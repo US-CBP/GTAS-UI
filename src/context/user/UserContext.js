@@ -55,7 +55,7 @@ const UserProvider = ({ children }) => {
     const storedUser = JSON.parse(sessionStorage.getItem("user"));
 
     // if (hasData((storedUser || {}).userToken)) {
-    if (storedUser.authenticated) {
+    if (hasData(storedUser) && storedUser.authenticated) {
       return storedUser;
     }
     return userAction({ type: "default" });
