@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Router, Redirect } from "@reach/router";
+import { Router, Redirect, navigate } from "@reach/router";
 import IdleTimer from "react-idle-timer";
 // import logo from './logo.svg';
 import Login from "./pages/login/Login";
@@ -45,7 +45,7 @@ import Authenticator from "./context/authenticator/Authenticator";
 import RoleAuthenticator from "./context/roleAuthenticator/RoleAuthenticator";
 import UserProvider from "./context/user/UserContext";
 
-import { ROLE } from "./utils/constants";
+import { ROLE, TIME } from "./utils/constants";
 
 //Split Link Analysis (Graph component, d3, jquery deps) into a separate bundle
 const LinkAnalysis = React.lazy(() =>
@@ -79,19 +79,20 @@ export default class App extends React.Component {
     console.log("last active", this.idleTimer.getLastActiveTime());
 
     // Logout and redirect to login page
-    this.setState({ redirect: true });
+    // this.setState({ redirect: true });
+    navigate("/login");
   }
 
   toggleModal() {
-    this.setState({ showModal: !this.state.showModal });
+    // this.setState({ showModal: !this.state.showModal });
   }
 
   render() {
-    if (this.state.redirect) {
-      this.setState({ redirect: false });
-      // logout and ...
-      return <Redirect to="/login" />;
-    }
+    // if (this.state.redirect) {
+    //   this.setState({ redirect: false });
+    //   // logout and ...
+    //   return <Redirect to="/login" />;
+    // }
 
     const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
 
@@ -99,6 +100,7 @@ export default class App extends React.Component {
       <React.StrictMode>
         <UserProvider>
           <Router>
+            <Redirect from="/" to="/login" noThrow />
             <Login path="/login"></Login>
           </Router>
           {this.state.showModal ? (
@@ -119,7 +121,7 @@ export default class App extends React.Component {
               onIdle={this.onIdle}
               onAction={this.onAction}
               debounce={250}
-              timeout={1000 * 25 * 60}
+              timeout={TIME.MINUTES_25}
             />
             <Suspense fallback="loading">
               <Authenticator>
