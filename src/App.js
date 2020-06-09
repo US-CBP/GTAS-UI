@@ -156,8 +156,8 @@ export default class App extends React.Component {
                           <ManageUser name="Manage Users" path="manageusers">
                             <AddUser name="Add User" path="/gtas/admin/adduser"></AddUser>
                           </ManageUser>
-                          <AuditLog name="Audit Log View" path="auditlog"></AuditLog>
-                          <ErrorLog name="Error Log View" path="errorlog"></ErrorLog>
+                          <AuditLog name="Audit Log" path="auditlog"></AuditLog>
+                          <ErrorLog name="Error Log" path="errorlog"></ErrorLog>
                           <Settings name="Settings" path="settings"></Settings>
                           <FileDownload
                             name="File Download"
