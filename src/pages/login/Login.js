@@ -76,15 +76,15 @@ const Login = () => {
               className="login-labeled-input"
             />
           </Form>
+          <div>
+            {alertVis && (
+              <Alert variant="danger" dismissible onClose={() => setAlertVis(false)}>
+                Login failed.
+              </Alert>
+            )}
+          </div>
         </Card.Body>
       </Card>
-      <div>
-        {alertVis && (
-          <Alert variant="danger" dismissible onClose={() => setAlertVis(false)}>
-            Login failed.
-          </Alert>
-        )}
-      </div>
     </div>
   );
 };
