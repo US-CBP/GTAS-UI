@@ -1,6 +1,16 @@
 export const NO_URI = "No URI was received in props";
 
-export const ROLE = { ADMIN: "Admin", USER: "User" };
+export const ROLE = {
+  ADMIN: "Admin",
+  QRYMGR: "Manage Queries",
+  PAXVWR: "View Passenger",
+  WLMGR: "Manage Watch List",
+  RULEMGR: "Manage Rules",
+  SYSADMIN: "SysAdmin",
+  HITMGR: "Manage Hits",
+  CASEMGR: "Manage Cases",
+  ANY: "Any"
+};
 
 export const TIME = {
   MINUTE: 60000,

@@ -248,7 +248,7 @@ const Table = props => {
       //   xl8Title = trans !== element.xid ? trans : undefined;
       // }
 
-      if (!(props.ignoredFields || []).includes(acc) && !Array.isArray(acc)) {
+      if (!(props.ignoredFields || []).includes(acc)) {
         // const title = titleCase(xl8Title || element.Header || acc);
         const title = titleCase(element.Header || acc);
         let cellconfig = { Header: title, accessor: acc };

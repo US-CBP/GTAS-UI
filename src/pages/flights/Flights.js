@@ -49,9 +49,7 @@ const Flights = props => {
     {
       Accessor: "passengerCount",
       Cell: ({ row }) => (
-        <Link to={"../flightpax?flightId=" + row.original.id}>
-          {row.original.passengerCount}
-        </Link>
+        <Link to={"../flightpax/" + row.original.id}>{row.original.passengerCount}</Link>
       )
     },
     { Accessor: "fullFlightNumber" },

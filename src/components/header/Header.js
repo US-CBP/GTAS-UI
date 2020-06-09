@@ -78,15 +78,16 @@ const Header = () => {
           >
             Vetting
           </Nav.Link>
-          <Nav.Link
-            as={Link}
-            to="admin"
-            className={`${getActiveClass(headerTabs.ADMIN)}`}
-            onClick={() => clickTab(headerTabs.ADMIN)}
-          >
-            Admin
-          </Nav.Link>
-
+          <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
+            <Nav.Link
+              as={Link}
+              to="admin"
+              className={`${getActiveClass(headerTabs.ADMIN)}`}
+              onClick={() => clickTab(headerTabs.ADMIN)}
+            >
+              Admin
+            </Nav.Link>
+          </RoleAuthenticator>
           <NavDropdown title="Tools" id="nav-dropdown">
             <NavDropdown.Item
               as={Link}

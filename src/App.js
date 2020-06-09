@@ -93,6 +93,8 @@ export default class App extends React.Component {
       return <Redirect to="/login" />;
     }
 
+    const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
+
     return (
       <React.StrictMode>
         <UserProvider>
@@ -122,50 +124,62 @@ export default class App extends React.Component {
             <Suspense fallback="loading">
               <Authenticator>
                 <Router>
+                  <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
                   <RoleAuthenticator
                     path="/"
-                    alt={<PageUnauthorized path="pageUnauthorized"></PageUnauthorized>}
-                    roles={[ROLE.ADMIN, ROLE.USER]}
+                    alt={UNAUTHED}
+                    roles={[
+                      ROLE.ADMIN,
+                      ROLE.PAXVWR,
+                      ROLE.RULEMGR,
+                      ROLE.CASEMGR,
+                      ROLE.WLMGR,
+                      ROLE.HITMGR,
+                      ROLE.QRYMGR
+                    ]}
                   >
                     <Redirect from="/" to="/gtas" noThrow />
                     <Home path="/gtas">
+                      <Page404 default></Page404>
                       <Redirect from="/gtas" to="/gtas/flights" noThrow />
                       <Dashboard path="dashboard"></Dashboard>
                       <Flights path="flights"></Flights>
-                      <FlightPax path="flightpax"></FlightPax>
+                      <FlightPax path="flightpax/:id"></FlightPax>
                       <PriorityVetting path="vetting"></PriorityVetting>
                       <Queries path="tools/queries"></Queries>
                       <Rules path="tools/rules"></Rules>
                       <Neo4J path="tools/neo4j"></Neo4J>
                       <Watchlist path="tools/watchlist"></Watchlist>
                       <About path="tools/about"></About>
-                      <Admin path="admin">
-                        <ManageUser name="Manage Users" path="manageusers">
-                          <AddUser name="Add User" path="/gtas/admin/adduser"></AddUser>
-                        </ManageUser>
-                        <AuditLog name="Audit Log View" path="auditlog"></AuditLog>
-                        <ErrorLog name="Error Log View" path="errorlog"></ErrorLog>
-                        <Settings name="Settings" path="settings"></Settings>
-                        <FileDownload
-                          name="File Download"
-                          path="filedownload"
-                        ></FileDownload>
-                        <CodeEditor name="Code Editor" path="codeeditor"></CodeEditor>
-                        <LoaderStats
-                          name="Loader Statistics"
-                          path="loaderstats"
-                        ></LoaderStats>
-                        <WatchlistCats
-                          name="Watchlist Categories"
-                          path="watchlistcats"
-                        ></WatchlistCats>
-                        <NoteTypeCats
-                          name="Note Type Categories"
-                          path="notetypecats"
-                        ></NoteTypeCats>
-                      </Admin>
-                      <PaxDetail path="paxdetail">
-                        <Summary path="summary"></Summary>
+                      <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
+                        <Admin path="/">
+                          <ManageUser name="Manage Users" path="manageusers">
+                            <AddUser name="Add User" path="/gtas/admin/adduser"></AddUser>
+                          </ManageUser>
+                          <AuditLog name="Audit Log View" path="auditlog"></AuditLog>
+                          <ErrorLog name="Error Log View" path="errorlog"></ErrorLog>
+                          <Settings name="Settings" path="settings"></Settings>
+                          <FileDownload
+                            name="File Download"
+                            path="filedownload"
+                          ></FileDownload>
+                          <CodeEditor name="Code Editor" path="codeeditor"></CodeEditor>
+                          <LoaderStats
+                            name="Loader Statistics"
+                            path="loaderstats"
+                          ></LoaderStats>
+                          <WatchlistCats
+                            name="Watchlist Categories"
+                            path="watchlistcats"
+                          ></WatchlistCats>
+                          <NoteTypeCats
+                            name="Note Type Categories"
+                            path="notetypecats"
+                          ></NoteTypeCats>
+                        </Admin>
+                      </RoleAuthenticator>
+                      <PaxDetail path="paxDetail/:flightId/:paxId">
+                        <Summary path="summary" default></Summary>
                         <APIS path="apis"></APIS>
                         <PNR path="pnr"></PNR>
                         <FlightHistory path="flighthistory"></FlightHistory>
@@ -175,7 +189,6 @@ export default class App extends React.Component {
                           </Suspense>
                         </ErrorBoundary>
                       </PaxDetail>
-                      <Page404 default></Page404>
                       <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
                     </Home>
                   </RoleAuthenticator>
