@@ -1,7 +1,6 @@
 import React from "react";
 import FlightBadge from "../flightBadge/FlightBadge";
-import PaxInfoRow from "./PaxInfoRow";
-import { Col, Form, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import "./PaxInfo.scss";
 
 const PaxInfo = props => {

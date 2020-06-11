@@ -6,7 +6,7 @@ const FlightBadge = props => {
   return (
     <div className="flight-badge">
       <Row>
-        <Col lg="4" className="fa fa-plane flight-number">
+        <Col lg="4" md="4" sm="4" className="fa fa-plane flight-number">
           {props.flightnumber}
         </Col>
         <Col>
