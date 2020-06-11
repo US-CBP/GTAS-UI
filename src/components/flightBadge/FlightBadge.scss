@@ -1,0 +1,17 @@
+.flight-badge {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: black;
+  font-size: smaller;
+  border-radius: 1rem 0;
+  margin-bottom: 5px;
+
+  .flight-number {
+    font-weight: bold;
+    margin-top: 5%;
+    align-items: center;
+  }
+
+  .flight-text {
+    font-weight: bold;
+  }
+}
