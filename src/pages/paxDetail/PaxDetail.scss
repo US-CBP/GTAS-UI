@@ -7,7 +7,7 @@ $wco-blue: rgb(0, 119, 200);
 $transparent: rgba(0, 0, 0, 0.65);
 
 .paxdetails-side-nav .filter-bg {
-  background: linear-gradient($wco-blue, $transparent),
+  background: linear-gradient($wco-blue, rgba(0, 119, 200, 0.75)),
     url($background-image-url) no-repeat, no-repeat;
   background-position: center center;
   background-size: cover;
