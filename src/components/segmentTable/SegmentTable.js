@@ -48,7 +48,7 @@ class SegmentTable extends React.Component {
   render() {
     let idx = 0;
     return (
-      <div className="tableHeight">
+      <div className="segment-table">
         {this.props.title && (
           <h4 className={`title ${this.props.style}`}>{this.props.title}</h4>
         )}

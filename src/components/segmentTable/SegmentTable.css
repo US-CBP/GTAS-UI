@@ -1,6 +1,7 @@
-.tableHeight {
+.segment-table {
   max-height: 65vh;
   overflow: scroll;
+  font-size: smaller;
 }
 
 .highlight {
