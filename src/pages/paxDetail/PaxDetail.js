@@ -8,17 +8,13 @@ import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SideNav from "../../components/sidenav/SideNav";
 import Main from "../../components/main/Main";
 import { paxdetails } from "../../services/serviceWrapper";
+import Summary from "./summary/Summary";
+import PNR from "./pnr/PNR";
+import APIS from "./apis/APIS";
+import FlightHistory from "./flightHistory/FlightHistory";
+import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
 
 const PaxDetail = props => {
-  const tabcontent = props.children.props.children;
-  const tabs = [
-    { title: "Summary", link: tabcontent[0] },
-    { title: "APIS", link: tabcontent[1] },
-    { title: "PNR", link: tabcontent[2] },
-    { title: "Flight History", link: tabcontent[3] },
-    { title: "Link Analysis", link: tabcontent[4] }
-  ];
-
   const passengerTypesMap = {
     P: "Passenger",
     C: "Crew",
@@ -59,12 +55,22 @@ const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState({});
   const [pax, setPax] = useState([]);
   const [documents, setDocuments] = useState([]);
+  const [pnr, setPnr] = useState({});
+
+  const tabs = [
+    { title: "Summary", link: <Summary></Summary> },
+    { title: "APIS", link: <APIS></APIS> },
+    { title: "PNR", link: <PNR data={pnr}></PNR> },
+    { title: "Flight History", link: <FlightHistory></FlightHistory> },
+    { title: "Link Analysis", link: <LinkAnalysis></LinkAnalysis> }
+  ];
 
   const fetchData = () => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
       setPax(getPaxInfo(res));
       setDocuments(res.documents);
       setFlightBadge(flightBadgeData(res));
+      setPnr(res.pnrVo);
     });
   };
 
