@@ -1,87 +1,109 @@
 import React, { useState } from "react";
+import { Row, Col, Container } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import SegmentTable from "../../../components/segmentTable/SegmentTable";
+import CardWithTable from "../../../components/cardWithTable/CardWithTable";
+import "./PNR.scss";
 
 const PNR = props => {
-  const mockdata = [
-    { key: "0", value: "UNB+IATA:1+UA++191228:1610+338471103105'" },
-    { key: "1", value: "UNH+1+PNRGOV:13:1:IA+123456789'" },
-    { key: "2", value: "MSG+:22'" },
-    { key: "3", value: "ORG+UA:DJE+55107'" },
-    { key: "TVLFRA ", value: "TVL+311219:1710:1955+FRA+IAD+UA+933'" },
-    { key: "5", value: "EQN+1'" },
-    { key: "6", value: "SRC'" },
-    { key: "7", value: "RCI+UA:BB9E79::141119:1610'" },
-    { key: "8", value: "DAT+700:311219:1416+710:281219:1610'" },
-    { key: "AGEN70379193 ", value: "ORG+DL:IAD+70379193:LON+++A+GB:GBP+D050517'" },
-    {
-      key: "ADDGUADALAJARA PHONE715898537516 ",
-      value: "ADD++700:6082 TATLOW AVENUE:GUADALAJARA:::MX::715898537516'"
-    },
-    { key: "11", value: "TIF+O GRADY+ELLIOT:A:1'" },
-    { key: "FTI462075 ", value: "FTI+UA:462075:::'" },
-    {
-      key: "EMAIL ELLIOT.O GRADY@YAHOO.COM ",
-      value: "IFT+4:28::YY+CTCE ELLIOT.O GRADY//YAHOO.COM'"
-    },
-    { key: "14", value: "REF+:695553137'" },
-    { key: "15", value: "FAR+N+++++'" },
-    {
-      key: "SSRELLIOT DOCS758471042 ",
-      value:
-        "SSR+DOCS:HK::DL:::::/P/GBR/758471042/USA/06OCT68/M/19OCT19/O GRADY/ELLIOT/OSCAR'"
-    },
-    { key: "17", value: "TKT+15158035510059:T:1'" },
-    { key: "18", value: "MON+B:94.34:GBP+T:100.00:GBP'" },
-    { key: "19", value: "PTK+NR++150417:1010+DL+006+LON'" },
-    {
-      key: "20",
-      value: "TXD++0.57:::AY6+0.85:::YQ+1.13:::YC+1.42:::XY+0.57:::XA+1.13:::XF'"
-    },
-    { key: "21", value: "DAT+710:311219'" },
-    { key: "FOPXXXXXXXXXXXX7236 ", value: "FOP+CC::100.00:VI:XXXXXXXXXXXX7236:0321'" },
-    {
-      key: "23",
-      value: "IFT+4:43+ELLIOT O GRADY+9178 ECCLESTON AVENUE TOKYO USA NRPXC+126087571132'"
-    },
-    { key: "24", value: "TIF+ELLROTT+DANIEL:A:2'" },
-    { key: "FTI949218 ", value: "FTI+UA:949218:::'" },
-    {
-      key: "EMAIL DANIEL.ELLROTT@HOTMAIL.COM ",
-      value: "IFT+4:28::YY+CTCE DANIEL.ELLROTT//HOTMAIL.COM'"
-    },
-    { key: "27", value: "REF+:5893702'" },
-    { key: "28", value: "FAR+N+++++'" },
-    {
-      key: "SSRDANIEL DOCS938630055 ",
-      value:
-        "SSR+DOCS:HK::DL:::::/P/GBR/938630055/DEU/28DEC74/M/17DEC21/ELLROTT/DANIEL/EWAN'"
-    },
-    { key: "30", value: "TKT+15158019063007:T:1'" },
-    { key: "31", value: "MON+B:235.85:GBP+T:250.00:GBP'" },
-    { key: "32", value: "PTK+NR++150417:1010+DL+006+LON'" },
-    {
-      key: "33",
-      value: "TXD++1.42:::AY6+2.12:::YQ+2.83:::YC+3.54:::XY+1.42:::XA+2.83:::XF'"
-    },
-    { key: "34", value: "DAT+710:311219'" },
-    { key: "FOPXXXXXXXXXXXX9672 ", value: "FOP+CC::250.00:VI:XXXXXXXXXXXX9672:0217'" },
-    {
-      key: "36",
-      value: "IFT+4:43+DANIEL ELLROTT+9178 ECCLESTON AVENUE TOKYO USA NRPXC+126087571132'"
-    },
-    { key: "TVLFRA ", value: "TVL+311219:1710::1955+FRA+IAD+UA+933:B'" },
-    { key: "38", value: "APD+388'" },
-    { key: "SEAT12D SEAT48G ", value: "SSR+SEAT:HK:2:UA:::FRA:IAD+12D::1+48G::2'" },
-    {
-      key: "SSRELLIOT ",
-      value: "SSR+TKNE::::::::TKT NBR 15158035510059 31DEC19 E ELLIOTO GRADY'"
-    },
-    { key: "41", value: "RCI+UA:BB9E79'" },
-    { key: "42", value: "ABI+1+:LHRRR+LON++DL'" },
-    { key: "43", value: "UNT+25'" },
-    { key: "44", value: "UNZ+1+0113360543'" }
-  ];
+  console.log(props.data);
+  const data = props.data;
+
+  const rawPnrSegments = data.segmentList;
+
+  const itinerary = (data.flightLegs || []).map((leg, index) => {
+    return {
+      leg: index + 1,
+      flightNumber: leg.flightNumber,
+      origin: leg.originAirport,
+      destination: leg.destinationAirport,
+      departure: leg.etd,
+      arrivval: leg.eta
+    };
+  });
+  const itineraryHeaders = {
+    leg: "Leg",
+    flightNumber: "Flight Number",
+    origin: "Origin",
+    destination: "Destination",
+    departure: "Departure",
+    arrivval: "Arrival"
+  };
+
+  const passengers = data.passengers || [];
+  const passengerHeaders = {
+    lastName: "Last Name",
+    firstName: "First Name",
+    middleName: "Middle Name",
+    gender: "Gender",
+    age: "Age"
+  };
+
+  const documents = data.documents || [];
+  const documentHeaders = {
+    lastName: "Last Name",
+    firstName: "First Name",
+    documentType: "Type",
+    issuanceCountry: "Issuance Country",
+    expirationDate: "Expiration Date",
+    documentNumber: "Number"
+  };
+
+  const addresses = (data.addresses || []).map(address => {
+    return {
+      ...address,
+      street: address.line1
+    };
+  });
+  const addressHeaders = {
+    street: "Street",
+    city: "City",
+    state: "State/Province",
+    country: "Country"
+  };
+
+  const phoneNumbers = data.phoneNumbers || [];
+  const phoneNumberHeaders = {
+    number: "Number"
+  };
+
+  const emails = data.emails || [];
+  const emailHeaders = {
+    address: "Email Adrress"
+  };
+
+  const creditCards = data.creditCards || [];
+  const creditCardHeaders = {
+    accountHolder: "Holder",
+    cardType: "Type",
+    expiration: "Exp. Date",
+    number: "Number"
+  };
+
+  const frequentFlyerDetails = data.frequentFlyerDetails || [];
+  const frequentFlyerDetailHeaders = {
+    carrier: "Airline",
+    number: "Number"
+  };
+
+  const agencies = data.agencies || [];
+  const agenciesHeaders = {
+    type: "Type",
+    country: "Country",
+    city: "City",
+    identifier: "ID",
+    location: "Location",
+    name: "Name",
+    phone: "Phone"
+  };
+
+  const seatAssignments = data.seatAssignments || [];
+  const seatAssignmentHeaders = {
+    firstName: "First Name",
+    lastName: "Last Name",
+    flightNumber: "Flight Number",
+    number: "Seat Number"
+  };
 
   const segmentRef = React.createRef();
   const [foo, setFoo] = useState(0);
@@ -96,21 +118,74 @@ const PNR = props => {
   };
 
   return (
-    <div className="container">
-      <Title title="PNR"></Title>
-
-      <div className="columns">
+    <Row>
+      <Col sm="4" md="4" lg="4">
         <div className="top">
           <input type="button" onClick={setActiveKeyWrapper} value="click"></input>
           <SegmentTable
             title="Segment Table"
-            data={mockdata}
+            data={rawPnrSegments}
             id="rawPnrSegments"
             ref={segmentRef}
           />
         </div>
-      </div>
-    </div>
+      </Col>
+      <Col>
+        <Container fluid className="pnr-card-container">
+          <CardWithTable
+            data={itinerary}
+            headers={itineraryHeaders}
+            title={`Itinerary (${itinerary.length})`}
+          />
+          <CardWithTable
+            data={passengers}
+            headers={passengerHeaders}
+            title={`PNR Names (${passengers.length})`}
+          />
+          <CardWithTable
+            data={documents}
+            headers={documentHeaders}
+            title={`Documents(${documents.length})`}
+          />
+          <CardWithTable
+            data={addresses}
+            headers={addressHeaders}
+            title={`Addresses(${addresses.length})`}
+          />
+          <CardWithTable
+            data={phoneNumbers}
+            headers={phoneNumberHeaders}
+            title={`Phone Numbers(${phoneNumbers.length})`}
+          />
+          <CardWithTable
+            data={emails}
+            headers={emailHeaders}
+            title={`Email Addresses(${emails.length})`}
+          />
+          <CardWithTable
+            data={creditCards}
+            headers={creditCardHeaders}
+            title={`Credit Cards(${creditCards.length})`}
+          />
+          <CardWithTable
+            data={frequentFlyerDetails}
+            headers={frequentFlyerDetailHeaders}
+            title={`Frequent Flyer Numbers(${frequentFlyerDetails.length})`}
+          />
+          <CardWithTable
+            data={seatAssignments}
+            headers={seatAssignmentHeaders}
+            title="Seat Information"
+          />
+
+          <CardWithTable
+            data={agencies}
+            headers={agenciesHeaders}
+            title={`Agencies(${agencies.length})`}
+          />
+        </Container>
+      </Col>
+    </Row>
   );
 };
 
