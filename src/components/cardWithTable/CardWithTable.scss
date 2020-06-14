@@ -1,4 +1,7 @@
 $wco-blue: rgb(0, 119, 200);
-.custommed-card-header {
+$gtas-white: rgba(255, 255, 255, 0.9);
+.customized-card-header {
   background-color: $wco-blue;
+  font-weight: 700;
+  color: $gtas-white;
 }

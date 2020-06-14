@@ -19,7 +19,7 @@ const CardWithTable = props => {
 
   return (
     <Card>
-      <Card.Header className="custommed-card-header">{props.title || ""}</Card.Header>
+      <Card.Header className="customized-card-header">{props.title || ""}</Card.Header>
       <Table size="sm" striped borderless>
         <thead>
           <tr>{tableHeaders}</tr>
