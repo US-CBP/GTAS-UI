@@ -6,11 +6,70 @@ import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import "./PNR.scss";
 
 const PNR = props => {
-  console.log(props.data);
   const data = props.data;
-
+  const headers = {
+    itinerary: {
+      leg: "Leg",
+      flightNumber: "Flight Number",
+      origin: "Origin",
+      destination: "Destination",
+      departure: "Departure",
+      arrivval: "Arrival"
+    },
+    passengers: {
+      lastName: "Last Name",
+      firstName: "First Name",
+      middleName: "Middle Name",
+      gender: "Gender",
+      age: "Age"
+    },
+    documents: {
+      lastName: "Last Name",
+      firstName: "First Name",
+      documentType: "Type",
+      issuanceCountry: "Issuance Country",
+      expirationDate: "Expiration Date",
+      documentNumber: "Number"
+    },
+    addresses: {
+      street: "Street",
+      city: "City",
+      state: "State/Province",
+      country: "Country"
+    },
+    phoneNumbers: {
+      number: "Number"
+    },
+    emails: {
+      address: "Email Adrress"
+    },
+    creditCards: {
+      accountHolder: "Holder",
+      cardType: "Type",
+      expiration: "Exp. Date",
+      number: "Number"
+    },
+    frequentFlyerDetails: {
+      carrier: "Airline",
+      number: "Number"
+    },
+    agencies: {
+      type: "Type",
+      country: "Country",
+      city: "City",
+      identifier: "ID",
+      location: "Location",
+      name: "Name",
+      phone: "Phone"
+    },
+    seatAssignments: {
+      firstName: "First Name",
+      lastName: "Last Name",
+      flightNumber: "Flight Number",
+      number: "Seat Number"
+    }
+  };
   const rawPnrSegments = data.segmentList;
-
   const itinerary = (data.flightLegs || []).map((leg, index) => {
     return {
       leg: index + 1,
@@ -21,89 +80,21 @@ const PNR = props => {
       arrivval: leg.eta
     };
   });
-  const itineraryHeaders = {
-    leg: "Leg",
-    flightNumber: "Flight Number",
-    origin: "Origin",
-    destination: "Destination",
-    departure: "Departure",
-    arrivval: "Arrival"
-  };
 
   const passengers = data.passengers || [];
-  const passengerHeaders = {
-    lastName: "Last Name",
-    firstName: "First Name",
-    middleName: "Middle Name",
-    gender: "Gender",
-    age: "Age"
-  };
-
   const documents = data.documents || [];
-  const documentHeaders = {
-    lastName: "Last Name",
-    firstName: "First Name",
-    documentType: "Type",
-    issuanceCountry: "Issuance Country",
-    expirationDate: "Expiration Date",
-    documentNumber: "Number"
-  };
-
   const addresses = (data.addresses || []).map(address => {
     return {
       ...address,
       street: address.line1
     };
   });
-  const addressHeaders = {
-    street: "Street",
-    city: "City",
-    state: "State/Province",
-    country: "Country"
-  };
-
   const phoneNumbers = data.phoneNumbers || [];
-  const phoneNumberHeaders = {
-    number: "Number"
-  };
-
   const emails = data.emails || [];
-  const emailHeaders = {
-    address: "Email Adrress"
-  };
-
   const creditCards = data.creditCards || [];
-  const creditCardHeaders = {
-    accountHolder: "Holder",
-    cardType: "Type",
-    expiration: "Exp. Date",
-    number: "Number"
-  };
-
   const frequentFlyerDetails = data.frequentFlyerDetails || [];
-  const frequentFlyerDetailHeaders = {
-    carrier: "Airline",
-    number: "Number"
-  };
-
   const agencies = data.agencies || [];
-  const agenciesHeaders = {
-    type: "Type",
-    country: "Country",
-    city: "City",
-    identifier: "ID",
-    location: "Location",
-    name: "Name",
-    phone: "Phone"
-  };
-
   const seatAssignments = data.seatAssignments || [];
-  const seatAssignmentHeaders = {
-    firstName: "First Name",
-    lastName: "Last Name",
-    flightNumber: "Flight Number",
-    number: "Seat Number"
-  };
 
   const segmentRef = React.createRef();
   const [foo, setFoo] = useState(0);
@@ -134,53 +125,53 @@ const PNR = props => {
         <Container fluid className="pnr-card-container">
           <CardWithTable
             data={itinerary}
-            headers={itineraryHeaders}
+            headers={headers.itinerary}
             title={`Itinerary (${itinerary.length})`}
           />
           <CardWithTable
             data={passengers}
-            headers={passengerHeaders}
+            headers={headers.passengers}
             title={`PNR Names (${passengers.length})`}
           />
           <CardWithTable
             data={documents}
-            headers={documentHeaders}
+            headers={headers.documents}
             title={`Documents(${documents.length})`}
           />
           <CardWithTable
             data={addresses}
-            headers={addressHeaders}
+            headers={headers.addresses}
             title={`Addresses(${addresses.length})`}
           />
           <CardWithTable
             data={phoneNumbers}
-            headers={phoneNumberHeaders}
+            headers={headers.phoneNumbers}
             title={`Phone Numbers(${phoneNumbers.length})`}
           />
           <CardWithTable
             data={emails}
-            headers={emailHeaders}
+            headers={headers.emails}
             title={`Email Addresses(${emails.length})`}
           />
           <CardWithTable
             data={creditCards}
-            headers={creditCardHeaders}
+            headers={headers.creditCards}
             title={`Credit Cards(${creditCards.length})`}
           />
           <CardWithTable
             data={frequentFlyerDetails}
-            headers={frequentFlyerDetailHeaders}
+            headers={headers.frequentFlyerDetails}
             title={`Frequent Flyer Numbers(${frequentFlyerDetails.length})`}
           />
           <CardWithTable
             data={seatAssignments}
-            headers={seatAssignmentHeaders}
+            headers={headers.seatAssignments}
             title="Seat Information"
           />
 
           <CardWithTable
             data={agencies}
-            headers={agenciesHeaders}
+            headers={headers.agencies}
             title={`Agencies(${agencies.length})`}
           />
         </Container>
