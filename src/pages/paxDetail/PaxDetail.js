@@ -7,7 +7,11 @@ import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SideNav from "../../components/sidenav/SideNav";
 import Main from "../../components/main/Main";
-import { paxdetails } from "../../services/serviceWrapper";
+import {
+  paxdetails,
+  paxFlightHisoty,
+  paxFullTravelHistory
+} from "../../services/serviceWrapper";
 import Summary from "./summary/Summary";
 import PNR from "./pnr/PNR";
 import APIS from "./apis/APIS";
@@ -36,9 +40,9 @@ const PaxDetail = props => {
       { label: "Seat", value: res.seat },
       {
         label: "Passenger Type",
-        value: passengerTypesMap[res.passengerType] || res.passengerType
+        value: passengerTypesMap[res.passengerType || ""]
       },
-      { label: "Last PNR Recieved", value: res.pnrVo.transmissionDate }
+      { label: "Last PNR Recieved", value: res.pnrVo?.transmissionDate }
     ];
   };
 
@@ -56,13 +60,23 @@ const PaxDetail = props => {
   const [pax, setPax] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [pnr, setPnr] = useState({});
+  const [paxFlightHisotyData, setPaxFlightHistoryData] = useState([]);
+  const [paxFullTravelHistoryData, setPaxFullTravelHistoryData] = useState([]);
 
   const tabs = [
-    { title: "Summary", link: <Summary></Summary> },
+    { title: "Summary", link: <Summary /> },
     { title: "APIS", link: <APIS></APIS> },
-    { title: "PNR", link: <PNR data={pnr}></PNR> },
-    { title: "Flight History", link: <FlightHistory></FlightHistory> },
-    { title: "Link Analysis", link: <LinkAnalysis></LinkAnalysis> }
+    { title: "PNR", link: <PNR data={pnr} /> },
+    {
+      title: "Flight History",
+      link: (
+        <FlightHistory
+          currentFlightHistory={paxFlightHisotyData}
+          fullTravelHistory={paxFullTravelHistoryData}
+        />
+      )
+    },
+    { title: "Link Analysis", link: <LinkAnalysis /> }
   ];
 
   const fetchData = () => {
@@ -71,6 +85,13 @@ const PaxDetail = props => {
       setDocuments(res.documents);
       setFlightBadge(flightBadgeData(res));
       setPnr(res.pnrVo);
+    });
+    paxFlightHisoty.get(props.flightId, props.paxId).then(res => {
+      setPaxFlightHistoryData(res);
+    });
+    paxFullTravelHistory.get(props.flightId, props.paxId).then(res => {
+      console.log(res);
+      setPaxFullTravelHistoryData(res);
     });
   };
 

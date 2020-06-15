@@ -82,6 +82,8 @@ const SETTINGSINFO = `${BASE_URL}gtas/settingsinfo`;
 const GETRULECATS = `${BASE_URL}getRuleCats`;
 const PAX = `${BASE_URL}gtas/flights/flight/:id/passengers`;
 const PAXDETAILS = `${BASE_URL}gtas/passengers/passenger/:paxId/details?flightId=:flightId`;
+const PAXFLIGHTHISTORY = `${BASE_URL}gtas/passengers/passenger/flighthistory?paxId=:paxId&flightId=:flightId`;
+const PAXFULLTRAVELHISTORY = `${BASE_URL}gtas/passengers/passenger/bookingdetailhistory?paxId=:paxId&flightId=:flightId`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/statistics`;
 const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
 const NOTE_TYPES = `${BASE_URL}gtas/passengers/passenger/notetypes`;
@@ -125,6 +127,21 @@ export const passengers = {
 export const paxdetails = {
   get: (flightId, paxId) => {
     const path = PAXDETAILS.replace(":flightId", flightId).replace(":paxId", paxId);
+    return get(path, BASEHEADER);
+  }
+};
+export const paxFlightHisoty = {
+  get: (flightId, paxId) => {
+    const path = PAXFLIGHTHISTORY.replace(":flightId", flightId).replace(":paxId", paxId);
+    return get(path, BASEHEADER);
+  }
+};
+export const paxFullTravelHistory = {
+  get: (flightId, paxId) => {
+    const path = PAXFULLTRAVELHISTORY.replace(":flightId", flightId).replace(
+      ":paxId",
+      paxId
+    );
     return get(path, BASEHEADER);
   }
 };
