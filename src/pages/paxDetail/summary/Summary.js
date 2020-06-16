@@ -86,7 +86,6 @@ const Summary = props => {
         })
         .slice(0, 10);
       setHistoricalEventNotes(notesData);
-      console.log(notesData);
     });
   };
 

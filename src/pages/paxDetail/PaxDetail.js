@@ -58,10 +58,7 @@ const PaxDetail = props => {
 
   const [flightBadge, setFlightBadge] = useState({});
   const [pax, setPax] = useState([]);
-  const [documents, setDocuments] = useState([]);
   const [pnr, setPnr] = useState({});
-  const [paxFlightHisotyData, setPaxFlightHistoryData] = useState([]);
-  const [paxFullTravelHistoryData, setPaxFullTravelHistoryData] = useState([]);
 
   const tabs = [
     { title: "Summary", link: <Summary paxId={props.paxId} flightId={props.flightId} /> },
@@ -69,12 +66,7 @@ const PaxDetail = props => {
     { title: "PNR", link: <PNR data={pnr} /> },
     {
       title: "Flight History",
-      link: (
-        <FlightHistory
-          currentFlightHistory={paxFlightHisotyData}
-          fullTravelHistory={paxFullTravelHistoryData}
-        />
-      )
+      link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
     { title: "Link Analysis", link: <LinkAnalysis /> }
   ];
@@ -82,15 +74,8 @@ const PaxDetail = props => {
   const fetchData = () => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
       setPax(getPaxInfo(res));
-      setDocuments(res.documents);
       setFlightBadge(flightBadgeData(res));
       setPnr(res.pnrVo);
-    });
-    paxFlightHisoty.get(props.flightId, props.paxId).then(res => {
-      setPaxFlightHistoryData(res);
-    });
-    paxFullTravelHistory.get(props.flightId, props.paxId).then(res => {
-      setPaxFullTravelHistoryData(res);
     });
   };
 
