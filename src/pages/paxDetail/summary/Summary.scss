@@ -5,14 +5,11 @@
 $wco-blue: rgb(0, 119, 200);
 $gtas-white: rgba(255, 255, 255, 0.9);
 
-.summary-card-deck .card {
-  min-width: 400px !important;
-  margin: 0.5rem 0.5rem;
+.summary-container {
+  max-height: 77vh;
+  overflow: scroll;
 }
-.summary-card-deck .card .card-header {
-  color: $gtas-white;
-  background-color: $wco-blue !important;
-}
+
 @include media-breakpoint-up(xl) {
   .summary-card-deck .card {
     max-width: 50%;

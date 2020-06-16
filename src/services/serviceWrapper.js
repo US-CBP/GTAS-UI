@@ -84,6 +84,9 @@ const PAX = `${BASE_URL}gtas/flights/flight/:id/passengers`;
 const PAXDETAILS = `${BASE_URL}gtas/passengers/passenger/:paxId/details?flightId=:flightId`;
 const PAXFLIGHTHISTORY = `${BASE_URL}gtas/passengers/passenger/flighthistory?paxId=:paxId&flightId=:flightId`;
 const PAXFULLTRAVELHISTORY = `${BASE_URL}gtas/passengers/passenger/bookingdetailhistory?paxId=:paxId&flightId=:flightId`;
+const PAXWATCHLISTLINK = `${BASE_URL}gtas/passengers/passenger/getwatchlistlink?paxId=`;
+const PAXEVENTNOTESHISTORY = `${BASE_URL}gtas/passengers/passenger/notes`;
+const FLIGHTPAXHITSUMMARY = `${BASE_URL}gtas/hit/flightpassenger`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/statistics`;
 const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
 const NOTE_TYPES = `${BASE_URL}gtas/passengers/passenger/notetypes`;
@@ -142,6 +145,21 @@ export const paxFullTravelHistory = {
       ":paxId",
       paxId
     );
+    return get(path, BASEHEADER);
+  }
+};
+export const paxWatchListLink = {
+  get: (id, params) => get(PAXWATCHLISTLINK, BASEHEADER, id, params)
+};
+export const flightpaxHitSummary = {
+  get: (flightId, paxId) => {
+    const path = `${FLIGHTPAXHITSUMMARY}?passengerId=${paxId}&flightId=${flightId}`;
+    return get(path, BASEHEADER);
+  }
+};
+export const paxEventNotesHistory = {
+  get: (paxId, historicalNotes) => {
+    const path = `${PAXEVENTNOTESHISTORY}?paxId=${paxId}&historicalNotes=${historicalNotes}`;
     return get(path, BASEHEADER);
   }
 };

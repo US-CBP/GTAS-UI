@@ -64,7 +64,7 @@ const PaxDetail = props => {
   const [paxFullTravelHistoryData, setPaxFullTravelHistoryData] = useState([]);
 
   const tabs = [
-    { title: "Summary", link: <Summary /> },
+    { title: "Summary", link: <Summary paxId={props.paxId} flightId={props.flightId} /> },
     { title: "APIS", link: <APIS></APIS> },
     { title: "PNR", link: <PNR data={pnr} /> },
     {
@@ -90,7 +90,6 @@ const PaxDetail = props => {
       setPaxFlightHistoryData(res);
     });
     paxFullTravelHistory.get(props.flightId, props.paxId).then(res => {
-      console.log(res);
       setPaxFullTravelHistoryData(res);
     });
   };
@@ -105,7 +104,7 @@ const PaxDetail = props => {
         <br />
         <PaxInfo pax={pax} badgeprops={flightBadge}></PaxInfo>
       </SideNav>
-      <Main>
+      <Main className="paxdetal-container">
         <Title title="Passenger Detail" uri={props.uri} />
 
         <Tabs tabs={tabs} />

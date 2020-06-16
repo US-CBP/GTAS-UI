@@ -13,6 +13,10 @@ $transparent: rgba(0, 0, 0, 0.65);
   background-size: cover;
 }
 
+.paxdetal-container {
+  overflow: scroll;
+}
+
 //TODO:  decide on what should be displayed on small devices
 @include media-breakpoint-down(sm) {
   .paxdetails-side-nav {
