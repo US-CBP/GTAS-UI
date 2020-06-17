@@ -55,7 +55,7 @@ class SegmentTable extends React.Component {
           <tbody>
             {this.state.data.map(raw => {
               const rec = JSON.parse(JSON.stringify(raw, this.state.header, 4));
-              const active = rec.key.includes(this.state.activeKey) ? " highlight" : "";
+              const active = rec.key?.includes(this.state.activeKey) ? " highlight" : "";
               return (
                 <tr
                   key={idx}
