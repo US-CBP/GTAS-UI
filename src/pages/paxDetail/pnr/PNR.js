@@ -3,11 +3,11 @@ import { Row, Col, Container } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import SegmentTable from "../../../components/segmentTable/SegmentTable";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
-import { asArray } from "../../../utils/utils";
+import { asArray, hasData, localeDate, localeDateOnly } from "../../../utils/utils";
 import "./PNR.scss";
 
 const PNR = props => {
-  const data = props.data;
+  const data = hasData(props.data) ? props.data : {};
 
   const headers = {
     itinerary: {
@@ -71,15 +71,15 @@ const PNR = props => {
       number: "Seat Number"
     }
   };
-  const rawPnrSegments = data.segmentList;
+  const rawPnrSegments = asArray(data.segmentList);
   const itinerary = asArray(data.flightLegs).map((leg, index) => {
     return {
       leg: index + 1,
       flightNumber: leg.flightNumber,
       origin: leg.originAirport,
       destination: leg.destinationAirport,
-      departure: leg.etd,
-      arrivval: leg.eta,
+      departure: localeDate(leg.etd),
+      arrivval: localeDate(leg.eta),
       key: `TVL${leg.originAirport} `
     };
   });
@@ -118,6 +118,7 @@ const PNR = props => {
   const creditCards = asArray(data.creditCards).map(ccData => {
     return {
       ...ccData,
+      expiration: localeDateOnly(ccData.expiration),
       key: `FOP${ccData.number} `
     };
   });

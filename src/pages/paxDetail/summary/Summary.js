@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
+import { localeDate, asArray } from "../../../utils/utils";
 import {
   users,
   paxdetails,
@@ -55,7 +56,13 @@ const Summary = props => {
       setDocuments(res.documents);
     });
     paxWatchListLink.get(null, props.paxId).then(res => {
-      setWatchListLinks(res);
+      const data = asArray(res).map(pwl => {
+        return {
+          ...pwl,
+          percentMatch: `${pwl.percentMatch * 100}%`
+        };
+      });
+      setWatchListLinks(data);
     });
 
     flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
@@ -68,6 +75,7 @@ const Summary = props => {
         });
         return {
           ...note,
+          createdAt: localeDate(note.createdAt),
           noteType: type.toString()
         };
       });
@@ -81,6 +89,7 @@ const Summary = props => {
           });
           return {
             ...note,
+            createdAt: localeDate(note.createdAt),
             notetype: type.toString()
           };
         })

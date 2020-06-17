@@ -112,7 +112,9 @@ export function localeDate(val) {
     localeMatcher: "lookup",
     year: "numeric",
     month: "short",
-    day: "2-digit"
+    day: "2-digit",
+    hour: "numeric",
+    minute: "numeric"
   };
   return new Date(val).toLocaleString(locale, options);
 }
