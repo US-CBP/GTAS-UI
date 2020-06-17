@@ -59,10 +59,11 @@ const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState({});
   const [pax, setPax] = useState([]);
   const [pnr, setPnr] = useState({});
+  const [apisMessage, setApisMessage] = useState({});
 
   const tabs = [
     { title: "Summary", link: <Summary paxId={props.paxId} flightId={props.flightId} /> },
-    { title: "APIS", link: <APIS></APIS> },
+    { title: "APIS", link: <APIS data={apisMessage}></APIS> },
     { title: "PNR", link: <PNR data={pnr} /> },
     {
       title: "Flight History",
@@ -76,6 +77,7 @@ const PaxDetail = props => {
       setPax(getPaxInfo(res));
       setFlightBadge(flightBadgeData(res));
       setPnr(res.pnrVo);
+      setApisMessage(res.apisMessageVo);
     });
   };
 
@@ -89,7 +91,7 @@ const PaxDetail = props => {
         <br />
         <PaxInfo pax={pax} badgeprops={flightBadge}></PaxInfo>
       </SideNav>
-      <Main className="paxdetal-container">
+      <Main className="paxdetail-container">
         <Title title="Passenger Detail" uri={props.uri} />
 
         <Tabs tabs={tabs} />
