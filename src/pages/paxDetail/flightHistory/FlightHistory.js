@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Table from "../../../components/table/Table";
-// import {  } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import { Container } from "react-bootstrap";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
