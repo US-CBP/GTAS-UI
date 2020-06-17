@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
-import { asArray, hasData, getParamList } from "../../../utils/utils";
+import { asArray, hasData, getParamList } from "../../utils/utils";
 import { Button, ButtonToolbar, Form as RBForm } from "react-bootstrap";
-import Title from "../title/Title";
+import Title from "../../components/title/Title";
 import { useQuery } from "react-query";
 
 import "./FilterForm.css";
@@ -11,33 +11,23 @@ import "./FilterForm.css";
 /**
  * **Generic filter form used to fetch data for use in another component.**
  */
-
 const FilterForm = props => {
-  const [formkey, setFormKey] = useState(1);
+  const [formkey, setFormKey] = useState(0);
+  const [fetchkey, setFetchKey] = useState(0);
   const [fields, setFields] = useState([]);
   const [fieldMap, setFieldMap] = useState([]);
   const [datafieldNames, setDatafieldNames] = useState([]);
-  const [getSuccess, setGetSuccess] = useState("");
+  // const [getSuccess, setGetSuccess] = useState("");
   const [kids, setKids] = useState([]);
   const [params, setParams] = useState("");
-  const [isPolling, setIsPolling] = useState("");
+  const [isPolling, setIsPolling] = useState(false);
+  const interval = props.interval || 0;
   let latestParams = "";
 
-  const onReset = () => {
-    let key = formkey;
-    let fields = [];
-
-    datafieldNames.forEach(function(name) {
-      fields[name] = "";
-    });
-
-    setFormKey(key + 1);
-    setFields(fields);
-  };
-
   const fetchData = (newParams, retainState = true) => {
-    const p = newParams || params;
+    if (fetchkey < 1) return;
 
+    const p = newParams || params;
     const controller = new AbortController();
     const signal = controller.signal;
 
@@ -49,15 +39,15 @@ const FilterForm = props => {
     return promise;
   };
 
-  // TODO - default to off and pull interval from props
   const { data } = useQuery(isPolling, fetchData, {
-    refetchInterval: 60000
-    // manual: true,
-    // initialData: []
+    refetchInterval: interval,
+    manual: true
   });
 
   useEffect(() => {
     setIsPolling(true);
+    setFetchKey(fetchkey + 1);
+
     return () => {
       setIsPolling(false);
     };
@@ -74,21 +64,34 @@ const FilterForm = props => {
     setFields(newfields);
   };
 
-  const onFormSubmit = e => {
-    e.preventDefault();
-    // pass the new val directly as they won't be updated in state
-    // before fetchData references it. Shd replace this with useeffect prob.
+  const onReset = e => {
+    let fields = [];
+
+    datafieldNames.forEach(function(name) {
+      fields[name] = "";
+    });
+
+    setFields(fields);
+    setFetchKey(fetchkey + 1);
+    setFormKey(formkey + 1);
+  };
+
+  useEffect(() => {
     const newParams = calcParams();
     fetchData(newParams, false);
+  }, [fetchkey]);
+
+  const onFormSubmit = e => {
+    if (e) e.preventDefault();
+    setFetchKey(fetchkey + 1);
   };
 
   const calcParams = () => {
     const cb = props.paramCallback;
     latestParams = getParamList(fields);
 
-    if (hasData(cb)) {
-      latestParams = cb(latestParams);
-    }
+    if (hasData(cb)) latestParams = cb(fields);
+
     setParams(latestParams);
 
     return latestParams;
@@ -115,7 +118,7 @@ const FilterForm = props => {
 
     setKids(boundChildren);
     setFields(populatedFields);
-    setGetSuccess(hasData(populatedFields)); // do we still need this??
+    // setGetSuccess(hasData(populatedFields)); // do we still need this??
   };
 
   useEffect(() => {
@@ -150,7 +153,6 @@ const FilterForm = props => {
 
     setFieldMap(fMap);
     setDatafieldNames(dfnames);
-    fetchData(undefined, false);
   }, []);
 
   return (

@@ -297,7 +297,7 @@ const Table = props => {
         columns={columns}
         data={data}
         rowcount={rowcount}
-        // initSort={props.initSort || []}
+        initSort={props.initSort || []}
       ></RTable>
       {/* </Xl8> */}
     </>
