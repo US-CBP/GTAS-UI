@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Row, Col, Container } from "react-bootstrap";
-import Title from "../../../components/title/Title";
 import SegmentTable from "../../../components/segmentTable/SegmentTable";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { asArray, hasData, localeDate, localeDateOnly } from "../../../utils/utils";
-import "./PNR.scss";
 
 const PNR = props => {
   const data = hasData(props.data) ? props.data : {};
@@ -163,7 +161,7 @@ const PNR = props => {
         </div>
       </Col>
       <Col>
-        <Container fluid className="pnr-card-container">
+        <Container fluid className="paxdetail-container">
           <CardWithTable
             data={itinerary}
             headers={headers.itinerary}

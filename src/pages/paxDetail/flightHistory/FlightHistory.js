@@ -30,7 +30,7 @@ const FlightHistory = props => {
     fetchData();
   }, [props.flightId, props.paxId]);
   return (
-    <Container>
+    <Container fluid className="paxdetail-container">
       <Title title="Flight History"></Title>
       <CardWithTable
         data={currentFlightHistory}
