@@ -1,0 +1,30 @@
+.bio-row {
+  margin: unset !important;
+  width: 110px;
+  text-align-last: center;
+  display: flex;
+}
+
+.fp {
+  /* background: url('../../images/fingerprint-24px.svg'); */
+}
+
+.bioicon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-size: 20px 20px !important;
+  background-repeat: no-repeat !important;
+  background-position-x: center !important;
+}
+
+.face {
+  /* background: url('../../images/face-24px.svg'); */
+}
+
+.icon-div {
+  flex-grow: 1 !important;
+  width: 33px;
+  text-align: -webkit-center;
+  color: black;
+}

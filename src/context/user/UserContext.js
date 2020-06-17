@@ -49,12 +49,10 @@ const UserProvider = ({ children }) => {
   );
 
   const getUserState = () => {
-    // if (hasData(userState.userToken)) return userState;
     if (userState.authenticated) return userState;
 
     const storedUser = JSON.parse(sessionStorage.getItem("user"));
 
-    // if (hasData((storedUser || {}).userToken)) {
     if (hasData(storedUser) && storedUser.authenticated) {
       return storedUser;
     }

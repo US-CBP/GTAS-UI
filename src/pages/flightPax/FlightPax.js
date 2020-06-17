@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../components/table/Table";
-import { passengers } from "../../services/serviceWrapper";
+import { flightPassengers } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import { Link } from "@reach/router";
 import { Container } from "react-bootstrap";
-import { asArray, hasData, getAge } from "../../utils/utils";
+import { asArray, hasData, getAge, alt, localeDateOnly } from "../../utils/utils";
 
 const FlightPax = props => {
   const cb = function(result) {};
@@ -14,11 +14,14 @@ const FlightPax = props => {
 
   const parseData = data => {
     return asArray(data).map(item => {
-      item.name = `${item.lastName}, ${item.firstName} ${item.middleName}`;
-      item.docNumber = item.documents?.length > 0 ? item.documents[0].documentNumber : ""; // TODO Documents: shd show all or none here.
-      item.dob = `${item.dob} - (${getAge(item.dob)})`;
+      // item.name = `${item.lastName}, ${item.firstName} ${item.middleName}`;
+      item.docNumber = item.documents?.length > 0 ? item.documents[0] : ""; // TODO Documents: shd show all or none here.
+      item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
+      item.dobStr = new Date(item.dob).toISOString().slice(0, -14);
+      item.dobAge = `${alt(localeDateOnly(item.dobStr))} ${item.age}`;
 
       //TODO: Do we need arrival and departure for passengers?? timestamp will be the same for all, right???
+      console.log(item);
       return item;
     });
   };
@@ -26,34 +29,40 @@ const FlightPax = props => {
   const headers = [
     { Accessor: "onRuleHitList", Header: "Rule Hits" },
     { Accessor: "onWatchList", Header: "Watchlist Hits" },
-    { Accessor: "type" },
+    { Accessor: "passengerType" },
     {
-      Accessor: "name",
+      Accessor: "lastName",
       Cell: ({ row }) => {
         return (
           <Link to={`/gtas/paxDetail/${props.id}/${row.original.id}`}>
-            {row.original.name}
+            {row.original.lastName}
           </Link>
         );
       }
     },
+    { Accessor: "firstName" },
+    { Accessor: "middleName" },
     { Accessor: "gender" },
-    { Accessor: "seat" },
-    { Accessor: "dob", Header: "DOB" },
+    {
+      Accessor: "dobStr",
+      Header: "DOB",
+      Cell: ({ row }) => row.original.dobAge
+    },
+    { Accessor: "docNumber" },
     { Accessor: "nationality" }
   ];
 
   useEffect(() => {
-    passengers.post(props.id || 1).then(res => {
-      if (!hasData(res) || !hasData(res.passengers)) {
+    flightPassengers.get(props.id).then(res => {
+      if (!hasData(res)) {
         setData([]);
         return;
       }
 
-      let parsed = parseData(res.passengers);
+      let parsed = parseData(res);
 
       setData(parsed);
-      setKey(key + 1);
+      setKey(1);
     });
   }, [props.id]);
 

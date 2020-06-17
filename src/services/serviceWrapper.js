@@ -1,22 +1,24 @@
 import GenericService from "./genericService";
 import { hasData } from "../utils/utils";
+import { object } from "prop-types";
 
 const GET = "get";
 const DELETE = "delete";
 const POST = "post";
 const PUT = "put";
-const AJSON = "application/json";
+const AJSON = "application/json, text/plain, */*";
+const JSONUTF8 = "application/json;charset=UTF-8";
 const FORM = "application/x-www-form-urlencoded";
 
 const LOGINHEADER = {
   "X-Login-Ajax-call": "true",
   "Content-Type": FORM,
   "X-Requested-With": "XMLHttpRequest",
-  Accept: "application/json, text/plain, */*",
+  Accept: AJSON,
   "Accept-Encoding": "gzip, deflate, br"
 };
 
-const BASEHEADER = { "Content-Type": AJSON, Accept: AJSON };
+const BASEHEADER = { "Content-Type": JSONUTF8, Accept: AJSON };
 const PUTBODY = "The put method requires a valid body parameter.";
 const POSTBODY = "The post method requires a valid body or data parameter.";
 const PUTID = "The put method requires a valid id parameter.";
@@ -24,19 +26,22 @@ const PUTPARAMS = "The put method requires parameters.";
 const DELETEID = "The delete method requires a valid id parameter.";
 
 function get(uri, headers, id, params) {
-  const query = hasData(id) ? `/${id}` : hasData(params) ? params : "";
-  return GenericService({ uri: uri + query, method: GET, headers: headers });
+  let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}${
+    hasData(params) ? params : ""
+  }`;
+
+  return GenericService({ uri: uricomplete, method: GET, headers: headers });
 }
 
 function post(uri, headers, body, data) {
-  if (
-    !hasData(body) &&
-    !(body instanceof FormData) &&
-    !(body instanceof URLSearchParams) &&
-    !(data instanceof URLSearchParams) &&
-    !hasData(data)
-  )
-    throw new TypeError(POSTBODY);
+  // if (
+  //   !hasData(body) &&
+  //   !(body instanceof FormData) &&
+  //   !(body instanceof URLSearchParams) &&
+  //   !(data instanceof URLSearchParams) &&
+  //   !hasData(data)
+  // )
+  //   throw new TypeError(POSTBODY);
 
   return GenericService({
     uri: uri,
@@ -73,8 +78,7 @@ const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users/`;
 const WLCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
 const WLCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
-const FLIGHTS = `${BASE_URL}gtas/flights`;
-// const AUDITLOG = `${BASE_URL}auditlog?startDate=2019-11-04&endDate=2019-12-02`;
+const FLIGHTS = `${BASE_URL}gtas/api/flights`;
 const AUDITLOG = `${BASE_URL}gtas/auditlog`;
 const ERRORLOG = `${BASE_URL}gtas/errorlog`;
 const CASES = `${BASE_URL}gtas/hits`;
@@ -87,6 +91,7 @@ const PAXFULLTRAVELHISTORY = `${BASE_URL}gtas/passengers/passenger/bookingdetail
 const PAXWATCHLISTLINK = `${BASE_URL}gtas/passengers/passenger/getwatchlistlink?paxId=`;
 const PAXEVENTNOTESHISTORY = `${BASE_URL}gtas/passengers/passenger/notes`;
 const FLIGHTPAXHITSUMMARY = `${BASE_URL}gtas/hit/flightpassenger`;
+const FLIGHTPAX = `${BASE_URL}gtas/api/flights/flightpax`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/statistics`;
 const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
 const NOTE_TYPES = `${BASE_URL}gtas/passengers/passenger/notetypes`;
@@ -103,16 +108,14 @@ export const watchlistcats = {
   post: body => post(WLCATS, BASEHEADER, body)
 };
 
-export const watchlistcatspost = { post: body => post(WLCATSPOST, BASEHEADER, body) };
-export const userService = { get: (id, params) => get(USERS, BASEHEADER) };
-export const flights = {
-  get: (id, params) => get(FLIGHTS, BASEHEADER),
+export const watchlistcatspost = {
   post: body => {
-    const testFilter = `{"pageNumber":1,"pageSize":25,"flightNumber":"","origin":[],"dest":[],"direction":"A","etaStart":"2018-06-08T15:43:56.715Z","etaEnd":"2020-06-09T16:43:56.715Z","sort":[{"column":"countDownTimer","dir":"asc"},{"column":"listHitCount","dir":"desc"},{"column":"ruleHitCount","dir":"desc"},{"column":"graphHitCount","dir":"desc"},{"column":"fuzzyHitCount","dir":"desc"}]}`;
-
-    return post(FLIGHTS, BASEHEADER, testFilter);
+    const objectBody = JSON.stringify({ ...body });
+    return post(WLCATSPOST, BASEHEADER, objectBody);
   }
 };
+export const userService = { get: (id, params) => get(USERS, BASEHEADER) };
+export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
 export const auditlog = { get: (id, params) => get(AUDITLOG, BASEHEADER) };
 export const errorlog = { get: (id, params) => get(ERRORLOG, BASEHEADER) };
 export const cases = { get: (id, params) => get(CASES, BASEHEADER) };
@@ -163,6 +166,7 @@ export const paxEventNotesHistory = {
     return get(path, BASEHEADER);
   }
 };
+export const flightPassengers = { get: id => get(FLIGHTPAX, BASEHEADER, id) };
 export const loaderStats = { get: (id, params) => get(LOADERSTATISTICS, BASEHEADER) };
 export const notetypes = { get: (id, params) => get(NOTE_TYPES, BASEHEADER) };
 export const loggedinUser = { get: (id, params) => get(LOGGEDIN_USER, BASEHEADER) };

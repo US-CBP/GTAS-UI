@@ -1,5 +1,5 @@
 import { NO_URI } from "./constants";
-import i18n from "../i18n";
+// import i18n from "../i18n";
 
 // APB - shd add handling for other naming patterns like underscores and dashes, and maybe
 // reference an enum of well-know acronyms to preserve casing there.
@@ -107,22 +107,34 @@ export function asOrderedHash(value) {
 // for fields that might.
 export function localeDate(val) {
   if (!hasData(val)) return "";
-  const locale = i18n.language;
+  // const locale = i18n.language;
+  const locale = window.navigator.language;
   const options = {
     localeMatcher: "lookup",
     year: "numeric",
     month: "short",
     day: "2-digit",
-    hour: "numeric",
-    minute: "numeric"
+    hour: "2-digit",
+    minute: "2-digit"
   };
   return new Date(val).toLocaleString(locale, options);
 }
 
+//TODO: !!! IMPLEMENT localestring validator!! syntax is not supported in all browsers
+// function toLocaleStringSupportsLocales() {
+//   try {
+//     new Date().toLocaleString('i');
+//   } catch (e) {
+//     return e instanceof RangeError;
+//   }
+//   return false;
+// }
+
 // Locale Date-only formatter
 export function localeDateOnly(val) {
   if (!hasData(val)) return "";
-  const locale = i18n.language;
+  // const locale = i18n.language;
+  const locale = window.navigator.language;
   const options = {
     localeMatcher: "lookup",
     year: "numeric",
@@ -137,7 +149,8 @@ export function localeDateOnly(val) {
 // as UTC dates, which will NOT equal the locale date for the hours where the UTC timezone
 // has passed midnight, but the locale timezone has not.
 export function dayOf(dateStr) {
-  const locale = i18n.language;
+  // const locale = i18n.language;
+  const locale = window.navigator.language;
   return new Intl.DateTimeFormat(locale, { weekday: "short" }).format(new Date(dateStr));
   // return (new Date(dateStr)).toLocaleDateString(locale, {weekday: 'short'});
 }

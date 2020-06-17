@@ -25,7 +25,7 @@ const GenericService = async props => {
         if (response.url.endsWith("/authenticate")) return response;
         return response.json().then(res => res.data || res || response);
       } else {
-        return response;
+        return [];
       }
     })
     .catch(error => {

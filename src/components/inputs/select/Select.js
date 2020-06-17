@@ -13,13 +13,13 @@ const SelectInput = props => {
 
   return (
     <select
-      className={`input-select ${props.className || ""}`}
+      // className={`input-select ${props.className || ""}`}
       type="select"
       name={props.name}
       required={props.required}
       alt={props.alt}
       onChange={onChange}
-      className="form-input"
+      className="form-select"
       value={selected}
       disabled={props.readOnly === "readOnly" ? "disabled" : ""}
     >
