@@ -108,14 +108,7 @@ export const watchlistcatspost = {
   }
 };
 export const userService = { get: (id, params) => get(USERS, BASEHEADER) };
-export const flights = {
-  get: params => get(FLIGHTS, BASEHEADER, undefined, params)
-  // post: body => {
-  //   const testFilter = `{"pageNumber":1,"pageSize":25,"flightNumber":"","origin":[],"dest":[],"direction":"A","etaStart":"2018-06-08T15:43:56.715Z","etaEnd":"2020-06-09T16:43:56.715Z","sort":[{"column":"countDownTimer","dir":"asc"},{"column":"listHitCount","dir":"desc"},{"column":"ruleHitCount","dir":"desc"},{"column":"graphHitCount","dir":"desc"},{"column":"fuzzyHitCount","dir":"desc"}]}`;
-  //   console.log(body);
-  //   return post(FLIGHTS, BASEHEADER, testFilter);
-  // }
-};
+export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
 export const auditlog = { get: (id, params) => get(AUDITLOG, BASEHEADER) };
 export const errorlog = { get: (id, params) => get(ERRORLOG, BASEHEADER) };
 export const cases = { get: (id, params) => get(CASES, BASEHEADER) };

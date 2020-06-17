@@ -1,7 +1,7 @@
 import React from "react";
 import "./CountdownBadge.css";
 import { Row } from "react-bootstrap";
-import { alt } from "../../utils/utils";
+import { alt, hasData } from "../../utils/utils";
 
 const CountdownBadge = props => {
   if (!props.future) return <></>;
@@ -29,15 +29,15 @@ const CountdownBadge = props => {
   days = altZero(Math.floor(delta / 86400));
   delta = Math.abs(delta);
 
-  // if (days > 0) {
-  hours = altZero(padded(Math.floor(delta / 3600) % 24));
+  if (!hasData(days)) hours = altZero(padded(Math.floor(delta / 3600) % 24));
+  else hours = padded(Math.floor(delta / 3600) % 24);
+
   delta -= hours * 3600;
 
   minutes = padded(Math.floor(delta / 60) % 60);
   delta -= minutes * 60;
 
   seconds = (delta % 60, 2).toFixed(2);
-  // }
 
   return (
     <Row flex="true" no-wrap="true" className="bio-row">
