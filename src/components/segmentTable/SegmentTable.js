@@ -16,7 +16,6 @@ class SegmentTable extends React.Component {
 
     let nodata = {};
     nodata[props.id] = "No Data Found";
-
     let dataArray = Array.isArray(props.data) ? props.data : [props.data];
     const sdata = hasData(dataArray) ? dataArray : [nodata];
     const sheader = hasData(dataArray) ? Object.keys(dataArray[0]) : [props.id];
@@ -44,7 +43,6 @@ class SegmentTable extends React.Component {
       });
     }
   };
-
   render() {
     let idx = 0;
     return (
@@ -57,8 +55,7 @@ class SegmentTable extends React.Component {
           <tbody>
             {this.state.data.map(raw => {
               const rec = JSON.parse(JSON.stringify(raw, this.state.header, 4));
-              const active = this.state.activeKey === +rec.key ? " highlight" : "";
-
+              const active = rec.key.includes(this.state.activeKey) ? " highlight" : "";
               return (
                 <tr
                   key={idx}
