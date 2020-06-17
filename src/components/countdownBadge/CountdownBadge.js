@@ -16,7 +16,7 @@ const CountdownBadge = props => {
   };
 
   const altZero = val => {
-    // if (val == 0) return ""; //allow coersion
+    if (val == 0) return ""; //allow coersion
     return val;
   };
 
