@@ -20,7 +20,8 @@ const Summary = props => {
       documentNumber: "Document Number",
       documentType: "Type",
       issuanceCountry: "Issuance Country",
-      expirationDate: "Expiration Date"
+      expirationDate: "Expiration Date",
+      messageType: "Source"
     },
     watchListLinks: {
       watchlistCategory: "Category",
