@@ -7,23 +7,15 @@ import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SideNav from "../../components/sidenav/SideNav";
 import Main from "../../components/main/Main";
-import {
-  paxdetails,
-  paxFlightHisoty,
-  paxFullTravelHistory
-} from "../../services/serviceWrapper";
+import { paxdetails } from "../../services/serviceWrapper";
 import Summary from "./summary/Summary";
 import PNR from "./pnr/PNR";
 import APIS from "./apis/APIS";
 import FlightHistory from "./flightHistory/FlightHistory";
 import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
+import { passengerTypeMapper } from "../../utils/utils";
 
 const PaxDetail = props => {
-  const passengerTypesMap = {
-    P: "Passenger",
-    C: "Crew",
-    I: "Intransit"
-  };
   const getPaxInfo = res => {
     return [
       {
@@ -38,11 +30,9 @@ const PaxDetail = props => {
       { label: "Nationality", value: res.nationality },
       { label: "Residence", value: res.residenceCountry },
       { label: "Seat", value: res.seat },
-      {
-        label: "Passenger Type",
-        value: passengerTypesMap[res.passengerType || ""]
-      },
-      { label: "Last PNR Recieved", value: res.pnrVo?.transmissionDate }
+      { label: "Passenger Type", value: passengerTypeMapper(res.passengerType) },
+      { label: "Last PNR Recieved", value: res.pnrVo?.transmissionDate },
+      { label: "Last APIS Recieved", value: res.apisMessageVo?.transmissionDate }
     ];
   };
 
