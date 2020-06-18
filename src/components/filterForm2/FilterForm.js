@@ -45,7 +45,9 @@ const FilterForm = props => {
   });
 
   useEffect(() => {
-    setIsPolling(true);
+    if (interval > 0) {
+      setIsPolling(true);
+    }
     setFetchKey(fetchkey + 1);
 
     return () => {

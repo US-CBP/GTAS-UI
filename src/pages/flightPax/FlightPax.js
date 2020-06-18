@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../components/table/Table";
-import { passengers } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
+import LabelledInput from "../../components/labelledInput/LabelledInput";
+import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
+import { passengers } from "../../services/serviceWrapper";
 import { Link } from "@reach/router";
-import { Container } from "react-bootstrap";
-import { asArray, hasData, getAge, alt, localeDateOnly } from "../../utils/utils";
+import {
+  asArray,
+  hasData,
+  getAge,
+  alt,
+  localeDateOnly,
+  localeDate
+} from "../../utils/utils";
+import Main from "../../components/main/Main";
+import { Col } from "react-bootstrap";
 
 const FlightPax = props => {
   const cb = function(result) {};
 
   const [data, setData] = useState([]);
   const [key, setKey] = useState(0);
+  const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
 
   const parseData = data => {
     return asArray(data).map(item => {
@@ -20,8 +31,6 @@ const FlightPax = props => {
       item.dobStr = new Date(item.dob).toISOString().slice(0, -14);
       item.dobAge = `${alt(localeDateOnly(item.dobStr))} ${item.age}`;
 
-      //TODO: Do we need arrival and departure for passengers?? timestamp will be the same for all, right???
-      console.log(item);
       return item;
     });
   };
@@ -67,8 +76,72 @@ const FlightPax = props => {
   }, [props.id]);
 
   return (
-    <Container fluid>
-      <div className="box2">
+    <>
+      <SidenavContainer>
+        <Col>
+          <br />
+          <LabelledInput
+            // labelText="Flight:"
+            alt="Flight"
+            inputStyle="big-name-sidebar"
+            inputType="label"
+            inputVal={flightData.fullFlightNumber}
+          />
+          <LabelledInput
+            labelText="Origin:"
+            alt="Origin"
+            inputType="label"
+            inputVal={flightData.origin}
+            inputStyle="form-static"
+          />
+
+          <div>
+            <LabelledInput
+              labelText="Destination:"
+              alt="Destination"
+              inputType="label"
+              inputVal={flightData.destination}
+              inputStyle="form-static"
+            />
+            <LabelledInput
+              labelText="Direction:"
+              alt="Direction"
+              inputType="label"
+              inputVal={flightData.direction}
+              inputStyle="form-static"
+            />
+            <LabelledInput
+              labelText="Arrival:"
+              alt="Arrival"
+              inputType="label"
+              inputVal={localeDate(flightData.eta)}
+              inputStyle="form-static"
+            />
+            <LabelledInput
+              labelText="Departure:"
+              alt="Departure"
+              inputType="label"
+              inputVal={localeDate(flightData.etd)}
+              inputStyle="form-static"
+            />
+            <LabelledInput
+              labelText="Passenger Count:"
+              alt="Passenger Count"
+              inputType="label"
+              inputVal={flightData.passengerCount}
+              inputStyle="form-static"
+            />
+            {/* <LabelledInput
+            labelText="Age:"
+            alt="Age"
+            inputType="label"
+            inputVal={qdata.age}
+            spacebetween
+          /> */}
+          </div>
+        </Col>
+      </SidenavContainer>
+      <Main>
         <Title title="Flight Passengers"></Title>
         <Table
           key={key}
@@ -77,8 +150,8 @@ const FlightPax = props => {
           id="Flight Passegers"
           callback={cb}
         ></Table>
-      </div>
-    </Container>
+      </Main>
+    </>
   );
 };
 

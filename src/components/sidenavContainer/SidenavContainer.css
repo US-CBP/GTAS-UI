@@ -6,7 +6,7 @@
   border: 2px solid #e0e0e0;
   text-align: center;
   margin-bottom: 20px;
-  margin-top: 20px;
+  margin-top: 40px;
   width: 230px !important;
   height: 205px !important;
   overflow: hidden;
@@ -112,11 +112,11 @@
 }
 
 .filter-bg {
-  z-index: 5;
+  /* z-index: 5;
   background: linear-gradient(hsla(190, 100%, 4%, 1), hsla(190, 100%, 4%, 1), #003f4cb3),
-    url(/static/media/krzysztof-hepner-TH7TW20de9s-unsplash_2.4d0c12e9.jpg) no-repeat;
+    url('../../images/krzysztof-hepner-TH7TW20de9s-unsplash_10x6.jpg') no-repeat;
   background-position: center center;
-  background-size: cover;
+  background-size: cover; */
 }
 
 .filter-screen {

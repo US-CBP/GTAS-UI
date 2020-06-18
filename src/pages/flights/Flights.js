@@ -4,16 +4,16 @@ import { flights } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import { Link } from "@reach/router";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
-import LabelledSelectInput from "../../components/inputs/LabelledSelectInput/LabelledSelectInput";
+// import LabelledSelectInput from "../../components/inputs/LabelledSelectInput/LabelledSelectInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Flights.css";
-import { Container, Row, Col } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 // import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import Main from "../../components/main/Main";
 import SideNav from "../../components/sidenav/SideNav";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
-import { components } from "react-select";
+// import { components } from "react-select";
 import { hasData, alt, localeDate, asArray } from "../../utils/utils";
 import { TIME } from "../../utils/constants";
 
@@ -34,6 +34,7 @@ const Flights = props => {
     const parsedData = asArray(data).map(item => {
       const future = item.direction === "O" ? item.etd : item.eta;
       item.timer = future;
+      item.sendRowToLink = `/gtas/flightpax/${item.id}`;
 
       return item;
     });
@@ -81,8 +82,16 @@ const Flights = props => {
         <CountdownBadge future={row.original.timer} baseline={now}></CountdownBadge>
       )
     },
-    { Accessor: "eta", Header: "ETA", Cell: ({ row }) => localeDate(row.original.eta) },
-    { Accessor: "etd", Header: "ETD", Cell: ({ row }) => localeDate(row.original.etd) },
+    {
+      Accessor: "eta",
+      Header: "Arrival",
+      Cell: ({ row }) => localeDate(row.original.eta)
+    },
+    {
+      Accessor: "etd",
+      Header: "Departure",
+      Cell: ({ row }) => localeDate(row.original.etd)
+    },
     {
       Accessor: "passengerCount",
       Header: "Passengers",
@@ -132,24 +141,7 @@ const Flights = props => {
             callback={setDataWrapper}
             interval={TIME.MINUTE}
           >
-            <hr />
-            {/* <LabelledSelectInput
-              name="originAirports"
-              labelText="Origin Airports"
-              datafield="originAirports"
-              ReturnStringArray
-              isMulti
-              // options={options}
-            />
-            <LabelledSelectInput
-              datafield
-              labelText="Destination Airports"
-              inputType="text"
-              name="destinationAirports"
-              ReturnStringArray
-              isMulti
-              // options={options}
-            /> */}
+            <br />
             <LabelledInput
               labelText="Origin Airports"
               datafield="originAirports"

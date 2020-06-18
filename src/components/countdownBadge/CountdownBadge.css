@@ -1,30 +1,78 @@
-.bio-row {
+.cdb-row {
   margin: unset !important;
-  width: 110px;
+  min-width: 110px;
   text-align-last: center;
-  display: flex;
+  white-space: nowrap;
 }
 
-.fp {
-  /* background: url('../../images/fingerprint-24px.svg'); */
+.cdb-days {
+  background: url("../../images/day.svg");
 }
 
-.bioicon {
-  display: block;
-  width: 20px;
-  height: 20px;
-  background-size: 20px 20px !important;
-  background-repeat: no-repeat !important;
-  background-position-x: center !important;
+.cdb-hours {
+  background: url("../../images/hour.svg");
 }
 
-.face {
-  /* background: url('../../images/face-24px.svg'); */
+.cdb-minutes {
+  background: url("../../images/minute.svg");
+}
+
+.cdb-red {
+  background-color: #ffa5a5;
+}
+
+.cdb-orange {
+  background-color: #ffc107;
+}
+
+.cdb-yellow {
+  background-color: #ffeb3b;
+}
+
+.cdb-green {
+  background-color: #a7ff6d;
+}
+
+.cdb-blue {
+  /* background-color: #6deeff; */
+}
+
+.cdb-violet {
+  /* background-color: #c8c5ff; */
 }
 
 .icon-div {
   flex-grow: 1 !important;
-  width: 33px;
+  width: 30px;
   text-align: -webkit-center;
-  color: black;
+  /* color: black; */
+  /* margin-top: -2px !important;
+  margin-bottom: -4px !important;
+  height: 33px; */
+}
+
+.badge {
+  font-size: 100% !important;
+  font-weight: 400 !important;
+  line-height: 2;
+}
+
+.badge-full {
+  width: 100% !important;
+  font-weight: 600;
+  padding: 0.25em 4px;
+  line-height: 2 !important;
+  background-size: 30px 30px !important;
+  background-repeat: no-repeat !important;
+  background-position-x: center !important;
+}
+
+.badge-inline {
+  font-size: 0.8rem !important;
+  font-weight: 600;
+  width: unset !important;
+}
+
+.big-badge {
+  font-size: 16px !important;
 }

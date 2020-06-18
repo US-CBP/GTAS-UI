@@ -21,7 +21,7 @@ const ManageUsers = props => {
 
   return (
     <>
-      <SideNav className="manage-users-side-nav">
+      <SideNav>
         <Col>
           <br />
           <Button

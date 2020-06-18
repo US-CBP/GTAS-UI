@@ -1,7 +1,8 @@
 .title {
-  text-shadow: aqua;
+  /* text-shadow: aqua; */
   text-align: center;
   font-weight: 600;
   font-size: x-large;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 5px;
 }

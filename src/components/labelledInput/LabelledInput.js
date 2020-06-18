@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CheckboxInput from "../inputs/checkbox/Checkbox";
+import CheckboxGroup from "../inputs/checkboxGroup/CheckboxGroup";
 import TextInput from "../inputs/text/Text";
 import TextareaInput from "../inputs/textarea/Textarea";
 import FileInput from "../inputs/file/File";
 import SelectInput from "../inputs/select/Select";
-import { hasData } from "../../utils/utils";
-import LabelledInputDisplayWrapper from "../inputs/LabelledInputDecorator";
+import LabelInput from "../inputs/label/Label";
+import { hasData, alt } from "../../utils/utils";
+import { FormGroup } from "react-bootstrap";
+import "./LabelledInput.css";
 
 const textTypes = ["text", "number", "password", "email", "search", "tel"];
 const boolTypes = ["radio", "checkbox", "toggle"];
 const selectType = "select";
+const checkboxGroup = "checkboxGroup";
 const textareaType = "textarea";
 const fileType = "file";
 const REQUIRED = "required";
@@ -18,42 +22,53 @@ const REQUIRED = "required";
 /**
  * **LabelledInput is contains elements and props required by filter form for non 3rd party inputs.**
  */
+
+// TODO - refac as a passthru hook!!!
+// Pass props through directly, remove all awareness of specific child types
+// remove all proptypes not related to the label or form group
 class LabelledInput extends Component {
   constructor(props) {
     super(props);
 
     this.onChange = this.onChange.bind(this);
+    this.onChangeArray = this.onChangeArray.bind(this);
 
     this.state = {
       isValid: true,
-      labelText: props.labelText || "",
-      inputVal: props.inputVal || "",
+      labelText: alt(props.labelText),
+      inputVal: alt(props.inputVal),
       options: props.options,
-      placeholder: props.placeholder || "",
-      required: props.required || "",
-      visibleStyle: props.isVisible || ""
+      placeholder: alt(props.placeholder),
+      required: alt(props.required),
+      visibleStyle: alt(props.isVisible)
     };
   }
-
-  componentDidMount() {}
 
   onChange(e) {
     const value = e.target.value;
 
-    //update the local state
     this.setState({
       inputVal: value,
       selected: value,
       isValid: hasData(value) || this.props.required !== REQUIRED
     });
-    //update the parent state
+
     this.props.callback(e.target);
+  }
+
+  onChangeArray(e, label) {
+    this.setState({
+      inputVal: e.value,
+      isValid: hasData(e) || this.props.required !== REQUIRED
+    });
+
+    this.props.callback(e);
   }
 
   //APB - REFACTOR
   getInputByType() {
     const type = this.props.inputType;
-    const inputStyle = `${type} ${this.props.className || ""}`;
+    const inputStyle = `${alt(type)} ${alt(this.props.className)}`;
 
     if (type === textareaType) {
       return (
@@ -62,7 +77,7 @@ class LabelledInput extends Component {
           alt={this.props.alt}
           name={this.props.name}
           inputType={this.props.inputType}
-          inputVal={this.state.inputVal || ""}
+          inputVal={alt(this.state.inputVal)}
           callback={this.onChange}
           required={this.state.required}
           placeholder={this.state.placeholder}
@@ -71,14 +86,28 @@ class LabelledInput extends Component {
       );
     }
 
+    if (type === "label") {
+      return (
+        <LabelInput
+          className={this.props.inputStyle}
+          alt={this.props.alt}
+          name={this.props.name}
+          inputVal={this.props.inputVal}
+          inline={this.props.inline}
+        />
+      );
+    }
+
     if (textTypes.includes(type)) {
       return (
         <TextInput
-          className={inputStyle}
+          autoFocus={this.props.autoFocus}
+          pattern={this.props.pattern}
+          className={this.props.className}
           alt={this.props.alt}
           name={this.props.name}
           inputType={this.props.inputType}
-          inputVal={this.state.inputVal || ""}
+          inputVal={alt(this.state.inputVal)}
           callback={this.onChange}
           required={this.state.required}
           placeholder={this.state.placeholder}
@@ -89,12 +118,12 @@ class LabelledInput extends Component {
     if (type === selectType) {
       return (
         <SelectInput
+          autoFocus={this.props.autoFocus}
           className={inputStyle}
           alt={this.props.alt}
           name={this.props.name}
           inputType={this.props.inputType}
-          selected={this.props.inputVal || ""}
-          inputVal={this.props.inputVal || ""}
+          selected={this.props.inputVal}
           callback={this.onChange}
           required={this.state.required}
           placeholder={this.state.placeholder}
@@ -109,8 +138,8 @@ class LabelledInput extends Component {
           {this.props.labelText && <br />}
           <CheckboxInput
             className={inputStyle}
-            label={this.props.label}
             name={this.props.name}
+            key={this.props.name}
             inputType={this.props.inputType}
             inputVal={this.props.inputVal}
             callback={this.onChange}
@@ -118,6 +147,29 @@ class LabelledInput extends Component {
             selected={this.props.selected}
             placeholder={this.state.placeholder}
             alt={this.props.alt}
+            readOnly={this.props.readOnly}
+          />
+        </React.Fragment>
+      );
+    }
+    if (checkboxGroup === type) {
+      return (
+        <React.Fragment>
+          {this.props.labelText && <br />}
+          <CheckboxGroup
+            collection={this.props.collection}
+            className={inputStyle}
+            name={this.props.name}
+            label={this.props.labelText}
+            key={this.props.name}
+            inputType="checkbox"
+            inputVal={this.props.inputVal}
+            callback={this.onChangeArray}
+            required={this.state.required}
+            selected={this.props.selected}
+            placeholder={this.state.placeholder}
+            alt={this.props.alt}
+            readOnly={this.props.readOnly}
           />
         </React.Fragment>
       );
@@ -128,7 +180,7 @@ class LabelledInput extends Component {
           className={inputStyle}
           name={this.props.name}
           inputType={this.props.inputType}
-          selected={this.state.inputVal}
+          inputVal={this.props.inputVal}
           options={this.state.options}
           callback={this.onChange}
           required={this.state.required}
@@ -142,14 +194,21 @@ class LabelledInput extends Component {
   }
 
   render() {
-    return this.getInputByType();
+    const cls = !!this.props.spacebetween ? "space-between" : "";
+    return (
+      <FormGroup className={`${cls} ${this.state.visibleStyle}`}>
+        <label className="txtlabel">{this.state.labelText}</label>
+        {this.getInputByType()}
+      </FormGroup>
+    );
   }
 }
 
 LabelledInput.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   alt: PropTypes.string.isRequired,
-  labelText: PropTypes.string.isRequired,
+  autoFocus: PropTypes.oneOf([true, ""]),
+  labelText: PropTypes.string,
   inputType: PropTypes.oneOf([
     "text",
     "textarea",
@@ -158,20 +217,22 @@ LabelledInput.propTypes = {
     "select",
     "radio",
     "checkbox",
+    "checkboxGroup",
     "toggle",
     "email",
     "search",
     "tel",
+    "label",
     "file"
   ]).isRequired,
-  callback: PropTypes.func.isRequired,
-  inputVal: PropTypes.string,
+  callback: PropTypes.func,
+  inputVal: PropTypes.any,
   selected: PropTypes.array,
   options: PropTypes.array,
   placeholder: PropTypes.string,
-  required: PropTypes.oneOf([REQUIRED, "", undefined]),
+  required: PropTypes.oneOf([REQUIRED, "", true]),
   isVisible: PropTypes.bool,
-  readOnly: PropTypes.string
+  readOnly: PropTypes.bool
 };
 
-export default LabelledInputDisplayWrapper(LabelledInput);
+export default LabelledInput;

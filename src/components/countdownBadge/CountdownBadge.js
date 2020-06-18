@@ -1,8 +1,10 @@
 import React from "react";
+import { Row, Badge } from "react-bootstrap";
+import { alt } from "../../utils/utils";
 import "./CountdownBadge.css";
-import { Row } from "react-bootstrap";
-import { alt, hasData } from "../../utils/utils";
+// import { DAYS } from "../../utils/constans";
 
+//TODO - refactor. clean and possibly move the calcs to utils.
 const CountdownBadge = props => {
   if (!props.future) return <></>;
 
@@ -29,7 +31,7 @@ const CountdownBadge = props => {
   days = altZero(Math.floor(delta / 86400));
   delta = Math.abs(delta);
 
-  if (!hasData(days)) hours = altZero(padded(Math.floor(delta / 3600) % 24));
+  if (!days) hours = altZero(padded(Math.floor(delta / 3600) % 24));
   else hours = padded(Math.floor(delta / 3600) % 24);
 
   delta -= hours * 3600;
@@ -39,14 +41,29 @@ const CountdownBadge = props => {
 
   seconds = (delta % 60, 2).toFixed(2);
 
+  const dayStyle = () => {
+    if (days > 2) return "cdb-violet";
+    if (days > 1) return "cdb-blue";
+    if (days == 1) return "cdb-green";
+
+    return "";
+  };
+
+  const hourStyle =
+    !days && hours >= 15 ? "cdb-yellow" : !days && hours < 15 ? "cdb-orange" : "";
+  const minuteStyle = !days && !hours && minutes > 0 ? "cdb-red" : "";
+
   return (
-    <Row flex="true" no-wrap="true" className="bio-row">
+    <Row flex="true" no-wrap="true" className="cdb-row">
       <div className="icon-div">
-        {days}
-        {/* <i className={getClass("E", "fa fa-lg fa-eye")}></i> */}
+        <Badge className={dayStyle()}>{days}</Badge>
       </div>
-      <div className="icon-div">{hours}</div>
-      <div className="icon-div">{minutes}</div>
+      <div className="icon-div">
+        <Badge className={hourStyle}>{hours}</Badge>
+      </div>
+      <div className="icon-div">
+        :<Badge className={minuteStyle}>{minutes}</Badge>
+      </div>
     </Row>
   );
 };
