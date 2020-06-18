@@ -4,9 +4,8 @@ import "./QueryBuilder.scss";
 
 const QueryBuilder = props => {
   function logQuery(query) {
-    console.log(query);
-
-    console.log(document.getElementsByClassName("rule"));
+    // console.log(query);
+    // console.log(document.getElementsByClassName("rule"));
   }
 
   const entities = [

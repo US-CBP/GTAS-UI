@@ -46,7 +46,7 @@ const Flights = props => {
 
   //TODO: refactor
   const preFetchCallback = fields => {
-    const range = +fields["hourRange"] || 48; // coerce fields[hourRange] values to numeric else default to 48 hours
+    const range = +fields["hourRange"] || 96; // coerce fields[hourRange] values to numeric else default to 96 hours
 
     let etaEnd = new Date();
     etaEnd.setHours(etaEnd.getHours() + range);
@@ -179,6 +179,7 @@ const Flights = props => {
               labelText="Hour Range"
               inputType="select"
               name="hourRange"
+              inputVal="96"
               inputStyle="form-select"
               datafield="hourRange"
               options={[

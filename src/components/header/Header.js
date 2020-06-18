@@ -89,49 +89,24 @@ const Header = () => {
             </Nav.Link>
           </RoleAuthenticator>
           <NavDropdown title="Tools" id="nav-dropdown">
-            <NavDropdown.Item
-              as={Link}
-              to="tools/queries"
-              className="fa fa-filter"
-              onClick={() => clickTab("")}
-            >
-              Queries
+            <NavDropdown.Item as={Link} to="tools/queries" onClick={() => clickTab("")}>
+              <i className="fa fa-filter"></i> Queries
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item
-              as={Link}
-              to="tools/rules"
-              className="fa fa-flag"
-              onClick={() => clickTab("")}
-            >
-              Rules
+            <NavDropdown.Item as={Link} to="tools/rules" onClick={() => clickTab("")}>
+              <i className="fa fa-flag"></i> Rules
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item
-              as={Link}
-              to="tools/watchlist"
-              className="fa fa-eye"
-              onClick={() => clickTab("")}
-            >
-              Watchlist
+            <NavDropdown.Item as={Link} to="tools/watchlist" onClick={() => clickTab("")}>
+              <i className="fa fa-eye"></i> Watchlist
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item
-              as={Link}
-              to="tools/neo4j"
-              className="fa fa-filter"
-              onClick={() => clickTab("")}
-            >
-              Neo4J Browser
+            <NavDropdown.Item as={Link} to="tools/neo4j" onClick={() => clickTab("")}>
+              <i className="fa fa-filter"></i> Neo4J Browser
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item
-              as={Link}
-              to="tools/about"
-              className="fa fa-info-circle"
-              onClick={() => clickTab("")}
-            >
-              About
+            <NavDropdown.Item as={Link} to="tools/about" onClick={() => clickTab("")}>
+              <i className="fa fa-info-circle"></i> About
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>
