@@ -28,7 +28,8 @@ const FlightHistory = props => {
 
   useEffect(() => {
     fetchData();
-  }, [props.flightId, props.paxId]);
+  }, []);
+
   return (
     <Container fluid className="paxdetail-container">
       <Title title="Flight History"></Title>

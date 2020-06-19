@@ -101,7 +101,7 @@ const Summary = props => {
 
   useEffect(() => {
     fetchData();
-  }, [props.flightId, props.paxId]);
+  }, []);
 
   return (
     <Container fluid className="summary-container">
