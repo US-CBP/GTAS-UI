@@ -1,21 +1,22 @@
 import React, { useState, useContext, useEffect } from "react";
 import Table from "../../components/table/Table";
-import { flights } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import { Link } from "@reach/router";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 // import LabelledSelectInput from "../../components/inputs/LabelledSelectInput/LabelledSelectInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
-import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
 import "./Flights.css";
-import { Col } from "react-bootstrap";
+import { Col, Tabs, Tab } from "react-bootstrap";
 // import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import Main from "../../components/main/Main";
-import SideNav from "../../components/sidenav/SideNav";
+import SideNavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 // import { components } from "react-select";
 import { hasData, alt, localeDate, asArray } from "../../utils/utils";
 import { TIME } from "../../utils/constants";
+
+import { flights } from "../../services/serviceWrapper";
 
 const Flights = props => {
   const cb = () => {};
@@ -26,21 +27,33 @@ const Flights = props => {
   };
 
   const [data, setData] = useState([{}]);
+  const [hitData, setHitData] = useState([{}]);
+  const [allData, setAllData] = useState([{}]);
+  const [tab, setTab] = useState("all");
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
 
   const setDataWrapper = (data, retainState) => {
     if (!retainState) setTableState(initTableState);
 
-    const parsedData = asArray(data).map(item => {
+    const parsedAll = asArray(data).map(item => {
       const future = item.direction === "O" ? item.etd : item.eta;
       item.timer = future;
       item.sendRowToLink = `/gtas/flightpax/${item.id}`;
 
+      const severity = alt(item.ruleHitCount, 0) + alt(item.listHitCount, 0);
+      item.severity = severity > 0 ? severity : "";
+
       return item;
     });
 
-    setData(alt(parsedData, []));
+    const parsedHits = parsedAll.filter(item => {
+      return item.severity > 0;
+    });
+
+    setAllData(alt(parsedAll, []));
+    setHitData(alt(parsedHits, []));
+
     const newkey = tablekey + 1;
     setTablekey(newkey);
   };
@@ -112,6 +125,19 @@ const Flights = props => {
     // { Accessor: "graphHitCount" }
   ];
 
+  useEffect(() => {
+    if (tab === "hits") setData(hitData);
+    else setData(allData);
+
+    const newkey = tablekey + 1;
+    setTablekey(newkey);
+  }, [hitData, tab]);
+
+  // useEffect(() => {
+  //   if (tab === "hits") setData(hitData);
+  //   else setData(allData);
+  // }, tab);
+
   const directions = [
     { value: "A", label: "All" },
     { value: "I", label: "Inbound" },
@@ -132,9 +158,22 @@ const Flights = props => {
     return tableState;
   };
 
+  const tabs = (
+    <Tabs defaultActiveKey="all" id="flightTabs">
+      <Tab eventKey="all" title="All"></Tab>
+      <Tab eventKey="hits" title="Hits"></Tab>
+    </Tabs>
+  );
+
+  const titleTabCallback = ev => {
+    console.log(ev.split("-")[2]);
+    const id = ev.split("-")[2];
+
+    setTab(id);
+  };
   return (
     <>
-      <SideNav>
+      <SideNavContainer>
         <Col>
           <FilterForm
             service={flights.get}
@@ -196,9 +235,14 @@ const Flights = props => {
             />
           </FilterForm>
         </Col>
-      </SideNav>
+      </SideNavContainer>
       <Main>
-        <Title title="Flights" uri={props.uri} />
+        <Title
+          title="Flights"
+          uri={props.uri}
+          leftChild={tabs}
+          leftCb={titleTabCallback}
+        />
         <Table
           data={data}
           key={tablekey}

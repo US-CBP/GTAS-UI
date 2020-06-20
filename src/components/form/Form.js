@@ -57,7 +57,7 @@ class Form extends React.Component {
 
   fetchData() {
     let fields = [];
-    if (this.isEdit()) {
+    if (this.isEdit() && hasData(this.props.getService)) {
       this.props.getService(this.props.recordId).then(res => {
         if (hasData(res)) {
           // If res is an object, let it pass

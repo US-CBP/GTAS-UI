@@ -1,8 +1,20 @@
 .title {
   /* text-shadow: aqua; */
+  display: flex;
   text-align: center;
   font-weight: 600;
   font-size: x-large;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding: 5px;
+}
+
+.title-span {
+  padding-right: 116px;
+  flex-grow: 1;
+}
+
+.left-span {
+  float: left;
+  font-size: initial;
+  margin-bottom: -6px;
 }

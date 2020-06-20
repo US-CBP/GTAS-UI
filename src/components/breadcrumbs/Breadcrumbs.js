@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "@reach/router";
-import { getCrumbs, titleCase } from "../../utils/text";
+import { getCrumbs, titleCase } from "../../utils/utils";
 import { NO_URI } from "../../utils/constants";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 //APB - probably don't need this except possibly for Admin pages.

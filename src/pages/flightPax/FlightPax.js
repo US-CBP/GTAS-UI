@@ -38,7 +38,7 @@ const FlightPax = props => {
   const headers = [
     { Accessor: "onRuleHitList", Header: "Rule Hits" },
     { Accessor: "onWatchList", Header: "Watchlist Hits" },
-    { Accessor: "passengerType" },
+    { Accessor: "passengerType", Header: "Type" },
     {
       Accessor: "lastName",
       Cell: ({ row }) => {
