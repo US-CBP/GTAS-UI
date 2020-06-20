@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Badge } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { alt } from "../../utils/utils";
 import "./CountdownBadge.css";
 
@@ -13,7 +13,7 @@ const CountdownBadge = props => {
   const pad = val => {
     if (isNaN(val)) return 0;
 
-    const sign = +val < 0 ? "-" : "";
+    const sign = val < 0 ? "-" : "";
     const res = alt(Math.abs(val), "0")
       .toString()
       .padStart(2, "0");

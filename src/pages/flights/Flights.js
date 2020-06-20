@@ -26,6 +26,7 @@ const Flights = props => {
   };
 
   const [data, setData] = useState([{}]);
+  const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
 
   const setDataWrapper = (data, retainState) => {
@@ -40,8 +41,8 @@ const Flights = props => {
     });
 
     setData(alt(parsedData, []));
-    // const newkey = tablekey + 1;
-    // setTablekey(newkey);
+    const newkey = tablekey + 1;
+    setTablekey(newkey);
   };
 
   //TODO: refactor
@@ -115,7 +116,6 @@ const Flights = props => {
     { value: "A", label: "All" },
     { value: "I", label: "Inbound" },
     { value: "O", label: "Outbound" }
-    // { value: "C", label: "Continuance" }
   ];
 
   const stateCallback = latestState => {
@@ -201,7 +201,7 @@ const Flights = props => {
         <Title title="Flights" uri={props.uri} />
         <Table
           data={data}
-          key={data}
+          key={tablekey}
           id="Flights"
           header={Headers}
           callback={cb}
