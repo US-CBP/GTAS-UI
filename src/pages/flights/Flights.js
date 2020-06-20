@@ -133,11 +133,6 @@ const Flights = props => {
     setTablekey(newkey);
   }, [hitData, tab]);
 
-  // useEffect(() => {
-  //   if (tab === "hits") setData(hitData);
-  //   else setData(allData);
-  // }, tab);
-
   const directions = [
     { value: "A", label: "All" },
     { value: "I", label: "Inbound" },
@@ -166,11 +161,11 @@ const Flights = props => {
   );
 
   const titleTabCallback = ev => {
-    console.log(ev.split("-")[2]);
     const id = ev.split("-")[2];
 
     setTab(id);
   };
+
   return (
     <>
       <SideNavContainer>

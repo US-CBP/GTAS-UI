@@ -3,6 +3,7 @@ import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
+import { Col, Tabs, Tab } from "react-bootstrap";
 import { passengers } from "../../services/serviceWrapper";
 import { Link } from "@reach/router";
 import {
@@ -14,12 +15,14 @@ import {
   localeDate
 } from "../../utils/utils";
 import Main from "../../components/main/Main";
-import { Col } from "react-bootstrap";
 
 const FlightPax = props => {
   const cb = function(result) {};
 
   const [data, setData] = useState([]);
+  const [hitData, setHitData] = useState([{}]);
+  const [allData, setAllData] = useState([{}]);
+  const [tab, setTab] = useState("all");
   const [key, setKey] = useState(0);
   const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
 
@@ -30,14 +33,19 @@ const FlightPax = props => {
       item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
       item.dobStr = new Date(item.dob).toISOString().slice(0, -14);
       item.dobAge = `${alt(localeDateOnly(item.dobStr))} ${item.age}`;
-
+      item.rulehit = item.onRuleHitList ? 1 : "";
+      item.watchhit = item.onWatchList ? 1 : "";
       return item;
     });
   };
 
   const headers = [
-    { Accessor: "onRuleHitList", Header: "Rule Hits" },
-    { Accessor: "onWatchList", Header: "Watchlist Hits" },
+    {
+      Accessor: "rulehit"
+    },
+    {
+      Accessor: "watchhit"
+    },
     { Accessor: "passengerType", Header: "Type" },
     {
       Accessor: "lastName",
@@ -55,7 +63,7 @@ const FlightPax = props => {
     {
       Accessor: "dobStr",
       Header: "DOB",
-      Cell: ({ row }) => row.original.dobAge
+      Cell: ({ row }) => <div>{row.original.dobAge}</div>
     },
     { Accessor: "docNumber" },
     { Accessor: "nationality" }
@@ -64,16 +72,43 @@ const FlightPax = props => {
   useEffect(() => {
     passengers.get(props.id).then(res => {
       if (!hasData(res)) {
-        setData([]);
+        setAllData([]);
+        setHitData([]);
         return;
       }
 
       let parsed = parseData(res);
 
-      setData(parsed);
+      const parsedHits = parsed.filter(item => {
+        return item.onRuleHitList || item.onWatchList;
+      });
+
+      setAllData(parsed);
+      setHitData(parsedHits);
       setKey(1);
     });
   }, [props.id]);
+
+  useEffect(() => {
+    if (tab === "hits") setData(hitData);
+    else setData(allData);
+
+    const newkey = key + 1;
+    setKey(newkey);
+  }, [hitData, tab]);
+
+  const tabs = (
+    <Tabs defaultActiveKey="all" id="flightPaxTabs">
+      <Tab eventKey="all" title="All"></Tab>
+      <Tab eventKey="hits" title="Hits"></Tab>
+    </Tabs>
+  );
+
+  const titleTabCallback = ev => {
+    const id = ev.split("-")[2];
+
+    setTab(id);
+  };
 
   return (
     <>
@@ -142,7 +177,11 @@ const FlightPax = props => {
         </Col>
       </SidenavContainer>
       <Main>
-        <Title title="Flight Passengers"></Title>
+        <Title
+          title="Flight Passengers"
+          leftChild={tabs}
+          leftCb={titleTabCallback}
+        ></Title>
         <Table
           key={key}
           header={headers}
