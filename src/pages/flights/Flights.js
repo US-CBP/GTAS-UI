@@ -46,7 +46,7 @@ const Flights = props => {
 
   //TODO: refactor
   const preFetchCallback = fields => {
-    const range = +fields["hourRange"] || 96; // coerce fields[hourRange] values to numeric else default to 96 hours
+    const range = +fields["hourRange"] || 96; // default to 96 hours
 
     let etaEnd = new Date();
     etaEnd.setHours(etaEnd.getHours() + range);
@@ -54,13 +54,14 @@ const Flights = props => {
     const fieldscopy = Object.assign([], fields);
     delete fieldscopy["hourRange"]; // hourRange is not passed directly to the backend
 
-    let paramObject = { etaStart: new Date(), etaEnd: etaEnd };
+    const oneHourAgo = new Date().setHours(new Date().getHours() - 1);
+    let paramObject = { etaStart: oneHourAgo, etaEnd: etaEnd };
 
     const fieldNames = Object.keys(fieldscopy);
     fieldNames.forEach(name => {
       if (hasData(fieldscopy[name])) {
         if (name === "destinationAirports" || name === "originAirports") {
-          // retrieve raw comma or whitespace separated text, convert to array, remove empties.
+          // retrieve raw comma- or whitespace-separated text, convert to array, remove empties.
           const airports = fieldscopy[name]
             .replace(",", " ")
             .split(" ")
@@ -164,7 +165,7 @@ const Flights = props => {
               inputType="text"
               name="flightNumber"
               callback={cb}
-              alt="nothing"
+              alt="Flight Number"
             />
             <LabelledInput
               datafield="direction"
@@ -174,6 +175,7 @@ const Flights = props => {
               callback={cb}
               name="direction"
               options={directions}
+              alt="Flight Direction"
             />
             <LabelledInput
               labelText="Hour Range"
@@ -190,7 +192,7 @@ const Flights = props => {
                 { value: "96", label: "+96 hours" }
               ]}
               callback={cb}
-              alt="nothing"
+              alt="Hour range"
             />
           </FilterForm>
         </Col>

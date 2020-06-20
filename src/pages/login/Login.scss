@@ -15,8 +15,12 @@ $gtas-white: rgba(255, 255, 255, 0.9);
 $transparent: rgba(223, 231, 247, 0.14);
 
 .login-page-container {
-  background: linear-gradient($wco-blue, $transparent, $wco-blue),
-    url("../../images/WCO_flag.svg") no-repeat center center fixed;
+  // background: linear-gradient($wco-blue, $transparent, $wco-blue),
+  //   url("../../images/WCO_flag.svg") no-repeat center center fixed;
+
+  // A softer version of the background image. We may end up reverting back to the original (above)
+  background: linear-gradient($transparent, #e5edf485),
+    url("../../images/WCO_background1000.png") no-repeat center center fixed;
   background-size: cover;
   min-height: 100vh;
   margin-bottom: 0em;

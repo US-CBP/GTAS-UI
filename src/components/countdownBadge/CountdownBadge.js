@@ -2,68 +2,57 @@ import React from "react";
 import { Row, Badge } from "react-bootstrap";
 import { alt } from "../../utils/utils";
 import "./CountdownBadge.css";
-// import { DAYS } from "../../utils/constans";
 
 //TODO - refactor. clean and possibly move the calcs to utils.
 const CountdownBadge = props => {
   if (!props.future) return <></>;
 
-  const future = new Date(props.future) || "";
+  const incoming = new Date(props.future);
   const now = props.now || new Date();
 
-  const padded = str => {
-    return alt(str, "0")
+  const pad = val => {
+    if (isNaN(val)) return 0;
+
+    const sign = +val < 0 ? "-" : "";
+    const res = alt(Math.abs(val), "0")
       .toString()
       .padStart(2, "0");
+    return `${sign}${res}`;
   };
 
   const altZero = val => {
-    if (val == 0) return ""; //allow coersion
+    if (+val === 0 || isNaN(+val)) return "";
     return val;
   };
 
-  let days = "",
-    hours = "",
-    minutes = "",
-    seconds = "";
+  const delta = (incoming - now) / 1000;
+  const isPos = delta > 0;
+  const round = isPos ? Math.floor : Math.ceil;
+  const parse = val => altZero(pad(val));
 
-  let delta = (future - now) / 1000;
-  days = altZero(Math.floor(delta / 86400));
-  delta = Math.abs(delta);
+  const dayraw = round(delta / 86400);
+  const hrsraw = round(delta / 3600) % 24;
+  const minraw = round(delta / 60) % 60;
+  const days = altZero(dayraw);
+  const hours = !days ? parse(hrsraw) : pad(Math.abs(hrsraw));
+  const minutes = !days && !hours ? parse(minraw) : pad(Math.abs(minraw));
 
-  if (!days) hours = altZero(padded(Math.floor(delta / 3600) % 24));
-  else hours = padded(Math.floor(delta / 3600) % 24);
+  const getStyle = () => {
+    if (dayraw > 1) return "";
 
-  delta -= hours * 3600;
+    if (!isPos) return "bordered cdb-gray";
+    if (dayraw === 1) return "bordered cdb-green";
+    if (hrsraw >= 12) return "bordered cdb-yellow";
+    if (hrsraw >= 1) return "bordered cdb-orange";
 
-  minutes = padded(Math.floor(delta / 60) % 60);
-  delta -= minutes * 60;
-
-  seconds = (delta % 60, 2).toFixed(2);
-
-  const dayStyle = () => {
-    if (days > 2) return "cdb-violet";
-    if (days > 1) return "cdb-blue";
-    if (days == 1) return "cdb-green";
-
-    return "";
+    return "bordered cdb-red";
   };
 
-  const hourStyle =
-    !days && hours >= 15 ? "cdb-yellow" : !days && hours < 15 ? "cdb-orange" : "";
-  const minuteStyle = !days && !hours && minutes > 0 ? "cdb-red" : "";
-
   return (
-    <Row flex="true" no-wrap="true" className="cdb-row">
-      <div className="icon-div">
-        <Badge className={dayStyle()}>{days}</Badge>
-      </div>
-      <div className="icon-div">
-        <Badge className={hourStyle}>{hours}</Badge>
-      </div>
-      <div className="icon-div">
-        :<Badge className={minuteStyle}>{minutes}</Badge>
-      </div>
+    <Row flex="true" no-wrap="true" className={`cdb-row ${getStyle()}`}>
+      <div className="cdb-days-div">{days}</div>
+      <div>{hours}</div>
+      <div>:{minutes}</div>
     </Row>
   );
 };
