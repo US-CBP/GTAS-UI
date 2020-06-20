@@ -150,15 +150,12 @@ const PNR = props => {
   return (
     <Row>
       <Col sm="4" md="4" lg="4">
-        <div className="top">
-          <input type="button" onClick={setActiveKeyWrapper} value="click"></input>
-          <SegmentTable
-            title="Segment Table"
-            data={rawPnrSegments}
-            id="rawPnrSegments"
-            ref={segmentRef}
-          />
-        </div>
+        <SegmentTable
+          title="Segment Table"
+          data={rawPnrSegments}
+          id="rawPnrSegments"
+          ref={segmentRef}
+        />
       </Col>
       <Col>
         <Container fluid className="paxdetail-container">

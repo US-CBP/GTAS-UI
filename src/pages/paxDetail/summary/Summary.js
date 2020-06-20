@@ -105,29 +105,31 @@ const Summary = props => {
 
   return (
     <Container fluid className="summary-container">
-      <CardWithTable
-        data={paxHitSummary}
-        headers={headers.paxHitSummary}
-        title="Passenger Current Hits summary"
-      />
+      <CardDeck>
+        <CardWithTable
+          data={paxHitSummary}
+          headers={headers.paxHitSummary}
+          title="Passenger Current Hits summary"
+        />
 
-      <CardWithTable data={documents} headers={headers.documents} title="Documents" />
-      <CardWithTable
-        data={watchListLinks}
-        headers={headers.watchListLinks}
-        title="Watchlist Name Comparison"
-      />
+        <CardWithTable data={documents} headers={headers.documents} title="Documents" />
+        <CardWithTable
+          data={watchListLinks}
+          headers={headers.watchListLinks}
+          title="Watchlist Name Comparison"
+        />
 
-      <CardWithTable
-        data={eventNotes}
-        headers={headers.eventNotes}
-        title="Event Note History"
-      />
-      <CardWithTable
-        data={historicalEventNotes}
-        headers={headers.eventNotes}
-        title={`Previous Notes History (Up to 10)`}
-      />
+        <CardWithTable
+          data={eventNotes}
+          headers={headers.eventNotes}
+          title="Event Note History"
+        />
+        <CardWithTable
+          data={historicalEventNotes}
+          headers={headers.eventNotes}
+          title={`Previous Notes History (Up to 10)`}
+        />
+      </CardDeck>
     </Container>
   );
 };
