@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Col, Button, Container } from "react-bootstrap";
 import Table from "../../../components/table/Table";
 import { userService, users } from "../../../services/serviceWrapper";
@@ -10,6 +10,7 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import FilterForm from "../../../components/filterForm/FilterForm";
 
 import "./ManageUsers.scss";
+import CreateUserModal from "./CreateUserModal";
 
 const ManageUsers = props => {
   const cb = function(result) {};
@@ -18,6 +19,7 @@ const ManageUsers = props => {
     { value: "Admin", label: "Admin" },
     { value: "User", label: "User" }
   ];
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <>
@@ -30,14 +32,18 @@ const ManageUsers = props => {
             className="btn btn-outline-info"
             name={props.name}
             placeholder={props.placeholder}
-            // onClick={addUser} //TODO
+            onClick={() => setShowModal(true)}
             required={props.required}
             value={props.inputVal}
             alt={props.alt}
           >
             Add New User
           </Button>
-
+          <CreateUserModal
+              show={showModal}
+              onHide={() => setShowModal(false)}
+              callback={cb}
+          />
           <br />
           <hr />
 

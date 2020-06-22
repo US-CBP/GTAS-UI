@@ -65,10 +65,27 @@ function put(uri, headers, id, body) {
   });
 }
 
+function putNoId(uri, headers, body) {
+  if (!hasData(body)) throw new TypeError(PUTBODY);
+
+  return GenericService({
+    uri: uri,
+    method: PUT,
+    body: body,
+    headers: headers
+  });
+}
+
+
 function del(uri, id) {
   if (!hasData(id)) throw new TypeError(DELETEID);
 
   return GenericService({ uri: `${uri}\\${id}`, method: DELETE });
+}
+
+function postBodyWrapper(body) {
+  const objectBody = JSON.stringify({ ...body });
+  return objectBody;
 }
 
 // APB - ENTITY CONSTANTS and ENTITY METHODS is the only code we should need to touch when adding new endpoints
@@ -89,7 +106,18 @@ const LOADERSTATISTICS = `${BASE_URL}gtas/api/statistics`;
 const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
 const NOTE_TYPES = `${BASE_URL}gtas/passengers/passenger/notetypes`;
 const LOGGEDIN_USER = `${BASE_URL}gtas/user`;
-
+const NOTE_TYPESPOST = `${BASE_URL}gtas/api/noteType`;
+const CREATEUSER = `${BASE_URL}gtas/users/1`;
+const ROLES = `${BASE_URL}gtas/roles/`;
+const CODES_AIRPORT = `${BASE_URL}gtas/api/airport`;
+const CODES_COUNTRY = `${BASE_URL}gtas/api/country`;
+const CODES_CARRIER = `${BASE_URL}gtas/api/carrier`;
+const CODES_RESTOREALL_AIRPORT = `${BASE_URL}gtas/api/airport/restoreAll`;
+const CODES_RESTOREALL_COUNTRY = `${BASE_URL}gtas/api/country/restoreAll`;
+const CODES_RESTOREALL_CARRIER = `${BASE_URL}gtas/api/carrier/restoreAll`;
+const CODES_RESTORE_AIRPORT = `${BASE_URL}gtas/api/airport/restore`;
+const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/country/restore`;
+const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/carrier/restore`;
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS, BASEHEADER, id, params),
@@ -107,18 +135,58 @@ export const watchlistcatspost = {
     return post(WLCATSPOST, BASEHEADER, objectBody);
   }
 };
-export const userService = { get: (id, params) => get(USERS, BASEHEADER) };
+export const userService = {
+  get: (id, params) => get(USERS, BASEHEADER),
+  post: body => {
+    const objectBody = JSON.stringify({ ...body });
+    return post(CREATEUSER, BASEHEADER, objectBody);
+    }
+  }
+
 export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
 export const auditlog = { get: (id, params) => get(AUDITLOG, BASEHEADER) };
 export const errorlog = { get: (id, params) => get(ERRORLOG, BASEHEADER) };
 export const cases = { get: (id, params) => get(CASES, BASEHEADER) };
 export const ruleCats = { get: (id, params) => get(RULE_CATS, BASEHEADER) };
-export const settingsinfo = { get: (id, params) => get(SETTINGSINFO, BASEHEADER) };
+export const settingsinfo = { get: (id, params) => get(SETTINGSINFO, BASEHEADER),
+                              put: (body) => putNoId(SETTINGSINFO, BASEHEADER, postBodyWrapper(body))};
 export const getrulecats = { get: (id, params) => get(GETRULECATS, BASEHEADER) };
 export const passengers = { get: id => get(PAX, BASEHEADER, id) };
 export const loaderStats = { get: (id, params) => get(LOADERSTATISTICS, BASEHEADER) };
-export const notetypes = { get: (id, params) => get(NOTE_TYPES, BASEHEADER) };
+export const notetypes = {
+  get: (id, params) => get(NOTE_TYPES, BASEHEADER),
+  post: body => post(NOTE_TYPESPOST, BASEHEADER, postBodyWrapper(body))
+};
 export const loggedinUser = { get: (id, params) => get(LOGGEDIN_USER, BASEHEADER) };
+export const roles = { get: get(ROLES, BASEHEADER)};
+export const codeEditor = {
+  get: {
+    carrierCodes: (id, params) => get(CODES_CARRIER, BASEHEADER),
+    countryCodes: (id, params) => get(CODES_COUNTRY, BASEHEADER),
+    airportCodes: (id, params) => get(CODES_AIRPORT, BASEHEADER)
+  },
+  put: {
+    updateCarrier: (body) => put(CODES_CARRIER, BASEHEADER, body),
+    updateCountry: (body) => put(CODES_COUNTRY, BASEHEADER, body),
+    updateAirport: (body) => put(CODES_AIRPORT, BASEHEADER, body),
+    restoreCarriersAll: (body) => putNoId(CODES_RESTOREALL_CARRIER, BASEHEADER, body),
+    restoreCountriesAll: (body) => putNoId(CODES_RESTOREALL_COUNTRY, BASEHEADER, body),
+    restoreAirportsAll: (body) => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
+    restoreCarrier: (body) => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
+    restoreCountry: (body) => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
+    restoreAirport: (body) => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body)
+  },
+  post: {
+    createCarrier: (body) => post(CODES_CARRIER, BASEHEADER, postBodyWrapper(body)),
+    createCountry: (body) => post(CODES_COUNTRY, BASEHEADER, postBodyWrapper(body)),
+    createAirport: (body) => post(CODES_AIRPORT, BASEHEADER, postBodyWrapper(body))
+  },
+  delete: {
+    deleteCarrier: (id) => del(CODES_CARRIER, id),
+    deleteCountry: (id) => del(CODES_COUNTRY, id),
+    deleteAirport: (id) => del(CODES_AIRPORT, id)
+  }
+};
 
 export const login = {
   post: body => {

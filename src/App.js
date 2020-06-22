@@ -23,6 +23,9 @@ import FileDownload from "./pages/admin/fileDownload/FileDownload";
 import AuditLog from "./pages/admin/auditLog/AuditLog";
 import ErrorLog from "./pages/admin/errorLog/ErrorLog";
 import CodeEditor from "./pages/admin/codeEditor/CodeEditor";
+import Airports from "./pages/admin/codeEditor/airport/Airports";
+import Carriers from "./pages/admin/codeEditor/carrier/Carriers";
+import Countries from "./pages/admin/codeEditor/country/Countries";
 import LoaderStats from "./pages/admin/loaderStats/LoaderStats";
 import Settings from "./pages/admin/settings/Settings";
 import WatchlistCats from "./pages/admin/watchlistCats/WatchlistCats";
@@ -165,7 +168,11 @@ export default class App extends React.Component {
                             name="File Download"
                             path="filedownload"
                           ></FileDownload>
-                          <CodeEditor name="Code Editor" path="codeeditor"></CodeEditor>
+                          <CodeEditor name="Code Editor" path="/codeeditor">
+                            <Airports name="Airport Codes" path="airports"></Airports>
+                            <Carriers name="Carrier Codes" path="carriers"></Carriers>
+                            <Countries name="Country Codes" path="countries"></Countries>
+                          </CodeEditor>
                           <LoaderStats
                             name="Loader Statistics"
                             path="loaderstats"
