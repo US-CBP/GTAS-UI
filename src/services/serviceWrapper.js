@@ -84,12 +84,7 @@ const ERRORLOG = `${BASE_URL}gtas/errorlog`;
 const CASES = `${BASE_URL}gtas/hits`;
 const SETTINGSINFO = `${BASE_URL}gtas/settingsinfo`;
 const GETRULECATS = `${BASE_URL}getRuleCats`;
-const PAX = `${BASE_URL}gtas/flights/flight/:id/passengers`;
-const PAXDETAILS = `${BASE_URL}gtas/passengers/passenger/:paxId/details?flightId=:flightId`;
-const PAXFLIGHTHISTORY = `${BASE_URL}gtas/passengers/passenger/flighthistory?paxId=:paxId&flightId=:flightId`;
-const PAXFULLTRAVELHISTORY = `${BASE_URL}gtas/passengers/passenger/bookingdetailhistory?paxId=:paxId&flightId=:flightId`;
-const PAXWATCHLISTLINK = `${BASE_URL}gtas/passengers/passenger/getwatchlistlink?paxId=`;
-const PAXEVENTNOTESHISTORY = `${BASE_URL}gtas/passengers/passenger/notes`;
+const PAX = `${BASE_URL}gtas/passengers/passenger`;
 const FLIGHTPAXHITSUMMARY = `${BASE_URL}gtas/hit/flightpassenger`;
 const FLIGHTPAX = `${BASE_URL}gtas/api/flights/flightpax`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/statistics`;
@@ -122,37 +117,29 @@ export const cases = { get: (id, params) => get(CASES, BASEHEADER) };
 export const ruleCats = { get: (id, params) => get(RULE_CATS, BASEHEADER) };
 export const settingsinfo = { get: (id, params) => get(SETTINGSINFO, BASEHEADER) };
 export const getrulecats = { get: (id, params) => get(GETRULECATS, BASEHEADER) };
-export const passengers = {
-  post: (id, body) => {
-    const testBody = `{"pageNumber":1,"pageSize":1000,"lastName":"","flightNumber":"","origin":[],"dest":[],"direction":"I","etaStart":"2017-06-08T00:00:00.000Z","etaEnd":"2020-06-09T23:59:59.000Z","sort":[{"column":"onWatchList","dir":"desc"},{"column":"onRuleHitList","dir":"desc"},{"column":"eta","dir":"desc"}]}`;
-    const path = PAX.replace(":id", id);
-    console.log(path);
-    return post(path, BASEHEADER, testBody);
-  }
-};
 export const paxdetails = {
   get: (flightId, paxId) => {
-    const path = PAXDETAILS.replace(":flightId", flightId).replace(":paxId", paxId);
+    const path = `${PAX}/${paxId}/details?flightId=${flightId}`;
     return get(path, BASEHEADER);
   }
 };
 export const paxFlightHisoty = {
   get: (flightId, paxId) => {
-    const path = PAXFLIGHTHISTORY.replace(":flightId", flightId).replace(":paxId", paxId);
+    const path = `${PAX}/flighthistory?paxId=${paxId}&flightId=${flightId}`;
     return get(path, BASEHEADER);
   }
 };
 export const paxFullTravelHistory = {
   get: (flightId, paxId) => {
-    const path = PAXFULLTRAVELHISTORY.replace(":flightId", flightId).replace(
-      ":paxId",
-      paxId
-    );
+    const path = `${PAX}/bookingdetailhistory?paxId=${paxId}&flightId=${flightId}`;
     return get(path, BASEHEADER);
   }
 };
 export const paxWatchListLink = {
-  get: (id, params) => get(PAXWATCHLISTLINK, BASEHEADER, id, params)
+  get: (id, params) => {
+    const path = `${PAX}/getwatchlistlink?paxId=`;
+    return get(path, BASEHEADER, id, params);
+  }
 };
 export const flightpaxHitSummary = {
   get: (flightId, paxId) => {
@@ -162,8 +149,12 @@ export const flightpaxHitSummary = {
 };
 export const paxEventNotesHistory = {
   get: (paxId, historicalNotes) => {
-    const path = `${PAXEVENTNOTESHISTORY}?paxId=${paxId}&historicalNotes=${historicalNotes}`;
+    const path = `${PAX}/notes?paxId=${paxId}&historicalNotes=${historicalNotes}`;
     return get(path, BASEHEADER);
+  },
+  post: body => {
+    const objectBody = JSON.stringify({ ...body });
+    post(`${PAX}/notes`, BASEHEADER, objectBody);
   }
 };
 export const flightPassengers = { get: id => get(FLIGHTPAX, BASEHEADER, id) };
