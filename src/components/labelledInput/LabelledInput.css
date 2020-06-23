@@ -14,4 +14,7 @@
 .space-between > label {
   width: unset !important;
   text-align: right;
+  white-space: nowrap;
+  min-width: 90px;
+  margin-right: 10px;
 }

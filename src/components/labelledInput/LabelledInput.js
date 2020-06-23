@@ -19,10 +19,6 @@ const textareaType = "textarea";
 const fileType = "file";
 const REQUIRED = "required";
 
-/**
- * **LabelledInput is contains elements and props required by filter form for non 3rd party inputs.**
- */
-
 // TODO - refac as a passthru hook!!!
 // Pass props through directly, remove all awareness of specific child types
 // remove all proptypes not related to the label or form group

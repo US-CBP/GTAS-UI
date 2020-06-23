@@ -15,7 +15,7 @@ const GroupCheckBox = ({ value, onChange, id, name }) => {
   };
 
   return (
-    <div>
+    <div className="form-inline space-between">
       <label>{name}</label>
       <input type="checkbox" onChange={handleChange} checked={value} value={value} />
     </div>

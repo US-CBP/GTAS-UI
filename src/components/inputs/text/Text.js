@@ -25,7 +25,7 @@ TextInput.propTypes = {
   alt: PropTypes.string.isRequired,
   callback: PropTypes.func.isRequired,
   inputVal: PropTypes.string.isRequired,
-  required: PropTypes.string,
+  required: PropTypes.oneOf(["required", true, ""]),
   placeHolder: PropTypes.string,
   readOnly: PropTypes.string
 };

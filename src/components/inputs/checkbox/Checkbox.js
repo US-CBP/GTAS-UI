@@ -20,7 +20,7 @@ const CheckboxInput = props => {
 
   return (
     <div className={divstyle}>
-      {` ${props.label}`}
+      {/* {` ${props.label}`} */}
       <input
         name={props.name}
         onChange={onChange}
@@ -38,8 +38,8 @@ CheckboxInput.propTypes = {
   inputVal: PropTypes.any,
   name: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
-  required: PropTypes.string,
+  // options: PropTypes.array.isRequired,
+  required: PropTypes.oneOf(["required", true, ""]),
   selected: PropTypes.oneOf(["true", "", undefined]),
   callback: PropTypes.func.isRequired
 };

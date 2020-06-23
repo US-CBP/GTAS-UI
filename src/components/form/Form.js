@@ -119,14 +119,19 @@ class Form extends React.Component {
       ? [this.props.recordId, this.state.fields]
       : [this.state.fields];
 
-    operation(...params).then(res => {
+    const parsedParams = hasData(this.props.paramCallback)
+      ? this.props.paramCallback(params)
+      : params;
+
+    operation(...parsedParams).then(res => {
       if (hasData(this.props.callback)) this.props.callback(alt(res));
     });
   }
 
   onFormCancel() {
     if (this.props.redirectTo !== undefined) navigate(this.props.redirectTo);
-    else window.history.back();
+    this.props.callback();
+    // else window.history.back();
   }
 
   // bind children containing form data to the ev handler and state
@@ -172,7 +177,7 @@ class Form extends React.Component {
             {this.props.cancellable && (
               <Button
                 type="button"
-                className="m-2 text-white outline-dark-outline"
+                className="m-2 outline-dark-outline"
                 variant="outline-dark"
                 onClick={this.onFormCancel}
               >
