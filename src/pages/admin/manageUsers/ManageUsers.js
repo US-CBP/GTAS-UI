@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Col, Button, Container } from "react-bootstrap";
 import Table from "../../../components/table/Table";
 import { userService, users } from "../../../services/serviceWrapper";
@@ -40,9 +40,9 @@ const ManageUsers = props => {
             Add New User
           </Button>
           <CreateUserModal
-              show={showModal}
-              onHide={() => setShowModal(false)}
-              callback={cb}
+            show={showModal}
+            onHide={() => setShowModal(false)}
+            callback={cb}
           />
           <br />
           <hr />

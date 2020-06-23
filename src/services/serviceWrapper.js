@@ -76,7 +76,6 @@ function putNoId(uri, headers, body) {
   });
 }
 
-
 function del(uri, id) {
   if (!hasData(id)) throw new TypeError(DELETEID);
 
@@ -101,7 +100,9 @@ const ERRORLOG = `${BASE_URL}gtas/errorlog`;
 const CASES = `${BASE_URL}gtas/hits`;
 const SETTINGSINFO = `${BASE_URL}gtas/settingsinfo`;
 const GETRULECATS = `${BASE_URL}getRuleCats`;
-const PAX = `${BASE_URL}gtas/api/flights/flightpax`;
+const PAX = `${BASE_URL}gtas/passengers/passenger`;
+const FLIGHTPAXHITSUMMARY = `${BASE_URL}gtas/hit/flightpassenger`;
+const FLIGHTPAX = `${BASE_URL}gtas/api/flights/flightpax`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/statistics`;
 const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
 const NOTE_TYPES = `${BASE_URL}gtas/passengers/passenger/notetypes`;
@@ -140,25 +141,67 @@ export const userService = {
   post: body => {
     const objectBody = JSON.stringify({ ...body });
     return post(CREATEUSER, BASEHEADER, objectBody);
-    }
   }
+};
 
 export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
 export const auditlog = { get: (id, params) => get(AUDITLOG, BASEHEADER) };
 export const errorlog = { get: (id, params) => get(ERRORLOG, BASEHEADER) };
 export const cases = { get: (id, params) => get(CASES, BASEHEADER) };
 export const ruleCats = { get: (id, params) => get(RULE_CATS, BASEHEADER) };
-export const settingsinfo = { get: (id, params) => get(SETTINGSINFO, BASEHEADER),
-                              put: (body) => putNoId(SETTINGSINFO, BASEHEADER, postBodyWrapper(body))};
+export const settingsinfo = {
+  get: (id, params) => get(SETTINGSINFO, BASEHEADER),
+  put: body => putNoId(SETTINGSINFO, BASEHEADER, postBodyWrapper(body))
+};
 export const getrulecats = { get: (id, params) => get(GETRULECATS, BASEHEADER) };
-export const passengers = { get: id => get(PAX, BASEHEADER, id) };
+export const paxdetails = {
+  get: (flightId, paxId) => {
+    const path = `${PAX}/${paxId}/details?flightId=${flightId}`;
+    return get(path, BASEHEADER);
+  }
+};
+export const paxFlightHisoty = {
+  get: (flightId, paxId) => {
+    const path = `${PAX}/flighthistory?paxId=${paxId}&flightId=${flightId}`;
+    return get(path, BASEHEADER);
+  }
+};
+export const paxFullTravelHistory = {
+  get: (flightId, paxId) => {
+    const path = `${PAX}/bookingdetailhistory?paxId=${paxId}&flightId=${flightId}`;
+    return get(path, BASEHEADER);
+  }
+};
+export const paxWatchListLink = {
+  get: (id, params) => {
+    const path = `${PAX}/getwatchlistlink?paxId=`;
+    return get(path, BASEHEADER, id, params);
+  }
+};
+export const flightpaxHitSummary = {
+  get: (flightId, paxId) => {
+    const path = `${FLIGHTPAXHITSUMMARY}?passengerId=${paxId}&flightId=${flightId}`;
+    return get(path, BASEHEADER);
+  }
+};
+export const paxEventNotesHistory = {
+  get: (paxId, historicalNotes) => {
+    const path = `${PAX}/notes?paxId=${paxId}&historicalNotes=${historicalNotes}`;
+    return get(path, BASEHEADER);
+  },
+  post: body => {
+    const objectBody = JSON.stringify({ ...body });
+    post(`${PAX}/notes`, BASEHEADER, objectBody);
+  }
+};
+export const flightPassengers = { get: id => get(FLIGHTPAX, BASEHEADER, id) };
 export const loaderStats = { get: (id, params) => get(LOADERSTATISTICS, BASEHEADER) };
 export const notetypes = {
   get: (id, params) => get(NOTE_TYPES, BASEHEADER),
   post: body => post(NOTE_TYPESPOST, BASEHEADER, postBodyWrapper(body))
 };
 export const loggedinUser = { get: (id, params) => get(LOGGEDIN_USER, BASEHEADER) };
-export const roles = { get: get(ROLES, BASEHEADER)};
+export const roles = { get: get(ROLES, BASEHEADER) };
 export const codeEditor = {
   get: {
     carrierCodes: (id, params) => get(CODES_CARRIER, BASEHEADER),
@@ -166,25 +209,25 @@ export const codeEditor = {
     airportCodes: (id, params) => get(CODES_AIRPORT, BASEHEADER)
   },
   put: {
-    updateCarrier: (body) => put(CODES_CARRIER, BASEHEADER, body),
-    updateCountry: (body) => put(CODES_COUNTRY, BASEHEADER, body),
-    updateAirport: (body) => put(CODES_AIRPORT, BASEHEADER, body),
-    restoreCarriersAll: (body) => putNoId(CODES_RESTOREALL_CARRIER, BASEHEADER, body),
-    restoreCountriesAll: (body) => putNoId(CODES_RESTOREALL_COUNTRY, BASEHEADER, body),
-    restoreAirportsAll: (body) => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
-    restoreCarrier: (body) => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
-    restoreCountry: (body) => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
-    restoreAirport: (body) => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body)
+    updateCarrier: body => put(CODES_CARRIER, BASEHEADER, body),
+    updateCountry: body => put(CODES_COUNTRY, BASEHEADER, body),
+    updateAirport: body => put(CODES_AIRPORT, BASEHEADER, body),
+    restoreCarriersAll: body => putNoId(CODES_RESTOREALL_CARRIER, BASEHEADER, body),
+    restoreCountriesAll: body => putNoId(CODES_RESTOREALL_COUNTRY, BASEHEADER, body),
+    restoreAirportsAll: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
+    restoreCarrier: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
+    restoreCountry: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
+    restoreAirport: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body)
   },
   post: {
-    createCarrier: (body) => post(CODES_CARRIER, BASEHEADER, postBodyWrapper(body)),
-    createCountry: (body) => post(CODES_COUNTRY, BASEHEADER, postBodyWrapper(body)),
-    createAirport: (body) => post(CODES_AIRPORT, BASEHEADER, postBodyWrapper(body))
+    createCarrier: body => post(CODES_CARRIER, BASEHEADER, postBodyWrapper(body)),
+    createCountry: body => post(CODES_COUNTRY, BASEHEADER, postBodyWrapper(body)),
+    createAirport: body => post(CODES_AIRPORT, BASEHEADER, postBodyWrapper(body))
   },
   delete: {
-    deleteCarrier: (id) => del(CODES_CARRIER, id),
-    deleteCountry: (id) => del(CODES_COUNTRY, id),
-    deleteAirport: (id) => del(CODES_AIRPORT, id)
+    deleteCarrier: id => del(CODES_CARRIER, id),
+    deleteCountry: id => del(CODES_COUNTRY, id),
+    deleteAirport: id => del(CODES_AIRPORT, id)
   }
 };
 

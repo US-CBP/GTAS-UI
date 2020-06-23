@@ -4,7 +4,6 @@ import Form from "../../../components/form/Form";
 import { notetypes } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 
-
 const NoteTypeModal = props => {
   const title = "Note Type Category";
   const cb = function(result) {};

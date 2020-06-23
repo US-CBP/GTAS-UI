@@ -2,8 +2,7 @@ import React from "react";
 import { Modal, Button, Container } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
-import {codeEditor} from "../../../../services/serviceWrapper";
-
+import { codeEditor } from "../../../../services/serviceWrapper";
 
 const AddCarrierModal = props => {
   const title = "Add Carrier";
@@ -40,13 +39,13 @@ const AddCarrierModal = props => {
               callback={cb}
             />
             <LabelledInput
-                datafield
-                labelText="Name:"
-                inputType="text"
-                name="name"
-                required={true}
-                alt="nothing"
-                callback={cb}
+              datafield
+              labelText="Name:"
+              inputType="text"
+              name="name"
+              required={true}
+              alt="nothing"
+              callback={cb}
             />
           </Form>
         </Container>

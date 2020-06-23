@@ -2,8 +2,7 @@ import React from "react";
 import { Modal, Button, Container } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
-import {codeEditor} from "../../../../services/serviceWrapper";
-
+import { codeEditor } from "../../../../services/serviceWrapper";
 
 const AddCountryModal = props => {
   const title = "Add Country";
@@ -40,31 +39,31 @@ const AddCountryModal = props => {
               callback={cb}
             />
             <LabelledInput
-                datafield
-                labelText="ISO3:"
-                inputType="text"
-                name="iso3"
-                required={true}
-                alt="nothing"
-                callback={cb}
+              datafield
+              labelText="ISO3:"
+              inputType="text"
+              name="iso3"
+              required={true}
+              alt="nothing"
+              callback={cb}
             />
             <LabelledInput
-                datafield
-                labelText="ISO Numeric:"
-                inputType="text"
-                name="isoNumeric"
-                required={true}
-                alt="nothing"
-                callback={cb}
+              datafield
+              labelText="ISO Numeric:"
+              inputType="text"
+              name="isoNumeric"
+              required={true}
+              alt="nothing"
+              callback={cb}
             />
             <LabelledInput
-                datafield
-                labelText="Name:"
-                inputType="text"
-                name="name"
-                required={true}
-                alt="nothing"
-                callback={cb}
+              datafield
+              labelText="Name:"
+              inputType="text"
+              name="name"
+              required={true}
+              alt="nothing"
+              callback={cb}
             />
           </Form>
         </Container>

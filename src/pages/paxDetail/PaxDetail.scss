@@ -2,6 +2,22 @@
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
+$background-image-url: "../../images/WCO_flag.svg";
+$wco-blue: rgb(0, 119, 200);
+$transparent: rgba(0, 0, 0, 0.65);
+
+.paxdetails-side-nav .filter-bg {
+  background: linear-gradient($wco-blue, rgba(0, 119, 200, 0.75)),
+    url($background-image-url) no-repeat, no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.paxdetail-container {
+  max-height: 70vh;
+  overflow: scroll;
+}
+
 //TODO:  decide on what should be displayed on small devices
 @include media-breakpoint-down(sm) {
   .paxdetails-side-nav {

@@ -1,53 +1,136 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
-import { users } from "../../../services/serviceWrapper";
-import { CardDeck, Card } from "react-bootstrap";
+import { localeDate, asArray } from "../../../utils/utils";
+import {
+  users,
+  paxdetails,
+  paxWatchListLink,
+  flightpaxHitSummary,
+  paxEventNotesHistory,
+  notetypes
+} from "../../../services/serviceWrapper";
+import { CardDeck, Card, Container } from "react-bootstrap";
 import Accordion from "../../../components/accordion/Accordion";
 import "./Summary.scss";
+import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 
 const Summary = props => {
-  const accordionData = [
-    {
-      header: "Event Note History",
-      body: "Add some event note history data here"
+  const headers = {
+    documents: {
+      documentNumber: "Document Number",
+      documentType: "Type",
+      issuanceCountry: "Issuance Country",
+      expirationDate: "Expiration Date",
+      messageType: "Source"
     },
-    {
-      header: "Previous Note History",
-      body: "Add previous note history here"
+    watchListLinks: {
+      watchlistCategory: "Category",
+      watchListLastName: "Last Name",
+      watchListFirstName: "First Name",
+      watchListDOB: "DOB",
+      percentMatch: "Match %"
+    },
+    paxHitSummary: {
+      status: "Status",
+      severity: "Severity",
+      author: "Author",
+      category: "Category",
+      ruleDesc: "Title",
+      ruleConditions: "Conditions"
+    },
+    eventNotes: {
+      plainTextNote: "Note",
+      noteType: "Note Type",
+      createdBy: "Created By",
+      createdAt: "Created At"
     }
-  ];
+  };
+
+  const [documents, setDocuments] = useState([]);
+  const [watchListLinks, setWatchListLinks] = useState([]);
+  const [paxHitSummary, setPaxHitSummary] = useState([]);
+  const [eventNotes, setEventNotes] = useState([]);
+  const [historicalEventNotes, setHistoricalEventNotes] = useState([]);
+
+  const fetchData = () => {
+    paxdetails.get(props.flightId, props.paxId).then(res => {
+      setDocuments(res.documents);
+    });
+    paxWatchListLink.get(null, props.paxId).then(res => {
+      const data = asArray(res).map(pwl => {
+        return {
+          ...pwl,
+          percentMatch: `${pwl.percentMatch * 100}%`
+        };
+      });
+      setWatchListLinks(data);
+    });
+
+    flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
+      setPaxHitSummary(res);
+    });
+    paxEventNotesHistory.get(props.paxId, false).then(res => {
+      const notesData = res.paxNotes?.map(note => {
+        const type = (note.noteType || []).map(t => {
+          return t.noteType;
+        });
+        return {
+          ...note,
+          createdAt: localeDate(note.createdAt),
+          noteType: type.toString()
+        };
+      });
+      setEventNotes(notesData);
+    });
+    paxEventNotesHistory.get(props.paxId, true).then(res => {
+      const notesData = res.paxNotes
+        ?.map(note => {
+          const type = (note.notetypes || []).map(t => {
+            return t.noteType;
+          });
+          return {
+            ...note,
+            createdAt: localeDate(note.createdAt),
+            notetype: type.toString()
+          };
+        })
+        .slice(0, 10);
+      setHistoricalEventNotes(notesData);
+    });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
-    <>
-      <CardDeck className="summary-card-deck">
-        <Card>
-          <Card.Header>Passenger Current Hits Summary</Card.Header>
-          <Card.Body>
-            <Card.Text>Passenger current hit summary goes in her</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card>
-          <Card.Header>Documents</Card.Header>
-          <Card.Body>
-            <Card.Text>PDocumnet data goes in here</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card>
-          <Card.Header>Watchlist Name Comparison</Card.Header>
-          <Card.Body>
-            <Card.Text>Watchlist name comparison goes in here</Card.Text>
-          </Card.Body>
-        </Card>
-        <Card>
-          <Card.Header>Event Notes</Card.Header>
-          <Card.Body>
-            <Card.Text>Event Notes goes in here</Card.Text>
-          </Card.Body>
-        </Card>
-      </CardDeck>
+    <Container fluid className="summary-container">
+      <CardDeck>
+        <CardWithTable
+          data={paxHitSummary}
+          headers={headers.paxHitSummary}
+          title="Passenger Current Hits summary"
+        />
 
-      <Accordion data={accordionData} />
-    </>
+        <CardWithTable data={documents} headers={headers.documents} title="Documents" />
+        <CardWithTable
+          data={watchListLinks}
+          headers={headers.watchListLinks}
+          title="Watchlist Name Comparison"
+        />
+
+        <CardWithTable
+          data={eventNotes}
+          headers={headers.eventNotes}
+          title="Event Note History"
+        />
+        <CardWithTable
+          data={historicalEventNotes}
+          headers={headers.eventNotes}
+          title={`Previous Notes History (Up to 10)`}
+        />
+      </CardDeck>
+    </Container>
   );
 };
 

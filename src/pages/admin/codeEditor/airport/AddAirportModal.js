@@ -1,10 +1,9 @@
 import React from "react";
 import { Modal, Button, Container } from "react-bootstrap";
 
-import {codeEditor} from "../../../../services/serviceWrapper";
+import { codeEditor } from "../../../../services/serviceWrapper";
 import Form from "../../../../components/form/Form";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
-
 
 const AddAirportModal = props => {
   const title = "Add Airport";
@@ -41,58 +40,58 @@ const AddAirportModal = props => {
               callback={cb}
             />
             <LabelledInput
-                datafield
-                labelText="ICAO:"
-                inputType="text"
-                name="icao"
-                required={true}
-                alt="nothing"
-                callback={cb}
+              datafield
+              labelText="ICAO:"
+              inputType="text"
+              name="icao"
+              required={true}
+              alt="nothing"
+              callback={cb}
             />
             <LabelledInput
-                datafield
-                labelText="Name:"
-                inputType="text"
-                name="name"
-                required={true}
-                alt="nothing"
-                callback={cb}
+              datafield
+              labelText="Name:"
+              inputType="text"
+              name="name"
+              required={true}
+              alt="nothing"
+              callback={cb}
             />
             <LabelledInput
-                datafield
-                labelText="City:"
-                inputType="text"
-                name="city"
-                required={true}
-                alt="nothing"
-                callback={cb}
+              datafield
+              labelText="City:"
+              inputType="text"
+              name="city"
+              required={true}
+              alt="nothing"
+              callback={cb}
             />
             <LabelledInput
-                datafield
-                labelText="Country"
-                inputType="text"
-                name="country"
-                required={true}
-                alt="nothing"
-                callback={cb}
+              datafield
+              labelText="Country"
+              inputType="text"
+              name="country"
+              required={true}
+              alt="nothing"
+              callback={cb}
             />
             <LabelledInput
-                datafield
-                labelText="Latitude:"
-                inputType="text"
-                name="latitude"
-                required={true}
-                alt="nothing"
-                callback={cb}
+              datafield
+              labelText="Latitude:"
+              inputType="text"
+              name="latitude"
+              required={true}
+              alt="nothing"
+              callback={cb}
             />
             <LabelledInput
-                datafield
-                labelText="Longitude:"
-                inputType="text"
-                name="longitude"
-                required={true}
-                alt="nothing"
-                callback={cb}
+              datafield
+              labelText="Longitude:"
+              inputType="text"
+              name="longitude"
+              required={true}
+              alt="nothing"
+              callback={cb}
             />
           </Form>
         </Container>

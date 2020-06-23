@@ -244,3 +244,12 @@ export function sortValues(key, desc) {
 }
 
 export function routes() {}
+
+export function passengerTypeMapper(type) {
+  const passengerTypesMap = {
+    P: "Passenger",
+    C: "Crew",
+    I: "Intransit"
+  };
+  return passengerTypesMap[type];
+}

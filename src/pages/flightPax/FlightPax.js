@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../components/table/Table";
+import { flightPassengers } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import { Col, Tabs, Tab } from "react-bootstrap";
-import { passengers } from "../../services/serviceWrapper";
 import { Link } from "@reach/router";
 import {
   asArray,
@@ -70,7 +70,7 @@ const FlightPax = props => {
   ];
 
   useEffect(() => {
-    passengers.get(props.id).then(res => {
+    flightPassengers.get(props.id).then(res => {
       if (!hasData(res)) {
         setAllData([]);
         setHitData([]);
