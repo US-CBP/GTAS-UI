@@ -2,19 +2,38 @@
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
-$gtas-primary-color: #075484;
-$header-text-color: #e0e0e0;
+$wco-blue: rgb(0, 119, 200);
+$gtas-white: rgba(255, 255, 255, 0.9);
 
-.summary-card-deck .card {
-  min-width: 400px !important;
-  margin: 0.5rem 0.5rem;
+.summary-container {
+  max-height: 70vh;
+  overflow: scroll;
 }
-.summary-card-deck .card .card-header {
-  color: $header-text-color;
-  background-color: $gtas-primary-color !important;
-}
+
 @include media-breakpoint-up(xl) {
   .summary-card-deck .card {
     max-width: 50%;
+  }
+}
+
+.summary-container {
+  .card-deck {
+    .card {
+      overflow: scroll;
+      margin: 5px;
+      min-width: 600px;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .summary-container {
+    .card-deck {
+      .card {
+        overflow: scroll;
+        margin: 5px;
+        min-width: 400px;
+      }
+    }
   }
 }

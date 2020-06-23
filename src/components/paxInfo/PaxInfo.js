@@ -1,52 +1,34 @@
 import React from "react";
 import FlightBadge from "../flightBadge/FlightBadge";
-import PaxInfoRow from "./PaxInfoRow";
-import { Col, Form } from "react-bootstrap";
-import "./PaxInfo.css";
+import { Table } from "react-bootstrap";
+import { hasData } from "../../utils/utils";
+import "./PaxInfo.scss";
 
 const PaxInfo = props => {
-  const fakepax = {
-    lastname: "Smitty",
-    firstname: "Alex",
-    middlename: "",
-    age: "46",
-    dob: "1/1/1964",
-    gender: "M",
-    nationality: "GBR",
-    residence: "ERI",
-    eta: "3-4-2020 05:00",
-    etd: "3-4-2020 09:00",
-    origin: "RUH",
-    destination: "IAD",
-    flightnumber: "SV0039"
-  };
+  const pax = props.pax || [];
+  const badgeprops = props.badgeprops || {};
 
-  const pax = props.pax || fakepax;
-  const badgeprops = {
-    eta: pax.eta,
-    etd: pax.etd,
-    origin: pax.origin,
-    destination: pax.destination,
-    flightnumber: pax.flightnumber
-  };
+  const tableRows = pax.reduce((acc, { label, value }) => {
+    //don't display label with a null value (a good example is last apis/pnr recieved)
+    if (hasData(value)) {
+      const row = (
+        <tr key={label} className="pax-info-row">
+          <td className="left-label">{label}</td>
+          <td className="right-label">{value}</td>
+        </tr>
+      );
+      acc.push(row);
+    }
+    return acc;
+  }, []);
+
   return (
-    <Col>
+    <div>
       <FlightBadge {...badgeprops}></FlightBadge>
-      <Form>
-        <PaxInfoRow leftlabel="Last Name" rightlabel={pax.lastname}></PaxInfoRow>
-        <PaxInfoRow leftlabel="First Name" rightlabel={pax.firstname}></PaxInfoRow>
-        <PaxInfoRow leftlabel="Middle Name" rightlabel={pax.middlename}></PaxInfoRow>
-        <PaxInfoRow leftlabel="Age" rightlabel={`${pax.age} (${pax.dob})`}></PaxInfoRow>
-        <PaxInfoRow leftlabel="Gender" rightlabel={pax.gender}></PaxInfoRow>
-        <PaxInfoRow leftlabel="Nationality" rightlabel={pax.nationality}></PaxInfoRow>
-        <PaxInfoRow leftlabel="Residence" rightlabel={pax.residence}></PaxInfoRow>
-        <PaxInfoRow leftlabel="Origin Airport" rightlabel={pax.origin}></PaxInfoRow>
-        <PaxInfoRow
-          leftlabel="Destination Airport"
-          rightlabel={pax.destination}
-        ></PaxInfoRow>
-      </Form>
-    </Col>
+      <Table size="sm" striped borderless>
+        <tbody>{tableRows}</tbody>
+      </Table>
+    </div>
   );
 };
 

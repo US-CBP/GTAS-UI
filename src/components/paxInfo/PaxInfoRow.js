@@ -1,6 +1,6 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import "./PaxInfo.css";
+import "./PaxInfo.scss";
 
 const PaxInfoRow = props => {
   return (

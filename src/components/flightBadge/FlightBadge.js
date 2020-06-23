@@ -1,26 +1,24 @@
 import React from "react";
-import { Col, Row, Form } from "react-bootstrap";
-import PaxInfoRow from "../paxInfo/PaxInfoRow";
+import { Col, Row } from "react-bootstrap";
+import "./FlightBadge.scss";
 
 const FlightBadge = props => {
   return (
-    <Form>
+    <div className="flight-badge">
       <Row>
-        <Col lg="3" md="3" sm="3">
-          <div className="fa fa-plane"> {props.flightnumber}</div>
+        <Col lg="4" md="4" sm="4" className="fa fa-plane flight-number">
+          {props.flightnumber}
         </Col>
         <Col>
-          <PaxInfoRow
-            leftlabel={<i className="fa fa-arrow-circle-up"> {props.origin}</i>}
-            rightlabel={props.etd}
-          ></PaxInfoRow>
-          <PaxInfoRow
-            leftlabel={<i className="fa fa-arrow-circle-down"> {props.destination}</i>}
-            rightlabel={props.eta}
-          ></PaxInfoRow>
+          <Row className="fa fa-arrow-circle-up flight-text">
+            {props.origin} {props.etd}
+          </Row>
+          <Row className="fa fa-arrow-circle-down flight-text">
+            {props.destination} {props.eta}
+          </Row>
         </Col>
       </Row>
-    </Form>
+    </div>
   );
 };
 

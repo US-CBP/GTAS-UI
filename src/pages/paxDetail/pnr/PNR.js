@@ -1,116 +1,228 @@
-import React, { useState } from "react";
-import Title from "../../../components/title/Title";
+import React from "react";
+import { Row, Col, Container } from "react-bootstrap";
 import SegmentTable from "../../../components/segmentTable/SegmentTable";
+import CardWithTable from "../../../components/cardWithTable/CardWithTable";
+import { asArray, hasData, localeDate, localeDateOnly } from "../../../utils/utils";
 
 const PNR = props => {
-  const mockdata = [
-    { key: "0", value: "UNB+IATA:1+UA++191228:1610+338471103105'" },
-    { key: "1", value: "UNH+1+PNRGOV:13:1:IA+123456789'" },
-    { key: "2", value: "MSG+:22'" },
-    { key: "3", value: "ORG+UA:DJE+55107'" },
-    { key: "TVLFRA ", value: "TVL+311219:1710:1955+FRA+IAD+UA+933'" },
-    { key: "5", value: "EQN+1'" },
-    { key: "6", value: "SRC'" },
-    { key: "7", value: "RCI+UA:BB9E79::141119:1610'" },
-    { key: "8", value: "DAT+700:311219:1416+710:281219:1610'" },
-    { key: "AGEN70379193 ", value: "ORG+DL:IAD+70379193:LON+++A+GB:GBP+D050517'" },
-    {
-      key: "ADDGUADALAJARA PHONE715898537516 ",
-      value: "ADD++700:6082 TATLOW AVENUE:GUADALAJARA:::MX::715898537516'"
+  const data = hasData(props.data) ? props.data : {};
+
+  const headers = {
+    itinerary: {
+      leg: "Leg",
+      flightNumber: "Flight Number",
+      origin: "Origin",
+      destination: "Destination",
+      departure: "Departure",
+      arrivval: "Arrival"
     },
-    { key: "11", value: "TIF+O GRADY+ELLIOT:A:1'" },
-    { key: "FTI462075 ", value: "FTI+UA:462075:::'" },
-    {
-      key: "EMAIL ELLIOT.O GRADY@YAHOO.COM ",
-      value: "IFT+4:28::YY+CTCE ELLIOT.O GRADY//YAHOO.COM'"
+    passengers: {
+      lastName: "Last Name",
+      firstName: "First Name",
+      middleName: "Middle Name",
+      gender: "Gender",
+      age: "Age"
     },
-    { key: "14", value: "REF+:695553137'" },
-    { key: "15", value: "FAR+N+++++'" },
-    {
-      key: "SSRELLIOT DOCS758471042 ",
-      value:
-        "SSR+DOCS:HK::DL:::::/P/GBR/758471042/USA/06OCT68/M/19OCT19/O GRADY/ELLIOT/OSCAR'"
+    documents: {
+      lastName: "Last Name",
+      firstName: "First Name",
+      documentType: "Type",
+      issuanceCountry: "Issuance Country",
+      expirationDate: "Expiration Date",
+      documentNumber: "Number"
     },
-    { key: "17", value: "TKT+15158035510059:T:1'" },
-    { key: "18", value: "MON+B:94.34:GBP+T:100.00:GBP'" },
-    { key: "19", value: "PTK+NR++150417:1010+DL+006+LON'" },
-    {
-      key: "20",
-      value: "TXD++0.57:::AY6+0.85:::YQ+1.13:::YC+1.42:::XY+0.57:::XA+1.13:::XF'"
+    addresses: {
+      street: "Street",
+      city: "City",
+      state: "State/Province",
+      country: "Country"
     },
-    { key: "21", value: "DAT+710:311219'" },
-    { key: "FOPXXXXXXXXXXXX7236 ", value: "FOP+CC::100.00:VI:XXXXXXXXXXXX7236:0321'" },
-    {
-      key: "23",
-      value: "IFT+4:43+ELLIOT O GRADY+9178 ECCLESTON AVENUE TOKYO USA NRPXC+126087571132'"
+    phoneNumbers: {
+      number: "Number"
     },
-    { key: "24", value: "TIF+ELLROTT+DANIEL:A:2'" },
-    { key: "FTI949218 ", value: "FTI+UA:949218:::'" },
-    {
-      key: "EMAIL DANIEL.ELLROTT@HOTMAIL.COM ",
-      value: "IFT+4:28::YY+CTCE DANIEL.ELLROTT//HOTMAIL.COM'"
+    emails: {
+      address: "Email Adrress"
     },
-    { key: "27", value: "REF+:5893702'" },
-    { key: "28", value: "FAR+N+++++'" },
-    {
-      key: "SSRDANIEL DOCS938630055 ",
-      value:
-        "SSR+DOCS:HK::DL:::::/P/GBR/938630055/DEU/28DEC74/M/17DEC21/ELLROTT/DANIEL/EWAN'"
+    creditCards: {
+      accountHolder: "Holder",
+      cardType: "Type",
+      expiration: "Exp. Date",
+      number: "Number"
     },
-    { key: "30", value: "TKT+15158019063007:T:1'" },
-    { key: "31", value: "MON+B:235.85:GBP+T:250.00:GBP'" },
-    { key: "32", value: "PTK+NR++150417:1010+DL+006+LON'" },
-    {
-      key: "33",
-      value: "TXD++1.42:::AY6+2.12:::YQ+2.83:::YC+3.54:::XY+1.42:::XA+2.83:::XF'"
+    frequentFlyerDetails: {
+      carrier: "Airline",
+      number: "Number"
     },
-    { key: "34", value: "DAT+710:311219'" },
-    { key: "FOPXXXXXXXXXXXX9672 ", value: "FOP+CC::250.00:VI:XXXXXXXXXXXX9672:0217'" },
-    {
-      key: "36",
-      value: "IFT+4:43+DANIEL ELLROTT+9178 ECCLESTON AVENUE TOKYO USA NRPXC+126087571132'"
+    agencies: {
+      type: "Type",
+      country: "Country",
+      city: "City",
+      identifier: "ID",
+      location: "Location",
+      name: "Name",
+      phone: "Phone"
     },
-    { key: "TVLFRA ", value: "TVL+311219:1710::1955+FRA+IAD+UA+933:B'" },
-    { key: "38", value: "APD+388'" },
-    { key: "SEAT12D SEAT48G ", value: "SSR+SEAT:HK:2:UA:::FRA:IAD+12D::1+48G::2'" },
-    {
-      key: "SSRELLIOT ",
-      value: "SSR+TKNE::::::::TKT NBR 15158035510059 31DEC19 E ELLIOTO GRADY'"
-    },
-    { key: "41", value: "RCI+UA:BB9E79'" },
-    { key: "42", value: "ABI+1+:LHRRR+LON++DL'" },
-    { key: "43", value: "UNT+25'" },
-    { key: "44", value: "UNZ+1+0113360543'" }
-  ];
+    seatAssignments: {
+      firstName: "First Name",
+      lastName: "Last Name",
+      flightNumber: "Flight Number",
+      number: "Seat Number"
+    }
+  };
+  const rawPnrSegments = asArray(data.segmentList);
+  const itinerary = asArray(data.flightLegs).map((leg, index) => {
+    return {
+      leg: index + 1,
+      flightNumber: leg.flightNumber,
+      origin: leg.originAirport,
+      destination: leg.destinationAirport,
+      departure: localeDate(leg.etd),
+      arrivval: localeDate(leg.eta),
+      key: `TVL${leg.originAirport} `
+    };
+  });
+
+  const passengers = asArray(data.passengers).map(passenger => {
+    return {
+      ...passenger,
+      key: `SSR${passenger.firstName} `
+    };
+  });
+  const documents = asArray(data.documents).map(doc => {
+    return {
+      ...doc,
+      key: `DOCS${doc.documentNumber} `
+    };
+  });
+  const addresses = asArray(data.addresses).map(address => {
+    return {
+      ...address,
+      street: address.line1,
+      key: `ADD${address.city} `
+    };
+  });
+  const phoneNumbers = asArray(data.phoneNumbers).map(pNumber => {
+    return {
+      ...pNumber,
+      key: `PHONE${pNumber.number} `
+    };
+  });
+  const emails = asArray(data.emails).map(email => {
+    return {
+      ...email,
+      key: `EMAIL${email.address} `
+    };
+  });
+  const creditCards = asArray(data.creditCards).map(ccData => {
+    return {
+      ...ccData,
+      expiration: localeDateOnly(ccData.expiration),
+      key: `FOP${ccData.number} `
+    };
+  });
+  const frequentFlyerDetails = asArray(data.frequentFlyerDetails).map(ffd => {
+    return {
+      ...ffd,
+      key: `FTI${ffd.number} `
+    };
+  });
+  const agencies = asArray(data.agencies).map(agency => {
+    return {
+      ...agency,
+      key: `AGEN${agency.identifier} `
+    };
+  });
+  const seatAssignments = asArray(data.seatAssignments).map(seatAssignment => {
+    return {
+      ...seatAssignment,
+      key: `SEAT${seatAssignment.number}`
+    };
+  });
 
   const segmentRef = React.createRef();
-  const [foo, setFoo] = useState(0);
 
   // To fire on the onclick event of child tables, passing the key of the matching raw pnr record.
   // Use as the child's callback reference
-  // Currently just iterates through the numeric keys as a demo
   const setActiveKeyWrapper = key => {
-    setFoo(foo + 1);
-    segmentRef.current.setActiveKey(foo);
-    // segmentRef.current.setActiveKey(key);
+    segmentRef.current.setActiveKey(key);
   };
 
   return (
-    <div className="container">
-      <Title title="PNR"></Title>
-
-      <div className="columns">
-        <div className="top">
-          <input type="button" onClick={setActiveKeyWrapper} value="click"></input>
-          <SegmentTable
-            title="Segment Table"
-            data={mockdata}
-            id="rawPnrSegments"
-            ref={segmentRef}
+    <Row>
+      <Col sm="4" md="4" lg="4">
+        <SegmentTable
+          title="Segment Table"
+          data={rawPnrSegments}
+          id="rawPnrSegments"
+          ref={segmentRef}
+        />
+      </Col>
+      <Col>
+        <Container fluid className="paxdetail-container">
+          <CardWithTable
+            data={itinerary}
+            headers={headers.itinerary}
+            title={`Itinerary (${itinerary.length})`}
+            callback={setActiveKeyWrapper}
           />
-        </div>
-      </div>
-    </div>
+          <CardWithTable
+            data={passengers}
+            headers={headers.passengers}
+            title={`PNR Names (${passengers.length})`}
+            callback={setActiveKeyWrapper}
+          />
+          <CardWithTable
+            data={documents}
+            headers={headers.documents}
+            title={`Documents(${documents.length})`}
+            callback={setActiveKeyWrapper}
+          />
+          <CardWithTable
+            data={addresses}
+            headers={headers.addresses}
+            title={`Addresses(${addresses.length})`}
+            callback={setActiveKeyWrapper}
+          />
+          <CardWithTable
+            data={phoneNumbers}
+            headers={headers.phoneNumbers}
+            title={`Phone Numbers(${phoneNumbers.length})`}
+            callback={setActiveKeyWrapper}
+          />
+          <CardWithTable
+            data={emails}
+            headers={headers.emails}
+            title={`Email Addresses(${emails.length})`}
+            callback={setActiveKeyWrapper}
+          />
+          <CardWithTable
+            data={creditCards}
+            headers={headers.creditCards}
+            title={`Credit Cards(${creditCards.length})`}
+            callback={setActiveKeyWrapper}
+          />
+          <CardWithTable
+            data={frequentFlyerDetails}
+            headers={headers.frequentFlyerDetails}
+            title={`Frequent Flyer Numbers(${frequentFlyerDetails.length})`}
+            callback={setActiveKeyWrapper}
+          />
+          <CardWithTable
+            data={seatAssignments}
+            headers={headers.seatAssignments}
+            title="Seat Information"
+            callback={setActiveKeyWrapper}
+          />
+
+          <CardWithTable
+            data={agencies}
+            headers={headers.agencies}
+            title={`Agencies(${agencies.length})`}
+            callback={setActiveKeyWrapper}
+          />
+        </Container>
+      </Col>
+    </Row>
   );
 };
 
