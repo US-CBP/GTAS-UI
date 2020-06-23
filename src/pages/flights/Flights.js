@@ -1,21 +1,22 @@
 import React, { useState, useContext, useEffect } from "react";
 import Table from "../../components/table/Table";
-import { flights } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import { Link } from "@reach/router";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
-import LabelledSelectInput from "../../components/inputs/LabelledSelectInput/LabelledSelectInput";
+// import LabelledSelectInput from "../../components/inputs/LabelledSelectInput/LabelledSelectInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
-import "react-datepicker/dist/react-datepicker.css";
+// import "react-datepicker/dist/react-datepicker.css";
 import "./Flights.css";
-import { Container, Row, Col } from "react-bootstrap";
+import { Col, Tabs, Tab } from "react-bootstrap";
 // import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import Main from "../../components/main/Main";
-import SideNav from "../../components/sidenav/SideNav";
+import SideNavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
-import { components } from "react-select";
+// import { components } from "react-select";
 import { hasData, alt, localeDate, asArray } from "../../utils/utils";
 import { TIME } from "../../utils/constants";
+
+import { flights } from "../../services/serviceWrapper";
 
 const Flights = props => {
   const cb = () => {};
@@ -26,26 +27,40 @@ const Flights = props => {
   };
 
   const [data, setData] = useState([{}]);
+  const [hitData, setHitData] = useState([{}]);
+  const [allData, setAllData] = useState([{}]);
+  const [tab, setTab] = useState("all");
+  const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
 
   const setDataWrapper = (data, retainState) => {
     if (!retainState) setTableState(initTableState);
 
-    const parsedData = asArray(data).map(item => {
+    const parsedAll = asArray(data).map(item => {
       const future = item.direction === "O" ? item.etd : item.eta;
       item.timer = future;
+      item.sendRowToLink = `/gtas/flightpax/${item.id}`;
+
+      const severity = alt(item.ruleHitCount, 0) + alt(item.listHitCount, 0);
+      item.severity = severity > 0 ? severity : "";
 
       return item;
     });
 
-    setData(alt(parsedData, []));
-    // const newkey = tablekey + 1;
-    // setTablekey(newkey);
+    const parsedHits = parsedAll.filter(item => {
+      return item.severity > 0;
+    });
+
+    setAllData(alt(parsedAll, []));
+    setHitData(alt(parsedHits, []));
+
+    const newkey = tablekey + 1;
+    setTablekey(newkey);
   };
 
   //TODO: refactor
   const preFetchCallback = fields => {
-    const range = +fields["hourRange"] || 48; // coerce fields[hourRange] values to numeric else default to 48 hours
+    const range = +fields["hourRange"] || 96; // default to 96 hours
 
     let etaEnd = new Date();
     etaEnd.setHours(etaEnd.getHours() + range);
@@ -53,13 +68,14 @@ const Flights = props => {
     const fieldscopy = Object.assign([], fields);
     delete fieldscopy["hourRange"]; // hourRange is not passed directly to the backend
 
-    let paramObject = { etaStart: new Date(), etaEnd: etaEnd };
+    const oneHourAgo = new Date().setHours(new Date().getHours() - 1);
+    let paramObject = { etaStart: oneHourAgo, etaEnd: etaEnd };
 
     const fieldNames = Object.keys(fieldscopy);
     fieldNames.forEach(name => {
       if (hasData(fieldscopy[name])) {
         if (name === "destinationAirports" || name === "originAirports") {
-          // retrieve raw comma or whitespace separated text, convert to array, remove empties.
+          // retrieve raw comma- or whitespace-separated text, convert to array, remove empties.
           const airports = fieldscopy[name]
             .replace(",", " ")
             .split(" ")
@@ -81,8 +97,16 @@ const Flights = props => {
         <CountdownBadge future={row.original.timer} baseline={now}></CountdownBadge>
       )
     },
-    { Accessor: "eta", Header: "ETA", Cell: ({ row }) => localeDate(row.original.eta) },
-    { Accessor: "etd", Header: "ETD", Cell: ({ row }) => localeDate(row.original.etd) },
+    {
+      Accessor: "eta",
+      Header: "Arrival",
+      Cell: ({ row }) => localeDate(row.original.eta)
+    },
+    {
+      Accessor: "etd",
+      Header: "Departure",
+      Cell: ({ row }) => localeDate(row.original.etd)
+    },
     {
       Accessor: "passengerCount",
       Header: "Passengers",
@@ -101,11 +125,18 @@ const Flights = props => {
     // { Accessor: "graphHitCount" }
   ];
 
+  useEffect(() => {
+    if (tab === "hits") setData(hitData);
+    else setData(allData);
+
+    const newkey = tablekey + 1;
+    setTablekey(newkey);
+  }, [hitData, tab]);
+
   const directions = [
     { value: "A", label: "All" },
     { value: "I", label: "Inbound" },
     { value: "O", label: "Outbound" }
-    // { value: "C", label: "Continuance" }
   ];
 
   const stateCallback = latestState => {
@@ -122,9 +153,22 @@ const Flights = props => {
     return tableState;
   };
 
+  const tabs = (
+    <Tabs defaultActiveKey="all" id="flightTabs">
+      <Tab eventKey="all" title="All"></Tab>
+      <Tab eventKey="hits" title="Hits"></Tab>
+    </Tabs>
+  );
+
+  const titleTabCallback = ev => {
+    const id = ev.split("-")[2];
+
+    setTab(id);
+  };
+
   return (
     <>
-      <SideNav>
+      <SideNavContainer>
         <Col>
           <FilterForm
             service={flights.get}
@@ -132,24 +176,7 @@ const Flights = props => {
             callback={setDataWrapper}
             interval={TIME.MINUTE}
           >
-            <hr />
-            {/* <LabelledSelectInput
-              name="originAirports"
-              labelText="Origin Airports"
-              datafield="originAirports"
-              ReturnStringArray
-              isMulti
-              // options={options}
-            />
-            <LabelledSelectInput
-              datafield
-              labelText="Destination Airports"
-              inputType="text"
-              name="destinationAirports"
-              ReturnStringArray
-              isMulti
-              // options={options}
-            /> */}
+            <br />
             <LabelledInput
               labelText="Origin Airports"
               datafield="originAirports"
@@ -172,7 +199,7 @@ const Flights = props => {
               inputType="text"
               name="flightNumber"
               callback={cb}
-              alt="nothing"
+              alt="Flight Number"
             />
             <LabelledInput
               datafield="direction"
@@ -182,11 +209,13 @@ const Flights = props => {
               callback={cb}
               name="direction"
               options={directions}
+              alt="Flight Direction"
             />
             <LabelledInput
               labelText="Hour Range"
               inputType="select"
               name="hourRange"
+              inputVal="96"
               inputStyle="form-select"
               datafield="hourRange"
               options={[
@@ -197,16 +226,21 @@ const Flights = props => {
                 { value: "96", label: "+96 hours" }
               ]}
               callback={cb}
-              alt="nothing"
+              alt="Hour range"
             />
           </FilterForm>
         </Col>
-      </SideNav>
+      </SideNavContainer>
       <Main>
-        <Title title="Flights" uri={props.uri} />
+        <Title
+          title="Flights"
+          uri={props.uri}
+          leftChild={tabs}
+          leftCb={titleTabCallback}
+        />
         <Table
           data={data}
-          key={data}
+          key={tablekey}
           id="Flights"
           header={Headers}
           callback={cb}

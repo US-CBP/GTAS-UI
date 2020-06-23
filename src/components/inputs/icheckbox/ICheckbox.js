@@ -1,5 +1,5 @@
 import React from "react";
-import { titleCase } from "../../../utils/text";
+import { titleCase } from "../../../utils/utils";
 
 /**
  * **DO NOT USE**

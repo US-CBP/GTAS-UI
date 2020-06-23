@@ -2,15 +2,29 @@ import React, { useEffect, useState } from "react";
 import Table from "../../components/table/Table";
 import { flightPassengers } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
+import LabelledInput from "../../components/labelledInput/LabelledInput";
+import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
+import { Col, Tabs, Tab } from "react-bootstrap";
 import { Link } from "@reach/router";
-import { Container } from "react-bootstrap";
-import { asArray, hasData, getAge, alt, localeDateOnly } from "../../utils/utils";
+import {
+  asArray,
+  hasData,
+  getAge,
+  alt,
+  localeDateOnly,
+  localeDate
+} from "../../utils/utils";
+import Main from "../../components/main/Main";
 
 const FlightPax = props => {
   const cb = function(result) {};
 
   const [data, setData] = useState([]);
+  const [hitData, setHitData] = useState([{}]);
+  const [allData, setAllData] = useState([{}]);
+  const [tab, setTab] = useState("all");
   const [key, setKey] = useState(0);
+  const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
 
   const parseData = data => {
     return asArray(data).map(item => {
@@ -19,17 +33,20 @@ const FlightPax = props => {
       item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
       item.dobStr = new Date(item.dob).toISOString().slice(0, -14);
       item.dobAge = `${alt(localeDateOnly(item.dobStr))} ${item.age}`;
-
-      //TODO: Do we need arrival and departure for passengers?? timestamp will be the same for all, right???
-      console.log(item);
+      item.rulehit = item.onRuleHitList ? 1 : "";
+      item.watchhit = item.onWatchList ? 1 : "";
       return item;
     });
   };
 
   const headers = [
-    { Accessor: "onRuleHitList", Header: "Rule Hits" },
-    { Accessor: "onWatchList", Header: "Watchlist Hits" },
-    { Accessor: "passengerType" },
+    {
+      Accessor: "rulehit"
+    },
+    {
+      Accessor: "watchhit"
+    },
+    { Accessor: "passengerType", Header: "Type" },
     {
       Accessor: "lastName",
       Cell: ({ row }) => {
@@ -46,7 +63,7 @@ const FlightPax = props => {
     {
       Accessor: "dobStr",
       Header: "DOB",
-      Cell: ({ row }) => row.original.dobAge
+      Cell: ({ row }) => <div>{row.original.dobAge}</div>
     },
     { Accessor: "docNumber" },
     { Accessor: "nationality" }
@@ -55,21 +72,116 @@ const FlightPax = props => {
   useEffect(() => {
     flightPassengers.get(props.id).then(res => {
       if (!hasData(res)) {
-        setData([]);
+        setAllData([]);
+        setHitData([]);
         return;
       }
 
       let parsed = parseData(res);
 
-      setData(parsed);
+      const parsedHits = parsed.filter(item => {
+        return item.onRuleHitList || item.onWatchList;
+      });
+
+      setAllData(parsed);
+      setHitData(parsedHits);
       setKey(1);
     });
   }, [props.id]);
 
+  useEffect(() => {
+    if (tab === "hits") setData(hitData);
+    else setData(allData);
+
+    const newkey = key + 1;
+    setKey(newkey);
+  }, [hitData, tab]);
+
+  const tabs = (
+    <Tabs defaultActiveKey="all" id="flightPaxTabs">
+      <Tab eventKey="all" title="All"></Tab>
+      <Tab eventKey="hits" title="Hits"></Tab>
+    </Tabs>
+  );
+
+  const titleTabCallback = ev => {
+    const id = ev.split("-")[2];
+
+    setTab(id);
+  };
+
   return (
-    <Container fluid>
-      <div className="box2">
-        <Title title="Flight Passengers"></Title>
+    <>
+      <SidenavContainer>
+        <Col>
+          <br />
+          <LabelledInput
+            // labelText="Flight:"
+            alt="Flight"
+            inputStyle="big-name-sidebar"
+            inputType="label"
+            inputVal={flightData.fullFlightNumber}
+          />
+          <LabelledInput
+            labelText="Origin:"
+            alt="Origin"
+            inputType="label"
+            inputVal={flightData.origin}
+            inputStyle="form-static"
+          />
+
+          <div>
+            <LabelledInput
+              labelText="Destination:"
+              alt="Destination"
+              inputType="label"
+              inputVal={flightData.destination}
+              inputStyle="form-static"
+            />
+            <LabelledInput
+              labelText="Direction:"
+              alt="Direction"
+              inputType="label"
+              inputVal={flightData.direction}
+              inputStyle="form-static"
+            />
+            <LabelledInput
+              labelText="Arrival:"
+              alt="Arrival"
+              inputType="label"
+              inputVal={localeDate(flightData.eta)}
+              inputStyle="form-static"
+            />
+            <LabelledInput
+              labelText="Departure:"
+              alt="Departure"
+              inputType="label"
+              inputVal={localeDate(flightData.etd)}
+              inputStyle="form-static"
+            />
+            <LabelledInput
+              labelText="Passenger Count:"
+              alt="Passenger Count"
+              inputType="label"
+              inputVal={flightData.passengerCount}
+              inputStyle="form-static"
+            />
+            {/* <LabelledInput
+            labelText="Age:"
+            alt="Age"
+            inputType="label"
+            inputVal={qdata.age}
+            spacebetween
+          /> */}
+          </div>
+        </Col>
+      </SidenavContainer>
+      <Main>
+        <Title
+          title="Flight Passengers"
+          leftChild={tabs}
+          leftCb={titleTabCallback}
+        ></Title>
         <Table
           key={key}
           header={headers}
@@ -77,8 +189,8 @@ const FlightPax = props => {
           id="Flight Passegers"
           callback={cb}
         ></Table>
-      </div>
-    </Container>
+      </Main>
+    </>
   );
 };
 

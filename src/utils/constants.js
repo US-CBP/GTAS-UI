@@ -20,3 +20,33 @@ export const TIME = {
   SECS_30: 30000,
   SECS_10: 10000
 };
+
+export const MS = secs => secs * 1000;
+export const SECONDS = secs => secs;
+export const SECSToMS = secs => MS(secs);
+
+export const MINUTES = mins => {
+  const rate = 60;
+  return {
+    inMs: () => mins * SECSToMS(rate),
+    inSeconds: () => mins * SECONDS(rate)
+  };
+};
+
+export const HOURS = hours => {
+  const rate = 60;
+  return {
+    inMs: () => hours * MINUTES(rate).inMs(),
+    inSeconds: () => hours * MINUTES(rate).inSeconds(),
+    inMinutes: () => hours * rate
+  };
+};
+
+export const DAYS = days => {
+  const rate = 60;
+  return {
+    inHours: () => days * rate,
+    inMs: () => days * HOURS(rate).inMs(),
+    inSeconds: () => days * HOURS(rate).inSeconds()
+  };
+};

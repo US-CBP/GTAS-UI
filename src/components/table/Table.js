@@ -96,7 +96,7 @@ const Table = props => {
 
     return (
       <>
-        <Col lg="12" className="table-main">
+        <div className="table-main">
           <RBTable {...getTableProps()} striped bordered hover>
             <thead>
               {headerGroups.map(headerGroup => {
@@ -120,6 +120,7 @@ const Table = props => {
               {page.map((row, i) => {
                 prepareRow(row);
                 const link = row.original.link;
+                const sendRowToLink = row.original.sendRowToLink;
                 const linked = link ? "linked" : "";
                 return (
                   <tr {...row.getRowProps()} className={linked}>
@@ -133,6 +134,20 @@ const Table = props => {
                             onClick={() =>
                               navigate(link, {
                                 state: { data: getLinkData() }
+                              })
+                            }
+                          >
+                            {cell.render("Cell")}
+                          </td>
+                        );
+                      } else if (sendRowToLink) {
+                        return (
+                          <td
+                            className={` p-1 ${style}`}
+                            {...cell.getCellProps()}
+                            onClick={() =>
+                              navigate(sendRowToLink, {
+                                state: { data: row.original }
                               })
                             }
                           >
@@ -206,7 +221,7 @@ const Table = props => {
               </h3>
             </span>
           </Pagination>
-        </Col>
+        </div>
       </>
     );
   };

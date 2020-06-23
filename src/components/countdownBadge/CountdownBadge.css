@@ -1,30 +1,95 @@
-.bio-row {
+.cdb-row {
   margin: unset !important;
-  width: 110px;
-  text-align-last: center;
-  display: flex;
+  white-space: nowrap;
+  border-radius: 5px;
+  padding-left: 7px;
+  float: right;
+  padding-right: 5px;
 }
 
-.fp {
-  /* background: url('../../images/fingerprint-24px.svg'); */
+/* .cdb-days {
+  background: url("../../images/day.svg");
 }
 
-.bioicon {
-  display: block;
-  width: 20px;
-  height: 20px;
-  background-size: 20px 20px !important;
+.cdb-hours {
+  background: url("../../images/hour.svg");
+}
+
+.cdb-minutes {
+  background: url("../../images/minute.svg");
+} */
+
+.bordered {
+  border: 1px solid #b6b6b6;
+}
+
+.cdb-red {
+  background-color: #cc1313;
+  color: white;
+  font-weight: 500;
+}
+
+.cdb-orange {
+  background-color: #ffc107;
+}
+
+.cdb-yellow {
+  background-color: #ffeb3b;
+}
+
+.cdb-green {
+  background-color: #a7ff6d;
+}
+
+.cdb-gray {
+  background-color: #4c4c4c;
+  color: white;
+}
+
+.cdb-blue {
+  /* background-color: #6deeff; */
+}
+
+.cdb-violet {
+  /* background-color: #c8c5ff; */
+}
+
+.cdb-days-div {
+  margin-right: 6px;
+}
+
+.icon-div {
+  /* flex-grow: 1 !important; */
+  /* min-width: 25px;
+  text-align: -webkit-center; */
+  /* color: black; */
+  /* margin-top: -2px !important;
+  margin-bottom: -4px !important;
+  height: 33px; */
+}
+
+.badge {
+  font-size: 100% !important;
+  font-weight: 400 !important;
+  line-height: 2;
+}
+
+.badge-full {
+  width: 100% !important;
+  font-weight: 600;
+  padding: 0.25em 4px;
+  line-height: 2 !important;
+  background-size: 30px 30px !important;
   background-repeat: no-repeat !important;
   background-position-x: center !important;
 }
 
-.face {
-  /* background: url('../../images/face-24px.svg'); */
+.badge-inline {
+  font-size: 0.8rem !important;
+  font-weight: 600;
+  width: unset !important;
 }
 
-.icon-div {
-  flex-grow: 1 !important;
-  width: 33px;
-  text-align: -webkit-center;
-  color: black;
+.big-badge {
+  font-size: 16px !important;
 }

@@ -1,18 +1,27 @@
 import React from "react";
-import Table from "../../../components/table/Table";
-import { users } from "../../../services/serviceWrapper";
-import Title from "../../../components/title/Title";
-import { Container } from "react-bootstrap";
+import Tabs from "../../../components/tabs/Tabs";
+import Banner from "../../../components/banner/Banner";
 
-const CodeEditor = ({ name }) => {
-  const cb = function(result) {};
+const CodeEditor = props => {
+  const tabcontent = props.children;
+
+  const tablist = tabcontent.map((tab, idx) => {
+    return { title: tab.props.name, key: tab.props.name, link: tab };
+  });
+  const showBanner = () => {
+    return false;
+  };
 
   return (
-    <Container fluid>
-      <Title title={name}></Title>
-
-      <Table id="foo" callback={cb}></Table>
-    </Container>
+    <>
+      <Banner
+        id="banner"
+        styleName="warning"
+        text="Something has happened."
+        defaultState={showBanner}
+      />
+      <Tabs tabs={tablist} />
+    </>
   );
 };
 
