@@ -114,3 +114,12 @@
 .wide-col {
   min-width: 170px;
 }
+
+.wide-col-2 {
+  min-width: 210px;
+}
+
+.p-1 > .icon-col {
+  width: 50px;
+  text-align: -webkit-center;
+}

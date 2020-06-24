@@ -103,6 +103,9 @@ const GETRULECATS = `${BASE_URL}getRuleCats`;
 const PAX = `${BASE_URL}gtas/passengers/passenger`;
 const FLIGHTPAXHITSUMMARY = `${BASE_URL}gtas/hit/flightpassenger`;
 const FLIGHTPAX = `${BASE_URL}gtas/api/flights/flightpax`;
+const QUERIES = `${BASE_URL}gtas/query`;
+const RULES = `${BASE_URL}gtas/udr`;
+const RULESALL = `${BASE_URL}gtas/all_udr`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/statistics`;
 const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
 const NOTE_TYPES = `${BASE_URL}gtas/passengers/passenger/notetypes`;
@@ -119,6 +122,10 @@ const CODES_RESTOREALL_CARRIER = `${BASE_URL}gtas/api/carrier/restoreAll`;
 const CODES_RESTORE_AIRPORT = `${BASE_URL}gtas/api/airport/restore`;
 const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/country/restore`;
 const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/carrier/restore`;
+
+const WLDOCS = `${BASE_URL}gtas/wl/DOCUMENT/Document`;
+const WLPAX = `${BASE_URL}gtas/wl/PASSENGER/Passenger`;
+
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS, BASEHEADER, id, params),
@@ -241,6 +248,51 @@ export const login = {
       if (!res.ok) return res;
 
       return get(LOGGEDIN_USER, BASEHEADER);
+    });
+  }
+};
+
+export const query = {
+  get: (id, params) => {
+    return get(QUERIES, BASEHEADER).then(res => {
+      if (res.status === "SUCCESS") return res.result;
+      return [];
+    });
+  }
+};
+
+export const rule = {
+  get: (id, params) => {
+    return get(RULES, BASEHEADER).then(res => {
+      if (res.status === "SUCCESS") return res.result;
+      return [];
+    });
+  }
+};
+
+export const rulesall = {
+  get: (id, params) => {
+    return get(RULESALL, BASEHEADER).then(res => {
+      if (res.status === "SUCCESS") return res.result;
+      return [];
+    });
+  }
+};
+
+export const wldocs = {
+  get: (id, params) => {
+    return get(WLDOCS, BASEHEADER).then(res => {
+      if (res.status === "SUCCESS") return res.result?.watchlistItems;
+      return [];
+    });
+  }
+};
+
+export const wlpax = {
+  get: (id, params) => {
+    return get(WLPAX, BASEHEADER).then(res => {
+      if (res.status === "SUCCESS") return res.result?.watchlistItems;
+      return [];
     });
   }
 };

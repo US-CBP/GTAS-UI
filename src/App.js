@@ -30,9 +30,8 @@ import LoaderStats from "./pages/admin/loaderStats/LoaderStats";
 import Settings from "./pages/admin/settings/Settings";
 import WatchlistCats from "./pages/admin/watchlistCats/WatchlistCats";
 import NoteTypeCats from "./pages/admin/noteTypeCats/NoteTypeCats";
-
-import Queries from "./pages/tools/queries/Queries";
-import Rules from "./pages/tools/rules/Rules";
+import QueryRules from "./pages/tools/queryrules/Rules";
+import Queries from "./pages/tools/queryrules/Queries";
 import Neo4J from "./pages/tools/neo4J/Neo4J";
 import Watchlist from "./pages/tools/watchlist/Watchlist";
 import About from "./pages/tools/about/About";
@@ -151,10 +150,12 @@ export default class App extends React.Component {
                       <Flights path="flights"></Flights>
                       <FlightPax path="flightpax/:id"></FlightPax>
                       <PriorityVetting path="vetting"></PriorityVetting>
+                      <QueryRules path="tools/rules"></QueryRules>
+                      <QueryRules path="tools/rules/:mode"></QueryRules>
                       <Queries path="tools/queries"></Queries>
-                      <Rules path="tools/rules"></Rules>
                       <Neo4J path="tools/neo4j"></Neo4J>
                       <Watchlist path="tools/watchlist"></Watchlist>
+                      <Watchlist path="tools/watchlist/:mode"></Watchlist>
                       <About path="tools/about"></About>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
                         <Admin path="/">
