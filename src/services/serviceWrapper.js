@@ -33,15 +33,6 @@ function get(uri, headers, id, params) {
 }
 
 function post(uri, headers, body) {
-  // if (
-  //   !hasData(body) &&
-  //   !(body instanceof FormData) &&
-  //   !(body instanceof URLSearchParams) &&
-  //   !(data instanceof URLSearchParams) &&
-  //   !hasData(data)
-  // )
-  //   throw new TypeError(POSTBODY);
-
   return GenericService({
     uri: uri,
     method: POST,
@@ -52,12 +43,11 @@ function post(uri, headers, body) {
 
 function put(uri, headers, id, body) {
   if (!hasData(body)) throw new TypeError(PUTBODY);
-  if (!hasData(id)) throw new TypeError(PUTID);
 
-  const query = `\\${id}`;
+  let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}`;
 
   return GenericService({
-    uri: uri + query,
+    uri: uricomplete,
     method: PUT,
     body: body,
     headers: headers

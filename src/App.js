@@ -154,7 +154,7 @@ export default class App extends React.Component {
                       <QueryRules path="tools/rules/:mode"></QueryRules>
                       <Queries path="tools/queries"></Queries>
                       <Neo4J path="tools/neo4j"></Neo4J>
-                      <Watchlist path="tools/watchlist"></Watchlist>
+                      <Redirect from="tools/watchlist" to="pax" noThrow />
                       <Watchlist path="tools/watchlist/:mode"></Watchlist>
                       <About path="tools/about"></About>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
