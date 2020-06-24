@@ -119,6 +119,7 @@ const CODES_RESTOREALL_CARRIER = `${BASE_URL}gtas/api/carrier/restoreAll`;
 const CODES_RESTORE_AIRPORT = `${BASE_URL}gtas/api/airport/restore`;
 const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/country/restore`;
 const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/carrier/restore`;
+const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS, BASEHEADER, id, params),
@@ -189,9 +190,21 @@ export const paxEventNotesHistory = {
     const path = `${PAX}/notes?paxId=${paxId}&historicalNotes=${historicalNotes}`;
     return get(path, BASEHEADER);
   },
-  post: body => {
-    const objectBody = JSON.stringify({ ...body });
-    post(`${PAX}/notes`, BASEHEADER, objectBody);
+  post: (paxId, body) => {
+    const tempBody = {
+      ...body,
+      noteType: [body.noteType],
+      rtfNote: `<div><!--block -->${body.plainTextNote}</div>`, //this should be fixed
+      passengerId: paxId
+    };
+    return post(`${PAX}/note`, BASEHEADER, postBodyWrapper(tempBody));
+  }
+};
+
+export const paxdetailsReport = {
+  get: (paxId, flightId) => {
+    const path = `${PAXDETAILSREPORT}?paxId=${paxId}&flightId=${flightId}`;
+    return get(path, BASEHEADER);
   }
 };
 export const flightPassengers = { get: id => get(FLIGHTPAX, BASEHEADER, id) };
