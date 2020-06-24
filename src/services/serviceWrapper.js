@@ -111,7 +111,7 @@ const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
 const NOTE_TYPES = `${BASE_URL}gtas/passengers/passenger/notetypes`;
 const LOGGEDIN_USER = `${BASE_URL}gtas/user`;
 const NOTE_TYPESPOST = `${BASE_URL}gtas/api/noteType`;
-const CREATEUSER = `${BASE_URL}gtas/users/1`;
+const CREATEUSER = `${BASE_URL}gtas/users`;
 const ROLES = `${BASE_URL}gtas/roles/`;
 const CODES_AIRPORT = `${BASE_URL}gtas/api/airport`;
 const CODES_COUNTRY = `${BASE_URL}gtas/api/country`;
@@ -266,7 +266,7 @@ export const login = {
 };
 
 export const query = {
-  get: (id, params) => {
+  get: () => {
     return get(QUERIES, BASEHEADER).then(res => {
       if (res.status === "SUCCESS") return res.result;
       return [];
@@ -275,7 +275,7 @@ export const query = {
 };
 
 export const rule = {
-  get: (id, params) => {
+  get: () => {
     return get(RULES, BASEHEADER).then(res => {
       if (res.status === "SUCCESS") return res.result;
       return [];
@@ -284,7 +284,7 @@ export const rule = {
 };
 
 export const rulesall = {
-  get: (id, params) => {
+  get: () => {
     return get(RULESALL, BASEHEADER).then(res => {
       if (res.status === "SUCCESS") return res.result;
       return [];
@@ -293,7 +293,7 @@ export const rulesall = {
 };
 
 export const wldocs = {
-  get: (id, params) => {
+  get: () => {
     return get(WLDOCS, BASEHEADER).then(res => {
       if (res.status === "SUCCESS") return res.result?.watchlistItems;
       return [];
@@ -302,7 +302,7 @@ export const wldocs = {
 };
 
 export const wlpax = {
-  get: (id, params) => {
+  get: () => {
     return get(WLPAX, BASEHEADER).then(res => {
       if (res.status === "SUCCESS") return res.result?.watchlistItems;
       return [];
