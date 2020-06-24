@@ -23,6 +23,7 @@ const GenericService = async props => {
       }
       if (response.ok) {
         if (response.url.endsWith("/authenticate")) return response;
+        if (response.url.includes("paxdetailreport")) return response.arrayBuffer();
         return response.json().then(res => res.data || res || response);
       } else {
         return [];
