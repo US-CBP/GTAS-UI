@@ -1,27 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal, Form as RBForm } from "react-bootstrap";
-import { paxEventNotesHistory } from "../../../services/serviceWrapper";
+import { paxEventNotesHistory, notetypes } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
+import { asArray } from "../../../utils/utils";
 
 const EventNotesModal = props => {
   const [show, setShow] = useState(false);
+  const [notTypes, setNoteTypes] = useState([]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const paxId = props.paxId;
-  const noteTypeOptions = [{ value: "GENERAL_PASSENGER", label: "GENERAL_PASSENGER" }];
+
+  useEffect(() => {
+    notetypes.get().then(types => {
+      const nTypes = asArray(types).map(type => {
+        return {
+          value: `{"id":"${type.id}", "noteType":"${type.noteType}"}`,
+          label: type.noteType
+        };
+      });
+      setNoteTypes(nTypes);
+    });
+  }, []);
 
   return (
     <>
-      <Button variant="outline-warning" size="sm" onClick={handleShow}>
-        Add Even Notes
+      <Button variant="outline-info" size="sm" onClick={handleShow}>
+        <i className="fa fa-pencil"></i> Notes
       </Button>
 
       <Modal
         show={show}
         onHide={handleClose}
-        size="lg"
+        size="md"
         backdrop="static"
         aria-labelledby="contained-modal-title-vcenter"
         centered
@@ -33,21 +46,13 @@ const EventNotesModal = props => {
           <Form
             title=""
             submitText="SAVE"
-            submitService={paxEventNotesHistory.put}
+            submitService={paxEventNotesHistory.post}
             callback={handleClose}
+            action="add"
             id="evennoteform"
-            recordId={props.paxId}
+            afterProcessed={handleClose}
+            recordId={paxId}
           >
-            {/* <LabelledInput
-              inputType="text"
-              inputVal={paxId}
-              alt=""
-              name="passengerId"
-              labelText=""
-              placeholder=""
-              datafield="passengerId"
-              required="required"
-            /> */}
             <LabelledInput
               inputType="select"
               alt="Choose not type"
@@ -56,7 +61,7 @@ const EventNotesModal = props => {
               placeholder="Choose note type"
               datafield="noteType"
               required="required"
-              options={noteTypeOptions}
+              options={notTypes}
             />
             <LabelledInput
               inputType="textarea"
@@ -70,14 +75,6 @@ const EventNotesModal = props => {
             />
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
       </Modal>
     </>
   );

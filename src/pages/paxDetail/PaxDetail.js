@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Title from "../../components/title/Title";
 import { Link } from "@reach/router";
 import Tabs from "../../components/tabs/Tabs";
-import { Row, Container, Col, Form } from "react-bootstrap";
+import { Button, Navbar, Nav } from "react-bootstrap";
 import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SideNav from "../../components/sidenav/SideNav";
@@ -14,6 +14,8 @@ import APIS from "./apis/APIS";
 import FlightHistory from "./flightHistory/FlightHistory";
 import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
 import { passengerTypeMapper } from "../../utils/utils";
+import EventNotesModal from "./evenNotesModal/EventNotesModal";
+import DownloadReport from "./downloadReports/DownloadReports";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
@@ -73,16 +75,36 @@ const PaxDetail = props => {
 
   useEffect(() => {
     fetchData();
-  }, [props.flightId, props.paxId]);
+  }, []);
 
   return (
     <>
       <SideNav className="paxdetails-side-nav">
         <br />
         <PaxInfo pax={pax} badgeprops={flightBadge}></PaxInfo>
+        <hr />
       </SideNav>
       <Main className="paxdetail-container">
-        <Title title="Passenger Detail" uri={props.uri} />
+        <Navbar>
+          <Navbar.Brand>Passenger Detail</Navbar.Brand>
+          <Nav>
+            <EventNotesModal paxId={props.paxId} />
+            <DownloadReport paxId={props.paxId} flightId={props.flightId} />
+
+            <Button variant="outline-danger" size="sm">
+              Add To Watchlist
+            </Button>
+            <Button variant="outline-danger" size="sm">
+              Create Manual Hit
+            </Button>
+            <Button variant="outline-warning" size="sm">
+              Notify
+            </Button>
+            <Button variant="outline-info" size="sm">
+              Set Status to Reviewed
+            </Button>
+          </Nav>
+        </Navbar>
 
         <Tabs tabs={tabs} />
       </Main>
