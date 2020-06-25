@@ -64,7 +64,7 @@ const Watchlist = props => {
   );
 
   const titleTabCallback = ev => {
-    // only respond to tab events, clicking the header button has no effect
+    // only respond to tab click events. Clicking the header button has no effect
     if (ev.length === 0) return;
 
     const id = ev.split("-")[2];
