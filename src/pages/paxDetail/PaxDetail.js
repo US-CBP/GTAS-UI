@@ -16,6 +16,7 @@ import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
 import { passengerTypeMapper } from "../../utils/utils";
 import EventNotesModal from "./evenNotesModal/EventNotesModal";
 import DownloadReport from "./downloadReports/DownloadReports";
+import Notification from "./notification/Notification";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
@@ -97,9 +98,7 @@ const PaxDetail = props => {
             <Button variant="outline-danger" size="sm">
               Create Manual Hit
             </Button>
-            <Button variant="outline-warning" size="sm">
-              Notify
-            </Button>
+            <Notification paxId={props.paxId} />
             <Button variant="outline-info" size="sm">
               Set Status to Reviewed
             </Button>

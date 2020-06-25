@@ -1,5 +1,5 @@
 import GenericService from "./genericService";
-import { hasData } from "../utils/utils";
+import { hasData, asArray } from "../utils/utils";
 import { object } from "prop-types";
 
 const GET = "get";
@@ -120,6 +120,7 @@ const CODES_RESTORE_AIRPORT = `${BASE_URL}gtas/api/airport/restore`;
 const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/country/restore`;
 const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/carrier/restore`;
 const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
+const NOTIFICATION = `${BASE_URL}gtas/users/notify`;
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS, BASEHEADER, id, params),
@@ -205,6 +206,21 @@ export const paxdetailsReport = {
   get: (paxId, flightId) => {
     const path = `${PAXDETAILSREPORT}?paxId=${paxId}&flightId=${flightId}`;
     return get(path, BASEHEADER);
+  }
+};
+export const notification = {
+  post: (paxId, body) => {
+    const selectedEmail = asArray(body.to)
+      .filter(email => email.checked === true)
+      .map(email => email.key);
+    selectedEmail.push(body.externalUsersEmail);
+
+    const bodyWithPaxId = {
+      note: body.note,
+      paxId: paxId,
+      to: selectedEmail
+    };
+    return post(NOTIFICATION, BASEHEADER, postBodyWrapper(bodyWithPaxId));
   }
 };
 export const flightPassengers = { get: id => get(FLIGHTPAX, BASEHEADER, id) };
