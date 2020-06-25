@@ -5,7 +5,6 @@ import { notification, users } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
-import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
 
 const Notification = props => {
   const [show, setShow] = useState(false);
