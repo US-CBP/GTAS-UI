@@ -213,10 +213,13 @@ export const notification = {
     const selectedEmail = asArray(body.to)
       .filter(email => email.checked === true)
       .map(email => email.key);
-    selectedEmail.push(body.externalUsersEmail);
+
+    if (body.externalUsersEmail) {
+      selectedEmail.push(body.externalUsersEmail);
+    }
 
     const bodyWithPaxId = {
-      note: body.note,
+      note: body.note ? body.note : "",
       paxId: paxId,
       to: selectedEmail
     };
