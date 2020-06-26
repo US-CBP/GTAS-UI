@@ -7,6 +7,10 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 const NoteTypeModal = props => {
   const title = "Note Type Category";
   const cb = function(result) {};
+  const postSubmit = ev => {
+    props.onHide();
+    props.refresh();
+  };
 
   return (
     <Modal
@@ -24,7 +28,7 @@ const NoteTypeModal = props => {
           <Form
             submitService={notetypes.post}
             title=""
-            callback={props.callback}
+            callback={postSubmit}
             action="add"
             submitText="Submit"
             afterProcessed={props.onHide}

@@ -66,7 +66,7 @@ function put(uri, headers, id, body) {
 }
 
 function putNoId(uri, headers, body) {
-  if (!hasData(body)) throw new TypeError(PUTBODY);
+  //if (!hasData(body)) throw new TypeError(PUTBODY);
 
   return GenericService({
     uri: uri,
@@ -82,16 +82,15 @@ function del(uri, id) {
   return GenericService({ uri: `${uri}\\${id}`, method: DELETE });
 }
 
-function postBodyWrapper(body) {
-  const objectBody = JSON.stringify({ ...body });
-  return objectBody;
+function stringify(body) {
+  return JSON.stringify({ ...body });
 }
 
 // APB - ENTITY CONSTANTS and ENTITY METHODS is the only code we should need to touch when adding new endpoints
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const LOGIN = `${BASE_URL}gtas/authenticate`;
-const USERS = `${BASE_URL}gtas/users/`;
+const USERS = `${BASE_URL}gtas/users`;
 const WLCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
 const WLCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
 const FLIGHTS = `${BASE_URL}gtas/api/flights`;
@@ -108,7 +107,6 @@ const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
 const NOTE_TYPES = `${BASE_URL}gtas/passengers/passenger/notetypes`;
 const LOGGEDIN_USER = `${BASE_URL}gtas/user`;
 const NOTE_TYPESPOST = `${BASE_URL}gtas/api/noteType`;
-const CREATEUSER = `${BASE_URL}gtas/users/1`;
 const ROLES = `${BASE_URL}gtas/roles/`;
 const CODES_AIRPORT = `${BASE_URL}gtas/api/airport`;
 const CODES_COUNTRY = `${BASE_URL}gtas/api/country`;
@@ -122,9 +120,9 @@ const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/carrier/restore`;
 const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
 // ENTITY METHODS
 export const users = {
-  get: (id, params) => get(USERS, BASEHEADER, id, params),
-  put: (id, body) => put(USERS, BASEHEADER, id, body),
-  post: body => post(USERS, BASEHEADER, body)
+  get: (id, params) => get(USERS+"/", BASEHEADER, id, params),
+  put: body => put(USERS, BASEHEADER, 1, stringify(body)),
+  post: body =>  post(USERS+"/1", BASEHEADER, stringify(body))
 };
 export const watchlistcats = {
   get: (id, params) => get(WLCATS, BASEHEADER, id, params),
@@ -140,8 +138,7 @@ export const watchlistcatspost = {
 export const userService = {
   get: (id, params) => get(USERS, BASEHEADER),
   post: body => {
-    const objectBody = JSON.stringify({ ...body });
-    return post(CREATEUSER, BASEHEADER, objectBody);
+    return post(USERS, BASEHEADER, stringify(body));
   }
 };
 
@@ -152,7 +149,7 @@ export const cases = { get: (id, params) => get(CASES, BASEHEADER) };
 export const ruleCats = { get: (id, params) => get(RULE_CATS, BASEHEADER) };
 export const settingsinfo = {
   get: (id, params) => get(SETTINGSINFO, BASEHEADER),
-  put: body => putNoId(SETTINGSINFO, BASEHEADER, postBodyWrapper(body))
+  put: body => putNoId(SETTINGSINFO, BASEHEADER, stringify(body))
 };
 export const getrulecats = { get: (id, params) => get(GETRULECATS, BASEHEADER) };
 export const paxdetails = {
@@ -197,7 +194,7 @@ export const paxEventNotesHistory = {
       rtfNote: `<div><!--block -->${body.plainTextNote}</div>`, //this should be fixed
       passengerId: paxId
     };
-    return post(`${PAX}/note`, BASEHEADER, postBodyWrapper(tempBody));
+    return post(`${PAX}/note`, BASEHEADER, stringify(tempBody));
   }
 };
 
@@ -211,7 +208,7 @@ export const flightPassengers = { get: id => get(FLIGHTPAX, BASEHEADER, id) };
 export const loaderStats = { get: (id, params) => get(LOADERSTATISTICS, BASEHEADER) };
 export const notetypes = {
   get: (id, params) => get(NOTE_TYPES, BASEHEADER),
-  post: body => post(NOTE_TYPESPOST, BASEHEADER, postBodyWrapper(body))
+  post: body => post(NOTE_TYPESPOST, BASEHEADER, stringify(body))
 };
 export const loggedinUser = { get: (id, params) => get(LOGGEDIN_USER, BASEHEADER) };
 export const roles = { get: get(ROLES, BASEHEADER) };
@@ -222,9 +219,9 @@ export const codeEditor = {
     airportCodes: (id, params) => get(CODES_AIRPORT, BASEHEADER)
   },
   put: {
-    updateCarrier: body => put(CODES_CARRIER, BASEHEADER, body),
-    updateCountry: body => put(CODES_COUNTRY, BASEHEADER, body),
-    updateAirport: body => put(CODES_AIRPORT, BASEHEADER, body),
+    updateCarrier: body => putNoId(CODES_CARRIER, BASEHEADER, stringify(body)),
+    updateCountry: body => putNoId(CODES_COUNTRY, BASEHEADER, stringify(body)),
+    updateAirport: body => putNoId(CODES_AIRPORT, BASEHEADER, stringify(body)),
     restoreCarriersAll: body => putNoId(CODES_RESTOREALL_CARRIER, BASEHEADER, body),
     restoreCountriesAll: body => putNoId(CODES_RESTOREALL_COUNTRY, BASEHEADER, body),
     restoreAirportsAll: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
@@ -233,14 +230,14 @@ export const codeEditor = {
     restoreAirport: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body)
   },
   post: {
-    createCarrier: body => post(CODES_CARRIER, BASEHEADER, postBodyWrapper(body)),
-    createCountry: body => post(CODES_COUNTRY, BASEHEADER, postBodyWrapper(body)),
-    createAirport: body => post(CODES_AIRPORT, BASEHEADER, postBodyWrapper(body))
+    createCarrier: body => post(CODES_CARRIER, BASEHEADER, stringify(body)),
+    createCountry: body => post(CODES_COUNTRY, BASEHEADER, stringify(body)),
+    createAirport: body => post(CODES_AIRPORT, BASEHEADER, stringify(body))
   },
   delete: {
-    deleteCarrier: id => del(CODES_CARRIER, id),
-    deleteCountry: id => del(CODES_COUNTRY, id),
-    deleteAirport: id => del(CODES_AIRPORT, id)
+    deleteCarrier: id => del(CODES_CARRIER,"", id),
+    deleteCountry: id => del(CODES_COUNTRY,"", id),
+    deleteAirport: id => del(CODES_AIRPORT,"", id)
   }
 };
 

@@ -8,6 +8,11 @@ import NoteTypeModal from "../noteTypeCats/NoteTypeModal.js";
 const NoteTypeCats = ({ name }) => {
   const cb = function(result) {};
   const [showModal, setShowModal] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(1);
+
+  const refresh = () => {
+    setRefreshKey(refreshKey + 1);
+  };
 
   return (
     <Container fluid>
@@ -22,11 +27,15 @@ const NoteTypeCats = ({ name }) => {
           <NoteTypeModal
             show={showModal}
             onHide={() => setShowModal(false)}
+            refresh={refresh}
             callback={cb}
           />
         </Col>
       </Row>
-      <Table service={notetypes.get} id="noteTypes" callback={cb}></Table>
+      <Table service={notetypes.get}
+             id="noteTypes"
+             key={refreshKey}
+             callback={cb}></Table>
     </Container>
   );
 };
