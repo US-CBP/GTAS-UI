@@ -7,7 +7,7 @@ import Title from "../../../components/title/Title";
 // import SideNav from "../../../components/sidenav/SideNav";
 
 import "./ManageUsers.scss";
-import CreateUserModal from "./CreateUserModal";
+import UserModal from "./UserModal";
 import { asArray } from "../../../utils/utils";
 
 const ManageUsers = props => {
@@ -147,7 +147,7 @@ const ManageUsers = props => {
           key={refreshKey}
           header={headers}
         ></Table>
-        <CreateUserModal
+        <UserModal
           show={showModal}
           callback={cb}
           onHide={() => setShowModal(false)}

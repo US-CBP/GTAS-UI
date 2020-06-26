@@ -4,7 +4,7 @@ import Form from "../../../../components/form/Form";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { codeEditor } from "../../../../services/serviceWrapper";
 
-const AddCountryModal = props => {
+const CountryModal = props => {
   const title = "Add Country";
   const cb = function(result) {};
 
@@ -123,4 +123,4 @@ const AddCountryModal = props => {
   );
 };
 
-export default AddCountryModal;
+export default CountryModal;

@@ -3,8 +3,7 @@ import Table from "../../../../components/table/Table";
 import Title from "../../../../components/title/Title";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
-import AddCarrierModal from "./AddCarrierModal";
-import CreateUserModal from "../../manageUsers/CreateUserModal";
+import CarrierModal from "./CarrierModal";
 
 const Carriers = ({ name }) => {
   const cb = function(result) {};
@@ -57,7 +56,7 @@ const Carriers = ({ name }) => {
           }}>
             Add Carrier
           </Button>
-          <AddCarrierModal
+          <CarrierModal
             show={showModal}
             onHide={() => setShowModal(false)}
             isEdit = {isEditModal}

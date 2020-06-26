@@ -6,7 +6,7 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
 import { asArray } from "../../../utils/utils";
 
-const CreateUserModal = props => {
+const UserModal = props => {
   //TODO make this a service call return data
   const cb = function(result) {};
 
@@ -166,7 +166,7 @@ const CreateUserModal = props => {
               alt="nothing"
               inputVal={props?.editRowDetails.emailEnabled || false}
               callback={cb}
-              selected={props?.editRowDetails.emailEnabled || ""}
+              selected={props?.editRowDetails.emailEnabled || false}
               spacebetween
             />
 
@@ -179,7 +179,7 @@ const CreateUserModal = props => {
               alt="nothing"
               inputVal={props?.editRowDetails.highPriorityEmail || false}
               callback={cb}
-              selected = {props?.editRowDetails.highPriorityEmail || ""}
+              selected = {props?.editRowDetails.highPriorityEmail || false}
               spacebetween
             />
 
@@ -192,7 +192,7 @@ const CreateUserModal = props => {
                 alt="nothing"
                 inputVal={(props?.editRowDetails.active || null) === 1? true : false}
                 callback={cb}
-                selected={(props?.editRowDetails.active || null) === 1? true : ""}
+                selected={(props?.editRowDetails.active || null) === 1? true : false}
                 spacebetween
             />
 
@@ -209,4 +209,4 @@ const CreateUserModal = props => {
   );
 };
 
-export default CreateUserModal;
+export default UserModal;

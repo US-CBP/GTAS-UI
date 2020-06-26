@@ -5,7 +5,7 @@ import { codeEditor } from "../../../../services/serviceWrapper";
 import Form from "../../../../components/form/Form";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 
-const AddAirportModal = props => {
+const AirportModal = props => {
   const cb = function(result) {};
 
   const postSubmit = ev => {
@@ -156,4 +156,4 @@ const AddAirportModal = props => {
   );
 };
 
-export default AddAirportModal;
+export default AirportModal;

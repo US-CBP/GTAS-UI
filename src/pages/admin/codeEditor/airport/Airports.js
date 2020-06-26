@@ -3,8 +3,7 @@ import Table from "../../../../components/table/Table";
 import Title from "../../../../components/title/Title";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import {codeEditor, users} from "../../../../services/serviceWrapper";
-import AddAirportModal from "./AddAirportModal";
-import CreateUserModal from "../../manageUsers/CreateUserModal";
+import AirportModal from "./AirportModal";
 
 const Airports = ({ name }) => {
   const cb = function(result) {};
@@ -60,7 +59,7 @@ const Airports = ({ name }) => {
           }}>
             Add Airport
           </Button>
-          <AddAirportModal
+          <AirportModal
             show={showModal}
             onHide={() => setShowModal(false)}
             isEdit = {isEditModal}

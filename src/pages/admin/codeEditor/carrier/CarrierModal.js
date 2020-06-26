@@ -4,7 +4,7 @@ import Form from "../../../../components/form/Form";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { codeEditor } from "../../../../services/serviceWrapper";
 
-const AddCarrierModal = props => {
+const CarrierModal = props => {
   const title = "Add Carrier";
   const cb = function(result) {};
 
@@ -101,4 +101,4 @@ const AddCarrierModal = props => {
   );
 };
 
-export default AddCarrierModal;
+export default CarrierModal;

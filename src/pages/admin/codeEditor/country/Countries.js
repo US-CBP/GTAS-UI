@@ -3,8 +3,7 @@ import Table from "../../../../components/table/Table";
 import Title from "../../../../components/title/Title";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
-import AddCountryModal from "./AddCountryModal";
-import CreateUserModal from "../../manageUsers/CreateUserModal";
+import CountryModal from "./CountryModal";
 
 const Countries = ({ name }) => {
   const cb = function(result) {};
@@ -58,7 +57,7 @@ const Countries = ({ name }) => {
           }}>
             Add Country
           </Button>
-          <AddCountryModal
+          <CountryModal
             show={showModal}
             onHide={() => setShowModal(false)}
             isEdit = {isEditModal}
