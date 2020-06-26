@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import { Button, Container, Tabs, Tab } from "react-bootstrap";
-import { navigate } from "@reach/router";
+// import { navigate } from "@reach/router";
 
 import { query } from "../../../services/serviceWrapper";
-import { titleCase } from "../../../utils/utils";
+// import { titleCase } from "../../../utils/utils";
 import QRModal from "./QRModal";
 import "./QueryRules.css";
 

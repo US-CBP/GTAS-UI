@@ -78,9 +78,8 @@ class Form extends React.Component {
         this.bindChildren(fields);
       });
       // .catch, throw error
-    } else {
-      this.bindChildren(fields);
-    }
+    } else if (hasData(this.props.data)) this.bindChildren(this.props.data);
+    else this.bindChildren(fields);
   }
 
   canSubmit() {
@@ -130,7 +129,7 @@ class Form extends React.Component {
 
   onFormCancel() {
     if (this.props.redirectTo !== undefined) navigate(this.props.redirectTo);
-    this.props.callback();
+    this.props.callback({ status: "CANCELED" });
     // else window.history.back();
   }
 
@@ -209,6 +208,7 @@ Form.propTypes = {
   submitService: PropTypes.func,
   action: PropTypes.oneOf(["add", "edit", "readonly", ""]),
   recordId: PropTypes.string,
+  data: PropTypes.object,
   callback: PropTypes.func.isRequired,
   paramCallback: PropTypes.func
 };

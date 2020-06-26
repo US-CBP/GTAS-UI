@@ -42,7 +42,7 @@ function post(uri, headers, body) {
 }
 
 function put(uri, headers, id, body) {
-  if (!hasData(body)) throw new TypeError(PUTBODY);
+  // if (!hasData(body)) throw new TypeError(PUTBODY);
 
   let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}`;
 
@@ -65,10 +65,16 @@ function putNoId(uri, headers, body) {
   });
 }
 
-function del(uri, id) {
+function del(uri, headers, id) {
   if (!hasData(id)) throw new TypeError(DELETEID);
 
-  return GenericService({ uri: `${uri}\\${id}`, method: DELETE });
+  let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}`;
+
+  return GenericService({
+    uri: uricomplete,
+    method: DELETE,
+    headers: headers
+  });
 }
 
 function stringify(body) {
@@ -112,7 +118,10 @@ const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/country/restore`;
 const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/carrier/restore`;
 
 const WLDOCS = `${BASE_URL}gtas/wl/DOCUMENT/Document`;
+const WLDOCSPOST = `${BASE_URL}gtas/wl/DOCUMENT`;
 const WLPAX = `${BASE_URL}gtas/wl/PASSENGER/Passenger`;
+const WLPAXPOST = `${BASE_URL}gtas/wl/PASSENGER`;
+const WLITEM = `${BASE_URL}gtas/wl/watchlistItem`;
 
 const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
 
@@ -155,7 +164,7 @@ export const paxdetails = {
     return get(path, BASEHEADER);
   }
 };
-export const paxFlightHisoty = {
+export const paxFlightHistory = {
   get: (flightId, paxId) => {
     const path = `${PAX}/flighthistory?paxId=${paxId}&flightId=${flightId}`;
     return get(path, BASEHEADER);
@@ -285,7 +294,10 @@ export const wldocs = {
       if (res.status === "SUCCESS") return res.result?.watchlistItems;
       return [];
     });
-  }
+  },
+  post: body => post(WLDOCSPOST, BASEHEADER, stringify(body)),
+  put: body => put(WLDOCSPOST, BASEHEADER, undefined, stringify(body)),
+  del: id => del(WLITEM, BASEHEADER, id)
 };
 
 export const wlpax = {
@@ -294,5 +306,8 @@ export const wlpax = {
       if (res.status === "SUCCESS") return res.result?.watchlistItems;
       return [];
     });
-  }
+  },
+  post: body => post(WLPAXPOST, BASEHEADER, stringify(body)),
+  put: body => put(WLPAXPOST, BASEHEADER, undefined, stringify(body)),
+  del: id => del(WLITEM, BASEHEADER, id)
 };

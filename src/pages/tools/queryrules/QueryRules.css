@@ -7,6 +7,10 @@
   color: #007bff;
 }
 
+.qbrb-icon-black {
+  font-size: 1.4em;
+}
+
 .qbrb-modal-body {
   position: relative;
   flex: 1 1 auto;

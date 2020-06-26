@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Title from "../../../components/title/Title";
 import { Container } from "react-bootstrap";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
-import { paxFlightHisoty, paxFullTravelHistory } from "../../../services/serviceWrapper";
+import { paxFlightHistory, paxFullTravelHistory } from "../../../services/serviceWrapper";
 
 const FlightHistory = props => {
   const headers = {
@@ -18,7 +18,7 @@ const FlightHistory = props => {
   const [fullTravelHistory, setFullTravelHistory] = useState([]);
 
   const fetchData = () => {
-    paxFlightHisoty.get(props.flightId, props.paxId).then(res => {
+    paxFlightHistory.get(props.flightId, props.paxId).then(res => {
       setcurrentFlightHistory(res);
     });
     paxFullTravelHistory.get(props.flightId, props.paxId).then(res => {
