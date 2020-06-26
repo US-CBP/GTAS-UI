@@ -124,7 +124,9 @@ const WLPAXPOST = `${BASE_URL}gtas/wl/PASSENGER`;
 const WLITEM = `${BASE_URL}gtas/wl/watchlistItem`;
 
 const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
-
+const HOST = `${BASE_URL}gtas/api/config/`;
+const CYPHER = HOST + "cypherUrl";
+const CYPHERAUTH = HOST + "cypherAuth";
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS, BASEHEADER, id, params),
@@ -311,3 +313,5 @@ export const wlpax = {
   put: body => put(WLPAXPOST, BASEHEADER, undefined, stringify(body)),
   del: id => del(WLITEM, BASEHEADER, id)
 };
+export const cypher = { get: () => get(CYPHER, BASEHEADER) };
+export const cypherAuth = { get: () => get(CYPHERAUTH, BASEHEADER) };
