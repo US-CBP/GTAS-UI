@@ -5,9 +5,20 @@ import { codeEditor } from "../../../../services/serviceWrapper";
 import Form from "../../../../components/form/Form";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 
-const AddAirportModal = props => {
-  const title = "Add Airport";
+const AirportModal = props => {
   const cb = function(result) {};
+
+  const postSubmit = ev => {
+    props.onHide();
+    props.refresh();
+  };
+
+  const preSubmit = fields => {
+    let res = {...fields[0]};
+    //Id is lacking for updates in the body
+    res.id = props.editRowDetails.id;
+    return [res];
+  };
 
   return (
     <Modal
@@ -18,16 +29,17 @@ const AddAirportModal = props => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
+        <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container fluid>
           <Form
-            submitService={codeEditor.post.createAirport}
+            submitService={props.isEdit?  codeEditor.put.updateAirport : codeEditor.post.createAirport}
             title=""
-            callback={props.callback}
+            callback={postSubmit}
             action="add"
-            submitText="Submit"
+            submitText={props.isEdit? "Save": "Submit"}
+            paramCallback={preSubmit}
             afterProcessed={props.onHide}
           >
             <LabelledInput
@@ -37,7 +49,9 @@ const AddAirportModal = props => {
               name="iata"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.iata || ""}
               callback={cb}
+              spacebetween
             />
             <LabelledInput
               datafield
@@ -46,7 +60,9 @@ const AddAirportModal = props => {
               name="icao"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.icao || ""}
               callback={cb}
+              spacebetween
             />
             <LabelledInput
               datafield
@@ -55,7 +71,9 @@ const AddAirportModal = props => {
               name="name"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.name || ""}
               callback={cb}
+              spacebetween
             />
             <LabelledInput
               datafield
@@ -64,7 +82,9 @@ const AddAirportModal = props => {
               name="city"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.city || ""}
               callback={cb}
+              spacebetween
             />
             <LabelledInput
               datafield
@@ -73,7 +93,9 @@ const AddAirportModal = props => {
               name="country"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.country || ""}
               callback={cb}
+              spacebetween
             />
             <LabelledInput
               datafield
@@ -82,7 +104,9 @@ const AddAirportModal = props => {
               name="latitude"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.latitude || ""}
               callback={cb}
+              spacebetween
             />
             <LabelledInput
               datafield
@@ -91,18 +115,45 @@ const AddAirportModal = props => {
               name="longitude"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.longitude || ""}
               callback={cb}
+              spacebetween
             />
           </Form>
         </Container>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="outline-danger" onClick={props.onHide}>
-          Close
-        </Button>
-      </Modal.Footer>
+      {props.isEdit?
+        <Modal.Footer>
+          <Button
+              type="button"
+              className="m-2 outline-dark-outline"
+              variant="outline-dark"
+              // onClick={this.onFormCancel}
+          >
+            Restore
+          </Button>
+          <Button
+              type="button"
+              className="m-2 outline-dark-outline"
+              variant="outline-dark"
+              onClick={() => {
+                codeEditor.delete.deleteAirport(props.editRowDetails.id).then(res => {
+                  postSubmit(undefined);
+                });
+              }}
+          >
+            Delete
+          </Button>
+        </Modal.Footer>
+      :
+        <Modal.Footer>
+          <Button variant="outline-danger" onClick={props.onHide}>
+            Close
+          </Button>
+        </Modal.Footer>
+      }
     </Modal>
   );
 };
 
-export default AddAirportModal;
+export default AirportModal;

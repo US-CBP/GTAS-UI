@@ -13,6 +13,11 @@ const WatchlistModal = props => {
     { value: "Normal", label: "Normal" }
   ];
 
+  const postSubmit = ev => {
+    props.onHide();
+    props.refresh();
+  };
+
   return (
     <Modal
       show={props.show}
@@ -29,7 +34,7 @@ const WatchlistModal = props => {
           <Form
             submitService={watchlistcatspost.post}
             title=""
-            callback={props.callback}
+            callback={postSubmit}
             action="add"
             submitText="Submit"
             afterProcessed={props.onHide}

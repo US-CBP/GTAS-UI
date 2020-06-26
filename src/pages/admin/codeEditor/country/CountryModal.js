@@ -4,9 +4,21 @@ import Form from "../../../../components/form/Form";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { codeEditor } from "../../../../services/serviceWrapper";
 
-const AddCountryModal = props => {
+const CountryModal = props => {
   const title = "Add Country";
   const cb = function(result) {};
+
+  const postSubmit = ev => {
+    props.onHide();
+    props.refresh();
+  };
+
+  const preSubmit = fields => {
+    let res = {...fields[0]};
+    //Id is lacking for updates in the body
+    res.id = props.editRowDetails.id;
+    return [res];
+  };
 
   return (
     <Modal
@@ -22,11 +34,12 @@ const AddCountryModal = props => {
       <Modal.Body>
         <Container fluid>
           <Form
-            submitService={codeEditor.post.createCountry}
+            submitService={props.isEdit? codeEditor.put.updateCountry : codeEditor.post.createCountry}
             title=""
-            callback={props.callback}
+            callback={postSubmit}
             action="add"
-            submitText="Submit"
+            submitText={props.isEdit? "Save": "Submit"}
+            paramCallback={preSubmit}
             afterProcessed={props.onHide}
           >
             <LabelledInput
@@ -36,7 +49,9 @@ const AddCountryModal = props => {
               name="iso2"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.iso2 || ""}
               callback={cb}
+              spacebetween
             />
             <LabelledInput
               datafield
@@ -45,7 +60,9 @@ const AddCountryModal = props => {
               name="iso3"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.iso3 || ""}
               callback={cb}
+              spacebetween
             />
             <LabelledInput
               datafield
@@ -54,7 +71,9 @@ const AddCountryModal = props => {
               name="isoNumeric"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.isoNumeric || ""}
               callback={cb}
+              spacebetween
             />
             <LabelledInput
               datafield
@@ -63,18 +82,45 @@ const AddCountryModal = props => {
               name="name"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.name || ""}
               callback={cb}
+              spacebetween
             />
           </Form>
         </Container>
       </Modal.Body>
+      {props.isEdit?
+      <Modal.Footer>
+        <Button
+            type="button"
+            className="m-2 outline-dark-outline"
+            variant="outline-dark"
+            // onClick={this.onFormCancel}
+        >
+          Restore
+        </Button>
+        <Button
+            type="button"
+            className="m-2 outline-dark-outline"
+            variant="outline-dark"
+            onClick={() => {
+              codeEditor.delete.deleteCountry(props.editRowDetails.id).then(res => {
+                postSubmit(undefined);
+              });
+            }}
+        >
+          Delete
+        </Button>
+      </Modal.Footer>
+     :
       <Modal.Footer>
         <Button variant="outline-danger" onClick={props.onHide}>
           Close
         </Button>
       </Modal.Footer>
+    }
     </Modal>
   );
 };
 
-export default AddCountryModal;
+export default CountryModal;

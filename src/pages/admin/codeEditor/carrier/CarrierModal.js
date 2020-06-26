@@ -4,9 +4,21 @@ import Form from "../../../../components/form/Form";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { codeEditor } from "../../../../services/serviceWrapper";
 
-const AddCarrierModal = props => {
+const CarrierModal = props => {
   const title = "Add Carrier";
   const cb = function(result) {};
+
+  const postSubmit = ev => {
+    props.onHide();
+    props.refresh();
+  };
+
+  const preSubmit = fields => {
+    let res = {...fields[0]};
+    //Id is lacking for updates in the body
+    res.id = props.editRowDetails.id;
+    return [res];
+  };
 
   return (
     <Modal
@@ -22,11 +34,12 @@ const AddCarrierModal = props => {
       <Modal.Body>
         <Container fluid>
           <Form
-            submitService={codeEditor.post.createCarrier}
+            submitService={props.isEdit? codeEditor.put.updateCarrier : codeEditor.post.createCarrier}
             title=""
-            callback={props.callback}
+            callback={postSubmit}
             action="add"
-            submitText="Submit"
+            submitText={props.isEdit? "Save": "Submit"}
+            paramCallback={preSubmit}
             afterProcessed={props.onHide}
           >
             <LabelledInput
@@ -36,7 +49,9 @@ const AddCarrierModal = props => {
               name="iata"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.iata || ""}
               callback={cb}
+              spacebetween
             />
             <LabelledInput
               datafield
@@ -45,18 +60,45 @@ const AddCarrierModal = props => {
               name="name"
               required={true}
               alt="nothing"
+              inputVal={props?.editRowDetails.name || ""}
               callback={cb}
+              spacebetween
             />
           </Form>
         </Container>
       </Modal.Body>
+      {props.isEdit?
+      <Modal.Footer>
+        <Button
+            type="button"
+            className="m-2 outline-dark-outline"
+            variant="outline-dark"
+            // onClick={this.onFormCancel}
+        >
+          Restore
+        </Button>
+        <Button
+            type="button"
+            className="m-2 outline-dark-outline"
+            variant="outline-dark"
+            onClick={() => {
+              codeEditor.delete.deleteCarrier(props.editRowDetails.id).then(res => {
+                postSubmit(undefined);
+              });
+            }}
+        >
+          Delete
+        </Button>
+      </Modal.Footer>
+    :
       <Modal.Footer>
         <Button variant="outline-danger" onClick={props.onHide}>
           Close
         </Button>
       </Modal.Footer>
+    }
     </Modal>
   );
 };
 
-export default AddCarrierModal;
+export default CarrierModal;
