@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../services/configService";
-import { cypher, cypherAuth } from "../../services/configService";
+import { cypher, cypherAuth } from "../../services/serviceWrapper";
 import * as d3 from "d3";
 import { provider, paxRelations, saves, palette } from "./structure";
 import "./Graph.css";

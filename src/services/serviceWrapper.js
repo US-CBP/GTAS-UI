@@ -120,6 +120,9 @@ const CODES_RESTORE_AIRPORT = `${BASE_URL}gtas/api/airport/restore`;
 const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/country/restore`;
 const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/carrier/restore`;
 const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
+const HOST = `${BASE_URL}gtas/api/config/`;
+const CYPHER = HOST + "cypherUrl";
+const CYPHERAUTH = HOST + "cypherAuth";
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS, BASEHEADER, id, params),
@@ -257,3 +260,5 @@ export const login = {
     });
   }
 };
+export const cypher = { get: () => get(CYPHER, BASEHEADER) };
+export const cypherAuth = { get: () => get(CYPHERAUTH, BASEHEADER) };
