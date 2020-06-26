@@ -135,11 +135,18 @@ class Form extends React.Component {
 
   // bind children containing form data to the ev handler and state
   bindChildren(populatedFields) {
+    let assignInputVals = false;
+    if(populatedFields.length === 0){
+      assignInputVals = true;
+    }
     let boundChildren = asArray(this.props.children).map((child, idx) => {
       if (!child.props.datafield) return child;
 
       let cleanprops = Object.assign({}, child.props);
       delete cleanprops.callback;
+      if (assignInputVals) {
+        populatedFields[child.props.name] = child.props.inputVal;
+      }
 
       let newchild = React.cloneElement(child, {
         key: idx,
