@@ -149,7 +149,13 @@ export const userService = {
 export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
 export const auditlog = { get: (id, params) => get(AUDITLOG, BASEHEADER) };
 export const errorlog = { get: (id, params) => get(ERRORLOG, BASEHEADER) };
-export const cases = { get: (id, params) => get(CASES, BASEHEADER) };
+export const cases = {
+  get: (id, params) => get(CASES, BASEHEADER),
+  updateStatus: (paxId, status) => {
+    const body = { passengerId: paxId, status: status };
+    return post(CASES, BASEHEADER, postBodyWrapper(body));
+  }
+};
 export const ruleCats = { get: (id, params) => get(RULE_CATS, BASEHEADER) };
 export const settingsinfo = {
   get: (id, params) => get(SETTINGSINFO, BASEHEADER),

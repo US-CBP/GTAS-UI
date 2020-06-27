@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import Title from "../../components/title/Title";
 import { Link } from "@reach/router";
 import Tabs from "../../components/tabs/Tabs";
-import { Button, Navbar, Nav } from "react-bootstrap";
+import { Button, Navbar, Nav, SplitButton, Dropdown } from "react-bootstrap";
 import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SideNav from "../../components/sidenav/SideNav";
 import Main from "../../components/main/Main";
-import { paxdetails } from "../../services/serviceWrapper";
+import { paxdetails, cases } from "../../services/serviceWrapper";
 import Summary from "./summary/Summary";
 import PNR from "./pnr/PNR";
 import APIS from "./apis/APIS";
@@ -17,6 +17,7 @@ import { passengerTypeMapper } from "../../utils/utils";
 import EventNotesModal from "./evenNotesModal/EventNotesModal";
 import DownloadReport from "./downloadReports/DownloadReports";
 import Notification from "./notification/Notification";
+import ChangeHitStatus from "./changeHitStatus/ChangeHitStatus";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
@@ -53,9 +54,19 @@ const PaxDetail = props => {
   const [pax, setPax] = useState([]);
   const [pnr, setPnr] = useState({});
   const [apisMessage, setApisMessage] = useState({});
+  const [hitSummaryRefreshKey, setHitSummaryRefreshKey] = useState();
 
   const tabs = [
-    { title: "Summary", link: <Summary paxId={props.paxId} flightId={props.flightId} /> },
+    {
+      title: "Summary",
+      link: (
+        <Summary
+          paxId={props.paxId}
+          flightId={props.flightId}
+          hitSummaryRefreshKey={hitSummaryRefreshKey}
+        />
+      )
+    },
     { title: "APIS", link: <APIS data={apisMessage}></APIS> },
     { title: "PNR", link: <PNR data={pnr} /> },
     {
@@ -64,6 +75,14 @@ const PaxDetail = props => {
     },
     { title: "Link Analysis", link: <LinkAnalysis /> }
   ];
+
+  const updateHitStatus = (status, confirmed) => {
+    if (confirmed) {
+      cases.updateStatus(props.paxId, status).then(() => {
+        setHitSummaryRefreshKey(status);
+      });
+    }
+  };
 
   const fetchData = () => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
@@ -99,9 +118,7 @@ const PaxDetail = props => {
               Create Manual Hit
             </Button>
             <Notification paxId={props.paxId} />
-            <Button variant="outline-info" size="sm">
-              Set Status to Reviewed
-            </Button>
+            <ChangeHitStatus updateStatus={updateHitStatus} />
           </Nav>
         </Navbar>
 
