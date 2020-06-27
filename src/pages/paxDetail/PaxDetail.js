@@ -55,6 +55,7 @@ const PaxDetail = props => {
   const [pnr, setPnr] = useState({});
   const [apisMessage, setApisMessage] = useState({});
   const [hitSummaryRefreshKey, setHitSummaryRefreshKey] = useState();
+  const [hasOpenHit, setHasOpenHit] = useState(false);
 
   const tabs = [
     {
@@ -64,6 +65,7 @@ const PaxDetail = props => {
           paxId={props.paxId}
           flightId={props.flightId}
           hitSummaryRefreshKey={hitSummaryRefreshKey}
+          setHasOpenHit={setHasOpenHit}
         />
       )
     },
@@ -118,7 +120,7 @@ const PaxDetail = props => {
               Create Manual Hit
             </Button>
             <Notification paxId={props.paxId} />
-            <ChangeHitStatus updateStatus={updateHitStatus} />
+            <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
           </Nav>
         </Navbar>
 

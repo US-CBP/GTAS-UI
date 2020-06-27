@@ -22,24 +22,29 @@ const ChangeHitStatus = props => {
         variant="outline-info"
         size="sm"
       >
-        <Dropdown.Item
-          key="statusReviewed"
-          onClick={() => {
-            setShow(true);
-            setStatus("REVIEWED");
-          }}
-        >
-          Reviewed
-        </Dropdown.Item>
-        <Dropdown.Item
-          key="statusReopened"
-          onClick={() => {
-            setShow(true);
-            setStatus("Re_Opened");
-          }}
-        >
-          Re_Opened
-        </Dropdown.Item>
+        {props.hasOpenHit && (
+          <Dropdown.Item
+            key="statusReviewed"
+            onClick={() => {
+              setShow(true);
+              setStatus("REVIEWED");
+            }}
+          >
+            Reviewed
+          </Dropdown.Item>
+        )}
+
+        {!props.hasOpenHit && (
+          <Dropdown.Item
+            key="statusReopened"
+            onClick={() => {
+              setShow(true);
+              setStatus("Re_Opened");
+            }}
+          >
+            Re_Opened
+          </Dropdown.Item>
+        )}
       </SplitButton>
 
       <Modal show={show} onHide={handleCancel} centered backdrop="static">
@@ -59,7 +64,8 @@ const ChangeHitStatus = props => {
 };
 
 ChangeHitStatus.propTypes = {
-  updateStatus: PropTypes.func
+  updateStatus: PropTypes.func,
+  hasOpenHit: PropTypes.bool
 };
 
 export default ChangeHitStatus;

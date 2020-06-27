@@ -70,6 +70,8 @@ const Summary = props => {
   useEffect(() => {
     flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
       setPaxHitSummary(res);
+      const openHit = res.find(hit => hit.status === "NEW" || hit.status === "Re_Opened");
+      props.setHasOpenHit(openHit != undefined);
     });
   }, [props.hitSummaryRefreshKey]);
 
