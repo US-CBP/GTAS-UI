@@ -104,7 +104,7 @@ const Summary = props => {
         .slice(0, 10);
       setHistoricalEventNotes(notesData);
     });
-  }, []);
+  }, [props.eventNoteRefreshKey]);
 
   return (
     <Container fluid className="summary-container">
@@ -127,11 +127,13 @@ const Summary = props => {
           data={eventNotes}
           headers={headers.eventNotes}
           title="Event Note History"
+          key={props.eventNoteRefreshKey}
         />
         <CardWithTable
           data={historicalEventNotes}
           headers={headers.eventNotes}
           title={`Previous Notes History (Up to 10)`}
+          key={props.eventNoteRefreshKey}
         />
       </CardDeck>
     </Container>

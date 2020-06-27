@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { Button, Modal } from "react-bootstrap";
 import { paxEventNotesHistory, notetypes } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
@@ -9,7 +10,10 @@ const EventNotesModal = props => {
   const [show, setShow] = useState(false);
   const [notTypes, setNoteTypes] = useState([]);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    props.setEventNoteRefreshKey(Date.now());
+  };
   const handleShow = () => setShow(true);
   const paxId = props.paxId;
 
@@ -78,5 +82,9 @@ const EventNotesModal = props => {
       </Modal>
     </>
   );
+};
+EventNotesModal.propTypes = {
+  setEventNoteRefreshKey: PropTypes.func,
+  paxId: PropTypes.string
 };
 export default EventNotesModal;

@@ -55,6 +55,7 @@ const PaxDetail = props => {
   const [pnr, setPnr] = useState({});
   const [apisMessage, setApisMessage] = useState({});
   const [hitSummaryRefreshKey, setHitSummaryRefreshKey] = useState();
+  const [eventNoteRefreshKey, setEventNoteRefreshKey] = useState();
   const [hasOpenHit, setHasOpenHit] = useState(false);
 
   const tabs = [
@@ -65,6 +66,7 @@ const PaxDetail = props => {
           paxId={props.paxId}
           flightId={props.flightId}
           hitSummaryRefreshKey={hitSummaryRefreshKey}
+          eventNoteRefreshKey={eventNoteRefreshKey}
           setHasOpenHit={setHasOpenHit}
         />
       )
@@ -110,7 +112,10 @@ const PaxDetail = props => {
         <Navbar>
           <Navbar.Brand>Passenger Detail</Navbar.Brand>
           <Nav>
-            <EventNotesModal paxId={props.paxId} />
+            <EventNotesModal
+              paxId={props.paxId}
+              setEventNoteRefreshKey={setEventNoteRefreshKey}
+            />
             <DownloadReport paxId={props.paxId} flightId={props.flightId} />
 
             <Button variant="outline-danger" size="sm">
