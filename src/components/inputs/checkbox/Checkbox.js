@@ -40,7 +40,7 @@ CheckboxInput.propTypes = {
   alt: PropTypes.string.isRequired,
   // options: PropTypes.array.isRequired,
   required: PropTypes.oneOf(["required", true, ""]),
-  selected: PropTypes.oneOf(["true", "", undefined]),
+  selected: PropTypes.oneOf(["true", "", undefined, true, false]),
   callback: PropTypes.func.isRequired
 };
 export default CheckboxInput;
