@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { localeDate, asArray } from "../../../utils/utils";
+import { localeDate, asArray, hasData } from "../../../utils/utils";
 import {
   paxdetails,
   paxWatchListLink,
@@ -43,6 +43,8 @@ const Summary = props => {
     }
   };
 
+  const setHasOpenHit = props.setHasOpenHit;
+  const setHasHit = props.setHasHit;
   const [documents, setDocuments] = useState([]);
   const [watchListLinks, setWatchListLinks] = useState([]);
   const [paxHitSummary, setPaxHitSummary] = useState([]);
@@ -70,8 +72,11 @@ const Summary = props => {
   useEffect(() => {
     flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
       setPaxHitSummary(res);
-      const openHit = res.find(hit => hit.status === "NEW" || hit.status === "Re_Opened");
-      props.setHasOpenHit(openHit != undefined);
+      const openHit = hasData(res)
+        ? res.find(hit => hit.status === "New" || hit.status === "Re_Opened")
+        : undefined;
+      setHasHit(hasData(res));
+      setHasOpenHit(openHit !== undefined);
     });
   }, [props.hitSummaryRefreshKey]);
 

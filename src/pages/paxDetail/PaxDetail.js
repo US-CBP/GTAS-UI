@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Title from "../../components/title/Title";
-import { Link } from "@reach/router";
 import Tabs from "../../components/tabs/Tabs";
-import { Button, Navbar, Nav, SplitButton, Dropdown } from "react-bootstrap";
+import { Button, Navbar, Nav } from "react-bootstrap";
 import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SideNav from "../../components/sidenav/SideNav";
@@ -57,6 +55,7 @@ const PaxDetail = props => {
   const [hitSummaryRefreshKey, setHitSummaryRefreshKey] = useState();
   const [eventNoteRefreshKey, setEventNoteRefreshKey] = useState();
   const [hasOpenHit, setHasOpenHit] = useState(false);
+  const [hasHit, setHasHit] = useState(false);
 
   const tabs = [
     {
@@ -68,6 +67,7 @@ const PaxDetail = props => {
           hitSummaryRefreshKey={hitSummaryRefreshKey}
           eventNoteRefreshKey={eventNoteRefreshKey}
           setHasOpenHit={setHasOpenHit}
+          setHasHit={setHasHit}
         />
       )
     },
@@ -125,7 +125,9 @@ const PaxDetail = props => {
               Create Manual Hit
             </Button>
             <Notification paxId={props.paxId} />
-            <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
+            {hasHit && (
+              <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
+            )}
           </Nav>
         </Navbar>
 
