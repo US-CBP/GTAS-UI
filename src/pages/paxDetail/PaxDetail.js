@@ -16,6 +16,7 @@ import EventNotesModal from "./evenNotesModal/EventNotesModal";
 import DownloadReport from "./downloadReports/DownloadReports";
 import Notification from "./notification/Notification";
 import ChangeHitStatus from "./changeHitStatus/ChangeHitStatus";
+import CreateManualHit from "./createManualHit/CreateManualHit";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
@@ -121,9 +122,7 @@ const PaxDetail = props => {
             <Button variant="outline-danger" size="sm">
               Add To Watchlist
             </Button>
-            <Button variant="outline-danger" size="sm">
-              Create Manual Hit
-            </Button>
+            <CreateManualHit paxId={props.paxId} flightId={props.flightId} />
             <Notification paxId={props.paxId} />
             {hasHit && (
               <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />

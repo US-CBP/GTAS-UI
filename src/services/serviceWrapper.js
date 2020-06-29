@@ -122,6 +122,7 @@ const NOTIFICATION = `${BASE_URL}gtas/users/notify`;
 const HOST = `${BASE_URL}gtas/api/config/`;
 const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
+const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS + "/", BASEHEADER, id, params),
@@ -284,3 +285,9 @@ export const login = {
 };
 export const cypher = { get: () => get(CYPHER, BASEHEADER) };
 export const cypherAuth = { get: () => get(CYPHERAUTH, BASEHEADER) };
+export const manualHit = {
+  post: body => {
+    const path = `${MANUALHIT}?paxId=${body.paxId}&flightId=${body.flightId}&hitCategoryId=${body.hitCategoryId}&desc=${body.description}`;
+    return post(path, BASEHEADER);
+  }
+};
