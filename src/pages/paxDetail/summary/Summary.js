@@ -6,7 +6,7 @@ import {
   flightpaxHitSummary,
   paxEventNotesHistory
 } from "../../../services/serviceWrapper";
-import { CardDeck, Card, Container } from "react-bootstrap";
+import { CardDeck, Container } from "react-bootstrap";
 import "./Summary.scss";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { composeInitialProps } from "react-i18next";
@@ -118,7 +118,6 @@ const Summary = props => {
           data={paxHitSummary}
           headers={headers.paxHitSummary}
           title="Passenger Current Hits summary"
-          key={props.hitSummaryRefreshKey}
         />
 
         <CardWithTable data={documents} headers={headers.documents} title="Documents" />
@@ -132,7 +131,6 @@ const Summary = props => {
           data={eventNotes}
           headers={headers.eventNotes}
           title="Event Note History"
-          key={props.eventNoteRefreshKey}
         />
         <CardWithTable
           data={historicalEventNotes}
