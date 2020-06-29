@@ -112,7 +112,7 @@ const PaxDetail = props => {
       <Main className="paxdetail-container">
         <Navbar>
           <Navbar.Brand>Passenger Detail</Navbar.Brand>
-          <Nav>
+          <Nav className="paxdetails-action-buttons">
             <EventNotesModal
               paxId={props.paxId}
               setEventNoteRefreshKey={setEventNoteRefreshKey}

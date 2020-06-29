@@ -18,6 +18,12 @@ $transparent: rgba(0, 0, 0, 0.65);
   overflow: scroll;
 }
 
+.paxdetails-action-buttons {
+  button {
+    margin: 1px;
+  }
+}
+
 //TODO:  decide on what should be displayed on small devices
 @include media-breakpoint-down(sm) {
   .paxdetails-side-nav {
