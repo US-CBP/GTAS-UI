@@ -41,10 +41,8 @@ const PaxDetail = props => {
 
   const flightBadgeData = res => {
     return {
-      eta: res.etaLocalTZ,
-      etd: res.etdLocalTZ,
-      origin: res.flightOrigin,
-      destination: res.flightDestination,
+      arrival: `${res.flightDestination} ${res.etaLocalTZ}`,
+      departure: `${res.flightOrigin} ${res.etdLocalTZ}`,
       flightnumber: `${res.carrier}${res.flightNumber}`
     };
   };

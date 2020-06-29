@@ -1,24 +1,32 @@
 import React from "react";
-import { Col, Row } from "react-bootstrap";
 import "./FlightBadge.scss";
+import LabelledInput from "../labelledInput/LabelledInput";
 
 const FlightBadge = props => {
+  const arrival = props.arrival;
+  const departure = props.departure;
+  const flightNumebr = props.flightnumber;
   return (
-    <div className="flight-badge">
-      <Row>
-        <Col lg="4" md="4" sm="4" className="fa fa-plane flight-number">
-          {props.flightnumber}
-        </Col>
-        <Col>
-          <Row className="fa fa-arrow-circle-up flight-text">
-            {props.origin} {props.etd}
-          </Row>
-          <Row className="fa fa-arrow-circle-down flight-text">
-            {props.destination} {props.eta}
-          </Row>
-        </Col>
-      </Row>
-    </div>
+    <>
+      <LabelledInput
+        alt="Flight"
+        inputStyle="big-name-sidebar fa fa-plane"
+        inputType="label"
+        inputVal={flightNumebr}
+      />
+      <LabelledInput
+        alt="Flight"
+        inputStyle="big-name-sidebar fa fa-arrow-circle-up"
+        inputType="label"
+        inputVal={departure}
+      />
+      <LabelledInput
+        alt="Flight"
+        inputStyle="big-name-sidebar fa fa-arrow-circle-down"
+        inputType="label"
+        inputVal={arrival}
+      />
+    </>
   );
 };
 
