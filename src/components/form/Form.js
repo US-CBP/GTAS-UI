@@ -137,7 +137,7 @@ class Form extends React.Component {
   // bind children containing form data to the ev handler and state
   bindChildren(populatedFields) {
     let assignInputVals = false;
-    if(populatedFields.length === 0){
+    if (populatedFields.length === 0) {
       assignInputVals = true;
     }
     let boundChildren = asArray(this.props.children).map((child, idx) => {

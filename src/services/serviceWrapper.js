@@ -1,5 +1,5 @@
 import GenericService from "./genericService";
-import { hasData } from "../utils/utils";
+import { hasData, asArray } from "../utils/utils";
 import { object } from "prop-types";
 
 const GET = "get";
@@ -118,14 +118,16 @@ const CODES_RESTORE_AIRPORT = `${BASE_URL}gtas/api/airport/restore`;
 const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/country/restore`;
 const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/carrier/restore`;
 const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
+const NOTIFICATION = `${BASE_URL}gtas/users/notify`;
 const HOST = `${BASE_URL}gtas/api/config/`;
 const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
+const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 // ENTITY METHODS
 export const users = {
-  get: (id, params) => get(USERS+"/", BASEHEADER, id, params),
+  get: (id, params) => get(USERS + "/", BASEHEADER, id, params),
   put: body => put(USERS, BASEHEADER, 1, stringify(body)),
-  post: body =>  post(USERS+"/1", BASEHEADER, stringify(body))
+  post: body => post(USERS + "/1", BASEHEADER, stringify(body))
 };
 export const watchlistcats = {
   get: (id, params) => get(WLCATS, BASEHEADER, id, params),
@@ -148,7 +150,13 @@ export const userService = {
 export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
 export const auditlog = { get: (id, params) => get(AUDITLOG, BASEHEADER) };
 export const errorlog = { get: (id, params) => get(ERRORLOG, BASEHEADER) };
-export const cases = { get: (id, params) => get(CASES, BASEHEADER) };
+export const cases = {
+  get: (id, params) => get(CASES, BASEHEADER),
+  updateStatus: (paxId, status) => {
+    const body = { passengerId: paxId, status: status };
+    return post(CASES, BASEHEADER, stringify(body));
+  }
+};
 export const ruleCats = { get: (id, params) => get(RULE_CATS, BASEHEADER) };
 export const settingsinfo = {
   get: (id, params) => get(SETTINGSINFO, BASEHEADER),
@@ -207,6 +215,24 @@ export const paxdetailsReport = {
     return get(path, BASEHEADER);
   }
 };
+export const notification = {
+  post: (paxId, body) => {
+    const selectedEmail = asArray(body.to)
+      .filter(email => email.checked === true)
+      .map(email => email.key);
+
+    if (body.externalUsersEmail) {
+      selectedEmail.push(body.externalUsersEmail);
+    }
+
+    const bodyWithPaxId = {
+      note: body.note ? body.note : "",
+      paxId: paxId,
+      to: selectedEmail
+    };
+    return post(NOTIFICATION, BASEHEADER, stringify(bodyWithPaxId));
+  }
+};
 export const flightPassengers = { get: id => get(FLIGHTPAX, BASEHEADER, id) };
 export const loaderStats = { get: (id, params) => get(LOADERSTATISTICS, BASEHEADER) };
 export const notetypes = {
@@ -259,3 +285,9 @@ export const login = {
 };
 export const cypher = { get: () => get(CYPHER, BASEHEADER) };
 export const cypherAuth = { get: () => get(CYPHERAUTH, BASEHEADER) };
+export const manualHit = {
+  post: body => {
+    const path = `${MANUALHIT}?paxId=${body.paxId}&flightId=${body.flightId}&hitCategoryId=${body.hitCategoryId}&desc=${body.description}`;
+    return post(path, BASEHEADER);
+  }
+};

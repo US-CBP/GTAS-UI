@@ -32,10 +32,12 @@ const NoteTypeCats = ({ name }) => {
           />
         </Col>
       </Row>
-      <Table service={notetypes.get}
-             id="noteTypes"
-             key={refreshKey}
-             callback={cb}></Table>
+      <Table
+        service={notetypes.get}
+        id="noteTypes"
+        key={refreshKey}
+        callback={cb}
+      ></Table>
     </Container>
   );
 };

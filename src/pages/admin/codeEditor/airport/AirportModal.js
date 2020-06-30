@@ -14,7 +14,7 @@ const AirportModal = props => {
   };
 
   const preSubmit = fields => {
-    let res = {...fields[0]};
+    let res = { ...fields[0] };
     //Id is lacking for updates in the body
     res.id = props.editRowDetails.id;
     return [res];
@@ -34,11 +34,13 @@ const AirportModal = props => {
       <Modal.Body>
         <Container fluid>
           <Form
-            submitService={props.isEdit?  codeEditor.put.updateAirport : codeEditor.post.createAirport}
+            submitService={
+              props.isEdit ? codeEditor.put.updateAirport : codeEditor.post.createAirport
+            }
             title=""
             callback={postSubmit}
             action="add"
-            submitText={props.isEdit? "Save": "Submit"}
+            submitText={props.isEdit ? "Save" : "Submit"}
             paramCallback={preSubmit}
             afterProcessed={props.onHide}
           >
@@ -122,36 +124,36 @@ const AirportModal = props => {
           </Form>
         </Container>
       </Modal.Body>
-      {props.isEdit?
+      {props.isEdit ? (
         <Modal.Footer>
           <Button
-              type="button"
-              className="m-2 outline-dark-outline"
-              variant="outline-dark"
-              // onClick={this.onFormCancel}
+            type="button"
+            className="m-2 outline-dark-outline"
+            variant="outline-dark"
+            // onClick={this.onFormCancel}
           >
             Restore
           </Button>
           <Button
-              type="button"
-              className="m-2 outline-dark-outline"
-              variant="outline-dark"
-              onClick={() => {
-                codeEditor.delete.deleteAirport(props.editRowDetails.id).then(res => {
-                  postSubmit(undefined);
-                });
-              }}
+            type="button"
+            className="m-2 outline-dark-outline"
+            variant="outline-dark"
+            onClick={() => {
+              codeEditor.delete.deleteAirport(props.editRowDetails.id).then(res => {
+                postSubmit(undefined);
+              });
+            }}
           >
             Delete
           </Button>
         </Modal.Footer>
-      :
+      ) : (
         <Modal.Footer>
           <Button variant="outline-danger" onClick={props.onHide}>
             Close
           </Button>
         </Modal.Footer>
-      }
+      )}
     </Modal>
   );
 };

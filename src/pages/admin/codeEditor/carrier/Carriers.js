@@ -17,52 +17,53 @@ const Carriers = ({ name }) => {
     setRefreshKey(refreshKey + 1);
   };
 
-  const openEditModal = (rowDetails) => {
+  const openEditModal = rowDetails => {
     setIsEditModal(true);
     setModalTitle("Edit Carrier Code");
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
 
-  const headers =  [
+  const headers = [
     {
       Accessor: "Edit",
-      Cell: ({row}) => {
+      Cell: ({ row }) => {
         return (
-            <div className="icon-col">
-              <i
-                  className="fa fa-pencil-square-o qbrb-icon"
-                  onClick={() => openEditModal(row.original)}
-              ></i>
-            </div>
+          <div className="icon-col">
+            <i
+              className="fa fa-pencil-square-o qbrb-icon"
+              onClick={() => openEditModal(row.original)}
+            ></i>
+          </div>
         );
       }
     },
     { Accessor: "iata" },
-    { Accessor: "name" },
+    { Accessor: "name" }
   ];
-
-
 
   return (
     <Container fluid>
       <Row>
         <Col sm={{ span: 3, offset: 1 }}>
-          <Button variant="outline-dark" onClick={() => {
-            setShowModal(true)
-            setModalTitle("Add Carrier")
-            setIsEditModal(false)
-            setEditRowDetails({});
-          }}>
+          <Button
+            variant="outline-dark"
+            onClick={() => {
+              setShowModal(true);
+              setModalTitle("Add Carrier");
+              setIsEditModal(false);
+              setEditRowDetails({});
+            }}
+          >
             Add Carrier
           </Button>
           <CarrierModal
             show={showModal}
             onHide={() => setShowModal(false)}
-            isEdit = {isEditModal}
-            title = {modalTitle}
-            editRowDetails = {editRowDetails}
-            refresh = {refresh}
+            isEdit={isEditModal}
+            title={modalTitle}
+            editRowDetails={editRowDetails}
+            refresh={refresh}
             callback={cb}
           />
         </Col>
@@ -70,11 +71,14 @@ const Carriers = ({ name }) => {
           <Title title={name}></Title>
         </Col>
         <Col sm={{ span: 3, offset: 1 }}>
-          <Button variant="outline-dark" onClick={() => {
-            codeEditor.put.restoreCarriersAll().then(res => {
-              refresh();
-            });
-          }}>
+          <Button
+            variant="outline-dark"
+            onClick={() => {
+              codeEditor.put.restoreCarriersAll().then(res => {
+                refresh();
+              });
+            }}
+          >
             Restore All Carriers
           </Button>
         </Col>

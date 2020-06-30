@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
-import {users, userService} from "../../../services/serviceWrapper"; //Add hooks
+import { users, userService } from "../../../services/serviceWrapper"; //Add hooks
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
 import { asArray } from "../../../utils/utils";
@@ -23,17 +23,16 @@ const UserModal = props => {
   const isCheckedRole = (roleToBeChecked, activeRoles) => {
     let boolVal = false;
     activeRoles.map(activeRole => {
-          if(activeRole.roleId === roleToBeChecked.roleId){
-            boolVal = true;
-          }
-        }
-    )
+      if (activeRole.roleId === roleToBeChecked.roleId) {
+        boolVal = true;
+      }
+    });
     return boolVal;
-  }
+  };
 
   const transformRoles = roles.map(role => {
     let isChecked = false;
-    if(props.isEdit){
+    if (props.isEdit) {
       isChecked = isCheckedRole(role, props.editRowDetails.roles);
     }
 
@@ -59,7 +58,7 @@ const UserModal = props => {
   };
 
   const preSubmit = fields => {
-    let res = {...fields[0]};
+    let res = { ...fields[0] };
 
     res.roles = asArray(res.roles)
       .filter(role => role.checked)
@@ -67,9 +66,9 @@ const UserModal = props => {
         return { roleId: role.roleId, roleDescription: role.roleDescription };
       });
 
-    if(res.active === true){
+    if (res.active === true) {
       res.active = 1;
-    } else{
+    } else {
       res.active = 0;
     }
 
@@ -90,7 +89,7 @@ const UserModal = props => {
       <Modal.Body>
         <Container fluid>
           <Form
-            submitService={props.isEdit? users.put : users.post}
+            submitService={props.isEdit ? users.put : users.post}
             title=""
             callback={postSubmit}
             action="add"
@@ -104,7 +103,7 @@ const UserModal = props => {
               inputType="text"
               name="userId"
               required={true}
-              inputVal = {props?.editRowDetails.userId || ""}
+              inputVal={props?.editRowDetails.userId || ""}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -127,7 +126,7 @@ const UserModal = props => {
               inputType="text"
               name="firstName"
               required={true}
-              inputVal = {props?.editRowDetails.firstName || ""}
+              inputVal={props?.editRowDetails.firstName || ""}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -139,7 +138,7 @@ const UserModal = props => {
               inputType="text"
               name="lastName"
               required={true}
-              inputVal = {props?.editRowDetails.lastName || ""}
+              inputVal={props?.editRowDetails.lastName || ""}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -151,7 +150,7 @@ const UserModal = props => {
               inputType="email"
               name="email"
               required={true}
-              inputVal = {props?.editRowDetails.email || ""}
+              inputVal={props?.editRowDetails.email || ""}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -179,21 +178,21 @@ const UserModal = props => {
               alt="nothing"
               inputVal={props?.editRowDetails.highPriorityEmail || false}
               callback={cb}
-              selected = {props?.editRowDetails.highPriorityEmail || false}
+              selected={props?.editRowDetails.highPriorityEmail || false}
               spacebetween
             />
 
             <LabelledInput
-                datafield
-                labelText="User Is Enabled"
-                inputType="checkbox"
-                name="active"
-                required={true}
-                alt="nothing"
-                inputVal={(props?.editRowDetails.active || null) === 1? true : false}
-                callback={cb}
-                selected={(props?.editRowDetails.active || null) === 1? true : false}
-                spacebetween
+              datafield
+              labelText="User Is Enabled"
+              inputType="checkbox"
+              name="active"
+              required={true}
+              alt="nothing"
+              inputVal={(props?.editRowDetails.active || null) === 1 ? true : false}
+              callback={cb}
+              selected={(props?.editRowDetails.active || null) === 1 ? true : false}
+              spacebetween
             />
 
             <CheckboxGroup

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
 import Title from "../../../../components/title/Title";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import {codeEditor, users} from "../../../../services/serviceWrapper";
+import { codeEditor, users } from "../../../../services/serviceWrapper";
 import AirportModal from "./AirportModal";
 
 const Airports = ({ name }) => {
@@ -17,24 +17,24 @@ const Airports = ({ name }) => {
     setRefreshKey(refreshKey + 1);
   };
 
-  const openEditModal = (rowDetails) => {
+  const openEditModal = rowDetails => {
     setIsEditModal(true);
     setModalTitle("Edit Airport Code");
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
 
-  const headers =  [
+  const headers = [
     {
       Accessor: "Edit",
-      Cell: ({row}) => {
+      Cell: ({ row }) => {
         return (
-            <div className="icon-col">
-              <i
-                  className="fa fa-pencil-square-o qbrb-icon"
-                  onClick={() => openEditModal(row.original)}
-              ></i>
-            </div>
+          <div className="icon-col">
+            <i
+              className="fa fa-pencil-square-o qbrb-icon"
+              onClick={() => openEditModal(row.original)}
+            ></i>
+          </div>
         );
       }
     },
@@ -51,21 +51,24 @@ const Airports = ({ name }) => {
     <Container fluid>
       <Row>
         <Col sm={{ span: 3, offset: 1 }}>
-          <Button variant="outline-dark" onClick={() => {
-            setShowModal(true)
-            setModalTitle("Add Airport")
-            setIsEditModal(false)
-            setEditRowDetails({});
-          }}>
+          <Button
+            variant="outline-dark"
+            onClick={() => {
+              setShowModal(true);
+              setModalTitle("Add Airport");
+              setIsEditModal(false);
+              setEditRowDetails({});
+            }}
+          >
             Add Airport
           </Button>
           <AirportModal
             show={showModal}
             onHide={() => setShowModal(false)}
-            isEdit = {isEditModal}
-            title = {modalTitle}
-            editRowDetails = {editRowDetails}
-            refresh = {refresh}
+            isEdit={isEditModal}
+            title={modalTitle}
+            editRowDetails={editRowDetails}
+            refresh={refresh}
             callback={cb}
           />
         </Col>
@@ -73,11 +76,14 @@ const Airports = ({ name }) => {
           <Title title={name}></Title>
         </Col>
         <Col sm={{ span: 3, offset: 1 }}>
-          <Button variant="outline-dark" onClick={() => {
-            codeEditor.put.restoreAirportsAll().then(res => {
-              refresh();
-            });
-          }}>
+          <Button
+            variant="outline-dark"
+            onClick={() => {
+              codeEditor.put.restoreAirportsAll().then(res => {
+                refresh();
+              });
+            }}
+          >
             Restore All Airports
           </Button>
         </Col>

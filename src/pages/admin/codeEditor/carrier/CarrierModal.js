@@ -14,7 +14,7 @@ const CarrierModal = props => {
   };
 
   const preSubmit = fields => {
-    let res = {...fields[0]};
+    let res = { ...fields[0] };
     //Id is lacking for updates in the body
     res.id = props.editRowDetails.id;
     return [res];
@@ -34,11 +34,13 @@ const CarrierModal = props => {
       <Modal.Body>
         <Container fluid>
           <Form
-            submitService={props.isEdit? codeEditor.put.updateCarrier : codeEditor.post.createCarrier}
+            submitService={
+              props.isEdit ? codeEditor.put.updateCarrier : codeEditor.post.createCarrier
+            }
             title=""
             callback={postSubmit}
             action="add"
-            submitText={props.isEdit? "Save": "Submit"}
+            submitText={props.isEdit ? "Save" : "Submit"}
             paramCallback={preSubmit}
             afterProcessed={props.onHide}
           >
@@ -67,17 +69,17 @@ const CarrierModal = props => {
           </Form>
         </Container>
       </Modal.Body>
-      {props.isEdit?
-      <Modal.Footer>
-        <Button
+      {props.isEdit ? (
+        <Modal.Footer>
+          <Button
             type="button"
             className="m-2 outline-dark-outline"
             variant="outline-dark"
             // onClick={this.onFormCancel}
-        >
-          Restore
-        </Button>
-        <Button
+          >
+            Restore
+          </Button>
+          <Button
             type="button"
             className="m-2 outline-dark-outline"
             variant="outline-dark"
@@ -86,17 +88,17 @@ const CarrierModal = props => {
                 postSubmit(undefined);
               });
             }}
-        >
-          Delete
-        </Button>
-      </Modal.Footer>
-    :
-      <Modal.Footer>
-        <Button variant="outline-danger" onClick={props.onHide}>
-          Close
-        </Button>
-      </Modal.Footer>
-    }
+          >
+            Delete
+          </Button>
+        </Modal.Footer>
+      ) : (
+        <Modal.Footer>
+          <Button variant="outline-danger" onClick={props.onHide}>
+            Close
+          </Button>
+        </Modal.Footer>
+      )}
     </Modal>
   );
 };

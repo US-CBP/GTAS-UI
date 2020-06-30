@@ -149,7 +149,7 @@ const PNR = props => {
 
   return (
     <Row>
-      <Col sm="4" md="4" lg="4">
+      <Col sm="5" md="5" lg="5">
         <SegmentTable
           title="Segment Table"
           data={rawPnrSegments}
