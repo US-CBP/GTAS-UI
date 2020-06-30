@@ -10,12 +10,11 @@ const WatchlistCats = ({ name }) => {
 
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState([{}]);
+  const [refreshKey, setRefreshKey] = useState(1);
 
-  useEffect(() => {
-    watchlistcats.get().then(response => {
-      setData(response);
-    });
-  }, []);
+  const refresh = () => {
+    setRefreshKey(refreshKey + 1);
+  };
 
   return (
     <Container fluid>
@@ -30,16 +29,15 @@ const WatchlistCats = ({ name }) => {
           <WatchlistModal
             show={showModal}
             onHide={() => setShowModal(false)}
+            refresh={refresh}
             callback={cb}
           />
         </Col>
       </Row>
-
       <Table
-        // service={watchlistcats.get}
-        key={data}
-        data={data}
+        service={watchlistcats.get}
         id="Watchlist Category"
+        key={refreshKey}
         callback={cb}
       ></Table>
     </Container>

@@ -8,7 +8,7 @@ const Dashboard = () => {
   return (
     <div>
       <Container>
-        <Title title="Dashboard"></Title>
+        <Title title="Dashboards"></Title>
       </Container>
       <Container fluid className="box2">
         <Table service={errorlog.get} id="foo"></Table>

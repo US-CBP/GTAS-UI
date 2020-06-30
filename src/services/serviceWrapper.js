@@ -55,7 +55,7 @@ function put(uri, headers, id, body) {
 }
 
 function putNoId(uri, headers, body) {
-  if (!hasData(body)) throw new TypeError(PUTBODY);
+  //if (!hasData(body)) throw new TypeError(PUTBODY);
 
   return GenericService({
     uri: uri,
@@ -85,7 +85,7 @@ function stringify(body) {
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const LOGIN = `${BASE_URL}gtas/authenticate`;
-const USERS = `${BASE_URL}gtas/users/`;
+const USERS = `${BASE_URL}gtas/users`;
 const WLCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
 const WLCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
 const FLIGHTS = `${BASE_URL}gtas/api/flights`;
@@ -105,7 +105,6 @@ const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
 const NOTE_TYPES = `${BASE_URL}gtas/passengers/passenger/notetypes`;
 const LOGGEDIN_USER = `${BASE_URL}gtas/user`;
 const NOTE_TYPESPOST = `${BASE_URL}gtas/api/noteType`;
-const CREATEUSER = `${BASE_URL}gtas/users`;
 const ROLES = `${BASE_URL}gtas/roles/`;
 const CODES_AIRPORT = `${BASE_URL}gtas/api/airport`;
 const CODES_COUNTRY = `${BASE_URL}gtas/api/country`;
@@ -129,9 +128,9 @@ const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
 // ENTITY METHODS
 export const users = {
-  get: (id, params) => get(USERS, BASEHEADER, id, params),
-  put: (id, body) => put(USERS, BASEHEADER, id, body),
-  post: body => post(USERS, BASEHEADER, body)
+  get: (id, params) => get(USERS + "/", BASEHEADER, id, params),
+  put: body => put(USERS, BASEHEADER, 1, stringify(body)),
+  post: body => post(USERS + "/1", BASEHEADER, stringify(body))
 };
 export const watchlistcats = {
   get: (id, params) => get(WLCATS, BASEHEADER, id, params),
@@ -146,7 +145,7 @@ export const watchlistcatspost = {
 export const userService = {
   get: (id, params) => get(USERS, BASEHEADER),
   post: body => {
-    return post(CREATEUSER, BASEHEADER, stringify(body));
+    return post(USERS, BASEHEADER, stringify(body));
   }
 };
 
@@ -227,9 +226,9 @@ export const codeEditor = {
     airportCodes: (id, params) => get(CODES_AIRPORT, BASEHEADER)
   },
   put: {
-    updateCarrier: body => put(CODES_CARRIER, BASEHEADER, body),
-    updateCountry: body => put(CODES_COUNTRY, BASEHEADER, body),
-    updateAirport: body => put(CODES_AIRPORT, BASEHEADER, body),
+    updateCarrier: body => putNoId(CODES_CARRIER, BASEHEADER, stringify(body)),
+    updateCountry: body => putNoId(CODES_COUNTRY, BASEHEADER, stringify(body)),
+    updateAirport: body => putNoId(CODES_AIRPORT, BASEHEADER, stringify(body)),
     restoreCarriersAll: body => putNoId(CODES_RESTOREALL_CARRIER, BASEHEADER, body),
     restoreCountriesAll: body => putNoId(CODES_RESTOREALL_COUNTRY, BASEHEADER, body),
     restoreAirportsAll: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
