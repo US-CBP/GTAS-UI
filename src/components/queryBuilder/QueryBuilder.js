@@ -1,57 +1,158 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import RQueryBuilder from "react-querybuilder";
+import { initQuery, addressFieldArray, FIELDS, EntitySelect } from "./constants.js";
+import { hasData } from "../../utils/utils";
+
 import "./QueryBuilder.scss";
 
 const QueryBuilder = props => {
-  function logQuery(query) {
-    // console.log(query);
-    // console.log(document.getElementsByClassName("rule"));
-  }
+  const qbref = useRef(null);
+  const editQuery = props.query || initQuery;
+  const [ruleState, setRuleState] = useState([]);
+  const [entState, setEntState] = useState([]);
 
-  const entities = [
-    { name: "ADDRESS", label: "ADDRESS", fields: "addressFields" },
-    { name: "BAG", label: "BAG", fields: "addressFields" },
-    { name: "CREDIT CARD", label: "CARD", fields: "addressFields" },
-    { name: "DOCUMENT", label: "DOCUMENT", fields: "addressFields" },
-    { name: "EMAIL", label: "EMAIL", fields: "addressFields" },
-    { name: "FLIGHT", label: "FLIGHT", fields: "addressFields" },
-    { name: "FLIGHT LEG", label: "LEG", fields: "addressFields" },
-    { name: "FREQUENT FLYER", label: "FLYER", fields: "addressFields" },
-    { name: "PASSENGER", label: "PASSENGER", fields: "addressFields" },
-    { name: "PHONE", label: "PHONE", fields: "addressFields" },
-    { name: "FORM OF PAYMENT", label: "PAYMENT", fields: "addressFields" },
-    { name: "PNR", label: "PNR", fields: "addressFields" },
-    { name: "DWELL TIME", label: "TIME", fields: "addressFields" },
-    { name: "TRAVEL AGENCY", label: "AGENCY", fields: "addressFields" }
-  ];
+  const fieldMap = {
+    ADDRESS: FIELDS.addressFields,
+    BAG: FIELDS.bagFields,
+    CREDITCARD: FIELDS.creditcardFields,
+    DOCUMENT: FIELDS.documentFields,
+    EMAIL: FIELDS.emailFields,
+    BOOKINGDETAIL: FIELDS.legFields,
+    FLIGHT: FIELDS.flightFields,
+    FREQUENTFLYER: FIELDS.frequentFlyerFields,
+    PASSENGER: FIELDS.passengerFields,
+    PAYMENTFORM: FIELDS.paymentFields,
+    AGENCY: FIELDS.agencyFields,
+    DWELLTIME: FIELDS.dwelltimeFields,
+    PHONE: FIELDS.phoneFields,
+    PNR: FIELDS.pnrFields
+  };
 
-  const addressFields = [
-    { name: "", label: "Select" },
-    { name: "city", label: "City" },
-    { name: "country", label: "Country" },
-    { name: "postalCode", label: "Postal Code" },
-    { name: "address", label: "Address" },
-    { name: "phone", label: "Phone" },
-    { name: "email", label: "Email" },
-    { name: "twitter", label: "Twitter" },
-    { name: "isDev", label: "Is a Developer?", value: false }
-  ];
+  const onEntityChange = ev => {
+    // console.log("ON ENTITY CHANGE");
 
-  const bagFields = [
-    { name: "", label: "Select" },
-    { name: "airline", label: "Airline" },
-    { name: "bagId", label: "Bag ID" },
-    { name: "dataSource", label: "Data Source" }
-  ];
+    const ruleid = ev.target?.parentNode?.dataset?.ruleId;
+    if (!ruleid) return;
 
-  const documentFields = [
-    { name: "", label: "Select" },
-    { name: "issuanceCountry", label: "Issuance Country" },
-    { name: "expirationDate", label: "Expiration Date" },
-    { name: "issuanceDate", label: "Issuance Date" }
-  ];
+    const selectedEntity = ev.target.value;
 
-  return <RQueryBuilder fields={entities} onQueryChange={logQuery}></RQueryBuilder>;
+    const flds = ev.target.parentNode.querySelector(".rule-fields");
+    flds.options.length = 0;
+    flds.innerHTML = fieldMap[selectedEntity];
+    let estate = entState;
+    estate[ruleid] = selectedEntity;
+    setEntState(estate);
+  };
+
+  /**
+   * iterate through an existing query (when mode= Edit) to correct the Field dropdowns and set the initial selections */
+  const parseRawQuery = (rawQuery, obj = {}) => {
+    let result = obj;
+
+    if (rawQuery.rules) {
+      rawQuery.rules.forEach(rule => {
+        if (!!rule.rules) parseRawQuery(rule, obj); //if the rule has rules (is a Group), parse those rules.
+        if (rule.id.substring(0, 2) === "r-") {
+          // const derivedEntity = hasData(rule.field)
+          //   ? rule.field.split(".")[0].toUpperCase()
+          //   : "";
+          let resarray = rule.field;
+          result[rule.id] = resarray;
+        }
+      });
+    }
+    return result;
+  };
+
+  const updateQuery = query => {
+    // console.log("UPDATE QUERY");
+    // console.log(entState);
+
+    const params = parseRawQuery(query);
+
+    setRuleState(params);
+  };
+
+  const syncEnts = () => {
+    let ents = entState;
+
+    for (const key in entState) {
+      if (ruleState[key] === undefined) {
+        delete ents[key];
+      }
+    }
+
+    setEntState(ents);
+  };
+
+  // const buildRuleState = query => {
+  // };
+
+  // give react time to sync with the dom changes. Once updateQuery has updated the ruleState, call insertEntityControl.
+  // If we call insertEntityControl directly from updateQuery after adding a new rule, querySelectorAll won't find it.
+  useEffect(() => {
+    insertEntityControl();
+    syncEnts();
+  }, [ruleState]);
+
+  const insertEntityControl = () => {
+    // console.log("INSERT ENTITY CONTROL");
+    // console.log("ruleState");
+    // console.log(entState);
+
+    const qb = qbref.current.children[0];
+
+    qb.querySelectorAll(".rule").forEach(rule => {
+      const ruleid = rule.getAttribute("data-rule-id");
+      const selectedValue = ruleState[ruleid];
+      let ent = rule.querySelector(".rule-entities") || {};
+      let fld = rule.querySelector(".rule-fields") || {};
+
+      if (!hasData(ent)) {
+        ent = document.createElement("select");
+        ent.innerHTML = EntitySelect;
+        ent.className = "rule-entities";
+      }
+
+      if (hasData(selectedValue)) {
+        const selectedEntity = selectedValue.split(".")[0].toUpperCase();
+
+        if (ent.value !== selectedEntity) {
+          ent.value = selectedEntity;
+
+          let estate = entState;
+          estate[ruleid] = selectedEntity;
+          setEntState(estate);
+
+          fld.options.length = 0;
+          fld.innerHTML = fieldMap[selectedEntity];
+          fld.value = selectedValue;
+        }
+      } else if (hasData(entState[ruleid])) {
+        ent.value = entState[ruleid];
+      } else {
+        let estate = entState;
+        estate[ruleid] = "ADDRESS";
+        // console.log(estate);
+        setEntState(estate);
+      }
+
+      if (!rule.querySelector(".rule-entities")) {
+        ent.addEventListener("change", ev => onEntityChange(ev, ruleState));
+        rule.insertBefore(ent, fld);
+      }
+    });
+  };
+
+  return (
+    <div ref={qbref}>
+      <RQueryBuilder
+        fields={addressFieldArray}
+        query={editQuery}
+        onQueryChange={updateQuery}
+      ></RQueryBuilder>
+    </div>
+  );
 };
 
 export default QueryBuilder;

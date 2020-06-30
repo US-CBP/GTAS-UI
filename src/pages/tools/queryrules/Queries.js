@@ -14,6 +14,8 @@ const Queries = props => {
 
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState(0);
+  const [record, setRecord] = useState({});
+  const [key, setKey] = useState(0);
 
   const [modalTitle, setModalTitle] = useState(`Add Query`);
 
@@ -22,11 +24,7 @@ const Queries = props => {
       block
       variant="ternary"
       className="btn btn-outline-info"
-      name={props.name}
-      placeholder={props.placeholder}
       onClick={() => launchModal(0)}
-      required={props.required}
-      value={props.inputVal}
       alt={props.alt}
     >
       {`Create new Query`}
@@ -41,7 +39,7 @@ const Queries = props => {
         <div className="icon-col">
           <i
             className="fa fa-pencil-square-o qbrb-icon"
-            onClick={() => launchModal(row.original.id)}
+            onClick={() => launchModal(row.original.id, row.original)}
           ></i>
         </div>
       )
@@ -50,17 +48,20 @@ const Queries = props => {
     { Accessor: "description" }
   ];
 
-  const launchModal = recordId => {
+  const launchModal = (recordId, record) => {
+    const title = (recordId || 0) > 0 ? `Edit Query` : `Add Query`;
+
+    setKey(key + 1);
     setId(recordId);
-    if (!isNaN(recordId)) {
-      const title = recordId > 0 ? `Edit Query` : `Add Query`;
-      setModalTitle(title);
-    }
+    setRecord(record);
+    setModalTitle(title);
     setShowModal(true);
   };
 
   const closeModal = () => {
     setId(0);
+    setRecord({});
+    setKey(key + 1);
     setShowModal(false);
   };
 
@@ -72,6 +73,8 @@ const Queries = props => {
         show={showModal}
         onHide={closeModal}
         callback={cb}
+        key={key}
+        data={record}
         title={modalTitle}
         id={id}
       />
