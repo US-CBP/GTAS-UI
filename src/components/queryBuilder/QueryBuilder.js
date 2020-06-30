@@ -1,6 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
 import RQueryBuilder from "react-querybuilder";
-import { initQuery, addressFieldArray, FIELDS, EntitySelect } from "./constants.js";
+import {
+  initQuery,
+  addressFieldArray,
+  FIELDS,
+  EntitySelect,
+  gtasoparray
+} from "./constants.js";
 import { hasData } from "../../utils/utils";
 
 import "./QueryBuilder.scss";
@@ -51,8 +57,9 @@ const QueryBuilder = props => {
 
     if (rawQuery.rules) {
       rawQuery.rules.forEach(rule => {
-        if (!!rule.rules) parseRawQuery(rule, obj); //if the rule has rules (is a Group), parse those rules.
-        if (rule.id.substring(0, 2) === "r-") {
+        const type = rule.id.substring(0, 2);
+        if (type === "g-") parseRawQuery(rule, obj); //if the rule is a Group, parse it.
+        if (type === "r-") {
           // const derivedEntity = hasData(rule.field)
           //   ? rule.field.split(".")[0].toUpperCase()
           //   : "";
@@ -65,9 +72,7 @@ const QueryBuilder = props => {
   };
 
   const updateQuery = query => {
-    // console.log("UPDATE QUERY");
-    // console.log(entState);
-
+    console.log(query);
     const params = parseRawQuery(query);
 
     setRuleState(params);
@@ -133,7 +138,6 @@ const QueryBuilder = props => {
       } else {
         let estate = entState;
         estate[ruleid] = "ADDRESS";
-        // console.log(estate);
         setEntState(estate);
       }
 
@@ -149,6 +153,7 @@ const QueryBuilder = props => {
       <RQueryBuilder
         fields={addressFieldArray}
         query={editQuery}
+        operators={gtasoparray}
         onQueryChange={updateQuery}
       ></RQueryBuilder>
     </div>

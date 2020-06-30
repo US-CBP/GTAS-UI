@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import QueryBuilder from "../../../components/queryBuilder/QueryBuilder";
-import { Button, Modal, Container } from "react-bootstrap";
+import { Button, Modal, Container, Row } from "react-bootstrap";
 import { hasData } from "../../../utils/utils";
+import LabelInput from "../../../components/inputs/label/Label";
+import LabelledInput from "../../../components/labelledInput/LabelledInput";
 
 const QRModal = props => {
   const data = props.data;
@@ -79,12 +81,17 @@ const QRModal = props => {
   const qry = hasData(data) ? fakequery : undefined;
   const [query, setQuery] = useState(qry);
   const [key, setKey] = useState(0);
+  const [title, setTitle] = useState(data?.title || "");
+  const [desc, setDesc] = useState(data?.description || "");
   const isEdit = hasData(props.data);
 
+  console.log(data);
   const clearForm = () => {
     setQuery(undefined);
     setKey(key + 1);
   };
+
+  const cb = ev => {};
 
   useEffect(() => {
     setQuery(qry);
@@ -104,6 +111,26 @@ const QRModal = props => {
         </Modal.Header>
         <Modal.Body className="qbrb-modal-body">
           <Container fluid>
+            <Row>
+              <LabelledInput
+                datafield
+                labelText="Title"
+                inputType="text"
+                inputVal={title}
+                name="title"
+                callback={cb}
+                alt="Title"
+              />
+              <LabelledInput
+                datafield
+                labelText="Description"
+                inputType="text"
+                inputVal={desc}
+                name="description"
+                callback={cb}
+                alt="Description"
+              />
+            </Row>
             <QueryBuilder query={query} key={key}></QueryBuilder>
           </Container>
         </Modal.Body>

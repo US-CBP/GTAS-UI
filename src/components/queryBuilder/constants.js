@@ -239,6 +239,40 @@ const intops = [
   "NOT_BETWEEN"
 ];
 
+export const gtasops = `<select>
+<option value="EQUAL" label="EQUAL"></option>
+<option value="NOT_EQUAL" label="NOT_EQUAL"></option>
+<option value="IN" label="IN"></option>
+<option value="NOT_IN" label="NOT_IN"></option>
+<option value="BEGINS_WITH" label="BEGINS_WITH"></option>
+<option value="NOT_BEGINS_WITH" label="NOT_BEGINS_WITH"></option>
+<option value="CONTAINS" label="CONTAINS"></option>
+<option value="NOT_CONTAINS" label="NOT_CONTAINS"></option>
+<option value="ENDS_WITH" label="ENDS_WITH"></option>
+<option value="NOT_ENDS_WITH" label="NOT_ENDS_WITH"></option>
+<option value="IS_NULL" label="IS_NULL"></option>
+<option value="IS_NOT_NULL" label="IS_NOT_NULL"></option>
+</select>`;
+
+export const gtasoparray = [
+  { name: "IS_NULL", label: "is null" },
+  { name: "IS_NOT_NULL", label: "is not null" },
+  { name: "IN", label: "in" },
+  { name: "NOT_IN", label: "not in" },
+  { name: "EQUAL", label: "=" },
+  { name: "NOT_EQUAL", label: "!=" },
+  { name: "LESS", label: "<" },
+  { name: "GREATER", label: ">" },
+  { name: "GREATER_OR_EQUAL", label: "<=" },
+  { name: "LESS_OR_EQUAL", label: ">=" },
+  { name: "CONTAINS", label: "contains" },
+  { name: "BEGINS_WITH", label: "begins with" },
+  { name: "ENDS_WITH", label: "ends with" },
+  { name: "NOT_CONTAINS", label: "does not contain" },
+  { name: "NOT_BEGINS_WITH", label: "does not begin with" },
+  { name: "NOT_ENDS_WITH", label: "does not end with" }
+];
+
 const equalIn = ["EQUAL", "NOT_EQUAL", "IN", "NOT_IN"];
 
 const yesno = { "1": "Yes", "0": "No" };
@@ -356,6 +390,73 @@ const formattedNewQuery = {
     enabled: true,
     ruleCat: 5,
     overMaxHits: null
+  }
+};
+
+///   what we receive
+const receivedqueries = {
+  status: "SUCCESS",
+  message: "1 record(s)",
+  result: [
+    {
+      id: 1,
+      title: "foo",
+      description: "sdfsdfsf",
+      query: {
+        "@class": "gov.gtas.model.udr.json.QueryObject",
+        condition: "AND",
+        rules: [
+          {
+            "@class": "QueryTerm",
+            entity: "Address",
+            field: "country",
+            type: "string",
+            operator: "EQUAL",
+            value: ["ASM"],
+            uuid: null
+          }
+        ]
+      }
+    }
+  ],
+  responseDetails: []
+};
+
+/// save payload
+const save = {
+  id: 2,
+  title: "bag",
+  description: "prime",
+  query: {
+    condition: "AND",
+    rules: [
+      {
+        entity: "PaymentForm",
+        type: "integer",
+        operator: "EQUAL",
+        value: ["56"],
+        "@class": "QueryTerm",
+        field: "wholeDollarAmount"
+      },
+      {
+        entity: "Bag",
+        type: "boolean",
+        input: "radio",
+        operator: "EQUAL",
+        value: ["1"],
+        "@class": "QueryTerm",
+        field: "primeFlight"
+      },
+      {
+        entity: "Passenger",
+        type: "string",
+        operator: "EQUAL",
+        value: ["SMITH"],
+        "@class": "QueryTerm",
+        field: "passengerDetails.lastName"
+      }
+    ],
+    "@class": "gov.gtas.model.udr.json.QueryObject"
   }
 };
 
