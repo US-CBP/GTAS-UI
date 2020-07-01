@@ -247,9 +247,9 @@ export const loggedinUser = { get: (id, params) => get(LOGGEDIN_USER, BASEHEADER
 export const roles = { get: get(ROLES, BASEHEADER) };
 export const codeEditor = {
   get: {
-    carrierCodes: (id, params) => get(CODES_CARRIER, BASEHEADER),
-    countryCodes: (id, params) => get(CODES_COUNTRY, BASEHEADER),
-    airportCodes: (id, params) => get(CODES_AIRPORT, BASEHEADER)
+    carrierCodes: () => get(CODES_CARRIER, BASEHEADER),
+    countryCodes: () => get(CODES_COUNTRY, BASEHEADER),
+    airportCodes: () => get(CODES_AIRPORT, BASEHEADER)
   },
   put: {
     updateCarrier: body => putNoId(CODES_CARRIER, BASEHEADER, stringify(body)),
