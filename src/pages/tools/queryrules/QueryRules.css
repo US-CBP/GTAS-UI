@@ -19,3 +19,6 @@
   overflow: hidden;
   overflow-y: auto;
 }
+.queryBuilder {
+  min-width: 740px;
+}

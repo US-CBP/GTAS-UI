@@ -17,7 +17,6 @@ const QRModal = props => {
   const isEdit = hasData(props.data);
 
   const cb = ev => {
-    console.log(ev.name, ev.value);
     if (ev.name === "description") setDesc(ev.value);
     if (ev.name === "title") setTitle(ev.value);
   };
@@ -60,10 +59,6 @@ const QRModal = props => {
   useEffect(() => {
     setData(props.data?.query);
   }, []);
-
-  useEffect(() => {
-    dataCallback(query);
-  }, [title, desc]);
 
   return (
     <>
