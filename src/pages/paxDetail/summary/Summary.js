@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Table from "../../../components/table/Table";
-import { localeDate, asArray } from "../../../utils/utils";
+import { localeDate, asArray, hasData } from "../../../utils/utils";
 import {
-  users,
   paxdetails,
   paxWatchListLink,
   flightpaxHitSummary,
-  paxEventNotesHistory,
-  notetypes
+  paxEventNotesHistory
 } from "../../../services/serviceWrapper";
-import { CardDeck, Card, Container } from "react-bootstrap";
-import Accordion from "../../../components/accordion/Accordion";
+import { CardDeck, Container } from "react-bootstrap";
 import "./Summary.scss";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
+import { composeInitialProps } from "react-i18next";
 
 const Summary = props => {
   const headers = {
@@ -46,16 +43,21 @@ const Summary = props => {
     }
   };
 
+  const setHasOpenHit = props.setHasOpenHit;
+  const setHasHit = props.setHasHit;
   const [documents, setDocuments] = useState([]);
   const [watchListLinks, setWatchListLinks] = useState([]);
   const [paxHitSummary, setPaxHitSummary] = useState([]);
   const [eventNotes, setEventNotes] = useState([]);
   const [historicalEventNotes, setHistoricalEventNotes] = useState([]);
 
-  const fetchData = () => {
+  useEffect(() => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
       setDocuments(res.documents);
     });
+  }, []);
+
+  useEffect(() => {
     paxWatchListLink.get(null, props.paxId).then(res => {
       const data = asArray(res).map(pwl => {
         return {
@@ -65,10 +67,20 @@ const Summary = props => {
       });
       setWatchListLinks(data);
     });
+  }, []);
 
+  useEffect(() => {
     flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
       setPaxHitSummary(res);
+      const openHit = hasData(res)
+        ? res.find(hit => hit.status === "New" || hit.status === "Re_Opened")
+        : undefined;
+      setHasHit(hasData(res));
+      setHasOpenHit(openHit !== undefined);
     });
+  }, [props.hitSummaryRefreshKey]);
+
+  useEffect(() => {
     paxEventNotesHistory.get(props.paxId, false).then(res => {
       const notesData = res.paxNotes?.map(note => {
         const type = (note.noteType || []).map(t => {
@@ -97,11 +109,7 @@ const Summary = props => {
         .slice(0, 10);
       setHistoricalEventNotes(notesData);
     });
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  }, [props.eventNoteRefreshKey]);
 
   return (
     <Container fluid className="summary-container">
@@ -128,6 +136,7 @@ const Summary = props => {
           data={historicalEventNotes}
           headers={headers.eventNotes}
           title={`Previous Notes History (Up to 10)`}
+          key={props.eventNoteRefreshKey}
         />
       </CardDeck>
     </Container>

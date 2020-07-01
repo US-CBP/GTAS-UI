@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Title from "../../components/title/Title";
-import { Link } from "@reach/router";
 import Tabs from "../../components/tabs/Tabs";
 import { Button, Navbar, Nav } from "react-bootstrap";
 import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SideNav from "../../components/sidenav/SideNav";
 import Main from "../../components/main/Main";
-import { paxdetails } from "../../services/serviceWrapper";
+import { paxdetails, cases } from "../../services/serviceWrapper";
 import Summary from "./summary/Summary";
 import PNR from "./pnr/PNR";
 import APIS from "./apis/APIS";
@@ -16,6 +14,9 @@ import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
 import { passengerTypeMapper } from "../../utils/utils";
 import EventNotesModal from "./evenNotesModal/EventNotesModal";
 import DownloadReport from "./downloadReports/DownloadReports";
+import Notification from "./notification/Notification";
+import ChangeHitStatus from "./changeHitStatus/ChangeHitStatus";
+import CreateManualHit from "./createManualHit/CreateManualHit";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
@@ -40,10 +41,8 @@ const PaxDetail = props => {
 
   const flightBadgeData = res => {
     return {
-      eta: res.etaLocalTZ,
-      etd: res.etdLocalTZ,
-      origin: res.flightOrigin,
-      destination: res.flightDestination,
+      arrival: `${res.flightDestination} ${res.etaLocalTZ}`,
+      departure: `${res.flightOrigin} ${res.etdLocalTZ}`,
       flightnumber: `${res.carrier}${res.flightNumber}`
     };
   };
@@ -52,9 +51,25 @@ const PaxDetail = props => {
   const [pax, setPax] = useState([]);
   const [pnr, setPnr] = useState({});
   const [apisMessage, setApisMessage] = useState({});
+  const [hitSummaryRefreshKey, setHitSummaryRefreshKey] = useState();
+  const [eventNoteRefreshKey, setEventNoteRefreshKey] = useState();
+  const [hasOpenHit, setHasOpenHit] = useState(false);
+  const [hasHit, setHasHit] = useState(false);
 
   const tabs = [
-    { title: "Summary", link: <Summary paxId={props.paxId} flightId={props.flightId} /> },
+    {
+      title: "Summary",
+      link: (
+        <Summary
+          paxId={props.paxId}
+          flightId={props.flightId}
+          hitSummaryRefreshKey={hitSummaryRefreshKey}
+          eventNoteRefreshKey={eventNoteRefreshKey}
+          setHasOpenHit={setHasOpenHit}
+          setHasHit={setHasHit}
+        />
+      )
+    },
     { title: "APIS", link: <APIS data={apisMessage}></APIS> },
     { title: "PNR", link: <PNR data={pnr} /> },
     {
@@ -63,6 +78,14 @@ const PaxDetail = props => {
     },
     { title: "Link Analysis", link: <LinkAnalysis /> }
   ];
+
+  const updateHitStatus = (status, confirmed) => {
+    if (confirmed) {
+      cases.updateStatus(props.paxId, status).then(() => {
+        setHitSummaryRefreshKey(status);
+      });
+    }
+  };
 
   const fetchData = () => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
@@ -87,22 +110,21 @@ const PaxDetail = props => {
       <Main className="paxdetail-container">
         <Navbar>
           <Navbar.Brand>Passenger Detail</Navbar.Brand>
-          <Nav>
-            <EventNotesModal paxId={props.paxId} />
+          <Nav className="paxdetails-action-buttons">
+            <EventNotesModal
+              paxId={props.paxId}
+              setEventNoteRefreshKey={setEventNoteRefreshKey}
+            />
             <DownloadReport paxId={props.paxId} flightId={props.flightId} />
 
             <Button variant="outline-danger" size="sm">
               Add To Watchlist
             </Button>
-            <Button variant="outline-danger" size="sm">
-              Create Manual Hit
-            </Button>
-            <Button variant="outline-warning" size="sm">
-              Notify
-            </Button>
-            <Button variant="outline-info" size="sm">
-              Set Status to Reviewed
-            </Button>
+            <CreateManualHit paxId={props.paxId} flightId={props.flightId} />
+            <Notification paxId={props.paxId} />
+            {hasHit && (
+              <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
+            )}
           </Nav>
         </Navbar>
 

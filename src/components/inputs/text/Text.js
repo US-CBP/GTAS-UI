@@ -27,7 +27,7 @@ TextInput.propTypes = {
   inputVal: PropTypes.string.isRequired,
   required: PropTypes.oneOf(["required", true, ""]),
   placeHolder: PropTypes.string,
-  readOnly: PropTypes.string
+  readOnly: PropTypes.oneOf(["readOnly", true])
 };
 
 export default TextInput;
