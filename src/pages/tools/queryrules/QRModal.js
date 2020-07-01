@@ -17,6 +17,7 @@ const QRModal = props => {
   const isEdit = hasData(props.data);
 
   const cb = ev => {
+    console.log(ev.name, ev.value);
     if (ev.name === "description") setDesc(ev.value);
     if (ev.name === "title") setTitle(ev.value);
   };
@@ -26,8 +27,6 @@ const QRModal = props => {
   };
 
   const onDelete = () => {
-    // console.log("deleting");
-
     if (hasData(svc)) svc.del(id);
     props.callback("DELETE");
   };
@@ -48,15 +47,13 @@ const QRModal = props => {
   };
 
   const onRun = () => {
-    let result;
-    // if (hasData(svc)) {
-    //   result = isEdit ? svc.put(id, query) : svc.post(query);
-    // }
     props.callback("RUN");
   };
 
   const onClear = () => {
     setData(undefined);
+    setDesc("");
+    setTitle("");
     setKey(key + 1);
   };
 
@@ -85,6 +82,7 @@ const QRModal = props => {
             <Row>
               <LabelledInput
                 datafield
+                key={`title${key}`}
                 labelText="Title"
                 inputType="text"
                 inputVal={title}
@@ -95,6 +93,7 @@ const QRModal = props => {
               <LabelledInput
                 datafield
                 labelText="Description"
+                key={`desc${key}`}
                 inputType="text"
                 inputVal={desc}
                 name="description"
@@ -131,7 +130,7 @@ const QRModal = props => {
             type="button"
             className="m-2 outline-dark-outline"
             variant="outline-dark"
-            // onClick={this.onFormCancel}
+            onClick={onRun}
           >
             Run
           </Button>
