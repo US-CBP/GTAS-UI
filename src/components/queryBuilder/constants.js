@@ -1,29 +1,4 @@
-export const allFields = [
-  { value: "", key: "0", label: "Select" },
-  { key: "Address.city", value: "Address.city", label: "City" },
-  { key: "Address.country", value: "Address.country", label: "Country" },
-  { key: "Address.line1", value: "Address.line1", label: "Line 1" },
-  { key: "Address.line2", value: "Address.line2", label: "Line 2" },
-  { key: "Address.line3", value: "Address.line3", label: "Line 3" },
-  { key: "Address.postalCode", value: "Address.postalCode", label: "Postal Code" },
-  { key: "Address.state", value: "Address.state", label: "State" },
-  { value: "airline", label: "Airline" },
-  { value: "bagId", label: "Bag ID" },
-  { value: "dataSource", label: "Data Source" },
-  {
-    key: "CreditCard.accountHolder",
-    value: "CreditCard.accountHolder",
-    label: "Account Holder"
-  },
-  {
-    key: "CreditCard.expiration",
-    value: "CreditCard.expiration",
-    label: "Expiration Date"
-  },
-  { key: "CreditCard.number", value: "CreditCard.number", label: "Number" },
-  { key: "CreditCard.cardType", value: "CreditCard.cardType", label: "Type" }
-];
-
+/** Initial query with the first rule row pre-loaded */
 export const initQuery = {
   id: "g-ITRz8BH8fS77-cw-DS4Ss",
   rules: [{ id: "r--idiJE1qPaXYJtaTgqYng", field: "", value: "", operator: "null" }],
@@ -85,6 +60,8 @@ export const FIELDS = {
 
   documentFields: `<select>
 <option key="0" value="" label="Select"></option>
+<option value="Document.documentNumber" key="Document.documentNumber" label="Number"> </option>
+<option value="Document.documentType" key="Document.documentType" label="Type"> </option>
 <option value="Document.issuanceCountry" key="Document.issuanceCountry" label="Issuance Country"> </option>
 <option value="Document.expirationDate" key="Document.expirationDate" label="Expiration Date"> </option>
 <option value="Document.issuanceDate" key="Document.issuanceDate" label="Issuance Date"></option>
@@ -198,6 +175,76 @@ export const FIELDS = {
   </select>`
 };
 
+export const fakequery = {
+  id: "g-b",
+  rules: [
+    {
+      id: "r-10305584923",
+      field: "Address.line1",
+      value: "",
+      operator: "null"
+    },
+    {
+      id: "r-1030558492",
+      field: "Bag.airline",
+      value: "IAD",
+      operator: "EQUAL"
+    },
+    {
+      id: "g-xWAFwb_nuhGLWTII6Hfwo",
+      rules: [
+        {
+          id: "r-LPFoRuzNV_QM3kJW_YDAo",
+          field: "Address.line2",
+          value: "",
+          operator: "null"
+        },
+        {
+          id: "r-wxBfBY335cUyBSF-Zpjlz",
+          field: "CreditCard.number",
+          value: "",
+          operator: "null"
+        },
+        {
+          id: "r-T52HEf8YEhO1NVNQ0nwax",
+          field: "BookingDetail.origin",
+          value: "",
+          operator: "null"
+        }
+      ],
+      combinator: "and",
+      not: false
+    },
+    {
+      id: "r-oCVbdomIhUsXSbdt4cvx9",
+      field: "CreditCard.expiration",
+      value: "",
+      operator: "null"
+    },
+    {
+      id: "g-EFxwdBNCTMHYuJxn_CRma",
+      rules: [
+        {
+          id: "r-UnPwHG4_tTsnxdXyWeGO2",
+          field: "Address.country",
+          value: "",
+          operator: "null"
+        },
+        {
+          id: "r-Wx-wjSop4nnmK5vK6cb4s",
+          field: "Email.domain",
+          value: "",
+          operator: "null"
+        }
+      ],
+      combinator: "and",
+      not: false
+    }
+  ],
+  combinator: "and",
+  not: false
+};
+
 const stringops = [
   "EQUAL",
   "NOT_EQUAL",
@@ -255,12 +302,12 @@ export const gtasops = `<select>
 </select>`;
 
 export const gtasoparray = [
+  { name: "EQUAL", label: "=" },
+  { name: "NOT_EQUAL", label: "!=" },
   { name: "IS_NULL", label: "is null" },
   { name: "IS_NOT_NULL", label: "is not null" },
   { name: "IN", label: "in" },
   { name: "NOT_IN", label: "not in" },
-  { name: "EQUAL", label: "=" },
-  { name: "NOT_EQUAL", label: "!=" },
   { name: "LESS", label: "<" },
   { name: "GREATER", label: ">" },
   { name: "GREATER_OR_EQUAL", label: "<=" },
@@ -277,59 +324,8 @@ const equalIn = ["EQUAL", "NOT_EQUAL", "IN", "NOT_IN"];
 
 const yesno = { "1": "Yes", "0": "No" };
 
-// const QBControl = (
-//   <RQueryBuilder fields={entities} onQueryChange={logQuery} ref={qbref}></RQueryBuilder>
-// );
-
-// what the control generates
-const raw = {
-  id: "g-Nt6Tb1r0WCpD-YuO8_TbA",
-  rules: [
-    { id: "r-jZsVcEeqAhwc9pv4mc5uS", field: "ADDRESS", value: "", operator: "null" },
-    { id: "r-g0evILfJ3KUCGu12wMokL", field: "ADDRESS", value: "", operator: "null" },
-    {
-      id: "g-xWAFwb_nuhGLWTII6Hfwo",
-      rules: [
-        {
-          id: "r-LPFoRuzNV_QM3kJW_YDAo",
-          field: "ADDRESS",
-          value: "",
-          operator: "null"
-        },
-        {
-          id: "r-wxBfBY335cUyBSF-Zpjlz",
-          field: "ADDRESS",
-          value: "",
-          operator: "null"
-        },
-        { id: "g-BOcl111YHA0gLJr2ztJT7", rules: [], combinator: "and", not: false },
-        { id: "r-T52HEf8YEhO1NVNQ0nwax", field: "ADDRESS", value: "", operator: "null" }
-      ],
-      combinator: "and",
-      not: false
-    },
-    { id: "r-oCVbdomIhUsXSbdt4cvx9", field: "ADDRESS", value: "", operator: "null" },
-    {
-      id: "g-EFxwdBNCTMHYuJxn_CRma",
-      rules: [
-        {
-          id: "r-UnPwHG4_tTsnxdXyWeGO2",
-          field: "ADDRESS",
-          value: "",
-          operator: "null"
-        },
-        { id: "r-Wx-wjSop4nnmK5vK6cb4s", field: "ADDRESS", value: "", operator: "null" }
-      ],
-      combinator: "and",
-      not: false
-    }
-  ],
-  combinator: "and",
-  not: false
-};
-
 // what we have to generate
-const formattedNewQuery = {
+const formattedNewRule = {
   id: null,
   details: {
     condition: "AND",
@@ -390,73 +386,6 @@ const formattedNewQuery = {
     enabled: true,
     ruleCat: 5,
     overMaxHits: null
-  }
-};
-
-///   what we receive
-const receivedqueries = {
-  status: "SUCCESS",
-  message: "1 record(s)",
-  result: [
-    {
-      id: 1,
-      title: "foo",
-      description: "sdfsdfsf",
-      query: {
-        "@class": "gov.gtas.model.udr.json.QueryObject",
-        condition: "AND",
-        rules: [
-          {
-            "@class": "QueryTerm",
-            entity: "Address",
-            field: "country",
-            type: "string",
-            operator: "EQUAL",
-            value: ["ASM"],
-            uuid: null
-          }
-        ]
-      }
-    }
-  ],
-  responseDetails: []
-};
-
-/// save payload
-const save = {
-  id: 2,
-  title: "bag",
-  description: "prime",
-  query: {
-    condition: "AND",
-    rules: [
-      {
-        entity: "PaymentForm",
-        type: "integer",
-        operator: "EQUAL",
-        value: ["56"],
-        "@class": "QueryTerm",
-        field: "wholeDollarAmount"
-      },
-      {
-        entity: "Bag",
-        type: "boolean",
-        input: "radio",
-        operator: "EQUAL",
-        value: ["1"],
-        "@class": "QueryTerm",
-        field: "primeFlight"
-      },
-      {
-        entity: "Passenger",
-        type: "string",
-        operator: "EQUAL",
-        value: ["SMITH"],
-        "@class": "QueryTerm",
-        field: "passengerDetails.lastName"
-      }
-    ],
-    "@class": "gov.gtas.model.udr.json.QueryObject"
   }
 };
 

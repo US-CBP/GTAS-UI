@@ -268,7 +268,10 @@ export const query = {
       if (res.status === "SUCCESS") return res.result;
       return [];
     });
-  }
+  },
+  put: (id, body) => put(QUERIES, BASEHEADER, id, stringify(body)),
+  post: body => post(QUERIES, BASEHEADER, stringify(body)),
+  del: id => del(QUERIES, BASEHEADER, id)
 };
 
 export const rule = {

@@ -10,12 +10,18 @@ import QRModal from "./QRModal";
 import "./QueryRules.css";
 
 const Queries = props => {
-  const cb = function(result) {};
+  const cb = function(result) {
+    if (result === "SAVE" || result === "DELETE" || result === "CLOSE") {
+      closeModal();
+      setTablekey(tablekey + 1);
+    }
+  };
 
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState(0);
   const [record, setRecord] = useState({});
   const [key, setKey] = useState(0);
+  const [tablekey, setTablekey] = useState(0);
 
   const [modalTitle, setModalTitle] = useState(`Add Query`);
 
@@ -59,7 +65,7 @@ const Queries = props => {
   };
 
   const closeModal = () => {
-    setId(0);
+    setId();
     setRecord({});
     setKey(key + 1);
     setShowModal(false);
@@ -68,7 +74,13 @@ const Queries = props => {
   return (
     <Container fluid>
       <Title title="Queries" rightChild={button}></Title>
-      <Table service={query.get} id="Queries" callback={cb} header={header}></Table>
+      <Table
+        service={query.get}
+        id="Queries"
+        callback={cb}
+        header={header}
+        key={tablekey}
+      ></Table>
       <QRModal
         show={showModal}
         onHide={closeModal}
@@ -77,6 +89,7 @@ const Queries = props => {
         data={record}
         title={modalTitle}
         id={id}
+        service={query}
       />
     </Container>
   );
