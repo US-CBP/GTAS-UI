@@ -172,6 +172,7 @@ const QueryBuilder = props => {
       <RQueryBuilder
         fields={addressFieldArray}
         query={data}
+        translations={props.translations}
         operators={gtasoparray}
         onQueryChange={updateQuery}
       ></RQueryBuilder>

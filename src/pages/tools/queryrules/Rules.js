@@ -10,14 +10,22 @@ import QRModal from "./QRModal";
 import "./QueryRules.css";
 
 const Rules = props => {
-  const cb = function(result) {};
   const mode = (props.mode || "my").toLowerCase();
-
-  const [showModal, setShowModal] = useState(false);
-  const [id, setId] = useState(0);
-  const [data, setData] = useState([]);
   const [tab, setTab] = useState(mode === "all" ? "all" : "my");
+  const service = tab === "all" ? rulesall : rule;
+  const [showModal, setShowModal] = useState(false);
+  const [id, setId] = useState();
+  const [data, setData] = useState();
   const [modalTitle, setModalTitle] = useState(`Add Rule`);
+  const [record, setRecord] = useState();
+  const [key, setKey] = useState(0);
+  const [tablekey, setTablekey] = useState(0);
+
+  const cb = function(result) {
+    if (result === "SAVE" || result === "DELETE" || result === "CLOSE") {
+      closeModal();
+    }
+  };
 
   const header = [
     {
@@ -27,7 +35,7 @@ const Rules = props => {
         <div className="icon-col">
           <i
             className="fa fa-pencil-square-o qbrb-icon"
-            onClick={() => launchModal(row.original.id)}
+            onClick={() => fetchDetail(row.original.id)}
           ></i>
         </div>
       )
@@ -62,17 +70,39 @@ const Rules = props => {
     }
   ];
 
-  const launchModal = recordId => {
+  const fetchDetail = id => {
+    rule.get(id).then(res => {
+      if (hasData(res)) {
+        res.title = res.summary.title;
+        res.description = res.summary.description;
+        res.ruleCat = res.summary.ruleCat;
+        res.startDate = res.summary.startDate;
+        res.endDate = res.summary.endDate;
+        res.query = res.details;
+        delete res.summary;
+        delete res.details;
+
+        console.log(res);
+        launchModal(res);
+      }
+    });
+  };
+
+  const launchModal = rec => {
+    const recordId = rec.id;
+    setKey(key + 1);
     setId(recordId);
-    if (!isNaN(recordId)) {
-      const title = recordId > 0 ? `Edit Rule` : `Add Rule`;
-      setModalTitle(title);
-    }
+    setRecord(rec);
+    const title = recordId > 0 ? `Edit Rule` : `Add Rule`;
+    setModalTitle(title);
     setShowModal(true);
   };
 
   const closeModal = () => {
-    setId(0);
+    setId();
+    setRecord();
+    setKey(key + 1);
+    setTablekey(tablekey + 1);
     setShowModal(false);
   };
 
@@ -89,8 +119,7 @@ const Rules = props => {
   };
 
   useEffect(() => {
-    const service = tab === "all" ? rulesall : rule;
-
+    console.log("fetch all");
     service.get().then(res => {
       let parsed = [];
 
@@ -105,10 +134,14 @@ const Rules = props => {
           };
         });
       }
-
       setData(parsed);
     });
   }, [tab]);
+
+  useEffect(() => {
+    // setTab("my");
+    setTablekey(tablekey + 1);
+  }, [data]);
 
   const tabs = (
     <Tabs defaultActiveKey={tab} id="qrTabs">
@@ -141,14 +174,20 @@ const Rules = props => {
         leftCb={titleTabCallback}
         rightChild={button}
       ></Title>
-      <Table data={data} key={data} id="Rules" callback={cb} header={header}></Table>
-      <QRModal
-        show={showModal}
-        onHide={closeModal}
-        callback={cb}
-        title={modalTitle}
-        id={id}
-      />
+      <Table data={data} id="Rules" callback={cb} header={header} key={tablekey}></Table>
+      {showModal && (
+        <QRModal
+          show={showModal}
+          onHide={closeModal}
+          callback={cb}
+          mode="RULE"
+          key={key}
+          data={record}
+          title={modalTitle}
+          id={id}
+          service={rule}
+        />
+      )}
     </Container>
   );
 };

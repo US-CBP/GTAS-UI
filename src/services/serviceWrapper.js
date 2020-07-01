@@ -275,17 +275,20 @@ export const query = {
 };
 
 export const rule = {
-  get: () => {
-    return get(RULES, BASEHEADER).then(res => {
+  get: id => {
+    return get(RULES, BASEHEADER, id).then(res => {
       if (res.status === "SUCCESS") return res.result;
       return [];
     });
-  }
+  },
+  put: (id, body) => put(RULES, BASEHEADER, id, stringify(body)),
+  post: body => post(RULES, BASEHEADER, stringify(body)),
+  del: id => del(RULES, BASEHEADER, id)
 };
 
 export const rulesall = {
-  get: () => {
-    return get(RULESALL, BASEHEADER).then(res => {
+  get: id => {
+    return get(RULESALL, BASEHEADER, id).then(res => {
       if (res.status === "SUCCESS") return res.result;
       return [];
     });

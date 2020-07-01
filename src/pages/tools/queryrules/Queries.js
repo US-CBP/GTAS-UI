@@ -79,7 +79,7 @@ const Queries = props => {
         id="Queries"
         callback={cb}
         header={header}
-        key={tablekey}
+        key={`t${tablekey}`}
       ></Table>
       <QRModal
         show={showModal}

@@ -34,6 +34,32 @@ export const EntitySelect = `<select className="rule-entities" title="Entities">
 <option label="TRAVEL AGENCY" VALUE="AGENCY"></option>
 </select>`;
 
+export const buttonConfigQuery = {
+  removeRule: {
+    label: "X",
+    title: "Remove rule"
+  },
+  removeGroup: {
+    label: "X",
+    title: "Remove group"
+  },
+  addRule: {
+    label: "+Query",
+    title: "Add query"
+  }
+};
+
+export const buttonConfigRule = {
+  removeRule: {
+    label: "X",
+    title: "Remove rule"
+  },
+  removeGroup: {
+    label: "X",
+    title: "Remove group"
+  }
+};
+
 export const FIELDS = {
   addressFields: `<select>
   <option key="0" value="" label="Select"></option>

@@ -3,16 +3,23 @@ import QueryBuilder from "../../../components/queryBuilder/QueryBuilder";
 import { Button, Modal, Container, Row } from "react-bootstrap";
 import { hasData } from "../../../utils/utils";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { initQuery } from "../../../components/queryBuilder/constants";
+import {
+  buttonConfigQuery,
+  buttonConfigRule
+} from "../../../components/queryBuilder/constants";
 
 const QRModal = props => {
   const id = props.id;
   const svc = props.service;
-
+  const mode = props.mode === "RULE" ? "RULE" : "QUERY";
+  const buttonConfig = mode === "RULE" ? buttonConfigRule : buttonConfigQuery;
   const [data, setData] = useState(props.data?.query);
   const [key, setKey] = useState(0);
   const [title, setTitle] = useState(props.data?.title);
   const [desc, setDesc] = useState(props.data?.description);
+  const [catid, setCatid] = useState(props.data?.ruleCat);
+  const [startDate, setStartDate] = useState(props.data?.startDate);
+  const [endDate, setEndDate] = useState(props.data?.endDate);
   const [query, setQuery] = useState();
   const isEdit = hasData(props.data);
 
@@ -58,6 +65,7 @@ const QRModal = props => {
 
   useEffect(() => {
     setData(props.data?.query);
+    console.log(props.data);
   }, []);
 
   return (
@@ -99,6 +107,7 @@ const QRModal = props => {
             <QueryBuilder
               data={data}
               key={key}
+              translations={buttonConfig}
               // cb={cb}
               dataCallback={dataCallback}
             ></QueryBuilder>
