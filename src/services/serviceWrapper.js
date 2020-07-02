@@ -115,8 +115,8 @@ const CODES_RESTOREALL_AIRPORT = `${BASE_URL}gtas/api/airport/restoreAll`;
 const CODES_RESTOREALL_COUNTRY = `${BASE_URL}gtas/api/country/restoreAll`;
 const CODES_RESTOREALL_CARRIER = `${BASE_URL}gtas/api/carrier/restoreAll`;
 const CODES_RESTORE_AIRPORT = `${BASE_URL}gtas/api/airport/restore`;
-const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/country/restore`;
-const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/carrier/restore`;
+const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/carrier/restore`;
+const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/country/restore`;
 const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
 const NOTIFICATION = `${BASE_URL}gtas/users/notify`;
 const HOST = `${BASE_URL}gtas/api/config/`;
@@ -257,9 +257,9 @@ export const codeEditor = {
     restoreCarriersAll: body => putNoId(CODES_RESTOREALL_CARRIER, BASEHEADER, body),
     restoreCountriesAll: body => putNoId(CODES_RESTOREALL_COUNTRY, BASEHEADER, body),
     restoreAirportsAll: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
-    restoreCarrier: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
-    restoreCountry: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
-    restoreAirport: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body)
+    restoreCarrier: body => putNoId(CODES_RESTORE_CARRIER, BASEHEADER, stringify(body)),
+    restoreCountry: body => putNoId(CODES_RESTORE_COUNTRY, BASEHEADER, stringify(body)),
+    restoreAirport: body => putNoId(CODES_RESTORE_AIRPORT, BASEHEADER, stringify(body))
   },
   post: {
     createCarrier: body => post(CODES_CARRIER, BASEHEADER, stringify(body)),

@@ -17,8 +17,16 @@ const AirportModal = props => {
     let res = { ...fields[0] };
     //Id is lacking for updates in the body
     res.id = props.editRowDetails.id;
+    res.originId = props.editRowDetails.originId;
     return [res];
   };
+
+  const restoreSpecificCode = () => {
+    codeEditor.put.restoreAirport(props.editRowDetails).then(res=>{
+      props.onHide();
+      props.refresh();
+    });
+  }
 
   return (
     <Modal
@@ -130,7 +138,7 @@ const AirportModal = props => {
             type="button"
             className="m-2 outline-dark-outline"
             variant="outline-dark"
-            // onClick={this.onFormCancel}
+            onClick={() => restoreSpecificCode()}
           >
             Restore
           </Button>
