@@ -151,8 +151,8 @@ export const userService = {
 };
 
 export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
-export const auditlog = { get: (id, params) => get(AUDITLOG, BASEHEADER) };
-export const errorlog = { get: (id, params) => get(ERRORLOG, BASEHEADER) };
+export const auditlog = { get: (params) => get(AUDITLOG, BASEHEADER, undefined, params) };
+export const errorlog = { get: (params) => get(ERRORLOG, BASEHEADER, undefined, params) };
 export const cases = {
   get: (id, params) => get(CASES, BASEHEADER),
   updateStatus: (paxId, status) => {
