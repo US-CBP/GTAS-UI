@@ -11,7 +11,7 @@ import PNR from "./pnr/PNR";
 import APIS from "./apis/APIS";
 import FlightHistory from "./flightHistory/FlightHistory";
 import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
-import { passengerTypeMapper } from "../../utils/utils";
+import { passengerTypeMapper, asArray } from "../../utils/utils";
 import EventNotesModal from "./evenNotesModal/EventNotesModal";
 import DownloadReport from "./downloadReports/DownloadReports";
 import Notification from "./notification/Notification";
@@ -84,6 +84,8 @@ const PaxDetail = props => {
   const [hasOpenHit, setHasOpenHit] = useState(false);
   const [hasHit, setHasHit] = useState(false);
   const [flightLegsSegmentData, setFlightLegsSegmentData] = useState([]);
+  const [hasApisRecord, setHasApisRecod] = useState(false);
+  const [hasPnrRecord, setHasPnrRecord] = useState(false);
 
   const tabs = [
     {
@@ -99,8 +101,8 @@ const PaxDetail = props => {
         />
       )
     },
-    { title: "APIS", link: <APIS data={apisMessage}></APIS> },
-    { title: "PNR", link: <PNR data={pnr} /> },
+    ...(hasApisRecord ? [{ title: "APIS", link: <APIS data={apisMessage}></APIS> }] : []),
+    ...(hasPnrRecord ? [{ title: "PNR", link: <PNR data={pnr} /> }] : []),
     {
       title: "Flight History",
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
@@ -125,7 +127,9 @@ const PaxDetail = props => {
       setFlightBadge(flightBadgeData(res));
       setPnr(res.pnrVo);
       setApisMessage(res.apisMessageVo);
-      setFlightLegsSegmentData(getTidyFlightLegData(res.pnrVo?.flightLegs));
+      setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
+      setHasApisRecod(res.apisMessageVo?.apisRecordExists || false);
+      setHasPnrRecord(res.pnrVo?.pnrRecordExists || false);
     });
   };
 

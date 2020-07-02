@@ -63,6 +63,7 @@ const Notification = props => {
               inputVal={usersEmails}
               labelText="Users in Current Group"
               name="to"
+              alt="nothing"
             />
             <LabelledInput
               inputType="email"
