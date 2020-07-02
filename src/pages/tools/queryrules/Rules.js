@@ -52,8 +52,12 @@ const Rules = props => {
       Accessor: "hitCount",
       Header: "Hits"
     },
-    { Accessor: "overMaxHits" },
-    { Accessor: "ruleCat" },
+    {
+      Accessor: "overMaxHits",
+      Cell: ({ row }) => (
+        <div className="icon-col">{row.original.overMaxHits ? "Yes" : "No"}</div>
+      )
+    },
     { Accessor: "modifiedOn" },
     { Accessor: "modifiedBy" },
     { Accessor: "author" },
