@@ -7,17 +7,17 @@ const CardWithTable = props => {
   const data = asArray(props.data); //[{key:value}]
   const headers = props.headers || {}; //{key:value}
   const cb = props.callback ? props.callback : () => {}; //callback may not be passed as a prop
-  const commentDisplayLimit = 50;
+  const textDisplayLimit = 20;
 
   const isShortText = text => {
-    return !hasData(text) || text.toString().length <= commentDisplayLimit ? true : false;
+    return !hasData(text) || text.toString().length <= textDisplayLimit ? true : false;
   };
 
   // truncate long text for display in the card. Full text will be in a popover
   const getShortText = text => {
     if (isShortText(text)) return text;
 
-    return `${text.toString().substr(0, commentDisplayLimit - 4)} ...`;
+    return `${text.toString().substr(0, textDisplayLimit - 4)} ...`;
   };
 
   const getPopover = content => {
