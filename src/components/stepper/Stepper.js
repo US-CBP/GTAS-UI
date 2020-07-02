@@ -10,11 +10,11 @@ const Stepper = props => {
     <Row>
       <Container className="stepper-container" fluid>
         <ul className="stepper">
-          {asArray(props.steps).map(step => (
+          {asArray(props.steps).map((step, index) => (
             <li
               className={step.active ? "active" : ""}
               style={{ width: segmentWidth + "%" }}
-              key={step.label}
+              key={index}
             >
               {step.label}
             </li>

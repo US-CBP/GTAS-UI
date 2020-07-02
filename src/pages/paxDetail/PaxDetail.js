@@ -116,7 +116,7 @@ const PaxDetail = props => {
     }
   };
   const FlightLegSegments = () => {
-    return flightLegsSegmentData.map(fl => <Stepper steps={fl} />);
+    return flightLegsSegmentData.map((fl, index) => <Stepper key={index} steps={fl} />);
   };
 
   const fetchData = () => {
