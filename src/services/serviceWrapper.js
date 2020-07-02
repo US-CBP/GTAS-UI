@@ -123,6 +123,9 @@ const HOST = `${BASE_URL}gtas/api/config/`;
 const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
+const LOGFILE = `${BASE_URL}gtas/api/logs/`;
+
+
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS + "/", BASEHEADER, id, params),
@@ -290,4 +293,9 @@ export const manualHit = {
     const path = `${MANUALHIT}?paxId=${body.paxId}&flightId=${body.flightId}&hitCategoryId=${body.hitCategoryId}&desc=${body.description}`;
     return post(path, BASEHEADER);
   }
+};
+
+export const logfile = {
+  get: (id, params) => get(LOGFILE, BASEHEADER, id, params),
+  download: (params) => window.open(LOGFILE+params, '_self')
 };
