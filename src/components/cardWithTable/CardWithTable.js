@@ -38,7 +38,7 @@ const CardWithTable = props => {
       const triggerOverlay = !isShortText(td);
       return (
         <OverlayTrigger
-          trigger={triggerOverlay ? "click" : ""}
+          trigger={triggerOverlay ? ["click"] : ""}
           rootClose
           key={key}
           placement="top"
@@ -57,9 +57,9 @@ const CardWithTable = props => {
   });
 
   return (
-    <Card>
+    <Card className="card-with-table">
       <Card.Header className="customized-card-header">{props.title || ""}</Card.Header>
-      <Table size="sm" striped borderless hover>
+      <Table size="sm" striped borderless hover responsive>
         <thead>
           <tr>{tableHeaders}</tr>
         </thead>

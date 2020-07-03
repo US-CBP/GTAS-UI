@@ -10,30 +10,16 @@ $gtas-white: rgba(255, 255, 255, 0.9);
   overflow: scroll;
 }
 
-@include media-breakpoint-up(xl) {
-  .summary-card-deck .card {
-    max-width: 50%;
-  }
-}
-
 .summary-container {
-  .card-deck {
-    .card {
-      overflow: scroll;
-      margin: 5px;
-      min-width: 600px;
-    }
+  .card-columns {
+    column-count: 1 !important;
   }
 }
 
-@include media-breakpoint-down(sm) {
+@media (min-width: 1500px) {
   .summary-container {
-    .card-deck {
-      .card {
-        overflow: scroll;
-        margin: 5px;
-        min-width: 400px;
-      }
+    .card-columns {
+      column-count: 2 !important;
     }
   }
 }

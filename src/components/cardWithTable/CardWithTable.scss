@@ -13,3 +13,15 @@ $gtas-white: rgba(255, 255, 255, 0.9);
 .aslink:hover {
   text-decoration: underline;
 }
+.card-with-table {
+  max-height: 300px;
+}
+.card-with-table .table-responsive {
+  overflow: scroll;
+  max-height: 250px;
+}
+@media (min-width: 1500px) {
+  .card-with-table {
+    min-height: 200px;
+  }
+}
