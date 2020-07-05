@@ -136,7 +136,6 @@ const Summary = props => {
           data={historicalEventNotes}
           headers={headers.eventNotes}
           title={`Previous Notes History (Up to 10)`}
-          key={props.eventNoteRefreshKey}
         />
       </CardColumns>
     </Container>
