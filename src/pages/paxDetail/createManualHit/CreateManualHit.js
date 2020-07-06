@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 import { manualHit, watchlistcats } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
@@ -6,7 +7,7 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
 
 const CreateManualHit = props => {
-  const cb = function(result) {};
+  const cb = () => {};
   const [show, setShow] = useState(false);
   const [wlCategories, setWlCategories] = useState([]);
   const paxId = props.paxId;
@@ -14,6 +15,7 @@ const CreateManualHit = props => {
 
   const handleClose = () => {
     setShow(false);
+    props.callback(Date.now());
   };
   const handleShow = () => setShow(true);
 
@@ -57,7 +59,6 @@ const CreateManualHit = props => {
             callback={handleClose}
             action="add"
             id="createManualHit"
-            afterProcessed={handleClose}
           >
             <LabelledInput
               datafield
@@ -107,6 +108,11 @@ const CreateManualHit = props => {
       </Modal>
     </>
   );
+};
+CreateManualHit.propTypes = {
+  paxId: PropTypes.string,
+  flightId: PropTypes.string,
+  callback: PropTypes.func
 };
 
 export default CreateManualHit;

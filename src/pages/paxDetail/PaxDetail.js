@@ -158,7 +158,11 @@ const PaxDetail = props => {
             <Button variant="outline-danger" size="sm">
               Add To Watchlist
             </Button>
-            <CreateManualHit paxId={props.paxId} flightId={props.flightId} />
+            <CreateManualHit
+              paxId={props.paxId}
+              flightId={props.flightId}
+              callback={setHitSummaryRefreshKey}
+            />
             <Notification paxId={props.paxId} />
             {hasHit && (
               <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
