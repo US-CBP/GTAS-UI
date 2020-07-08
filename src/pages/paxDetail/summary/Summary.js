@@ -97,13 +97,13 @@ const Summary = props => {
     paxEventNotesHistory.get(props.paxId, true).then(res => {
       const notesData = res.paxNotes
         ?.map(note => {
-          const type = (note.notetypes || []).map(t => {
+          const type = (note.noteTypes || []).map(t => {
             return t.noteType;
           });
           return {
             ...note,
             createdAt: localeDate(note.createdAt),
-            notetype: type.toString()
+            noteType: type.toString()
           };
         })
         .slice(0, 10);
