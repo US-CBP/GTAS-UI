@@ -1,18 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Table from "../../components/table/Table";
 import { cases } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm/FilterForm";
-import { hasData } from "../../utils/utils";
-import { Col, Container } from "react-bootstrap";
-import Row from "react-bootstrap/Row";
+import { hasData, asArray, getShortText, isShortText } from "../../utils/utils";
+import { Col } from "react-bootstrap";
 import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import CheckboxGroup from "../../components/inputs/checkboxGroup/CheckboxGroup";
 import "./Vetting.css";
 import { useFetchHitCategories } from "../../services/dataInterface/HitCategoryService";
 import SideNav from "../../components/sidenav/SideNav";
 import Main from "../../components/main/Main";
+import { Link } from "@reach/router";
+import FlightInfo from "./flightInfo/FlightInfo";
+import Notification from "../paxDetail/notification/Notification";
+import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
+import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
+import Overlay from "../../components/overlay/Overlay";
 
 const Vetting = props => {
   const onTableChange = () => {};
@@ -21,12 +26,13 @@ const Vetting = props => {
 
   let sDate = new Date();
   let eDate = new Date();
-  eDate.setDate(eDate.getDate() + 1);
-  sDate.setHours(sDate.getHours() - 1);
+  eDate.setDate(eDate.getDate() + 7);
+  sDate.setHours(sDate.getHours() - 7);
   const [startDate, setStartData] = useState(sDate);
   const [endDate, setEndData] = useState(eDate);
-
   const [data, setData] = useState([{}]);
+  const now = new Date();
+  const target = useRef(null);
 
   const setDataWrapper = data => {
     setData(data?.cases || []);
@@ -62,6 +68,75 @@ const Vetting = props => {
     return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 
+  const Headers = [
+    {
+      Accessor: "countdownTime",
+      Header: "Timer",
+      Cell: ({ row }) => {
+        const future =
+          row.original.countdownTime === "O"
+            ? row.original.flightETDDate
+            : row.original.flightETADate;
+        return <CountdownBadge future={future} baseline={now} />;
+      }
+    },
+    {
+      Accessor: "flightNumber",
+      Header: "Flight Id",
+      Cell: ({ row }) => (
+        <FlightInfo
+          flightNumber={row.original.flightNumber}
+          eta={row.original.flightETADate}
+          etd={row.original.flightETDDate}
+          origin={row.original.flightOrigin}
+          destination={row.original.flightDestination}
+        />
+      )
+    },
+    {
+      Accessor: "hitNames",
+      Header: "Hits",
+      Cell: ({ row }) => {
+        const listdata = asArray(row.original.hitNames).map((hit, index) => {
+          const triggerOverlay = !isShortText(hit, 20);
+          return (
+            <Overlay
+              trigger={triggerOverlay ? ["click", "hover"] : ""}
+              key={index}
+              content={hit}
+            >
+              <li className={triggerOverlay ? "as-link" : ""}>{getShortText(hit, 20)}</li>
+            </Overlay>
+          );
+        });
+        return <ul>{listdata}</ul>;
+      }
+    },
+    {
+      Accessor: "paxName",
+      Header: "Biographic Information",
+      Cell: ({ row }) => (
+        <Link to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}>
+          {row.original.paxName}
+        </Link>
+      )
+    },
+    {
+      Accessor: "status",
+      Header: "Status"
+    },
+    {
+      Accessor: "paxId",
+      Header: "Actions",
+      Cell: ({ row }) => (
+        <>
+          <Notification paxId={`${row.original.paxId}`} />
+          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
+        </>
+      )
+    }
+  ];
+
   let ruleTypes = {
     name: "ruleTypes",
     value: [
@@ -73,13 +148,13 @@ const Vetting = props => {
       },
       {
         name: "USER_RULE",
-        label: "User Created Rule:",
+        label: "User Created:",
         type: "checkbox",
         checked: true
       },
       {
         name: "GRAPH_RULE",
-        label: "Graph Database Rule:",
+        label: "Graph Database:",
         type: "checkbox",
         checked: true
       },
@@ -129,7 +204,7 @@ const Vetting = props => {
 
   useEffect(() => {
     if (hitCategories !== undefined) {
-      let tranformedResponse = hitCategories.map(hitCat => {
+      let tranformedResponse = asArray(hitCategories).map(hitCat => {
         return {
           ...hitCat,
           label: hitCat.name,
@@ -183,11 +258,13 @@ const Vetting = props => {
               <LabelledInput
                 datafield="myRulesOnly"
                 name="myRulesOnly"
-                label="My Rules Only"
+                labelText="My Rules Only"
                 inputType="checkbox"
                 inputVal={false}
                 callback={cb}
                 selected={false}
+                alt="nothing"
+                spacebetween
               />
               <LabelledInput
                 datafield
@@ -230,7 +307,7 @@ const Vetting = props => {
               data={data}
               id="FlightDataTable"
               callback={onTableChange}
-              header={["flightId", "hitNames", "status"]}
+              header={Headers}
               ignoredFields={[
                 "countDown",
                 "priorityVettingListRuleTypes",
