@@ -103,7 +103,6 @@
   margin-left: 8px;
   background-color: white;
 }
-
 .table-hover tbody tr.linked:hover {
   color: rgba(0, 123, 255, 1);
   background-color: rgba(255, 225, 12, 0.24);
@@ -113,4 +112,14 @@
 
 .wide-col {
   min-width: 170px;
+}
+
+.wide-col-2 {
+  min-width: 210px;
+}
+
+.p-1 > .icon-col {
+  width: 50px;
+  text-align: -webkit-center;
+  cursor: pointer;
 }

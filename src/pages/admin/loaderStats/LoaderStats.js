@@ -41,7 +41,7 @@ const LoaderStats = ({ name }) => {
           />
           <LabelledInput
             datafield
-            labelText="Most recent rule hIt (Partial excluded) timestamp:"
+            labelText="Most recent rule hit (Partial excluded) timestamp:"
             inputType="text"
             name="mostRecentRuleHit"
             callback={onChange}

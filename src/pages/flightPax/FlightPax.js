@@ -186,7 +186,7 @@ const FlightPax = props => {
           key={key}
           header={headers}
           data={data}
-          id="Flight Passegers"
+          id="Flight Passengers"
           callback={cb}
         ></Table>
       </Main>
