@@ -98,6 +98,7 @@ const Vetting = props => {
           });
           paramObject[name] = [...morphedArray];
         } else {
+          console.log(name, fields[name]);
           paramObject[name] = fields[name];
         }
       }
@@ -257,18 +258,18 @@ const Vetting = props => {
                 alt="nothing"
               />
               <LabelledInput
-                datafield
+                datafield="lastName"
                 labelText="Passenger Last Name"
                 inputType="text"
-                name="paxName"
+                name="lastName"
                 callback={onTextChange}
                 alt="nothing"
               />
               <LabelledInput
-                datafield
-                labelText="Full Flight ID"
+                datafield="flightNumber"
+                labelText="Flight Number"
                 inputType="text"
-                name="flightId"
+                name="flightNumber"
                 callback={onTextChange}
                 alt="nothing"
               />
