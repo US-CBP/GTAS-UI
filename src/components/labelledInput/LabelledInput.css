@@ -18,3 +18,7 @@
   min-width: 90px;
   margin-right: 10px;
 }
+
+.form-group {
+  margin-bottom: 0.3rem !important;
+}

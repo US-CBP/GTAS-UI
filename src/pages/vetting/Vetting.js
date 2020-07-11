@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import Table from "../../components/table/Table";
-import { cases } from "../../services/serviceWrapper";
+import { cases, ruleCats } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm/FilterForm";
 import { hasData, asArray, getShortText, isShortText } from "../../utils/utils";
-import { Col } from "react-bootstrap";
+import { Col, Button } from "react-bootstrap";
 import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import CheckboxGroup from "../../components/inputs/checkboxGroup/CheckboxGroup";
 import "./Vetting.css";
@@ -20,6 +20,43 @@ import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import Overlay from "../../components/overlay/Overlay";
 
 const Vetting = props => {
+  const hitTypeOptions = [
+    {
+      value: "WATCHLIST",
+      label: "Watchlist"
+    },
+    {
+      value: "USER_RULE",
+      label: "User Created"
+    },
+    {
+      value: "GRAPH_RULE",
+      label: "Graph Database"
+    },
+    {
+      value: "MANUAL",
+      label: "Manual "
+    },
+    {
+      value: "PARTIAL_WATCHLIST",
+      label: "Partial Watchlist"
+    }
+  ];
+
+  const hitStatusOptions = [
+    {
+      value: "NEW",
+      label: "New"
+    },
+    {
+      value: "REVIEWED",
+      label: "Reviewed"
+    },
+    {
+      value: "RE_OPENED",
+      label: "Re Opened"
+    }
+  ];
   const onTableChange = () => {};
   const onTextChange = () => {};
   const cb = () => {};
@@ -31,8 +68,9 @@ const Vetting = props => {
   const [startDate, setStartData] = useState(sDate);
   const [endDate, setEndData] = useState(eDate);
   const [data, setData] = useState([{}]);
+  const { hitCategories, loading } = useFetchHitCategories();
+  const [hitCategoryOptions, setHitCategoryOptions] = useState();
   const now = new Date();
-  const target = useRef(null);
 
   const setDataWrapper = data => {
     setData(data?.cases || []);
@@ -41,22 +79,21 @@ const Vetting = props => {
   const parameterAdapter = fields => {
     let paramObject = { pageSize: 100, pageNumber: 1 };
     const fieldNames = Object.keys(fields);
-
     fieldNames.forEach(name => {
       if (hasData(fields[name])) {
         if (name === "displayStatusCheckBoxes" || name === "ruleTypes") {
-          const checkboxObject = fields[name];
-          const morphedArray = checkboxObject.map(cb => {
-            let name = cb.name;
-            let value = cb.checked;
-            return { [name]: value };
+          const selectedBoxes = fields[name];
+          const morphedArray = selectedBoxes.map(sb => {
+            const name = sb.value;
+            const checked = true;
+            return { [name]: checked };
           });
           paramObject[name] = Object.assign({}, ...morphedArray);
         } else if (name === "ruleCatFilter") {
-          const checkboxObject = fields[name];
-          const morphedArray = checkboxObject.map(cb => {
-            let name = cb.name;
-            let value = cb.checked;
+          const selectedCheckbox = fields[name];
+          const morphedArray = selectedCheckbox.map(cb => {
+            let name = cb.label;
+            let value = true;
             return { name: name, value: value };
           });
           paramObject[name] = [...morphedArray];
@@ -130,6 +167,10 @@ const Vetting = props => {
       Header: "Actions",
       Cell: ({ row }) => (
         <>
+          {/* TODO */}
+          <Button variant="outline-info" size="sm">
+            Review
+          </Button>
           <Notification paxId={`${row.original.paxId}`} />
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
         </>
@@ -137,93 +178,15 @@ const Vetting = props => {
     }
   ];
 
-  let ruleTypes = {
-    name: "ruleTypes",
-    value: [
-      {
-        name: "WATCHLIST",
-        label: "Watchlist:",
-        type: "checkbox",
-        checked: true
-      },
-      {
-        name: "USER_RULE",
-        label: "User Created:",
-        type: "checkbox",
-        checked: true
-      },
-      {
-        name: "GRAPH_RULE",
-        label: "Graph Database:",
-        type: "checkbox",
-        checked: true
-      },
-      {
-        name: "MANUAL",
-        label: "Manual: ",
-        type: "checkbox",
-        checked: true
-      },
-      {
-        name: "PARTIAL_WATCHLIST",
-        label: "Partial Watchlist:",
-        type: "checkbox",
-        checked: false
-      }
-    ]
-  };
-
-  let displayStatusCheckboxGroups = {
-    name: "displayStatusCheckboxes",
-    value: [
-      {
-        name: "NEW",
-        label: "New:",
-        type: "checkbox",
-        checked: true
-      },
-      {
-        name: "REVIEWED",
-        label: "Reviewed:",
-        type: "checkbox",
-        checked: true
-      },
-      {
-        name: "RE_OPENED",
-        label: "Re Opened:",
-        type: "checkbox",
-        checked: false
-      }
-    ]
-  };
-
-  const { hitCategories, loading } = useFetchHitCategories();
-  const [hitCategoryCheckboxes, setHitCategoryCheckboxes] = useState(
-    <div>Loading Checkboxes...</div>
-  );
-
   useEffect(() => {
     if (hitCategories !== undefined) {
-      let tranformedResponse = asArray(hitCategories).map(hitCat => {
+      const options = asArray(hitCategories).map(hitCat => {
         return {
-          ...hitCat,
           label: hitCat.name,
-          type: "checkbox",
-          checked: true
+          value: hitCat.name
         };
       });
-      const data = {
-        name: "hitCategories",
-        value: tranformedResponse
-      };
-      setHitCategoryCheckboxes(
-        <CheckboxGroup
-          datafield={data}
-          inputVal={data.value}
-          labelText="Passenger Hit Categories"
-          name="ruleCatFilter"
-        />
-      );
+      setHitCategoryOptions(options);
     }
   }, [hitCategories, loading]);
 
@@ -241,20 +204,7 @@ const Vetting = props => {
               callback={setDataWrapper}
               paramAdapter={parameterAdapter}
             >
-              <hr />
-              <CheckboxGroup
-                datafield={displayStatusCheckboxGroups}
-                inputVal={displayStatusCheckboxGroups.value}
-                labelText="Passenger Hit Status"
-                name="displayStatusCheckBoxes"
-              />
-              {hitCategoryCheckboxes}
-              <CheckboxGroup
-                datafield={ruleTypes}
-                inputVal={ruleTypes.value}
-                labelText="Hit Types"
-                name="ruleTypes"
-              />
+              <hr className="horizontal-line" />
               <LabelledInput
                 datafield="myRulesOnly"
                 name="myRulesOnly"
@@ -265,6 +215,46 @@ const Vetting = props => {
                 selected={false}
                 alt="nothing"
                 spacebetween
+              />
+              <hr />
+              <LabelledInput
+                name="displayStatusCheckBoxes"
+                datafield="displayStatusCheckBoxes"
+                labelText="Passenger Hit Status"
+                inputType="multiSelect"
+                inputVal={[
+                  {
+                    value: "NEW",
+                    label: "New"
+                  },
+                  {
+                    value: "RE_OPENED",
+                    label: "Re Opened"
+                  }
+                ]}
+                options={hitStatusOptions}
+                callback={cb}
+                alt="nothing"
+              />
+              <LabelledInput
+                name="ruleTypes"
+                datafield="ruleTypes"
+                labelText="Hit Types"
+                inputType="multiSelect"
+                inputVal={hitTypeOptions}
+                options={hitTypeOptions}
+                callback={cb}
+                alt="nothing"
+              />
+              <LabelledInput
+                name="ruleCatFilter"
+                datafield="ruleCatFilter"
+                labelText="Passenger Hit Categories"
+                inputType="multiSelect"
+                inputVal={hitCategoryOptions}
+                options={hitCategoryOptions}
+                callback={cb}
+                alt="nothing"
               />
               <LabelledInput
                 datafield

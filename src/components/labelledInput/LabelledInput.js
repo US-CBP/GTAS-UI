@@ -13,7 +13,7 @@ import "./LabelledInput.css";
 
 const textTypes = ["text", "number", "password", "email", "search", "tel"];
 const boolTypes = ["radio", "checkbox", "toggle"];
-const selectType = "select";
+const selectType = ["select", "multiSelect"];
 const checkboxGroup = "checkboxGroup";
 const textareaType = "textarea";
 const fileType = "file";
@@ -28,6 +28,7 @@ class LabelledInput extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onChangeArray = this.onChangeArray.bind(this);
+    this.onMultiSelecChange = this.onMultiSelecChange.bind(this);
 
     this.state = {
       isValid: true,
@@ -59,6 +60,15 @@ class LabelledInput extends Component {
     });
 
     this.props.callback(e);
+  }
+
+  onMultiSelecChange(e) {
+    this.setState({
+      inputVal: e,
+      isValid: hasData(e) || this.props.required !== REQUIRED
+    });
+
+    this.props.callback({ value: e, name: this.props.name });
   }
 
   //APB - REFACTOR
@@ -111,7 +121,7 @@ class LabelledInput extends Component {
         />
       );
     }
-    if (type === selectType) {
+    if (selectType.includes(type)) {
       return (
         <SelectInput
           autoFocus={this.props.autoFocus}
@@ -120,7 +130,7 @@ class LabelledInput extends Component {
           name={this.props.name}
           inputType={this.props.inputType}
           selected={this.props.inputVal}
-          callback={this.onChange}
+          callback={type === "select" ? this.onChange : this.onMultiSelecChange}
           required={this.state.required}
           placeholder={this.state.placeholder}
           options={this.state.options}
@@ -191,9 +201,10 @@ class LabelledInput extends Component {
 
   render() {
     const cls = !!this.props.spacebetween ? "space-between" : "";
+    const textlabelStyle = this.props.inputType === "multiSelect" ? "" : "txtlabel";
     return (
       <FormGroup className={`${cls} ${this.state.visibleStyle}`}>
-        <label className="txtlabel">{this.state.labelText}</label>
+        <label className={textlabelStyle}>{this.state.labelText}</label>
         {this.getInputByType()}
       </FormGroup>
     );
@@ -219,11 +230,12 @@ LabelledInput.propTypes = {
     "search",
     "tel",
     "label",
-    "file"
+    "file",
+    "multiSelect"
   ]).isRequired,
   callback: PropTypes.func,
   inputVal: PropTypes.any,
-  selected: PropTypes.array,
+  selected: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   options: PropTypes.array,
   placeholder: PropTypes.string,
   required: PropTypes.oneOf([REQUIRED, "", true]),
