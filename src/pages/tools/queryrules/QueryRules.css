@@ -1,0 +1,24 @@
+.modal-content {
+  width: unset !important;
+}
+
+.qbrb-icon {
+  font-size: 1.4em;
+  color: #007bff;
+}
+
+.qbrb-icon-black {
+  font-size: 1.4em;
+}
+
+.qbrb-modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+  max-height: 60vh;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.queryBuilder {
+  min-width: 740px;
+}
