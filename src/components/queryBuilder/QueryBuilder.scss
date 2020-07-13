@@ -1,0 +1,68 @@
+.ruleGroup-header {
+  background-color: #bfdaf7;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+.ruleGroup {
+  margin: 10px 20px;
+  padding: 5px;
+  border: 2px #9fb8d2 solid;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.ruleGroup-combinators {
+  margin-right: 15px;
+  font-weight: 500;
+  // background-color: #caff77;
+  border-radius: 3px;
+}
+
+.ruleGroup-addRule,
+.ruleGroup-addGroup {
+  margin-right: 5px;
+  border-radius: 5px;
+  background-color: #003780;
+  color: white;
+  font-weight: 600;
+}
+
+.ruleGroup-remove,
+.rule-remove {
+  border: 1px solid black;
+  border-radius: 3px;
+  margin-left: 8px;
+  line-height: 1.1;
+  padding-bottom: 3px;
+  font-size: large;
+  background-color: #fff0f0;
+  color: firebrick;
+  font-weight: 600;
+}
+
+.rule {
+  padding: 4px;
+  white-space: nowrap;
+}
+
+.rule-fields,
+.rule-operators,
+.rule-value,
+.rule-entities {
+  height: calc(1.5em + 0.5rem + 2px);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+  margin-right: 5px;
+  border: 1px solid rgb(118, 118, 118);
+}
+
+.rule-fields:focus,
+.rule-operators:focus,
+.rule-value:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: 0;
+}

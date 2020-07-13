@@ -1,6 +1,5 @@
 import GenericService from "./genericService";
 import { hasData, asArray } from "../utils/utils";
-import { object } from "prop-types";
 
 const GET = "get";
 const DELETE = "delete";
@@ -33,16 +32,7 @@ function get(uri, headers, id, params) {
   return GenericService({ uri: uricomplete, method: GET, headers: headers });
 }
 
-function post(uri, headers, body, data) {
-  // if (
-  //   !hasData(body) &&
-  //   !(body instanceof FormData) &&
-  //   !(body instanceof URLSearchParams) &&
-  //   !(data instanceof URLSearchParams) &&
-  //   !hasData(data)
-  // )
-  //   throw new TypeError(POSTBODY);
-
+function post(uri, headers, body) {
   return GenericService({
     uri: uri,
     method: POST,
@@ -52,13 +42,12 @@ function post(uri, headers, body, data) {
 }
 
 function put(uri, headers, id, body) {
-  if (!hasData(body)) throw new TypeError(PUTBODY);
-  if (!hasData(id)) throw new TypeError(PUTID);
+  // if (!hasData(body)) throw new TypeError(PUTBODY);
 
-  const query = `\\${id}`;
+  let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}`;
 
   return GenericService({
-    uri: uri + query,
+    uri: uricomplete,
     method: PUT,
     body: body,
     headers: headers
@@ -76,10 +65,16 @@ function putNoId(uri, headers, body) {
   });
 }
 
-function del(uri, id) {
+function del(uri, headers, id) {
   if (!hasData(id)) throw new TypeError(DELETEID);
 
-  return GenericService({ uri: `${uri}\\${id}`, method: DELETE });
+  let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}`;
+
+  return GenericService({
+    uri: uricomplete,
+    method: DELETE,
+    headers: headers
+  });
 }
 
 function stringify(body) {
@@ -117,15 +112,19 @@ const CODES_RESTOREALL_CARRIER = `${BASE_URL}gtas/api/carrier/restoreAll`;
 const CODES_RESTORE_AIRPORT = `${BASE_URL}gtas/api/airport/restore`;
 const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/carrier/restore`;
 const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/country/restore`;
+
+const WLDOCS = `${BASE_URL}gtas/wl/DOCUMENT/Document`;
+const WLDOCSPOST = `${BASE_URL}gtas/wl/DOCUMENT`;
+const WLPAX = `${BASE_URL}gtas/wl/PASSENGER/Passenger`;
+const WLPAXPOST = `${BASE_URL}gtas/wl/PASSENGER`;
+const WLITEM = `${BASE_URL}gtas/wl/watchlistItem`;
+
 const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
 const NOTIFICATION = `${BASE_URL}gtas/users/notify`;
 const HOST = `${BASE_URL}gtas/api/config/`;
 const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
-const LOGFILE = `${BASE_URL}gtas/api/logs/`;
-
-
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS + "/", BASEHEADER, id, params),
@@ -139,8 +138,7 @@ export const watchlistcats = {
 
 export const watchlistcatspost = {
   post: body => {
-    const objectBody = JSON.stringify({ ...body });
-    return post(WLCATSPOST, BASEHEADER, objectBody);
+    return post(WLCATSPOST, BASEHEADER, stringify(body));
   }
 };
 export const userService = {
@@ -172,7 +170,7 @@ export const paxdetails = {
     return get(path, BASEHEADER);
   }
 };
-export const paxFlightHisoty = {
+export const paxFlightHistory = {
   get: (flightId, paxId) => {
     const path = `${PAX}/flighthistory?paxId=${paxId}&flightId=${flightId}`;
     return get(path, BASEHEADER);
@@ -246,9 +244,9 @@ export const loggedinUser = { get: (id, params) => get(LOGGEDIN_USER, BASEHEADER
 export const roles = { get: get(ROLES, BASEHEADER) };
 export const codeEditor = {
   get: {
-    carrierCodes: (id, params) => get(CODES_CARRIER, BASEHEADER),
-    countryCodes: (id, params) => get(CODES_COUNTRY, BASEHEADER),
-    airportCodes: (id, params) => get(CODES_AIRPORT, BASEHEADER)
+    carrierCodes: () => get(CODES_CARRIER, BASEHEADER),
+    countryCodes: () => get(CODES_COUNTRY, BASEHEADER),
+    airportCodes: () => get(CODES_AIRPORT, BASEHEADER)
   },
   put: {
     updateCarrier: body => putNoId(CODES_CARRIER, BASEHEADER, stringify(body)),
@@ -285,6 +283,63 @@ export const login = {
       return get(LOGGEDIN_USER, BASEHEADER);
     });
   }
+};
+
+export const query = {
+  get: () => {
+    return get(QUERIES, BASEHEADER).then(res => {
+      if (res.status === "SUCCESS") return res.result;
+      return [];
+    });
+  },
+  put: (id, body) => put(QUERIES, BASEHEADER, id, stringify(body)),
+  post: body => post(QUERIES, BASEHEADER, stringify(body)),
+  del: id => del(QUERIES, BASEHEADER, id)
+};
+
+export const rule = {
+  get: id => {
+    return get(RULES, BASEHEADER, id).then(res => {
+      if (res.status === "SUCCESS") return res.result;
+      return [];
+    });
+  },
+  put: (id, body) => put(RULES, BASEHEADER, id, stringify(body)),
+  post: body => post(RULES, BASEHEADER, stringify(body)),
+  del: id => del(RULES, BASEHEADER, id)
+};
+
+export const rulesall = {
+  get: id => {
+    return get(RULESALL, BASEHEADER, id).then(res => {
+      if (res.status === "SUCCESS") return res.result;
+      return [];
+    });
+  }
+};
+
+export const wldocs = {
+  get: () => {
+    return get(WLDOCS, BASEHEADER).then(res => {
+      if (res.status === "SUCCESS") return res.result?.watchlistItems;
+      return [];
+    });
+  },
+  post: body => post(WLDOCSPOST, BASEHEADER, stringify(body)),
+  put: body => put(WLDOCSPOST, BASEHEADER, undefined, stringify(body)),
+  del: id => del(WLITEM, BASEHEADER, id)
+};
+
+export const wlpax = {
+  get: () => {
+    return get(WLPAX, BASEHEADER).then(res => {
+      if (res.status === "SUCCESS") return res.result?.watchlistItems;
+      return [];
+    });
+  },
+  post: body => post(WLPAXPOST, BASEHEADER, stringify(body)),
+  put: body => put(WLPAXPOST, BASEHEADER, undefined, stringify(body)),
+  del: id => del(WLITEM, BASEHEADER, id)
 };
 export const cypher = { get: () => get(CYPHER, BASEHEADER) };
 export const cypherAuth = { get: () => get(CYPHERAUTH, BASEHEADER) };

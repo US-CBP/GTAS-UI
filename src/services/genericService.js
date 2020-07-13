@@ -12,9 +12,7 @@ const GenericService = async props => {
     credentials: "include"
   };
 
-  // if (hasData(props.body) && !(props.body instanceof FormData)) {
   param.body = props.body;
-  // }
 
   return fetch(props.uri, param)
     .then(response => {
@@ -26,7 +24,7 @@ const GenericService = async props => {
         if (response.url.includes("paxdetailreport")) return response.arrayBuffer();
         return response.json().then(res => res.data || res || response);
       } else {
-        return [];
+        return response;
       }
     })
     .catch(error => {
