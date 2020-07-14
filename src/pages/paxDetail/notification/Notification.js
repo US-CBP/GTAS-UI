@@ -56,6 +56,7 @@ const Notification = props => {
             id="notificationmodal"
             afterProcessed={handleClose}
             recordId={paxId}
+            cancellable
           >
             <LabelledInput
               datafield

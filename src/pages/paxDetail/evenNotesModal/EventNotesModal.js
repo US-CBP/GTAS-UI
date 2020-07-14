@@ -56,12 +56,13 @@ const EventNotesModal = props => {
             id="evennoteform"
             afterProcessed={handleClose}
             recordId={paxId}
+            cancellable
           >
             <LabelledInput
               inputType="select"
               alt="Choose not type"
               name="noteType"
-              labelText=""
+              labelText="Note Type"
               placeholder="Choose note type"
               datafield="noteType"
               required="required"

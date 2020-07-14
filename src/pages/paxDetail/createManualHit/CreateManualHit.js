@@ -59,6 +59,7 @@ const CreateManualHit = props => {
             callback={handleClose}
             action="add"
             id="createManualHit"
+            cancellable
           >
             <LabelledInput
               datafield
