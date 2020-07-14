@@ -18,6 +18,7 @@ import Notification from "./notification/Notification";
 import ChangeHitStatus from "./changeHitStatus/ChangeHitStatus";
 import CreateManualHit from "./createManualHit/CreateManualHit";
 import Stepper from "../../components/stepper/Stepper";
+import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
@@ -86,6 +87,7 @@ const PaxDetail = props => {
   const [flightLegsSegmentData, setFlightLegsSegmentData] = useState([]);
   const [hasApisRecord, setHasApisRecod] = useState(false);
   const [hasPnrRecord, setHasPnrRecord] = useState(false);
+  const [watchlistData, setWatchlistData] = useState({});
 
   const tabs = [
     {
@@ -130,6 +132,9 @@ const PaxDetail = props => {
       setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
       setHasApisRecod(res.apisMessageVo?.apisRecordExists || false);
       setHasPnrRecord(res.pnrVo?.pnrRecordExists || false);
+
+      const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
+      setWatchlistData({ passenger: p, documents: res.documents });
     });
   };
 
@@ -154,10 +159,7 @@ const PaxDetail = props => {
               setEventNoteRefreshKey={setEventNoteRefreshKey}
             />
             <DownloadReport paxId={props.paxId} flightId={props.flightId} />
-
-            <Button variant="outline-danger" size="sm">
-              Add To Watchlist
-            </Button>
+            <AddToWatchlist watchlistItems={watchlistData} />
             <CreateManualHit
               paxId={props.paxId}
               flightId={props.flightId}
