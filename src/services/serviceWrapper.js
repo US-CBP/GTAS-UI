@@ -344,6 +344,23 @@ export const wlpax = {
   put: body => put(WLPAXPOST, BASEHEADER, undefined, stringify(body)),
   del: id => del(WLITEM, BASEHEADER, id)
 };
+
+export const addWLItems = {
+  post: body => {
+    // TODO find a cleaner way to handle the respone.
+    //Change the backend to accept a list of watchlist items?
+    const responses = [];
+    const paxItem = JSON.parse(body.passenger.replace("{categoryId}", body.categoryId));
+    return post(WLPAXPOST, BASEHEADER, stringify(paxItem)).then(
+      asArray(body.documents).forEach(doc => {
+        const docItem = JSON.parse(doc.replace("{categoryId}", body.categoryId));
+        return post(WLDOCSPOST, BASEHEADER, stringify(docItem)).then(
+          res => responses.push[res]
+        );
+      })
+    );
+  }
+};
 export const cypher = { get: () => get(CYPHER, BASEHEADER) };
 export const cypherAuth = { get: () => get(CYPHERAUTH, BASEHEADER) };
 export const manualHit = {

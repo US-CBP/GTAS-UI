@@ -7,17 +7,17 @@ const CardWithTable = props => {
   const data = asArray(props.data); //[{key:value}]
   const headers = props.headers || {}; //{key:value}
   const cb = props.callback ? props.callback : () => {}; //callback may not be passed as a prop
-  const commentDisplayLimit = 50;
+  const textDisplayLimit = 20;
 
   const isShortText = text => {
-    return !hasData(text) || text.toString().length <= commentDisplayLimit ? true : false;
+    return !hasData(text) || text.toString().length <= textDisplayLimit ? true : false;
   };
 
   // truncate long text for display in the card. Full text will be in a popover
   const getShortText = text => {
     if (isShortText(text)) return text;
 
-    return `${text.toString().substr(0, commentDisplayLimit - 4)} ...`;
+    return `${text.toString().substr(0, textDisplayLimit - 4)} ...`;
   };
 
   const getPopover = content => {
@@ -38,7 +38,7 @@ const CardWithTable = props => {
       const triggerOverlay = !isShortText(td);
       return (
         <OverlayTrigger
-          trigger={triggerOverlay ? "click" : ""}
+          trigger={triggerOverlay ? ["click"] : ""}
           rootClose
           key={key}
           placement="top"
@@ -57,9 +57,11 @@ const CardWithTable = props => {
   });
 
   return (
-    <Card>
-      <Card.Header className="customized-card-header">{props.title || ""}</Card.Header>
-      <Table size="sm" striped borderless hover>
+    <Card className="card-with-table">
+      <Card.Header className="customized-card-header">
+        {props.title || ""} <span className="row-count">{data.length}</span>
+      </Card.Header>
+      <Table size="sm" striped borderless hover responsive>
         <thead>
           <tr>{tableHeaders}</tr>
         </thead>
