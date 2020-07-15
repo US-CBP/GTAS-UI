@@ -1,7 +1,83 @@
-/* .success {
-  background-color: #d5f8d7;
+.success > div > .modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  border-radius: 0.3rem;
+  outline: 0;
+  color: #155724;
+  background-color: #f8f9fa;
+  padding-right: 20px;
+  padding-left: 20px;
 }
 
-.error {
-  background-color: #f8d5d5;
-} */
+.success2 > div > .modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  border-radius: 0.3rem;
+  outline: 0;
+  color: #155724;
+  background-color: white;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.default > div > .modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  border-radius: 0.3rem;
+  outline: 0;
+  color: #303030;
+  background-color: white;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.default > div > .modal-content > .modal-header {
+  border-bottom: 1px solid #a0a0a0;
+}
+
+.bq-default:before {
+  content: "\f05a";
+}
+
+.success > div > .modal-content > .modal-header {
+  border-bottom: 1px solid #b1dfbb;
+}
+
+.bq-success:before {
+  content: "\f046";
+}
+
+.error > div > hr {
+  border-top-color: #dfb1b1;
+}
+
+.error > div > .modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  border-radius: 0.3rem;
+  outline: 0;
+  color: #a21919;
+  background-color: #f8f9fa;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.modal-footer {
+  border-top: unset !important;
+}
+
+.bq-error:before {
+  content: "\f071";
+}

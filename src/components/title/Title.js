@@ -20,6 +20,9 @@ const Title = props => {
         {props.leftChild}
       </span>
       <span className="title-span">{props.title}</span>
+      <span className="right-span" onClick={ev => cb(ev)}>
+        {props.rightChild}
+      </span>
     </div>
   );
 };

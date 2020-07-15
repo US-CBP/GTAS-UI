@@ -6,7 +6,7 @@ import {
   flightpaxHitSummary,
   paxEventNotesHistory
 } from "../../../services/serviceWrapper";
-import { CardDeck, Container } from "react-bootstrap";
+import { Container, CardColumns } from "react-bootstrap";
 import "./Summary.scss";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { composeInitialProps } from "react-i18next";
@@ -97,13 +97,13 @@ const Summary = props => {
     paxEventNotesHistory.get(props.paxId, true).then(res => {
       const notesData = res.paxNotes
         ?.map(note => {
-          const type = (note.notetypes || []).map(t => {
+          const type = (note.noteTypes || []).map(t => {
             return t.noteType;
           });
           return {
             ...note,
             createdAt: localeDate(note.createdAt),
-            notetype: type.toString()
+            noteType: type.toString()
           };
         })
         .slice(0, 10);
@@ -113,7 +113,7 @@ const Summary = props => {
 
   return (
     <Container fluid className="summary-container">
-      <CardDeck>
+      <CardColumns>
         <CardWithTable
           data={paxHitSummary}
           headers={headers.paxHitSummary}
@@ -136,9 +136,8 @@ const Summary = props => {
           data={historicalEventNotes}
           headers={headers.eventNotes}
           title={`Previous Notes History (Up to 10)`}
-          key={props.eventNoteRefreshKey}
         />
-      </CardDeck>
+      </CardColumns>
     </Container>
   );
 };

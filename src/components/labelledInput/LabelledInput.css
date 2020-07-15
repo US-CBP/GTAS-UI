@@ -15,7 +15,8 @@
   width: unset !important;
   text-align: right;
   white-space: nowrap;
-  min-width: 90px;
+  /* min-width: 90px; */
+  min-width: 30%;
   margin-right: 10px;
 }
 
