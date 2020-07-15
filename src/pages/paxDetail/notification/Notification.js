@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { Button, Modal } from "react-bootstrap";
 import { notification, users } from "../../../services/serviceWrapper";
@@ -15,18 +15,24 @@ const Notification = props => {
   const paxId = props.paxId;
 
   useEffect(() => {
+    let isMounted = true;
+
     users.get().then(res => {
-      const emails = asArray(res).map(user => {
-        return {
-          label: user.userId,
-          key: user.email,
-          name: user.email,
-          type: "checkbox",
-          checked: false
-        };
-      });
-      setUsersEmails(emails);
+      if (isMounted) {
+        const emails = asArray(res).map(user => {
+          return {
+            label: user.userId,
+            key: user.email,
+            name: user.email,
+            type: "checkbox",
+            checked: false
+          };
+        });
+        setUsersEmails(emails);
+      }
     });
+
+    return () => (isMounted = false); //clean up
   }, []);
 
   return (
