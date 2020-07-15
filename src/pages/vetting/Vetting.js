@@ -18,6 +18,7 @@ import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import Overlay from "../../components/overlay/Overlay";
+import ReviewPVL from "./review/Review";
 
 const Vetting = props => {
   const hitTypeOptions = [
@@ -70,6 +71,7 @@ const Vetting = props => {
   const [data, setData] = useState([{}]);
   const { hitCategories, loading } = useFetchHitCategories();
   const [hitCategoryOptions, setHitCategoryOptions] = useState();
+  const [refreshKey, setRefreshKey] = useState("");
   const now = new Date();
 
   const setDataWrapper = data => {
@@ -98,7 +100,6 @@ const Vetting = props => {
           });
           paramObject[name] = [...morphedArray];
         } else {
-          console.log(name, fields[name]);
           paramObject[name] = fields[name];
         }
       }
@@ -168,10 +169,7 @@ const Vetting = props => {
       Header: "Actions",
       Cell: ({ row }) => (
         <>
-          {/* TODO */}
-          <Button variant="outline-info" size="sm">
-            Review
-          </Button>
+          <ReviewPVL paxId={row.original.paxId} callback={setRefreshKey} />
           <Notification paxId={`${row.original.paxId}`} />
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
         </>
@@ -204,6 +202,7 @@ const Vetting = props => {
               title="Filter"
               callback={setDataWrapper}
               paramAdapter={parameterAdapter}
+              key={refreshKey}
             >
               <hr className="horizontal-line" />
               <LabelledInput
