@@ -97,17 +97,33 @@ const UserModal = props => {
             paramCallback={preSubmit}
             cancellable
           >
+
+            {props.isEdit ? (
             <LabelledInput
-              datafield
-              labelText="User ID"
-              inputType="text"
-              name="userId"
-              required={true}
-              inputVal={props?.editRowDetails.userId || ""}
-              alt="nothing"
-              callback={cb}
-              spacebetween
+            datafield
+            labelText="User ID"
+            inputType="text"
+            name="userId"
+            required={true}
+            inputVal={props?.editRowDetails.userId || ""}
+            alt="nothing"
+            callback={cb}
+            readOnly={true}
+            spacebetween
+            ></LabelledInput>
+              ):(
+            <LabelledInput
+                datafield
+                labelText="User ID"
+                inputType="text"
+                name="userId"
+                required={true}
+                inputVal={props?.editRowDetails.userId || ""}
+                alt="nothing"
+                callback={cb}
+                spacebetween
             />
+            )}
 
             <LabelledInput
               datafield

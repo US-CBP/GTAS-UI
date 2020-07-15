@@ -17,8 +17,16 @@ const CountryModal = props => {
     let res = { ...fields[0] };
     //Id is lacking for updates in the body
     res.id = props.editRowDetails.id;
+    res.originId = props.editRowDetails.originId;
     return [res];
   };
+
+  const restoreSpecificCode = () => {
+    codeEditor.put.restoreCountry(props.editRowDetails).then(res=>{
+      props.onHide();
+      props.refresh();
+    });
+  }
 
   return (
     <Modal
