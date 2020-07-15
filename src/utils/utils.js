@@ -253,3 +253,15 @@ export function passengerTypeMapper(type) {
   };
   return passengerTypesMap[type];
 }
+
+//if engthToCompare is not passed, set default to 50
+export function isShortText(text, lengthToCompare = 50) {
+  return !hasData(text) || text.toString().length <= lengthToCompare ? true : false;
+}
+
+//if shortTextLength is not passed, set default to 50
+export function getShortText(text, shortTextLength = 50) {
+  if (isShortText(text, shortTextLength)) return text;
+
+  return `${text.toString().substr(0, shortTextLength - 4)} ...`;
+}

@@ -1,18 +1,11 @@
 $wco-blue: rgb(0, 119, 200);
 $gtas-white: rgba(255, 255, 255, 0.9);
 .customized-card-header {
-  background-color: $wco-blue;
+  background-color: $wco-blue !important;
   font-weight: 700;
   color: $gtas-white;
 }
-.aslink {
-  color: #0199b8;
-  cursor: pointer;
-  font-weight: 500;
-}
-.aslink:hover {
-  text-decoration: underline;
-}
+
 .card-with-table {
   max-height: 300px;
 }

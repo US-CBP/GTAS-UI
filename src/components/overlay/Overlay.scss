@@ -1,0 +1,14 @@
+$transparent: rgba(133, 130, 130, 0.6);
+.as-link {
+  color: #0199b8;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.as-link:hover {
+  text-decoration: underline;
+}
+
+.overlay-content {
+  background-color: $transparent;
+}
