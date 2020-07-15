@@ -97,6 +97,9 @@ const GETRULECATS = `${BASE_URL}getRuleCats`;
 const PAX = `${BASE_URL}gtas/passengers/passenger`;
 const FLIGHTPAXHITSUMMARY = `${BASE_URL}gtas/hit/flightpassenger`;
 const FLIGHTPAX = `${BASE_URL}gtas/api/flights/flightpax`;
+const QUERIES = `${BASE_URL}gtas/query`;
+const RULES = `${BASE_URL}gtas/udr`;
+const RULESALL = `${BASE_URL}gtas/all_udr`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/statistics`;
 const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
 const NOTE_TYPES = `${BASE_URL}gtas/passengers/passenger/notetypes`;
@@ -125,11 +128,13 @@ const HOST = `${BASE_URL}gtas/api/config/`;
 const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
+const LOGFILE = `${BASE_URL}gtas/api/logs/`;
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS + "/", BASEHEADER, id, params),
   put: body => put(USERS, BASEHEADER, 1, stringify(body)),
-  post: body => post(USERS + "/1", BASEHEADER, stringify(body))
+  post: body => post(USERS + "/1", BASEHEADER, stringify(body)),
+  del: body => post(USERS, BASEHEADER)
 };
 export const watchlistcats = {
   get: (id, params) => get(WLCATS, BASEHEADER, id, params),

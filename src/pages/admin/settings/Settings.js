@@ -6,7 +6,7 @@ import { Container, Col } from "react-bootstrap";
 
 const Settings = ({ name }) => {
   const onChange = function(result) {};
-  // const cb = function() {};
+  const cb = function() {};
 
   return (
     <Container>
@@ -14,6 +14,7 @@ const Settings = ({ name }) => {
         <Form
           getService={settingsinfo.get}
           submitService={settingsinfo.put}
+          callback={onChange}
           title=""
           action="edit"
         >
@@ -22,7 +23,7 @@ const Settings = ({ name }) => {
             labelText="Matching Threshold"
             inputType="number"
             name="matchingThreshold"
-            callback={onChange}
+            callback={cb}
             alt="nothing"
           />
           <LabelledInput
@@ -30,7 +31,7 @@ const Settings = ({ name }) => {
             labelText="Maximum Passenger Query Results"
             inputType="number"
             name="maxPassengerQueryResult"
-            callback={onChange}
+            callback={cb}
             alt="nothing"
           />
           <LabelledInput
@@ -38,7 +39,7 @@ const Settings = ({ name }) => {
             labelText="Maximum Flight Query Results"
             inputType="number"
             name="maxFlightQueryResult"
-            callback={onChange}
+            callback={cb}
             alt="nothing"
           />
           <LabelledInput
@@ -46,7 +47,7 @@ const Settings = ({ name }) => {
             labelText="Watchlists Matching Flight Range"
             inputType="number"
             name="flightRange"
-            callback={onChange}
+            callback={cb}
             alt="nothing"
           />
           <LabelledInput
@@ -54,7 +55,7 @@ const Settings = ({ name }) => {
             labelText="Maximum Rule Hits Allowed Per Run on Rule"
             inputType="number"
             name="maxRuleHit"
-            callback={onChange}
+            callback={cb}
             alt="nothing"
           />
           <LabelledInput
@@ -66,7 +67,7 @@ const Settings = ({ name }) => {
               { value: "FALSE", label: "FALSE" }
             ]}
             name="apisOnlyFlag"
-            callback={onChange}
+            callback={cb}
             alt="nothing"
           />
           <LabelledInput
@@ -74,7 +75,7 @@ const Settings = ({ name }) => {
             labelText="APIS Version"
             inputType="text"
             name="apisVersion"
-            callback={onChange}
+            callback={cb}
             alt="nothing"
           />
         </Form>

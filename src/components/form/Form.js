@@ -69,9 +69,9 @@ class Form extends React.Component {
             ? res[0]
             : {};
 
-          let populatedFields = [];
+          let populatedFields = {};
           for (let field in this.state.fields) {
-            populatedFields[field] = singleRecord[field];
+            populatedFields[field]=singleRecord[field];
           }
           fields = populatedFields;
         }
