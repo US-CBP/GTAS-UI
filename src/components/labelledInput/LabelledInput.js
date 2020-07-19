@@ -50,6 +50,9 @@ class LabelledInput extends Component {
       isValid: hasData(value) || this.props.required !== REQUIRED
     });
 
+    if (e.target.name === "showDateTimePicker") {
+      this.props.toggleDateTimePicker(e.target.value);
+    }
     this.props.callback(e.target);
   }
 
@@ -240,7 +243,8 @@ LabelledInput.propTypes = {
   placeholder: PropTypes.string,
   required: PropTypes.oneOf([REQUIRED, "", true]),
   isVisible: PropTypes.bool,
-  readOnly: PropTypes.bool
+  readOnly: PropTypes.bool,
+  toggleDateTimePicker: PropTypes.func
 };
 
 export default LabelledInput;
