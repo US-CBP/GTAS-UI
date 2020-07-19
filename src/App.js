@@ -48,6 +48,7 @@ import RoleAuthenticator from "./context/roleAuthenticator/RoleAuthenticator";
 import UserProvider from "./context/user/UserContext";
 
 import { ROLE, TIME } from "./utils/constants";
+import ChangePassword from "./pages/admin/manageUsers/changePassword/ChangePassword";
 
 //Split Link Analysis (Graph component, d3, jquery deps) into a separate bundle
 const LinkAnalysis = React.lazy(() =>
@@ -157,6 +158,7 @@ export default class App extends React.Component {
                       <Redirect from="tools/watchlist" to="pax" noThrow />
                       <Watchlist path="tools/watchlist/:mode"></Watchlist>
                       <About path="tools/about"></About>
+                      <ChangePassword path="user/change-password"></ChangePassword>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
                         <Admin path="/">
                           <ManageUser name="Manage Users" path="manageusers">

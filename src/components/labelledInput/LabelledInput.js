@@ -51,6 +51,9 @@ class LabelledInput extends Component {
     });
 
     this.props.callback(e.target);
+    if (hasData(this.props.onChange)) {
+      this.props.onChange(e.target.value);
+    }
   }
 
   onChangeArray(e, label) {
@@ -240,7 +243,8 @@ LabelledInput.propTypes = {
   placeholder: PropTypes.string,
   required: PropTypes.oneOf([REQUIRED, "", true]),
   isVisible: PropTypes.bool,
-  readOnly: PropTypes.bool
+  readOnly: PropTypes.bool,
+  onChange: PropTypes.func
 };
 
 export default LabelledInput;
