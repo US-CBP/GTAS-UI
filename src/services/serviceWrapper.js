@@ -86,6 +86,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
+const CHANGEPASSWORD = `${BASE_URL}gtas/user/change-password`;
 const WLCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
 const WLCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
 const FLIGHTS = `${BASE_URL}gtas/api/flights`;
@@ -154,8 +155,8 @@ export const userService = {
 };
 
 export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
-export const auditlog = { get: (params) => get(AUDITLOG, BASEHEADER, undefined, params) };
-export const errorlog = { get: (params) => get(ERRORLOG, BASEHEADER, undefined, params) };
+export const auditlog = { get: params => get(AUDITLOG, BASEHEADER, undefined, params) };
+export const errorlog = { get: params => get(ERRORLOG, BASEHEADER, undefined, params) };
 export const cases = {
   get: (id, params) => get(CASES, BASEHEADER, undefined, params),
   updateStatus: (paxId, status) => {
@@ -374,5 +375,9 @@ export const manualHit = {
 
 export const logfile = {
   get: (id, params) => get(LOGFILE, BASEHEADER, id, params),
-  download: (params) => window.open(LOGFILE+params, '_self')
+  download: params => window.open(LOGFILE + params, "_self")
+};
+
+export const changePassword = {
+  put: body => put(CHANGEPASSWORD, BASEHEADER, undefined, stringify(body))
 };

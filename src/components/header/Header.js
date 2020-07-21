@@ -118,7 +118,11 @@ const Header = () => {
         </Nav>
         <Nav variant="tabs" className="ml-auto">
           <NavDropdown title={userFullName} id="basic-nav-dropdown" className="right">
-            <NavDropdown.Item as={Link} to="#" onClick={() => clickTab("")}>
+            <NavDropdown.Item
+              as={Link}
+              to={"user/change-password"}
+              onClick={() => clickTab("")}
+            >
               Change Password
             </NavDropdown.Item>
             <NavDropdown.Divider />
