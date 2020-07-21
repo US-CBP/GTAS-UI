@@ -5,6 +5,7 @@ import { users, userService } from "../../../services/serviceWrapper"; //Add hoo
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
 import { asArray } from "../../../utils/utils";
+import "./ManageUsers.scss";
 
 const UserModal = props => {
   //TODO make this a service call return data
@@ -75,6 +76,23 @@ const UserModal = props => {
     return [res];
   };
 
+  const getPasswordInput = () => {
+    return props.isEdit ? (
+      <></>
+    ) : (
+      <LabelledInput
+        datafield
+        labelText="Password"
+        inputType="password"
+        name="password"
+        required={true}
+        alt="nothing"
+        callback={cb}
+        spacebetween
+      />
+    );
+  };
+
   return (
     <Modal
       show={props.show}
@@ -97,22 +115,21 @@ const UserModal = props => {
             paramCallback={preSubmit}
             cancellable
           >
-
             {props.isEdit ? (
-            <LabelledInput
-            datafield
-            labelText="User ID"
-            inputType="text"
-            name="userId"
-            required={true}
-            inputVal={props?.editRowDetails.userId || ""}
-            alt="nothing"
-            callback={cb}
-            readOnly={true}
-            spacebetween
-            ></LabelledInput>
-              ):(
-            <LabelledInput
+              <LabelledInput
+                datafield
+                labelText="User ID"
+                inputType="text"
+                name="userId"
+                required={true}
+                inputVal={props?.editRowDetails.userId || ""}
+                alt="nothing"
+                callback={cb}
+                readOnly={true}
+                spacebetween
+              ></LabelledInput>
+            ) : (
+              <LabelledInput
                 datafield
                 labelText="User ID"
                 inputType="text"
@@ -122,19 +139,10 @@ const UserModal = props => {
                 alt="nothing"
                 callback={cb}
                 spacebetween
-            />
+              />
             )}
 
-            <LabelledInput
-              datafield
-              labelText="Password"
-              inputType="password"
-              name="password"
-              required={true}
-              alt="nothing"
-              callback={cb}
-              spacebetween
-            />
+            {getPasswordInput()}
 
             <LabelledInput
               datafield
@@ -211,12 +219,14 @@ const UserModal = props => {
               spacebetween
             />
 
-            <CheckboxGroup
-              datafield
-              inputVal={rcb.value}
-              labelText="Roles"
-              name="roles"
-            />
+            <div className="um-checkbox">
+              <CheckboxGroup
+                datafield
+                inputVal={rcb.value}
+                labelText="Roles"
+                name="roles"
+              />
+            </div>
           </Form>
         </Container>
       </Modal.Body>
