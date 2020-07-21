@@ -5,6 +5,7 @@ import Title from "../../../components/title/Title";
 import { Container } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray, hasData } from "../../../utils/utils";
+import "./fileDownload.css";
 
 const FileDownload = ({ name }) => {
   const [logTypes, setLogTypes] = useState([]);
