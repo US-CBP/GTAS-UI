@@ -79,14 +79,43 @@ const Header = () => {
             Vetting
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
-            <Nav.Link
+            {/* <Nav.Link
               as={Link}
               to="admin"
               className={`${getActiveClass(headerTabs.ADMIN)}`}
               onClick={() => clickTab(headerTabs.ADMIN)}
             >
               Admin
-            </Nav.Link>
+            </Nav.Link> */}
+            <NavDropdown title="Admin" id="nav-dropdown">
+              <NavDropdown.Item as={Link} to="admin/manageusers">
+                Manage Users
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="admin/auditlog">
+                Audit Log
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="admin/errorlog">
+                Error Log
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="admin/settings">
+                Settings
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="admin/filedownload">
+                File Download
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="admin/codeeditor">
+                Code Editor
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="admin/loaderstats">
+                Loader Statistics
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="admin/watchlistcats">
+                Watchlist Categories
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="admin/notetypecats">
+                Note Type Categories
+              </NavDropdown.Item>
+            </NavDropdown>
           </RoleAuthenticator>
           <NavDropdown title="Tools" id="nav-dropdown">
             <NavDropdown.Item as={Link} to="tools/queries" onClick={() => clickTab("")}>

@@ -6,15 +6,22 @@
   font-size: x-large;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding: 5px;
+  position: relative;
 }
 
 .title-span {
-  padding-right: 116px;
   flex-grow: 1;
 }
 
 .left-span {
-  float: left;
+  position: absolute;
+  left: 0px;
+  top: 5px;
   font-size: initial;
-  margin-bottom: -6px;
+}
+
+.right-span {
+  position: absolute;
+  right: 0px;
+  top: 0px;
 }

@@ -16,30 +16,27 @@ const WatchlistCats = ({ name }) => {
     setRefreshKey(refreshKey + 1);
   };
 
+  const cats = (
+    <Button variant="outline-dark" onClick={() => setShowModal(true)}>
+      Add Category
+    </Button>
+  );
+
   return (
     <Container fluid>
-      <Row>
-        <Col sm={4}>
-          <Title title={name}></Title>
-        </Col>
-        <Col sm={{ span: 4, offset: 4 }}>
-          <Button variant="outline-dark" onClick={() => setShowModal(true)}>
-            Add to Watchlist
-          </Button>
-          <WatchlistModal
-            show={showModal}
-            onHide={() => setShowModal(false)}
-            refresh={refresh}
-            callback={cb}
-          />
-        </Col>
-      </Row>
+      <Title title={name} rightChild={cats}></Title>
       <Table
         service={watchlistcats.get}
         id="Watchlist Category"
         key={refreshKey}
         callback={cb}
       ></Table>
+      <WatchlistModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        refresh={refresh}
+        callback={cb}
+      />
     </Container>
   );
 };

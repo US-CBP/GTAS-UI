@@ -24,8 +24,8 @@ const Admin = props => {
         text="Something has happened."
         defaultState={showBanner}
       />
-
-      <Tabs tabs={tablist} />
+      {props.children}
+      {/* <Tabs tabs={tablist} /> */}
     </>
   );
 };

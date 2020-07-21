@@ -14,30 +14,28 @@ const NoteTypeCats = ({ name }) => {
     setRefreshKey(refreshKey + 1);
   };
 
+  const addCat = (
+    <Button variant="outline-dark" onClick={() => setShowModal(true)}>
+      Add Category
+    </Button>
+  );
+
   return (
     <Container fluid>
-      <Row>
-        <Col sm={4}>
-          <Title title={name}></Title>
-        </Col>
-        <Col sm={{ span: 4, offset: 4 }}>
-          <Button variant="outline-dark" onClick={() => setShowModal(true)}>
-            Add Note Type Category
-          </Button>
-          <NoteTypeModal
-            show={showModal}
-            onHide={() => setShowModal(false)}
-            refresh={refresh}
-            callback={cb}
-          />
-        </Col>
-      </Row>
+      <Title title={name} rightChild={addCat}></Title>
+      <Row></Row>
       <Table
         service={notetypes.get}
         id="noteTypes"
         key={refreshKey}
         callback={cb}
       ></Table>
+      <NoteTypeModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        refresh={refresh}
+        callback={cb}
+      />
     </Container>
   );
 };
