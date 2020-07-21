@@ -7,6 +7,7 @@ import {
   buttonConfigQuery,
   buttonConfigRule
 } from "../../../components/queryBuilder/constants";
+import { navigate } from "@reach/router";
 
 const QRModal = props => {
   const id = props.id;
@@ -53,6 +54,9 @@ const QRModal = props => {
   };
 
   const onRun = () => {
+    navigate("/gtas/tools/qrdetails", {
+      state: { data: {} }
+    });
     props.callback("RUN");
   };
 
@@ -65,7 +69,6 @@ const QRModal = props => {
 
   useEffect(() => {
     setData(props.data?.query);
-    console.log(props.data);
   }, []);
 
   return (
@@ -108,7 +111,6 @@ const QRModal = props => {
               data={data}
               key={key}
               translations={buttonConfig}
-              // cb={cb}
               dataCallback={dataCallback}
             ></QueryBuilder>
           </Container>
