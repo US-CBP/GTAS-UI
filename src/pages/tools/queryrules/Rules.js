@@ -156,7 +156,6 @@ const Rules = props => {
 
   const button = (
     <Button
-      block
       variant="ternary"
       className="btn btn-outline-info"
       name={props.name}

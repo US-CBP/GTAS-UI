@@ -94,7 +94,6 @@ const ManageUsers = props => {
 
   const button = (
     <Button
-      block
       variant="ternary"
       className="btn btn-outline-info"
       name={props.name}
@@ -139,7 +138,7 @@ const ManageUsers = props => {
   return (
     <>
       <Container fluid>
-        <Title title="Manage Users" leftChild={button}></Title>
+        <Title title="Manage Users" rightChild={button}></Title>
         <Table
           id="users"
           data={data}
