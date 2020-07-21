@@ -16,7 +16,8 @@
 .left-span {
   position: absolute;
   left: 0px;
-  top: 0px;
+  top: 5px;
+  font-size: initial;
 }
 
 .right-span {
