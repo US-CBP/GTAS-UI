@@ -55,7 +55,7 @@ class LabelledInput extends Component {
     }
     this.props.callback(e.target);
     if (hasData(this.props.onChange)) {
-      this.props.onChange(e.target.value);
+      this.props.onChange(e.target);
     }
   }
 
