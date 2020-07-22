@@ -7,7 +7,6 @@ import {
   buttonConfigQuery,
   buttonConfigRule
 } from "../../../components/queryBuilder/constants";
-import { navigate } from "@reach/router";
 
 const QRModal = props => {
   const id = props.id;
@@ -54,9 +53,6 @@ const QRModal = props => {
   };
 
   const onRun = () => {
-    navigate("/gtas/tools/qrdetails", {
-      state: { data: {} }
-    });
     props.callback("RUN");
   };
 
