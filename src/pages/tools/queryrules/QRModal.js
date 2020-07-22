@@ -55,7 +55,13 @@ const QRModal = props => {
 
   const onRun = () => {
     navigate("/gtas/tools/qrdetails", {
-      state: { data: {} }
+      state: {
+        data: {
+          pageNumber: 1,
+          pageSize: 10,
+          query: data
+        }
+      }
     });
     props.callback("RUN");
   };

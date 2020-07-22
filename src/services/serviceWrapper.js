@@ -331,7 +331,8 @@ export const querypax = {
       if (res.status === "SUCCESS") return res.result;
       return [];
     });
-  }
+  },
+  post: body => post(QUERYPAX, BASEHEADER, stringify(body))
 };
 
 export const wldocs = {
