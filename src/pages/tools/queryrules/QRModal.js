@@ -65,7 +65,6 @@ const QRModal = props => {
 
   useEffect(() => {
     setData(props.data?.query);
-    console.log(props.data);
   }, []);
 
   return (
@@ -108,7 +107,6 @@ const QRModal = props => {
               data={data}
               key={key}
               translations={buttonConfig}
-              // cb={cb}
               dataCallback={dataCallback}
             ></QueryBuilder>
           </Container>
