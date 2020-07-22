@@ -27,6 +27,7 @@ export const EntitySelect = `<select className="rule-entities" title="Entities">
 <option label="FLIGHT LEG" value="BOOKINGDETAIL"></option>
 <option label="FREQUENT FLYER" value="FREQUENTFLYER"></option>
 <option label="PASSENGER" value="PASSENGER"></option>
+<option label="SEAT" value="SEAT"></option>
 <option label="PHONE" value="PHONE"></option>
 <option label="FORM OF PAYMENT" value="PAYMENTFORM"></option>
 <option label="PNR" value="PNR"></option>
@@ -149,9 +150,15 @@ export const FIELDS = {
   <option key="Passenger.passengerDetails.lastName" value="Passenger.passengerDetails.lastName" label="Name - Last"></option>
   <option key="Passenger.passengerDetails.middleName" value="Passenger.passengerDetails.middleName" label="Name - Middle"></option>
   <option key="Passenger.passengerDetails.residencyCountry" value="Passenger.passengerDetails.residencyCountry" label="Residency Country"></option>
-  <option key="Passenger.seat" value="Passenger.seat" label="Seat"></option>
   <option key="Passenger.passengerDetails.passengerType" value="Passenger.passengerDetails.passengerType" label="Type"></option>
   <option key="Passenger.passengerTripDetails.travelFrequency" value="Passenger.passengerTripDetails.travelFrequency" label="Travel Frequency"></option>
+  </select>`,
+
+  seatFields: `<select>
+  <option key="0" value="" label="Select"></option>
+    <option key="Seat.number" value="Seat.number" label="Seat Number"></option>
+    <option key="Seat.cabinClass" value="Seat.cabinClass" label="Cabin Class"></option>
+    <option key="Seat.apis" value="Seat.apis" label="Is APIS"></option>
   </select>`,
 
   paymentFields: `<select>
@@ -274,8 +281,8 @@ export const fakequery = {
 const stringops = [
   "EQUAL",
   "NOT_EQUAL",
-  "IN",
-  "NOT_IN",
+  "BETWEEN",
+  "NOT_BETWEEN",
   "BEGINS_WITH",
   "NOT_BEGINS_WITH",
   "CONTAINS",
@@ -299,7 +306,14 @@ const dateops = [
 
 const dateopsNull = [...dateops, "IS_NULL", "IS_NOT_NULL"];
 
-const equalInNull = ["EQUAL", "NOT_EQUAL", "IN", "NOT_IN", "IS_NULL", "IS_NOT_NULL"];
+const equalInNull = [
+  "EQUAL",
+  "NOT_EQUAL",
+  "BETWEEN",
+  "NOT_BETWEEN",
+  "IS_NULL",
+  "IS_NOT_NULL"
+];
 
 const intops = [
   "EQUAL",
@@ -315,8 +329,8 @@ const intops = [
 export const gtasops = `<select>
 <option value="EQUAL" label="EQUAL"></option>
 <option value="NOT_EQUAL" label="NOT_EQUAL"></option>
-<option value="IN" label="IN"></option>
-<option value="NOT_IN" label="NOT_IN"></option>
+<option value="BETWEEN" label="IN"></option>
+<option value="NOT_BETWEEN" label="NOT_IN"></option>
 <option value="BEGINS_WITH" label="BEGINS_WITH"></option>
 <option value="NOT_BEGINS_WITH" label="NOT_BEGINS_WITH"></option>
 <option value="CONTAINS" label="CONTAINS"></option>
@@ -332,8 +346,8 @@ export const gtasoparray = [
   { name: "NOT_EQUAL", label: "!=" },
   { name: "IS_NULL", label: "is null" },
   { name: "IS_NOT_NULL", label: "is not null" },
-  { name: "IN", label: "in" },
-  { name: "NOT_IN", label: "not in" },
+  { name: "BETWEEN", label: "between" },
+  { name: "NOT_BETWEEN", label: "not between" },
   { name: "LESS", label: "<" },
   { name: "GREATER", label: ">" },
   { name: "GREATER_OR_EQUAL", label: "<=" },
@@ -706,12 +720,6 @@ export const fullEntities = {
         dataSource: "countries"
       },
       {
-        id: "Passenger.seat",
-        label: "Seat",
-        type: "string",
-        operators: stringops
-      },
-      {
         id: "Passenger.passengerDetails.passengerType",
         label: "Type",
         type: "string",
@@ -726,6 +734,29 @@ export const fullEntities = {
         label: "Travel Frequency",
         type: "integer",
         operators: intops
+      }
+    ]
+  },
+  Seat: {
+    label: "SEAT",
+    columns: [
+      {
+        id: "Seat.number",
+        label: "Number",
+        type: "string",
+        operators: stringops
+      },
+      {
+        id: "Seat.cabinClass",
+        label: "Cabin Class",
+        type: "string",
+        operators: stringops
+      },
+      {
+        id: "Seat.apis",
+        label: "Is Apis",
+        type: "boolean",
+        operators: ["EQUAL", "NOT_EQUAL"]
       }
     ]
   },

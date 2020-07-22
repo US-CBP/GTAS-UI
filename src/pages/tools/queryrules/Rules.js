@@ -143,7 +143,6 @@ const Rules = props => {
   }, [tab]);
 
   useEffect(() => {
-    // setTab("my");
     setTablekey(tablekey + 1);
   }, [data]);
 
