@@ -17,7 +17,7 @@ const Notification = props => {
   useEffect(() => {
     let isMounted = true;
 
-    users.get().then(res => {
+    users.get.getAllNonArchived().then(res => {
       if (isMounted) {
         const emails = asArray(res).map(user => {
           return {

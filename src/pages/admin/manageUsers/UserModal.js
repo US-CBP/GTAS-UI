@@ -34,6 +34,10 @@ const UserModal = props => {
     let isChecked = false;
     if (props.isEdit) {
       isChecked = isCheckedRole(role, props.editRowDetails.roles);
+    } else{ //New user generation default to having this checked
+      if (role.roleId == 3){
+        isChecked = true;
+      }
     }
 
     return {
@@ -197,7 +201,7 @@ const UserModal = props => {
               selected={props?.editRowDetails.highPriorityEmail || false}
               spacebetween
             />
-
+            {props.isEdit ? (
             <LabelledInput
               datafield
               labelText="User Is Enabled"
@@ -210,6 +214,21 @@ const UserModal = props => {
               selected={(props?.editRowDetails.active || null) === 1 ? true : false}
               spacebetween
             />
+            ):(
+            <LabelledInput
+                datafield
+                labelText="User Is Enabled"
+                inputType="checkbox"
+                name="active"
+                required={true}
+                alt="nothing"
+                inputVal={true}
+                callback={cb}
+                selected={true}
+                spacebetween
+            />
+            )}
+
 
             <CheckboxGroup
               datafield
