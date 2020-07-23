@@ -129,7 +129,7 @@ const ManageUsers = props => {
 
   // fetch the data when the page loads so we can massage the bools before passing it into the table
   useEffect(() => {
-    users.get().then(res => {
+    users.get.getAllNonArchived().then(res => {
       setData(parseData(res));
       setRefreshKey(refreshKey + 1);
     });

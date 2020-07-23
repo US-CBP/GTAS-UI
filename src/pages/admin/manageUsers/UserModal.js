@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
-import { users, userService } from "../../../services/serviceWrapper"; //Add hooks
+import {users, userService} from "../../../services/serviceWrapper"; //Add hooks
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
 import { asArray } from "../../../utils/utils";
@@ -220,6 +220,22 @@ const UserModal = props => {
           </Form>
         </Container>
       </Modal.Body>
+      {props.isEdit && (
+          <Modal.Footer>
+            <Button
+                type="button"
+                className="m-2 outline-dark-outline"
+                variant="outline-dark"
+                onClick={() => {
+                  users.del(props.editRowDetails.userId).then(res => {
+                    postSubmit(undefined);
+                  });
+                }}
+            >
+              Delete
+            </Button>
+          </Modal.Footer>
+      )}
     </Modal>
   );
 };

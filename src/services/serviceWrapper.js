@@ -86,6 +86,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
+const USERSNONARCHIVED = `${USERS}/nonarchived`;
 const CHANGEPASSWORD = `${BASE_URL}gtas/user/change-password`;
 const WLCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
 const WLCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
@@ -132,10 +133,13 @@ const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 const LOGFILE = `${BASE_URL}gtas/api/logs/`;
 // ENTITY METHODS
 export const users = {
-  get: (id, params) => get(USERS + "/", BASEHEADER, id, params),
+  get: {
+    getAll: (id,params) => get(USERS + "/", BASEHEADER, id, params),
+    getAllNonArchived: (id,params) => get(USERSNONARCHIVED, BASEHEADER, id, params)
+  },
   put: body => put(USERS, BASEHEADER, 1, stringify(body)),
   post: body => post(USERS + "/1", BASEHEADER, stringify(body)),
-  del: body => post(USERS, BASEHEADER)
+  del: id => del(USERS, BASEHEADER, id)
 };
 export const watchlistcats = {
   get: (id, params) => get(WLCATS, BASEHEADER, id, params),

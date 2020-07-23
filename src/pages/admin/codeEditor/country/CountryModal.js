@@ -105,7 +105,7 @@ const CountryModal = props => {
             type="button"
             className="m-2 outline-dark-outline"
             variant="outline-dark"
-            // onClick={this.onFormCancel}
+            onClick={() => restoreSpecificCode()}
           >
             Restore
           </Button>
