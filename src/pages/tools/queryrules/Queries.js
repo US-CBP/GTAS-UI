@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
-import { Button, Container, Tabs, Tab } from "react-bootstrap";
-// import { navigate } from "@reach/router";
+import { Button, Container } from "react-bootstrap";
 
 import { query } from "../../../services/serviceWrapper";
 // import { titleCase } from "../../../utils/utils";
@@ -29,10 +28,10 @@ const Queries = props => {
     <Button
       variant="ternary"
       className="btn btn-outline-info"
-      onClick={() => launchModal(0)}
+      onClick={() => launchModal()}
       alt={props.alt}
     >
-      {`Create new Query`}
+      Create new Query
     </Button>
   );
 
@@ -54,7 +53,7 @@ const Queries = props => {
   ];
 
   const launchModal = (recordId, record) => {
-    const title = (recordId || 0) > 0 ? `Edit Query` : `Add Query`;
+    const title = recordId ? `Edit Query` : `Add Query`;
 
     setKey(key + 1);
     setId(recordId);
@@ -66,7 +65,7 @@ const Queries = props => {
   const closeModal = () => {
     setId();
     setRecord({});
-    setKey(key + 1);
+    setTablekey(key + 1);
     setShowModal(false);
   };
 
