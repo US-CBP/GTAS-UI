@@ -138,7 +138,7 @@ const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 const LOGFILE = `${BASE_URL}gtas/api/logs/`;
 const SIGNUP = `${BASE_URL}gtas/user/signup/new`;
 const PHYSICALLOCATIONS = `${BASE_URL}gtas/user/signup/physiclLocations`;
-const SIGNUPREQUESTS = `${BASE_URL}gtas/user/allNewSignupRequests`;
+const SIGNUPREQUESTS = `${BASE_URL}gtas/api/signup-requests`;
 const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
 const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
 // ENTITY METHODS
@@ -401,7 +401,7 @@ export const physicalLocations = {
 };
 
 export const signuprequests = {
-  get: () => get(SIGNUPREQUESTS, BASEHEADER),
+  get: params => get(SIGNUPREQUESTS, BASEHEADER, undefined, params),
   approve: body => post(SIGNUPREQUESTAPPROVE, BASEHEADER, stringify(body)),
   reject: body => post(SIGNUPREQUESTSREJECT, BASEHEADER, stringify(body))
 };
