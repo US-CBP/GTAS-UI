@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from "react";
 import QueryBuilder from "../../../components/queryBuilder/QueryBuilder";
 import { Button, Modal, Container, Row } from "react-bootstrap";
-import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import {
   buttonConfigQuery,
   buttonConfigRule
 } from "../../../components/queryBuilder/constants";
 import { navigate } from "@reach/router";
+import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
+import { QR } from "../../../utils/constants";
 import { watchlistcats } from "../../../services/serviceWrapper";
 
 const QRModal = props => {
   const id = props.id;
   const svc = props.service;
-  const mode = props.mode === "RULE" ? "RULE" : "QUERY";
-  const buttonConfig = mode === "RULE" ? buttonConfigRule : buttonConfigQuery;
+  const mode = props.mode === QR.RULE ? QR.RULE : QR.QUERY;
+  const buttonConfig = mode === QR.RULE ? buttonConfigRule : buttonConfigQuery;
   const [data, setData] = useState(props.data?.query);
   const [key, setKey] = useState(0);
-  const [metaData, setMetaData] = useState(props.data);
-  const [title, setTitle] = useState(props.data?.title);
-  const [desc, setDesc] = useState(props.data?.description);
-  const [catid, setCatid] = useState(props.data?.ruleCat);
-  const [startDate, setStartDate] = useState(props.data?.startDate);
-  const [endDate, setEndDate] = useState(props.data?.endDate);
+  const [summaryData, setSummaryData] = useState(
+    props.data || { startDate: localeDateOnly(Date.now()), enabled: true }
+  );
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState();
   const isEdit = hasData(props.data);
 
   const cb = ev => {
-    if (ev.name === "description") setDesc(ev.value);
-    if (ev.name === "title") setTitle(ev.value);
+    let newSummary = summaryData;
+    newSummary[ev.name] = ev.value;
+
+    setSummaryData(newSummary);
   };
 
   const dataCallback = formatted => {
@@ -37,23 +37,53 @@ const QRModal = props => {
   };
 
   const onDelete = () => {
-    if (hasData(svc)) svc.del(id);
-    props.callback("DELETE");
+    if (hasData(svc)) {
+      svc.del(id).then(res => {
+        props.callback("DELETE");
+      });
+    }
   };
 
   const onSave = () => {
+    if (!hasData(svc)) return;
+
+    const q = getSaveObject();
+    const saveMethod = isEdit ? svc.put : svc.post;
+    const saveArgs = hasData(id) ? [id, q] : [q];
+
+    saveMethod(...saveArgs).then(() => {
+      // postpone callback to parent until *after* the save promise is resolved.
+      // Ensures the save is complete before we attempt to refresh the parent table data
+      props.callback("SAVE");
+    });
+  };
+
+  const getSaveObject = () => {
     const safeid = id > 0 ? id : null;
-    const q = {
+
+    if (props.mode === QR.RULE) {
+      return {
+        id: safeid,
+        details: query,
+        summary: {
+          title: summaryData.title,
+          description: summaryData.description,
+          input: "select",
+          startDate: new Date(summaryData.startDate || Date.now()),
+          endDate: summaryData.endDate ? new Date(summaryData.endDate) : undefined,
+          enabled: summaryData.enabled,
+          ruleCat: summaryData.ruleCat,
+          overMaxHits: null
+        }
+      };
+    }
+
+    return {
       id: safeid,
-      title: title,
-      description: desc,
+      title: summaryData.title,
+      description: summaryData.description,
       query: query
     };
-
-    if (hasData(svc)) {
-      isEdit ? svc.put(id, q) : svc.post(q);
-    }
-    props.callback("SAVE");
   };
 
   const onRun = () => {
@@ -71,15 +101,14 @@ const QRModal = props => {
 
   const onClear = () => {
     setData(undefined);
-    // setDesc("");
-    // setTitle("");
-    setMetaData({
+
+    setSummaryData({
       title: "",
       description: "",
-      startDate: "",
+      startDate: localeDateOnly(Date.now()),
       endDate: "",
       enabled: true,
-      ruleCat: 0
+      ruleCat: -1
     });
     setKey(key + 1);
   };
@@ -92,8 +121,9 @@ const QRModal = props => {
       });
 
       setCategories(cats);
+      setKey(key + 1);
     });
-  }, [props.id]);
+  }, []);
 
   return (
     <>
@@ -116,7 +146,7 @@ const QRModal = props => {
                 labelText="Title"
                 required={true}
                 inputType="text"
-                inputVal={metaData.title}
+                inputVal={summaryData?.title}
                 name="title"
                 callback={cb}
                 alt="Title"
@@ -128,23 +158,23 @@ const QRModal = props => {
                 key={`desc${key}`}
                 required={true}
                 inputType="text"
-                inputVal={metaData.description}
+                inputVal={summaryData?.description}
                 name="description"
                 callback={cb}
                 alt="Description"
                 spacebetween
               />
             </Row>
-            {mode === "RULE" && (
+            {mode === QR.RULE && (
               <>
                 <Row className="card-columns qrm">
                   <LabelledInput
                     datafield
                     labelText="Start Date"
-                    key={`sd${metaData}`}
+                    key={`sd${key}`}
                     required={true}
                     inputType="text"
-                    inputVal={localeDateOnly(metaData.startDate)}
+                    inputVal={localeDateOnly(summaryData?.startDate)}
                     name="startDate"
                     callback={cb}
                     alt="start date"
@@ -153,9 +183,9 @@ const QRModal = props => {
                   <LabelledInput
                     datafield
                     labelText="End Date"
-                    key={`ed${metaData}`}
+                    key={`ed${key}`}
                     inputType="text"
-                    inputVal={localeDateOnly(metaData.endDate)}
+                    inputVal={localeDateOnly(summaryData?.endDate)}
                     name="endDate"
                     callback={cb}
                     alt="end date"
@@ -169,19 +199,19 @@ const QRModal = props => {
                     inputType="checkbox"
                     name="enabled"
                     alt="query or rule is enabled"
-                    selected={metaData.enabled}
+                    selected={summaryData?.enabled}
                     callback={cb}
                     spacebetween
                   />
                   <LabelledInput
                     datafield
+                    key={`rc${key}`}
                     labelText="Rule Category"
                     inputType="select"
                     options={categories}
-                    inputVal={metaData.ruleCat}
+                    inputVal={summaryData?.ruleCat}
                     required={true}
                     name="ruleCat"
-                    key={`rc${categories}`}
                     callback={cb}
                     alt="rule category"
                     spacebetween

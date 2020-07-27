@@ -6,6 +6,7 @@ import { navigate } from "@reach/router";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
 import { hasData } from "../../../utils/utils";
+import { QR } from "../../../utils/constants";
 import QRModal from "./QRModal";
 import "./QueryRules.css";
 
@@ -89,25 +90,30 @@ const Rules = props => {
 
         launchModal(res);
       }
+      // else, launch info/warning notification?
     });
   };
 
   const launchModal = rec => {
-    const recordId = rec.id;
-    setKey(key + 1);
-    setId(recordId);
-    setRecord(rec);
-    const title = recordId > 0 ? `Edit Rule` : `Add Rule`;
-    setModalTitle(title);
+    const recordId = rec?.id;
+    const title = recordId ? `Edit Rule` : `Add Rule`;
+
+    if (rec) {
+      setKey(key + 1);
+      setId(recordId);
+      setRecord(rec);
+      setModalTitle(title);
+    }
+
     setShowModal(true);
   };
 
   const closeModal = () => {
+    fetchData();
+    setShowModal(false);
     setId();
     setRecord();
-    setKey(key + 1);
-    setTablekey(tablekey + 1);
-    setShowModal(false);
+    // setKey(key + 1);
   };
 
   const titleTabCallback = ev => {
@@ -122,8 +128,9 @@ const Rules = props => {
     }
   };
 
-  useEffect(() => {
-    console.log("fetch all");
+  const fetchData = () => {
+    console.log("fetching data");
+
     service.get().then(res => {
       let parsed = [];
 
@@ -137,14 +144,18 @@ const Rules = props => {
             ...item.summary
           };
         });
+        setData(parsed);
+        setTablekey(tablekey + 1);
+      } else {
+        // setData(parsed);
+        // setTablekey(tablekey + 1);
       }
-      setData(parsed);
     });
-  }, [tab]);
+  };
 
   useEffect(() => {
-    setTablekey(tablekey + 1);
-  }, [data]);
+    fetchData();
+  }, [tab]);
 
   const tabs = (
     <Tabs defaultActiveKey={tab} id="qrTabs">
@@ -159,12 +170,12 @@ const Rules = props => {
       className="btn btn-outline-info"
       name={props.name}
       placeholder={props.placeholder}
-      onClick={() => launchModal(0)}
+      onClick={() => launchModal()}
       required={props.required}
       value={props.inputVal}
       alt={props.alt}
     >
-      {`Create new Rule`}
+      Create new Rule
     </Button>
   );
 
@@ -176,19 +187,21 @@ const Rules = props => {
         leftCb={titleTabCallback}
         rightChild={button}
       ></Title>
-      <Table
-        data={data}
-        id="Rules"
-        callback={cb}
-        header={header}
-        key={`tr${tablekey}`}
-      ></Table>
+      {data && (
+        <Table
+          data={data}
+          id="Rules"
+          callback={cb}
+          header={header}
+          key={tablekey}
+        ></Table>
+      )}
       {showModal && (
         <QRModal
           show={showModal}
           onHide={closeModal}
           callback={cb}
-          mode="RULE"
+          mode={QR.RULE}
           key={key}
           data={record}
           title={modalTitle}

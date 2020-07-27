@@ -1,5 +1,22 @@
 export const NO_URI = "No URI was received in props";
 
+export const QR = {
+  RULE: "Rule",
+  QUERY: "Query"
+};
+
+export const MODE = {
+  ADD: "Add",
+  EDIT: "Edit"
+};
+
+export const ACTION = {
+  SAVE: "Save",
+  DELETE: "Delete",
+  CANCEL: "Cancel",
+  CLOSE: "Close"
+};
+
 export const ROLE = {
   ADMIN: "Admin",
   QRYMGR: "Manage Queries",
