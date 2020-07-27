@@ -34,7 +34,13 @@ class SegmentTable extends React.Component {
 
   setActiveKey = key => {
     this.setState({ activeKey: key });
-    const row = this.state.refs[key];
+
+    let row;
+    // find a row where the key *contains* the activekey since a single row can
+    // contain multiple
+    for (let item in this.state.refs) {
+      if (item.includes(key)) row = this.state.refs[item];
+    }
 
     if (row) {
       row.current.scrollIntoView({
