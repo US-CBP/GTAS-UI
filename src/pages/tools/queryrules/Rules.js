@@ -113,24 +113,21 @@ const Rules = props => {
     setShowModal(false);
     setId();
     setRecord();
-    // setKey(key + 1);
   };
 
   const titleTabCallback = ev => {
     const id = ev.split("-")[2];
 
     if ((id || "my").toLowerCase() === "all") {
-      // setTab("all");
+      setTab("all");
       navigate(`/gtas/tools/rules/all`);
     } else {
-      // setTab("my");
+      setTab("my");
       navigate(`/gtas/tools/rules/my`);
     }
   };
 
   const fetchData = () => {
-    console.log("fetching data");
-
     service.get().then(res => {
       let parsed = [];
 
