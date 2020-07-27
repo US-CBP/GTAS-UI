@@ -146,9 +146,6 @@ const Rules = props => {
         });
         setData(parsed);
         setTablekey(tablekey + 1);
-      } else {
-        // setData(parsed);
-        // setTablekey(tablekey + 1);
       }
     });
   };
