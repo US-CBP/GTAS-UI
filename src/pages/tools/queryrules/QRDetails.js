@@ -36,7 +36,7 @@ const QRDetails = props => {
       Accessor: "lastName",
       Cell: ({ row }) => {
         return (
-          <Link to={`/gtas/paxDetail/${props.id}/${row.original.id}`}>
+          <Link to={`/gtas/paxDetail/${row.original.flightId}/${row.original.id}`}>
             {row.original.lastName}
           </Link>
         );

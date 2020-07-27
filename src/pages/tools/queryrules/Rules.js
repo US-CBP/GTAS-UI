@@ -81,12 +81,12 @@ const Rules = props => {
         res.description = res.summary.description;
         res.ruleCat = res.summary.ruleCat;
         res.startDate = res.summary.startDate;
+        res.enabled = res.summary.enabled;
         res.endDate = res.summary.endDate;
         res.query = res.details;
         delete res.summary;
         delete res.details;
 
-        console.log(res);
         launchModal(res);
       }
     });
@@ -176,7 +176,13 @@ const Rules = props => {
         leftCb={titleTabCallback}
         rightChild={button}
       ></Title>
-      <Table data={data} id="Rules" callback={cb} header={header} key={tablekey}></Table>
+      <Table
+        data={data}
+        id="Rules"
+        callback={cb}
+        header={header}
+        key={`tr${tablekey}`}
+      ></Table>
       {showModal && (
         <QRModal
           show={showModal}
