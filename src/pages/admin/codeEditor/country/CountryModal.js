@@ -22,11 +22,11 @@ const CountryModal = props => {
   };
 
   const restoreSpecificCode = () => {
-    codeEditor.put.restoreCountry(props.editRowDetails).then(res=>{
+    codeEditor.put.restoreCountry(props.editRowDetails).then(res => {
       props.onHide();
       props.refresh();
     });
-  }
+  };
 
   return (
     <Modal
@@ -105,7 +105,7 @@ const CountryModal = props => {
             type="button"
             className="m-2 outline-dark-outline"
             variant="outline-dark"
-            // onClick={this.onFormCancel}
+            onClick={restoreSpecificCode}
           >
             Restore
           </Button>

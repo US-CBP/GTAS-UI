@@ -3,20 +3,16 @@ import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import { Link } from "@reach/router";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
-// import LabelledSelectInput from "../../components/inputs/LabelledSelectInput/LabelledSelectInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
-// import "react-datepicker/dist/react-datepicker.css";
-import "./Flights.css";
 import { Col, Tabs, Tab } from "react-bootstrap";
-// import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import Main from "../../components/main/Main";
 import SideNavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
-// import { components } from "react-select";
 import { hasData, alt, localeDate, asArray } from "../../utils/utils";
 import { TIME } from "../../utils/constants";
 
 import { flights } from "../../services/serviceWrapper";
+import "./Flights.css";
 
 const Flights = props => {
   const cb = () => {};

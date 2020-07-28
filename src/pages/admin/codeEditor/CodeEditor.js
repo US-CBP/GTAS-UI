@@ -1,29 +1,35 @@
 import React from "react";
-import Tabs from "../../../components/tabs/Tabs";
-import Banner from "../../../components/banner/Banner";
+// import Tabs from "../../../components/tabs/Tabs";
+import Title from "../../../components/title/Title";
+import { Tabs, Tab, Container } from "react-bootstrap";
+import Main from "../../../components/main/Main";
+import { navigate } from "@reach/router";
 
 const CodeEditor = props => {
   const tabcontent = props.children.props.children;
 
-  console.log(props.children);
+  const cb = () => {};
 
-  const tablist = tabcontent.map((tab, idx) => {
-    return { title: tab.props.name, key: tab.props.name, link: tab };
-  });
-  const showBanner = () => {
-    return false;
-  };
+  const tabs = (
+    <Tabs defaultActiveKey="airport" id="editorTabs">
+      {tabcontent.map((tab, idx) => {
+        return (
+          <Tab
+            eventKey={tab.props.name}
+            title={tab.props.name}
+            onclick={() => navigate(tab.props.name)}
+          ></Tab>
+        );
+      })}
+    </Tabs>
+  );
 
   return (
-    <>
-      <Banner
-        id="banner"
-        styleName="warning"
-        text="Something has happened."
-        defaultState={showBanner}
-      />
-      <Tabs tabs={tablist} />
-    </>
+    <Container fluid>
+      <Title title="" uri={props.uri} leftChild={tabs} leftCb={cb} />
+      {/* <Tabs tabs={tablist} /> */}
+      {props.children}
+    </Container>
   );
 };
 

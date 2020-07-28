@@ -50,6 +50,10 @@ const Airports = ({ name }) => {
   return (
     <Container fluid>
       <Row>
+        <Col sm={{ span: 3, offset: 1 }}></Col>
+        <Col sm={3}>
+          <Title title={name}></Title>
+        </Col>
         <Col sm={{ span: 3, offset: 1 }}>
           <Button
             variant="outline-dark"
@@ -62,20 +66,7 @@ const Airports = ({ name }) => {
           >
             Add Airport
           </Button>
-          <AirportModal
-            show={showModal}
-            onHide={() => setShowModal(false)}
-            isEdit={isEditModal}
-            title={modalTitle}
-            editRowDetails={editRowDetails}
-            refresh={refresh}
-            callback={cb}
-          />
-        </Col>
-        <Col sm={3}>
-          <Title title={name}></Title>
-        </Col>
-        <Col sm={{ span: 3, offset: 1 }}>
+
           <Button
             variant="outline-dark"
             onClick={() => {

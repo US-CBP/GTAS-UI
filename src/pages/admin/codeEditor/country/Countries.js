@@ -10,7 +10,7 @@ const Countries = ({ name }) => {
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState("Create New User");
+  const [modalTitle, setModalTitle] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
 
   const refresh = () => {
