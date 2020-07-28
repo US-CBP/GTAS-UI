@@ -101,7 +101,7 @@ const ReviewPVL = props => {
               placeholder="Choose note type"
               datafield="noteType"
               required="required"
-              options={props.notTypes}
+              options={props.noteTypes}
             />
             <LabelledInput
               inputType="textarea"

@@ -427,7 +427,7 @@ const Vetting = props => {
             callback={setRefreshKey}
             show={showReviewModal}
             onHide={() => setShowReviewModal(false)}
-            notTypes={noteTypes}
+            noteTypes={noteTypes}
           />
         </Main>
       </>
