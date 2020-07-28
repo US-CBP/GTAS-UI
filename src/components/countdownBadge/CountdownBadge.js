@@ -20,22 +20,22 @@ const CountdownBadge = props => {
     return `${sign}${res}`;
   };
 
-  const altZero = val => {
-    if (+val === 0 || isNaN(+val)) return "";
+  const altZero = (val, alt = "") => {
+    if (+val === 0 || isNaN(+val)) return alt;
     return val;
   };
 
   const delta = (incoming - now) / 1000;
-  const isPos = delta > 0;
+  const isPos = delta >= 0;
   const round = isPos ? Math.floor : Math.ceil;
-  const parse = val => altZero(pad(val));
+  const parse = (val, alt) => altZero(pad(val), alt);
 
   const dayraw = round(delta / 86400);
   const hrsraw = round(delta / 3600) % 24;
   const minraw = round(delta / 60) % 60;
   const days = altZero(dayraw);
   const hours = !days ? parse(hrsraw) : pad(Math.abs(hrsraw));
-  const minutes = !days && !hours ? parse(minraw) : pad(Math.abs(minraw));
+  const minutes = !days && !hours ? parse(minraw, "00") : pad(Math.abs(minraw));
 
   const getStyle = () => {
     if (dayraw > 1) return "";
