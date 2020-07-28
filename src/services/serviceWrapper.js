@@ -271,9 +271,9 @@ export const codeEditor = {
     createAirport: body => post(CODES_AIRPORT, BASEHEADER, stringify(body))
   },
   delete: {
-    deleteCarrier: id => del(CODES_CARRIER, id),
-    deleteCountry: id => del(CODES_COUNTRY, id),
-    deleteAirport: id => del(CODES_AIRPORT, id)
+    deleteCarrier: id => del(CODES_CARRIER, BASEHEADER, id),
+    deleteCountry: id => del(CODES_COUNTRY, BASEHEADER, id),
+    deleteAirport: id => del(CODES_AIRPORT, BASEHEADER, id)
   }
 };
 

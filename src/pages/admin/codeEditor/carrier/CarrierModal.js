@@ -22,11 +22,11 @@ const CarrierModal = props => {
   };
 
   const restoreSpecificCode = () => {
-    codeEditor.put.restoreCarrier(props.editRowDetails).then(res=>{
+    codeEditor.put.restoreCarrier(props.editRowDetails).then(res => {
       props.onHide();
       props.refresh();
     });
-  }
+  };
 
   return (
     <Modal
@@ -49,6 +49,7 @@ const CarrierModal = props => {
             callback={postSubmit}
             action="add"
             submitText={props.isEdit ? "Save" : "Submit"}
+            cancellable
             paramCallback={preSubmit}
             afterProcessed={props.onHide}
           >
@@ -77,7 +78,7 @@ const CarrierModal = props => {
           </Form>
         </Container>
       </Modal.Body>
-      {props.isEdit ? (
+      {props.isEdit && (
         <Modal.Footer>
           <Button
             type="button"
@@ -98,12 +99,6 @@ const CarrierModal = props => {
             }}
           >
             Delete
-          </Button>
-        </Modal.Footer>
-      ) : (
-        <Modal.Footer>
-          <Button variant="outline-danger" onClick={props.onHide}>
-            Close
           </Button>
         </Modal.Footer>
       )}

@@ -71,7 +71,7 @@ class Form extends React.Component {
 
           let populatedFields = {};
           for (let field in this.state.fields) {
-            populatedFields[field]=singleRecord[field];
+            populatedFields[field] = singleRecord[field];
           }
           fields = populatedFields;
         }
@@ -192,12 +192,14 @@ class Form extends React.Component {
             )}
             {showSubmit && (
               <Button
-                className={`m-2 button block info fullwidth gradient-button ${disabled}`}
+                className={`m-2 button block info fullwidth ${disabled}`}
                 type="submit"
               >
                 {this.props.submitText || "Submit"}
               </Button>
             )}
+
+            {this.props.customButtons}
           </ButtonToolbar>
         </RBForm>
       </div>

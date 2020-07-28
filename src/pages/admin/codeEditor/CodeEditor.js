@@ -28,7 +28,13 @@ const CodeEditor = props => {
   const headerTabs = (
     <Tabs defaultActiveKey={props.startTab} id="codeTabs">
       {tabcontent.map(tab => {
-        return <Tab eventKey={tab.props.name.toLowerCase()} title={tab.props.name}></Tab>;
+        return (
+          <Tab
+            eventKey={tab.props.name.toLowerCase()}
+            title={tab.props.name}
+            key={tab.props.name}
+          ></Tab>
+        );
       })}
     </Tabs>
   );

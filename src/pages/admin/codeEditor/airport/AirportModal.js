@@ -22,11 +22,35 @@ const AirportModal = props => {
   };
 
   const restoreSpecificCode = () => {
-    codeEditor.put.restoreAirport(props.editRowDetails).then(res=>{
-      props.onHide();
-      props.refresh();
+    codeEditor.put.restoreAirport(props.editRowDetails).then(res => {
+      postSubmit();
     });
-  }
+  };
+
+  const customButtons = props.isEdit
+    ? [
+        <Button
+          type="button"
+          className="m-2 outline-dark-outline"
+          variant="outline-dark"
+          onClick={() => restoreSpecificCode()}
+        >
+          Restore
+        </Button>,
+        <Button
+          type="button"
+          className="m-2 outline-dark-outline"
+          variant="outline-dark"
+          onClick={() => {
+            codeEditor.delete.deleteAirport(props.editRowDetails?.id).then(res => {
+              postSubmit();
+            });
+          }}
+        >
+          Delete
+        </Button>
+      ]
+    : [];
 
   return (
     <Modal
@@ -51,6 +75,8 @@ const AirportModal = props => {
             submitText={props.isEdit ? "Save" : "Submit"}
             paramCallback={preSubmit}
             afterProcessed={props.onHide}
+            cancellable
+            customButtons={customButtons}
           >
             <LabelledInput
               datafield
@@ -132,36 +158,6 @@ const AirportModal = props => {
           </Form>
         </Container>
       </Modal.Body>
-      {props.isEdit ? (
-        <Modal.Footer>
-          <Button
-            type="button"
-            className="m-2 outline-dark-outline"
-            variant="outline-dark"
-            onClick={() => restoreSpecificCode()}
-          >
-            Restore
-          </Button>
-          <Button
-            type="button"
-            className="m-2 outline-dark-outline"
-            variant="outline-dark"
-            onClick={() => {
-              codeEditor.delete.deleteAirport(props.editRowDetails.id).then(res => {
-                postSubmit(undefined);
-              });
-            }}
-          >
-            Delete
-          </Button>
-        </Modal.Footer>
-      ) : (
-        <Modal.Footer>
-          <Button variant="outline-danger" onClick={props.onHide}>
-            Close
-          </Button>
-        </Modal.Footer>
-      )}
     </Modal>
   );
 };
