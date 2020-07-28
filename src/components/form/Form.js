@@ -6,6 +6,7 @@ import Title from "../title/Title";
 import { Button, Form as RBForm, ButtonToolbar } from "react-bootstrap";
 import { navigate } from "@reach/router";
 
+import { ACTION } from "../../utils/constants";
 import "./Form.css";
 
 /**
@@ -123,13 +124,13 @@ class Form extends React.Component {
       : params;
 
     operation(...parsedParams).then(res => {
-      if (hasData(this.props.callback)) this.props.callback(alt(res));
+      if (hasData(this.props.callback)) this.props.callback(ACTION.SAVE, alt(res));
     });
   }
 
   onFormCancel() {
     if (this.props.redirectTo !== undefined) navigate(this.props.redirectTo);
-    this.props.callback({ status: "CANCELED" });
+    this.props.callback(ACTION.CANCEL);
     // else window.history.back();
   }
 

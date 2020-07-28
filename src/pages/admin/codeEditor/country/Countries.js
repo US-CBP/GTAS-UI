@@ -19,7 +19,7 @@ const Countries = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit Country Code");
+    setModalTitle("Edit Country");
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };

@@ -19,7 +19,7 @@ const Airports = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit Airport Code");
+    setModalTitle("Edit Airport");
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };

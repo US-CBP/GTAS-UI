@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
-import Title from "../../../../components/title/Title";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CarrierModal from "./CarrierModal";
 
@@ -19,7 +18,7 @@ const Carriers = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit Carrier Code");
+    setModalTitle("Edit Carrier");
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
