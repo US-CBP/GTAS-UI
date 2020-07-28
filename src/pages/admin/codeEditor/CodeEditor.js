@@ -9,7 +9,6 @@ import "./CodeEditor.css";
 
 const CodeEditor = props => {
   const tabcontent = props.children.props.children;
-  const [rightHeaderChild, setRightHeaderChild] = useState();
   const [tab, setTab] = useState(props.startTab);
 
   const tabHandler = ev => {
