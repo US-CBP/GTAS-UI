@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import Tabs from "../../../components/tabs/Tabs";
 import Title from "../../../components/title/Title";
 import { Tabs, Tab, Container } from "react-bootstrap";
@@ -7,17 +7,20 @@ import { navigate } from "@reach/router";
 
 const CodeEditor = props => {
   const tabcontent = props.children.props.children;
+  const [rightHeaderChild, setRightHeaderChild] = useState();
 
-  const cb = () => {};
+  const leftCbHandler = ev => {
+    console.log(ev);
+    
+  };
 
-  const tabs = (
-    <Tabs defaultActiveKey="airport" id="editorTabs">
+  const leftHeaderChild = (
+    <Tabs defaultActiveKey="countries" id="codeTabs">
       {tabcontent.map((tab, idx) => {
         return (
           <Tab
-            eventKey={tab.props.name}
+            eventKey={tab.props.name.toLowerCase()}
             title={tab.props.name}
-            onclick={() => navigate(tab.props.name)}
           ></Tab>
         );
       })}
@@ -26,8 +29,7 @@ const CodeEditor = props => {
 
   return (
     <Container fluid>
-      <Title title="" uri={props.uri} leftChild={tabs} leftCb={cb} />
-      {/* <Tabs tabs={tablist} /> */}
+      <Title title="" uri={props.uri} leftChild={leftHeaderChild} leftCb={leftCbHandler} />
       {props.children}
     </Container>
   );

@@ -103,7 +103,7 @@ const Header = () => {
               <NavDropdown.Item as={Link} to="admin/filedownload">
                 File Download
               </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/codeeditor">
+              <NavDropdown.Item as={Link} to="admin/codeeditor/countries">
                 Code Editor
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="admin/loaderstats">
