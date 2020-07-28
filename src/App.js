@@ -171,7 +171,11 @@ export default class App extends React.Component {
                             name="File Download"
                             path="filedownload"
                           ></FileDownload>
-                          <CodeEditor name="Code Editor" path="/codeeditor">
+                          <CodeEditor
+                            name="Code Editor"
+                            path="/codeeditor"
+                            startTab="countries"
+                          >
                             <Countries name="Countries" path="countries"></Countries>
                             <Airports name="Airports" path="airports"></Airports>
                             <Carriers name="Carriers" path="carriers"></Carriers>

@@ -10,7 +10,7 @@ const Airports = ({ name }) => {
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState("Create New User");
+  const [modalTitle, setModalTitle] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
 
   const refresh = () => {
@@ -49,36 +49,40 @@ const Airports = ({ name }) => {
 
   return (
     <Container fluid>
-      <Row>
-        <Col sm={{ span: 3, offset: 1 }}></Col>
-        <Col sm={3}>
-          <Title title={name}></Title>
-        </Col>
-        <Col sm={{ span: 3, offset: 1 }}>
-          <Button
-            variant="outline-dark"
-            onClick={() => {
-              setShowModal(true);
-              setModalTitle("Add Airport");
-              setIsEditModal(false);
-              setEditRowDetails({});
-            }}
-          >
-            Add Airport
-          </Button>
+      <AirportModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        isEdit={isEditModal}
+        title={modalTitle}
+        editRowDetails={editRowDetails}
+        refresh={refresh}
+        callback={cb}
+      />
 
-          <Button
-            variant="outline-dark"
-            onClick={() => {
-              codeEditor.put.restoreAirportsAll().then(res => {
-                refresh();
-              });
-            }}
-          >
-            Restore All Airports
-          </Button>
-        </Col>
-      </Row>
+      <div className="action-button-div">
+        <Button
+          variant="outline-dark"
+          onClick={() => {
+            setShowModal(true);
+            setModalTitle("Add Airport");
+            setIsEditModal(false);
+            setEditRowDetails({});
+          }}
+        >
+          Add Airport
+        </Button>
+
+        <Button
+          variant="outline-dark"
+          onClick={() => {
+            codeEditor.put.restoreAirportsAll().then(res => {
+              refresh();
+            });
+          }}
+        >
+          Restore All Airports
+        </Button>
+      </div>
 
       <Table
         service={codeEditor.get.airportCodes}

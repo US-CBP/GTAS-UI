@@ -1,21 +1,33 @@
-import React, { useState } from "react";
-// import Tabs from "../../../components/tabs/Tabs";
+import React, { useState, useEffect } from "react";
 import Title from "../../../components/title/Title";
 import { Tabs, Tab, Container } from "react-bootstrap";
 import Main from "../../../components/main/Main";
 import { navigate } from "@reach/router";
+import { titleCase } from "../../../utils/utils";
+
+import "./CodeEditor.css";
 
 const CodeEditor = props => {
   const tabcontent = props.children.props.children;
   const [rightHeaderChild, setRightHeaderChild] = useState();
+  const [tab, setTab] = useState(props.startTab);
 
-  const leftCbHandler = ev => {
-    console.log(ev);
+  const tabHandler = ev => {
+    const tabname = ev
+      .split("-")
+      .pop()
+      .toLowerCase();
+
+    setTab(tabname);
   };
 
-  const leftHeaderChild = (
-    <Tabs defaultActiveKey="countries" id="codeTabs">
-      {tabcontent.map((tab, idx) => {
+  useEffect(() => {
+    navigate(tab);
+  }, [tab]);
+
+  const headerTabs = (
+    <Tabs defaultActiveKey={props.startTab} id="codeTabs">
+      {tabcontent.map(tab => {
         return <Tab eventKey={tab.props.name.toLowerCase()} title={tab.props.name}></Tab>;
       })}
     </Tabs>
@@ -23,12 +35,7 @@ const CodeEditor = props => {
 
   return (
     <Container fluid>
-      <Title
-        title=""
-        uri={props.uri}
-        leftChild={leftHeaderChild}
-        leftCb={leftCbHandler}
-      />
+      <Title title={titleCase(tab)} leftChild={headerTabs} leftCb={tabHandler} />
       {props.children}
     </Container>
   );
