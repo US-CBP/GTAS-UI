@@ -22,7 +22,7 @@ const CodeEditor = props => {
   };
 
   useEffect(() => {
-    navigate(tab);
+    navigate(`/gtas/admin/codeeditor/${tab}`);
   }, [tab]);
 
   const headerTabs = (
