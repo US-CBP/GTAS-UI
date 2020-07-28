@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { paxEventNotesHistory, notetypes, cases } from "../../../services/serviceWrapper";
-import { asArray, localeDate } from "../../../utils/utils";
+import { localeDate } from "../../../utils/utils";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
@@ -14,8 +14,6 @@ const ReviewPVL = props => {
     createdAt: "Created At"
   };
 
-  const [show, setShow] = useState(false);
-  const [notTypes, setNoteTypes] = useState([]);
   const [eventNotes, setEventNotes] = useState([]);
   const [historicalEventNotes, setHistoricalEventNotes] = useState([]);
   const paxId = props.paxId;
@@ -27,29 +25,8 @@ const ReviewPVL = props => {
     cases.updateStatus(paxId, "REVIEWED").then(() => {
       props.callback(new Date()); //refresh key for the filter
     });
-    setShow(false);
+    props.onHide();
   };
-  const handleClose = () => {
-    setShow(false);
-  };
-
-  const handleShow = () => setShow(true);
-
-  useEffect(() => {
-    isMountedRef.current = true;
-    notetypes.get().then(types => {
-      if (isMountedRef.current) {
-        const nTypes = asArray(types).map(type => {
-          return {
-            value: `{"id":"${type.id}", "noteType":"${type.noteType}"}`,
-            label: type.noteType
-          };
-        });
-        setNoteTypes(nTypes);
-      }
-    });
-    return () => (isMountedRef.current = false); // clean up (cancel  subscriptions)
-  }, []);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -89,18 +66,14 @@ const ReviewPVL = props => {
     }
 
     return () => (isMountedRef.current = false); // clean up (cancel  subscriptions)
-  }, []);
+  }, [paxId]);
 
   return (
     <>
-      <Button variant="outline-info" size="sm" onClick={handleShow}>
-        <i className="fa fa-pencil"></i> Review
-      </Button>
       <Modal
-        show={show}
-        onHide={handleClose}
-        size="lg"
-        backdrop="static"
+        show={props.show}
+        onHide={props.onHide}
+        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
@@ -128,7 +101,7 @@ const ReviewPVL = props => {
               placeholder="Choose note type"
               datafield="noteType"
               required="required"
-              options={notTypes}
+              options={props.notTypes}
             />
             <LabelledInput
               inputType="textarea"
