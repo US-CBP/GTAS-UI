@@ -11,25 +11,24 @@ const CodeEditor = props => {
 
   const leftCbHandler = ev => {
     console.log(ev);
-    
   };
 
   const leftHeaderChild = (
     <Tabs defaultActiveKey="countries" id="codeTabs">
       {tabcontent.map((tab, idx) => {
-        return (
-          <Tab
-            eventKey={tab.props.name.toLowerCase()}
-            title={tab.props.name}
-          ></Tab>
-        );
+        return <Tab eventKey={tab.props.name.toLowerCase()} title={tab.props.name}></Tab>;
       })}
     </Tabs>
   );
 
   return (
     <Container fluid>
-      <Title title="" uri={props.uri} leftChild={leftHeaderChild} leftCb={leftCbHandler} />
+      <Title
+        title=""
+        uri={props.uri}
+        leftChild={leftHeaderChild}
+        leftCb={leftCbHandler}
+      />
       {props.children}
     </Container>
   );
