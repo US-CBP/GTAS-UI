@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import Table from "../../components/table/Table";
-import { cases } from "../../services/serviceWrapper";
+import { cases, notetypes, usersemails } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm/FilterForm";
 import { hasData, asArray, getShortText, isShortText } from "../../utils/utils";
-import { Col } from "react-bootstrap";
+import { Col, Button } from "react-bootstrap";
 import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import "./Vetting.css";
 import { useFetchHitCategories } from "../../services/dataInterface/HitCategoryService";
@@ -119,8 +119,14 @@ const Vetting = props => {
       Header: "Actions",
       Cell: ({ row }) => (
         <>
-          <ReviewPVL paxId={row.original.paxId} callback={setRefreshKey} />
-          <Notification paxId={`${row.original.paxId}`} />
+          <Button
+            variant="outline-info"
+            size="sm"
+            onClick={() => reviewPVL(row.original.paxId)}
+          >
+            <i className="fa fa-pencil"></i> Review
+          </Button>
+          <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
         </>
       )
@@ -142,7 +148,16 @@ const Vetting = props => {
   const [hitCategoryOptions, setHitCategoryOptions] = useState();
   const [refreshKey, setRefreshKey] = useState("");
   const showDateTimePicker = useRef(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [currentPaxId, setCurrentPaxId] = useState();
+  const [noteTypes, setNoteTypes] = useState([]);
+  const [usersEmails, setUsersEmails] = useState({});
   const now = new Date();
+
+  const reviewPVL = paxId => {
+    setCurrentPaxId(paxId);
+    setShowReviewModal(true);
+  };
 
   const toggleDateTimePicker = ev => {
     showDateTimePicker.current = !showDateTimePicker.current;
@@ -200,6 +215,33 @@ const Vetting = props => {
     });
     return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
   };
+
+  useEffect(() => {
+    usersemails.get().then(res => {
+      const emails = asArray(res).map(userEmail => {
+        return {
+          label: userEmail.username,
+          key: userEmail.email,
+          name: userEmail.email,
+          type: "checkbox",
+          checked: false
+        };
+      });
+      setUsersEmails(emails);
+    });
+  }, []);
+
+  useEffect(() => {
+    notetypes.get().then(types => {
+      const nTypes = asArray(types).map(type => {
+        return {
+          value: `{"id":"${type.id}", "noteType":"${type.noteType}"}`,
+          label: type.noteType
+        };
+      });
+      setNoteTypes(nTypes);
+    });
+  }, []);
 
   useEffect(() => {
     if (hitCategories !== undefined) {
@@ -268,6 +310,7 @@ const Vetting = props => {
       startMut={setStartData}
     />
   );
+
   let renderedFilter;
   if (loading) {
     renderedFilter = <div>Loading Filter!</div>;
@@ -369,21 +412,23 @@ const Vetting = props => {
           </Col>
         </SideNav>
         <Main>
-          <Col>
-            <Title title="Priority Vetting" uri={props.uri} />
-            <Table
-              data={data}
-              id="FlightDataTable"
-              callback={onTableChange}
-              header={Headers}
-              ignoredFields={[
-                "countDown",
-                "priorityVettingListRuleTypes",
-                "ruleCatFilter"
-              ]}
-              key={data}
-            />
-          </Col>
+          <Title title="Priority Vetting" uri={props.uri} />
+          <Table
+            data={data}
+            id="FlightDataTable"
+            callback={onTableChange}
+            header={Headers}
+            ignoredFields={["countDown", "priorityVettingListRuleTypes", "ruleCatFilter"]}
+            key={data}
+          />
+
+          <ReviewPVL
+            paxId={currentPaxId}
+            callback={setRefreshKey}
+            show={showReviewModal}
+            onHide={() => setShowReviewModal(false)}
+            noteTypes={noteTypes}
+          />
         </Main>
       </>
     );

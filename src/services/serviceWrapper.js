@@ -86,6 +86,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
+const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
 const CHANGEPASSWORD = `${BASE_URL}gtas/user/change-password`;
 const WLCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
 const WLCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
@@ -136,6 +137,9 @@ export const users = {
   put: body => put(USERS, BASEHEADER, 1, stringify(body)),
   post: body => post(USERS + "/1", BASEHEADER, stringify(body)),
   del: body => post(USERS, BASEHEADER)
+};
+export const usersemails = {
+  get: () => get(USERSEMAIL, BASEHEADER)
 };
 export const watchlistcats = {
   get: (id, params) => get(WLCATS, BASEHEADER, id, params),

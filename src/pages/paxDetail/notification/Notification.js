@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import { Button, Modal } from "react-bootstrap";
-import { notification, users } from "../../../services/serviceWrapper";
+import { notification, usersemails } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
 
 const Notification = props => {
   const [show, setShow] = useState(false);
-  const [usersEmails, setUsersEmails] = useState({});
+  const [usersEmails, setUsersEmails] = useState(props.usersEmails);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -17,21 +17,22 @@ const Notification = props => {
   useEffect(() => {
     let isMounted = true;
 
-    users.get().then(res => {
-      if (isMounted) {
-        const emails = asArray(res).map(user => {
-          return {
-            label: user.userId,
-            key: user.email,
-            name: user.email,
-            type: "checkbox",
-            checked: false
-          };
-        });
-        setUsersEmails(emails);
-      }
-    });
-
+    if (!props.usersEmails) {
+      usersemails.get().then(res => {
+        if (isMounted) {
+          const emails = asArray(res).map(userEmail => {
+            return {
+              label: userEmail.username,
+              key: userEmail.email,
+              name: userEmail.email,
+              type: "checkbox",
+              checked: false
+            };
+          });
+          setUsersEmails(emails);
+        }
+      });
+    }
     return () => (isMounted = false); //clean up
   }, []);
 
