@@ -3,6 +3,7 @@ import { Modal, Button, Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import { watchlistcatspost } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
+import { ACTION } from "../../../utils/constants";
 
 const WatchlistModal = props => {
   const title = "Watchlist Category";
@@ -13,9 +14,10 @@ const WatchlistModal = props => {
     { value: "Normal", label: "Normal" }
   ];
 
-  const postSubmit = ev => {
+  const postSubmit = status => {
     props.onHide();
-    props.refresh();
+
+    if (status !== ACTION.CANCEL) props.refresh();
   };
 
   return (
@@ -33,10 +35,10 @@ const WatchlistModal = props => {
         <Container fluid>
           <Form
             submitService={watchlistcatspost.post}
-            title=""
             callback={postSubmit}
             action="add"
             submitText="Submit"
+            cancellable
             afterProcessed={props.onHide}
           >
             <LabelledInput
@@ -71,11 +73,6 @@ const WatchlistModal = props => {
           </Form>
         </Container>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="outline-danger" onClick={props.onHide}>
-          Close
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 };
