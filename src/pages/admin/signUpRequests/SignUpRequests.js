@@ -12,6 +12,7 @@ import { hasData } from "../../../utils/utils";
 const SignUpRequests = () => {
   const [data, setData] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [fetchData, setFetchData] = useState(0);
   const [show, setShow] = useState(false);
   const [alertContent, setAlertContent] = useState("");
   const [variant, setVariant] = useState("");
@@ -27,18 +28,17 @@ const SignUpRequests = () => {
     setAlertContent(`${status} : ${message}`);
     status === "SUCCESS" ? setVariant("success") : setVariant("danger");
     setShow(true);
+    setFetchData(setFetchData + 1);
   };
-  const approve = request => {
-    signuprequests.approve(request).then(res => {
+  const approve = requestId => {
+    signuprequests.approve(requestId).then(res => {
       handleResponse(res);
-      setRefreshKey(refreshKey + 1);
     });
   };
 
-  const reject = request => {
-    signuprequests.reject(request).then(res => {
+  const reject = requestId => {
+    signuprequests.reject(requestId).then(res => {
       handleResponse(res);
-      setRefreshKey(refreshKey + 1);
     });
   };
 
@@ -91,7 +91,7 @@ const SignUpRequests = () => {
           <Button
             variant="outline-info"
             className="fa fa-thumbs-up"
-            onClick={() => approve(row.original)}
+            onClick={() => approve(row.original.id)}
             disabled={row.original.status !== "NEW"}
           >
             Approve
@@ -99,7 +99,7 @@ const SignUpRequests = () => {
           <Button
             variant="outline-danger"
             className="fa fa-thumbs-down"
-            onClick={() => reject(row.original)}
+            onClick={() => reject(row.original.id)}
             disabled={row.original.status !== "NEW"}
           >
             Reject
@@ -117,6 +117,7 @@ const SignUpRequests = () => {
           service={signuprequests.get}
           paramCallback={preFetchCallback}
           callback={setDataWrapper}
+          key={fetchData}
         >
           <hr />
           <LabelledInput
