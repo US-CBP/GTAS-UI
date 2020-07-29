@@ -24,8 +24,8 @@ const Header = () => {
 
   const userFullName = user?.fullName || "";
 
-  const headerTabs = {
-    DASHBOARD: "/gtas/dashboard",
+  const htab = {
+    DASH: "/gtas/dashboard",
     FLIGHT: "/gtas/flights",
     VETTING: "/gtas/vetting",
     TOOLS: "/gtas/tools",
@@ -41,13 +41,13 @@ const Header = () => {
   };
 
   const getActiveClass = tabName => {
-    return currentPath.pathname === tabName ? "active-tab" : "";
+    return currentPath.pathname.startsWith(tabName) ? "active-tab" : "";
   };
 
   return (
     <Navbar sticky="top" expand="md" className="header-navbar" variant="light">
       <Navbar.Brand className="header-navbar-brand">
-        <Link to="dashboard" onClick={() => clickTab(headerTabs.DASHBOARD)}>
+        <Link to="dashboard" onClick={() => clickTab(htab.DASH)}>
           <img src={wcoLogo} />
         </Link>
       </Navbar.Brand>
@@ -57,38 +57,38 @@ const Header = () => {
           <Nav.Link
             as={Link}
             to="dashboard"
-            className={`${getActiveClass(headerTabs.DASHBOARD)}`}
-            onClick={() => clickTab(headerTabs.DASHBOARD)}
+            className={`${getActiveClass(htab.DASH)}`}
+            onClick={() => clickTab(htab.DASH)}
           >
             Dashboard
           </Nav.Link>
           <Nav.Link
             as={Link}
             to="flights"
-            className={`${getActiveClass(headerTabs.FLIGHT)}`}
-            onClick={() => clickTab(headerTabs.FLIGHT)}
+            className={`${getActiveClass(htab.FLIGHT)}`}
+            onClick={() => clickTab(htab.FLIGHT)}
           >
             Flights
           </Nav.Link>
           <Nav.Link
             as={Link}
             to="vetting"
-            className={`${getActiveClass(headerTabs.VETTING)}`}
-            onClick={() => clickTab(headerTabs.VETTING)}
+            className={`${getActiveClass(htab.VETTING)}`}
+            onClick={() => clickTab(htab.VETTING)}
           >
             Vetting
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
-            {/* <Nav.Link
-              as={Link}
-              to="admin"
-              className={`${getActiveClass(headerTabs.ADMIN)}`}
-              onClick={() => clickTab(headerTabs.ADMIN)}
+            <NavDropdown
+              title="Admin"
+              id="nav-dropdown"
+              className={`${getActiveClass(htab.ADMIN)}`}
             >
-              Admin
-            </Nav.Link> */}
-            <NavDropdown title="Admin" id="nav-dropdown">
-              <NavDropdown.Item as={Link} to="admin/manageusers">
+              <NavDropdown.Item
+                as={Link}
+                to="admin/manageusers"
+                onClick={() => clickTab(htab.ADMIN)}
+              >
                 Manage Users
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="admin/auditlog">
@@ -120,12 +120,20 @@ const Header = () => {
               </NavDropdown.Item>
             </NavDropdown>
           </RoleAuthenticator>
-          <NavDropdown title="Tools" id="nav-dropdown">
-            <NavDropdown.Item as={Link} to="tools/queries" onClick={() => clickTab("")}>
+          <NavDropdown
+            title="Tools"
+            id="nav-dropdown"
+            className={`${getActiveClass(htab.TOOLS)}`}
+          >
+            <NavDropdown.Item as={Link} to="tools/queries">
               <i className="fa fa-filter"></i> Queries
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="tools/rules" onClick={() => clickTab("")}>
+            <NavDropdown.Item
+              as={Link}
+              to="tools/rules"
+              onClick={() => clickTab(htab.TOOLS)}
+            >
               <i className="fa fa-flag"></i> Rules
             </NavDropdown.Item>
             <NavDropdown.Divider />
