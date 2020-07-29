@@ -49,6 +49,8 @@ import UserProvider from "./context/user/UserContext";
 
 import { ROLE, TIME } from "./utils/constants";
 import ChangePassword from "./pages/admin/manageUsers/changePassword/ChangePassword";
+import SignUp from "./pages/signUp/SignUp";
+import SignUpRequests from "./pages/admin/signUpRequests/SignUpRequests";
 
 //Split Link Analysis (Graph component, d3, jquery deps) into a separate bundle
 const LinkAnalysis = React.lazy(() =>
@@ -105,6 +107,7 @@ export default class App extends React.Component {
           <Router>
             <Redirect from="/" to="/login" noThrow />
             <Login path="/login"></Login>
+            <SignUp path="/signup"></SignUp>
           </Router>
           {this.state.showModal ? (
             <GModal>
@@ -188,6 +191,10 @@ export default class App extends React.Component {
                             name="Note Type Categories"
                             path="notetypecats"
                           ></NoteTypeCats>
+                          <SignUpRequests
+                            name="Sign Up Request"
+                            path="signuprequests"
+                          ></SignUpRequests>
                         </Admin>
                       </RoleAuthenticator>
                       <PaxDetail path="paxDetail/:flightId/:paxId">
