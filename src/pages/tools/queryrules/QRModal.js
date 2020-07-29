@@ -92,7 +92,7 @@ const QRModal = props => {
         data: {
           pageNumber: 1,
           pageSize: 10,
-          query: data
+          query: data || query
         }
       }
     });
