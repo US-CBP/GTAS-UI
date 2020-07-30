@@ -53,7 +53,7 @@ const UserModal = props => {
 
   // const optionsForEmails = ["Enabled/Disabled"];
 
-  const postSubmit = ev => {
+  const postSubmit = (status, res) => {
     props.onHide();
     props.refresh();
   };

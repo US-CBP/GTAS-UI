@@ -14,7 +14,7 @@ const WatchlistModal = props => {
     { value: "Normal", label: "Normal" }
   ];
 
-  const postSubmit = status => {
+  const postSubmit = (status, res) => {
     props.onHide();
 
     if (status !== ACTION.CANCEL) props.refresh();
