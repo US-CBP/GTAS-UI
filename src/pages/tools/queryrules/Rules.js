@@ -185,15 +185,7 @@ const Rules = props => {
         leftCb={titleTabCallback}
         rightChild={button}
       ></Title>
-      {data && (
-        <Table
-          data={data}
-          id="Rules"
-          callback={cb}
-          header={header}
-          key={tablekey}
-        ></Table>
-      )}
+      <Table data={data} id="Rules" callback={cb} header={header} key={tablekey}></Table>
       {showModal && (
         <QRModal
           show={showModal}

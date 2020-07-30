@@ -86,6 +86,10 @@ const QRModal = props => {
     };
   };
 
+  const onClose = () => {
+    props.callback(ACTION.CLOSE);
+  };
+
   const onRun = () => {
     navigate("/gtas/tools/qrdetails", {
       state: {
@@ -228,6 +232,14 @@ const QRModal = props => {
           </Container>
         </Modal.Body>
         <Modal.Footer>
+          <Button
+            type="button"
+            className="m-2 outline-dark-outline"
+            variant="outline-dark"
+            onClick={onClose}
+          >
+            Close
+          </Button>
           <Button
             type="button"
             className="m-2 outline-dark-outline"
