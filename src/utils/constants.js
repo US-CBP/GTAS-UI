@@ -15,7 +15,8 @@ export const ACTION = {
   DELETE: "Delete",
   CANCEL: "Cancel",
   CLOSE: "Close",
-  UPDATE: "Update"
+  UPDATE: "Update",
+  RUN: "Run"
 };
 
 export const ROLE = {

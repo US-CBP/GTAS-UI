@@ -8,7 +8,7 @@ import {
 } from "../../../components/queryBuilder/constants";
 import { navigate } from "@reach/router";
 import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
-import { QR } from "../../../utils/constants";
+import { QR, ACTION } from "../../../utils/constants";
 import { watchlistcats } from "../../../services/serviceWrapper";
 
 const QRModal = props => {
@@ -39,7 +39,7 @@ const QRModal = props => {
   const onDelete = () => {
     if (hasData(svc)) {
       svc.del(id).then(res => {
-        props.callback("DELETE");
+        props.callback(ACTION.DELETE);
       });
     }
   };
@@ -54,7 +54,7 @@ const QRModal = props => {
     saveMethod(...saveArgs).then(() => {
       // postpone callback to parent until *after* the save promise is resolved.
       // Ensures the save is complete before we attempt to refresh the parent table data
-      props.callback("SAVE");
+      props.callback(ACTION.SAVE);
     });
   };
 
@@ -96,7 +96,7 @@ const QRModal = props => {
         }
       }
     });
-    props.callback("RUN");
+    props.callback(ACTION.RUN);
   };
 
   const onClear = () => {

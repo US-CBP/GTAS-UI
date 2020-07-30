@@ -6,7 +6,7 @@ import { navigate } from "@reach/router";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
 import { hasData } from "../../../utils/utils";
-import { QR } from "../../../utils/constants";
+import { QR, ACTION } from "../../../utils/constants";
 import QRModal from "./QRModal";
 import "./QueryRules.css";
 
@@ -23,9 +23,9 @@ const Rules = props => {
   const [tablekey, setTablekey] = useState(0);
 
   const cb = function(result) {
-    if (result === "SAVE" || result === "DELETE" || result === "CLOSE") {
-      closeModal();
-    }
+    if (result === ACTION.DELETE || result === ACTION.SAVE) return closeModalAndRefresh();
+
+    closeModal();
   };
 
   const header = [
@@ -108,8 +108,12 @@ const Rules = props => {
     setShowModal(true);
   };
 
-  const closeModal = () => {
+  const closeModalAndRefresh = () => {
     fetchData();
+    closeModal();
+  };
+
+  const closeModal = () => {
     setShowModal(false);
     setId();
     setRecord();
