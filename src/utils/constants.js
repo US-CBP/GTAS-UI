@@ -14,7 +14,8 @@ export const ACTION = {
   SAVE: "Save",
   DELETE: "Delete",
   CANCEL: "Cancel",
-  CLOSE: "Close"
+  CLOSE: "Close",
+  UPDATE: "Update"
 };
 
 export const ROLE = {

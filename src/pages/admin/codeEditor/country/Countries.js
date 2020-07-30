@@ -10,7 +10,7 @@ const Countries = ({ name }) => {
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState("Create New User");
+  const [modalTitle, setModalTitle] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
 
   const refresh = () => {
@@ -19,7 +19,7 @@ const Countries = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit Country Code");
+    setModalTitle("Edit Country");
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -46,45 +46,38 @@ const Countries = ({ name }) => {
 
   return (
     <Container fluid>
-      <Row>
-        <Col sm={{ span: 3, offset: 1 }}>
-          <Button
-            variant="outline-dark"
-            onClick={() => {
-              setShowModal(true);
-              setModalTitle("Add Country");
-              setIsEditModal(false);
-              setEditRowDetails({});
-            }}
-          >
-            Add Country
-          </Button>
-          <CountryModal
-            show={showModal}
-            onHide={() => setShowModal(false)}
-            isEdit={isEditModal}
-            title={modalTitle}
-            editRowDetails={editRowDetails}
-            refresh={refresh}
-            callback={cb}
-          />
-        </Col>
-        <Col sm={3}>
-          <Title title={name}></Title>
-        </Col>
-        <Col sm={{ span: 3, offset: 1 }}>
-          <Button
-            variant="outline-dark"
-            onClick={() => {
-              codeEditor.put.restoreCountriesAll().then(res => {
-                refresh();
-              });
-            }}
-          >
-            Restore All Countries
-          </Button>
-        </Col>
-      </Row>
+      <div className="action-button-div">
+        <Button
+          variant="outline-dark"
+          onClick={() => {
+            setShowModal(true);
+            setModalTitle("Add Country");
+            setIsEditModal(false);
+            setEditRowDetails({});
+          }}
+        >
+          Add Country
+        </Button>
+        <Button
+          variant="outline-dark"
+          onClick={() => {
+            codeEditor.put.restoreCountriesAll().then(res => {
+              refresh();
+            });
+          }}
+        >
+          Restore All Countries
+        </Button>
+      </div>
+      <CountryModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        isEdit={isEditModal}
+        title={modalTitle}
+        editRowDetails={editRowDetails}
+        refresh={refresh}
+        callback={cb}
+      />
 
       <Table
         service={codeEditor.get.countryCodes}

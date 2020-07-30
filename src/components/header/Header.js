@@ -115,6 +115,9 @@ const Header = () => {
               <NavDropdown.Item as={Link} to="admin/notetypecats">
                 Note Type Categories
               </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="admin/signuprequests">
+                Sign Up Requests
+              </NavDropdown.Item>
             </NavDropdown>
           </RoleAuthenticator>
           <NavDropdown

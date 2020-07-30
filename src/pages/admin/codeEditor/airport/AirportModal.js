@@ -4,13 +4,16 @@ import { Modal, Button, Container } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import Form from "../../../../components/form/Form";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
+import { ACTION } from "../../../../utils/constants";
 
 const AirportModal = props => {
   const cb = function(result) {};
+  const data = props.editRowDetails || {};
 
-  const postSubmit = ev => {
+  const postSubmit = (status = ACTION.CANCEL, results) => {
     props.onHide();
-    props.refresh();
+
+    if (status !== ACTION.CANCEL) props.refresh();
   };
 
   const preSubmit = fields => {
@@ -22,11 +25,37 @@ const AirportModal = props => {
   };
 
   const restoreSpecificCode = () => {
-    codeEditor.put.restoreAirport(props.editRowDetails).then(res=>{
-      props.onHide();
-      props.refresh();
+    codeEditor.put.restoreAirport(props.editRowDetails).then(res => {
+      postSubmit(ACTION.UPDATE);
     });
-  }
+  };
+
+  const customButtons = props.isEdit
+    ? [
+        <Button
+          type="button"
+          className="m-2 outline-dark-outline"
+          variant="outline-dark"
+          key="restore"
+          onClick={() => restoreSpecificCode()}
+        >
+          Restore
+        </Button>,
+        <Button
+          type="button"
+          className="m-2 outline-dark-outline"
+          variant="outline-dark"
+          key="delete"
+          onClick={() => {
+            codeEditor.delete.deleteAirport(props.editRowDetails?.id).then(res => {
+              postSubmit(ACTION.DELETE);
+            });
+          }}
+        >
+          Delete
+        </Button>
+      ]
+    : [];
 
   return (
     <Modal
@@ -51,6 +80,8 @@ const AirportModal = props => {
             submitText={props.isEdit ? "Save" : "Submit"}
             paramCallback={preSubmit}
             afterProcessed={props.onHide}
+            cancellable
+            customButtons={customButtons}
           >
             <LabelledInput
               datafield
@@ -59,7 +90,7 @@ const AirportModal = props => {
               name="iata"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.iata || ""}
+              inputVal={data.iata}
               callback={cb}
               spacebetween
             />
@@ -70,7 +101,7 @@ const AirportModal = props => {
               name="icao"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.icao || ""}
+              inputVal={data.icao}
               callback={cb}
               spacebetween
             />
@@ -81,7 +112,7 @@ const AirportModal = props => {
               name="name"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.name || ""}
+              inputVal={data.name}
               callback={cb}
               spacebetween
             />
@@ -92,7 +123,7 @@ const AirportModal = props => {
               name="city"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.city || ""}
+              inputVal={data.city}
               callback={cb}
               spacebetween
             />
@@ -103,7 +134,7 @@ const AirportModal = props => {
               name="country"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.country || ""}
+              inputVal={data.country}
               callback={cb}
               spacebetween
             />
@@ -114,7 +145,7 @@ const AirportModal = props => {
               name="latitude"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.latitude || ""}
+              inputVal={data.latitude?.toString() || ""}
               callback={cb}
               spacebetween
             />
@@ -125,43 +156,13 @@ const AirportModal = props => {
               name="longitude"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.longitude || ""}
+              inputVal={data.longitude?.toString() || ""}
               callback={cb}
               spacebetween
             />
           </Form>
         </Container>
       </Modal.Body>
-      {props.isEdit ? (
-        <Modal.Footer>
-          <Button
-            type="button"
-            className="m-2 outline-dark-outline"
-            variant="outline-dark"
-            onClick={() => restoreSpecificCode()}
-          >
-            Restore
-          </Button>
-          <Button
-            type="button"
-            className="m-2 outline-dark-outline"
-            variant="outline-dark"
-            onClick={() => {
-              codeEditor.delete.deleteAirport(props.editRowDetails.id).then(res => {
-                postSubmit(undefined);
-              });
-            }}
-          >
-            Delete
-          </Button>
-        </Modal.Footer>
-      ) : (
-        <Modal.Footer>
-          <Button variant="outline-danger" onClick={props.onHide}>
-            Close
-          </Button>
-        </Modal.Footer>
-      )}
     </Modal>
   );
 };
