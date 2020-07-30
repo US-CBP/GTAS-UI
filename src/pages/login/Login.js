@@ -16,7 +16,7 @@ const Login = () => {
     ctx.userAction({ type: "logoff" });
   }, []);
 
-  const loginHandler = res => {
+  const loginHandler = (status, res) => {
     if (res?.userId) {
       const newuser = {
         authenticated: true,
