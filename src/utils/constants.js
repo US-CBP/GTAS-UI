@@ -1,5 +1,13 @@
 export const NO_URI = "No URI was received in props";
 
+export const ACTION = {
+  SAVE: "Save",
+  DELETE: "Delete",
+  CANCEL: "Cancel",
+  CLOSE: "Close",
+  UPDATE: "Update"
+};
+
 export const ROLE = {
   ADMIN: "Admin",
   QRYMGR: "Manage Queries",

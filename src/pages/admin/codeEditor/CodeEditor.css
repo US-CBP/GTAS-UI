@@ -1,0 +1,9 @@
+.action-button-div {
+  position: absolute;
+  top: 64px;
+  right: 30px;
+}
+
+.action-button-div > button {
+  margin-left: 10px;
+}

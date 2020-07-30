@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Form from "../../components/form/Form";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { login } from "../../services/serviceWrapper";
-import { Alert, Card } from "react-bootstrap";
+import { Alert, Card, Button } from "react-bootstrap";
 import { navigate } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
 import "./Login.scss";
@@ -77,10 +77,14 @@ const Login = () => {
             />
           </Form>
           <div>
-            {alertVis && (
+            {alertVis ? (
               <Alert variant="danger" dismissible onClose={() => setAlertVis(false)}>
                 Login failed.
               </Alert>
+            ) : (
+              <Button variant="outline-info" onClick={() => navigate("/signup")}>
+                Sign Up
+              </Button>
             )}
           </div>
         </Card.Body>

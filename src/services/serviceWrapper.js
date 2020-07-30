@@ -16,6 +16,12 @@ const LOGINHEADER = {
   Accept: AJSON,
   "Accept-Encoding": "gzip, deflate, br"
 };
+const SIGNUPHEADER = {
+  "X-Login-Ajax-call": "true",
+  "Content-Type": "application/json",
+  "X-Requested-With": "XMLHttpRequest",
+  Accept: AJSON
+};
 
 const BASEHEADER = { "Content-Type": JSONUTF8, Accept: AJSON };
 const PUTBODY = "The put method requires a valid body parameter.";
@@ -87,6 +93,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
 const USERSNONARCHIVED = `${USERS}/nonarchived`;
+const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
 const CHANGEPASSWORD = `${BASE_URL}gtas/user/change-password`;
 const WLCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
 const WLCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
@@ -131,6 +138,11 @@ const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 const LOGFILE = `${BASE_URL}gtas/api/logs/`;
+const SIGNUP = `${BASE_URL}gtas/user/signup/new`;
+const PHYSICALLOCATIONS = `${BASE_URL}gtas/user/signup/physiclLocations`;
+const SIGNUPREQUESTS = `${BASE_URL}gtas/api/signup-requests`;
+const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
+const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
 // ENTITY METHODS
 export const users = {
   get: {
@@ -140,6 +152,9 @@ export const users = {
   put: body => put(USERS, BASEHEADER, 1, stringify(body)),
   post: body => post(USERS + "/1", BASEHEADER, stringify(body)),
   del: id => del(USERS, BASEHEADER, id)
+};
+export const usersemails = {
+  get: () => get(USERSEMAIL, BASEHEADER)
 };
 export const watchlistcats = {
   get: (id, params) => get(WLCATS, BASEHEADER, id, params),
@@ -275,9 +290,9 @@ export const codeEditor = {
     createAirport: body => post(CODES_AIRPORT, BASEHEADER, stringify(body))
   },
   delete: {
-    deleteCarrier: id => del(CODES_CARRIER, id),
-    deleteCountry: id => del(CODES_COUNTRY, id),
-    deleteAirport: id => del(CODES_AIRPORT, id)
+    deleteCarrier: id => del(CODES_CARRIER, BASEHEADER, id),
+    deleteCountry: id => del(CODES_COUNTRY, BASEHEADER, id),
+    deleteAirport: id => del(CODES_AIRPORT, BASEHEADER, id)
   }
 };
 
@@ -384,4 +399,17 @@ export const logfile = {
 
 export const changePassword = {
   put: body => put(CHANGEPASSWORD, BASEHEADER, undefined, stringify(body))
+};
+
+export const signup = {
+  post: body => post(SIGNUP, SIGNUPHEADER, stringify(body))
+};
+export const physicalLocations = {
+  get: () => get(PHYSICALLOCATIONS, SIGNUPHEADER)
+};
+
+export const signuprequests = {
+  get: params => get(SIGNUPREQUESTS, BASEHEADER, undefined, params),
+  approve: id => put(SIGNUPREQUESTAPPROVE, BASEHEADER, id),
+  reject: id => put(SIGNUPREQUESTSREJECT, BASEHEADER, id)
 };
