@@ -1,29 +1,48 @@
-import React from "react";
-import Tabs from "../../../components/tabs/Tabs";
-import Banner from "../../../components/banner/Banner";
+import React, { useState, useEffect } from "react";
+import Title from "../../../components/title/Title";
+import { Tabs, Tab, Container } from "react-bootstrap";
+import Main from "../../../components/main/Main";
+import { navigate } from "@reach/router";
+import { titleCase } from "../../../utils/utils";
+
+import "./CodeEditor.css";
 
 const CodeEditor = props => {
   const tabcontent = props.children.props.children;
+  const [tab, setTab] = useState(props.startTab);
 
-  console.log(props.children);
+  const tabHandler = ev => {
+    const tabname = ev
+      .split("-")
+      .pop()
+      .toLowerCase();
 
-  const tablist = tabcontent.map((tab, idx) => {
-    return { title: tab.props.name, key: tab.props.name, link: tab };
-  });
-  const showBanner = () => {
-    return false;
+    setTab(tabname);
   };
 
+  useEffect(() => {
+    navigate(`/gtas/admin/codeeditor/${tab}`);
+  }, [tab]);
+
+  const headerTabs = (
+    <Tabs defaultActiveKey={props.startTab} id="codeTabs">
+      {tabcontent.map(tab => {
+        return (
+          <Tab
+            eventKey={tab.props.name.toLowerCase()}
+            title={tab.props.name}
+            key={tab.props.name}
+          ></Tab>
+        );
+      })}
+    </Tabs>
+  );
+
   return (
-    <>
-      <Banner
-        id="banner"
-        styleName="warning"
-        text="Something has happened."
-        defaultState={showBanner}
-      />
-      <Tabs tabs={tablist} />
-    </>
+    <Container fluid>
+      <Title title={titleCase(tab)} leftChild={headerTabs} leftCb={tabHandler} />
+      {props.children}
+    </Container>
   );
 };
 
