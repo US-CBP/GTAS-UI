@@ -3,24 +3,22 @@ import { Button, Container } from "react-bootstrap";
 import Table from "../../../components/table/Table";
 import { users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
-// import Xl8 from "../../../components/xl8/Xl8";
-// import SideNav from "../../../components/sidenav/SideNav";
+import { asArray } from "../../../utils/utils";
+import { ACTION } from "../../../utils/constants";
 
 import "./ManageUsers.scss";
 import UserModal from "./UserModal";
-import { asArray } from "../../../utils/utils";
 
 const ManageUsers = props => {
-  const cb = function(result) {};
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState("Create New User");
+  const [modalTitle, setModalTitle] = useState("Add New User");
   const [editRowDetails, setEditRowDetails] = useState({});
 
-  const refresh = () => {
-    setRefreshKey(refreshKey + 1);
+  const cb = function(status = ACTION.CLOSE, result) {
+    if (status !== ACTION.CLOSE && status !== ACTION.CANCEL) fetchData();
   };
 
   const openEditModal = rowDetails => {
@@ -100,7 +98,7 @@ const ManageUsers = props => {
       placeholder={props.placeholder}
       onClick={() => {
         setShowModal(true);
-        setModalTitle("Create New User");
+        setModalTitle("Add New User");
         setIsEditModal(false);
         setEditRowDetails({});
       }}
@@ -127,12 +125,15 @@ const ManageUsers = props => {
     });
   };
 
-  // fetch the data when the page loads so we can massage the bools before passing it into the table
-  useEffect(() => {
+  const fetchData = () => {
     users.get().then(res => {
       setData(parseData(res));
       setRefreshKey(refreshKey + 1);
     });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (
@@ -153,7 +154,6 @@ const ManageUsers = props => {
           isEdit={isEditModal}
           title={modalTitle}
           editRowDetails={editRowDetails}
-          refresh={refresh}
         />
       </Container>
     </>
