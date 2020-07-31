@@ -86,7 +86,6 @@ const Rules = props => {
         delete res.summary;
         delete res.details;
 
-        console.log(res);
         launchModal(res);
       }
     });
@@ -123,7 +122,6 @@ const Rules = props => {
   };
 
   useEffect(() => {
-    console.log("fetch all");
     service.get().then(res => {
       let parsed = [];
 
