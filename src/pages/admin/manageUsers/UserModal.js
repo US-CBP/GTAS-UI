@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
-import {users, userService} from "../../../services/serviceWrapper"; //Add hooks
+import {codeEditor, users, userService} from "../../../services/serviceWrapper"; //Add hooks
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
 import { asArray } from "../../../utils/utils";
 import "./ManageUsers.scss";
+import {ACTION} from "../../../utils/constants";
 
 const UserModal = props => {
   //TODO make this a service call return data
@@ -57,7 +58,8 @@ const UserModal = props => {
 
   // const optionsForEmails = ["Enabled/Disabled"];
 
-  const postSubmit = ev => {
+  const postSubmit = (action = ACTION.DELETE, response) => {
+    //TODO react to response appropriately here using action as guideline
     props.onHide();
     props.refresh();
   };
@@ -97,6 +99,24 @@ const UserModal = props => {
     );
   };
 
+  const buttons = props.isEdit
+      ? [
+        <Button
+            type="button"
+            className="m-2 outline-dark-outline"
+            variant="outline-dark"
+            key="delete"
+            onClick={() => {
+              users.del(props.editRowDetails.userId).then(res => {
+                postSubmit(ACTION.DELETE, res);
+              });
+            }}
+        >
+          Delete
+        </Button>
+      ]
+      : [];
+
   return (
     <Modal
       show={props.show}
@@ -118,6 +138,7 @@ const UserModal = props => {
             submitText="Submit"
             paramCallback={preSubmit}
             cancellable
+            customButtons={buttons}
           >
             {props.isEdit ? (
               <LabelledInput
@@ -249,22 +270,6 @@ const UserModal = props => {
           </Form>
         </Container>
       </Modal.Body>
-      {props.isEdit && (
-          <Modal.Footer>
-            <Button
-                type="button"
-                className="m-2 outline-dark-outline"
-                variant="outline-dark"
-                onClick={() => {
-                  users.del(props.editRowDetails.userId).then(res => {
-                    postSubmit(undefined);
-                  });
-                }}
-            >
-              Delete
-            </Button>
-          </Modal.Footer>
-      )}
     </Modal>
   );
 };
