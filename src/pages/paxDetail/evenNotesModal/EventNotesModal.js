@@ -10,7 +10,7 @@ const EventNotesModal = props => {
   const [show, setShow] = useState(false);
   const [notTypes, setNoteTypes] = useState([]);
 
-  const handleClose = () => {
+  const handleClose = (status, res) => {
     setShow(false);
     props.setEventNoteRefreshKey(Date.now());
   };

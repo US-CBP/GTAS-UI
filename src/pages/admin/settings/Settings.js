@@ -6,7 +6,7 @@ import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 
 const Settings = ({ name }) => {
-  const onChange = function(result) {};
+  const onChange = (status, result) => {};
   const cb = function() {};
 
   return (

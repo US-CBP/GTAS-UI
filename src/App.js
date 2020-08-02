@@ -36,7 +36,6 @@ import Neo4J from "./pages/tools/neo4J/Neo4J";
 import Watchlist from "./pages/tools/watchlist/Watchlist";
 import About from "./pages/tools/about/About";
 import GModal from "./components/modal/GModal";
-import AddUser from "./pages/admin/manageUsers/addUser/AddUser";
 
 import Page404 from "./pages/page404/Page404";
 import PageUnauthorized from "./pages/pageUnauthorized/PageUnauthorized";
@@ -164,9 +163,7 @@ export default class App extends React.Component {
                       <ChangePassword path="user/change-password"></ChangePassword>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
                         <Admin path="/">
-                          <ManageUser name="Manage Users" path="manageusers">
-                            <AddUser name="Add User" path="/gtas/admin/adduser"></AddUser>
-                          </ManageUser>
+                          <ManageUser name="Manage Users" path="manageusers"></ManageUser>
                           <AuditLog name="Audit Log" path="auditlog"></AuditLog>
                           <ErrorLog name="Error Log" path="errorlog"></ErrorLog>
                           <Settings name="Settings" path="settings"></Settings>

@@ -44,7 +44,7 @@ const ChangePassword = props => {
   }, [oldPassword, newPassword, confirmedPassword]);
 
   const cb = () => {};
-  const passwordChangeCallback = res => {
+  const passwordChangeCallback = (status, res) => {
     const responseStatus = hasData(res) ? res.status : "";
     const message = hasData(res) ? res.message : "";
 
