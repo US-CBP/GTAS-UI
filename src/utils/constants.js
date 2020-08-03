@@ -2,7 +2,14 @@ export const NO_URI = "No URI was received in props";
 
 export const QR = {
   RULE: "Rule",
-  QUERY: "Query"
+  QUERY: "Query",
+  MY: "my",
+  ALL: "all"
+};
+
+export const RULETAB = {
+  MY: "my",
+  ALL: "all"
 };
 
 export const MODE = {

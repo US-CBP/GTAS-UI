@@ -5,15 +5,15 @@ import { Button, Container, Tabs, Tab } from "react-bootstrap";
 import { navigate } from "@reach/router";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
-import { hasData } from "../../../utils/utils";
-import { QR, ACTION } from "../../../utils/constants";
+import { hasData, getEndpoint } from "../../../utils/utils";
+import { QR, ACTION, RULETAB } from "../../../utils/constants";
 import QRModal from "./QRModal";
 import "./QueryRules.css";
 
 const Rules = props => {
-  const mode = (props.mode || "my").toLowerCase();
-  const [tab, setTab] = useState(mode === "all" ? "all" : "my");
-  const service = tab === "all" ? rulesall : rule;
+  const endpoint = getEndpoint(props.location.pathname);
+  const [tab, setTab] = useState(endpoint === "rules" ? RULETAB.MY : RULETAB.ALL);
+  const service = tab === RULETAB.ALL ? rulesall : rule;
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
   const [data, setData] = useState();
@@ -111,13 +111,11 @@ const Rules = props => {
   };
 
   const closeModalAndRefresh = () => {
-    console.log(" close refresh");
     closeModal();
     fetchData();
   };
 
   const closeModal = () => {
-    console.log(" close only");
     setShowModal(false);
     setId();
     setRecord();
@@ -125,13 +123,14 @@ const Rules = props => {
 
   const titleTabCallback = ev => {
     const id = ev.split("-")[2];
+    if (!id) return;
 
-    if ((id || "my").toLowerCase() === "all") {
-      setTab("all");
-      navigate(`/gtas/tools/rules/all`);
+    if ((id || RULETAB.MY).toLowerCase() === RULETAB.ALL) {
+      setTab(RULETAB.ALL);
+      navigate(`/gtas/tools/rules/${RULETAB.ALL}`);
     } else {
-      setTab("my");
-      navigate(`/gtas/tools/rules/my`);
+      setTab(RULETAB.MY);
+      navigate(`/gtas/tools/rules/${RULETAB.MY}`);
     }
   };
 
@@ -157,13 +156,19 @@ const Rules = props => {
   };
 
   useEffect(() => {
+    if (endpoint === "rules") {
+      // titleTabCallback expects a string in the in the format "somestring-somestring-TABNAME",
+      // so we are building a fake string ending with the tab we want as the default;
+      titleTabCallback(`click-tab-${RULETAB.MY}`);
+    }
+
     fetchData();
   }, [tab]);
 
   const tabs = (
-    <Tabs defaultActiveKey={tab} id="qrTabs">
-      <Tab eventKey="my" title="My Rules"></Tab>
-      <Tab eventKey="all" title="All Rules"></Tab>
+    <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs">
+      <Tab eventKey={RULETAB.MY} title="My Rules"></Tab>
+      <Tab eventKey={RULETAB.ALL} title="All Rules"></Tab>
     </Tabs>
   );
 
@@ -198,19 +203,17 @@ const Rules = props => {
         header={header}
         key={`table-${tablekey}`}
       ></Table>
-      {showModal && (
-        <QRModal
-          show={showModal}
-          onHide={closeModal}
-          callback={cb}
-          mode={QR.RULE}
-          key={key}
-          data={record}
-          title={modalTitle}
-          id={id}
-          service={rule}
-        />
-      )}
+      <QRModal
+        show={showModal}
+        onHide={closeModal}
+        callback={cb}
+        mode={QR.RULE}
+        key={key}
+        data={record}
+        title={modalTitle}
+        id={id}
+        service={rule}
+      />
     </Container>
   );
 };
