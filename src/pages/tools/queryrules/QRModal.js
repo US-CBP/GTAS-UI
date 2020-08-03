@@ -46,7 +46,6 @@ const QRModal = props => {
 
   const onSave = () => {
     if (!hasData(svc)) return;
-    console.log("on save");
 
     const q = getSaveObject();
     const saveMethod = isEdit ? svc.put : svc.post;
