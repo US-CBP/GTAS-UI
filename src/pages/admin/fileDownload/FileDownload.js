@@ -60,7 +60,6 @@ const FileDownload = ({ name }) => {
   };
 
   const downloadFile = rowDetails => {
-    console.log(rowDetails);
     logfile.download(currentLogType + "/" + rowDetails.fileName);
   };
 

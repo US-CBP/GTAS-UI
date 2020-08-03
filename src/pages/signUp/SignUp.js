@@ -15,7 +15,7 @@ const SignUp = props => {
   const [locations, setLocations] = useState([]);
   const cb = () => {};
 
-  const signupCallback = res => {
+  const signupCallback = (status, res) => {
     if (hasData(res) && res.status === "FAILURE") {
       setErrorMsg(res.message);
       setDisplaySuccessMsg(false);

@@ -61,14 +61,7 @@ function put(uri, headers, id, body) {
 }
 
 function putNoId(uri, headers, body) {
-  //if (!hasData(body)) throw new TypeError(PUTBODY);
-
-  return GenericService({
-    uri: uri,
-    method: PUT,
-    body: body,
-    headers: headers
-  });
+  return put(uri, headers, undefined, body);
 }
 
 function del(uri, headers, id) {
@@ -92,6 +85,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
+const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
 const USERSNONARCHIVED = `${USERS}/nonarchived`;
 const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
 const CHANGEPASSWORD = `${BASE_URL}gtas/user/change-password`;
@@ -149,7 +143,10 @@ export const users = {
     getAll: (id,params) => get(USERS + "/", BASEHEADER, id, params),
     getAllNonArchived: (id,params) => get(USERSNONARCHIVED, BASEHEADER, id, params)
   },
-  put: body => put(USERS, BASEHEADER, 1, stringify(body)),
+  put: body => {
+    const id = body.userId;
+    return put(MANAGEUSERS, BASEHEADER, id, stringify(body));
+  },
   post: body => post(USERS + "/1", BASEHEADER, stringify(body)),
   del: id => del(USERS, BASEHEADER, id)
 };
@@ -266,7 +263,7 @@ export const notetypes = {
   post: body => post(NOTE_TYPESPOST, BASEHEADER, stringify(body))
 };
 export const loggedinUser = { get: (id, params) => get(LOGGEDIN_USER, BASEHEADER) };
-export const roles = { get: get(ROLES, BASEHEADER) };
+export const roles = { get: () => get(ROLES, BASEHEADER) };
 export const codeEditor = {
   get: {
     carrierCodes: () => get(CODES_CARRIER, BASEHEADER),

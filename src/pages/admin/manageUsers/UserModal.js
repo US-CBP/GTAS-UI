@@ -1,26 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Modal, Button, Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
-import {codeEditor, users, userService} from "../../../services/serviceWrapper"; //Add hooks
+import { users, roles } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
+import { UserContext } from "../../../context/user/UserContext";
 import { asArray } from "../../../utils/utils";
+import { ACTION } from "../../../utils/constants";
 import "./ManageUsers.scss";
-import {ACTION} from "../../../utils/constants";
 
 const UserModal = props => {
-  //TODO make this a service call return data
-  const cb = function(result) {};
+  const [selectedRoles, setSelectedRoles] = useState();
+  const [allRoles, setAllRoles] = useState([]);
+  const { getUserState, userAction } = useContext(UserContext);
 
-  const roles = [
-    { roleId: 1, roleDescription: "Admin" },
-    { roleId: 2, roleDescription: "Manage Queries" },
-    { roleId: 3, roleDescription: "View Passenger" },
-    { roleId: 4, roleDescription: "Manage Watch List" },
-    { roleId: 5, roleDescription: "Manage Rules" },
-    { roleId: 7, roleDescription: "Manage Hits" },
-    { roleId: 8, roleDescription: "Manage Cases" }
-  ];
+  const cb = function(result) {};
+  const row = props.editRowDetails || {};
+  const user = getUserState();
+
+  const cbRoles = function(result) {
+    const coll = result.value
+      .map(item => {
+        if (item.checked) {
+          return { roleId: item.roleId, roleDescription: item.roleDescription };
+        }
+      })
+      .filter(Boolean);
+
+    setSelectedRoles(coll);
+  };
 
   const isCheckedRole = (roleToBeChecked, activeRoles) => {
     let boolVal = false;
@@ -32,7 +40,7 @@ const UserModal = props => {
     return boolVal;
   };
 
-  const transformRoles = roles.map(role => {
+  const transformRoles = allRoles.map(role => {
     let isChecked = false;
     if (props.isEdit) {
       isChecked = isCheckedRole(role, props.editRowDetails.roles);
@@ -56,28 +64,18 @@ const UserModal = props => {
     value: transformRoles
   };
 
-  // const optionsForEmails = ["Enabled/Disabled"];
-
-  const postSubmit = (action = ACTION.DELETE, response) => {
-    //TODO react to response appropriately here using action as guideline
+  const postSubmit = (status = ACTION.CLOSE, res) => {
     props.onHide();
-    props.refresh();
+    props.callback(status);
   };
 
   const preSubmit = fields => {
     let res = { ...fields[0] };
 
-    res.roles = asArray(res.roles)
-      .filter(role => role.checked)
-      .map(role => {
-        return { roleId: role.roleId, roleDescription: role.roleDescription };
-      });
-
-    if (res.active === true) {
-      res.active = 1;
-    } else {
-      res.active = 0;
-    }
+    res.roles = selectedRoles;
+    res.password = null;
+    res.isCurrentlyLoggedInUser = row.userId === user.userId;
+    res.active = res.active ? 1 : 0;
 
     return [res];
   };
@@ -98,6 +96,12 @@ const UserModal = props => {
       />
     );
   };
+
+  useEffect(() => {
+    roles.get().then(res => {
+      setAllRoles(res);
+    });
+  }, []);
 
   const buttons = props.isEdit
       ? [
@@ -147,7 +151,7 @@ const UserModal = props => {
                 inputType="text"
                 name="userId"
                 required={true}
-                inputVal={props?.editRowDetails.userId || ""}
+                inputVal={row.userId}
                 alt="nothing"
                 callback={cb}
                 readOnly={true}
@@ -160,7 +164,7 @@ const UserModal = props => {
                 inputType="text"
                 name="userId"
                 required={true}
-                inputVal={props?.editRowDetails.userId || ""}
+                inputVal={row.userId}
                 alt="nothing"
                 callback={cb}
                 spacebetween
@@ -175,7 +179,7 @@ const UserModal = props => {
               inputType="text"
               name="firstName"
               required={true}
-              inputVal={props?.editRowDetails.firstName || ""}
+              inputVal={row.firstName}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -187,7 +191,7 @@ const UserModal = props => {
               inputType="text"
               name="lastName"
               required={true}
-              inputVal={props?.editRowDetails.lastName || ""}
+              inputVal={row.lastName}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -199,7 +203,7 @@ const UserModal = props => {
               inputType="email"
               name="email"
               required={true}
-              inputVal={props?.editRowDetails.email || ""}
+              inputVal={row.email}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -212,9 +216,9 @@ const UserModal = props => {
               name="emailEnabled"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.emailEnabled || false}
+              inputVal={row.emailEnabled}
               callback={cb}
-              selected={props?.editRowDetails.emailEnabled || false}
+              selected={row.emailEnabled}
               spacebetween
             />
 
@@ -225,9 +229,9 @@ const UserModal = props => {
               name="highPriorityEmail"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.highPriorityEmail || false}
+              inputVal={row.highPriorityEmail}
               callback={cb}
-              selected={props?.editRowDetails.highPriorityEmail || false}
+              selected={row.highPriorityEmail}
               spacebetween
             />
             {props.isEdit ? (
@@ -238,9 +242,9 @@ const UserModal = props => {
               name="active"
               required={true}
               alt="nothing"
-              inputVal={(props?.editRowDetails.active || null) === 1 ? true : false}
+              inputVal={!!row.active}
               callback={cb}
-              selected={(props?.editRowDetails.active || null) === 1 ? true : false}
+              selected={!!row.active}
               spacebetween
             />
             ):(
@@ -262,6 +266,7 @@ const UserModal = props => {
             <div className="um-checkbox">
               <CheckboxGroup
                 datafield
+                callback={cbRoles}
                 inputVal={rcb.value}
                 labelText="Roles"
                 name="roles"

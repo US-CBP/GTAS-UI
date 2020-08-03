@@ -12,7 +12,7 @@ const AddToWatchlist = props => {
   const passenger = props.watchlistItems.passenger;
   const documents = props.watchlistItems.documents;
 
-  const handleClose = () => {
+  const handleClose = (status, res) => {
     setShow(false);
   };
   const handleShow = () => setShow(true);
