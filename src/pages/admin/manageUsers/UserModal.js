@@ -71,9 +71,8 @@ const UserModal = props => {
 
   const preSubmit = fields => {
     let res = { ...fields[0] };
-
+    //TODO selectedRoles is empty if no change occurs, which makes hard to apply default values
     res.roles = selectedRoles;
-    res.password = null;
     res.isCurrentlyLoggedInUser = row.userId === user.userId;
     res.active = res.active ? 1 : 0;
 
