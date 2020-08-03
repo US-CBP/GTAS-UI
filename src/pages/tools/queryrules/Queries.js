@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import { Button, Container } from "react-bootstrap";
+import { QR, ACTION } from "../../../utils/constants";
 
 import { query } from "../../../services/serviceWrapper";
 import QRModal from "./QRModal";
 import "./QueryRules.css";
 
 const Queries = props => {
-  const cb = function(result) {
-    if (result === "SAVE" || result === "DELETE" || result === "CLOSE") {
+  const cb = function(status, res) {
+    if (status === ACTION.SAVE || status === ACTION.DELETE || status === ACTION.CLOSE) {
       closeModal();
       setTablekey(tablekey + 1);
     }
@@ -64,7 +65,7 @@ const Queries = props => {
   const closeModal = () => {
     setId();
     setRecord({});
-    setTablekey(key + 1);
+    setTablekey(tablekey + 1);
     setShowModal(false);
   };
 
@@ -76,7 +77,7 @@ const Queries = props => {
         id="Queries"
         callback={cb}
         header={header}
-        key={`t${tablekey}`}
+        key={`table${tablekey}`}
       ></Table>
       <QRModal
         show={showModal}
