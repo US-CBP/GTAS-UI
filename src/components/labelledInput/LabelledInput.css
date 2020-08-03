@@ -23,3 +23,9 @@
 .form-group {
   margin-bottom: 0.3rem !important;
 }
+
+.space-between-cols {
+  margin-bottom: 0.3rem;
+  display: inline-flex;
+  justify-content: space-between;
+}

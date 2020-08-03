@@ -40,7 +40,7 @@ const UserModal = props => {
     return boolVal;
   };
 
-  const transformRoles = allRoles.map(role => {
+  const transformRoles = asArray(allRoles).map(role => {
     let isChecked = false;
     if (props.isEdit) {
       isChecked = isCheckedRole(role, props.editRowDetails.roles);

@@ -1,11 +1,29 @@
 export const NO_URI = "No URI was received in props";
 
+export const QR = {
+  RULE: "Rule",
+  QUERY: "Query",
+  MY: "my",
+  ALL: "all"
+};
+
+export const RULETAB = {
+  MY: "my",
+  ALL: "all"
+};
+
+export const MODE = {
+  ADD: "Add",
+  EDIT: "Edit"
+};
+
 export const ACTION = {
   SAVE: "Save",
   DELETE: "Delete",
   CANCEL: "Cancel",
   CLOSE: "Close",
-  UPDATE: "Update"
+  UPDATE: "Update",
+  RUN: "Run"
 };
 
 export const ROLE = {

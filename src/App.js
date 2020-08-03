@@ -32,6 +32,7 @@ import WatchlistCats from "./pages/admin/watchlistCats/WatchlistCats";
 import NoteTypeCats from "./pages/admin/noteTypeCats/NoteTypeCats";
 import QueryRules from "./pages/tools/queryrules/Rules";
 import Queries from "./pages/tools/queryrules/Queries";
+import QRDetails from "./pages/tools/queryrules/QRDetails";
 import Neo4J from "./pages/tools/neo4J/Neo4J";
 import Watchlist from "./pages/tools/watchlist/Watchlist";
 import About from "./pages/tools/about/About";
@@ -156,6 +157,7 @@ export default class App extends React.Component {
                       <QueryRules path="tools/rules"></QueryRules>
                       <QueryRules path="tools/rules/:mode"></QueryRules>
                       <Queries path="tools/queries"></Queries>
+                      <QRDetails path="tools/qrdetails"></QRDetails>
                       <Neo4J path="tools/neo4j"></Neo4J>
                       <Redirect from="tools/watchlist" to="pax" noThrow />
                       <Watchlist path="tools/watchlist/:mode"></Watchlist>

@@ -22,3 +22,7 @@
 .queryBuilder {
   min-width: 740px;
 }
+
+.qrm > .space-between {
+  width: 45%;
+}
