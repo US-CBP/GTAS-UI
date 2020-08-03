@@ -100,6 +100,7 @@ const PAX = `${BASE_URL}gtas/passengers/passenger`;
 const FLIGHTPAXHITSUMMARY = `${BASE_URL}gtas/hit/flightpassenger`;
 const FLIGHTPAX = `${BASE_URL}gtas/api/flights/flightpax`;
 const QUERIES = `${BASE_URL}gtas/query`;
+const QUERYPAX = `${BASE_URL}gtas/query/queryPassengers`;
 const RULES = `${BASE_URL}gtas/udr`;
 const RULESALL = `${BASE_URL}gtas/all_udr`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/statistics`;
@@ -334,6 +335,16 @@ export const rulesall = {
       return [];
     });
   }
+};
+
+export const querypax = {
+  get: () => {
+    return get(QUERYPAX, BASEHEADER).then(res => {
+      if (res.status === "SUCCESS") return res.result;
+      return [];
+    });
+  },
+  post: body => post(QUERYPAX, BASEHEADER, stringify(body))
 };
 
 export const wldocs = {
