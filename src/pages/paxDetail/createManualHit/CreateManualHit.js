@@ -13,7 +13,7 @@ const CreateManualHit = props => {
   const paxId = props.paxId;
   const flightId = props.flightId;
 
-  const handleClose = () => {
+  const handleClose = (status, res) => {
     setShow(false);
     props.callback(Date.now());
   };

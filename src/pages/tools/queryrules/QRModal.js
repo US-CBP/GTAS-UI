@@ -46,6 +46,7 @@ const QRModal = props => {
 
   const onSave = () => {
     if (!hasData(svc)) return;
+    console.log("on save");
 
     const q = getSaveObject();
     const saveMethod = isEdit ? svc.put : svc.post;
@@ -198,6 +199,7 @@ const QRModal = props => {
                 </Row>
                 <Row className="card-columns qrm">
                   <LabelledInput
+                    key={`en${key}`}
                     datafield
                     labelText="Enabled"
                     inputType="checkbox"
@@ -234,6 +236,7 @@ const QRModal = props => {
         <Modal.Footer>
           <Button
             type="button"
+            key="close"
             className="m-2 outline-dark-outline"
             variant="outline-dark"
             onClick={onClose}
@@ -242,6 +245,7 @@ const QRModal = props => {
           </Button>
           <Button
             type="button"
+            key="clear"
             className="m-2 outline-dark-outline"
             variant="outline-dark"
             onClick={onClear}
@@ -249,6 +253,7 @@ const QRModal = props => {
             Clear
           </Button>
           <Button
+            key="save"
             type="button"
             className="m-2 outline-dark-outline"
             variant="outline-dark"
@@ -257,6 +262,7 @@ const QRModal = props => {
             Save
           </Button>
           <Button
+            key="run"
             type="button"
             className="m-2 outline-dark-outline"
             variant="outline-dark"
@@ -266,6 +272,7 @@ const QRModal = props => {
           </Button>
           {isEdit && (
             <Button
+              key="delete"
               type="button"
               className="m-2 outline-dark-outline"
               variant="outline-dark"

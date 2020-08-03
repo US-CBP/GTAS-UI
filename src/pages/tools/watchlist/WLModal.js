@@ -16,7 +16,7 @@ const WLModal = props => {
   const onFormChange = () => {};
 
   // Form submitted or closed
-  const onFormExit = ev => {
+  const onFormExit = (status, ev) => {
     //Currently the backend returns a success message or nothing.
     //Form inserts a message with status = "CANCELED", so the page will receive either
     // "SUCCESS", "CANCELED" or null. Need to standardize the return vals so we can pass

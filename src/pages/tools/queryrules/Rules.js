@@ -22,8 +22,8 @@ const Rules = props => {
   const [key, setKey] = useState(0);
   const [tablekey, setTablekey] = useState(0);
 
-  const cb = function(result) {
-    if (result === ACTION.DELETE || result === ACTION.SAVE) return closeModalAndRefresh();
+  const cb = function(status, res) {
+    if (status === ACTION.DELETE || status === ACTION.SAVE) return closeModalAndRefresh();
 
     closeModal();
   };
@@ -65,12 +65,14 @@ const Rules = props => {
     {
       Accessor: "enabled",
       Cell: ({ row }) => {
-        if (row.original.enabled)
+        if (row.original.enabled === true) {
           return (
             <div className="icon-col">
               <i className="fa fa-check-square qbrb-icon"></i>
             </div>
           );
+        }
+        return <div className="icon-col"></div>;
       }
     }
   ];
@@ -109,11 +111,13 @@ const Rules = props => {
   };
 
   const closeModalAndRefresh = () => {
-    fetchData();
+    console.log(" close refresh");
     closeModal();
+    fetchData();
   };
 
   const closeModal = () => {
+    console.log(" close only");
     setShowModal(false);
     setId();
     setRecord();
@@ -133,7 +137,7 @@ const Rules = props => {
 
   const fetchData = () => {
     service.get().then(res => {
-      let parsed = [];
+      let parsed = [{}];
 
       if (hasData(res)) {
         parsed = res.map(item => {
@@ -146,6 +150,7 @@ const Rules = props => {
           };
         });
         setData(parsed);
+
         setTablekey(tablekey + 1);
       }
     });
@@ -181,11 +186,18 @@ const Rules = props => {
     <Container fluid>
       <Title
         title="Rules"
+        key="title"
         leftChild={tabs}
         leftCb={titleTabCallback}
         rightChild={button}
       ></Title>
-      <Table data={data} id="Rules" callback={cb} header={header} key={tablekey}></Table>
+      <Table
+        data={data}
+        id="Rules"
+        callback={cb}
+        header={header}
+        key={`table-${tablekey}`}
+      ></Table>
       {showModal && (
         <QRModal
           show={showModal}
