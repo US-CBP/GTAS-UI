@@ -1,4 +1,4 @@
-import { hasData, randomIntOfLength } from "../../utils/utils";
+import { hasData } from "../../utils/utils";
 import { fullEntities } from "./constants";
 
 /** Converts queries from the external java class structure to the one consumed by the QB component

@@ -19,10 +19,12 @@ const Rules = props => {
   const [data, setData] = useState();
   const [modalTitle, setModalTitle] = useState(`Add Rule`);
   const [record, setRecord] = useState();
-  const [key, setKey] = useState(0);
+  const [modalKey, setModalKey] = useState(-1);
   const [tablekey, setTablekey] = useState(0);
 
-  const cb = function(status, res) {
+  const cb = res => {};
+
+  const modalCb = (status, res) => {
     if (status === ACTION.DELETE || status === ACTION.SAVE) return closeModalAndRefresh();
 
     closeModal();
@@ -77,8 +79,8 @@ const Rules = props => {
     }
   ];
 
-  const fetchDetail = id => {
-    rule.get(id).then(res => {
+  const fetchDetail = selectedId => {
+    rule.get(selectedId).then(res => {
       if (hasData(res)) {
         res.title = res.summary.title;
         res.description = res.summary.description;
@@ -90,42 +92,45 @@ const Rules = props => {
         delete res.summary;
         delete res.details;
 
-        launchModal(res);
+        setId(selectedId);
+        setRecord(res);
+        triggerShowModal(selectedId);
       }
-      // else, launch info/warning notification?
     });
   };
 
-  const launchModal = rec => {
-    const recordId = rec?.id;
+  // Causes show modal to update in a useEffect. This gives the setRecord and setId (see fetchDetail) time to refresh
+  // so the modal doesn't launch with stale or missing data.
+  const triggerShowModal = recId => {
+    const recordId = recId;
     const title = recordId ? `Edit Rule` : `Add Rule`;
 
-    if (rec) {
-      setKey(key + 1);
-      setId(recordId);
-      setRecord(rec);
-      setModalTitle(title);
-    }
-
-    setShowModal(true);
+    setModalTitle(title);
+    // timestamp as key ensures the modal gets refreshed and displayed on each launch.
+    setModalKey(Date.now());
   };
+
+  useEffect(() => {
+    if (modalKey > -1) setShowModal(true);
+  }, [modalKey]);
 
   const closeModalAndRefresh = () => {
     closeModal();
-    fetchData();
+    fetchTableData();
   };
 
   const closeModal = () => {
-    setShowModal(false);
     setId();
     setRecord();
+    setShowModal(false);
   };
 
+  // Called by the Tab component where ev is a dash separated string in the form of "tabId-tab-selectedTabName"
   const titleTabCallback = ev => {
-    const id = ev.split("-")[2];
-    if (!id) return;
+    const selectedTabName = ev.split("-")[2];
+    if (!selectedTabName) return;
 
-    if ((id || RULETAB.MY).toLowerCase() === RULETAB.ALL) {
+    if ((selectedTabName || RULETAB.MY).toLowerCase() === RULETAB.ALL) {
       setTab(RULETAB.ALL);
       navigate(`/gtas/tools/rules/${RULETAB.ALL}`);
     } else {
@@ -134,7 +139,7 @@ const Rules = props => {
     }
   };
 
-  const fetchData = () => {
+  const fetchTableData = () => {
     service.get().then(res => {
       let parsed = [{}];
 
@@ -157,12 +162,11 @@ const Rules = props => {
 
   useEffect(() => {
     if (endpoint === "rules") {
-      // titleTabCallback expects a string in the in the format "somestring-somestring-TABNAME",
-      // so we are building a fake string ending with the tab we want as the default;
-      titleTabCallback(`click-tab-${RULETAB.MY}`);
+      // Builds a dummy string with the default tabname in the 3rd position;
+      titleTabCallback(`--${RULETAB.MY}`);
     }
 
-    fetchData();
+    fetchTableData();
   }, [tab]);
 
   const tabs = (
@@ -178,7 +182,7 @@ const Rules = props => {
       className="btn btn-outline-info"
       name={props.name}
       placeholder={props.placeholder}
-      onClick={() => launchModal()}
+      onClick={() => triggerShowModal()}
       required={props.required}
       value={props.inputVal}
       alt={props.alt}
@@ -203,17 +207,19 @@ const Rules = props => {
         header={header}
         key={`table-${tablekey}`}
       ></Table>
-      <QRModal
-        show={showModal}
-        onHide={closeModal}
-        callback={cb}
-        mode={QR.RULE}
-        key={key}
-        data={record}
-        title={modalTitle}
-        id={id}
-        service={rule}
-      />
+      {showModal && (
+        <QRModal
+          show="true"
+          onHide={closeModal}
+          callback={modalCb}
+          mode={QR.RULE}
+          key={modalKey}
+          data={record}
+          title={modalTitle}
+          id={id}
+          service={rule}
+        />
+      )}
     </Container>
   );
 };
