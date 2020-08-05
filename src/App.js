@@ -51,6 +51,8 @@ import { ROLE, TIME } from "./utils/constants";
 import ChangePassword from "./pages/admin/manageUsers/changePassword/ChangePassword";
 import SignUp from "./pages/signUp/SignUp";
 import SignUpRequests from "./pages/admin/signUpRequests/SignUpRequests";
+import ResetPassword from "./pages/admin/manageUsers/changePassword/ResetPassword";
+import ForgotPassword from "./pages/admin/manageUsers/changePassword/ForgotPassword";
 
 //Split Link Analysis (Graph component, d3, jquery deps) into a separate bundle
 const LinkAnalysis = React.lazy(() =>
@@ -108,6 +110,8 @@ export default class App extends React.Component {
             <Redirect from="/" to="/login" noThrow />
             <Login path="/login"></Login>
             <SignUp path="/signup"></SignUp>
+            <ResetPassword path="/password-reset/:username/:resetToken"></ResetPassword>
+            <ForgotPassword path="/forgot-password"></ForgotPassword>
           </Router>
           {this.state.showModal ? (
             <GModal>
