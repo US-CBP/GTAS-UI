@@ -3,7 +3,7 @@ import Form from "../../components/form/Form";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { login } from "../../services/serviceWrapper";
 import { Alert, Card, Button } from "react-bootstrap";
-import { navigate } from "@reach/router";
+import { navigate, Link } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
 import "./Login.scss";
 import Logo from "../../images/WCO_GTAS_logo.svg";
@@ -44,6 +44,7 @@ const Login = () => {
         <Card.Img variant="top" src={Logo} className="logo" />
         <div className="placeholder"></div>
         <Card.Body className="login-card-body">
+          <Link to="/forgot-password">Forgot my password</Link>
           <br />
           <Form
             title=""
