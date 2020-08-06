@@ -61,14 +61,7 @@ function put(uri, headers, id, body) {
 }
 
 function putNoId(uri, headers, body) {
-  //if (!hasData(body)) throw new TypeError(PUTBODY);
-
-  return GenericService({
-    uri: uri,
-    method: PUT,
-    body: body,
-    headers: headers
-  });
+  return put(uri, headers, undefined, body);
 }
 
 function del(uri, headers, id) {
@@ -92,6 +85,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
+const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
 const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
 const CHANGEPASSWORD = `${BASE_URL}gtas/user/change-password`;
 const WLCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
@@ -106,6 +100,7 @@ const PAX = `${BASE_URL}gtas/passengers/passenger`;
 const FLIGHTPAXHITSUMMARY = `${BASE_URL}gtas/hit/flightpassenger`;
 const FLIGHTPAX = `${BASE_URL}gtas/api/flights/flightpax`;
 const QUERIES = `${BASE_URL}gtas/query`;
+const QUERYPAX = `${BASE_URL}gtas/query/queryPassengers`;
 const RULES = `${BASE_URL}gtas/udr`;
 const RULESALL = `${BASE_URL}gtas/all_udr`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/statistics`;
@@ -147,7 +142,10 @@ const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS + "/", BASEHEADER, id, params),
-  put: body => put(USERS, BASEHEADER, 1, stringify(body)),
+  put: body => {
+    const id = body.userId;
+    return put(MANAGEUSERS, BASEHEADER, id, stringify(body));
+  },
   post: body => post(USERS + "/1", BASEHEADER, stringify(body)),
   del: body => post(USERS, BASEHEADER)
 };
@@ -264,7 +262,7 @@ export const notetypes = {
   post: body => post(NOTE_TYPESPOST, BASEHEADER, stringify(body))
 };
 export const loggedinUser = { get: (id, params) => get(LOGGEDIN_USER, BASEHEADER) };
-export const roles = { get: get(ROLES, BASEHEADER) };
+export const roles = { get: () => get(ROLES, BASEHEADER) };
 export const codeEditor = {
   get: {
     carrierCodes: () => get(CODES_CARRIER, BASEHEADER),
@@ -288,9 +286,9 @@ export const codeEditor = {
     createAirport: body => post(CODES_AIRPORT, BASEHEADER, stringify(body))
   },
   delete: {
-    deleteCarrier: id => del(CODES_CARRIER, id),
-    deleteCountry: id => del(CODES_COUNTRY, id),
-    deleteAirport: id => del(CODES_AIRPORT, id)
+    deleteCarrier: id => del(CODES_CARRIER, BASEHEADER, id),
+    deleteCountry: id => del(CODES_COUNTRY, BASEHEADER, id),
+    deleteAirport: id => del(CODES_AIRPORT, BASEHEADER, id)
   }
 };
 
@@ -339,6 +337,16 @@ export const rulesall = {
       return [];
     });
   }
+};
+
+export const querypax = {
+  get: () => {
+    return get(QUERYPAX, BASEHEADER).then(res => {
+      if (res.status === "SUCCESS") return res.result;
+      return [];
+    });
+  },
+  post: body => post(QUERYPAX, BASEHEADER, stringify(body))
 };
 
 export const wldocs = {

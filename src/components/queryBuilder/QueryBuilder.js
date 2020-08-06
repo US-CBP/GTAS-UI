@@ -31,6 +31,7 @@ const QueryBuilder = props => {
     FLIGHT: FIELDS.flightFields,
     FREQUENTFLYER: FIELDS.frequentFlyerFields,
     PASSENGER: FIELDS.passengerFields,
+    SEAT: FIELDS.seatFields,
     PAYMENTFORM: FIELDS.paymentFields,
     AGENCY: FIELDS.agencyFields,
     DWELLTIME: FIELDS.dwelltimeFields,

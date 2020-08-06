@@ -3,30 +3,58 @@ import { Modal, Button, Container } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { codeEditor } from "../../../../services/serviceWrapper";
+import { ACTION } from "../../../../utils/constants";
 
 const CountryModal = props => {
-  const title = "Add Country";
   const cb = function(result) {};
+  const data = props.editRowDetails || {};
 
-  const postSubmit = ev => {
+  const postSubmit = (status = ACTION.CANCEL, results) => {
     props.onHide();
-    props.refresh();
+
+    if (status !== ACTION.CANCEL) props.refresh();
   };
 
   const preSubmit = fields => {
     let res = { ...fields[0] };
     //Id is lacking for updates in the body
-    res.id = props.editRowDetails.id;
-    res.originId = props.editRowDetails.originId;
+    res.id = data.id;
+    res.originId = data.originId;
     return [res];
   };
 
   const restoreSpecificCode = () => {
-    codeEditor.put.restoreCountry(props.editRowDetails).then(res=>{
-      props.onHide();
-      props.refresh();
+    codeEditor.put.restoreCountry(data).then(res => {
+      postSubmit(ACTION.UPDATE);
     });
-  }
+  };
+
+  const customButtons = props.isEdit
+    ? [
+        <Button
+          type="button"
+          className="m-2 outline-dark-outline"
+          variant="outline-dark"
+          key="restore"
+          onClick={restoreSpecificCode}
+        >
+          Restore
+        </Button>,
+        <Button
+          type="button"
+          className="m-2 outline-dark-outline"
+          variant="outline-dark"
+          key="delete"
+          onClick={() => {
+            codeEditor.delete.deleteCountry(data.id).then(res => {
+              postSubmit(ACTION.DELETE);
+            });
+          }}
+        >
+          Delete
+        </Button>
+      ]
+    : [];
 
   return (
     <Modal
@@ -37,7 +65,7 @@ const CountryModal = props => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
+        <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Container fluid>
@@ -45,12 +73,13 @@ const CountryModal = props => {
             submitService={
               props.isEdit ? codeEditor.put.updateCountry : codeEditor.post.createCountry
             }
-            title=""
             callback={postSubmit}
             action="add"
             submitText={props.isEdit ? "Save" : "Submit"}
             paramCallback={preSubmit}
             afterProcessed={props.onHide}
+            cancellable
+            customButtons={customButtons}
           >
             <LabelledInput
               datafield
@@ -59,7 +88,7 @@ const CountryModal = props => {
               name="iso2"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.iso2 || ""}
+              inputVal={data.iso2}
               callback={cb}
               spacebetween
             />
@@ -70,7 +99,7 @@ const CountryModal = props => {
               name="iso3"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.iso3 || ""}
+              inputVal={data.iso3}
               callback={cb}
               spacebetween
             />
@@ -81,7 +110,7 @@ const CountryModal = props => {
               name="isoNumeric"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.isoNumeric || ""}
+              inputVal={data.isoNumeric}
               callback={cb}
               spacebetween
             />
@@ -92,43 +121,13 @@ const CountryModal = props => {
               name="name"
               required={true}
               alt="nothing"
-              inputVal={props?.editRowDetails.name || ""}
+              inputVal={data.name}
               callback={cb}
               spacebetween
             />
           </Form>
         </Container>
       </Modal.Body>
-      {props.isEdit ? (
-        <Modal.Footer>
-          <Button
-            type="button"
-            className="m-2 outline-dark-outline"
-            variant="outline-dark"
-            // onClick={this.onFormCancel}
-          >
-            Restore
-          </Button>
-          <Button
-            type="button"
-            className="m-2 outline-dark-outline"
-            variant="outline-dark"
-            onClick={() => {
-              codeEditor.delete.deleteCountry(props.editRowDetails.id).then(res => {
-                postSubmit(undefined);
-              });
-            }}
-          >
-            Delete
-          </Button>
-        </Modal.Footer>
-      ) : (
-        <Modal.Footer>
-          <Button variant="outline-danger" onClick={props.onHide}>
-            Close
-          </Button>
-        </Modal.Footer>
-      )}
     </Modal>
   );
 };

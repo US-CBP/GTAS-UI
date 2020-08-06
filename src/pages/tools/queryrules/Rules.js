@@ -5,26 +5,29 @@ import { Button, Container, Tabs, Tab } from "react-bootstrap";
 import { navigate } from "@reach/router";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
-import { hasData } from "../../../utils/utils";
+import { hasData, getEndpoint } from "../../../utils/utils";
+import { QR, ACTION, RULETAB } from "../../../utils/constants";
 import QRModal from "./QRModal";
 import "./QueryRules.css";
 
 const Rules = props => {
-  const mode = (props.mode || "my").toLowerCase();
-  const [tab, setTab] = useState(mode === "all" ? "all" : "my");
-  const service = tab === "all" ? rulesall : rule;
+  const endpoint = getEndpoint(props.location.pathname);
+  const [tab, setTab] = useState(endpoint === "rules" ? RULETAB.MY : RULETAB.ALL);
+  const service = tab === RULETAB.ALL ? rulesall : rule;
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
   const [data, setData] = useState();
   const [modalTitle, setModalTitle] = useState(`Add Rule`);
   const [record, setRecord] = useState();
-  const [key, setKey] = useState(0);
+  const [modalKey, setModalKey] = useState(-1);
   const [tablekey, setTablekey] = useState(0);
 
-  const cb = function(result) {
-    if (result === "SAVE" || result === "DELETE" || result === "CLOSE") {
-      closeModal();
-    }
+  const cb = res => {};
+
+  const modalCb = (status, res) => {
+    if (status === ACTION.DELETE || status === ACTION.SAVE) return closeModalAndRefresh();
+
+    closeModal();
   };
 
   const header = [
@@ -64,68 +67,81 @@ const Rules = props => {
     {
       Accessor: "enabled",
       Cell: ({ row }) => {
-        if (row.original.enabled)
+        if (row.original.enabled === true) {
           return (
             <div className="icon-col">
               <i className="fa fa-check-square qbrb-icon"></i>
             </div>
           );
+        }
+        return <div className="icon-col"></div>;
       }
     }
   ];
 
-  const fetchDetail = id => {
-    rule.get(id).then(res => {
+  const fetchDetail = selectedId => {
+    rule.get(selectedId).then(res => {
       if (hasData(res)) {
         res.title = res.summary.title;
         res.description = res.summary.description;
         res.ruleCat = res.summary.ruleCat;
         res.startDate = res.summary.startDate;
+        res.enabled = res.summary.enabled;
         res.endDate = res.summary.endDate;
         res.query = res.details;
         delete res.summary;
         delete res.details;
 
-        console.log(res);
-        launchModal(res);
+        setId(selectedId);
+        setRecord(res);
+        triggerShowModal(selectedId);
       }
     });
   };
 
-  const launchModal = rec => {
-    const recordId = rec.id;
-    setKey(key + 1);
-    setId(recordId);
-    setRecord(rec);
-    const title = recordId > 0 ? `Edit Rule` : `Add Rule`;
+  // Causes show modal to update in a useEffect. This gives the setRecord and setId (see fetchDetail) time to refresh
+  // so the modal doesn't launch with stale or missing data.
+  const triggerShowModal = recId => {
+    const recordId = recId;
+    const title = recordId ? `Edit Rule` : `Add Rule`;
+
     setModalTitle(title);
-    setShowModal(true);
+    // timestamp as key ensures the modal gets refreshed and displayed on each launch.
+    setModalKey(Date.now());
+  };
+
+  useEffect(() => {
+    if (modalKey > -1) setShowModal(true);
+  }, [modalKey]);
+
+  const closeModalAndRefresh = () => {
+    closeModal();
+    fetchTableData();
   };
 
   const closeModal = () => {
     setId();
     setRecord();
-    setKey(key + 1);
-    setTablekey(tablekey + 1);
     setShowModal(false);
   };
 
+  // Called by the Tab component where ev is a dash separated string in the form of "tabId-tab-selectedTabName"
   const titleTabCallback = ev => {
-    const id = ev.split("-")[2];
+    const selectedTabName = ev.split("-")[2];
+    if (!selectedTabName) return;
 
-    if ((id || "my").toLowerCase() === "all") {
-      // setTab("all");
-      navigate(`/gtas/tools/rules/all`);
+    if ((selectedTabName || RULETAB.MY).toLowerCase() === RULETAB.ALL) {
+      setTab(RULETAB.ALL);
+      navigate(`/gtas/tools/rules/${RULETAB.ALL}`);
     } else {
-      // setTab("my");
-      navigate(`/gtas/tools/rules/my`);
+      setTab(RULETAB.MY);
+      navigate(`/gtas/tools/rules/${RULETAB.MY}`);
     }
   };
 
-  useEffect(() => {
-    console.log("fetch all");
+  const fetchTableData = () => {
     service.get().then(res => {
-      let parsed = [];
+      let parsed = [{}];
 
       if (hasData(res)) {
         parsed = res.map(item => {
@@ -137,20 +153,26 @@ const Rules = props => {
             ...item.summary
           };
         });
+        setData(parsed);
+
+        setTablekey(tablekey + 1);
       }
-      setData(parsed);
     });
-  }, [tab]);
+  };
 
   useEffect(() => {
-    // setTab("my");
-    setTablekey(tablekey + 1);
-  }, [data]);
+    if (endpoint === "rules") {
+      // Builds a dummy string with the default tabname in the 3rd position;
+      titleTabCallback(`--${RULETAB.MY}`);
+    }
+
+    fetchTableData();
+  }, [tab]);
 
   const tabs = (
-    <Tabs defaultActiveKey={tab} id="qrTabs">
-      <Tab eventKey="my" title="My Rules"></Tab>
-      <Tab eventKey="all" title="All Rules"></Tab>
+    <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs">
+      <Tab eventKey={RULETAB.MY} title="My Rules"></Tab>
+      <Tab eventKey={RULETAB.ALL} title="All Rules"></Tab>
     </Tabs>
   );
 
@@ -160,12 +182,12 @@ const Rules = props => {
       className="btn btn-outline-info"
       name={props.name}
       placeholder={props.placeholder}
-      onClick={() => launchModal(0)}
+      onClick={() => triggerShowModal()}
       required={props.required}
       value={props.inputVal}
       alt={props.alt}
     >
-      {`Create new Rule`}
+      Create new Rule
     </Button>
   );
 
@@ -173,18 +195,25 @@ const Rules = props => {
     <Container fluid>
       <Title
         title="Rules"
+        key="title"
         leftChild={tabs}
         leftCb={titleTabCallback}
         rightChild={button}
       ></Title>
-      <Table data={data} id="Rules" callback={cb} header={header} key={tablekey}></Table>
+      <Table
+        data={data}
+        id="Rules"
+        callback={cb}
+        header={header}
+        key={`table-${tablekey}`}
+      ></Table>
       {showModal && (
         <QRModal
-          show={showModal}
+          show="true"
           onHide={closeModal}
-          callback={cb}
-          mode="RULE"
-          key={key}
+          callback={modalCb}
+          mode={QR.RULE}
+          key={modalKey}
           data={record}
           title={modalTitle}
           id={id}

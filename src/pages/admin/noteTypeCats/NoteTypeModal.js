@@ -9,7 +9,7 @@ const NoteTypeModal = props => {
   const title = "Note Type Category";
   const cb = function(result) {};
 
-  const postSubmit = status => {
+  const postSubmit = (status, res) => {
     props.onHide();
 
     if (status !== ACTION.CANCEL) props.refresh();
