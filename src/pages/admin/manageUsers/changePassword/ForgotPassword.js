@@ -14,7 +14,7 @@ const ForgotPassword = props => {
   const [errorMessage, setErrorMessage] = useState("");
   const [displayErrorMessage, setDisplayErrorMessage] = useState(false);
 
-  const forgotPasswordCallback = res => {
+  const forgotPasswordCallback = (action, res) => {
     const responseStatus = hasData(res) ? res.status : "";
     if (responseStatus === "SUCCESS") {
       setResetLinkSetnt(true);

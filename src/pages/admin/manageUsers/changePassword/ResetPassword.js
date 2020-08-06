@@ -14,7 +14,7 @@ const ResetPassword = props => {
   const [displayErrorMessage, setDisplayErrorMessage] = useState(false);
   const [displaySuccessMessage, setDisplaySuccessMessage] = useState(false);
   const cb = () => {};
-  const passwordResetCallback = res => {
+  const passwordResetCallback = (action, res) => {
     if (hasData(res) && res.status === "FAILURE") {
       setErrorMessage(res.message);
       setDisplayErrorMessage(true);
