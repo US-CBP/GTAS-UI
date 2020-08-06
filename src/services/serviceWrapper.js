@@ -137,6 +137,8 @@ const PHYSICALLOCATIONS = `${BASE_URL}gtas/user/signup/physiclLocations`;
 const SIGNUPREQUESTS = `${BASE_URL}gtas/api/signup-requests`;
 const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
 const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
+const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
+const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 // ENTITY METHODS
 export const users = {
   get: (id, params) => get(USERS + "/", BASEHEADER, id, params),
@@ -416,4 +418,16 @@ export const signuprequests = {
   get: params => get(SIGNUPREQUESTS, BASEHEADER, undefined, params),
   approve: id => put(SIGNUPREQUESTAPPROVE, BASEHEADER, id),
   reject: id => put(SIGNUPREQUESTSREJECT, BASEHEADER, id)
+};
+
+export const forgotPassword = {
+  post: body => {
+    const header = `${FORGOTPASSWORD}?userId=${body.userId}`;
+    return post(header, SIGNUPHEADER, stringify(body));
+  }
+};
+
+export const resetPassword = {
+  post: body => post(RESETPASSWORD, SIGNUPHEADER, stringify(body)),
+  isValidToken: token => get(RESETPASSWORD, SIGNUPHEADER, undefined, token)
 };
