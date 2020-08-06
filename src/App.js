@@ -110,7 +110,7 @@ export default class App extends React.Component {
             <Redirect from="/" to="/login" noThrow />
             <Login path="/login"></Login>
             <SignUp path="/signup"></SignUp>
-            <ResetPassword path="/password-reset/:username/:resetToken"></ResetPassword>
+            <ResetPassword path="/reset-password/:username/:resetToken"></ResetPassword>
             <ForgotPassword path="/forgot-password"></ForgotPassword>
           </Router>
           {this.state.showModal ? (
