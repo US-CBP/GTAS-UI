@@ -67,9 +67,8 @@ const UserModal = props => {
 
   const preSubmit = fields => {
     let res = { ...fields[0] };
-
+    //TODO selectedRoles is empty if no change occurs, which makes hard to apply default values
     res.roles = selectedRoles;
-    res.password = null;
     res.isCurrentlyLoggedInUser = row.userId === user.userId;
     res.active = res.active ? 1 : 0;
 
@@ -99,6 +98,24 @@ const UserModal = props => {
     });
   }, []);
 
+  const buttons = props.isEdit
+      ? [
+        <Button
+            type="button"
+            className="m-2 outline-dark-outline"
+            variant="outline-dark"
+            key="delete"
+            onClick={() => {
+              users.del(props.editRowDetails.userId).then(res => {
+                postSubmit(ACTION.DELETE, res);
+              });
+            }}
+        >
+          Delete
+        </Button>
+      ]
+      : [];
+
   return (
     <Modal
       show={props.show}
@@ -120,6 +137,7 @@ const UserModal = props => {
             submitText="Submit"
             paramCallback={preSubmit}
             cancellable
+            customButtons={buttons}
           >
             {props.isEdit ? (
               <LabelledInput
@@ -211,7 +229,7 @@ const UserModal = props => {
               selected={row.highPriorityEmail}
               spacebetween
             />
-
+            {props.isEdit ? (
             <LabelledInput
               datafield
               labelText="User Is Enabled"
@@ -224,6 +242,21 @@ const UserModal = props => {
               selected={!!row.active}
               spacebetween
             />
+            ):(
+            <LabelledInput
+                datafield
+                labelText="User Is Enabled"
+                inputType="checkbox"
+                name="active"
+                required={true}
+                alt="nothing"
+                inputVal={true}
+                callback={cb}
+                selected={true}
+                spacebetween
+            />
+            )}
+
 
             <div className="um-checkbox">
               <CheckboxGroup
