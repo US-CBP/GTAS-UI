@@ -6,6 +6,7 @@ import { Container, Alert } from "react-bootstrap";
 import Title from "../../../../components/title/Title";
 import "./ChangePassword.scss";
 import { hasData } from "../../../../utils/utils";
+import { navigate } from "@reach/router";
 
 const ChangePassword = props => {
   const [oldPassword, setOldPassword] = useState();
@@ -45,14 +46,17 @@ const ChangePassword = props => {
 
   const cb = () => {};
   const passwordChangeCallback = (status, res) => {
-    const responseStatus = hasData(res) ? res.status : "";
-    const message = hasData(res) ? res.message : "";
+    if (status === "Cancel") navigate(-1);
+    else {
+      const responseStatus = hasData(res) ? res.status : "";
+      const message = hasData(res) ? res.message : "";
 
-    if (responseStatus === "SUCCESS") {
-      setDisplaySuccessMsg(true);
-    } else {
-      setErrorMessage(message);
-      setDisplayErrorMsg(true);
+      if (responseStatus === "SUCCESS") {
+        setDisplaySuccessMsg(true);
+      } else {
+        setErrorMessage(message);
+        setDisplayErrorMsg(true);
+      }
     }
   };
 
@@ -74,7 +78,6 @@ const ChangePassword = props => {
           callback={passwordChangeCallback}
           action="add"
           submitText="Submit"
-          redirectTo="/gtas/flights" //TODO: for now, on form cancel navigate to gtas default page
           cancellable
           key={style}
         >
