@@ -1,11 +1,14 @@
-import React from "react";
-import { Modal, Button, Container } from "react-bootstrap";
+import React, {useState} from "react";
+import {Modal, Button, Container, Alert} from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import { watchlistcatspost } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../utils/constants";
 
 const WatchlistModal = props => {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+  const [variant, setVariant] = useState("");
   const title = "Watchlist Category";
   const cb = function(result) {};
   const severityLevels = [
@@ -31,6 +34,13 @@ const WatchlistModal = props => {
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
+      <Alert show={showAlert} variant={variant}>
+        {alertContent}
+        <hr />
+        <Button onClick={() => setShowAlert(false)} variant="outline-success">
+          Confirm
+        </Button>
+      </Alert>
       <Modal.Body>
         <Container fluid>
           <Form

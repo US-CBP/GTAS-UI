@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Modal, Button, Container } from "react-bootstrap";
+import {Modal, Button, Container, Alert} from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import { users, roles } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
@@ -8,11 +8,15 @@ import { UserContext } from "../../../context/user/UserContext";
 import { asArray } from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
 import "./ManageUsers.scss";
+import Main from "../../../components/main/Main";
 
 const UserModal = props => {
   const [selectedRoles, setSelectedRoles] = useState();
   const [allRoles, setAllRoles] = useState([]);
   const { getUserState, userAction } = useContext(UserContext);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+  const [variant, setVariant] = useState("");
 
   const cb = function(result) {};
   const row = props.editRowDetails || {};
@@ -61,15 +65,23 @@ const UserModal = props => {
   };
 
   const postSubmit = (status = ACTION.CLOSE, res) => {
-    props.onHide();
-    props.callback(status);
+    res.status === "SUCCESS" ? setVariant("success") : setVariant("danger");
+    let message;
+    if (res.message === undefined || res.message === ""){
+      message = "There was an issue with the server for that request.";
+    } else {
+      message = res.message;
+    }
+    setAlertContent(message);
+    setShowAlert(true);
+    /*props.onHide();
+    props.callback(status);*/
   };
 
   const preSubmit = fields => {
     let res = { ...fields[0] };
 
     res.roles = selectedRoles;
-    res.password = null;
     res.isCurrentlyLoggedInUser = row.userId === user.userId;
     res.active = res.active ? 1 : 0;
 
@@ -110,6 +122,13 @@ const UserModal = props => {
       <Modal.Header closeButton>
         <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
+      <Alert show={showAlert} variant={variant}>
+        {alertContent}
+        <hr />
+        <Button onClick={() => setShowAlert(false)} variant="outline-success">
+          Confirm
+        </Button>
+      </Alert>
       <Modal.Body>
         <Container fluid>
           <Form
