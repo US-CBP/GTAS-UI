@@ -86,6 +86,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
 const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
+const USERSNONARCHIVED = `${USERS}/nonarchived`;
 const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
 const CHANGEPASSWORD = `${BASE_URL}gtas/user/change-password`;
 const WLCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
@@ -141,13 +142,16 @@ const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
 const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 // ENTITY METHODS
 export const users = {
-  get: (id, params) => get(USERS + "/", BASEHEADER, id, params),
+  get: {
+    getAll: (id, params) => get(USERS + "/", BASEHEADER, id, params),
+    getAllNonArchived: (id, params) => get(USERSNONARCHIVED, BASEHEADER, id, params)
+  },
   put: body => {
     const id = body.userId;
     return put(MANAGEUSERS, BASEHEADER, id, stringify(body));
   },
   post: body => post(USERS + "/1", BASEHEADER, stringify(body)),
-  del: body => post(USERS, BASEHEADER)
+  del: id => del(USERS, BASEHEADER, id)
 };
 export const usersemails = {
   get: () => get(USERSEMAIL, BASEHEADER)

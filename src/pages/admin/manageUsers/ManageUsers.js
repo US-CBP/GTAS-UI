@@ -126,7 +126,7 @@ const ManageUsers = props => {
   };
 
   const fetchData = () => {
-    users.get().then(res => {
+    users.get.getAllNonArchived().then(res => {
       setData(parseData(res));
       setRefreshKey(refreshKey + 1);
     });
