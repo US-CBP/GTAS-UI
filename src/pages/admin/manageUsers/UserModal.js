@@ -44,10 +44,6 @@ const UserModal = props => {
     let isChecked = false;
     if (props.isEdit) {
       isChecked = isCheckedRole(role, props.editRowDetails.roles);
-    } else{ //New user generation default to having this checked
-      if (role.roleId == 3){
-        isChecked = true;
-      }
     }
 
     return {
