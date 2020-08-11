@@ -12,7 +12,7 @@ const SeatsMap = () => {
 
       <div className="columns">
         <div className="top">
-          <Table service={users.get} id="foo" callback={cb}></Table>
+          <Table service={users.get.getAllNonArchived} id="foo" callback={cb}></Table>
         </div>
       </div>
     </div>
