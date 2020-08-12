@@ -6,7 +6,7 @@ import { Container, Alert } from "react-bootstrap";
 import Title from "../../../../components/title/Title";
 import "./ChangePassword.scss";
 import { hasData } from "../../../../utils/utils";
-import { navigate } from "@reach/router";
+import { navigate, useParams } from "@reach/router";
 
 const ChangePassword = props => {
   const [oldPassword, setOldPassword] = useState();
@@ -16,6 +16,12 @@ const ChangePassword = props => {
   const [displaySuccessMsg, setDisplaySuccessMsg] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [displayErrorMsg, setDisplayErrorMsg] = useState(false);
+
+  const params = useParams();
+  const service = hasData(params.userId)
+    ? changePassword.byAdmin
+    : changePassword.byloggedInUser;
+  const recordId = hasData(params.userId) ? params.userId : "";
 
   const checkPasswordMatch = () => {
     if (confirmedPassword === newPassword) {
@@ -52,6 +58,7 @@ const ChangePassword = props => {
       const message = hasData(res) ? res.message : "";
 
       if (responseStatus === "SUCCESS") {
+        setDisplayErrorMsg(false);
         setDisplaySuccessMsg(true);
       } else {
         setErrorMessage(message);
@@ -73,26 +80,31 @@ const ChangePassword = props => {
         <Alert variant="success">Your password has been changed successfully!!</Alert>
       ) : (
         <Form
-          submitService={changePassword.put}
+          submitService={service}
           title=""
           callback={passwordChangeCallback}
           action="add"
           submitText="Submit"
           cancellable
           key={style}
+          recordId={recordId}
         >
-          <LabelledInput
-            datafield
-            labelText="Old Password"
-            inputType="password"
-            name="oldPassword"
-            required={true}
-            inputVal={oldPassword}
-            alt="nothing"
-            callback={cb}
-            onChange={changeInput}
-            spacebetween
-          />
+          {hasData(params.userId) ? (
+            <></>
+          ) : (
+            <LabelledInput
+              datafield
+              labelText="Old Password"
+              inputType="password"
+              name="oldPassword"
+              required={true}
+              inputVal={oldPassword}
+              alt="nothing"
+              callback={cb}
+              onChange={changeInput}
+              spacebetween
+            />
+          )}
           <LabelledInput
             datafield
             labelText="New Password"

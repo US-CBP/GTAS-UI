@@ -12,8 +12,6 @@ import "./ManageUsers.scss";
 const UserModal = props => {
   const [selectedRoles, setSelectedRoles] = useState();
   const [allRoles, setAllRoles] = useState([]);
-  const [refreshKey, setRefreshKey] = useState();
-  const [updatePassword, setUpdatePassword] = useState(false);
   const { getUserState, userAction } = useContext(UserContext);
 
   const cb = function(result) {};
@@ -71,27 +69,20 @@ const UserModal = props => {
     let res = { ...fields[0] };
     //TODO selectedRoles is empty if no change occurs, which makes hard to apply default values
     res.roles = selectedRoles;
-    res.password = props.isEdit && !updatePassword ? null : res.password;
+    res.password = props.isEdit ? null : res.password;
     res.isCurrentlyLoggedInUser = row.userId === user.userId;
     res.active = res.active ? 1 : 0;
-    delete res["updatePassword"];
 
     return [res];
   };
 
-  const toggleUpdatePassword = ev => {
-    setUpdatePassword(!updatePassword);
-    setRefreshKey(ev.value);
-  };
-
   const getPasswordInput = () => {
-    const label = updatePassword ? "Enter New Password" : "Password";
-    return props.isEdit && !updatePassword ? (
+    return props.isEdit ? (
       <></>
     ) : (
       <LabelledInput
         datafield
-        labelText={label}
+        labelText="Password"
         inputType="password"
         name="password"
         required={true}
@@ -147,37 +138,21 @@ const UserModal = props => {
             submitText="Submit"
             paramCallback={preSubmit}
             cancellable
-            key={refreshKey}
             customButtons={buttons}
           >
             {props.isEdit ? (
-              <>
-                <LabelledInput
-                  datafield
-                  labelText="Update User's Password"
-                  inputType="checkbox"
-                  name="updatePassword"
-                  required={true}
-                  alt="nothing"
-                  inputVal={updatePassword}
-                  callback={cb}
-                  selected={updatePassword}
-                  onChange={toggleUpdatePassword}
-                  spacebetween
-                />
-                <LabelledInput
-                  datafield
-                  labelText="User ID"
-                  inputType="text"
-                  name="userId"
-                  required={true}
-                  inputVal={row.userId}
-                  alt="nothing"
-                  callback={cb}
-                  readOnly={true}
-                  spacebetween
-                ></LabelledInput>
-              </>
+              <LabelledInput
+                datafield
+                labelText="User ID"
+                inputType="text"
+                name="userId"
+                required={true}
+                inputVal={row.userId}
+                alt="nothing"
+                callback={cb}
+                readOnly={true}
+                spacebetween
+              ></LabelledInput>
             ) : (
               <LabelledInput
                 datafield
