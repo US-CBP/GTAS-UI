@@ -79,6 +79,7 @@ const Vetting = props => {
           etd={row.original.flightETDDate}
           origin={row.original.flightOrigin}
           destination={row.original.flightDestination}
+          direction={row.original.flightDirection}
         />
       )
     },
