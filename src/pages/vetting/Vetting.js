@@ -105,20 +105,23 @@ const Vetting = props => {
       Accessor: "paxName",
       Header: "Biographic Information",
       Cell: ({ row }) => (
-        <Link to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}>
-          {row.original.paxName}
-        </Link>
+        <div className="text-center">
+          <Link to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}>
+            {row.original.paxName}
+          </Link>
+        </div>
       )
     },
     {
       Accessor: "status",
-      Header: "Status"
+      Header: "Status",
+      Cell: ({ row }) => <div className="text-center">{row.original.status}</div>
     },
     {
       Accessor: "paxId",
       Header: "Actions",
       Cell: ({ row }) => (
-        <>
+        <div className="text-center">
           <Button
             variant="outline-info"
             size="sm"
@@ -128,7 +131,7 @@ const Vetting = props => {
           </Button>
           <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
-        </>
+        </div>
       )
     }
   ];

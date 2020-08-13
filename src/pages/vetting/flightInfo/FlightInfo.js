@@ -17,7 +17,7 @@ const FlightInfo = props => {
 
   return (
     <Overlay trigger={["click", "hover"]} content={getPopover}>
-      <div className="as-link">{props.flightNumber}</div>
+      <div className="as-link text-center">{props.flightNumber}</div>
     </Overlay>
   );
 };
