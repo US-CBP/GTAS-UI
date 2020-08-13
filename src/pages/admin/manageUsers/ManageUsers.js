@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container } from "react-bootstrap";
+import { Button, Container, DropdownButton, Dropdown } from "react-bootstrap";
 import Table from "../../../components/table/Table";
 import { users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
@@ -8,6 +8,7 @@ import { ACTION } from "../../../utils/constants";
 
 import "./ManageUsers.scss";
 import UserModal from "./UserModal";
+import { navigate } from "@reach/router";
 
 const ManageUsers = props => {
   const [data, setData] = useState([]);
@@ -28,16 +29,27 @@ const ManageUsers = props => {
     setShowModal(true);
   };
 
+  const changePassword = userId => {
+    navigate(`/gtas/user/change-password/${userId}`);
+  };
+
   const headers = [
     {
       Accessor: "Edit",
       Cell: ({ row }) => {
         return (
-          <div className="text-center">
-            <i
-              className="fa fa-lg fa-pencil-square-o qbrb-icon"
-              onClick={() => openEditModal(row.original)}
-            ></i>
+          <div className="text-center edit-user">
+            <DropdownButton variant="outline-info" title="Choose Action">
+              <Dropdown.Item as="button" onClick={() => openEditModal(row.original)}>
+                Edit User
+              </Dropdown.Item>
+              <Dropdown.Item
+                as="button"
+                onClick={() => changePassword(row.original.userId)}
+              >
+                Change Password
+              </Dropdown.Item>
+            </DropdownButton>
           </div>
         );
       }

@@ -143,8 +143,8 @@ const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 // ENTITY METHODS
 export const users = {
   get: {
-    getAll: (id,params) => get(USERS + "/", BASEHEADER, id, params),
-    getAllNonArchived: (id,params) => get(USERSNONARCHIVED, BASEHEADER, id, params)
+    getAll: (id, params) => get(USERS + "/", BASEHEADER, id, params),
+    getAllNonArchived: (id, params) => get(USERSNONARCHIVED, BASEHEADER, id, params)
   },
   put: body => {
     const id = body.userId;
@@ -408,7 +408,10 @@ export const logfile = {
 };
 
 export const changePassword = {
-  put: body => put(CHANGEPASSWORD, BASEHEADER, undefined, stringify(body))
+  byloggedInUser: body => put(CHANGEPASSWORD, BASEHEADER, undefined, stringify(body)),
+  byAdmin: (id, body) => {
+    return put(CHANGEPASSWORD, BASEHEADER, id, stringify(body));
+  }
 };
 
 export const signup = {
