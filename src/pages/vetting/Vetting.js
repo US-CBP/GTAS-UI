@@ -145,8 +145,8 @@ const Vetting = props => {
   let eDate = new Date();
   eDate.setDate(eDate.getDate() + 7);
   sDate.setHours(sDate.getHours() - 7);
-  const [startDate, setStartData] = useState(sDate);
-  const [endDate, setEndData] = useState(eDate);
+  const [startDate, setStartDate] = useState(sDate);
+  const [endDate, setEndDate] = useState(eDate);
   const [data, setData] = useState([{}]);
   const { hitCategories, loading } = useFetchHitCategories();
   const [hitCategoryOptions, setHitCategoryOptions] = useState();
@@ -310,8 +310,8 @@ const Vetting = props => {
       inputVal={{ etaStart: startDate, etaEnd: endDate }}
       startDate={startDate}
       endDate={endDate}
-      endMut={setEndData}
-      startMut={setStartData}
+      endMut={setEndDate}
+      startMut={setStartDate}
     />
   );
 
