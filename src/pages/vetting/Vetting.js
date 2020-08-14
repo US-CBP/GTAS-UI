@@ -4,7 +4,7 @@ import { cases, notetypes, usersemails } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm/FilterForm";
-import { hasData, asArray, getShortText, isShortText } from "../../utils/utils";
+import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
 import { Col, Button } from "react-bootstrap";
 import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import "./Vetting.css";
@@ -57,6 +57,17 @@ const Vetting = props => {
       label: "Re Opened"
     }
   ];
+
+  const getBiographicData = pax => {
+    return (
+      <ul style={{ listStyle: "none", paddingLeft: 0, fontSize: "small" }}>
+        <li>Name: {pax.paxName}</li>
+        <li>DOB: {`${pax.dob} (${getAge(pax.dob)})`} </li>
+        <li>Nationality: {pax.nationality}</li>
+        <li>Document: {`${pax.document} (${pax.docType})`}</li>
+      </ul>
+    );
+  };
   const Headers = [
     {
       Accessor: "countdownTime",
@@ -106,11 +117,12 @@ const Vetting = props => {
       Accessor: "paxName",
       Header: "Biographic Information",
       Cell: ({ row }) => (
-        <div className="text-center">
-          <Link to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}>
-            {row.original.paxName}
-          </Link>
-        </div>
+        <Link
+          to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}
+          className="as-link"
+        >
+          {getBiographicData(row.original)}
+        </Link>
       )
     },
     {
