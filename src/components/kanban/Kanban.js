@@ -1,8 +1,7 @@
 import React from "react";
 import Board from "react-trello";
 import Title from "../../components/title/Title";
-import Main from "../../components/main/Main";
-import { Container, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 import "./Kanban.css";
 
