@@ -34,6 +34,7 @@
     "react-scripts": "^3.4.0",
     "react-select": "^3.0.8",
     "react-table": "^7.0.0-rc.15",
+    "react-trello": "^2.2.8",
     "vaquita": "^1.0.9"
   },
   "scripts": {

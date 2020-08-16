@@ -18,6 +18,7 @@ import FlightHistory from "./pages/paxDetail/flightHistory/FlightHistory";
 import FlightPax from "./pages/flightPax/FlightPax";
 import Admin from "./pages/admin/Admin";
 import ManageUser from "./pages/admin/manageUsers/ManageUsers";
+import POE from "./pages/poe/POE";
 
 import FileDownload from "./pages/admin/fileDownload/FileDownload";
 import AuditLog from "./pages/admin/auditLog/AuditLog";
@@ -37,6 +38,7 @@ import Neo4J from "./pages/tools/neo4J/Neo4J";
 import Watchlist from "./pages/tools/watchlist/Watchlist";
 import About from "./pages/tools/about/About";
 import GModal from "./components/modal/GModal";
+import Kanban from "./components/kanban/Kanban";
 
 import Page404 from "./pages/page404/Page404";
 import PageUnauthorized from "./pages/pageUnauthorized/PageUnauthorized";
@@ -155,6 +157,7 @@ export default class App extends React.Component {
                       <Page404 default></Page404>
                       <Redirect from="/gtas" to="/gtas/flights" noThrow />
                       <Dashboard path="dashboard"></Dashboard>
+                      <POE path="poe"></POE>
                       <Flights path="flights"></Flights>
                       <FlightPax path="flightpax/:id"></FlightPax>
                       <PriorityVetting path="vetting"></PriorityVetting>
