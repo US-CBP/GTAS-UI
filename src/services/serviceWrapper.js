@@ -301,7 +301,10 @@ export const logfile = {
 };
 
 export const changePassword = {
-  put: body => put(URL.CHANGEPASSWORD, BASEHEADER, undefined, stringify(body))
+  byloggedInUser: body => put(URL.CHANGEPASSWORD, BASEHEADER, undefined, stringify(body)),
+  byAdmin: (id, body) => {
+    return put(URL.CHANGEPASSWORD, BASEHEADER, id, stringify(body));
+  }
 };
 
 export const signup = {

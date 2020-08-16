@@ -6,6 +6,7 @@ import { Container, Alert } from "react-bootstrap";
 import Title from "../../../../components/title/Title";
 import "./ChangePassword.scss";
 import { hasData } from "../../../../utils/utils";
+import { navigate, useParams } from "@reach/router";
 
 const ChangePassword = props => {
   const [oldPassword, setOldPassword] = useState();
@@ -15,6 +16,12 @@ const ChangePassword = props => {
   const [displaySuccessMsg, setDisplaySuccessMsg] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [displayErrorMsg, setDisplayErrorMsg] = useState(false);
+
+  const params = useParams();
+  const service = hasData(params.userId)
+    ? changePassword.byAdmin
+    : changePassword.byloggedInUser;
+  const recordId = hasData(params.userId) ? params.userId : "";
 
   const checkPasswordMatch = () => {
     if (confirmedPassword === newPassword) {
@@ -45,14 +52,18 @@ const ChangePassword = props => {
 
   const cb = () => {};
   const passwordChangeCallback = (status, res) => {
-    const responseStatus = hasData(res) ? res.status : "";
-    const message = hasData(res) ? res.message : "";
+    if (status === "Cancel") navigate(-1);
+    else {
+      const responseStatus = hasData(res) ? res.status : "";
+      const message = hasData(res) ? res.message : "";
 
-    if (responseStatus === "SUCCESS") {
-      setDisplaySuccessMsg(true);
-    } else {
-      setErrorMessage(message);
-      setDisplayErrorMsg(true);
+      if (responseStatus === "SUCCESS") {
+        setDisplayErrorMsg(false);
+        setDisplaySuccessMsg(true);
+      } else {
+        setErrorMessage(message);
+        setDisplayErrorMsg(true);
+      }
     }
   };
 
@@ -69,27 +80,31 @@ const ChangePassword = props => {
         <Alert variant="success">Your password has been changed successfully!!</Alert>
       ) : (
         <Form
-          submitService={changePassword.put}
+          submitService={service}
           title=""
           callback={passwordChangeCallback}
           action="add"
           submitText="Submit"
-          redirectTo="/gtas/flights" //TODO: for now, on form cancel navigate to gtas default page
           cancellable
           key={style}
+          recordId={recordId}
         >
-          <LabelledInput
-            datafield
-            labelText="Old Password"
-            inputType="password"
-            name="oldPassword"
-            required={true}
-            inputVal={oldPassword}
-            alt="nothing"
-            callback={cb}
-            onChange={changeInput}
-            spacebetween
-          />
+          {hasData(params.userId) ? (
+            <></>
+          ) : (
+            <LabelledInput
+              datafield
+              labelText="Old Password"
+              inputType="password"
+              name="oldPassword"
+              required={true}
+              inputVal={oldPassword}
+              alt="nothing"
+              callback={cb}
+              onChange={changeInput}
+              spacebetween
+            />
+          )}
           <LabelledInput
             datafield
             labelText="New Password"

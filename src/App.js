@@ -167,6 +167,7 @@ export default class App extends React.Component {
                       <Watchlist path="tools/watchlist/:mode"></Watchlist>
                       <About path="tools/about"></About>
                       <ChangePassword path="user/change-password"></ChangePassword>
+                      <ChangePassword path="user/change-password/:userId"></ChangePassword>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
                         <Admin path="/">
                           <ManageUser name="Manage Users" path="manageusers"></ManageUser>
