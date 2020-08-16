@@ -9,8 +9,8 @@ const AddToWatchlist = props => {
   const cb = () => {};
   const [show, setShow] = useState(false);
   const [wlCategories, setWlCategories] = useState([]);
-  const passenger = props.watchlistItems.passenger;
-  const documents = props.watchlistItems.documents;
+  const passenger = props.watchlistItems?.passenger;
+  const documents = props.watchlistItems?.documents;
 
   const handleClose = (status, res) => {
     setShow(false);

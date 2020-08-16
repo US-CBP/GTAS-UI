@@ -7,8 +7,30 @@
       "pre-commit": "pretty-quick --staged"
     }
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js, jsx}",
+      "!<rootDir>/node_modules/",
+      "!**/coverage/**",
+      "!**/serviceWorker.js",
+      "!**/index.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    },
+    "coverageReporters": [
+      "text"
+    ]
+  },
   "dependencies": {
     "@reach/router": "^1.3.3",
+    "@testing-library/jest-dom": "^5.11.3",
+    "@testing-library/react": "^10.4.8",
     "axios": "^0.19.0",
     "bootstrap": "^4.4.1",
     "cross-env": "^6.0.3",
@@ -40,7 +62,7 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage",
     "eject": "react-scripts eject",
     "rsg": "styleguidist server",
     "rsg:build": "styleguidist build",
@@ -73,6 +95,7 @@
     "eslint-plugin-react": "^7.17.0",
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
+    "msw": "^0.20.5",
     "prettier": "^1.19.1",
     "prop-types": "^15.7.2",
     "react-styleguidist": "^11.0.5",

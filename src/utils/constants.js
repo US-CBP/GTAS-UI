@@ -38,6 +38,10 @@ export const ROLE = {
   ANY: "Any"
 };
 
+export const CTX = {
+  JSESSIONID: `JSESSIONID`
+};
+
 export const TIME = {
   MINUTE: 60000,
   MINUTES_2: 120000,

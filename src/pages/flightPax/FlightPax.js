@@ -24,7 +24,9 @@ const FlightPax = props => {
   const [allData, setAllData] = useState([{}]);
   const [tab, setTab] = useState("all");
   const [key, setKey] = useState(0);
-  const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
+  const flightData = hasData(props.location?.state?.data)
+    ? props.location.state.data
+    : {};
 
   const parseData = data => {
     return asArray(data).map(item => {

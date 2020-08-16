@@ -11,7 +11,7 @@ import QRModal from "./QRModal";
 import "./QueryRules.css";
 
 const Rules = props => {
-  const endpoint = getEndpoint(props.location.pathname);
+  const endpoint = getEndpoint(props.location?.pathname);
   const [tab, setTab] = useState(endpoint === "rules" ? RULETAB.MY : RULETAB.ALL);
   const service = tab === RULETAB.ALL ? rulesall : rule;
   const [showModal, setShowModal] = useState(false);

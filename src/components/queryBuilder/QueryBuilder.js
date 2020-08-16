@@ -5,8 +5,7 @@ import {
   addressFieldArray,
   FIELDS,
   EntitySelect,
-  gtasoparray,
-  fakequery
+  gtasoparray
 } from "./constants.js";
 import { importQuery, exportQuery } from "./QBUtils";
 import { hasData } from "../../utils/utils";

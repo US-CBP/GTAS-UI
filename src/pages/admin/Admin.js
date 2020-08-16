@@ -5,9 +5,9 @@ import Banner from "../../components/banner/Banner";
 import { Container } from "react-bootstrap";
 
 const Admin = props => {
-  const tabcontent = props.children.props.children;
+  const tabcontent = props?.children?.props?.children;
 
-  const tablist = tabcontent.map((tab, idx) => {
+  const tablist = (tabcontent || []).map((tab, idx) => {
     return { title: tab.props.name, key: tab.props.name, link: tab };
   });
 

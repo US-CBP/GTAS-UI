@@ -1,18 +1,16 @@
 import React from "react";
-import Table from "../../components/table/Table";
-import { errorlog } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import { Container } from "react-bootstrap";
 
 const Dashboard = () => {
+  const cb = () => {};
+
   return (
     <div>
       <Container>
         <Title title="Dashboards"></Title>
       </Container>
-      <Container fluid className="box2">
-        <Table service={errorlog.get} id="foo"></Table>
-      </Container>
+      <Container fluid className="box2"></Container>
     </div>
   );
 };

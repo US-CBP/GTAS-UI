@@ -13,10 +13,14 @@ const Login = () => {
   const [alertVis, setAlertVis] = useState(false);
 
   useEffect(() => {
-    ctx.userAction({ type: "logoff" });
+    if (ctx) {
+      ctx.userAction({ type: "logoff" });
+    }
   }, []);
 
   const loginHandler = (status, res) => {
+    console.log("status:", status, "res:", res);
+
     if (res?.userId) {
       const newuser = {
         authenticated: true,

@@ -45,6 +45,8 @@ export function isObject(data) {
 }
 
 export function getEndpoint(str) {
+  if (!str) return "";
+
   return str
     .split("/")
     .pop()
@@ -54,9 +56,10 @@ export function getEndpoint(str) {
 
 // returns a random int with "length" digits
 export function randomIntOfLength(length) {
-  let digits = rerunArray(length, randomInt, 0, 10);
+  const firstDigit = randomInt(1, 10);
+  const digits = rerunArray(length - 1, randomInt, 0, 10);
 
-  return Number(digits.join(""));
+  return Number(`${firstDigit}${digits.join("")}`);
 }
 
 export function randomInt(min = 0, max = 10) {
@@ -180,7 +183,10 @@ export const altDash = str => alt(str, "---");
 
 export const altObj = str => alt(str, {});
 
-export const altNull = str => alt(str, null);
+export const altNull = str => {
+  let res = alt(str);
+  return hasData(res) ? res : null;
+};
 
 export const altData = data => {
   let safeResults = data;
@@ -254,7 +260,7 @@ export function passengerTypeMapper(type) {
   return passengerTypesMap[type];
 }
 
-//if engthToCompare is not passed, set default to 50
+//if lengthToCompare is not passed, set default to 50
 export function isShortText(text, lengthToCompare = 50) {
   return !hasData(text) || text.toString().length <= lengthToCompare ? true : false;
 }

@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react";
 import Cookies from "js-cookie";
 import { hasData } from "../../utils/utils";
+import { CTX } from "../../utils/constants";
 
 const initialState = {
   authenticated: false,
@@ -33,7 +34,7 @@ const UserProvider = ({ children }) => {
       }
       case "logoff": {
         sessionStorage.removeItem("user");
-        Cookies.remove("JSESSIONID");
+        Cookies.remove(CTX.JSESSIONID);
         setStorage("user", initialState);
         return initialState;
       }

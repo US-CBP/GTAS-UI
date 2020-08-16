@@ -1,7 +1,7 @@
 import React from "react";
-import Table from "../../../components/table/Table";
-import { users } from "../../../services/serviceWrapper";
-import Title from "../../../components/title/Title";
+import Table from "../../components/table/Table";
+import { users } from "../../services/serviceWrapper";
+import Title from "../../components/title/Title";
 
 const QuickQuery = () => {
   const cb = function(result) {};
