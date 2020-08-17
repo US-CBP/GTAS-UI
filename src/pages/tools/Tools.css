@@ -1,0 +1,19 @@
+.tools-tiles {
+  min-width: 220px;
+  max-width: 200px;
+  width: 220px;
+  margin: 10px;
+}
+
+.tools-deck {
+  margin: 20px;
+  justify-content: center;
+}
+
+.tools-text-link {
+  color: black;
+}
+
+.tools-text-link:hover {
+  text-decoration: underline;
+}

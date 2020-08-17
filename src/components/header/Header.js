@@ -88,35 +88,14 @@ const Header = () => {
               Admin
             </Nav.Link>
           </RoleAuthenticator>
-          <NavDropdown
-            title="Tools"
-            id="nav-dropdown"
+          <Nav.Link
+            as={Link}
+            to="tools"
             className={`${getActiveClass(htab.TOOLS)}`}
+            onClick={() => clickTab(htab.TOOLS)}
           >
-            <NavDropdown.Item as={Link} to="tools/queries">
-              <i className="fa fa-filter"></i> Queries
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item
-              as={Link}
-              to="tools/rules"
-              onClick={() => clickTab(htab.TOOLS)}
-            >
-              <i className="fa fa-flag"></i> Rules
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="tools/watchlist" onClick={() => clickTab("")}>
-              <i className="fa fa-eye"></i> Watchlist
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="tools/neo4j" onClick={() => clickTab("")}>
-              <i className="fa fa-filter"></i> Neo4J Browser
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="tools/about" onClick={() => clickTab("")}>
-              <i className="fa fa-info-circle"></i> About
-            </NavDropdown.Item>
-          </NavDropdown>
+            Tools
+          </Nav.Link>
         </Nav>
         <Nav className="navbar-search">
           <Form inline>

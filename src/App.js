@@ -30,6 +30,7 @@ import LoaderStats from "./pages/admin/loaderStats/LoaderStats";
 import Settings from "./pages/admin/settings/Settings";
 import WatchlistCats from "./pages/admin/watchlistCats/WatchlistCats";
 import NoteTypeCats from "./pages/admin/noteTypeCats/NoteTypeCats";
+import Tools from "./pages/tools/Tools";
 import QueryRules from "./pages/tools/queryrules/Rules";
 import Queries from "./pages/tools/queryrules/Queries";
 import QRDetails from "./pages/tools/queryrules/QRDetails";
@@ -158,14 +159,16 @@ export default class App extends React.Component {
                       <Flights path="flights"></Flights>
                       <FlightPax path="flightpax/:id"></FlightPax>
                       <PriorityVetting path="vetting"></PriorityVetting>
-                      <QueryRules path="tools/rules"></QueryRules>
-                      <QueryRules path="tools/rules/:mode"></QueryRules>
-                      <Queries path="tools/queries"></Queries>
-                      <QRDetails path="tools/qrdetails"></QRDetails>
-                      <Neo4J path="tools/neo4j"></Neo4J>
-                      <Redirect from="tools/watchlist" to="pax" noThrow />
-                      <Watchlist path="tools/watchlist/:mode"></Watchlist>
-                      <About path="tools/about"></About>
+                      <Tools path="tools">
+                        <QueryRules name="Rules" path="rules"></QueryRules>
+                        <QueryRules name="Rules" path="rules/:mode" hideTile></QueryRules>
+                        <Queries name="Queries" path="queries"></Queries>
+                        <QRDetails path="qrdetails" hideTile></QRDetails>
+                        <Neo4J name="Neo4j" path="neo4j"></Neo4J>
+                        <Watchlist path="watchlist" name="Watchlist"></Watchlist>
+                        <Watchlist path="watchlist/:mode" name="Watchlist"></Watchlist>
+                        <About name="About" path="about"></About>
+                      </Tools>
                       <ChangePassword path="user/change-password"></ChangePassword>
                       <ChangePassword path="user/change-password/:userId"></ChangePassword>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
