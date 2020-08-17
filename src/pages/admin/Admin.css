@@ -1,0 +1,19 @@
+.admin-tiles {
+  min-width: 220px;
+  max-width: 200px;
+  width: 220px;
+  margin: 10px;
+}
+
+.admin-deck {
+  margin: 20px;
+  justify-content: center;
+}
+
+.admin-text-link {
+  color: black;
+}
+
+.admin-text-link:hover {
+  text-decoration: underline;
+}

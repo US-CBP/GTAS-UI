@@ -79,46 +79,14 @@ const Header = () => {
             Vetting
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
-            <NavDropdown
-              title="Admin"
-              id="nav-dropdown"
+            <Nav.Link
+              as={Link}
+              to="admin"
               className={`${getActiveClass(htab.ADMIN)}`}
+              onClick={() => clickTab(htab.ADMIN)}
             >
-              <NavDropdown.Item
-                as={Link}
-                to="admin/manageusers"
-                onClick={() => clickTab(htab.ADMIN)}
-              >
-                Manage Users
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/auditlog">
-                Audit Log
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/errorlog">
-                Error Log
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/settings">
-                Settings
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/filedownload">
-                File Download
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/codeeditor">
-                Code Editor
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/loaderstats">
-                Loader Statistics
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/watchlistcats">
-                Watchlist Categories
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/notetypecats">
-                Note Type Categories
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/signuprequests">
-                Sign Up Requests
-              </NavDropdown.Item>
-            </NavDropdown>
+              Admin
+            </Nav.Link>
           </RoleAuthenticator>
           <NavDropdown
             title="Tools"

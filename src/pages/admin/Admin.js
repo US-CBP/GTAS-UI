@@ -1,33 +1,40 @@
 import React from "react";
 import Title from "../../components/title/Title";
-import Tabs from "../../components/tabs/Tabs";
-import Banner from "../../components/banner/Banner";
-import { Container } from "react-bootstrap";
+import { Card, CardDeck, Container } from "react-bootstrap";
+import { hasData, getEndpoint } from "../../utils/utils";
+import "./Admin.css";
 
 const Admin = props => {
-  const tabcontent = props.children.props.children;
+  const children = props.children?.props?.children;
 
-  const tablist = tabcontent.map((tab, idx) => {
-    return { title: tab.props.name, key: tab.props.name, link: tab };
-  });
+  console.log(children);
 
-  // use cases for banner vs notification?
-  const showBanner = () => {
-    return false;
-  };
+  if (getEndpoint(props.location?.pathname) === "admin")
+    return (
+      <CardDeck className="admin-deck">
+        {children.map(info => {
+          return (
+            <Card className="admin-tiles">
+              <Card.Body className="dash-card-body">
+                <Card.Title>
+                  <Card.Link href={`admin/${info.props.path}`}>
+                    {info.props.name}
+                  </Card.Link>
+                </Card.Title>
+                <Card.Link href={`admin/${info.props.path}`} className="admin-text-link">
+                  <Card.Text>
+                    Some quick example text to build on the card title and make up the
+                    bulk of the card's content.
+                  </Card.Text>
+                </Card.Link>
+              </Card.Body>
+            </Card>
+          );
+        })}
+      </CardDeck>
+    );
 
-  return (
-    <>
-      <Banner
-        id="banner"
-        styleName="warning"
-        text="Something has happened."
-        defaultState={showBanner}
-      />
-      {props.children}
-      {/* <Tabs tabs={tablist} /> */}
-    </>
-  );
+  return <>{props.children}</>;
 };
 
 export default Admin;
