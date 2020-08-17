@@ -1,7 +1,5 @@
 import React from "react";
 import Board from "react-trello";
-import Title from "../../components/title/Title";
-import { Container } from "react-bootstrap";
 
 import "./Kanban.css";
 
@@ -158,19 +156,12 @@ const Kanban = props => {
   };
 
   return (
-    <>
-      <Container>
-        <Title title="POE" />
-      </Container>
-      <Container fluid>
-        <Board
-          data={data}
-          cardDragClass="draggingCard"
-          laneDragClass="draggingLane"
-          draggable
-        />
-      </Container>
-    </>
+    <Board
+      data={data}
+      cardDragClass="draggingCard"
+      laneDragClass="draggingLane"
+      draggable
+    />
   );
 };
 
