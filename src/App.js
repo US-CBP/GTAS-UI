@@ -38,7 +38,6 @@ import Neo4J from "./pages/tools/neo4J/Neo4J";
 import Watchlist from "./pages/tools/watchlist/Watchlist";
 import About from "./pages/tools/about/About";
 import GModal from "./components/modal/GModal";
-import Kanban from "./components/kanban/Kanban";
 
 import Page404 from "./pages/page404/Page404";
 import PageUnauthorized from "./pages/pageUnauthorized/PageUnauthorized";
