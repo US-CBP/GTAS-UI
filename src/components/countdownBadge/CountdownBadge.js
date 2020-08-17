@@ -37,7 +37,7 @@ const CountdownBadge = props => {
   const hours = !days ? parse(hrsraw) : pad(Math.abs(hrsraw));
   const minutes = !days && !hours ? parse(minraw, "00") : pad(Math.abs(minraw));
 
-  const formatedDays = days ? `${days}h` : days;
+  const formatedDays = days ? `${days}d` : days;
   const formatedHours = hours ? `${hours}h` : hours;
   const formatedMinutes = minutes ? `${minutes}m` : minutes;
 
