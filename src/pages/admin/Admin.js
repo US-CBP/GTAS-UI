@@ -7,31 +7,32 @@ import "./Admin.css";
 const Admin = props => {
   const children = props.children?.props?.children;
 
-  console.log(children);
-
   if (getEndpoint(props.location?.pathname) === "admin")
     return (
-      <CardDeck className="admin-deck">
-        {children.map(info => {
-          return (
-            <Card className="admin-tiles">
-              <Card.Body className="dash-card-body">
-                <Card.Title>
-                  <Card.Link href={`admin/${info.props.path}`}>
-                    {info.props.name}
+      <>
+        <Title title="Admin" />
+
+        <CardDeck className="admin-deck">
+          {children.map(info => {
+            const data = info.props;
+            return (
+              <Card className="admin-tiles" key={data.path}>
+                <Card.Body>
+                  <Card.Title className="nowrap">
+                    <Card.Link href={`admin/${data.path}`}>
+                      <i className={`fa ${data.icon}`}></i>
+                      {`  ${data.name}`}
+                    </Card.Link>
+                  </Card.Title>
+                  <Card.Link href={`admin/${data.path}`} className="admin-text-link">
+                    <Card.Text>{data.desc}</Card.Text>
                   </Card.Link>
-                </Card.Title>
-                <Card.Link href={`admin/${info.props.path}`} className="admin-text-link">
-                  <Card.Text>
-                    Some quick example text to build on the card title and make up the
-                    bulk of the card's content.
-                  </Card.Text>
-                </Card.Link>
-              </Card.Body>
-            </Card>
-          );
-        })}
-      </CardDeck>
+                </Card.Body>
+              </Card>
+            );
+          })}
+        </CardDeck>
+      </>
     );
 
   return <>{props.children}</>;
