@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Container } from "react-bootstrap";
 import { notification, usersemails } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
+import "./Notification.scss";
 
 const Notification = props => {
+  const cb = result => {};
   const [show, setShow] = useState(false);
   const [usersEmails, setUsersEmails] = useState(props.usersEmails);
 
@@ -54,45 +56,53 @@ const Notification = props => {
           <Modal.Title>Notify Users</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form
-            title=""
-            submitText="NOTIFY"
-            submitService={notification.post}
-            callback={handleClose}
-            action="add"
-            id="notificationmodal"
-            afterProcessed={handleClose}
-            recordId={paxId}
-            cancellable
-          >
-            <LabelledInput
-              datafield
-              inputType="checkboxGroup"
-              inputVal={usersEmails}
-              labelText="Users in Current Group"
-              name="to"
-              alt="nothing"
-            />
-            <LabelledInput
-              inputType="email"
-              alt="nothing"
-              name="externalUsersEmail"
-              labelText="External Users Email:"
-              placeholder="email@example.com"
-              datafield
-              inputVal=""
-            />
+          <Container fluid>
+            <Form
+              title=""
+              submitText="NOTIFY"
+              submitService={notification.post}
+              callback={handleClose}
+              action="add"
+              id="notificationmodal"
+              afterProcessed={handleClose}
+              recordId={paxId}
+              cancellable
+            >
+              <div className="notify-checkbox">
+                <LabelledInput
+                  datafield
+                  inputType="checkboxGroup"
+                  inputVal={usersEmails}
+                  labelText="Users in Current Group:"
+                  name="to"
+                  alt="nothing"
+                  callback={cb}
+                />
+              </div>
 
-            <LabelledInput
-              inputType="textarea"
-              alt="Add note here..."
-              name="note"
-              labelText=""
-              placeholder="Add note here..."
-              datafield="note"
-              inputVal=""
-            />
-          </Form>
+              <LabelledInput
+                inputType="email"
+                alt="nothing"
+                name="externalUsersEmail"
+                labelText="External Users Email:"
+                placeholder="email@example.com"
+                datafield
+                inputVal=""
+                callback={cb}
+              />
+
+              <LabelledInput
+                inputType="textarea"
+                alt="Add note here..."
+                name="note"
+                labelText=""
+                placeholder="Add note here..."
+                datafield="note"
+                inputVal=""
+                callback={cb}
+              />
+            </Form>
+          </Container>
         </Modal.Body>
       </Modal>
     </>
