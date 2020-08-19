@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { Modal, Button, Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import { users, roles } from "../../../services/serviceWrapper";
@@ -69,6 +69,7 @@ const UserModal = props => {
     let res = { ...fields[0] };
     //TODO selectedRoles is empty if no change occurs, which makes hard to apply default values
     res.roles = selectedRoles;
+    res.password = props.isEdit ? null : res.password;
     res.isCurrentlyLoggedInUser = row.userId === user.userId;
     res.active = res.active ? 1 : 0;
 
@@ -99,22 +100,22 @@ const UserModal = props => {
   }, []);
 
   const buttons = props.isEdit
-      ? [
+    ? [
         <Button
-            type="button"
-            className="m-2 outline-dark-outline"
-            variant="outline-dark"
-            key="delete"
-            onClick={() => {
-              users.del(props.editRowDetails.userId).then(res => {
-                postSubmit(ACTION.DELETE, res);
-              });
-            }}
+          type="button"
+          className="m-2 outline-dark-outline"
+          variant="outline-dark"
+          key="delete"
+          onClick={() => {
+            users.del(props.editRowDetails.userId).then(res => {
+              postSubmit(ACTION.DELETE, res);
+            });
+          }}
         >
           Delete
         </Button>
       ]
-      : [];
+    : [];
 
   return (
     <Modal
@@ -230,20 +231,20 @@ const UserModal = props => {
               spacebetween
             />
             {props.isEdit ? (
-            <LabelledInput
-              datafield
-              labelText="User Is Enabled"
-              inputType="checkbox"
-              name="active"
-              required={true}
-              alt="nothing"
-              inputVal={!!row.active}
-              callback={cb}
-              selected={!!row.active}
-              spacebetween
-            />
-            ):(
-            <LabelledInput
+              <LabelledInput
+                datafield
+                labelText="User Is Enabled"
+                inputType="checkbox"
+                name="active"
+                required={true}
+                alt="nothing"
+                inputVal={!!row.active}
+                callback={cb}
+                selected={!!row.active}
+                spacebetween
+              />
+            ) : (
+              <LabelledInput
                 datafield
                 labelText="User Is Enabled"
                 inputType="checkbox"
@@ -254,9 +255,8 @@ const UserModal = props => {
                 callback={cb}
                 selected={true}
                 spacebetween
-            />
+              />
             )}
-
 
             <div className="um-checkbox">
               <CheckboxGroup

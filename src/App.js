@@ -169,6 +169,7 @@ export default class App extends React.Component {
                       <About path="tools/about"></About>
                       <ChangePassword path="user/change-password"></ChangePassword>
                       <Search path="search/:searchParam"></Search>
+                      <ChangePassword path="user/change-password/:userId"></ChangePassword>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
                         <Admin path="/">
                           <ManageUser name="Manage Users" path="manageusers"></ManageUser>
