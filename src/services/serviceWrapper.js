@@ -140,11 +140,12 @@ const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
 const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
 const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
 const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
+const SEARCH = `${BASE_URL}gtas/search`;
 // ENTITY METHODS
 export const users = {
   get: {
-    getAll: (id,params) => get(USERS + "/", BASEHEADER, id, params),
-    getAllNonArchived: (id,params) => get(USERSNONARCHIVED, BASEHEADER, id, params)
+    getAll: (id, params) => get(USERS + "/", BASEHEADER, id, params),
+    getAllNonArchived: (id, params) => get(USERSNONARCHIVED, BASEHEADER, id, params)
   },
   put: body => {
     const id = body.userId;
@@ -434,4 +435,11 @@ export const forgotPassword = {
 export const resetPassword = {
   post: body => post(RESETPASSWORD, SIGNUPHEADER, stringify(body)),
   isValidToken: token => get(RESETPASSWORD, SIGNUPHEADER, undefined, token)
+};
+
+export const search = {
+  passengers: params => {
+    const url = `${SEARCH}/queryPassengers`;
+    return get(url, BASEHEADER, undefined, params);
+  }
 };

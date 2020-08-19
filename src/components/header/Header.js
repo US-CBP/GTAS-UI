@@ -7,9 +7,11 @@ import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator
 import { ROLE } from "../../utils/constants";
 import "./Header.scss";
 import wcoLogo from "../../images/WCO_GTAS_header_brand.svg";
+import { hasData } from "../../utils/utils";
 
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
+  const searchInputRef = useRef();
 
   const user = getUserState();
   const currentPath = useLocation();
@@ -42,6 +44,14 @@ const Header = () => {
 
   const getActiveClass = tabName => {
     return currentPath.pathname.startsWith(tabName) ? "active-tab" : "";
+  };
+
+  const handleSearchSubmit = () => {
+    const searchParam = searchInputRef.current.value;
+    if (hasData(searchParam)) {
+      navigate(`/gtas/search/${searchParam}`);
+    }
+    console.log(searchInputRef.current.value);
   };
 
   return (
@@ -152,8 +162,15 @@ const Header = () => {
         </Nav>
         <Nav className="navbar-search">
           <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-light">Search</Button>
+            <FormControl
+              type="text"
+              placeholder="Search"
+              className="mr-sm-2"
+              ref={searchInputRef}
+            />
+            <Button variant="outline-light" onClick={handleSearchSubmit}>
+              Search
+            </Button>
           </Form>
         </Nav>
         <Nav variant="tabs" className="ml-auto">
