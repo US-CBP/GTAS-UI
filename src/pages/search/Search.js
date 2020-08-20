@@ -51,7 +51,7 @@ const Search = props => {
     search.passengers(params).then(res => {
       if (hasData(res.result)) setData(res.result.passengers);
     });
-  }, []);
+  }, [searchParam]);
 
   return (
     <Container fluid>
