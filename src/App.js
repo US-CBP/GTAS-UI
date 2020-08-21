@@ -53,6 +53,7 @@ import SignUp from "./pages/signUp/SignUp";
 import SignUpRequests from "./pages/admin/signUpRequests/SignUpRequests";
 import ResetPassword from "./pages/admin/manageUsers/changePassword/ResetPassword";
 import ForgotPassword from "./pages/admin/manageUsers/changePassword/ForgotPassword";
+import SeatChart from "./components/seatChart/SeatChart";
 
 //Split Link Analysis (Graph component, d3, jquery deps) into a separate bundle
 const LinkAnalysis = React.lazy(() =>
@@ -168,6 +169,7 @@ export default class App extends React.Component {
                       <About path="tools/about"></About>
                       <ChangePassword path="user/change-password"></ChangePassword>
                       <ChangePassword path="user/change-password/:userId"></ChangePassword>
+                      <SeatChart path="seat-chart"></SeatChart>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
                         <Admin path="/">
                           <ManageUser name="Manage Users" path="manageusers"></ManageUser>

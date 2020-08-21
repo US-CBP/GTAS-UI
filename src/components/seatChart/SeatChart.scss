@@ -1,0 +1,14 @@
+.seat-chart {
+  margin-top: 20px;
+  padding-right: 30px;
+  padding-left: 30px;
+  overflow: scroll;
+}
+.seat-chart .row {
+  flex-wrap: nowrap;
+}
+
+.middle-rows {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

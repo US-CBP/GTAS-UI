@@ -1,0 +1,22 @@
+.seat {
+  border-color: rgb(245, 241, 241) !important;
+  background-color: rgb(184, 182, 182);
+  margin-left: 5px;
+}
+.seat.btn-group-sm > .btn,
+.btn-sm {
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  min-width: 40px;
+  max-width: 40px;
+}
+
+.seat .btn-light.disabled,
+.btn-light:disabled {
+  background-color: rgb(184, 182, 182) !important;
+}
+
+.green {
+  background-color: green;
+}
