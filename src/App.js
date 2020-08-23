@@ -16,6 +16,7 @@ import APIS from "./pages/paxDetail/apis/APIS";
 import PNR from "./pages/paxDetail/pnr/PNR";
 import FlightHistory from "./pages/paxDetail/flightHistory/FlightHistory";
 import FlightPax from "./pages/flightPax/FlightPax";
+import LinkAnalysis from "./pages/paxDetail/linkAnalysis/LinkAnalysis";
 
 import Rules from "./pages/tools/queryrules/Rules";
 import Queries from "./pages/tools/queryrules/Queries";
@@ -44,19 +45,10 @@ const SignUp = loadable(() =>
   import(/* webpackChunkName: "unauthed" */ "./pages/signUp/SignUp")
 );
 const ResetPassword = loadable(() =>
-  import(
-    /* webpackChunkName: "unauthed" */ "./pages/admin/manageUsers/changePassword/ResetPassword"
-  )
+  import(/* webpackChunkName: "unauthed" */ "./pages/login/ResetPassword")
 );
 const ForgotPassword = loadable(() =>
-  import(
-    /* webpackChunkName: "unauthed" */ "./pages/admin/manageUsers/changePassword/ForgotPassword"
-  )
-);
-
-//Link Analysis bundle
-const LinkAnalysis = loadable(() =>
-  import(/* webpackChunkName: "vaquita" */ "./pages/paxDetail/linkAnalysis/LinkAnalysis")
+  import(/* webpackChunkName: "unauthed" */ "./pages/login/ForgotPassword")
 );
 
 //Admin bundle imports

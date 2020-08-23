@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Form from "../../../../components/form/Form";
-import LabelledInput from "../../../../components/labelledInput/LabelledInput";
-import { forgotPassword } from "../../../../services/serviceWrapper";
+import Form from "../../components/form/Form";
+import LabelledInput from "../../components/labelledInput/LabelledInput";
+import { forgotPassword } from "../../services/serviceWrapper";
 import { Container, Alert } from "react-bootstrap";
-import Title from "../../../../components/title/Title";
-import { hasData } from "../../../../utils/utils";
+import Title from "../../components/title/Title";
+import { hasData } from "../../utils/utils";
 import { Link } from "@reach/router";
 
 const ForgotPassword = props => {

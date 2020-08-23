@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
+import loadable from "@loadable/component";
 import "../../services/configService";
 import { cypher, cypherAuth } from "../../services/serviceWrapper";
-import * as d3 from "d3";
 import { provider, paxRelations, saves, palette } from "./structure";
 import "./Graph.css";
 import "../../../node_modules/vaquita/css/vaquita-svg.css";
-const vaquita = require("vaquita");
+
+const select = loadable.lib(() => import("d3-selection"));
+const vaquita = loadable.lib(() => import("vaquita"));
 
 class Graph extends React.Component {
   constructor(props) {
@@ -154,9 +156,8 @@ class Graph extends React.Component {
   onClickSavedGraph = function(id) {
     // Update Graph title:
     if (!id) {
-      d3.select("#save-header").text(
-        d3
-          .select(this)
+      select("#save-header").text(
+        select(this)
           .select(".ppt-label")
           .text()
       );
