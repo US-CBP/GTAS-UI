@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import { Router, Redirect, navigate } from "@reach/router";
 import IdleTimer from "react-idle-timer";
-// import logo from './logo.svg';
-import Login from "./pages/login/Login";
+import loadable from "@loadable/component";
+
 import Flights from "./pages/flights/Flights";
 import PriorityVetting from "./pages/vetting/Vetting";
 import Home from "./pages/home/Home";
@@ -16,21 +16,8 @@ import APIS from "./pages/paxDetail/apis/APIS";
 import PNR from "./pages/paxDetail/pnr/PNR";
 import FlightHistory from "./pages/paxDetail/flightHistory/FlightHistory";
 import FlightPax from "./pages/flightPax/FlightPax";
-import Admin from "./pages/admin/Admin";
-import ManageUser from "./pages/admin/manageUsers/ManageUsers";
 
-import FileDownload from "./pages/admin/fileDownload/FileDownload";
-import AuditLog from "./pages/admin/auditLog/AuditLog";
-import ErrorLog from "./pages/admin/errorLog/ErrorLog";
-import CodeEditor from "./pages/admin/codeEditor/CodeEditor";
-import Airports from "./pages/admin/codeEditor/airport/Airports";
-import Carriers from "./pages/admin/codeEditor/carrier/Carriers";
-import Countries from "./pages/admin/codeEditor/country/Countries";
-import LoaderStats from "./pages/admin/loaderStats/LoaderStats";
-import Settings from "./pages/admin/settings/Settings";
-import WatchlistCats from "./pages/admin/watchlistCats/WatchlistCats";
-import NoteTypeCats from "./pages/admin/noteTypeCats/NoteTypeCats";
-import QueryRules from "./pages/tools/queryrules/Rules";
+import Rules from "./pages/tools/queryrules/Rules";
 import Queries from "./pages/tools/queryrules/Queries";
 import QRDetails from "./pages/tools/queryrules/QRDetails";
 import Neo4J from "./pages/tools/neo4J/Neo4J";
@@ -48,15 +35,77 @@ import RoleAuthenticator from "./context/roleAuthenticator/RoleAuthenticator";
 import UserProvider from "./context/user/UserContext";
 
 import { ROLE, TIME } from "./utils/constants";
-import ChangePassword from "./pages/admin/manageUsers/changePassword/ChangePassword";
-import SignUp from "./pages/signUp/SignUp";
-import SignUpRequests from "./pages/admin/signUpRequests/SignUpRequests";
-import ResetPassword from "./pages/admin/manageUsers/changePassword/ResetPassword";
-import ForgotPassword from "./pages/admin/manageUsers/changePassword/ForgotPassword";
 
-//Split Link Analysis (Graph component, d3, jquery deps) into a separate bundle
-const LinkAnalysis = React.lazy(() =>
-  import("./pages/paxDetail/linkAnalysis/LinkAnalysis")
+//login bundle
+const Login = loadable(() =>
+  import(/* webpackChunkName: "unauthed" */ "./pages/login/Login")
+);
+const SignUp = loadable(() =>
+  import(/* webpackChunkName: "unauthed" */ "./pages/signUp/SignUp")
+);
+const ResetPassword = loadable(() =>
+  import(
+    /* webpackChunkName: "unauthed" */ "./pages/admin/manageUsers/changePassword/ResetPassword"
+  )
+);
+const ForgotPassword = loadable(() =>
+  import(
+    /* webpackChunkName: "unauthed" */ "./pages/admin/manageUsers/changePassword/ForgotPassword"
+  )
+);
+
+//Link Analysis bundle
+const LinkAnalysis = loadable(() =>
+  import(/* webpackChunkName: "vaquita" */ "./pages/paxDetail/linkAnalysis/LinkAnalysis")
+);
+
+//Admin bundle imports
+const Admin = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/Admin")
+);
+const ManageUser = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/manageUsers/ManageUsers")
+);
+const FileDownload = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/fileDownload/FileDownload")
+);
+const AuditLog = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/auditLog/AuditLog")
+);
+const ErrorLog = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/errorLog/ErrorLog")
+);
+const CodeEditor = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/CodeEditor")
+);
+const Airports = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/airport/Airports")
+);
+const Carriers = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/carrier/Carriers")
+);
+const Countries = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/country/Countries")
+);
+const LoaderStats = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/loaderStats/LoaderStats")
+);
+const Settings = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/settings/Settings")
+);
+const WatchlistCats = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/watchlistCats/WatchlistCats")
+);
+const NoteTypeCats = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/noteTypeCats/NoteTypeCats")
+);
+const ChangePassword = loadable(() =>
+  import(
+    /* webpackChunkName: "admin" */ "./pages/admin/manageUsers/changePassword/ChangePassword"
+  )
+);
+const SignUpRequests = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/signUpRequests/SignUpRequests")
 );
 
 export default class App extends React.Component {
@@ -95,12 +144,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    // if (this.state.redirect) {
-    //   this.setState({ redirect: false });
-    //   // logout and ...
-    //   return <Redirect to="/login" />;
-    // }
-
     const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
 
     return (
@@ -154,12 +197,12 @@ export default class App extends React.Component {
                     <Home path="/gtas">
                       <Page404 default></Page404>
                       <Redirect from="/gtas" to="/gtas/flights" noThrow />
-                      <Dashboard path="dashboard"></Dashboard>
                       <Flights path="flights"></Flights>
                       <FlightPax path="flightpax/:id"></FlightPax>
                       <PriorityVetting path="vetting"></PriorityVetting>
-                      <QueryRules path="tools/rules"></QueryRules>
-                      <QueryRules path="tools/rules/:mode"></QueryRules>
+                      <Dashboard path="dashboard"></Dashboard>
+                      <Rules path="tools/rules"></Rules>
+                      <Rules path="tools/rules/:mode"></Rules>
                       <Queries path="tools/queries"></Queries>
                       <QRDetails path="tools/qrdetails"></QRDetails>
                       <Neo4J path="tools/neo4j"></Neo4J>
@@ -210,11 +253,7 @@ export default class App extends React.Component {
                         <APIS path="apis"></APIS>
                         <PNR path="pnr"></PNR>
                         <FlightHistory path="flighthistory"></FlightHistory>
-                        <ErrorBoundary>
-                          <Suspense fallback={<Loading></Loading>}>
-                            <LinkAnalysis path="linkanalysis"></LinkAnalysis>
-                          </Suspense>
-                        </ErrorBoundary>
+                        <LinkAnalysis path="linkanalysis"></LinkAnalysis>
                       </PaxDetail>
                       <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
                     </Home>
