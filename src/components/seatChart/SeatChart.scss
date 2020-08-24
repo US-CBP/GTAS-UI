@@ -1,7 +1,7 @@
 .seat-chart {
   margin-top: 20px;
-  padding-right: 30px;
-  padding-left: 30px;
+  margin-left: 20px;
+  width: calc(100vw - 40px);
   overflow: scroll;
 }
 .seat-chart .row {

@@ -1,22 +1,28 @@
 .seat {
   border-color: rgb(245, 241, 241) !important;
-  background-color: rgb(184, 182, 182);
+  background-color: green;
   margin-left: 5px;
-}
-.seat.btn-group-sm > .btn,
-.btn-sm {
   font-size: 0.75rem;
   font-weight: 700;
-  border-radius: 0.5rem;
-  min-width: 40px;
-  max-width: 40px;
+  border-radius: 0.3rem;
+  min-width: 30px;
+  max-width: 30px;
+  padding: 0.15px 0.15px;
 }
 
-.seat .btn-light.disabled,
-.btn-light:disabled {
+.seat:disabled {
   background-color: rgb(184, 182, 182) !important;
 }
 
-.green {
-  background-color: green;
+.seat:focus,
+.seat:hover {
+  background-color: rgb(69, 168, 69);
+}
+
+.pink {
+  background-color: rgb(216, 60, 177) !important;
+}
+
+.seat-info-modal .modal-footer {
+  border-top: 1px solid #dee2e6 !important;
 }

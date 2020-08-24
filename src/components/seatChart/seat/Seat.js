@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import "./Seat.scss";
@@ -8,14 +8,15 @@ import SeatInfoModal from "./SeatInfoModal";
 const Seat = props => {
   const reserved = hasData(props.seatInfo);
   const [showModal, setShowModal] = useState(false);
+  const isCurrentPaxSeat = props.currentPaxSeat === props.seatNumber;
+  const currentPaxSeatClass = isCurrentPaxSeat ? "pink" : "";
 
-  const displaySeatInfo = () => {};
   return (
     <>
       <Button
         variant="light"
         size="sm"
-        className={`seat ${reserved ? "green" : ""}`}
+        className={`seat ${currentPaxSeatClass}`}
         disabled={!reserved}
         onClick={() => setShowModal(true)}
       >
@@ -31,6 +32,7 @@ const Seat = props => {
 };
 Seat.propTypes = {
   seatNumber: PropTypes.string,
-  seatInfo: PropTypes.any
+  seatInfo: PropTypes.any,
+  currentPaxSeat: PropTypes.string
 };
 export default Seat;

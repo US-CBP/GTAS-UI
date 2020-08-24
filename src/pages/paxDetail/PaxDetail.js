@@ -19,6 +19,7 @@ import ChangeHitStatus from "./changeHitStatus/ChangeHitStatus";
 import CreateManualHit from "./createManualHit/CreateManualHit";
 import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
+import { Link } from "@reach/router";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
@@ -34,7 +35,17 @@ const PaxDetail = props => {
       { label: "Gender", value: res.gender },
       { label: "Nationality", value: res.nationality },
       { label: "Residence", value: res.residenceCountry },
-      { label: "Seat", value: res.seat },
+      {
+        label: "Seat",
+        value: (
+          <Link
+            to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${res.seat}`}
+            style={{ color: "#8fdeef" }}
+          >
+            {res.seat}
+          </Link>
+        )
+      },
       { label: "Passenger Type", value: passengerTypeMapper(res.passengerType) },
       { label: "Last PNR Recieved", value: res.pnrVo?.transmissionDate },
       { label: "Last APIS Recieved", value: res.apisMessageVo?.transmissionDate }

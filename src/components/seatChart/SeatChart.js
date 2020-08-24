@@ -4,18 +4,21 @@ import { Container, Row } from "react-bootstrap";
 import "./SeatChart.scss";
 import { seats } from "../../services/serviceWrapper";
 import { asArray } from "../../utils/utils";
+import { useParams } from "@reach/router";
 
 const SeatChart = props => {
   const [reserevedSeatsInfo, setReservedSeatsInfo] = useState({});
+  const { flightId, currentPaxSeat } = useParams();
 
   const getRow = letter => {
     const row = [];
-    for (let i = 1; i < 87; i++) {
+    for (let i = 1; i < 90; i++) {
       const seatNumber = `${i}${letter}`;
       row.push(
         <Seat
           seatNumber={seatNumber}
           seatInfo={reserevedSeatsInfo[seatNumber]}
+          currentPaxSeat={currentPaxSeat}
           key={seatNumber}
         />
       );
@@ -31,7 +34,7 @@ const SeatChart = props => {
   };
 
   useEffect(() => {
-    seats.get(1).then(res => {
+    seats.get(flightId).then(res => {
       seatNumberToSeatInfoMap(res);
     });
   }, []);
