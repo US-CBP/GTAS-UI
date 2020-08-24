@@ -3,31 +3,10 @@ import { Router, Redirect, navigate } from "@reach/router";
 import IdleTimer from "react-idle-timer";
 import loadable from "@loadable/component";
 
-import Flights from "./pages/flights/Flights";
-import PriorityVetting from "./pages/vetting/Vetting";
-import Home from "./pages/home/Home";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import "./App.css";
-import Dashboard from "./pages/dashboard/Dashboard";
-import PaxDetail from "./pages/paxDetail/PaxDetail";
-import Summary from "./pages/paxDetail/summary/Summary";
-import APIS from "./pages/paxDetail/apis/APIS";
-import PNR from "./pages/paxDetail/pnr/PNR";
-import FlightHistory from "./pages/paxDetail/flightHistory/FlightHistory";
-import FlightPax from "./pages/flightPax/FlightPax";
-import LinkAnalysis from "./pages/paxDetail/linkAnalysis/LinkAnalysis";
 
-import Rules from "./pages/tools/queryrules/Rules";
-import Queries from "./pages/tools/queryrules/Queries";
-import QRDetails from "./pages/tools/queryrules/QRDetails";
-import Neo4J from "./pages/tools/neo4J/Neo4J";
-import Watchlist from "./pages/tools/watchlist/Watchlist";
-import About from "./pages/tools/about/About";
-import GModal from "./components/modal/GModal";
-
-import Page404 from "./pages/page404/Page404";
-import PageUnauthorized from "./pages/pageUnauthorized/PageUnauthorized";
 import ErrorBoundary from "./components/errorBoundary/ErrorBoundary";
 import Loading from "./components/loading/Loading";
 
@@ -38,17 +17,68 @@ import UserProvider from "./context/user/UserContext";
 import { ROLE, TIME } from "./utils/constants";
 
 //login bundle
-const Login = loadable(() =>
-  import(/* webpackChunkName: "unauthed" */ "./pages/login/Login")
+import Login from "./pages/login/Login";
+import SignUp from "./pages/signUp/SignUp";
+import ResetPassword from "./pages/login/ResetPassword";
+import ForgotPassword from "./pages/login/ForgotPassword";
+
+const Flights = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")
 );
-const SignUp = loadable(() =>
-  import(/* webpackChunkName: "unauthed" */ "./pages/signUp/SignUp")
+const PriorityVetting = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/vetting/Vetting")
 );
-const ResetPassword = loadable(() =>
-  import(/* webpackChunkName: "unauthed" */ "./pages/login/ResetPassword")
+const Home = loadable(() => import(/* webpackChunkName: "authed" */ "./pages/home/Home"));
+const Dashboard = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/dashboard/Dashboard")
 );
-const ForgotPassword = loadable(() =>
-  import(/* webpackChunkName: "unauthed" */ "./pages/login/ForgotPassword")
+const PaxDetail = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/PaxDetail")
+);
+const Summary = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/summary/Summary")
+);
+const APIS = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/apis/APIS")
+);
+const PNR = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/pnr/PNR")
+);
+const FlightHistory = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/flightHistory/FlightHistory")
+);
+const FlightPax = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/flightPax/FlightPax")
+);
+const LinkAnalysis = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/linkAnalysis/LinkAnalysis")
+);
+const Rules = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/Rules")
+);
+const Queries = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/Queries")
+);
+const QRDetails = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/QRDetails")
+);
+const Neo4J = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/neo4J/Neo4J")
+);
+const Watchlist = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/watchlist/Watchlist")
+);
+const About = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/about/About")
+);
+const GModal = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./components/modal/GModal")
+);
+const Page404 = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/page404/Page404")
+);
+const PageUnauthorized = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
 );
 
 //Admin bundle imports
