@@ -48,7 +48,7 @@ const Watchlist = props => {
 
   const closeModal = ev => {
     setId(0);
-    setEditRow([]);
+    setEditRow({});
     setShowModal(false);
 
     if (ev === "SUCCESS") fetchData();
@@ -255,8 +255,8 @@ const Watchlist = props => {
         show={showMiniModal}
         onHide={closeMiniModal}
         data={deleteText}
-        submitText="Delete"
-        closeText="Cancel"
+        submittext="Delete"
+        closetext="Cancel"
       ></Modal>
       <WLModal
         type={tab}
