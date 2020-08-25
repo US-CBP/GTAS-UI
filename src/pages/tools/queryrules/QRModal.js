@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import QueryBuilder from "../../../components/queryBuilder/QueryBuilder";
+import RAQB from "../../../components/raqb/RAQB";
 import { Button, Modal, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import {
@@ -224,12 +225,14 @@ const QRModal = props => {
                 </Row>
               </>
             )}
-            <QueryBuilder
+            {/* <QueryBuilder
               data={data}
               key={key}
               translations={buttonConfig}
               dataCallback={dataCallback}
-            ></QueryBuilder>
+            ></QueryBuilder> */}
+
+            <RAQB></RAQB>
           </Container>
         </Modal.Body>
         <Modal.Footer>
