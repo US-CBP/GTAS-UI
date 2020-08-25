@@ -1,13 +1,14 @@
 .seat {
   border-color: rgb(245, 241, 241) !important;
-  background-color: green;
-  margin-left: 5px;
+  background-color: rgb(6, 146, 81);
+  color: rgb(216, 211, 211);
   font-size: 0.75rem;
   font-weight: 700;
   border-radius: 0.3rem;
-  min-width: 30px;
   max-width: 30px;
+  min-width: 30px;
   padding: 0.15px 0.15px;
+  transform: rotate(-90deg);
 }
 
 .seat:disabled {
@@ -16,7 +17,7 @@
 
 .seat:focus,
 .seat:hover {
-  background-color: rgb(69, 168, 69);
+  background-color: rgb(55, 199, 132);
 }
 
 .pink {

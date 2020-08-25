@@ -8,12 +8,13 @@ import { useParams } from "@reach/router";
 
 const SeatChart = props => {
   const [reserevedSeatsInfo, setReservedSeatsInfo] = useState({});
+  const [columnWithReservedSeat, setColumnWithReservedSeat] = useState([]);
   const { flightId, currentPaxSeat } = useParams();
 
   const getRow = letter => {
     const row = [];
-    for (let i = 1; i < 90; i++) {
-      const seatNumber = `${i}${letter}`;
+    columnWithReservedSeat.forEach(col => {
+      const seatNumber = `${col}${letter}`;
       row.push(
         <Seat
           seatNumber={seatNumber}
@@ -22,7 +23,7 @@ const SeatChart = props => {
           key={seatNumber}
         />
       );
-    }
+    });
 
     return row;
   };
@@ -33,31 +34,44 @@ const SeatChart = props => {
     setReservedSeatsInfo(mappedSeatInfo);
   };
 
+  const getColumnWithReservedSeat = seatsInfo => {
+    const rows = [];
+    asArray(seatsInfo).map(info => {
+      const number = info.number.slice(0, -1);
+      if (rows.indexOf(number) === -1) rows[number] = number;
+    });
+    rows.sort((x, y) => x - y);
+    return rows;
+  };
+
   useEffect(() => {
     seats.get(flightId).then(res => {
       seatNumberToSeatInfoMap(res);
+      setColumnWithReservedSeat(getColumnWithReservedSeat(res));
     });
   }, []);
 
   return (
-    <Container fluid className="seat-chart">
-      <div>
-        <Row>{getRow("A")}</Row>
-        <Row>{getRow("B")}</Row>
-        <Row>{getRow("C")}</Row>
-      </div>
+    <Container fluid>
+      <div className="seat-chart">
+        <div>
+          <Row>{getRow("A")}</Row>
+          <Row>{getRow("B")}</Row>
+          <Row>{getRow("C")}</Row>
+        </div>
 
-      <div className="middle-rows">
-        <Row>{getRow("D")}</Row>
-        <Row>{getRow("E")}</Row>
-        <Row>{getRow("F")}</Row>
-        <Row>{getRow("G")}</Row>
-      </div>
+        <div className="middle-rows">
+          <Row>{getRow("D")}</Row>
+          <Row>{getRow("E")}</Row>
+          <Row>{getRow("F")}</Row>
+          <Row>{getRow("G")}</Row>
+        </div>
 
-      <div>
-        <Row>{getRow("H")}</Row>
-        <Row>{getRow("J")}</Row>
-        <Row>{getRow("K")}</Row>
+        <div>
+          <Row>{getRow("H")}</Row>
+          <Row>{getRow("J")}</Row>
+          <Row>{getRow("K")}</Row>
+        </div>
       </div>
     </Container>
   );

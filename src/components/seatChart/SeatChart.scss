@@ -1,14 +1,14 @@
 .seat-chart {
   margin-top: 20px;
-  margin-left: 20px;
   width: calc(100vw - 40px);
   overflow: scroll;
 }
 .seat-chart .row {
   flex-wrap: nowrap;
+  margin: 10px 0px;
 }
 
 .middle-rows {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
