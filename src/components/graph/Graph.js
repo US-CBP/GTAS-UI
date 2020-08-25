@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import "../../services/configService";
 import { cypher, cypherAuth } from "../../services/serviceWrapper";
-import * as d3 from "d3";
 import { provider, paxRelations, saves, palette } from "./structure";
 import "./Graph.css";
 import "../../../node_modules/vaquita/css/vaquita-svg.css";
+import * as d3 from "d3";
+
 const vaquita = require("vaquita");
 
 class Graph extends React.Component {

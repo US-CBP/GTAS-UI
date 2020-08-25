@@ -167,7 +167,7 @@ const Rules = props => {
     }
 
     fetchTableData();
-  }, [tab]);
+  }, [tab, endpoint]);
 
   const tabs = (
     <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs">
