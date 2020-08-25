@@ -6,22 +6,89 @@ import {
   Utils as QbUtils
 } from "react-awesome-query-builder";
 import "react-awesome-query-builder/lib/css/styles.css";
+import { FIELDS } from "./constants";
 // import "react-awesome-query-builder/lib/css/compact_styles.css"; //optional, for more compact styles
 
 const InitialConfig = BasicConfig;
 
-// You need to provide your own config. See below 'Config format'
 const initconfig = {
   ...InitialConfig,
   fields: {
-    qty: {
-      label: "Qty",
-      type: "number",
-      fieldSettings: {
-        min: 0
-      },
+    address: {
+      label: "Address",
+      type: "!group",
+      subfields: FIELDS.addressFields
+    },
+    bag: {
+      label: "Bag",
+      type: "!group",
+      subfields: FIELDS.bagFields
+    },
+    creditCard: {
+      label: "Credit Card",
+      type: "!group",
+      subfields: FIELDS.creditcardFields
+    },
+    document: {
+      label: "Document",
+      type: "!group",
+      subfields: FIELDS.documentFields
+    },
+    email: {
+      label: "Email",
+      type: "!group",
+      subfields: FIELDS.emailFields
+    },
+    flight: {
+      label: "Flight",
+      type: "!group",
+      subfields: FIELDS.flightFields
+    },
+    bookingDetail: {
+      label: "Flight Leg",
+      type: "!group",
+      subfields: FIELDS.legFields
+    },
+    passenger: {
+      label: "Passenger",
+      type: "!group",
+      subfields: FIELDS.passengerFields
+    },
+    seat: {
+      label: "Seat",
+      type: "!group",
+      subfields: FIELDS.seatFields
+    },
+    pnr: {
+      label: "PNR",
+      type: "!group",
+      subfields: FIELDS.pnrFields
+    },
+    payment: {
+      label: "Form of Payment",
+      type: "!group",
+      subfields: FIELDS.paymentFields
+    },
+    phone: {
+      label: "Phone",
+      type: "!group",
+      subfields: FIELDS.phoneFields
+    },
+    dwellTime: {
+      label: "Dwell Time",
+      type: "!group",
+      subfields: FIELDS.dwelltimeFields
+    },
+    acgency: {
+      label: "Agency",
+      type: "!group",
+      subfields: FIELDS.agencyFields
+    },
+    user: {
+      label: "User",
+      type: "text",
       valueSources: ["value"],
-      preferWidgets: ["number"]
+      preferWidgets: ["text"]
     },
     price: {
       label: "Price",
@@ -31,7 +98,7 @@ const initconfig = {
         min: 10,
         max: 100
       },
-      preferWidgets: ["slider", "rangeslider"]
+      preferWidgets: ["number"]
     },
     color: {
       label: "Color",
@@ -41,6 +108,9 @@ const initconfig = {
         listValues: [
           { value: "yellow", title: "Yellow" },
           { value: "green", title: "Green" },
+          { value: "red", title: "Red" },
+          { value: "brown", title: "Brown" },
+          { value: "black", title: "Black" },
           { value: "orange", title: "Orange" }
         ]
       }
@@ -55,95 +125,131 @@ const initconfig = {
 };
 
 const fakedata = {
-  id: "9a8aa8ba-0123-4456-b89a-b174228f14fd",
+  id: "b8bb9bb9-0123-4456-b89a-b17427779e38",
   type: "group",
-  path: ["9a8aa8ba-0123-4456-b89a-b174228f14fd"],
   children1: {
-    "9b89bba9-89ab-4cde-b012-3174228fc7d4": {
+    "89bb99aa-cdef-4012-b456-71742777c700": {
       type: "rule",
-      id: "9b89bba9-89ab-4cde-b012-3174228fc7d4",
       properties: {
-        field: "qty",
-        operator: "between",
-        value: [21, 41],
-        valueSrc: ["value", null],
-        operatorOptions: null,
-        valueType: ["number", "number"]
-      },
-      path: [
-        "9a8aa8ba-0123-4456-b89a-b174228f14fd",
-        "9b89bba9-89ab-4cde-b012-3174228fc7d4"
-      ]
-    },
-    "89ab8baa-4567-489a-bcde-f17422910b01": {
-      type: "rule",
-      id: "89ab8baa-4567-489a-bcde-f17422910b01",
-      properties: {
-        field: "price",
+        field: "user",
         operator: "equal",
-        value: [31],
+        value: ["ASDASDADSDFSD"],
         valueSrc: ["value"],
-        operatorOptions: null,
-        valueType: ["number"]
-      },
-      path: [
-        "9a8aa8ba-0123-4456-b89a-b174228f14fd",
-        "89ab8baa-4567-489a-bcde-f17422910b01"
-      ]
+        valueType: ["text"]
+      }
     },
-    "8ab9bb8b-0123-4456-b89a-b1742291ac89": {
+    "bb9b89ba-89ab-4cde-b012-31742777ffc9": {
+      type: "rule",
+      properties: {
+        field: "color",
+        operator: "select_any_in",
+        value: [["yellow", "red"]],
+        valueSrc: ["value"],
+        valueType: ["multiselect"]
+      }
+    },
+    "ba8b99ab-0123-4456-b89a-b1742778b9e7": {
       type: "group",
-      id: "8ab9bb8b-0123-4456-b89a-b1742291ac89",
-      properties: { conjunction: "OR" },
-      path: [
-        "9a8aa8ba-0123-4456-b89a-b174228f14fd",
-        "8ab9bb8b-0123-4456-b89a-b1742291ac89"
-      ],
+      properties: { conjunction: "OR", not: true },
       children1: {
-        "88b8ba99-cdef-4012-b456-71742291ac89": {
+        "a9a89988-cdef-4012-b456-71742778b9e9": {
           type: "rule",
-          id: "88b8ba99-cdef-4012-b456-71742291ac89",
           properties: {
-            field: "color",
-            operator: "select_not_equals",
-            value: ["yellow"],
-            valueSrc: ["value"],
-            operatorOptions: null,
-            valueType: ["select"]
-          },
-          path: [
-            "9a8aa8ba-0123-4456-b89a-b174228f14fd",
-            "8ab9bb8b-0123-4456-b89a-b1742291ac89",
-            "88b8ba99-cdef-4012-b456-71742291ac89"
-          ]
+            field: "price",
+            operator: "is_empty",
+            value: [],
+            valueSrc: [],
+            valueType: []
+          }
         },
-        "888bb9ba-89ab-4cde-b012-31742291d951": {
+        "9b999bbb-89ab-4cde-b012-31742778dce6": {
           type: "rule",
-          id: "888bb9ba-89ab-4cde-b012-31742291d951",
           properties: {
-            field: "is_promotion",
-            operator: "equal",
-            value: [true],
+            field: "price",
+            operator: "less",
+            value: [18],
             valueSrc: ["value"],
-            operatorOptions: null,
-            valueType: ["boolean"]
-          },
-          path: [
-            "9a8aa8ba-0123-4456-b89a-b174228f14fd",
-            "8ab9bb8b-0123-4456-b89a-b1742291ac89",
-            "888bb9ba-89ab-4cde-b012-31742291d951"
-          ]
+            valueType: ["number"]
+          }
         }
+      }
+    },
+    "aa88aba8-4567-489a-bcde-f174277a9963": {
+      type: "rule",
+      properties: {
+        field: "user",
+        operator: "ends_with",
+        value: ["ocka"],
+        valueSrc: ["value"],
+        valueType: ["text"]
       }
     }
   },
   properties: { conjunction: "AND" }
 };
 
-const fakejsonlogic = {
-  errors: [],
-  logic: { and: [{ "==": [{ var: "price" }, 65] }] },
-  data: { price: null }
+const fakedatanoids = {
+  id: 1,
+  type: "group",
+  children1: {
+    2: {
+      type: "rule",
+      properties: {
+        field: "user",
+        operator: "equal",
+        value: ["ASDASDADSDFSD"],
+        valueSrc: ["value"],
+        valueType: ["text"]
+      }
+    },
+    3: {
+      type: "rule",
+      properties: {
+        field: "color",
+        operator: "select_any_in",
+        value: [["yellow", "red"]],
+        valueSrc: ["value"],
+        valueType: ["multiselect"]
+      }
+    },
+    4: {
+      type: "group",
+      properties: { conjunction: "OR", not: true },
+      children1: {
+        5: {
+          type: "rule",
+          properties: {
+            field: "price",
+            operator: "is_empty",
+            value: [],
+            valueSrc: [],
+            valueType: []
+          }
+        },
+        6: {
+          type: "rule",
+          properties: {
+            field: "price",
+            operator: "less",
+            value: [18],
+            valueSrc: ["value"],
+            valueType: ["number"]
+          }
+        }
+      }
+    },
+    7: {
+      type: "rule",
+      properties: {
+        field: "user",
+        operator: "ends_with",
+        value: ["ocka"],
+        valueSrc: ["value"],
+        valueType: ["text"]
+      }
+    }
+  },
+  properties: { conjunction: "AND" }
 };
 
 const fakelogic = {
@@ -155,26 +261,94 @@ const fakelogic = {
 };
 const queryValue = { id: QbUtils.uuid(), type: "group" };
 
+const fakeraw = {
+  status: "SUCCESS",
+  message: "GET UDR by ID was successful",
+  result: {
+    id: 14032,
+    details: {
+      "@class": "gov.gtas.model.udr.json.QueryObject",
+      condition: "AND",
+      rules: [
+        {
+          "@class": "QueryTerm",
+          entity: "CreditCard",
+          field: "cardType",
+          type: "string",
+          operator: "EQUAL",
+          value: ["AX"],
+          uuid: null
+        },
+        {
+          "@class": "QueryObject",
+          condition: "OR",
+          rules: [
+            {
+              "@class": "QueryTerm",
+              entity: "Passenger",
+              field: "passengerDetails.lastName",
+              type: "string",
+              operator: "EQUAL",
+              value: ["RIDDLE"],
+              uuid: null
+            },
+            {
+              "@class": "QueryTerm",
+              entity: "Passenger",
+              field: "passengerDetails.lastName",
+              type: "string",
+              operator: "EQUAL",
+              value: ["MARVIN"],
+              uuid: null
+            }
+          ]
+        },
+        {
+          "@class": "QueryTerm",
+          entity: "Flight",
+          field: "flightNumber",
+          type: "string",
+          operator: "EQUAL",
+          value: ["0232"],
+          uuid: null
+        }
+      ]
+    },
+    summary: {
+      title: "MARVIN OR RIDDLE 2",
+      description: "copy",
+      ruleCat: 3,
+      startDate: 1598227200000,
+      endDate: null,
+      author: "BALAWEA",
+      enabled: true,
+      overMaxHits: false
+    }
+  },
+  responseDetails: []
+};
+
 const RAQB = props => {
-  const foo = QbUtils.checkTree(
+  const jsonlogic = QbUtils.checkTree(
     QbUtils.loadFromJsonLogic(fakelogic, initconfig),
     initconfig
   );
 
-  console.log(foo);
+  const initvalue = QbUtils.checkTree(QbUtils.loadTree(queryValue), initconfig);
+  const fakeimmutable = QbUtils.checkTree(QbUtils.loadTree(fakedatanoids), initconfig);
+
   // console.log(QbUtils.loadTree(foo, initconfig));
 
   const [tree, setTree] = useState(
-    foo
-    // QbUtils.checkTree(QbUtils.loadTree(queryValue), initconfig) // load tree data
-    // QbUtils.loadFromJsonLogic(fakejsonlogic, initconfig) // load json data
+    fakeimmutable
+    // jsonlogic
   );
 
   const [config, setConfig] = useState(initconfig);
 
   const renderBuilder = props => (
     <div className="query-builder-container" style={{ padding: "10px" }}>
-      <div className="query-builder qb-lite">
+      <div className="query-builder">
         <Builder {...props} />
       </div>
     </div>
@@ -189,10 +363,10 @@ const RAQB = props => {
       <div>
         MongoDb query:{" "}
         <pre>{JSON.stringify(QbUtils.mongodbFormat(immutableTree, config))}</pre>
-      </div>
+      </div> */}
       <div>
         SQL where: <pre>{JSON.stringify(QbUtils.sqlFormat(immutableTree, config))}</pre>
-      </div> */}
+      </div>
       <div>
         JsonLogic:
         <pre>{JSON.stringify(QbUtils.jsonLogicFormat(immutableTree, config))}</pre>

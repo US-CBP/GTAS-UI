@@ -6,17 +6,6 @@ export const initQuery = {
   not: false
 };
 
-export const addressFieldArray = [
-  { name: "", key: "0", label: "Select" },
-  { key: "Address.city", name: "Address.city", label: "City" },
-  { key: "Address.country", name: "Address.country", label: "Country" },
-  { key: "Address.line1", name: "Address.line1", label: "Line 1" },
-  { key: "Address.line2", name: "Address.line2", label: "Line 2" },
-  { key: "Address.line3", name: "Address.line3", label: "Line 3" },
-  { key: "Address.postalCode", name: "Address.postalCode", label: "Postal Code" },
-  { key: "Address.state", name: "Address.state", label: "State" }
-];
-
 export const EntitySelect = `<select className="rule-entities" title="Entities">
 <option label="ADDRESS" key="ADDRESS" value="ADDRESS"></option>
 <option label="BAG" key="BAG" value="BAG"></option>
@@ -35,177 +24,253 @@ export const EntitySelect = `<select className="rule-entities" title="Entities">
 <option label="TRAVEL AGENCY" VALUE="AGENCY"></option>
 </select>`;
 
-export const buttonConfigQuery = {
-  removeRule: {
-    label: "X",
-    title: "Remove rule"
-  },
-  removeGroup: {
-    label: "X",
-    title: "Remove group"
-  },
-  addRule: {
-    label: "+Query",
-    title: "Add query"
-  }
-};
-
-export const buttonConfigRule = {
-  removeRule: {
-    label: "X",
-    title: "Remove rule"
-  },
-  removeGroup: {
-    label: "X",
-    title: "Remove group"
-  }
-};
-
 export const FIELDS = {
-  addressFields: `<select>
-  <option key="0" value="" label="Select"></option>
-<option key="Address.city" value="Address.city" label="City"></option>
-<option key="Address.country" value="Address.country" label="Country"></option>
-<option key="Address.line1" value="Address.line1" label="Line 1"></option>
-<option key="Address.line2" value="Address.line2" label="Line 2"></option>
-<option key="Address.line3" value="Address.line3" label="Line 3"></option>
-<option key="Address.postalCode" value="Address.postalCode" label="Postal Code"></option>
-<option key="Address.state" value="Address.state" label="State"></option>
-</select>`,
+  addressFields: {
+    city: { label: "City", type: "text", valueSources: ["value"] },
+    country: { label: "Country", type: "text", valueSources: ["value"] },
+    line1: { label: "Line 1", type: "text", valueSources: ["value"] },
+    line2: { label: "Line 2", type: "text", valueSources: ["value"] },
+    line3: { label: "Line 3", type: "text", valueSources: ["value"] },
+    postalCode: { label: "Postal Code", type: "text", valueSources: ["value"] },
+    state: { label: "State", type: "text", valueSources: ["value"] }
+  },
 
-  bagFields: `<select>
-  <option key="0" value="" label="Select"></option>
-<option key="Bag.airline" value="Bag.airline" label="Airline"></option>
-<option key="Bag.bagId" value="Bag.bagId" label="Bag ID"></option>
-<option key="Bag.dataSource" value="Bag.dataSource" label="Data Source"></option>
-<option key="Bag.country" value="Bag.country" label="Destination Country"></option>
-<option key="Bag.destinationAirport" value="Bag.destinationAirport" label="Destination Airport"></option>
-<option key="Bag.primeFlight" value="Bag.primeFlight" label="Is Prime Flight"></option>
-<option key="Bag.bagMeasurements.weight" value="Bag.bagMeasurements.weight" label="Bag Weight Measurement (kg)"></option>
-<option key="Bag.headPool" value="Bag.headPool" label="Is Head Of a Baggage Pool"></option>
-</select>`,
+  bagFields: {
+    airline: { label: "Airline", type: "text", valueSources: ["value"] },
+    bagId: { label: "Bag ID", type: "text", valueSources: ["value"] },
+    dataSource: { label: "Data Source", type: "text", valueSources: ["value"] },
+    country: { label: "Destination Country", type: "text", valueSources: ["value"] },
+    destinationAirport: {
+      label: "Destination Airport",
+      type: "text",
+      valueSources: ["value"]
+    },
+    primeFlight: { label: "Is Prime Flight", type: "boolean", valueSources: ["value"] },
+    headPool: {
+      label: "Is Head Of a Baggage Pool",
+      type: "boolean",
+      valueSources: ["value"]
+    },
+    "bagMeasurements.weight": {
+      label: "Bag Weight Measurement (kg)",
+      type: "number",
+      fieldSettings: { min: 0 },
+      valueSources: ["value"]
+    }
+  },
 
-  documentFields: `<select>
-<option key="0" value="" label="Select"></option>
-<option value="Document.documentNumber" key="Document.documentNumber" label="Number"> </option>
-<option value="Document.documentType" key="Document.documentType" label="Type"> </option>
-<option value="Document.issuanceCountry" key="Document.issuanceCountry" label="Issuance Country"> </option>
-<option value="Document.expirationDate" key="Document.expirationDate" label="Expiration Date"> </option>
-<option value="Document.issuanceDate" key="Document.issuanceDate" label="Issuance Date"></option>
-</select>`,
+  creditcardFields: {
+    accountHolder: { label: "Account Holder", type: "text", valueSources: ["value"] },
+    expiration: { label: "Expiration Date", type: "date", valueSources: ["value"] },
+    number: { label: "Number", type: "text", valueSources: ["value"] },
+    cardType: { label: "Type", type: "text", valueSources: ["value"] }
+  },
 
-  creditcardFields: `<select>
-<option key="0" value="" label="Select"></option>
-<option key="CreditCard.accountHolder" value="CreditCard.accountHolder" label="Account Holder"></option>
-<option key="CreditCard.expiration" value="CreditCard.expiration" label="Expiration Date"></option>
-<option key="CreditCard.number" value="CreditCard.number" label="Number"></option>
-<option key="CreditCard.cardType" value="CreditCard.cardType" label="Type"></option>`,
+  documentFields: {
+    documentNumber: { label: "Number", type: "text", valueSources: ["value"] },
+    documentType: { label: "Type", type: "text", valueSources: ["value"] },
+    issuanceCountry: { label: "Issuance Country", type: "text", valueSources: ["value"] },
+    expirationDate: { label: "Expiration Date", type: "date", valueSources: ["value"] },
+    issuanceDate: { label: "Issuance Date", type: "date", valueSources: ["value"] }
+  },
 
-  emailFields: `<select>
-  <option key="0" value="" label="Select"></option>
-  <option key="Email.address" value="Email.address" label="Address"></option>
-  <option key="Email.domain" value="Email.domain" label="Domain"></option>
-</select>`,
+  emailFields: {
+    address: { label: "Address", type: "text", valueSources: ["value"] },
+    domain: { label: "Domain", type: "text", valueSources: ["value"] }
+  },
 
-  legFields: `<select>
-<option key="0" value="" label="Select"></option>
-<option key="BookingDetail.origin" value="BookingDetail.origin" label="Origin" ops="stringops"></option>
-<option key="BookingDetail.destination" value="BookingDetail.destination" label="Destination" ops="stringops"></option>
-</select>`,
+  legFields: {
+    origin: { label: "Origin", type: "text", valueSources: ["value"] },
+    destination: { label: "Destination", type: "text", valueSources: ["value"] }
+  },
 
-  flightFields: `<select>
-  <option key="0" value="" label="Select"></option>
-  <option key="Flight.destination" value="Flight.destination" label="Airport Destination"></option>
-  <option key="Flight.origin" value="Flight.origin" label="Airport Origin"></option>
-  <option key="Flight.carrier" value="Flight.carrier" label="Carrier"></option>
-  <option key="Flight.destinationCountry" value="Flight.destinationCountry" label="Destination Country"></option>
-  <option key="Flight.originCountry" value="Flight.originCountry" label="Origin Country"></option>
-  <option key="Flight.direction" value="Flight.direction" label="Direction"></option>
-  <option key="Flight.mutableFlightDetails.etaDate" value="Flight.mutableFlightDetails.etaDate" label="ETA"></option>
-  <option key="Flight.etdDate" value="Flight.etdDate" label="ETD"></option>
-  <option key="Flight.flightNumber" value="Flight.flightNumber" label="Number"></option>
-  <option key="Flight.isOperatingFlight" value="Flight.isOperatingFlight" label="Is Operating Flight"></option>
-  <option key="Flight.isMarketingFlight" value="Flight.isMarketingFlight" label="Is Marketing Flight"></option>
-</select>`,
+  flightFields: {
+    destination: { label: "Airport Destination", type: "text", valueSources: ["value"] },
+    origin: { label: "Airport Origin", type: "text", valueSources: ["value"] },
+    carrier: { label: "Carrier", type: "text", valueSources: ["value"] },
+    destinationCountry: {
+      label: "Destination Country",
+      type: "text",
+      valueSources: ["value"]
+    },
+    originCountry: { label: "Origin Country", type: "text", valueSources: ["value"] },
+    direction: { label: "Direction", type: "text", valueSources: ["value"] },
+    etdDate: { label: "ETD", type: "date", valueSources: ["value"] },
+    flightNumber: { label: "Number", type: "text", valueSources: ["value"] },
+    isOperatingFlight: {
+      label: "Is Operating Flight",
+      type: "boolean",
+      valueSources: ["value"]
+    },
+    isMarketingFlight: {
+      label: "Is Marketing Flight",
+      type: "boolean",
+      valueSources: ["value"]
+    },
+    "mutableFlightDetails.etaDate": {
+      label: "ETA",
+      type: "date",
+      valueSources: ["value"]
+    }
+  },
 
-  frequentFlyerFields: `<select>
-  <option key="0" value="" label="Select"></option>
-  <option key="FrequentFlyer.carrier" value="FrequentFlyer.carrier" label="Carrier"></option>
-  <option key="FrequentFlyer.number" value="FrequentFlyer.number" label="Number"></option>
-</select>`,
+  frequentFlyerFields: {
+    carrier: { label: "Carrier", type: "text", valueSources: ["value"] },
+    number: { label: "Number", type: "text", valueSources: ["value"] }
+  },
 
-  passengerFields: `<select>
-  <option key="0" value="" label="Select"></option>
-  <option key="Passenger.passengerDetails.age" value="Passenger.passengerDetails.age" label="Age"></option>
-  <option key="Passenger.passengerTripDetails.coTravelerCount" value="Passenger.passengerTripDetails.coTravelerCount" label="APIS Co-Passengers"></option>
-  <option key="Passenger.passengerTripDetails.hoursBeforeTakeOff" value="Passenger.passengerTripDetails.hoursBeforeTakeOff" label="Hours Before Take Off"></option>
-  <option key="Passenger.passengerDetails.nationality" value="Passenger.passengerDetails.nationality" label="Nationality"></option>
-  <option key="Passenger.passengerTripDetails.debarkation" value="Passenger.passengerTripDetails.debarkation" label="Debarkation Airport"></option>
-  <option key="Passenger.passengerTripDetails.debarkCountry" value="Passenger.passengerTripDetails.debarkCountry" label="Debarkation Country"></option>
-  <option key="Passenger.passengerDetails.dob" value="Passenger.passengerDetails.dob" label="DOB"></option>
-  <option key="Passenger.passengerTripDetails.embarkation" value="Passenger.passengerTripDetails.embarkation" label="Embarkation Airport"></option>
-  <option key="Passenger.passengerTripDetails.embarkCountry" value="Passenger.passengerTripDetails.embarkCountry" label="Embarkation Country"></option>
-  <option key="Passenger.passengerDetails.gender" value="Passenger.passengerDetails.gender" label="Gender"></option>
-  <option key="Passenger.passengerDetails.firstName" value="Passenger.passengerDetails.firstName" label="Name - First"></option>
-  <option key="Passenger.passengerDetails.lastName" value="Passenger.passengerDetails.lastName" label="Name - Last"></option>
-  <option key="Passenger.passengerDetails.middleName" value="Passenger.passengerDetails.middleName" label="Name - Middle"></option>
-  <option key="Passenger.passengerDetails.residencyCountry" value="Passenger.passengerDetails.residencyCountry" label="Residency Country"></option>
-  <option key="Passenger.passengerDetails.passengerType" value="Passenger.passengerDetails.passengerType" label="Type"></option>
-  <option key="Passenger.passengerTripDetails.travelFrequency" value="Passenger.passengerTripDetails.travelFrequency" label="Travel Frequency"></option>
-  </select>`,
+  passengerFields: {
+    "passengerDetails.age": { label: "Age", type: "number", valueSources: ["value"] },
+    "passengerTripDetails.coTravelerCount": {
+      label: "APIS Co-Passenger Count",
+      type: "number",
+      fieldSettings: { min: 0 },
+      valueSources: ["value"]
+    },
+    "passengerTripDetails.hoursBeforeTakeOff": {
+      label: "Hours Before Take Off",
+      type: "number",
+      fieldSettings: { min: 0 },
+      valueSources: ["value"]
+    },
+    "passengerDetails.nationality": {
+      label: "Nationality",
+      type: "text",
+      valueSources: ["value"]
+    },
+    "passengerTripDetails.debarkation": {
+      label: "Debarkation Airport",
+      type: "text",
+      valueSources: ["value"]
+    },
+    "passengerTripDetails.debarkCountry": {
+      label: "Debarkation Country",
+      type: "text",
+      valueSources: ["value"]
+    },
+    "passengerDetails.dob": { label: "DOB", type: "date", valueSources: ["value"] },
+    "passengerTripDetails.embarkation": {
+      label: "Embarkation Airport",
+      type: "text",
+      valueSources: ["value"]
+    },
+    "passengerTripDetails.embarkCountry": {
+      label: "Embarkation Country",
+      type: "text",
+      valueSources: ["value"]
+    },
+    "passengerDetails.gender": { label: "Gender", type: "text", valueSources: ["value"] },
+    "passengerDetails.firstName": {
+      label: "Name - First",
+      type: "text",
+      valueSources: ["value"]
+    },
+    "passengerDetails.lastName": {
+      label: "Name - Last",
+      type: "text",
+      valueSources: ["value"]
+    },
+    "passengerDetails.middleName": {
+      label: "Name - Middle",
+      type: "text",
+      valueSources: ["value"]
+    },
+    "passengerDetails.residencyCountry": {
+      label: "Residency Country",
+      type: "text",
+      valueSources: ["value"]
+    },
+    "passengerDetails.passengerType": {
+      label: "Type",
+      type: "text",
+      valueSources: ["value"]
+    },
+    "passengerTripDetails.travelFrequency": {
+      label: "Travel Frequency",
+      type: "text",
+      valueSources: ["value"]
+    }
+  },
 
-  seatFields: `<select>
-  <option key="0" value="" label="Select"></option>
-    <option key="Seat.number" value="Seat.number" label="Seat Number"></option>
-    <option key="Seat.cabinClass" value="Seat.cabinClass" label="Cabin Class"></option>
-    <option key="Seat.apis" value="Seat.apis" label="Is APIS"></option>
-  </select>`,
+  seatFields: {
+    number: { label: "Seat Number", type: "text", valueSources: ["value"] },
+    cabinClass: { label: "Cabin Class", type: "text", valueSources: ["value"] },
+    apis: { label: "Is APIS", type: "boolean", valueSources: ["value"] }
+  },
 
-  paymentFields: `<select>
-  <option key="0" value="" label="Select"></option>
-    <option key="PaymentForm.wholeDollarAmount" value="PaymentForm.wholeDollarAmount" label="Monetary Amount(No Decimal)"></option>
-    <option key="PaymentForm.paymentType" value="PaymentForm.paymentType" label="Form of Payment"></option>
-  </select>`,
+  paymentFields: {
+    wholeDollarAmount: {
+      label: "Monetary Amount(No Decimal)",
+      type: "number",
+      fieldSettings: { min: 0 },
+      valueSources: ["value"]
+    },
+    paymentType: { label: "Form of Payment", type: "text", valueSources: ["value"] }
+  },
 
-  pnrFields: `<select>
-  <option key="0" value="" label="Select"></option>
-  <option key="Pnr.bagCount" value="Pnr.bagCount" label="Bag - Count"></option>
-  <option key="Pnr.baggageWeight" value="Pnr.baggageWeight" label="Baggage - Weight"></option>
-  <option key="Pnr.dateBooked" value="Pnr.dateBooked" label="Booking Date"></option>
-  <option key="Pnr.carrier" value="Pnr.carrier" label="Carrier Code"></option>
-  <option key="Pnr.dateReceived" value="Pnr.dateReceived" label="Date Received"></option>
-  <option key="Pnr.daysBookedBeforeTravel" value="Pnr.daysBookedBeforeTravel" label="Days Booked Before Travel"></option>
-  <option key="Pnr.departureDate" value="Pnr.departureDate" label="Departure Date"></option>
-  <option key="Pnr.id" value="Pnr.id"  label="Pnr Id"></option>
-  <option key="Pnr.origin" value="Pnr.origin"  label="Origin - Airport"></option>
-  <option key="Pnr.originCountry" value="Pnr.originCountry"  label="Origin - Country"></option>
-  <option key="Pnr.passengerCount" value="Pnr.passengerCount"  label="Passenger Count"></option>
-  <option key="Pnr.recordLocator" value="Pnr.recordLocator"  label="Record Locator"></option>
-  <option key="Pnr.seat" value="Pnr.seat" label="Seat"></option>
-  <option key="Pnr.tripType" value="Pnr.tripType" label="Trip Type"></option>
-  <option key="Pnr.tripDuration" value="Pnr.tripDuration" label="Trip Duration"></option>
-  </select>`,
+  pnrFields: {
+    bagCount: {
+      label: "Bag - Count",
+      type: "number",
+      fieldSettings: { min: 0 },
+      valueSources: ["value"]
+    },
+    baggageWeight: {
+      label: "Baggage - Weight",
+      type: "number",
+      fieldSettings: { min: 0 },
+      valueSources: ["value"]
+    },
+    dateBooked: { label: "Booking Date", type: "date", valueSources: ["value"] },
+    carrier: { label: "Carrier Code", type: "text", valueSources: ["value"] },
+    dateReceived: { label: "Date Received", type: "date", valueSources: ["value"] },
+    daysBookedBeforeTravel: {
+      label: "Days Booked Before Travel",
+      type: "number",
+      fieldSettings: { min: 0 },
+      valueSources: ["value"]
+    },
+    departureDate: { label: "Departure Date", type: "date", valueSources: ["value"] },
+    id: { label: "Pnr Id", type: "text", valueSources: ["value"] },
+    origin: { label: "Origin - Airport", type: "text", valueSources: ["value"] },
+    originCountry: { label: "Origin - Country", type: "text", valueSources: ["value"] },
+    passengerCount: {
+      label: "Passenger Count",
+      type: "number",
+      fieldSettings: { min: 0 },
+      valueSources: ["value"]
+    },
+    recordLocator: { label: "Record Locator", type: "text", valueSources: ["value"] },
+    seat: { label: "Seat", type: "text", valueSources: ["value"] },
+    tripType: { label: "Trip Type", type: "text", valueSources: ["value"] },
+    tripDuration: {
+      label: "Trip Duration",
+      type: "number",
+      fieldSettings: { min: 0 },
+      valueSources: ["value"]
+    }
+  },
 
-  phoneFields: `<select>
-  <option key="0" value="" label="Select"></option>
-  <option key="Phone.number" value="Phone.number" label="Number"></option>
-  </select>`,
+  phoneFields: { number: { label: "Number", type: "text", valueSources: ["value"] } },
 
-  dwelltimeFields: `<select>
-  <option key="0" value="" label="Select"></option>
-  <option key="DwellTime.location" value="DwellTime.location" label="Location"></option>
-  <option key="DwellTime.dwellTime" value="DwellTime.dwellTime" label="Lay over Time"></option>
-  </select>`,
+  dwelltimeFields: {
+    location: { label: "Location", type: "text", valueSources: ["value"] },
+    dwellTime: {
+      label: "Lay over Time",
+      type: "number",
+      fieldSettings: { min: 0 },
+      valueSources: ["value"]
+    }
+  },
 
-  agencyFields: `<select>
-  <option key="0" value="" label="Select"></option>
-  <option key="Agency.country" value="Agency.country" label="Country"></option>
-  <option key="Agency.identifier" value="Agency.identifier" label="Identifier"></option>
-  <option key="Agency.location" value="Agency.location" label="Location"></option>
-  <option key="Agency.name" value="Agency.name" label="Name"></option>
-  <option key="Agency.city" value="Agency.city" label="City"></option>
-  <option key="Agency.phone" value="Agency.phone" label="Phone"></option>
-  </select>`
+  agencyFields: {
+    country: { label: "Country", type: "text", valueSources: ["value"] },
+    identifier: { label: "Identifier", type: "text", valueSources: ["value"] },
+    location: { label: "Location", type: "text", valueSources: ["value"] },
+    name: { label: "Name", type: "text", valueSources: ["value"] },
+    city: { label: "City", type: "text", valueSources: ["value"] },
+    phone: { label: "Phone", type: "text", valueSources: ["value"] }
+  }
 };
 
 export const fakequery = {
