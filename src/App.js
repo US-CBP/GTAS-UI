@@ -80,6 +80,9 @@ const Page404 = loadable(() =>
 const PageUnauthorized = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
 );
+const SeatChart = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
+);
 
 //Admin bundle imports
 const Admin = loadable(() =>
@@ -233,6 +236,7 @@ export default class App extends React.Component {
                       <About path="tools/about"></About>
                       <ChangePassword path="user/change-password"></ChangePassword>
                       <ChangePassword path="user/change-password/:userId"></ChangePassword>
+                      <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
                         <Admin path="/">
                           <ManageUser name="Manage Users" path="manageusers"></ManageUser>

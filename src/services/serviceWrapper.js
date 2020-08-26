@@ -140,6 +140,7 @@ const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
 const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
 const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
 const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
+const SEATS = `${BASE_URL}gtas/seats`;
 // ENTITY METHODS
 export const users = {
   get: {
@@ -437,4 +438,8 @@ export const forgotPassword = {
 export const resetPassword = {
   post: body => post(RESETPASSWORD, SIGNUPHEADER, stringify(body)),
   isValidToken: token => get(RESETPASSWORD, SIGNUPHEADER, undefined, token)
+};
+
+export const seats = {
+  get: flightId => get(SEATS, BASEHEADER, flightId)
 };
