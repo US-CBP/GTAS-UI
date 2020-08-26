@@ -32,7 +32,7 @@
 .rule--widget,
 .rule,
 .rule--body {
-  display: -webkit-inline-box;
+  display: flex;
 }
 
 select {
@@ -45,17 +45,11 @@ select {
 
 select[multiple] {
   width: 120px;
+  height: 40px;
 }
 
-.qb-lite .group--header:hover .group--header .group--drag-handler,
-.qb-lite .group--header:hover .group--header .group--actions,
-.qb-lite .group--header:not(:hover) .group--drag-handler,
-.qb-lite .group--header:not(:hover) .group--actions,
-.qb-lite .rule_group:hover .rule_group .group--drag-handler,
-.qb-lite .rule_group:hover .rule_group .group--actions,
-.qb-lite .rule_group:not(:hover) .group--drag-handler,
-.qb-lite .rule_group:not(:hover) .group--actions {
-  opacity: unset !important;
+select[multiple]:hover {
+  height: 80px;
 }
 
 .group--actions > button {
@@ -74,6 +68,21 @@ select[multiple] {
   border-radius: 0.25rem;
 }
 
+.rule--header > button {
+  margin: 0.3rem !important;
+  color: #343a40;
+  border-color: #343a40;
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border-radius: 0.25rem;
+}
+
 @media (min-width: 576px) {
   .modal-dialog {
     max-width: 70vw;
@@ -88,4 +97,18 @@ pre {
 .group--conjunctions > label {
   margin-right: 8px;
   margin-left: 2px;
+}
+
+.group > .group--actions > button {
+  display: none;
+}
+
+.rule--body--wrapper {
+  align-self: center;
+}
+
+.rule--field,
+.rule--operator,
+.rule--value {
+  align-self: center;
 }
