@@ -34,32 +34,29 @@ const SeatChart = props => {
     return row;
   };
 
-  const seatNumberToSeatInfoMap = seatsInfo => {
+  const processData = seatsInfo => {
     const mappedSeatInfo = {};
-    asArray(seatsInfo).map(info => (mappedSeatInfo[info.number] = info));
-    setReservedSeatsInfo(mappedSeatInfo);
-  };
-
-  const getColumnWithReservedSeat = seatsInfo => {
-    const rows = [];
+    const colsWithReservedSeat = []; // contains all column that have at least one reserved seat.
     asArray(seatsInfo).map(info => {
-      const number = info.number.slice(0, -1);
-      if (rows.indexOf(number) === -1) rows[number] = number;
+      mappedSeatInfo[info.number] = info;
+
+      const number = info.number.slice(0, -1); //remove letter (row) from the seat
+      if (colsWithReservedSeat.indexOf(number) === -1) colsWithReservedSeat.push(number);
     });
-    rows.sort((x, y) => x - y);
-    return rows;
+    setReservedSeatsInfo(mappedSeatInfo);
+    colsWithReservedSeat.sort((x, y) => x - y);
+    setColumnWithReservedSeat(colsWithReservedSeat);
   };
 
   useEffect(() => {
     seats.get(flightId).then(res => {
-      seatNumberToSeatInfoMap(res);
-      setColumnWithReservedSeat(getColumnWithReservedSeat(res));
+      processData(res);
     });
   }, []);
 
   useEffect(() => {
     setSelectedSeatInfo(reserevedSeatsInfo[currentPaxSeat] || {});
-  }, [currentPaxSeat, reserevedSeatsInfo]);
+  }, [reserevedSeatsInfo]);
 
   return (
     <Container fluid>
