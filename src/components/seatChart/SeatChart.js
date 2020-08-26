@@ -3,13 +3,14 @@ import Seat from "./seat/Seat";
 import { Container, Row } from "react-bootstrap";
 import "./SeatChart.scss";
 import { seats } from "../../services/serviceWrapper";
-import { asArray } from "../../utils/utils";
-import { useParams } from "@reach/router";
+import { asArray, hasData } from "../../utils/utils";
+import { useParams, navigate, Link } from "@reach/router";
 
 const SeatChart = props => {
+  const { flightId, currentPaxSeat } = useParams();
   const [reserevedSeatsInfo, setReservedSeatsInfo] = useState({});
   const [columnWithReservedSeat, setColumnWithReservedSeat] = useState([]);
-  const { flightId, currentPaxSeat } = useParams();
+  const [selectedSeatInfo, setSelectedSeatInfo] = useState();
 
   const getRow = letter => {
     const row = [];
@@ -19,8 +20,11 @@ const SeatChart = props => {
         <Seat
           seatNumber={seatNumber}
           seatInfo={reserevedSeatsInfo[seatNumber]}
-          currentPaxSeat={currentPaxSeat}
+          selected={currentPaxSeat === seatNumber}
           key={seatNumber}
+          className={
+            selectedSeatInfo.coTravellers.includes(seatNumber) ? "co-traveler" : ""
+          }
         />
       );
     });
@@ -51,6 +55,10 @@ const SeatChart = props => {
     });
   }, []);
 
+  useEffect(() => {
+    setSelectedSeatInfo(reserevedSeatsInfo[currentPaxSeat] || {});
+  }, [currentPaxSeat, reserevedSeatsInfo]);
+
   return (
     <Container fluid>
       <div className="seat-chart">
@@ -73,6 +81,30 @@ const SeatChart = props => {
           <Row>{getRow("K")}</Row>
         </div>
       </div>
+      {hasData(selectedSeatInfo) ? (
+        <div className="seat-info-display">
+          <h5>Selected seat Info</h5>
+          <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+            <li>
+              <b>First Name:</b> {selectedSeatInfo.firstName}
+            </li>
+            <li>
+              <b>Last Name:</b> {selectedSeatInfo.lastName}
+            </li>
+            <li>
+              <b>Middle Name:</b> {selectedSeatInfo.middleInitial}
+            </li>
+            <li>
+              <b>Seat Number:</b> {selectedSeatInfo.number}
+            </li>
+          </ul>
+          <Link to={`/gtas/paxDetail/${flightId}/${selectedSeatInfo.paxId}`}>
+            Show passenger details
+          </Link>
+        </div>
+      ) : (
+        ""
+      )}
     </Container>
   );
 };

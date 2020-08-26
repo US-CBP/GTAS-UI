@@ -8,15 +8,15 @@ import SeatInfoModal from "./SeatInfoModal";
 const Seat = props => {
   const reserved = hasData(props.seatInfo);
   const [showModal, setShowModal] = useState(false);
-  const isCurrentPaxSeat = props.currentPaxSeat === props.seatNumber;
-  const currentPaxSeatClass = isCurrentPaxSeat ? "pink" : "";
+  const selectedSeatClass = props.selected ? "selected-seat" : "";
+  const hasHitClass = props.seatInfo?.hasHits ? "has-hit" : "";
 
   return (
     <>
       <Button
         variant="light"
         size="sm"
-        className={`seat ${currentPaxSeatClass}`}
+        className={`seat ${selectedSeatClass} ${hasHitClass} ${props.className} `}
         disabled={!reserved}
         onClick={() => setShowModal(true)}
       >
@@ -33,6 +33,8 @@ const Seat = props => {
 Seat.propTypes = {
   seatNumber: PropTypes.string,
   seatInfo: PropTypes.any,
-  currentPaxSeat: PropTypes.string
+  currentPaxSeat: PropTypes.string,
+  selected: PropTypes.bool,
+  className: PropTypes.string
 };
 export default Seat;
