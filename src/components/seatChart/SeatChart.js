@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Seat from "./seat/Seat";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import "./SeatChart.scss";
 import { seats } from "../../services/serviceWrapper";
 import { asArray, hasData } from "../../utils/utils";
 import { useParams, navigate, Link } from "@reach/router";
+import SeatInfo from "./seatInfo/SeatInfo";
+import Legend from "./legend/Legend";
 
 const SeatChart = props => {
   const { flightId, currentPaxSeat } = useParams();
@@ -81,30 +83,15 @@ const SeatChart = props => {
           <Row>{getRow("K")}</Row>
         </div>
       </div>
-      {hasData(selectedSeatInfo) ? (
-        <div className="seat-info-display">
-          <h5>Selected seat Info</h5>
-          <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-            <li>
-              <b>First Name:</b> {selectedSeatInfo.firstName}
-            </li>
-            <li>
-              <b>Last Name:</b> {selectedSeatInfo.lastName}
-            </li>
-            <li>
-              <b>Middle Name:</b> {selectedSeatInfo.middleInitial}
-            </li>
-            <li>
-              <b>Seat Number:</b> {selectedSeatInfo.number}
-            </li>
-          </ul>
-          <Link to={`/gtas/paxDetail/${flightId}/${selectedSeatInfo.paxId}`}>
-            Show passenger details
-          </Link>
-        </div>
-      ) : (
-        ""
-      )}
+      <Row className="seat-info-display">
+        <Col xs={12} md={6}>
+          <Legend />
+        </Col>
+
+        <Col xs={12} md={6}>
+          <SeatInfo info={selectedSeatInfo} />
+        </Col>
+      </Row>
     </Container>
   );
 };
