@@ -12,8 +12,8 @@
   justify-content: center;
 }
 
-.admin-text-link {
-  color: black;
+.admin-text-link > a {
+  color: black !important;
 }
 
 .admin-text-link:hover {
