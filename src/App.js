@@ -80,6 +80,9 @@ const Page404 = loadable(() =>
 const PageUnauthorized = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
 );
+const SeatChart = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
+);
 
 const Search = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/search/Search")
@@ -238,6 +241,7 @@ export default class App extends React.Component {
                       <ChangePassword path="user/change-password"></ChangePassword>
                       <Search path="search/:searchParam"></Search>
                       <ChangePassword path="user/change-password/:userId"></ChangePassword>
+                      <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
                         <Admin path="/">
                           <ManageUser name="Manage Users" path="manageusers"></ManageUser>
