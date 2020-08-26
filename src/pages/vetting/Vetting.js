@@ -4,7 +4,7 @@ import { cases, notetypes, usersemails } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm/FilterForm";
-import { hasData, asArray, getShortText, isShortText } from "../../utils/utils";
+import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
 import { Col, Button } from "react-bootstrap";
 import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import "./Vetting.css";
@@ -57,6 +57,17 @@ const Vetting = props => {
       label: "Re Opened"
     }
   ];
+
+  const getBiographicData = pax => {
+    return (
+      <ul style={{ listStyle: "none", paddingLeft: 0, fontSize: "small" }}>
+        <li>Name: {pax.paxName}</li>
+        <li>DOB: {`${pax.dob} (${getAge(pax.dob)})`} </li>
+        <li>Nationality: {pax.nationality}</li>
+        <li>Document: {`${pax.document} (${pax.docType})`}</li>
+      </ul>
+    );
+  };
   const Headers = [
     {
       Accessor: "countdownTime",
@@ -79,6 +90,7 @@ const Vetting = props => {
           etd={row.original.flightETDDate}
           origin={row.original.flightOrigin}
           destination={row.original.flightDestination}
+          direction={row.original.flightDirection}
         />
       )
     },
@@ -105,20 +117,24 @@ const Vetting = props => {
       Accessor: "paxName",
       Header: "Biographic Information",
       Cell: ({ row }) => (
-        <Link to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}>
-          {row.original.paxName}
+        <Link
+          to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}
+          className="as-link"
+        >
+          {getBiographicData(row.original)}
         </Link>
       )
     },
     {
       Accessor: "status",
-      Header: "Status"
+      Header: "Status",
+      Cell: ({ row }) => <div className="text-center">{row.original.status}</div>
     },
     {
       Accessor: "paxId",
       Header: "Actions",
       Cell: ({ row }) => (
-        <>
+        <div className="text-center">
           <Button
             variant="outline-info"
             size="sm"
@@ -128,7 +144,7 @@ const Vetting = props => {
           </Button>
           <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
-        </>
+        </div>
       )
     }
   ];
@@ -141,9 +157,9 @@ const Vetting = props => {
   let eDate = new Date();
   eDate.setDate(eDate.getDate() + 7);
   sDate.setHours(sDate.getHours() - 7);
-  const [startDate, setStartData] = useState(sDate);
-  const [endDate, setEndData] = useState(eDate);
-  const [data, setData] = useState([{}]);
+  const [startDate, setStartDate] = useState(sDate);
+  const [endDate, setEndDate] = useState(eDate);
+  const [data, setData] = useState([]);
   const { hitCategories, loading } = useFetchHitCategories();
   const [hitCategoryOptions, setHitCategoryOptions] = useState();
   const [refreshKey, setRefreshKey] = useState("");
@@ -306,8 +322,8 @@ const Vetting = props => {
       inputVal={{ etaStart: startDate, etaEnd: endDate }}
       startDate={startDate}
       endDate={endDate}
-      endMut={setEndData}
-      startMut={setStartData}
+      endMut={setEndDate}
+      startMut={setStartDate}
     />
   );
 
