@@ -59,7 +59,7 @@ export const FIELDS = {
     }
   },
 
-  creditcardFields: {
+  creditCardFields: {
     accountHolder: { label: "Account Holder", type: "text", valueSources: ["value"] },
     expiration: { label: "Expiration Date", type: "date", valueSources: ["value"] },
     number: { label: "Number", type: "text", valueSources: ["value"] },
@@ -198,7 +198,7 @@ export const FIELDS = {
     apis: { label: "Is APIS", type: "boolean", valueSources: ["value"] }
   },
 
-  paymentFields: {
+  paymentFormFields: {
     wholeDollarAmount: {
       label: "Monetary Amount(No Decimal)",
       type: "number",
@@ -253,7 +253,7 @@ export const FIELDS = {
 
   phoneFields: { number: { label: "Number", type: "text", valueSources: ["value"] } },
 
-  dwelltimeFields: {
+  dwellTimeFields: {
     location: { label: "Location", type: "text", valueSources: ["value"] },
     dwellTime: {
       label: "Lay over Time",
@@ -264,7 +264,21 @@ export const FIELDS = {
   },
 
   agencyFields: {
-    country: { label: "Country", type: "text", valueSources: ["value"] },
+    country: {
+      label: "Country",
+      type: "text",
+      fieldSettings: {
+        listValues: [
+          { value: "yellow", title: "Yellow" },
+          { value: "green", title: "Green" },
+          { value: "red", title: "Red" },
+          { value: "brown", title: "Brown" },
+          { value: "black", title: "Black" },
+          { value: "orange", title: "Orange" }
+        ]
+      },
+      valueSources: ["value"]
+    },
     identifier: { label: "Identifier", type: "text", valueSources: ["value"] },
     location: { label: "Location", type: "text", valueSources: ["value"] },
     name: { label: "Name", type: "text", valueSources: ["value"] },

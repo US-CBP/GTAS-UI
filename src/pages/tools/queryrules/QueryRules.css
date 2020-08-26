@@ -112,3 +112,7 @@ pre {
 .rule--value {
   align-self: center;
 }
+
+.widget--widget > input[type="number"] {
+  width: 75px;
+}

@@ -23,9 +23,94 @@ export const importQuery = obj => {
   });
 };
 
+const fakedatanoids = {
+  id: 1,
+  type: "group",
+  properties: { conjunction: "AND" },
+  children1: {
+    2: {
+      type: "rule",
+      properties: {
+        field: "user",
+        operator: "equal",
+        value: ["ASDASDADSDFSD"],
+        valueSrc: ["value"],
+        valueType: ["text"]
+      }
+    },
+    3: {
+      type: "rule",
+      properties: {
+        field: "color",
+        operator: "select_any_in",
+        value: [["yellow", "red"]],
+        valueSrc: ["value"],
+        valueType: ["multiselect"]
+      }
+    },
+    4: {
+      type: "group",
+      properties: { conjunction: "OR", not: true },
+      children1: {
+        5: {
+          type: "rule",
+          properties: {
+            field: "price",
+            operator: "is_empty",
+            value: [],
+            valueSrc: [],
+            valueType: []
+          }
+        },
+        6: {
+          type: "rule",
+          properties: {
+            field: "price",
+            operator: "less",
+            value: [18],
+            valueSrc: ["value"],
+            valueType: ["number"]
+          }
+        }
+      }
+    },
+    7: {
+      type: "rule",
+      properties: {
+        field: "user",
+        operator: "ends_with",
+        value: ["ocka"],
+        valueSrc: ["value"],
+        valueType: ["text"]
+      }
+    }
+  }
+};
+
 // import raw QueryObject from the DB and convert it to a jsontree object for the RAQB component.
-export const importQueryObject = obj => {
-  const res = {};
+export const importQueryObject = (raw, idx = 0) => {
+  if (!hasData(raw)) return {};
+
+  let res = {};
+
+  // top level
+  if (hasData(raw.result?.details)) {
+    const details = raw.result.details;
+    res.id = idx++;
+    res.type = "group";
+    res.properties = { conjunction: details.condition };
+    res.children1 = importQueryObject(details.rules, idx);
+  }
+
+  // group
+  let rules = [];
+  raw.foreach(item => {
+    let rule = {};
+    rule[idx++] = {};
+    if (item.hasOwnProperty("@class") && item["@class"].endsWith("QueryObject")) {
+      rule.properties = { conjunction: item.condition };
+    }
+  });
 
   return res;
 };
