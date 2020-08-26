@@ -80,6 +80,9 @@ const Page404 = loadable(() =>
 const PageUnauthorized = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
 );
+const SeatChart = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
+);
 
 //Admin bundle imports
 const Admin = loadable(() =>
@@ -128,10 +131,6 @@ const ChangePassword = loadable(() =>
 );
 const SignUpRequests = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/admin/signUpRequests/SignUpRequests")
-);
-
-const SeatChart = loadable(() =>
-  import(/* webpackChunkName: "admin" */ "./components/seatChart/SeatChart")
 );
 
 export default class App extends React.Component {
