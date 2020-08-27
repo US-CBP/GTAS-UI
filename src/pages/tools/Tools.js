@@ -1,23 +1,24 @@
 import React from "react";
 import Title from "../../components/title/Title";
-import { Card, CardDeck, Container } from "react-bootstrap";
-import { hasData, getEndpoint } from "../../utils/utils";
+import { Card, CardDeck } from "react-bootstrap";
+import { asArray, getEndpoint } from "../../utils/utils";
 import { Link } from "@reach/router";
-import "./Admin.css";
+import "./Tools.css";
 
-const Admin = props => {
+const Tools = props => {
   const children = props.children?.props?.children;
+  const tiles = asArray(children).filter(child => child.props.hideTile !== true);
 
-  if (getEndpoint(props.location?.pathname) === "admin")
+  if (getEndpoint(props.location?.pathname) === "tools")
     return (
       <>
-        <Title title="Admin" />
+        <Title title="Tools" />
 
-        <CardDeck className="admin-deck">
-          {children.map(info => {
+        <CardDeck className="page-deck">
+          {tiles.map(info => {
             const data = info.props;
             return (
-              <Card className="admin-tiles" key={data.path}>
+              <Card className="page-tiles" key={data.path}>
                 <Card.Body>
                   <Card.Title className="nowrap">
                     <Link to={data.path} className="card-link">
@@ -41,4 +42,4 @@ const Admin = props => {
   return <>{props.children}</>;
 };
 
-export default Admin;
+export default Tools;

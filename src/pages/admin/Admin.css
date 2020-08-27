@@ -1,0 +1,31 @@
+.admin-tiles {
+  min-width: 300px;
+  max-width: 300px;
+  width: 300px;
+  margin: 10px;
+  min-height: 125px;
+  border: 1px solid #98b4c7;
+}
+
+.admin-deck {
+  margin: 20px;
+  justify-content: center;
+}
+
+.admin-text-link > a {
+  color: black !important;
+}
+
+.admin-text-link:hover {
+  text-decoration: underline;
+}
+
+.nowrap {
+  white-space: nowrap !important;
+}
+
+.card-link > .fa {
+  border: 1px solid #0077c8;
+  border-radius: 3px;
+  padding: 2px;
+}
