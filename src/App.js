@@ -309,7 +309,7 @@ export default class App extends React.Component {
                             desc="View or edit Airport, Carrier, or Country codes"
                             icon="fa-list-ul"
                             name="Code Editor"
-                            path="/codeeditor"
+                            path="codeeditor"
                             startTab="countries"
                           >
                             <Countries name="Countries" path="countries"></Countries>
