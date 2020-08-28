@@ -123,3 +123,8 @@
   text-align: -webkit-center;
   cursor: pointer;
 }
+
+.table-filter-form {
+  width: 100%;
+  border-radius: 5px;
+}
