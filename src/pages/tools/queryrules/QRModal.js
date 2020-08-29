@@ -225,14 +225,8 @@ const QRModal = props => {
                 </Row>
               </>
             )}
-            {/* <QueryBuilder
-              data={data}
-              key={key}
-              translations={buttonConfig}
-              dataCallback={dataCallback}
-            ></QueryBuilder> */}
 
-            <RAQB></RAQB>
+            <RAQB data={data} key={key} dataCallback={dataCallback}></RAQB>
           </Container>
         </Modal.Body>
         <Modal.Footer>
