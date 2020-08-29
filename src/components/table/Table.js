@@ -17,7 +17,7 @@ const Table = props => {
   const [columns, setColumns] = useState([]);
   const [rowcount, setRowcount] = useState("");
   const stateVals = props.hasOwnProperty("stateVals") ? altObj(props.stateVals()) : {};
-
+  const [displayColumnFilter, setDisplayColumnFilter] = useState(false);
   useEffect(() => {
     validateProps();
     if (!Array.isArray(props.data)) getData();
@@ -135,15 +135,19 @@ const Table = props => {
                         );
                       })}
                     </tr>
-                    <tr>
-                      {headerGroup.headers.map(column => {
-                        return (
-                          <th className="table-header" key={column.id}>
-                            <div>{column.canFilter ? column.render("Filter") : null}</div>
-                          </th>
-                        );
-                      })}
-                    </tr>
+                    {props.enableColumnFilter && displayColumnFilter ? (
+                      <tr>
+                        {headerGroup.headers.map(column => {
+                          return (
+                            <th className="table-header" key={column.id}>
+                              <div>
+                                {column.canFilter ? column.render("Filter") : null}
+                              </div>
+                            </th>
+                          );
+                        })}
+                      </tr>
+                    ) : null}
                   </Fragment>
                 );
               })}
@@ -276,13 +280,11 @@ const Table = props => {
     let dataArray = asArray(data);
     const isPopulated = hasData(dataArray);
     const sdata = isPopulated ? dataArray : noDataObj;
-
     const sheader = isPopulated
       ? hasData(header)
         ? header
         : Object.keys(dataArray[0])
       : [props.id];
-
     let columns = [];
 
     (sheader || []).forEach(element => {
@@ -312,7 +314,7 @@ const Table = props => {
         columns.push(cellconfig);
       }
     });
-
+    setDisplayColumnFilter(isPopulated);
     setData(sdata);
     setHeader(sheader);
     setColumns(columns);
@@ -368,7 +370,8 @@ Table.propTypes = {
   style: PropTypes.string,
   stateCb: PropTypes.func,
   stateVals: PropTypes.func,
-  ignoredFields: PropTypes.arrayOf(PropTypes.string)
+  ignoredFields: PropTypes.arrayOf(PropTypes.string),
+  enableColumnFilter: PropTypes.bool
 };
 
 // export default withTranslation()(Table);
