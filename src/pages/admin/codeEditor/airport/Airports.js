@@ -92,6 +92,7 @@ const Airports = ({ name }) => {
         callback={cb}
         header={headers}
         key={refreshKey}
+        enableColumnFilter={true}
       ></Table>
     </Container>
   );
