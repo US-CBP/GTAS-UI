@@ -105,6 +105,7 @@ pre {
 
 .group--conjunctions > .group--drag-handler {
   float: inline-start;
+  margin-left: 0px;
 }
 
 .group--conjunctions > .group--drag-handler > svg {
@@ -149,7 +150,7 @@ pre {
 
 .group--children > .group-or-rule-container > .group-or-rule::before,
 .group--children > .group-or-rule-container > .group-or-rule::after {
-  height: calc(50% + 11px);
+  height: calc(50% + 20px);
   border-color: #6a8eb3;
 }
 
@@ -165,7 +166,7 @@ pre {
   padding-left: 10px;
   padding-right: 5px;
   padding-top: 3px;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   border-radius: 3px;
   padding-bottom: 3px;
   background-color: #125c8e;
@@ -173,8 +174,16 @@ pre {
 }
 
 .group-or-rule-container {
-  margin-top: 6px;
+  margin-top: 1px;
   padding-right: 10px;
   padding-bottom: 0px;
   margin-bottom: 0px;
+}
+
+.group.group-or-rule:not(.rule_group) {
+  margin-top: 19px;
+}
+
+.query-builder {
+  margin-top: -10px;
 }

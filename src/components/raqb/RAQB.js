@@ -51,7 +51,7 @@ const RAQB = props => {
   return (
     <div>
       <Query {...config} value={tree} onChange={onChange} renderBuilder={renderBuilder} />
-      {/* {renderResult({ tree: tree, config: config })} */}
+      {renderResult({ tree: tree, config: config })}
     </div>
   );
 };

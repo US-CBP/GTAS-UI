@@ -68,7 +68,7 @@ export const FIELDS = {
     documentNumber: { label: "Number", ...txtProps },
     documentType: {
       label: "Type",
-      type: "text",
+      type: "select",
       fieldSettings: {
         listValues: [
           { value: "P", title: "Passport" },
@@ -334,8 +334,10 @@ export const operatorMap = {
   GREATER_OR_EQUAL: "greater_or_equal",
   LESS: "less",
   LESS_OR_EQUAL: "less_or_equal",
+  IN: "select_any_in",
+  NOT_IN: "select_not_any_in",
 
-  to_select_equals: "select_equals", // force "select_equals" on incoming raw obj
+  to_select_equals: "select_any_in", // force "select_equals" on incoming raw obj
 
   equal: "EQUAL",
   select_equals: "EQUAL",
@@ -360,7 +362,7 @@ export const operatorMap = {
 export const valueTypeMap = {
   string: "text",
   to_select: "select", // force "select" on incoming raw obj
-  // select: "text",
+  multiselect: "multiselect",
   text: "string",
   date: "date",
   boolean: "boolean",
