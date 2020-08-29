@@ -37,6 +37,8 @@ const importGroup = raw => {
 const importRule = raw => {
   const types = getEntityType(raw.entity, raw.field, true);
   const value = getValue(types.type, raw.value);
+  const op = operatorMap[types?.operator || raw.operator];
+  const type = valueTypeMap[types?.type] || "NOT_FOUND";
   let rule = {};
   let children1 = {};
 
@@ -46,10 +48,10 @@ const importRule = raw => {
     type: QB.RULE,
     properties: {
       field: `${raw.entity}.${raw.field}`,
-      operator: operatorMap[types?.operator || raw.operator],
+      operator: op,
       value: value,
-      valueSrc: ["value"],
-      valueType: [valueTypeMap[types?.type] || "NOT_FOUND"]
+      valueSrc: op === "between" ? ["value", "value"] : ["value"],
+      valueType: op === "between" ? [type, type] : [type]
     }
   };
 
