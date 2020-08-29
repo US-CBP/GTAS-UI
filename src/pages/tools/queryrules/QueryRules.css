@@ -103,6 +103,14 @@ pre {
   padding-top: 7px;
 }
 
+.group--conjunctions > .group--drag-handler {
+  float: inline-start;
+}
+
+.group--conjunctions > .group--drag-handler > svg {
+  vertical-align: text-bottom;
+}
+
 .group--conjunctions > label,
 .widget--widget > label {
   margin-right: 14px;
