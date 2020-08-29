@@ -36,6 +36,8 @@ const ManageUsers = props => {
   const headers = [
     {
       Accessor: "Edit",
+      disableFilters: true,
+      disableSortBy: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center edit-user">
@@ -158,6 +160,7 @@ const ManageUsers = props => {
           callback={cb}
           key={refreshKey}
           header={headers}
+          enableColumnFilter={true}
         ></Table>
         <UserModal
           show={showModal}
