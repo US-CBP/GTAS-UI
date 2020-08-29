@@ -21,6 +21,7 @@
 }
 .queryBuilder {
   min-width: 740px;
+  margin: 0.5rem;
 }
 
 .qrm > .space-between {
@@ -55,15 +56,14 @@ select[multiple]:hover {
 .group--actions > button {
   margin: 0.3rem !important;
   color: #343a40;
-  border-color: #343a40;
+  border-color: #6a8eb3;
   display: inline-block;
   font-weight: 400;
-  color: #212529;
   text-align: center;
   vertical-align: middle;
   -webkit-user-select: none;
   user-select: none;
-  background-color: transparent;
+  background-color: white;
   padding: 0.375rem 0.75rem;
   border-radius: 0.25rem;
 }
@@ -94,9 +94,20 @@ pre {
   white-space: break-spaces !important;
 }
 
-.group--conjunctions > label {
-  margin-right: 8px;
+.group--conjunctions {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px 5px 1px 10px;
+  line-height: 1.5rem;
+  border: 2px solid #6a8eb3;
+  padding-top: 7px;
+}
+
+.group--conjunctions > label,
+.widget--widget > label {
+  margin-right: 14px;
   margin-left: 2px;
+  margin-bottom: 2px;
 }
 
 .group > .group--actions > button {
@@ -115,4 +126,42 @@ pre {
 
 .widget--widget > input[type="number"] {
   width: 75px;
+}
+
+.group {
+  background: rgb(0 119 200 / 0.1);
+  border: 2px solid #6a8eb3;
+}
+
+.rule_group {
+  /* background: rgba(210, 234, 252, 0.1); */
+  background: white;
+  border: 2px solid #bad2eb66;
+}
+
+.group--children > .group-or-rule-container > .group-or-rule::before,
+.group--children > .group-or-rule-container > .group-or-rule::after {
+  height: calc(50% + 11px);
+  border-color: #6a8eb3;
+}
+
+.rule {
+  padding: 0px;
+}
+
+.group--header {
+  padding-left: 10px;
+  padding-right: 5px;
+  padding-top: 3px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  padding-bottom: 3px;
+  background-color: #125c8e;
+  margin-top: 0px;
+}
+
+.group-or-rule-container {
+  margin-top: 6px;
+  padding-right: 10px;
+  padding-bottom: 0px;
 }

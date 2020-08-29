@@ -7,7 +7,7 @@ import {
 } from "react-awesome-query-builder";
 import "react-awesome-query-builder/lib/css/styles.css";
 import { fieldConfig } from "./constants";
-import { importQueryObject, exportInternalObject } from "./utils";
+import { importToTreeObject, exportToQueryObject } from "./utils";
 
 const InitialConfig = BasicConfig;
 
@@ -19,7 +19,7 @@ const initconfig = {
 const queryValue = { id: QbUtils.uuid(), type: "group" };
 
 const RAQB = props => {
-  const convertedInput = props.data ? importQueryObject(props.data) : queryValue;
+  const convertedInput = props.data ? importToTreeObject(props.data) : queryValue;
   const inputTree = QbUtils.checkTree(QbUtils.loadTree(convertedInput), initconfig);
   const [tree, setTree] = useState(inputTree);
   const [config, setConfig] = useState(initconfig);
@@ -44,10 +44,7 @@ const RAQB = props => {
   const onChange = (immutableTree, config) => {
     setTree(immutableTree);
     setConfig(config);
-    const exportedObj = exportInternalObject(
-      QbUtils.getTree(immutableTree, config),
-      true
-    );
+    const exportedObj = exportToQueryObject(QbUtils.getTree(immutableTree, config), true);
     props.dataCallback(exportedObj);
   };
 

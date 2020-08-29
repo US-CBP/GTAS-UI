@@ -3,7 +3,7 @@ import { hasData } from "../../utils/utils";
 import { operatorMap, valueTypeMap, fullEntities, QB } from "./constants";
 
 // import raw QueryObject from the DB and convert it to a jsontree object for the RAQB component.
-export const importQueryObject = raw => {
+export const importToTreeObject = raw => {
   if (!hasData(raw)) return {};
 
   if (isImportGroup(raw)) return importGroup(raw);
@@ -23,7 +23,7 @@ const importGroup = raw => {
   group.type = QB.GROUP;
   group.properties = { conjunction: raw.condition };
 
-  const rules = raw.rules.map(item => importQueryObject(item)); //recurse back to the parent fxn
+  const rules = raw.rules.map(item => importToTreeObject(item)); //recurse back to the parent fxn
 
   rules.forEach(item => (resultObj[QbUtils.uuid()] = item));
 
@@ -57,7 +57,7 @@ const importRule = raw => {
   return rule;
 };
 
-export const exportInternalObject = (obj, isFirstLevel = false) => {
+export const exportToQueryObject = (obj, isFirstLevel = false) => {
   if (!obj) return {};
 
   if (obj.type === QB.GROUP) return exportGroup(obj, isFirstLevel);
@@ -72,7 +72,7 @@ const exportGroup = (raw, isFirstLevel) => {
   group[QB.CLASS] = isFirstLevel ? QB.QOTYPEFULL : QB.QUERYOBJECT;
   group.condition = raw.properties?.conjunction || QB.ALL; // the raqb component leaves the conjunction null when there's only a single clause
   group.rules = [];
-  rulesMap.forEach(rule => group.rules.push(exportInternalObject(rule)));
+  rulesMap.forEach(rule => group.rules.push(exportToQueryObject(rule)));
 
   return group;
 };
