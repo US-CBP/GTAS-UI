@@ -145,6 +145,10 @@ pre {
   border-color: #6a8eb3;
 }
 
+.group--children.hide--line > .group-or-rule-container > .group-or-rule::before,
+.group--children.hide--line > .group-or-rule-container > .group-or-rule::after {
+  border-color: #6a8eb3;
+}
 .rule {
   padding: 0px;
 }
