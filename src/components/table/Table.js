@@ -36,6 +36,22 @@ const Table = props => {
     );
   }
 
+  function BooleanFilter({ column: { filterValue, setFilter } }) {
+    return (
+      <select
+        className="table-filter-form"
+        value={filterValue}
+        onChange={e => {
+          setFilter(e.target.value || undefined);
+        }}
+      >
+        <option value="">All</option>
+        <option value={1}>True</option>
+        <option value={0}>False</option>
+      </select>
+    );
+  }
+
   const RTable = ({ columns, data }) => {
     const defaultColumn = React.useMemo(
       () => ({
@@ -309,6 +325,9 @@ const Table = props => {
 
         if (element.Cell !== undefined) {
           cellconfig.Cell = element.Cell;
+        }
+        if (element.isBoolean) {
+          cellconfig.Filter = BooleanFilter;
         }
 
         columns.push(cellconfig);

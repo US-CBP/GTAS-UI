@@ -58,6 +58,7 @@ const ManageUsers = props => {
     },
     {
       Accessor: "active",
+      isBoolean: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center">
@@ -76,6 +77,7 @@ const ManageUsers = props => {
     { Accessor: "email" },
     {
       Accessor: "emailEnabledInt",
+      isBoolean: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center">
@@ -90,6 +92,7 @@ const ManageUsers = props => {
     },
     {
       Accessor: "highPriorityEmailInt",
+      isBoolean: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center">
