@@ -6,6 +6,8 @@ const txtProps = {
 
 const numProps = { type: "number", fieldSettings: { min: 0 }, valueSources: ["value"] };
 
+const dateProps = { type: "date", valueSources: ["value"] };
+
 export const QB = {
   QOTYPEFULL: "gov.gtas.model.udr.json.QueryObject",
   QUERYOBJECT: "QueryObject",
@@ -30,11 +32,7 @@ export const FIELDS = {
   },
 
   agencyFields: {
-    country: {
-      label: "Country",
-      type: "text",
-      valueSources: ["value"]
-    },
+    country: { label: "Country", ...txtProps },
     identifier: { label: "Identifier", ...txtProps },
     location: { label: "Location", ...txtProps },
     name: { label: "Name", ...txtProps },
@@ -59,7 +57,7 @@ export const FIELDS = {
 
   creditCardFields: {
     accountHolder: { label: "Account Holder", ...txtProps },
-    expiration: { label: "Expiration Date", type: "date", valueSources: ["value"] },
+    expiration: { label: "Expiration Date", ...dateProps },
     number: { label: "Number", ...txtProps },
     cardType: { label: "Type", ...txtProps }
   },
@@ -78,13 +76,16 @@ export const FIELDS = {
           // { value: "C", title: "Inbound" },
           // { value: "I", title: "Inbound" },
           // { value: "F", title: "Outbound" }
+
+          //interpol travel doc?
+          //us re-entry permit
         ]
       },
       valueSources: ["value"]
     },
     issuanceCountry: { label: "Issuance Country", ...txtProps },
-    expirationDate: { label: "Expiration Date", type: "date", valueSources: ["value"] },
-    issuanceDate: { label: "Issuance Date", type: "date", valueSources: ["value"] }
+    expirationDate: { label: "Expiration Date", ...dateProps },
+    issuanceDate: { label: "Issuance Date", ...dateProps }
   },
 
   emailFields: {
@@ -115,20 +116,14 @@ export const FIELDS = {
       },
       valueSources: ["value"]
     },
-    etdDate: { label: "ETD", type: "date", valueSources: ["value"] },
+    etdDate: { label: "ETD", ...dateProps },
     flightNumber: { label: "Number", ...txtProps },
-    "mutableFlightDetails.etaDate": {
-      label: "ETA",
-      type: "date",
-      valueSources: ["value"]
-    }
+    "mutableFlightDetails.etaDate": { label: "ETA", ...dateProps }
   },
-
   frequentFlyerFields: {
     carrier: { label: "Carrier", ...txtProps },
     number: { label: "Number", ...txtProps }
   },
-
   passengerFields: {
     "passengerDetails.age": { label: "Age", ...numProps },
     "passengerTripDetails.coTravelerCount": {
@@ -142,7 +137,7 @@ export const FIELDS = {
     "passengerDetails.nationality": { label: "Nationality", ...txtProps },
     "passengerTripDetails.debarkation": { label: "Debarkation Airport", ...txtProps },
     "passengerTripDetails.debarkCountry": { label: "Debarkation Country", ...txtProps },
-    "passengerDetails.dob": { label: "DOB", type: "date", valueSources: ["value"] },
+    "passengerDetails.dob": { label: "DOB", ...dateProps },
     "passengerTripDetails.embarkation": { label: "Embarkation Airport", ...txtProps },
     "passengerTripDetails.embarkCountry": { label: "Embarkation Country", ...txtProps },
     "passengerDetails.gender": {
@@ -180,13 +175,11 @@ export const FIELDS = {
       ...numProps
     }
   },
-
   seatFields: {
     number: { label: "Seat Number", ...txtProps },
     cabinClass: { label: "Cabin Class", ...txtProps },
     apis: { label: "Is APIS", type: "boolean", valueSources: ["value"] }
   },
-
   paymentFormFields: {
     wholeDollarAmount: { label: "Monetary Amount(No Decimal)", ...numProps },
     paymentType: {
@@ -204,15 +197,14 @@ export const FIELDS = {
       valueSources: ["value"]
     }
   },
-
   pnrFields: {
     bagCount: { label: "Bag - Count", ...numProps },
     baggageWeight: { label: "Baggage - Weight", ...numProps },
-    dateBooked: { label: "Booking Date", type: "date", valueSources: ["value"] },
+    dateBooked: { label: "Booking Date", ...dateProps },
     carrier: { label: "Carrier Code", ...txtProps },
-    dateReceived: { label: "Date Received", type: "date", valueSources: ["value"] },
+    dateReceived: { label: "Date Received", ...dateProps },
     daysBookedBeforeTravel: { label: "Days Booked Before Travel", ...numProps },
-    departureDate: { label: "Departure Date", type: "date", valueSources: ["value"] },
+    departureDate: { label: "Departure Date", ...dateProps },
     id: { label: "Pnr Id", ...txtProps },
     origin: { label: "Origin - Airport", ...txtProps },
     originCountry: { label: "Origin - Country", ...txtProps },
@@ -235,9 +227,7 @@ export const FIELDS = {
     },
     tripDuration: { label: "Trip Duration", ...numProps }
   },
-
   phoneFields: { number: { label: "Number", ...txtProps } },
-
   dwellTimeFields: {
     location: { label: "Location", ...txtProps },
     dwellTime: { label: "Lay over Time", ...numProps }
@@ -337,7 +327,7 @@ export const operatorMap = {
   IN: "select_any_in",
   NOT_IN: "select_not_any_in",
 
-  to_select_equals: "select_any_in", // force "select_equals" on incoming raw obj
+  to_select_any_in: "select_any_in", // force "select_equals" on incoming raw obj
 
   equal: "EQUAL",
   select_equals: "EQUAL",

@@ -136,7 +136,7 @@ function getEntityType(entpart, fieldpart, isImporting = false) {
 
   if (isImporting && field?.multiple) {
     field.type = "multiselect";
-    field.operator = "to_select_equals";
+    field.operator = "to_select_any_in";
   }
 
   return field;
