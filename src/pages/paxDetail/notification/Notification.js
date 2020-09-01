@@ -48,7 +48,6 @@ const Notification = props => {
         show={show}
         onHide={handleClose}
         size="md"
-        backdrop="static"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
