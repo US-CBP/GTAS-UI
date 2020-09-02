@@ -5,7 +5,6 @@ const txtProps = {
 };
 
 const numProps = { type: "number", fieldSettings: { min: 0 }, valueSources: ["value"] };
-
 const dateProps = { type: "date", valueSources: ["value"] };
 
 export const QB = {
@@ -20,7 +19,7 @@ export const QB = {
   CLASS: "@class"
 };
 
-export const FIELDS = {
+export const FIELDSINT = {
   addressFields: {
     city: { label: "City", ...txtProps },
     country: { label: "Country", ...txtProps },
@@ -71,14 +70,6 @@ export const FIELDS = {
         listValues: [
           { value: "P", title: "Passport" },
           { value: "V", title: "Visa" }
-          // { value: "IP", title: "Inbound" },
-          // { value: "A", title: "Inbound" },
-          // { value: "C", title: "Inbound" },
-          // { value: "I", title: "Inbound" },
-          // { value: "F", title: "Outbound" }
-
-          //interpol travel doc?
-          //us re-entry permit
         ]
       },
       valueSources: ["value"]
@@ -239,72 +230,72 @@ export const fieldConfig = {
     Address: {
       label: "Address",
       type: "!group",
-      subfields: FIELDS.addressFields
+      subfields: FIELDSINT.addressFields
     },
     Agency: {
       label: "Agency",
       type: "!group",
-      subfields: FIELDS.agencyFields
+      subfields: FIELDSINT.agencyFields
     },
     Bag: {
       label: "Bag",
       type: "!group",
-      subfields: FIELDS.bagFields
+      subfields: FIELDSINT.bagFields
     },
     CreditCard: {
       label: "Credit Card",
       type: "!group",
-      subfields: FIELDS.creditCardFields
+      subfields: FIELDSINT.creditCardFields
     },
     Document: {
       label: "Document",
       type: "!group",
-      subfields: FIELDS.documentFields
+      subfields: FIELDSINT.documentFields
     },
     DwellTime: {
       label: "Dwell Time",
       type: "!group",
-      subfields: FIELDS.dwellTimeFields
+      subfields: FIELDSINT.dwellTimeFields
     },
     Email: {
       label: "Email",
       type: "!group",
-      subfields: FIELDS.emailFields
+      subfields: FIELDSINT.emailFields
     },
     Flight: {
       label: "Flight",
       type: "!group",
-      subfields: FIELDS.flightFields
+      subfields: FIELDSINT.flightFields
     },
     BookingDetail: {
       label: "Flight Leg",
       type: "!group",
-      subfields: FIELDS.legFields
+      subfields: FIELDSINT.legFields
     },
     PaymentForm: {
       label: "Form of Payment",
       type: "!group",
-      subfields: FIELDS.paymentFormFields
+      subfields: FIELDSINT.paymentFormFields
     },
     Passenger: {
       label: "Passenger",
       type: "!group",
-      subfields: FIELDS.passengerFields
+      subfields: FIELDSINT.passengerFields
     },
     Phone: {
       label: "Phone",
       type: "!group",
-      subfields: FIELDS.phoneFields
+      subfields: FIELDSINT.phoneFields
     },
     Pnr: {
       label: "PNR",
       type: "!group",
-      subfields: FIELDS.pnrFields
+      subfields: FIELDSINT.pnrFields
     },
     Seat: {
       label: "Seat",
       type: "!group",
-      subfields: FIELDS.seatFields
+      subfields: FIELDSINT.seatFields
     }
   }
 };
@@ -324,7 +315,7 @@ export const operatorMap = {
   GREATER_OR_EQUAL: "greater_or_equal",
   LESS: "less",
   LESS_OR_EQUAL: "less_or_equal",
-  IN: "select_any_in",
+  IN: "any_in",
   NOT_IN: "select_not_any_in",
 
   to_select_any_in: "select_any_in", // force "select_equals" on incoming raw obj
@@ -361,460 +352,413 @@ export const valueTypeMap = {
   double: "number"
 };
 
-export const fullEntities = {
-  Address: {
-    columns: [
-      {
-        id: "Address.city",
-        type: "string"
-      },
-      {
-        id: "Address.country",
-        type: "string",
-        multiple: true
-      },
-      {
-        id: "Address.line1",
-        type: "string"
-      },
-      {
-        id: "Address.line2",
-        type: "string"
-      },
-      {
-        id: "Address.line3",
-        type: "string"
-      },
-      {
-        id: "Address.postalCode",
-        type: "string"
-      },
-      {
-        id: "Address.state",
-        type: "string"
-      }
-    ]
-  },
-  CreditCard: {
-    columns: [
-      {
-        id: "CreditCard.accountHolder",
-        type: "string",
-        csv: true
-      },
-      {
-        id: "CreditCard.expiration",
-        type: "date"
-      },
-      {
-        id: "CreditCard.number",
-        type: "string"
-      },
-      {
-        id: "CreditCard.cardType",
-        type: "string"
-      }
-    ]
-  },
-  Document: {
-    columns: [
-      {
-        id: "Document.issuanceCountry",
-        type: "string",
-        multiple: true
-      },
-      {
-        id: "Document.expirationDate",
-        type: "date"
-      },
-      {
-        id: "Document.issuanceDate",
-        type: "date"
-      },
-      {
-        id: "Document.documentNumber",
-        type: "string"
-      },
-      {
-        id: "Document.documentType",
-        type: "string",
-        input: "select",
-        multiple: true
-      }
-    ]
-  },
-  Email: {
-    columns: [
-      {
-        id: "Email.address",
-        type: "string"
-      },
-      {
-        id: "Email.domain",
-        type: "string"
-      }
-    ]
-  },
-  Flight: {
-    columns: [
-      {
-        id: "Flight.destination",
-        type: "string",
-        multiple: true
-      },
-      {
-        id: "Flight.origin",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Flight.carrier",
-        type: "string"
-      },
-      {
-        id: "Flight.destinationCountry",
-        type: "string",
-        multiple: true
-      },
-      {
-        id: "Flight.originCountry",
-        type: "string",
-        multiple: true
-      },
-      {
-        id: "Flight.direction",
-        type: "string",
-        input: "radio",
-        multiple: true
-      },
-      {
-        id: "Flight.mutableFlightDetails.etaDate",
-        type: "date"
-      },
-      {
-        id: "Flight.etdDate",
-        type: "date"
-      },
-      {
-        id: "Flight.flightNumber",
-        type: "string"
-      },
-      {
-        id: "Flight.isOperatingFlight",
-        type: "boolean",
-        input: "radio"
-      },
-      {
-        id: "Flight.isMarketingFlight",
-        type: "boolean",
-        input: "radio"
-      }
-    ]
-  },
-  BookingDetail: {
-    columns: [
-      {
-        id: "BookingDetail.origin",
-        type: "string",
-        multiple: true
-      },
-      {
-        id: "BookingDetail.destination",
-        type: "string",
-        multiple: true
-      }
-    ]
-  },
-  FrequentFlyer: {
-    columns: [
-      {
-        id: "FrequentFlyer.carrier",
-        type: "string"
-      },
-      {
-        id: "FrequentFlyer.number",
-        type: "string"
-      }
-    ]
-  },
-  Passenger: {
-    columns: [
-      {
-        id: "Passenger.passengerDetails.age",
-        type: "integer"
-      },
-      {
-        id: "Passenger.passengerTripDetails.coTravelerCount",
-        type: "integer"
-      },
-      {
-        id: "Passenger.passengerTripDetails.hoursBeforeTakeOff",
-        type: "integer"
-      },
-      {
-        id: "Passenger.passengerDetails.nationality",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Passenger.passengerTripDetails.debarkation",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Passenger.passengerTripDetails.debarkCountry",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Passenger.passengerDetails.dob",
-        type: "date"
-      },
-      {
-        id: "Passenger.passengerTripDetails.embarkation",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Passenger.passengerTripDetails.embarkCountry",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Passenger.passengerDetails.gender",
-        type: "string",
-        multiple: true
-      },
-      {
-        id: "Passenger.passengerDetails.firstName",
-        type: "string"
-      },
-      {
-        id: "Passenger.passengerDetails.lastName",
-        type: "string"
-      },
-      {
-        id: "Passenger.passengerDetails.middleName",
-        type: "string"
-      },
-      {
-        id: "Passenger.passengerDetails.residencyCountry",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Passenger.passengerDetails.passengerType",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Passenger.passengerTripDetails.travelFrequency",
-        type: "integer"
-      }
-    ]
-  },
-  Seat: {
-    columns: [
-      {
-        id: "Seat.number",
-        type: "string"
-      },
-      {
-        id: "Seat.cabinClass",
-        type: "string"
-      },
-      {
-        id: "Seat.apis",
-        type: "boolean"
-      }
-    ]
-  },
-  Phone: {
-    columns: [
-      {
-        id: "Phone.number",
-        type: "string"
-      }
-    ]
-  },
-  Bag: {
-    columns: [
-      {
-        id: "Bag.airline",
-        type: "string"
-      },
-      {
-        id: "Bag.bagId",
-        type: "string"
-      },
-      {
-        id: "Bag.data_source",
-        type: "string"
-      },
-      {
-        id: "Bag.country",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Bag.destinationAirport",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Bag.primeFlight",
-        type: "boolean",
-        input: "radio"
-      },
-      {
-        id: "Bag.bagMeasurements.weight",
-        type: "double"
-      },
-      {
-        id: "Bag.bagMeasurements.bagCount",
-        type: "integer"
-      },
-      {
-        id: "Bag.headPool",
-        type: "boolean",
-        input: "radio"
-      }
-    ]
-  },
-  PaymentForm: {
-    columns: [
-      {
-        id: "PaymentForm.wholeDollarAmount",
-        type: "integer"
-      },
-      {
-        id: "PaymentForm.paymentType",
-        type: "string",
-        input: "text"
-      }
-    ]
-  },
-  Pnr: {
-    columns: [
-      {
-        id: "Pnr.bagCount",
-        type: "integer"
-      },
-      {
-        id: "Pnr.baggageWeight",
-        type: "double"
-      },
-      {
-        id: "Pnr.dateBooked",
-        type: "date"
-      },
-      {
-        id: "Pnr.carrier",
-        type: "string"
-      },
-      {
-        id: "Pnr.dateReceived",
-        type: "date"
-      },
-      {
-        id: "Pnr.daysBookedBeforeTravel",
-        type: "integer"
-      },
-      {
-        id: "Pnr.departureDate",
-        type: "date"
-      },
-      {
-        id: "Pnr.id",
-        type: "integer"
-      },
-      {
-        id: "Pnr.origin",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Pnr.originCountry",
-        type: "string",
+// use a select list and allow multiple selections
+const selMult = { select: true, multival: true };
 
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Pnr.passengerCount",
-        type: "integer"
-      },
-      {
-        id: "Pnr.recordLocator",
-        type: "string"
-      },
-      {
-        id: "Pnr.seat",
-        type: "string"
-      },
-      {
-        id: "Pnr.tripType",
-        type: "string",
-        input: "select",
-        multiple: false
-      },
-      {
-        id: "Pnr.tripDuration",
-        type: "double"
-      }
-    ]
-  },
-  DwellTime: {
-    columns: [
-      {
-        id: "DwellTime.location",
-        type: "string"
-      },
-      {
-        id: "DwellTime.dwellTime",
-        type: "double"
-      }
-    ]
-  },
-  Agency: {
-    columns: [
-      {
-        id: "Agency.country",
-        type: "string",
-        input: "select",
-        multiple: true
-      },
-      {
-        id: "Agency.identifier",
-        type: "string"
-      },
-      {
-        id: "Agency.location",
-        type: "string"
-      },
-      {
-        id: "Agency.name",
-        type: "string"
-      },
-      {
-        id: "Agency.city",
-        type: "string"
-      },
-      {
-        id: "Agency.phone",
-        type: "string"
-      }
-    ]
-  }
+export const ENTITIESEXT = {
+  Address: [
+    {
+      id: "city",
+      type: "string",
+      multiple: true
+    },
+    {
+      id: "country",
+      type: "string",
+      multiple: true
+    },
+    {
+      id: "line1",
+      type: "string"
+    },
+    {
+      id: "line2",
+      type: "string"
+    },
+    {
+      id: "line3",
+      type: "string"
+    },
+    {
+      id: "postalCode",
+      type: "string"
+    },
+    {
+      id: "state",
+      type: "string"
+    }
+  ],
+  CreditCard: [
+    {
+      id: "accountHolder",
+      type: "string",
+      csv: true
+    },
+    {
+      id: "expiration",
+      type: "date"
+    },
+    {
+      id: "number",
+      type: "string"
+    },
+    {
+      id: "cardType",
+      type: "string"
+    }
+  ],
+  Document: [
+    {
+      id: "issuanceCountry",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "expirationDate",
+      type: "date"
+    },
+    {
+      id: "issuanceDate",
+      type: "date"
+    },
+    {
+      id: "documentNumber",
+      type: "string"
+    },
+    {
+      id: "documentType",
+      type: "string",
+      ...selMult
+    }
+  ],
+  Email: [
+    {
+      id: "Email.address",
+      type: "string"
+    },
+    {
+      id: "Email.domain",
+      type: "string"
+    }
+  ],
+  Flight: [
+    {
+      id: "destination",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "origin",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "carrier",
+      type: "string"
+    },
+    {
+      id: "destinationCountry",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "originCountry",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "direction",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "mutableFlightDetails.etaDate",
+      type: "date"
+    },
+    {
+      id: "etdDate",
+      type: "date"
+    },
+    {
+      id: "flightNumber",
+      type: "string"
+    },
+    {
+      id: "isOperatingFlight",
+      type: "boolean"
+    },
+    {
+      id: "isMarketingFlight",
+      type: "boolean"
+    }
+  ],
+  BookingDetail: [
+    {
+      id: "origin",
+      type: "string",
+      multival: true
+    },
+    {
+      id: "destination",
+      type: "string",
+      mltival: true
+    }
+  ],
+  FrequentFlyer: [
+    {
+      id: "carrier",
+      type: "string"
+    },
+    {
+      id: "number",
+      type: "string"
+    }
+  ],
+  Passenger: [
+    {
+      id: "passengerDetails.age",
+      type: "integer"
+    },
+    {
+      id: "passengerTripDetails.coTravelerCount",
+      type: "integer"
+    },
+    {
+      id: "passengerTripDetails.hoursBeforeTakeOff",
+      type: "integer"
+    },
+    {
+      id: "passengerDetails.nationality",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "passengerTripDetails.debarkation",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "passengerTripDetails.debarkCountry",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "passengerDetails.dob",
+      type: "date"
+    },
+    {
+      id: "passengerTripDetails.embarkation",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "passengerTripDetails.embarkCountry",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "passengerDetails.gender",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "passengerDetails.firstName",
+      type: "string"
+    },
+    {
+      id: "passengerDetails.lastName",
+      type: "string"
+    },
+    {
+      id: "passengerDetails.middleName",
+      type: "string"
+    },
+    {
+      id: "passengerDetails.residencyCountry",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "passengerDetails.passengerType",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "passengerTripDetails.travelFrequency",
+      type: "integer"
+    }
+  ],
+  Seat: [
+    {
+      id: "number",
+      type: "string"
+    },
+    {
+      id: "cabinClass",
+      type: "string"
+    },
+    {
+      id: "apis",
+      type: "boolean"
+    }
+  ],
+  Phone: [
+    {
+      id: "number",
+      type: "string"
+    }
+  ],
+  Bag: [
+    {
+      id: "airline",
+      type: "string"
+    },
+    {
+      id: "bagId",
+      type: "string"
+    },
+    {
+      id: "data_source",
+      type: "string"
+    },
+    {
+      id: "country",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "destinationAirport",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "primeFlight",
+      type: "boolean"
+    },
+    {
+      id: "bagMeasurements.weight",
+      type: "double"
+    },
+    {
+      id: "bagMeasurements.bagCount",
+      type: "integer"
+    },
+    {
+      id: "headPool",
+      type: "boolean"
+    }
+  ],
+  PaymentForm: [
+    {
+      id: "wholeDollarAmount",
+      type: "integer"
+    },
+    {
+      id: "paymentType",
+      type: "string"
+    }
+  ],
+  Pnr: [
+    {
+      id: "bagCount",
+      type: "integer"
+    },
+    {
+      id: "baggageWeight",
+      type: "double"
+    },
+    {
+      id: "dateBooked",
+      type: "date"
+    },
+    {
+      id: "carrier",
+      type: "string"
+    },
+    {
+      id: "dateReceived",
+      type: "date"
+    },
+    {
+      id: "daysBookedBeforeTravel",
+      type: "integer"
+    },
+    {
+      id: "departureDate",
+      type: "date"
+    },
+    {
+      id: "id",
+      type: "integer"
+    },
+    {
+      id: "origin",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "originCountry",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "passengerCount",
+      type: "integer"
+    },
+    {
+      id: "recordLocator",
+      type: "string"
+    },
+    {
+      id: "seat",
+      type: "string"
+    },
+    {
+      id: "tripType",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "tripDuration",
+      type: "double"
+    }
+  ],
+  DwellTime: [
+    {
+      id: "location",
+      type: "string"
+    },
+    {
+      id: "dwellTime",
+      type: "double"
+    }
+  ],
+  Agency: [
+    {
+      id: "country",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "identifier",
+      type: "string"
+    },
+    {
+      id: "location",
+      type: "string"
+    },
+    {
+      id: "name",
+      type: "string"
+    },
+    {
+      id: "city",
+      type: "string",
+      ...selMult
+    },
+    {
+      id: "phone",
+      type: "string"
+    }
+  ]
 };

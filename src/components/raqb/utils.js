@@ -1,6 +1,6 @@
 import { Utils as QbUtils } from "react-awesome-query-builder";
 import { hasData } from "../../utils/utils";
-import { operatorMap, valueTypeMap, fullEntities, QB } from "./constants";
+import { operatorMap, valueTypeMap, ENTITIESEXT, QB } from "./constants";
 
 // import raw QueryObject from the DB and convert it to a jsontree object for the RAQB component.
 export const importToTreeObject = raw => {
@@ -35,10 +35,10 @@ const importGroup = raw => {
  * Import the rule part of a raw QueryObject
  */
 const importRule = raw => {
-  const types = getEntityType(raw.entity, raw.field, true);
-  const value = getValue(types.type, raw.value);
+  const types = getEntityProps(raw.entity, raw.field, undefined, true);
   const op = operatorMap[types?.operator || raw.operator];
   const type = valueTypeMap[types?.type] || "NOT_FOUND";
+  const value = getValue(type, raw.value);
   let rule = {};
   let children1 = {};
 
@@ -50,10 +50,15 @@ const importRule = raw => {
       field: `${raw.entity}.${raw.field}`,
       operator: op,
       value: value,
-      valueSrc: op === "between" ? ["value", "value"] : ["value"],
-      valueType: op === "between" ? [type, type] : [type]
+      valueSrc: isMultivalueOperator(op) ? ["value", "value"] : ["value"],
+      valueType: isMultivalueOperator(op) ? [type, type] : [type]
     }
   };
+
+  if (op === "not_between") {
+    // console.log("RAW, TYPES, TYPE, VALUE OP, CHILDREN1");
+    // console.log(raw, types, type, value, op, children1);
+  }
 
   rule.children1 = children1;
   return rule;
@@ -91,15 +96,15 @@ const exportRule = raw => {
 
   const entity = raw.properties?.field;
   const field = getFieldPart(terms?.field);
-  const type = getEntityType(entity, field)?.type;
+  const entProps = getEntityProps(entity, field, terms, false) || {};
 
   let rule = {
     entity: entity,
     field: field,
     operator: operatorMap[terms?.operator],
-    value: getValue(type, terms?.value, false),
+    value: getValue(entProps.type, terms?.value, false),
     uuid: null,
-    type: type
+    type: entProps.type
   };
 
   rule[QB.CLASS] = QB.QUERYTERM;
@@ -113,6 +118,9 @@ const getValue = (type, val, isImporting = true) => {
   if (type === "boolean") {
     convertedVal = isImporting ? [!!val[0]] : [(+val[0]).toString()]; // convert to t/f if importing, "0"/"1" if exporting
   }
+
+  if (type === "number") convertedVal = val.map(item => +item);
+
   return convertedVal;
 };
 
@@ -127,17 +135,30 @@ export const getFieldPart = str => {
   return strarray.filter(Boolean).join(".");
 };
 
-function getEntityType(entpart, fieldpart, isImporting = false) {
-  let field = {
-    ...fullEntities[entpart].columns.find(item => {
-      return item.id === `${entpart}.${fieldpart}`;
+// determine whether the operator param can act on multiple value fields, eg, "between", "select_any"
+const isMultivalueOperator = op => {
+  const multivalueOperators = [
+    "not_between",
+    "between",
+    "select_any_in",
+    "select_any_not_in",
+    "any_in",
+    "any_not_in",
+    "in",
+    "not_in"
+  ];
+  return multivalueOperators.includes(op);
+};
+
+const getEntityProps = (entpart, fieldpart, terms, isImporting = false) => {
+  let externalField = {
+    ...ENTITIESEXT[`${entpart}`].find(item => {
+      return item.id === fieldpart;
     })
   };
 
-  if (isImporting && field?.multiple) {
-    field.type = "multiselect";
-    field.operator = "to_select_any_in";
-  }
+  if (isImporting && externalField?.select) externalField.type = ["multiselect"];
+  if (isImporting && externalField?.multival) externalField.operator = "to_select_any_in";
 
-  return field;
-}
+  return externalField;
+};
