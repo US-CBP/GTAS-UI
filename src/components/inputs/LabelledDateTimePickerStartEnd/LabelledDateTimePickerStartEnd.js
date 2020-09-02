@@ -8,15 +8,13 @@
 
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
-import inputPasses from "../Inputs.css";
-
 import "../../../../node_modules/react-datepicker/dist/react-datepicker.css";
 import PropTypes from "prop-types";
-import classes from "./LabelledDateTimePickerStartEnd.css";
+import "./LabelledDateTimePickerStartEnd.css";
+import "../Inputs.scss";
 import LabelledInputDisplayWrapper from "../LabelledInputDecorator";
 import { Container, Row } from "react-bootstrap";
 const REQUIRED = "required";
-
 const LabelledDateTimePickerStartEnd = props => {
   const changeEta = event => {
     setStartDate(event);
@@ -37,42 +35,38 @@ const LabelledDateTimePickerStartEnd = props => {
     };
     props.callback(update);
   };
-  const totalClasses = { ...classes, ...inputPasses };
   const [startDate, setStartDate] = useState(props.startDate);
   const [endDate, setEndDate] = useState(props.endDate);
 
   return (
-    <Container style={totalClasses}>
+    <div className="date-picker-container">
       <div>
-        <Row>
-          <label>Start Date</label>
-        </Row>
-        <Row>
-          <DatePicker
-            selected={startDate}
-            onChange={changeEta}
-            selectsStart
-            {...props}
-            startDate={startDate}
-            endDate={endDate}
-          />
-        </Row>
-        <Row>
-          <label>End Date</label>
-        </Row>
-        <Row>
-          <DatePicker
-            selected={endDate}
-            onChange={changeEtd}
-            selectsEnd
-            {...props}
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-          />
-        </Row>
+        <label>Start Date</label>
       </div>
-    </Container>
+
+      <DatePicker
+        selected={startDate}
+        onChange={changeEta}
+        selectsStart
+        {...props}
+        startDate={startDate}
+        endDate={endDate}
+      />
+
+      <div>
+        <label>End Date</label>
+      </div>
+
+      <DatePicker
+        selected={endDate}
+        onChange={changeEtd}
+        selectsEnd
+        {...props}
+        startDate={startDate}
+        endDate={endDate}
+        minDate={startDate}
+      />
+    </div>
   );
 };
 
