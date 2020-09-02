@@ -76,7 +76,7 @@ LabelledDateTimePickerStartEnd.propTypes = {
   labelText: PropTypes.string.isRequired,
   inputType: PropTypes.oneOf(["dateTime", "date"]).isRequired,
   callback: PropTypes.func.isRequired,
-  inputVal: PropTypes.instanceOf(Date),
+  inputVal: PropTypes.objectOf(Date),
   startDate: PropTypes.instanceOf(Date),
   endDate: PropTypes.instanceOf(Date),
   placeholder: PropTypes.string,
