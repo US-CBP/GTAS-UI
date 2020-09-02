@@ -45,7 +45,7 @@ const Search = props => {
     }
   ];
 
-  const params = `?pageNumber=1&pageSize=10&column=_score&dir=des&query=${searchParam}`;
+  const params = `?pageNumber=1&pageSize=500&column=_score&dir=des&query=${searchParam}`;
 
   useEffect(() => {
     search.passengers(params).then(res => {
@@ -55,7 +55,7 @@ const Search = props => {
 
   return (
     <Container fluid>
-      <Title title="Search Result" uri={props.uri} />
+      <Title title={`Search Result for ${searchParam.toUpperCase()}`} uri={props.uri} />
       <Table data={data} id="searchTable" callback={cb} header={Headers} key={data} />
     </Container>
   );
