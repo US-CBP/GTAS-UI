@@ -97,76 +97,23 @@ const Header = () => {
             Vetting
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
-            <NavDropdown
-              title="Admin"
-              id="nav-dropdown"
-              className={`${getActiveClass(htab.ADMIN)}`}
-            >
-              <NavDropdown.Item
-                as={Link}
-                to="admin/manageusers"
-                onClick={() => clickTab(htab.ADMIN)}
-              >
-                Manage Users
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/auditlog">
-                Audit Log
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/errorlog">
-                Error Log
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/settings">
-                Settings
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/filedownload">
-                File Download
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/codeeditor">
-                Code Editor
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/loaderstats">
-                Loader Statistics
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/watchlistcats">
-                Watchlist Categories
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/notetypecats">
-                Note Type Categories
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/signuprequests">
-                Sign Up Requests
-              </NavDropdown.Item>
-            </NavDropdown>
-          </RoleAuthenticator>
-          <NavDropdown
-            title="Tools"
-            id="nav-dropdown"
-            className={`${getActiveClass(htab.TOOLS)}`}
-          >
-            <NavDropdown.Item as={Link} to="tools/queries">
-              <i className="fa fa-filter"></i> Queries
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item
+            <Nav.Link
               as={Link}
-              to="tools/rules"
-              onClick={() => clickTab(htab.TOOLS)}
+              to="admin"
+              className={`${getActiveClass(htab.ADMIN)}`}
+              onClick={() => clickTab(htab.ADMIN)}
             >
-              <i className="fa fa-flag"></i> Rules
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="tools/watchlist" onClick={() => clickTab("")}>
-              <i className="fa fa-eye"></i> Watchlist
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="tools/neo4j" onClick={() => clickTab("")}>
-              <i className="fa fa-filter"></i> Neo4J Browser
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="tools/about" onClick={() => clickTab("")}>
-              <i className="fa fa-info-circle"></i> About
-            </NavDropdown.Item>
-          </NavDropdown>
+              Admin
+            </Nav.Link>
+          </RoleAuthenticator>
+          <Nav.Link
+            as={Link}
+            to="tools"
+            className={`${getActiveClass(htab.TOOLS)}`}
+            onClick={() => clickTab(htab.TOOLS)}
+          >
+            Tools
+          </Nav.Link>
         </Nav>
         <Nav className="ml-auto">
           <Form inline>

@@ -62,6 +62,9 @@ const Queries = loadable(() =>
 const QRDetails = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/QRDetails")
 );
+const Tools = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/Tools")
+);
 const Neo4J = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/tools/neo4J/Neo4J")
 );
@@ -226,35 +229,96 @@ export default class App extends React.Component {
                     <Home path="/gtas">
                       <Page404 default></Page404>
                       <Redirect from="/gtas" to="/gtas/flights" noThrow />
+                      <Dashboard path="dashboard"></Dashboard>
                       <Flights path="flights"></Flights>
                       <FlightPax path="flightpax/:id"></FlightPax>
                       <PriorityVetting path="vetting"></PriorityVetting>
-                      <Dashboard path="dashboard"></Dashboard>
-                      <Rules path="tools/rules"></Rules>
-                      <Rules path="tools/rules/:mode"></Rules>
-                      <Queries path="tools/queries"></Queries>
-                      <QRDetails path="tools/qrdetails"></QRDetails>
-                      <Neo4J path="tools/neo4j"></Neo4J>
-                      <Redirect from="tools/watchlist" to="pax" noThrow />
-                      <Watchlist path="tools/watchlist/:mode"></Watchlist>
-                      <About path="tools/about"></About>
+                      <Tools path="tools">
+                        <Rules
+                          name="Rules"
+                          path="rules"
+                          desc="View or edit rules for generating hits"
+                          icon="fa-address-book-o"
+                        ></Rules>
+                        <Rules name="Rules" path="rules/:mode" hideTile></Rules>
+                        <Queries
+                          name="Queries"
+                          path="queries"
+                          desc="View or edit queries of system data"
+                          icon="fa-search"
+                        ></Queries>
+                        <QRDetails path="qrdetails" hideTile></QRDetails>
+                        <Neo4J
+                          name="Neo4j"
+                          path="neo4j"
+                          desc="Browse the Neo4j database"
+                          icon="fa-database"
+                        ></Neo4J>
+                        <Watchlist
+                          path="watchlist"
+                          name="Watchlist"
+                          desc="View or add passenger and document watchlists"
+                          icon="fa-user-secret"
+                        ></Watchlist>
+                        <Watchlist
+                          path="watchlist/:mode"
+                          name="Watchlist"
+                          hideTile
+                        ></Watchlist>
+                        <About
+                          name="About"
+                          path="about"
+                          desc="View system information details"
+                          icon="fa-info-circle"
+                        ></About>
+                      </Tools>
                       <ChangePassword path="user/change-password"></ChangePassword>
                       <Search path="search/:searchParam"></Search>
                       <ChangePassword path="user/change-password/:userId"></ChangePassword>
                       <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
                         <Admin path="/">
-                          <ManageUser name="Manage Users" path="manageusers"></ManageUser>
-                          <AuditLog name="Audit Log" path="auditlog"></AuditLog>
-                          <ErrorLog name="Error Log" path="errorlog"></ErrorLog>
-                          <Settings name="Settings" path="settings"></Settings>
+                          <ManageUser
+                            name="Manage Users"
+                            path="manageusers"
+                            desc="Manage user profiles and privileges"
+                            icon="fa-users"
+                          ></ManageUser>
+                          <SignUpRequests
+                            desc="Manage system access requests"
+                            icon="fa-user-plus"
+                            name="Sign Up Request"
+                            path="signuprequests"
+                          ></SignUpRequests>
+                          <AuditLog
+                            name="Audit Log"
+                            path="auditlog"
+                            desc="View the system audit log"
+                            icon="fa-question-circle"
+                          ></AuditLog>
+                          <ErrorLog
+                            name="Error Log"
+                            path="errorlog"
+                            desc="View the system error log"
+                            icon="fa-exclamation-triangle"
+                          ></ErrorLog>
+                          <Settings
+                            name="Settings"
+                            path="settings"
+                            desc="View or edit system settings"
+                            icon="fa-toggle-on"
+                          ></Settings>
                           <FileDownload
+                            desc="Download system log files"
+                            icon="fa-download"
                             name="File Download"
                             path="filedownload"
                           ></FileDownload>
                           <CodeEditor
+                            desc="View or edit Airport, Carrier, or Country codes"
+                            icon="fa-list-ul"
                             name="Code Editor"
-                            path="/codeeditor"
+                            path="codeeditor"
                             startTab="countries"
                           >
                             <Countries name="Countries" path="countries"></Countries>
@@ -262,21 +326,23 @@ export default class App extends React.Component {
                             <Carriers name="Carriers" path="carriers"></Carriers>
                           </CodeEditor>
                           <LoaderStats
+                            desc="View current message loading statistics"
+                            icon="fa-bar-chart"
                             name="Loader Statistics"
                             path="loaderstats"
                           ></LoaderStats>
                           <WatchlistCats
+                            desc="View or edit Watchlist categories"
+                            icon="fa-user-secret"
                             name="Watchlist Categories"
                             path="watchlistcats"
                           ></WatchlistCats>
                           <NoteTypeCats
+                            desc="View or edit Note Type categories"
+                            icon="fa-comment"
                             name="Note Type Categories"
                             path="notetypecats"
                           ></NoteTypeCats>
-                          <SignUpRequests
-                            name="Sign Up Request"
-                            path="signuprequests"
-                          ></SignUpRequests>
                         </Admin>
                       </RoleAuthenticator>
                       <PaxDetail path="paxDetail/:flightId/:paxId">
