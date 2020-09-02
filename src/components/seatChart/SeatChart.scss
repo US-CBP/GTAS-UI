@@ -1,0 +1,19 @@
+.seat-chart {
+  margin-top: 20px;
+  width: calc(100vw - 40px);
+  overflow: scroll;
+}
+.seat-chart .row {
+  flex-wrap: nowrap;
+  margin: 10px 0px;
+}
+
+.middle-rows {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.seat-info-display {
+  margin-top: 20px;
+  border-top: 1px solid rgb(185, 183, 183);
+}

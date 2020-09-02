@@ -10,8 +10,9 @@ const Modal = props => {
     style: "default"
   };
 
-  const submitText = props.submitText || "Submit";
-  const closeText = props.closeText || "Close";
+  const submitText = props.submittext || "Submit";
+  const closeText = props.closetext || "Close";
+
   return (
     <RBModal
       {...props}
@@ -34,9 +35,9 @@ const Modal = props => {
         <Button onClick={() => props.onHide(closeText)} variant="ternary">
           {closeText}
         </Button>
-        {props.submitText && (
+        {props.submittext && (
           <Button onClick={() => props.onHide(submitText)} variant="ternary">
-            {submitText}
+            {props.submittext}
           </Button>
         )}
       </RBModal.Footer>
