@@ -5,6 +5,7 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
 import { hasData, asArray } from "../../../utils/utils";
+import { ACTION } from "../../../utils/constants";
 
 const WLModal = props => {
   const TAB = { PAX: ["pax", "Passenger"], DOX: ["dox", "Document"] };
@@ -16,13 +17,14 @@ const WLModal = props => {
   const onFormChange = () => {};
 
   // Form submitted or closed
-  const onFormExit = (status, ev) => {
+  const onFormExit = (action, ev) => {
     //Currently the backend returns a success message or nothing.
     //Form inserts a message with status = "CANCELED", so the page will receive either
     // "SUCCESS", "CANCELED" or null. Need to standardize the return vals so we can pass
     // the error back to the users in the alert/modal whatever.
     // Here we will keep the modal form up if there's an error so the user can review the inputs.
-    if (hasData(ev)) props.onHide(ev.status);
+    const status = ev?.status;
+    if (hasData(status) || action === ACTION.CANCEL) props.onHide(status);
   };
 
   const categories = asArray(props.categories).map(item => {

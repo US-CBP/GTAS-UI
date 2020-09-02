@@ -140,11 +140,12 @@ const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
 const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
 const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
 const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
+const SEATS = `${BASE_URL}gtas/seats`;
 // ENTITY METHODS
 export const users = {
   get: {
-    getAll: (id,params) => get(USERS + "/", BASEHEADER, id, params),
-    getAllNonArchived: (id,params) => get(USERSNONARCHIVED, BASEHEADER, id, params)
+    getAll: (id, params) => get(USERS + "/", BASEHEADER, id, params),
+    getAllNonArchived: (id, params) => get(USERSNONARCHIVED, BASEHEADER, id, params)
   },
   put: body => {
     const id = body.userId;
@@ -408,7 +409,10 @@ export const logfile = {
 };
 
 export const changePassword = {
-  put: body => put(CHANGEPASSWORD, BASEHEADER, undefined, stringify(body))
+  byloggedInUser: body => put(CHANGEPASSWORD, BASEHEADER, undefined, stringify(body)),
+  byAdmin: (id, body) => {
+    return put(CHANGEPASSWORD, BASEHEADER, id, stringify(body));
+  }
 };
 
 export const signup = {
@@ -434,4 +438,8 @@ export const forgotPassword = {
 export const resetPassword = {
   post: body => post(RESETPASSWORD, SIGNUPHEADER, stringify(body)),
   isValidToken: token => get(RESETPASSWORD, SIGNUPHEADER, undefined, token)
+};
+
+export const seats = {
+  get: flightId => get(SEATS, BASEHEADER, flightId)
 };

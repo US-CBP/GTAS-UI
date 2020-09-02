@@ -1,45 +1,12 @@
 import React, { Suspense } from "react";
 import { Router, Redirect, navigate } from "@reach/router";
 import IdleTimer from "react-idle-timer";
-// import logo from './logo.svg';
-import Login from "./pages/login/Login";
-import Flights from "./pages/flights/Flights";
-import PriorityVetting from "./pages/vetting/Vetting";
-import Home from "./pages/home/Home";
+import loadable from "@loadable/component";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import "./App.css";
-import Dashboard from "./pages/dashboard/Dashboard";
-import PaxDetail from "./pages/paxDetail/PaxDetail";
-import Summary from "./pages/paxDetail/summary/Summary";
-import APIS from "./pages/paxDetail/apis/APIS";
-import PNR from "./pages/paxDetail/pnr/PNR";
-import FlightHistory from "./pages/paxDetail/flightHistory/FlightHistory";
-import FlightPax from "./pages/flightPax/FlightPax";
-import Admin from "./pages/admin/Admin";
-import ManageUser from "./pages/admin/manageUsers/ManageUsers";
 
-import FileDownload from "./pages/admin/fileDownload/FileDownload";
-import AuditLog from "./pages/admin/auditLog/AuditLog";
-import ErrorLog from "./pages/admin/errorLog/ErrorLog";
-import CodeEditor from "./pages/admin/codeEditor/CodeEditor";
-import Airports from "./pages/admin/codeEditor/airport/Airports";
-import Carriers from "./pages/admin/codeEditor/carrier/Carriers";
-import Countries from "./pages/admin/codeEditor/country/Countries";
-import LoaderStats from "./pages/admin/loaderStats/LoaderStats";
-import Settings from "./pages/admin/settings/Settings";
-import WatchlistCats from "./pages/admin/watchlistCats/WatchlistCats";
-import NoteTypeCats from "./pages/admin/noteTypeCats/NoteTypeCats";
-import QueryRules from "./pages/tools/queryrules/Rules";
-import Queries from "./pages/tools/queryrules/Queries";
-import QRDetails from "./pages/tools/queryrules/QRDetails";
-import Neo4J from "./pages/tools/neo4J/Neo4J";
-import Watchlist from "./pages/tools/watchlist/Watchlist";
-import About from "./pages/tools/about/About";
-import GModal from "./components/modal/GModal";
-
-import Page404 from "./pages/page404/Page404";
-import PageUnauthorized from "./pages/pageUnauthorized/PageUnauthorized";
 import ErrorBoundary from "./components/errorBoundary/ErrorBoundary";
 import Loading from "./components/loading/Loading";
 
@@ -48,15 +15,125 @@ import RoleAuthenticator from "./context/roleAuthenticator/RoleAuthenticator";
 import UserProvider from "./context/user/UserContext";
 
 import { ROLE, TIME } from "./utils/constants";
-import ChangePassword from "./pages/admin/manageUsers/changePassword/ChangePassword";
-import SignUp from "./pages/signUp/SignUp";
-import SignUpRequests from "./pages/admin/signUpRequests/SignUpRequests";
-import ResetPassword from "./pages/admin/manageUsers/changePassword/ResetPassword";
-import ForgotPassword from "./pages/admin/manageUsers/changePassword/ForgotPassword";
 
-//Split Link Analysis (Graph component, d3, jquery deps) into a separate bundle
-const LinkAnalysis = React.lazy(() =>
-  import("./pages/paxDetail/linkAnalysis/LinkAnalysis")
+//login bundle
+import Login from "./pages/login/Login";
+import SignUp from "./pages/signUp/SignUp";
+import ResetPassword from "./pages/login/ResetPassword";
+import ForgotPassword from "./pages/login/ForgotPassword";
+
+const Flights = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")
+);
+const PriorityVetting = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/vetting/Vetting")
+);
+const Home = loadable(() => import(/* webpackChunkName: "authed" */ "./pages/home/Home"));
+const Dashboard = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/dashboard/Dashboard")
+);
+const PaxDetail = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/PaxDetail")
+);
+const Summary = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/summary/Summary")
+);
+const APIS = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/apis/APIS")
+);
+const PNR = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/pnr/PNR")
+);
+const FlightHistory = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/flightHistory/FlightHistory")
+);
+const FlightPax = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/flightPax/FlightPax")
+);
+const LinkAnalysis = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/linkAnalysis/LinkAnalysis")
+);
+const Rules = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/Rules")
+);
+const Queries = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/Queries")
+);
+const QRDetails = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/QRDetails")
+);
+const Tools = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/Tools")
+);
+const Neo4J = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/neo4J/Neo4J")
+);
+const Watchlist = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/watchlist/Watchlist")
+);
+const About = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/about/About")
+);
+const GModal = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./components/modal/GModal")
+);
+const Page404 = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/page404/Page404")
+);
+const PageUnauthorized = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
+);
+const SeatChart = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
+);
+
+//Admin bundle imports
+const Admin = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/Admin")
+);
+const ManageUser = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/manageUsers/ManageUsers")
+);
+const FileDownload = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/fileDownload/FileDownload")
+);
+const AuditLog = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/auditLog/AuditLog")
+);
+const ErrorLog = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/errorLog/ErrorLog")
+);
+const CodeEditor = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/CodeEditor")
+);
+const Airports = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/airport/Airports")
+);
+const Carriers = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/carrier/Carriers")
+);
+const Countries = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/country/Countries")
+);
+const LoaderStats = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/loaderStats/LoaderStats")
+);
+const Settings = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/settings/Settings")
+);
+const WatchlistCats = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/watchlistCats/WatchlistCats")
+);
+const NoteTypeCats = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/noteTypeCats/NoteTypeCats")
+);
+const ChangePassword = loadable(() =>
+  import(
+    /* webpackChunkName: "admin" */ "./pages/admin/manageUsers/changePassword/ChangePassword"
+  )
+);
+const SignUpRequests = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/signUpRequests/SignUpRequests")
 );
 
 export default class App extends React.Component {
@@ -95,12 +172,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    // if (this.state.redirect) {
-    //   this.setState({ redirect: false });
-    //   // logout and ...
-    //   return <Redirect to="/login" />;
-    // }
-
     const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
 
     return (
@@ -158,28 +229,91 @@ export default class App extends React.Component {
                       <Flights path="flights"></Flights>
                       <FlightPax path="flightpax/:id"></FlightPax>
                       <PriorityVetting path="vetting"></PriorityVetting>
-                      <QueryRules path="tools/rules"></QueryRules>
-                      <QueryRules path="tools/rules/:mode"></QueryRules>
-                      <Queries path="tools/queries"></Queries>
-                      <QRDetails path="tools/qrdetails"></QRDetails>
-                      <Neo4J path="tools/neo4j"></Neo4J>
-                      <Redirect from="tools/watchlist" to="pax" noThrow />
-                      <Watchlist path="tools/watchlist/:mode"></Watchlist>
-                      <About path="tools/about"></About>
+                      <Tools path="tools">
+                        <Rules
+                          name="Rules"
+                          path="rules"
+                          desc="View or edit rules for generating hits"
+                          icon="fa-address-book-o"
+                        ></Rules>
+                        <Rules name="Rules" path="rules/:mode" hideTile></Rules>
+                        <Queries
+                          name="Queries"
+                          path="queries"
+                          desc="View or edit queries of system data"
+                          icon="fa-search"
+                        ></Queries>
+                        <QRDetails path="qrdetails" hideTile></QRDetails>
+                        <Neo4J
+                          name="Neo4j"
+                          path="neo4j"
+                          desc="Browse the Neo4j database"
+                          icon="fa-database"
+                        ></Neo4J>
+                        <Watchlist
+                          path="watchlist"
+                          name="Watchlist"
+                          desc="View or add passenger and document watchlists"
+                          icon="fa-user-secret"
+                        ></Watchlist>
+                        <Watchlist
+                          path="watchlist/:mode"
+                          name="Watchlist"
+                          hideTile
+                        ></Watchlist>
+                        <About
+                          name="About"
+                          path="about"
+                          desc="View system information details"
+                          icon="fa-info-circle"
+                        ></About>
+                      </Tools>
                       <ChangePassword path="user/change-password"></ChangePassword>
+                      <ChangePassword path="user/change-password/:userId"></ChangePassword>
+                      <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
                         <Admin path="/">
-                          <ManageUser name="Manage Users" path="manageusers"></ManageUser>
-                          <AuditLog name="Audit Log" path="auditlog"></AuditLog>
-                          <ErrorLog name="Error Log" path="errorlog"></ErrorLog>
-                          <Settings name="Settings" path="settings"></Settings>
+                          <ManageUser
+                            name="Manage Users"
+                            path="manageusers"
+                            desc="Manage user profiles and privileges"
+                            icon="fa-users"
+                          ></ManageUser>
+                          <SignUpRequests
+                            desc="Manage system access requests"
+                            icon="fa-user-plus"
+                            name="Sign Up Request"
+                            path="signuprequests"
+                          ></SignUpRequests>
+                          <AuditLog
+                            name="Audit Log"
+                            path="auditlog"
+                            desc="View the system audit log"
+                            icon="fa-question-circle"
+                          ></AuditLog>
+                          <ErrorLog
+                            name="Error Log"
+                            path="errorlog"
+                            desc="View the system error log"
+                            icon="fa-exclamation-triangle"
+                          ></ErrorLog>
+                          <Settings
+                            name="Settings"
+                            path="settings"
+                            desc="View or edit system settings"
+                            icon="fa-toggle-on"
+                          ></Settings>
                           <FileDownload
+                            desc="Download system log files"
+                            icon="fa-download"
                             name="File Download"
                             path="filedownload"
                           ></FileDownload>
                           <CodeEditor
+                            desc="View or edit Airport, Carrier, or Country codes"
+                            icon="fa-list-ul"
                             name="Code Editor"
-                            path="/codeeditor"
+                            path="codeeditor"
                             startTab="countries"
                           >
                             <Countries name="Countries" path="countries"></Countries>
@@ -187,21 +321,23 @@ export default class App extends React.Component {
                             <Carriers name="Carriers" path="carriers"></Carriers>
                           </CodeEditor>
                           <LoaderStats
+                            desc="View current message loading statistics"
+                            icon="fa-bar-chart"
                             name="Loader Statistics"
                             path="loaderstats"
                           ></LoaderStats>
                           <WatchlistCats
+                            desc="View or edit Watchlist categories"
+                            icon="fa-user-secret"
                             name="Watchlist Categories"
                             path="watchlistcats"
                           ></WatchlistCats>
                           <NoteTypeCats
+                            desc="View or edit Note Type categories"
+                            icon="fa-comment"
                             name="Note Type Categories"
                             path="notetypecats"
                           ></NoteTypeCats>
-                          <SignUpRequests
-                            name="Sign Up Request"
-                            path="signuprequests"
-                          ></SignUpRequests>
                         </Admin>
                       </RoleAuthenticator>
                       <PaxDetail path="paxDetail/:flightId/:paxId">
@@ -209,11 +345,7 @@ export default class App extends React.Component {
                         <APIS path="apis"></APIS>
                         <PNR path="pnr"></PNR>
                         <FlightHistory path="flighthistory"></FlightHistory>
-                        <ErrorBoundary>
-                          <Suspense fallback={<Loading></Loading>}>
-                            <LinkAnalysis path="linkanalysis"></LinkAnalysis>
-                          </Suspense>
-                        </ErrorBoundary>
+                        <LinkAnalysis path="linkanalysis"></LinkAnalysis>
                       </PaxDetail>
                       <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
                     </Home>

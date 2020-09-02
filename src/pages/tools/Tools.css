@@ -1,0 +1,31 @@
+.page-tiles {
+  min-width: 300px;
+  max-width: 300px;
+  width: 300px;
+  margin: 10px;
+  min-height: 125px;
+  border: 1px solid #98b4c7;
+}
+
+.page-deck {
+  margin: 20px;
+  justify-content: center;
+}
+
+.page-card-link {
+  color: black;
+}
+
+.page-card-link:hover {
+  text-decoration: underline;
+}
+
+.nowrap {
+  white-space: nowrap !important;
+}
+
+.page-card-link > .fa {
+  border: 1px solid #0077c8;
+  border-radius: 3px;
+  padding: 2px;
+}
