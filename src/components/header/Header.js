@@ -59,7 +59,6 @@ const Header = () => {
     if (hasData(searchParam)) {
       navigate(`/gtas/search/${searchParam}`);
     }
-    console.log(searchInputRef.current.value);
   };
 
   return (
