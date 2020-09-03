@@ -8,6 +8,7 @@ const PUT = "put";
 const AJSON = "application/json, text/plain, */*";
 const JSONUTF8 = "application/json;charset=UTF-8";
 const FORM = "application/x-www-form-urlencoded";
+const FILEFORM = "multipart-file/form-data";
 
 const LOGINHEADER = {
   "X-Login-Ajax-call": "true",
@@ -24,6 +25,7 @@ const SIGNUPHEADER = {
 };
 
 const BASEHEADER = { "Content-Type": JSONUTF8, Accept: AJSON };
+const FILEHEADER = {"Content-Type": FILEFORM, Accept: AJSON};
 const PUTBODY = "The put method requires a valid body parameter.";
 const POSTBODY = "The post method requires a valid body or data parameter.";
 const PUTID = "The put method requires a valid id parameter.";
@@ -141,6 +143,8 @@ const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
 const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
 const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 const SEATS = `${BASE_URL}gtas/seats`;
+const UPLOADATTACHMENT = `${BASE_URL}gtas/uploadattachments`;
+const GETATTACHMENTS = `${BASE_URL}gtas/getattachments`;
 // ENTITY METHODS
 export const users = {
   get: {
@@ -296,6 +300,14 @@ export const codeEditor = {
     deleteAirport: id => del(CODES_AIRPORT, BASEHEADER, id)
   }
 };
+
+export const attachment = {
+  get: (paxId) => {
+    const path = GETATTACHMENTS+`?paxId=${paxId}`;
+    return get(path, BASEHEADER);
+  },
+  post: body => post(UPLOADATTACHMENT, "", body)
+}
 
 export const login = {
   post: body => {

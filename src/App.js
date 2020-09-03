@@ -86,6 +86,9 @@ const PageUnauthorized = loadable(() =>
 const SeatChart = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
 );
+const UploadAttachment = loadable(() =>
+    import(/* webpackChunkName: "authed" */ "./pages/paxDetail/uploadAttachment/UploadAttachment")
+);
 
 //Admin bundle imports
 const Admin = loadable(() =>
@@ -346,6 +349,7 @@ export default class App extends React.Component {
                         <PNR path="pnr"></PNR>
                         <FlightHistory path="flighthistory"></FlightHistory>
                         <LinkAnalysis path="linkanalysis"></LinkAnalysis>
+                        <UploadAttachment path="uploadattachment"></UploadAttachment>
                       </PaxDetail>
                       <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
                     </Home>
