@@ -57,6 +57,8 @@ const importRule = raw => {
   };
 
   rule.children1 = children1;
+  console.log("IMPORTING RULE", raw, rule);
+
   return rule;
 };
 
@@ -81,6 +83,7 @@ const exportGroup = (raw, isFirstLevel) => {
 };
 
 const exportRule = raw => {
+  console.log("EXPORTING RULE", raw);
   let terms = {};
 
   try {
@@ -109,6 +112,7 @@ const exportRule = raw => {
 };
 
 // convert value representations to and from the raqb object and the queryobject
+// TODO: refac, maybe restructure with a map of functions so we can drop the if statements.
 const getValue = (type, val, isImporting = true) => {
   let convertedVal = val;
   if (type === "boolean") {
@@ -123,6 +127,7 @@ const getValue = (type, val, isImporting = true) => {
     convertedVal = convertedVal[0];
   }
 
+  // console.log("value translated from ", val, convertedVal);
   return convertedVal;
 };
 
@@ -147,9 +152,9 @@ const isMultivalueOperator = op => {
     // "multiselect_equals",
     // "multiselect_not_equals",
     "any_in",
-    "any_not_in",
-    "in",
-    "not_in"
+    "any_not_in"
+    // "in",
+    // "not_in"
   ];
   return multivalueOperators.includes(op);
 };

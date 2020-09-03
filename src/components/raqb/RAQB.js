@@ -6,20 +6,62 @@ import {
   Utils as QbUtils
 } from "react-awesome-query-builder";
 import "react-awesome-query-builder/lib/css/styles.css";
-import { fieldConfig } from "./constants";
+import { fieldConfig, testOp } from "./constants";
 import { importToTreeObject, exportToQueryObject } from "./utils";
 
-const InitialConfig = BasicConfig;
+const additionalOperators = [
+  "equal",
+  "not_equal",
+  "is_empty",
+  "is_not_empty",
+  "like",
+  "not_like",
+  "starts_with",
+  "not_starts_with",
+  "not_ends_with",
+  "ends_with",
+  "in",
+  "not_in"
+];
 
-const initconfig = {
-  ...InitialConfig,
-  ...fieldConfig
-};
+let initconfig = { ...BasicConfig, ...fieldConfig };
+initconfig.operators = { ...initconfig.operators, ...testOp };
+
+// initconfig.types.text.widgets.text.operators = {
+//   ...initconfig.types.text.widgets.text.operators,
+//   ...additionalOperators
+// };
+
+console.log(initconfig);
+
+// const types = {
+//   text: {
+//     defaultOperator: "equal",
+//     widgets: {
+//       text: {
+// operators: [
+//   "equal",
+//   "not_equal",
+//   "is_empty",
+//   "is_not_empty",
+//   "like",
+//   "not_like",
+//   "starts_with",
+//   "not_starts_with",
+//   "not_ends_with",
+//   "ends_with",
+//   "in",
+//   "not_in"
+// ];
+
+//         }}}}
 
 const queryValue = { id: QbUtils.uuid(), type: "group" };
 
 const RAQB = props => {
   const convertedInput = props.data ? importToTreeObject(props.data) : queryValue;
+  console.log(convertedInput);
+
   const inputTree = QbUtils.checkTree(QbUtils.loadTree(convertedInput), initconfig);
   const [tree, setTree] = useState(inputTree);
   const [config, setConfig] = useState(initconfig);
@@ -41,10 +83,13 @@ const RAQB = props => {
     </div>
   );
 
-  const onChange = (immutableTree, config) => {
+  const onChange = (immutableTree, cfg) => {
     setTree(immutableTree);
-    setConfig(config);
-    const exportedObj = exportToQueryObject(QbUtils.getTree(immutableTree, config), true);
+    setConfig(cfg);
+    const exportedObj = exportToQueryObject(QbUtils.getTree(immutableTree, cfg), true);
+
+    console.log(exportedObj);
+    console.log(config, cfg);
     props.dataCallback(exportedObj);
   };
 

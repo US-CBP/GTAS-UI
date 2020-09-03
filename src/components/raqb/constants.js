@@ -1,11 +1,90 @@
+export const testOp = {
+  in: {
+    label: "In",
+    labelForFormat: "In",
+    sqlOp: "IN",
+    formatOp: (
+      field,
+      op,
+      value,
+      valueSrcs,
+      valueTypes,
+      opDef,
+      operatorOptions,
+      isForDisplay,
+      fieldDef
+    ) => {
+      // if (valueTypes === "boolean" && isForDisplay)
+      //   return value === "No" ? `IN ${field}` : `${field}`;
+      console.log(`${field} ${opDef.label} ${value}`);
+      return `${field} ${opDef.label} ${value}`;
+    },
+    sqlFormatOp: (field, op, values, valueSrc) => {
+      return valueSrc === "value" ? `${field} IN ${values}` : `${field} IN ${values}`;
+    },
+    jsonLogic: undefined, // not supported
+    valueSources: ["value"]
+  },
+  // not_starts_with: {
+  //   label: "Doesnt start with",
+  //   labelForFormat: "Doesnt start with",
+  //   sqlOp: "LIKE",
+  //   sqlFormatOp: (field, op, values, valueSrc, valueType, opDef, operatorOptions) => {
+  //     // if (valueSrc === "value") {
+  //     return `${field}  LIKE ${values}`;
+  //     // } else return undefined;
+  //   },
+  //   jsonLogic: undefined,
+  //   valueSources: ["value"]
+  // }
+  not_starts_with: {
+    label: "Starts with",
+    labelForFormat: "Starts with",
+    cardinality: 1,
+    sqlOp: "LIKE",
+    sqlFormatOp: (field, op, values, valueSrc, valueType, opDef, operatorOptions) => {
+      // if (valueSrc === "value") {
+      return `${field} LIKE ${values}`;
+      // } else return undefined; // not supported
+    },
+    mongoFormatOp: (field, op, value) => ({ [field]: { $eq: value } }),
+    jsonLogic: undefined, // not supported
+    valueSources: ["value"]
+  }
+};
+
+const txtops = [
+  "equal",
+  "not_equal",
+  "like",
+  "in",
+  "not_in",
+  "not_like",
+  "starts_with",
+  "not_starts_with",
+  "ends_with",
+  // "not_ends_with",
+  "is_empty",
+  "is_not_empty"
+];
+
 const txtProps = {
   type: "text",
   excludeOperators: ["proximity"],
+  operators: txtops,
   valueSources: ["value"]
 };
+
 const txtProps2 = {
   type: "text",
   excludeOperators: ["proximity", "is_empty", "is_not_empty"],
+  operators: txtops,
+  valueSources: ["value"]
+};
+
+const TXTOPSPROPS = {
+  type: "text",
+  operators: txtops,
   valueSources: ["value"]
 };
 
@@ -37,7 +116,10 @@ export const FIELDSINT = {
 
   agencyFields: {
     country: { label: "Country", ...txtProps },
-    identifier: { label: "Identifier", ...txtProps },
+    identifier: {
+      label: "Identifier",
+      ...txtProps
+    },
     location: { label: "Location", ...txtProps },
     name: { label: "Name", ...txtProps },
     city: { label: "City", ...txtProps },
@@ -313,6 +395,7 @@ export const operatorMap = {
   IS_NULL: "is_empty",
   NOT_IS_NULL: "is_not_empty",
   BEGINS_WITH: "starts_with",
+  NOT_BEGINS_WITH: "not_starts_with",
   ENDS_WITH: "ends_with",
   BETWEEN: "between",
   NOT_BETWEEN: "not_between",
@@ -325,6 +408,8 @@ export const operatorMap = {
 
   to_select_any_in: "select_any_in", // force "select_equals" on incoming raw obj
 
+  in: "IN",
+  not_in: "NOT_IN",
   equal: "EQUAL",
   select_equals: "EQUAL",
   select_any_in: "IN",
@@ -336,6 +421,7 @@ export const operatorMap = {
   is_empty: "IS_NULL",
   is_not_empty: "NOT_IS_NULL",
   starts_with: "BEGINS_WITH",
+  not_starts_with: "NOT_BEGINS_WITH",
   ends_with: "ENDS_WITH",
   between: "BETWEEN",
   not_between: "NOT_BETWEEN",
