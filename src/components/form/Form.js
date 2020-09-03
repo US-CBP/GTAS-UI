@@ -8,7 +8,7 @@ import { navigate } from "@reach/router";
 
 import { ACTION } from "../../utils/constants";
 import "./Form.css";
-import Confirm from "../../pages/confirmationModal/Confirm";
+import Confirm from "../confirmationModal/Confirm";
 
 /**
  * **Generic form that can add a new record or fetch and edit an existing one.**

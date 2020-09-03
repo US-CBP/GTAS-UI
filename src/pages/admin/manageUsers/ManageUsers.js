@@ -9,7 +9,7 @@ import { ACTION } from "../../../utils/constants";
 import "./ManageUsers.scss";
 import UserModal from "./UserModal";
 import { navigate } from "@reach/router";
-import Confirm from "../../confirmationModal/Confirm";
+import Confirm from "../../../components/confirmationModal/Confirm";
 
 const ManageUsers = props => {
   const [data, setData] = useState([]);
