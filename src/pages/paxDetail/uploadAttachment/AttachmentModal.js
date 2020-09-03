@@ -18,9 +18,10 @@ const AttachmentModal = props => {
     };
 
     const getAttachments = () => {
+        const CarouselCollection = [];
         attachment.get(props.paxId).then(res => {
-            const imageSource = `data:image/jpeg;base64,${res[0].content}`;
-            const CarouselCollection = [];
+            res.map(img => {
+            const imageSource = `data:image/jpeg;base64,${img.content}`;
             const CarouselItem =
                 <Carousel.Item>
                     <img
@@ -29,15 +30,16 @@ const AttachmentModal = props => {
                         alt="First slide"
                     />
                     <Carousel.Caption>
-                        <h3>First slide label</h3>
-                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        <h3>{img.filename}</h3>
+                        <p>{img.description}</p>
                     </Carousel.Caption>
                 </Carousel.Item>;
             CarouselCollection.push(CarouselItem);
             setCarouselItems(CarouselCollection)
             setShow(true);
-            console.log(res[0]);
-        });
+            console.log(img);
+            }); //map
+        }); //request
     };
 
     return (
