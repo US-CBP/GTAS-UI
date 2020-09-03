@@ -87,6 +87,10 @@ const SeatChart = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
 );
 
+const Search = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/search/Search")
+);
+
 //Admin bundle imports
 const Admin = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/admin/Admin")
@@ -269,6 +273,7 @@ export default class App extends React.Component {
                         ></About>
                       </Tools>
                       <ChangePassword path="user/change-password"></ChangePassword>
+                      <Search path="search/:searchParam"></Search>
                       <ChangePassword path="user/change-password/:userId"></ChangePassword>
                       <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
                       <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
