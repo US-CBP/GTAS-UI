@@ -9,7 +9,7 @@ import { ACTION } from "../../../utils/constants";
 import "./ManageUsers.scss";
 import UserModal from "./UserModal";
 import { navigate } from "@reach/router";
-import ConfirmationModal from "../../confirmationModal/ConfirmationModal";
+import Confirm from "../../confirmationModal/Confirm";
 
 const ManageUsers = props => {
   const [data, setData] = useState([]);
@@ -18,7 +18,6 @@ const ManageUsers = props => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("Add New User");
   const [editRowDetails, setEditRowDetails] = useState({});
-  const [showConfirmationModal, setShowconfirmationModal] = useState(false);
 
   const cb = function(status = ACTION.CLOSE, result) {
     if (status !== ACTION.CLOSE && status !== ACTION.CANCEL) fetchData();
@@ -35,12 +34,10 @@ const ManageUsers = props => {
     navigate(`/gtas/user/change-password/${userId}`);
   };
 
-  const deleteUser = () => {
-    users.del(editRowDetails.userId).then(res => {
+  const deleteUser = rowDetails => {
+    users.del(rowDetails.userId).then(res => {
       cb(ACTION.DELETE, res);
     });
-
-    setShowconfirmationModal(false);
   };
 
   const headers = [
@@ -59,15 +56,21 @@ const ManageUsers = props => {
               >
                 Change Password
               </Dropdown.Item>
-              <Dropdown.Item
-                as="button"
-                onClick={() => {
-                  setEditRowDetails(row.original);
-                  setShowconfirmationModal(true);
-                }}
+              <Confirm
+                header="Confirm User Deletion"
+                message={`Please confirm to delete a user with userId: ${row.original.userId}`}
               >
-                Delete User
-              </Dropdown.Item>
+                {confirm => (
+                  <Dropdown.Item
+                    as="button"
+                    onClick={confirm(() => {
+                      deleteUser(row.original);
+                    })}
+                  >
+                    Delete User
+                  </Dropdown.Item>
+                )}
+              </Confirm>
             </DropdownButton>
           </div>
         );
@@ -186,14 +189,6 @@ const ManageUsers = props => {
           title={modalTitle}
           editRowDetails={editRowDetails}
         />
-        <ConfirmationModal
-          show={showConfirmationModal}
-          onHide={() => setShowconfirmationModal(false)}
-          onConfirm={deleteUser}
-          onCancel={() => setShowconfirmationModal(false)}
-        >
-          <p>Please confirm to delete a user with userId: {editRowDetails?.userId}</p>
-        </ConfirmationModal>
       </Container>
     </>
   );

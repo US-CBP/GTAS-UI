@@ -21,6 +21,7 @@ const Settings = ({ name }) => {
             callback={onChange}
             title=""
             action="edit"
+            shouldConfirm={true}
           >
             <LabelledInput
               datafield
