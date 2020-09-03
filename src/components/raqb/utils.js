@@ -118,6 +118,11 @@ const getValue = (type, val, isImporting = true) => {
   if (type === "number") convertedVal = val.map(item => +item);
 
   if (type === "multiselect") convertedVal = [convertedVal];
+
+  if (!isImporting && Array.isArray(convertedVal) && Array.isArray(convertedVal[0])) {
+    convertedVal = convertedVal[0];
+  }
+
   return convertedVal;
 };
 
@@ -138,9 +143,9 @@ const isMultivalueOperator = op => {
     "not_between",
     "between",
     // "select_any_in",
-    "select_any_not_in",
-    "multiselect_equals",
-    "multiselect_not_equals",
+    // "select_any_not_in",
+    // "multiselect_equals",
+    // "multiselect_not_equals",
     "any_in",
     "any_not_in",
     "in",
