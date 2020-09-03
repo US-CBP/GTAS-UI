@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Title from "../../components/title/Title";
 import Table from "../../components/table/Table";
 import { search } from "../../services/serviceWrapper";
-import { hasData } from "../../utils/utils";
+import { hasData, localeDate } from "../../utils/utils";
 import { Container } from "react-bootstrap";
 import { useParams } from "@reach/router";
 
@@ -37,15 +37,18 @@ const Search = props => {
     },
     {
       Accessor: "etd",
-      Header: "ETD"
+      Header: "ETD",
+      Cell: ({ row }) => localeDate(row.original.eta)
     },
     {
       Accessor: "eta",
-      Header: "ETA"
+      Header: "ETA",
+      Cell: ({ row }) => localeDate(row.original.eta)
     }
   ];
 
-  const params = `?pageNumber=1&pageSize=500&column=_score&dir=des&query=${searchParam}`;
+  const pageSize = 500;
+  const params = `?pageNumber=1&pageSize=${pageSize}&column=_score&dir=des&query=${searchParam}`;
 
   useEffect(() => {
     search.passengers(params).then(res => {
