@@ -27,6 +27,8 @@ const Airports = ({ name }) => {
   const headers = [
     {
       Accessor: "Edit",
+      disableFilters: true,
+      disableSortBy: true,
       Cell: ({ row }) => {
         return (
           <div className="icon-col">
@@ -90,6 +92,7 @@ const Airports = ({ name }) => {
         callback={cb}
         header={headers}
         key={refreshKey}
+        enableColumnFilter={true}
       ></Table>
     </Container>
   );

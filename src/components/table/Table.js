@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import { hasData, titleCase, asArray, altObj, isObject } from "../../utils/utils";
-import { useTable, usePagination, useSortBy } from "react-table";
+import { useTable, usePagination, useSortBy, useFilters } from "react-table";
 import { navigate } from "@reach/router";
 // import { withTranslation } from 'react-i18next';
 // import Xl8 from '../xl8/Xl8';
@@ -17,14 +17,48 @@ const Table = props => {
   const [columns, setColumns] = useState([]);
   const [rowcount, setRowcount] = useState("");
   const stateVals = props.hasOwnProperty("stateVals") ? altObj(props.stateVals()) : {};
-
+  const [displayColumnFilter, setDisplayColumnFilter] = useState(false);
   useEffect(() => {
     validateProps();
     if (!Array.isArray(props.data)) getData();
     else parseData(props.data);
   }, []);
 
+  function ColumnFilter({ column: { filterValue, setFilter } }) {
+    return (
+      <input
+        className="table-filter-form"
+        value={filterValue || ""}
+        onChange={e => {
+          setFilter(e.target.value || undefined);
+        }}
+      />
+    );
+  }
+
+  function BooleanFilter({ column: { filterValue, setFilter } }) {
+    return (
+      <select
+        className="table-filter-form"
+        value={filterValue}
+        onChange={e => {
+          setFilter(e.target.value || undefined);
+        }}
+      >
+        <option value="">All</option>
+        <option value={1}>True</option>
+        <option value={0}>False</option>
+      </select>
+    );
+  }
+
   const RTable = ({ columns, data }) => {
+    const defaultColumn = React.useMemo(
+      () => ({
+        Filter: ColumnFilter
+      }),
+      []
+    );
     const {
       getTableProps,
       getTableBodyProps,
@@ -44,12 +78,14 @@ const Table = props => {
       {
         columns,
         data,
+        defaultColumn,
         initialState: {
           pageIndex: stateVals.pageIndex || 0,
           pageSize: stateVals.pageSize || 25,
           sortBy: stateVals.sortBy || []
         }
       },
+      useFilters,
       useSortBy,
       usePagination
     );
@@ -99,20 +135,36 @@ const Table = props => {
         <div className="table-main">
           <RBTable {...getTableProps()} striped bordered hover>
             <thead>
-              {headerGroups.map(headerGroup => {
+              {headerGroups.map((headerGroup, index) => {
                 return (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(column => {
-                      return (
-                        <th
-                          className="table-header"
-                          {...column.getHeaderProps(column.getSortByToggleProps())}
-                        >
-                          {`${column.render("Header")} `} {sortIcon(column)}
-                        </th>
-                      );
-                    })}
-                  </tr>
+                  <Fragment key={index}>
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map(column => {
+                        return (
+                          <th
+                            className="table-header"
+                            {...column.getHeaderProps(column.getSortByToggleProps())}
+                          >
+                            {`${column.render("Header")} `}{" "}
+                            {column.canSort ? sortIcon(column) : ""}
+                          </th>
+                        );
+                      })}
+                    </tr>
+                    {props.enableColumnFilter && displayColumnFilter ? (
+                      <tr>
+                        {headerGroup.headers.map(column => {
+                          return (
+                            <th className="table-header" key={column.id}>
+                              <div>
+                                {column.canFilter ? column.render("Filter") : null}
+                              </div>
+                            </th>
+                          );
+                        })}
+                      </tr>
+                    ) : null}
+                  </Fragment>
                 );
               })}
             </thead>
@@ -244,13 +296,11 @@ const Table = props => {
     let dataArray = asArray(data);
     const isPopulated = hasData(dataArray);
     const sdata = isPopulated ? dataArray : noDataObj;
-
     const sheader = isPopulated
       ? hasData(header)
         ? header
         : Object.keys(dataArray[0])
       : [props.id];
-
     let columns = [];
 
     (sheader || []).forEach(element => {
@@ -266,16 +316,24 @@ const Table = props => {
       if (!(props.ignoredFields || []).includes(acc)) {
         // const title = titleCase(xl8Title || element.Header || acc);
         const title = titleCase(element.Header || acc);
-        let cellconfig = { Header: title, accessor: acc };
+        let cellconfig = {
+          Header: title,
+          accessor: acc,
+          disableFilters: element.disableFilters,
+          disableSortBy: element.disableSortBy
+        };
 
         if (element.Cell !== undefined) {
           cellconfig.Cell = element.Cell;
+        }
+        if (element.isBoolean) {
+          cellconfig.Filter = BooleanFilter;
         }
 
         columns.push(cellconfig);
       }
     });
-
+    setDisplayColumnFilter(isPopulated);
     setData(sdata);
     setHeader(sheader);
     setColumns(columns);
@@ -331,7 +389,8 @@ Table.propTypes = {
   style: PropTypes.string,
   stateCb: PropTypes.func,
   stateVals: PropTypes.func,
-  ignoredFields: PropTypes.arrayOf(PropTypes.string)
+  ignoredFields: PropTypes.arrayOf(PropTypes.string),
+  enableColumnFilter: PropTypes.bool
 };
 
 // export default withTranslation()(Table);

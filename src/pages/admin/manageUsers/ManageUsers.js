@@ -36,6 +36,8 @@ const ManageUsers = props => {
   const headers = [
     {
       Accessor: "Edit",
+      disableFilters: true,
+      disableSortBy: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center edit-user">
@@ -56,6 +58,7 @@ const ManageUsers = props => {
     },
     {
       Accessor: "active",
+      isBoolean: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center">
@@ -74,6 +77,7 @@ const ManageUsers = props => {
     { Accessor: "email" },
     {
       Accessor: "emailEnabledInt",
+      isBoolean: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center">
@@ -88,6 +92,7 @@ const ManageUsers = props => {
     },
     {
       Accessor: "highPriorityEmailInt",
+      isBoolean: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center">
@@ -158,6 +163,7 @@ const ManageUsers = props => {
           callback={cb}
           key={refreshKey}
           header={headers}
+          enableColumnFilter={true}
         ></Table>
         <UserModal
           show={showModal}
