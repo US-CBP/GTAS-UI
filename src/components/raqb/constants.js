@@ -3,6 +3,11 @@ const txtProps = {
   excludeOperators: ["proximity"],
   valueSources: ["value"]
 };
+const txtProps2 = {
+  type: "text",
+  excludeOperators: ["proximity", "is_empty", "is_not_empty"],
+  valueSources: ["value"]
+};
 
 const numProps = { type: "number", fieldSettings: { min: 0 }, valueSources: ["value"] };
 const dateProps = { type: "date", valueSources: ["value"] };
@@ -21,7 +26,7 @@ export const QB = {
 
 export const FIELDSINT = {
   addressFields: {
-    city: { label: "City", ...txtProps },
+    city: { label: "City", ...txtProps2 },
     country: { label: "Country", ...txtProps },
     line1: { label: "Line 1", ...txtProps },
     line2: { label: "Line 2", ...txtProps },
@@ -315,15 +320,16 @@ export const operatorMap = {
   GREATER_OR_EQUAL: "greater_or_equal",
   LESS: "less",
   LESS_OR_EQUAL: "less_or_equal",
-  IN: "any_in",
-  NOT_IN: "select_not_any_in",
+  IN: "multiselect_equals",
+  NOT_IN: "multiselect_not_equals",
 
   to_select_any_in: "select_any_in", // force "select_equals" on incoming raw obj
 
   equal: "EQUAL",
   select_equals: "EQUAL",
   select_any_in: "IN",
-  select_not_any_in: "NOT_IN",
+  multiselect_equals: "IN",
+  multiselect_not_equals: "NOT_IN",
   not_equal: "NOT_EQUAL",
   like: "CONTAINS",
   not_like: "NOT_CONTAINS",

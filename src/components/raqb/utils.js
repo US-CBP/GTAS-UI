@@ -39,6 +39,7 @@ const importRule = raw => {
   const op = operatorMap[types?.operator || raw.operator];
   const type = valueTypeMap[types?.type] || "NOT_FOUND";
   const value = getValue(type, raw.value);
+
   let rule = {};
   let children1 = {};
 
@@ -54,11 +55,6 @@ const importRule = raw => {
       valueType: isMultivalueOperator(op) ? [type, type] : [type]
     }
   };
-
-  if (op === "not_between") {
-    // console.log("RAW, TYPES, TYPE, VALUE OP, CHILDREN1");
-    // console.log(raw, types, type, value, op, children1);
-  }
 
   rule.children1 = children1;
   return rule;
@@ -77,7 +73,7 @@ const exportGroup = (raw, isFirstLevel) => {
   const rulesMap = new Map(Object.entries(raw.children1));
 
   group[QB.CLASS] = isFirstLevel ? QB.QOTYPEFULL : QB.QUERYOBJECT;
-  group.condition = raw.properties?.conjunction || QB.ALL; // the raqb component leaves the conjunction null when there's only a single clause
+  group.condition = raw.properties?.conjunction || QB.AND; // the raqb component leaves the conjunction null when there's only a single clause
   group.rules = [];
   rulesMap.forEach(rule => group.rules.push(exportToQueryObject(rule)));
 
@@ -121,6 +117,7 @@ const getValue = (type, val, isImporting = true) => {
 
   if (type === "number") convertedVal = val.map(item => +item);
 
+  if (type === "multiselect") convertedVal = [convertedVal];
   return convertedVal;
 };
 
@@ -140,8 +137,10 @@ const isMultivalueOperator = op => {
   const multivalueOperators = [
     "not_between",
     "between",
-    "select_any_in",
+    // "select_any_in",
     "select_any_not_in",
+    "multiselect_equals",
+    "multiselect_not_equals",
     "any_in",
     "any_not_in",
     "in",
