@@ -138,11 +138,11 @@ const QRModal = props => {
         show={props.show}
         onHide={props.onHide}
         size="md"
-        // aria-labelledby="contained-modal-title-vcenter"
+        aria-labelledby="contained-modal-title-vcenter"
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title key="">{`${props.title}: ${title || ""}`}</Modal.Title>
+          <Modal.Title>{`${props.title}: ${title || ""}`}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="qbrb-modal-body">
           <Container fluid>

@@ -6,7 +6,8 @@ import {
   Utils as QbUtils
 } from "react-awesome-query-builder";
 import "react-awesome-query-builder/lib/css/styles.css";
-import { fieldConfig, testOp } from "./constants";
+import { fieldConfig } from "./constants";
+import { operators } from "./config";
 import { importToTreeObject, exportToQueryObject } from "./utils";
 
 const additionalOperators = [
@@ -25,8 +26,7 @@ const additionalOperators = [
 ];
 
 let initconfig = { ...BasicConfig, ...fieldConfig };
-initconfig.operators = { ...initconfig.operators, ...testOp };
-
+initconfig.operators = { ...operators };
 initconfig.types.text.widgets.text.operators = additionalOperators;
 
 const queryValue = {

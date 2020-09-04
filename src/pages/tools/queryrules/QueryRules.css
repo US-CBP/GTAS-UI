@@ -26,6 +26,7 @@
 
 .qrm > .space-between {
   width: 45%;
+  justify-content: flex-start;
 }
 
 /* RAQB */
