@@ -20,6 +20,27 @@ export const testOp = {
     jsonLogic: undefined,
     valueSources: ["value"]
   },
+  not_in: {
+    label: "Not In",
+    labelForFormat: "Not In",
+    sqlOp: "NOT IN",
+    formatOp: (
+      field,
+      op,
+      value,
+      valueSrcs,
+      valueTypes,
+      opDef,
+      operatorOptions,
+      isForDisplay,
+      fieldDef
+    ) => `${field} ${opDef.label} ${value}`,
+    sqlFormatOp: (field, op, values, valueSrc) => {
+      return `${field} NOT IN ${values}`;
+    },
+    jsonLogic: undefined,
+    valueSources: ["value"]
+  },
   not_ends_with: {
     label: "Doesn't end with",
     labelForFormat: "Doesn't end with",
@@ -54,27 +75,32 @@ const txtops = [
   "is_not_empty"
 ];
 
+const dateops = [
+  "equal",
+  "not_equal",
+  "less",
+  "less_or_equal",
+  "greater",
+  "greater_or_equal",
+  "between",
+  "not_between"
+];
+const txtNullops = [...txtops, "is_empty", "is_not_empty"];
+
 const txtProps = {
   type: "text",
   operators: txtops,
   valueSources: ["value"]
 };
 
-const txtProps2 = {
+const txtNullProps = {
   type: "text",
-  excludeOperators: ["proximity", "is_empty", "is_not_empty"],
-  operators: txtops,
-  valueSources: ["value"]
-};
-
-const TXTOPSPROPS = {
-  type: "text",
-  operators: txtops,
+  operators: txtNullops,
   valueSources: ["value"]
 };
 
 const numProps = { type: "number", fieldSettings: { min: 0 }, valueSources: ["value"] };
-const dateProps = { type: "date", valueSources: ["value"] };
+const dateProps = { type: "date", operators: dateops, valueSources: ["value"] };
 
 export const QB = {
   QOTYPEFULL: "gov.gtas.model.udr.json.QueryObject",
@@ -90,7 +116,7 @@ export const QB = {
 
 export const FIELDSINT = {
   addressFields: {
-    city: { label: "City", ...txtProps2 },
+    city: { label: "City", ...txtProps },
     country: { label: "Country", ...txtProps },
     line1: { label: "Line 1", ...txtProps },
     line2: { label: "Line 2", ...txtProps },
