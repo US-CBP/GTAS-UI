@@ -29,33 +29,19 @@ initconfig.operators = { ...initconfig.operators, ...testOp };
 
 initconfig.types.text.widgets.text.operators = additionalOperators;
 
-// const types = {
-//   text: {
-//     defaultOperator: "equal",
-//     widgets: {
-//       text: {
-// operators: [
-//   "equal",
-//   "not_equal",
-//   "is_empty",
-//   "is_not_empty",
-//   "like",
-//   "not_like",
-//   "starts_with",
-//   "not_starts_with",
-//   "not_ends_with",
-//   "ends_with",
-//   "in",
-//   "not_in"
-// ];
-
-//         }}}}
-
-const queryValue = { id: QbUtils.uuid(), type: "group" };
+const queryValue = {
+  id: QbUtils.uuid(),
+  type: "group",
+  children1: {
+    "bbb8abb8-cdef-4012-b456-71745accffac": {
+      type: "rule",
+      properties: { field: null, operator: null, value: [], valueSrc: [] }
+    }
+  }
+};
 
 const RAQB = props => {
   const convertedInput = props.data ? importToTreeObject(props.data) : queryValue;
-
   const inputTree = QbUtils.checkTree(QbUtils.loadTree(convertedInput), initconfig);
   const [tree, setTree] = useState(inputTree);
   const [config, setConfig] = useState(initconfig);

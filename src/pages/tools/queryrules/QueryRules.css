@@ -187,3 +187,8 @@ pre {
 .query-builder {
   margin-top: -10px;
 }
+
+.group--conjunctions > input[type="checkbox"],
+.group--conjunctions > label:first-of-type {
+  display: none;
+}

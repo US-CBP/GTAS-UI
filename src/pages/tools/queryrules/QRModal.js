@@ -22,6 +22,7 @@ const QRModal = props => {
   const [summaryData, setSummaryData] = useState(
     props.data || { startDate: localeDateOnly(Date.now()), enabled: true }
   );
+  const [title, setTitle] = useState(props.data?.title || "");
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState();
   const isEdit = hasData(props.data);
@@ -31,6 +32,7 @@ const QRModal = props => {
     newSummary[ev.name] = ev.value;
 
     setSummaryData(newSummary);
+    setTitle(newSummary.title);
   };
 
   const dataCallback = formatted => {
@@ -140,7 +142,7 @@ const QRModal = props => {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>{props.title}</Modal.Title>
+          <Modal.Title key="">{`${props.title}: ${title || ""}`}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="qbrb-modal-body">
           <Container fluid>
