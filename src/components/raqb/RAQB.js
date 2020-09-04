@@ -27,12 +27,7 @@ const additionalOperators = [
 let initconfig = { ...BasicConfig, ...fieldConfig };
 initconfig.operators = { ...initconfig.operators, ...testOp };
 
-// initconfig.types.text.widgets.text.operators = {
-//   ...initconfig.types.text.widgets.text.operators,
-//   ...additionalOperators
-// };
-
-console.log(initconfig);
+initconfig.types.text.widgets.text.operators = additionalOperators;
 
 // const types = {
 //   text: {
@@ -60,7 +55,6 @@ const queryValue = { id: QbUtils.uuid(), type: "group" };
 
 const RAQB = props => {
   const convertedInput = props.data ? importToTreeObject(props.data) : queryValue;
-  console.log(convertedInput);
 
   const inputTree = QbUtils.checkTree(QbUtils.loadTree(convertedInput), initconfig);
   const [tree, setTree] = useState(inputTree);
@@ -88,8 +82,6 @@ const RAQB = props => {
     setConfig(cfg);
     const exportedObj = exportToQueryObject(QbUtils.getTree(immutableTree, cfg), true);
 
-    console.log(exportedObj);
-    console.log(config, cfg);
     props.dataCallback(exportedObj);
   };
 

@@ -37,8 +37,10 @@ const importGroup = raw => {
 const importRule = raw => {
   const types = getEntityProps(raw.entity, raw.field, undefined, true);
   const op = operatorMap[types?.operator || raw.operator];
+  const isMulti = isMultivalueOperator(op);
+
   const type = valueTypeMap[types?.type] || "NOT_FOUND";
-  const value = getValue(type, raw.value);
+  const value = getValue(type, raw.value, op);
 
   let rule = {};
   let children1 = {};
@@ -51,13 +53,13 @@ const importRule = raw => {
       field: `${raw.entity}.${raw.field}`,
       operator: op,
       value: value,
-      valueSrc: isMultivalueOperator(op) ? ["value", "value"] : ["value"],
-      valueType: isMultivalueOperator(op) ? [type, type] : [type]
+      valueSrc: isMulti ? ["value", "value"] : ["value"],
+      valueType: isMulti ? [type, type] : [type]
     }
   };
 
   rule.children1 = children1;
-  console.log("IMPORTING RULE", raw, rule);
+  // console.log("IMPORTING RULE", raw, rule);
 
   return rule;
 };
@@ -83,13 +85,15 @@ const exportGroup = (raw, isFirstLevel) => {
 };
 
 const exportRule = raw => {
-  console.log("EXPORTING RULE", raw);
+  // console.log("EXPORTING RULE", raw);
   let terms = {};
 
   try {
     // refac. Need a cleaner way to nav the object
     terms = Object.entries(Object.entries(raw)[2][1])[0][1].properties;
   } catch {}
+
+  // console.log("EXPORTING RULE");
 
   if (!hasData(terms)) return {};
 
@@ -101,7 +105,7 @@ const exportRule = raw => {
     entity: entity,
     field: field,
     operator: operatorMap[terms?.operator],
-    value: getValue(entProps.type, terms?.value, false),
+    value: getValue(entProps.type, terms?.value, operatorMap[terms?.operator], false),
     uuid: null,
     type: entProps.type
   };
@@ -113,21 +117,44 @@ const exportRule = raw => {
 
 // convert value representations to and from the raqb object and the queryobject
 // TODO: refac, maybe restructure with a map of functions so we can drop the if statements.
-const getValue = (type, val, isImporting = true) => {
+const getValue = (type, val, op, isImporting = true) => {
+  if (!hasData(val)) return val;
+
   let convertedVal = val;
+  // console.log(convertedVal);
+
   if (type === "boolean") {
-    convertedVal = isImporting ? [!!val[0]] : [(+val[0]).toString()]; // convert to t/f if importing, "0"/"1" if exporting
+    return isImporting ? [!!val[0]] : [(+val[0]).toString()]; // convert to t/f if importing, "0"/"1" if exporting
   }
 
-  if (type === "number") convertedVal = val.map(item => +item);
+  if (type === "number") return val.map(item => +item);
 
-  if (type === "multiselect") convertedVal = [convertedVal];
+  if (type === "multiselect") return [convertedVal];
 
   if (!isImporting && Array.isArray(convertedVal) && Array.isArray(convertedVal[0])) {
-    convertedVal = convertedVal[0];
+    return convertedVal[0];
   }
 
-  // console.log("value translated from ", val, convertedVal);
+  if (
+    op &&
+    (op.toString().toLowerCase() === "in" || op.toString().toLowerCase() === "not_in")
+  ) {
+    if (isImporting) {
+      return [convertedVal.join(", ")];
+    } else {
+      return (convertedVal[0] || "")
+        .split(",")
+        .map(item => item.trim().toUpperCase())
+        .filter(Boolean);
+    }
+  }
+
+  // if (type === "string" || type === "text") {
+  //   // console.log(convertedVal);
+
+  //   return convertedVal.toUpperCase();
+  // }
+
   return convertedVal;
 };
 
@@ -142,7 +169,7 @@ export const getFieldPart = str => {
   return strarray.filter(Boolean).join(".");
 };
 
-// determine whether the operator param can act on multiple value fields, eg, "between", "select_any"
+// determine whether the valuesrc and value fields are multival
 const isMultivalueOperator = op => {
   const multivalueOperators = [
     "not_between",

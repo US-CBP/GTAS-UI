@@ -13,42 +13,28 @@ export const testOp = {
       operatorOptions,
       isForDisplay,
       fieldDef
-    ) => {
-      // if (valueTypes === "boolean" && isForDisplay)
-      //   return value === "No" ? `IN ${field}` : `${field}`;
-      console.log(`${field} ${opDef.label} ${value}`);
-      return `${field} ${opDef.label} ${value}`;
-    },
+    ) => `${field} ${opDef.label} ${value}`,
     sqlFormatOp: (field, op, values, valueSrc) => {
-      return valueSrc === "value" ? `${field} IN ${values}` : `${field} IN ${values}`;
+      return `${field} IN ${values}`;
     },
-    jsonLogic: undefined, // not supported
+    jsonLogic: undefined,
     valueSources: ["value"]
   },
-  // not_starts_with: {
-  //   label: "Doesnt start with",
-  //   labelForFormat: "Doesnt start with",
-  //   sqlOp: "LIKE",
-  //   sqlFormatOp: (field, op, values, valueSrc, valueType, opDef, operatorOptions) => {
-  //     // if (valueSrc === "value") {
-  //     return `${field}  LIKE ${values}`;
-  //     // } else return undefined;
-  //   },
-  //   jsonLogic: undefined,
-  //   valueSources: ["value"]
-  // }
+  not_ends_with: {
+    label: "Doesn't end with",
+    labelForFormat: "Doesn't end with",
+    sqlOp: "NOT LIKE",
+    sqlFormatOp: (field, op, values) => `${field} NOT LIKE ${values}`,
+    jsonLogic: undefined,
+    valueSources: ["value"]
+  },
   not_starts_with: {
-    label: "Starts with",
-    labelForFormat: "Starts with",
+    label: "Doesn't start with",
+    labelForFormat: "Doesn't start with",
     cardinality: 1,
-    sqlOp: "LIKE",
-    sqlFormatOp: (field, op, values, valueSrc, valueType, opDef, operatorOptions) => {
-      // if (valueSrc === "value") {
-      return `${field} LIKE ${values}`;
-      // } else return undefined; // not supported
-    },
-    mongoFormatOp: (field, op, value) => ({ [field]: { $eq: value } }),
-    jsonLogic: undefined, // not supported
+    sqlOp: "NOT LIKE",
+    sqlFormatOp: (field, op, values) => `${field} NOT LIKE ${values}`,
+    jsonLogic: undefined,
     valueSources: ["value"]
   }
 };
@@ -63,14 +49,13 @@ const txtops = [
   "starts_with",
   "not_starts_with",
   "ends_with",
-  // "not_ends_with",
+  "not_ends_with",
   "is_empty",
   "is_not_empty"
 ];
 
 const txtProps = {
   type: "text",
-  excludeOperators: ["proximity"],
   operators: txtops,
   valueSources: ["value"]
 };
@@ -319,11 +304,6 @@ export const fieldConfig = {
       type: "!group",
       subfields: FIELDSINT.addressFields
     },
-    Agency: {
-      label: "Agency",
-      type: "!group",
-      subfields: FIELDSINT.agencyFields
-    },
     Bag: {
       label: "Bag",
       type: "!group",
@@ -383,6 +363,11 @@ export const fieldConfig = {
       label: "Seat",
       type: "!group",
       subfields: FIELDSINT.seatFields
+    },
+    Agency: {
+      label: "Travel Agency",
+      type: "!group",
+      subfields: FIELDSINT.agencyFields
     }
   }
 };
@@ -403,8 +388,10 @@ export const operatorMap = {
   GREATER_OR_EQUAL: "greater_or_equal",
   LESS: "less",
   LESS_OR_EQUAL: "less_or_equal",
-  IN: "multiselect_equals",
-  NOT_IN: "multiselect_not_equals",
+  IN: "in",
+  NOT_IN: "not_in",
+  MULTI_IN: "multiselect_equals",
+  MULTI_NOT_IN: "multiselect_not_equals",
 
   to_select_any_in: "select_any_in", // force "select_equals" on incoming raw obj
 
@@ -423,6 +410,7 @@ export const operatorMap = {
   starts_with: "BEGINS_WITH",
   not_starts_with: "NOT_BEGINS_WITH",
   ends_with: "ENDS_WITH",
+  not_ends_with: "NOT_ENDS_WITH",
   between: "BETWEEN",
   not_between: "NOT_BETWEEN",
   greater: "GREATER",
@@ -451,13 +439,12 @@ export const ENTITIESEXT = {
   Address: [
     {
       id: "city",
-      type: "string",
-      multiple: true
+      type: "string"
     },
     {
       id: "country",
-      type: "string",
-      multiple: true
+      type: "string"
+      // ... selMult
     },
     {
       id: "line1",
@@ -483,8 +470,7 @@ export const ENTITIESEXT = {
   CreditCard: [
     {
       id: "accountHolder",
-      type: "string",
-      csv: true
+      type: "string"
     },
     {
       id: "expiration",
@@ -502,8 +488,8 @@ export const ENTITIESEXT = {
   Document: [
     {
       id: "issuanceCountry",
-      type: "string",
-      ...selMult
+      type: "string"
+      // ...selMult
     },
     {
       id: "expirationDate",
@@ -593,7 +579,7 @@ export const ENTITIESEXT = {
     {
       id: "destination",
       type: "string",
-      mltival: true
+      multival: true
     }
   ],
   FrequentFlyer: [

@@ -366,12 +366,12 @@ const types = {
           "is_not_empty",
           "like",
           "not_like",
+          "in",
+          "not_in",
           "starts_with",
           "not_starts_with",
-          "not_ends_with",
           "ends_with",
-          "in",
-          "not_in"
+          "not_ends_with"
         ],
         widgetProps: {},
         opProps: {}
