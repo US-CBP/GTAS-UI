@@ -28,6 +28,7 @@ const additionalOperators = [
 let initconfig = { ...BasicConfig, ...fieldConfig };
 initconfig.operators = { ...operators };
 initconfig.types.text.widgets.text.operators = additionalOperators;
+initconfig.settings.addRuleLabel = "Add Condition";
 
 const queryValue = {
   id: QbUtils.uuid(),

@@ -55,9 +55,8 @@ select[multiple]:hover {
 }
 
 .group--actions > button {
-  margin: 0.3rem !important;
+  margin: 0.2rem !important;
   color: #343a40;
-  border-color: #6a8eb3;
   display: inline-block;
   font-weight: 400;
   text-align: center;
@@ -67,6 +66,8 @@ select[multiple]:hover {
   background-color: white;
   padding: 0.375rem 0.75rem;
   border-radius: 0.25rem;
+  border: 1px solid #6a8eb3;
+  line-height: 1.4rem;
 }
 
 .rule--header > button {
@@ -80,7 +81,7 @@ select[multiple]:hover {
   vertical-align: middle;
   -webkit-user-select: none;
   user-select: none;
-  background-color: transparent;
+  background-color: #ffc8ca;
   border-radius: 0.25rem;
 }
 
