@@ -370,6 +370,11 @@ export const fieldConfig = {
       type: "!group",
       subfields: FIELDSINT.paymentFormFields
     },
+    FrequentFlyer: {
+      label: "Frequent Flyer",
+      type: "!group",
+      subfields: FIELDSINT.frequentFlyerFields
+    },
     Passenger: {
       label: "Passenger",
       type: "!group",
