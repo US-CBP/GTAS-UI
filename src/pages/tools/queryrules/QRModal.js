@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
-import QueryBuilder from "../../../components/queryBuilder/QueryBuilder";
 import RAQB from "../../../components/raqb/RAQB";
 import { Button, Modal, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import {
-  buttonConfigQuery,
-  buttonConfigRule
-} from "../../../components/queryBuilder/constants";
 import { navigate } from "@reach/router";
 import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
 import { QR, ACTION } from "../../../utils/constants";
@@ -16,7 +11,6 @@ const QRModal = props => {
   const id = props.id;
   const svc = props.service;
   const mode = props.mode === QR.RULE ? QR.RULE : QR.QUERY;
-  const buttonConfig = mode === QR.RULE ? buttonConfigRule : buttonConfigQuery;
   const [data, setData] = useState(props.data?.query);
   const [key, setKey] = useState(0);
   const [summaryData, setSummaryData] = useState(
@@ -142,7 +136,10 @@ const QRModal = props => {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>{`${props.title}: ${title || ""}`}</Modal.Title>
+          <Modal.Title>
+            {`${props.title}: `}
+            <label className="big-name-sidebar">{title}</label>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body className="qbrb-modal-body">
           <Container fluid>

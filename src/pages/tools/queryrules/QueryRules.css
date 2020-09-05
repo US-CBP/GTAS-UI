@@ -27,8 +27,17 @@
 .qrm > .space-between {
   width: 45%;
   justify-content: flex-start;
+  margin-bottom: 0px !important;
 }
 
+.qrm > .space-between > .undefined {
+  padding-top: 5px;
+  padding-left: 2px;
+}
+
+.qrm > .space-between > .txtlabel {
+  padding-top: 5px;
+}
 /* RAQB */
 
 .rule--widget,
@@ -46,12 +55,21 @@ select {
 }
 
 select[multiple] {
-  width: 120px;
-  height: 40px;
+  width: 270px;
+  height: 24px;
+  display: inline-flex;
+  position: absolute;
+  top: -12px;
 }
 
 select[multiple]:hover {
-  height: 80px;
+  height: min-content;
+  z-index: 200;
+}
+
+select:-internal-list-box option:checked {
+  background-color: rgb(137 193 252 / 0.5) !important;
+  color: rgb(16, 16, 16) !important;
 }
 
 .group--actions > button {
@@ -117,7 +135,7 @@ pre {
 .group--conjunctions > label,
 .widget--widget > label {
   margin-right: 14px;
-  margin-left: 2px;
+  margin-left: 4px;
   margin-bottom: 2px;
 }
 
@@ -139,20 +157,29 @@ pre {
   width: 75px;
 }
 
+.widget--widget {
+  position: relative;
+}
+
 .group {
   background: rgb(0 119 200 / 0.1);
-  border: 2px solid #6a8eb3;
+  border: 1px solid #6a8eb3;
 }
 
 .rule_group {
   /* background: rgba(210, 234, 252, 0.1); */
   background: white;
-  border: 2px solid #bad2eb66;
+  border: 1px solid #bad2eb66;
+}
+
+.rule_group--children {
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
 }
 
 .group--children > .group-or-rule-container > .group-or-rule::before,
 .group--children > .group-or-rule-container > .group-or-rule::after {
-  height: calc(50% + 20px);
+  height: calc(50% + 5px);
   border-color: #6a8eb3;
 }
 
@@ -161,7 +188,8 @@ pre {
   border-color: #6a8eb3;
 }
 .rule {
-  padding: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 .group--header {
