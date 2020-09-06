@@ -22,13 +22,11 @@ const CreateManualHit = props => {
   useEffect(() => {
     watchlistcats.get().then(res => {
       const wlc = asArray(res).map(wl => {
-        {
-          return {
-            label: wl.label,
-            value: wl.id,
-            key: wl.id
-          };
-        }
+        return {
+          label: wl.label,
+          value: wl.id,
+          key: wl.id
+        };
       });
       setWlCategories(wlc);
     });
@@ -65,33 +63,33 @@ const CreateManualHit = props => {
               labelText="Passenger ID"
               inputType="text"
               name="paxId"
-              required={true}
               inputVal={paxId || ""}
               alt="nothing"
-              callback={cb}
+              readOnly={true}
               spacebetween
+              callback={cb}
             />
             <LabelledInput
               datafield
               labelText="flight ID"
               inputType="text"
               name="flightId"
-              required={true}
               inputVal={flightId || ""}
               alt="nothing"
               callback={cb}
+              readOnly={true}
               spacebetween
             />
             <LabelledInput
               inputType="select"
               alt="Nothing"
               name="hitCategoryId"
-              labelText=""
-              placeholder="Choose Hit Category"
+              labelText="Choose Hit Category"
               datafield
               required
               callback={cb}
               options={wlCategories}
+              spacebetween
             />
             <LabelledInput
               datafield
@@ -102,6 +100,7 @@ const CreateManualHit = props => {
               inputVal=""
               alt="nothing"
               callback={cb}
+              spacebetween
             />
           </Form>
         </Modal.Body>
