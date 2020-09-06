@@ -9,6 +9,9 @@ const CountdownBadge = props => {
 
   const incoming = new Date(props.future);
   const now = props.now || new Date();
+  const deltaRaw = (incoming - now) / 1000;
+  const isPos = deltaRaw >= 0;
+  const delta = Math.abs(deltaRaw);
 
   const pad = val => {
     if (isNaN(val)) return 0;
@@ -25,14 +28,12 @@ const CountdownBadge = props => {
     return val;
   };
 
-  const delta = (incoming - now) / 1000;
-  const isPos = delta >= 0;
-  const round = isPos ? Math.floor : Math.ceil;
+  const sign = isPos ? "" : "-";
   const parse = (val, alt) => altZero(pad(val), alt);
 
-  const dayraw = round(delta / 86400);
-  const hrsraw = round(delta / 3600) % 24;
-  const minraw = round(delta / 60) % 60;
+  const dayraw = Math.floor(delta / 86400);
+  const hrsraw = Math.floor(delta / 3600) % 24;
+  const minraw = Math.floor(delta / 60) % 60;
   const days = altZero(dayraw);
   const hours = !days ? parse(hrsraw) : pad(Math.abs(hrsraw));
   const minutes = !days && !hours ? parse(minraw, "00") : pad(Math.abs(minraw));
@@ -54,9 +55,10 @@ const CountdownBadge = props => {
 
   return (
     <Row flex="true" no-wrap="true" className={`cdb-row ${getStyle()}`}>
-      <div className="cdb-days-div">{formatedDays}</div>
-      <div>{formatedHours}</div>
-      <div>:{formatedMinutes}</div>
+      <span>{sign}</span>
+      <span className="cdb-days-div">{formatedDays}</span>
+      <span className="cdb-days-div">{formatedHours}</span>
+      <span className="cdb-days-div">{formatedMinutes}</span>
     </Row>
   );
 };
