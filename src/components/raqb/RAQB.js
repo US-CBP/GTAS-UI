@@ -29,17 +29,34 @@ let initconfig = { ...BasicConfig, ...fieldConfig };
 initconfig.operators = { ...operators };
 initconfig.types.text.widgets.text.operators = additionalOperators;
 initconfig.settings.addRuleLabel = "Add Condition";
+// initconfig.settings.showErrorMessage = true;
 
-const queryValue = {
+let queryValue = {
   id: QbUtils.uuid(),
   type: "group",
-  children1: {
-    "bbb8abb8-cdef-4012-b456-71745accffac": {
-      type: "rule",
-      properties: { field: null, operator: null, value: [], valueSrc: [] }
-    }
+  children1: {}
+};
+const inner = {
+  type: "rule",
+  properties: {
+    field: null,
+    operator: null,
+    value: [],
+    valueSrc: [],
+    valueError: []
   }
 };
+
+let outer = {
+  type: "rule_group",
+  properties: { conjunction: "AND", field: "Address" },
+  children1: {}
+};
+
+outer.children1[QbUtils.uuid()] = inner;
+queryValue.children1[QbUtils.uuid()] = outer;
+
+console.log(queryValue);
 
 const RAQB = props => {
   const convertedInput = props.data ? importToTreeObject(props.data) : queryValue;
@@ -68,6 +85,8 @@ const RAQB = props => {
     setTree(immutableTree);
     setConfig(cfg);
     const exportedObj = exportToQueryObject(QbUtils.getTree(immutableTree, cfg), true);
+
+    // console.log(exportedObj);
 
     props.dataCallback(exportedObj);
   };

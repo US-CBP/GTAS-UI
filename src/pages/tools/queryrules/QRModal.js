@@ -19,6 +19,8 @@ const QRModal = props => {
   const [title, setTitle] = useState(props.data?.title || "");
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState();
+  const [showInvalid, setShowInvalid] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const isEdit = hasData(props.data);
 
   const cb = ev => {
@@ -31,6 +33,8 @@ const QRModal = props => {
 
   const dataCallback = formatted => {
     setQuery(formatted);
+    console.log("ONCHANGE CALLBACK ");
+    setRefresh(true);
   };
 
   const onDelete = () => {
@@ -41,10 +45,72 @@ const QRModal = props => {
     }
   };
 
+  useEffect(() => {
+    if (refresh) refreshHighlight();
+  }, [refresh]);
+
+  const refreshHighlight = () => {
+    clearInvalid();
+
+    if (!showInvalid) {
+      setRefresh(false);
+      return;
+    }
+    const q = getSaveObject();
+
+    const invalids = (q.details || q.query)?.invalid;
+    console.log("invalids", invalids);
+    if (!invalids) {
+      setShowInvalid(false);
+      setRefresh(false);
+      return;
+    }
+    console.log("HAS INVALIDS");
+    highlightInvalid(invalids);
+    setRefresh(false);
+  };
+
+  const highlightInvalid = invalidList => {
+    console.log("highlighting invalids", invalidList);
+    if (invalidList.length === 0) {
+      setShowInvalid(false);
+      return;
+    }
+    let foo = invalidList.map(item => document.querySelectorAll(`[data-id="${item}"]`));
+
+    console.log(foo);
+
+    foo.forEach(item => item.forEach(subItem => subItem.classList.add("rule-invalid")));
+  };
+
+  const clearInvalid = () => {
+    console.log("clearing invalid");
+    const marked = document.getElementsByClassName("rule-invalid");
+
+    console.log("marked invalid - clearing", marked);
+
+    while (marked.length > 0) {
+      marked[0].classList.remove("rule-invalid");
+    }
+
+    // .forEach(item => item.classList.remove("rule-invalid"));
+
+    // document
+    //   .querySelectorAll("[group-or-rule]")
+    //   .forEach(item => item.classList.remove("rule-invalid"));
+  };
+
   const onSave = () => {
     if (!hasData(svc)) return;
 
+    setShowInvalid(true);
     const q = getSaveObject();
+    const invalids = (q.details || q.query).invalid;
+
+    if (hasData(invalids)) return highlightInvalid(invalids);
+
+    console.log("continuing save");
+
     const saveMethod = isEdit ? svc.put : svc.post;
     const saveArgs = hasData(id) ? [id, q] : [q];
 
@@ -55,13 +121,13 @@ const QRModal = props => {
     });
   };
 
-  const getSaveObject = () => {
+  const getSaveObject = (altQuery = query) => {
     const safeid = id > 0 ? id : null;
 
     if (props.mode === QR.RULE) {
       return {
         id: safeid,
-        details: query,
+        details: altQuery,
         summary: {
           title: summaryData.title,
           description: summaryData.description,
@@ -79,7 +145,7 @@ const QRModal = props => {
       id: safeid,
       title: summaryData.title,
       description: summaryData.description,
-      query: query
+      query: altQuery
     };
   };
 

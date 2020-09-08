@@ -67,48 +67,84 @@ const importRule = raw => {
 export const exportToQueryObject = (obj, isFirstLevel = false) => {
   if (!obj) return {};
 
-  if (obj.type === QB.GROUP) return exportGroup(obj, isFirstLevel);
-
+  if (obj.type === QB.GROUP) {
+    return exportGroup(obj, isFirstLevel);
+  }
   return exportRule(obj);
 };
 
 const exportGroup = (raw, isFirstLevel) => {
   let group = {};
+  let invalid = [];
   const rulesMap = new Map(Object.entries(raw.children1));
 
   group[QB.CLASS] = isFirstLevel ? QB.QOTYPEFULL : QB.QUERYOBJECT;
   group.condition = raw.properties?.conjunction || QB.AND; // the raqb component leaves the conjunction null when there's only a single clause
   group.rules = [];
-  rulesMap.forEach(rule => group.rules.push(exportToQueryObject(rule)));
+
+  rulesMap.forEach((rule, key) => {
+    const exported = exportToQueryObject(rule);
+    if (exported.invalid) {
+      console.log(
+        "MY KEY: ",
+        key,
+        "MY INVALIDS LIST: ",
+        exported.invalid,
+        "MY TYPE: ",
+        rule.type
+      );
+      const keyofInvalidRule =
+        exported.invalid === true ? [key] : [...exported.invalid, key];
+      invalid.push(...keyofInvalidRule);
+      console.log(invalid);
+    }
+    group.rules.push(exported);
+  });
+
+  if (hasData(invalid)) group.invalid = [...invalid];
 
   return group;
 };
 
 const exportRule = raw => {
-  // console.log("EXPORTING RULE", raw);
+  console.log("EXPORTING RULE", raw);
   let terms = {};
+  let invalid = false;
 
   try {
     // refac. Need a cleaner way to nav the object
     terms = Object.entries(Object.entries(raw)[2][1])[0][1].properties;
   } catch {}
 
-  // console.log("EXPORTING RULE");
-
-  if (!hasData(terms)) return {};
+  console.log("TERMS", terms);
+  if (!hasData(terms)) return { invalid: true };
 
   const entity = raw.properties?.field;
   const field = getFieldPart(terms?.field);
   const entProps = getEntityProps(entity, field, terms, false) || {};
+  const operator = operatorMap[terms?.operator];
+  const value = getValue(entProps.type, terms?.value, operator, false);
+  const value0 = Array.isArray(value) ? value[0] : value;
+
+  if (!field || !operator) invalid = true;
+  if (operator !== "IS_NULL" && operator !== "NULL" && !hasData(value0)) invalid = true;
+  if ((operator === "BETWEEN" || operator === "NOT_BETWEEN") && !hasData(value[1]))
+    invalid = true;
+
+  console.log(field, operator, value);
+
+  console.log("IS INVALID??? ", invalid);
 
   let rule = {
     entity: entity,
     field: field,
-    operator: operatorMap[terms?.operator],
-    value: getValue(entProps.type, terms?.value, operatorMap[terms?.operator], false),
+    operator: operator,
+    value: value,
     uuid: null,
     type: entProps.type
   };
+
+  if (invalid) rule.invalid = true;
 
   rule[QB.CLASS] = QB.QUERYTERM;
 

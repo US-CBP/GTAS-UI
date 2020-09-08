@@ -224,3 +224,7 @@ pre {
 .group--conjunctions > label:first-of-type {
   display: none;
 }
+
+.rule-invalid {
+  box-shadow: 0 0 0 0.2rem rgb(255 0 0 / 0.25);
+}
