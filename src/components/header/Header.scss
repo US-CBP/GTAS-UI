@@ -62,22 +62,12 @@ $wco-gray: rgb(141, 144, 147);
 }
 
 .navbar-search {
-  // The search form on the nav bar needs more thought
-  //on when we are going to use it and on what size of
-  //screen we should display it.
-  //Once we decide, we can display it.
-  display: none !important;
 }
 @include media-breakpoint-up(md) {
   .navbar-expand-md .navbar-collapse {
     display: flex !important;
     flex-basis: auto;
     align-self: flex-end;
-  }
-
-  .right {
-    // position: absolute;
-    right: 30px;
   }
 
   .header-navbar {

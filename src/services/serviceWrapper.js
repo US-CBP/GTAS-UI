@@ -142,6 +142,7 @@ const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
 const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
 const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
 const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
+const SEARCH = `${BASE_URL}gtas/search`;
 const SEATS = `${BASE_URL}gtas/seats`;
 const UPLOADATTACHMENT = `${BASE_URL}gtas/uploadattachments`;
 const GETATTACHMENTS = `${BASE_URL}gtas/getattachments`;
@@ -452,6 +453,12 @@ export const resetPassword = {
   isValidToken: token => get(RESETPASSWORD, SIGNUPHEADER, undefined, token)
 };
 
+export const search = {
+  passengers: params => {
+    const url = `${SEARCH}/queryPassengers`;
+    return get(url, BASEHEADER, undefined, params);
+  }
+};
 export const seats = {
   get: flightId => get(SEATS, BASEHEADER, flightId)
 };

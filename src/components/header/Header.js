@@ -1,15 +1,25 @@
 import React, { useContext, useState, useRef } from "react";
 import { Link } from "@reach/router";
-import { Nav, Navbar, NavDropdown, Form, FormControl, Button } from "react-bootstrap";
+import {
+  Nav,
+  Navbar,
+  NavDropdown,
+  Form,
+  FormControl,
+  Button,
+  InputGroup
+} from "react-bootstrap";
 import { navigate, useLocation } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { ROLE } from "../../utils/constants";
 import "./Header.scss";
 import wcoLogo from "../../images/WCO_GTAS_header_brand.svg";
+import { hasData } from "../../utils/utils";
 
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
+  const searchInputRef = useRef();
 
   const user = getUserState();
   const currentPath = useLocation();
@@ -42,6 +52,13 @@ const Header = () => {
 
   const getActiveClass = tabName => {
     return currentPath.pathname.startsWith(tabName) ? "active-tab" : "";
+  };
+
+  const handleSearchSubmit = () => {
+    const searchParam = searchInputRef.current.value;
+    if (hasData(searchParam)) {
+      navigate(`/gtas/search/${searchParam}`);
+    }
   };
 
   return (
@@ -97,13 +114,17 @@ const Header = () => {
             Tools
           </Nav.Link>
         </Nav>
-        <Nav className="navbar-search">
+        <Nav className="ml-auto">
           <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-light">Search</Button>
+            <InputGroup>
+              <FormControl type="text" placeholder="Search" ref={searchInputRef} />
+              <InputGroup.Append>
+                <Button variant="light" onClick={handleSearchSubmit}>
+                  <i className="fa fa-search"></i>
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
           </Form>
-        </Nav>
-        <Nav variant="tabs" className="ml-auto">
           <NavDropdown title={userFullName} id="basic-nav-dropdown" className="right">
             <NavDropdown.Item
               as={Link}

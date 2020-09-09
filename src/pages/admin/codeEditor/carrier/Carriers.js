@@ -26,6 +26,8 @@ const Carriers = ({ name }) => {
   const headers = [
     {
       Accessor: "Edit",
+      disableFilters: true,
+      disableSortBy: true,
       Cell: ({ row }) => {
         return (
           <div className="icon-col">
@@ -83,6 +85,7 @@ const Carriers = ({ name }) => {
         callback={cb}
         header={headers}
         key={refreshKey}
+        enableColumnFilter={true}
       ></Table>
     </Container>
   );

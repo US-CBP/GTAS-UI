@@ -80,7 +80,6 @@ const AddToWatchlist = props => {
         show={show}
         onHide={handleClose}
         size="md"
-        backdrop="static"
         centered
         aria-labelledby="contained-modal-title-vcenter"
       >
