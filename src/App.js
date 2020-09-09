@@ -21,6 +21,7 @@ import Login from "./pages/login/Login";
 import SignUp from "./pages/signUp/SignUp";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
+import Aux from "./components/aux/Aux";
 
 const Flights = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")
@@ -248,12 +249,13 @@ export default class App extends React.Component {
                           icon="fa-search"
                         ></Queries>
                         <QRDetails path="qrdetails" hideTile></QRDetails>
-                        <Neo4J
+                        <Aux
                           name="Neo4j"
-                          path="neo4j"
+                          path="http://localhost:7474/browser/"
                           desc="Browse the Neo4j database"
                           icon="fa-database"
-                        ></Neo4J>
+                          hasExternalLink={true}
+                        ></Aux>
                         <Watchlist
                           path="watchlist"
                           name="Watchlist"
@@ -343,6 +345,13 @@ export default class App extends React.Component {
                             name="Note Type Categories"
                             path="notetypecats"
                           ></NoteTypeCats>
+                          <Aux
+                            desc="Got to Kibana Dashboard"
+                            icon="fa-comment"
+                            name="Kibana Dashboard"
+                            path="https://localhost:5601/login?next=%2F"
+                            hasExternalLink={true}
+                          ></Aux>
                         </Admin>
                       </RoleAuthenticator>
                       <PaxDetail path="paxDetail/:flightId/:paxId">
