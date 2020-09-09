@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import RAQB from "../../../components/raqb/RAQB";
 import { Button, Modal, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
@@ -29,11 +29,11 @@ const QRModal = props => {
 
     setSummaryData(newSummary);
     setTitle(newSummary.title);
+    setRefresh(true);
   };
 
   const dataCallback = formatted => {
     setQuery(formatted);
-    console.log("ONCHANGE CALLBACK ");
     setRefresh(true);
   };
 
@@ -56,60 +56,95 @@ const QRModal = props => {
       setRefresh(false);
       return;
     }
-    const q = getSaveObject();
+    // const q = getSaveObject();
+    // const invalids = (q.details || q.query || {})?.invalid;
 
-    const invalids = (q.details || q.query)?.invalid;
-    console.log("invalids", invalids);
-    if (!invalids) {
-      setShowInvalid(false);
-      setRefresh(false);
-      return;
-    }
-    console.log("HAS INVALIDS");
-    highlightInvalid(invalids);
+    // if (!invalids) {
+    //   setShowInvalid(false);
+    //   setRefresh(false);
+    //   return;
+    // }
+    // highlightInvalid(invalids);
+    validateAll();
     setRefresh(false);
   };
 
   const highlightInvalid = invalidList => {
-    console.log("highlighting invalids", invalidList);
     if (invalidList.length === 0) {
       setShowInvalid(false);
       return;
     }
-    let foo = invalidList.map(item => document.querySelectorAll(`[data-id="${item}"]`));
 
-    console.log(foo);
+    let highlights = invalidList.map(item =>
+      document.querySelectorAll(
+        `[data-id="${item}"].rule_group.group-or-rule, [data-id="${item}"].rule.group-or-rule`
+      )
+    );
 
-    foo.forEach(item => item.forEach(subItem => subItem.classList.add("rule-invalid")));
+    highlights.forEach(item =>
+      item.forEach(subItem => subItem.classList.add("qrm-invalid"))
+    );
+
+    highlightRequiredFormFields();
+  };
+
+  const highlightRequiredFormFields = () => {
+    if (!title) {
+      document.querySelector('[name="title"]').classList.add("qrm-invalid");
+    }
+    if (!summaryData.ruleCat && mode === QR.RULE) {
+      document.querySelector('[name="ruleCat"]').classList.add("qrm-invalid");
+    }
+  };
+
+  const highlightComponent = () => {
+    document
+      .querySelector('[class="query-builder-container"]')
+      .classList.add("qrm-invalid");
+  };
+
+  const validateAll = () => {
+    let isValid = true;
+
+    setShowInvalid(true);
+    const q = getSaveObject();
+    const details = q.details || q.query;
+    const invalids = details?.invalid;
+
+    if (!details) {
+      highlightComponent();
+      isValid = false;
+    }
+    if (hasData(invalids)) {
+      highlightInvalid(invalids);
+      isValid = false;
+    }
+
+    if (!title || (!summaryData.ruleCat && mode === QR.RULE)) {
+      highlightRequiredFormFields();
+      isValid = false;
+    }
+    return isValid;
   };
 
   const clearInvalid = () => {
-    console.log("clearing invalid");
-    const marked = document.getElementsByClassName("rule-invalid");
-
-    console.log("marked invalid - clearing", marked);
+    const marked = document.getElementsByClassName("qrm-invalid");
 
     while (marked.length > 0) {
-      marked[0].classList.remove("rule-invalid");
+      marked[0].classList.remove("qrm-invalid");
     }
-
-    // .forEach(item => item.classList.remove("rule-invalid"));
-
-    // document
-    //   .querySelectorAll("[group-or-rule]")
-    //   .forEach(item => item.classList.remove("rule-invalid"));
   };
 
   const onSave = () => {
     if (!hasData(svc)) return;
 
-    setShowInvalid(true);
+    if (!validateAll()) return;
+
+    // setShowInvalid(true);
     const q = getSaveObject();
-    const invalids = (q.details || q.query).invalid;
+    // const invalids = (q.details || q.query || {}).invalid;
 
-    if (hasData(invalids)) return highlightInvalid(invalids);
-
-    console.log("continuing save");
+    // if (hasData(invalids)) return highlightInvalid(invalids);
 
     const saveMethod = isEdit ? svc.put : svc.post;
     const saveArgs = hasData(id) ? [id, q] : [q];
@@ -121,13 +156,13 @@ const QRModal = props => {
     });
   };
 
-  const getSaveObject = (altQuery = query) => {
+  const getSaveObject = () => {
     const safeid = id > 0 ? id : null;
 
     if (props.mode === QR.RULE) {
       return {
         id: safeid,
-        details: altQuery,
+        details: query,
         summary: {
           title: summaryData.title,
           description: summaryData.description,
@@ -136,7 +171,8 @@ const QRModal = props => {
           endDate: summaryData.endDate ? new Date(summaryData.endDate) : undefined,
           enabled: summaryData.enabled,
           ruleCat: summaryData.ruleCat,
-          overMaxHits: null
+          overMaxHits: null,
+          tag: query
         }
       };
     }
@@ -145,7 +181,8 @@ const QRModal = props => {
       id: safeid,
       title: summaryData.title,
       description: summaryData.description,
-      query: altQuery
+      tag: query,
+      query: query
     };
   };
 
@@ -154,6 +191,14 @@ const QRModal = props => {
   };
 
   const onRun = () => {
+    // setShowInvalid(true);
+    // const q = getSaveObject();
+    // const invalids = (q.details || q.query).invalid;
+
+    // if (hasData(invalids)) return highlightInvalid(invalids);
+
+    if (!validateAll()) return;
+
     navigate("/gtas/tools/qrdetails", {
       state: {
         data: {
@@ -168,6 +213,7 @@ const QRModal = props => {
 
   const onClear = () => {
     setData(undefined);
+    setTitle();
 
     setSummaryData({
       title: "",
@@ -177,7 +223,9 @@ const QRModal = props => {
       enabled: true,
       ruleCat: -1
     });
+
     setKey(key + 1);
+    setShowInvalid(false);
   };
 
   useEffect(() => {
@@ -214,7 +262,6 @@ const QRModal = props => {
                 datafield
                 key={`title${key}`}
                 labelText="Title"
-                required={true}
                 inputType="text"
                 inputVal={summaryData?.title}
                 name="title"
@@ -226,7 +273,6 @@ const QRModal = props => {
                 datafield
                 labelText="Description"
                 key={`desc${key}`}
-                required={true}
                 inputType="text"
                 inputVal={summaryData?.description}
                 name="description"
@@ -286,6 +332,7 @@ const QRModal = props => {
                     callback={cb}
                     alt="rule category"
                     spacebetween
+                    className="rule-cat"
                   />
                 </Row>
               </>

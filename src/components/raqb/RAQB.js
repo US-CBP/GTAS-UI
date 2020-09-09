@@ -36,27 +36,13 @@ let queryValue = {
   type: "group",
   children1: {}
 };
-const inner = {
-  type: "rule",
-  properties: {
-    field: null,
-    operator: null,
-    value: [],
-    valueSrc: [],
-    valueError: []
-  }
-};
 
 let outer = {
-  type: "rule_group",
-  properties: { conjunction: "AND", field: "Address" },
-  children1: {}
+  type: "rule",
+  properties: { field: null, operator: null, value: [], valueSrc: [] }
 };
 
-outer.children1[QbUtils.uuid()] = inner;
 queryValue.children1[QbUtils.uuid()] = outer;
-
-console.log(queryValue);
 
 const RAQB = props => {
   const convertedInput = props.data ? importToTreeObject(props.data) : queryValue;
@@ -72,21 +58,18 @@ const RAQB = props => {
     </div>
   );
 
-  const renderResult = ({ tree: immutableTree, config }) => (
-    <div className="query-builder-result">
-      <div>
-        Tree??:
-        <pre>{JSON.stringify(QbUtils.getTree(immutableTree, config))}</pre>
-      </div>
-    </div>
-  );
+  // const renderResult = ({ tree: immutableTree, config }) => (
+  //   <div className="query-builder-result">
+  //     <div>
+  //       <pre>{JSON.stringify(QbUtils.getTree(immutableTree, config))}</pre>
+  //     </div>
+  //   </div>
+  // );
 
   const onChange = (immutableTree, cfg) => {
     setTree(immutableTree);
     setConfig(cfg);
     const exportedObj = exportToQueryObject(QbUtils.getTree(immutableTree, cfg), true);
-
-    // console.log(exportedObj);
 
     props.dataCallback(exportedObj);
   };
@@ -94,7 +77,7 @@ const RAQB = props => {
   return (
     <div>
       <Query {...config} value={tree} onChange={onChange} renderBuilder={renderBuilder} />
-      {renderResult({ tree: tree, config: config })}
+      {/* {renderResult({ tree: tree, config: config })} */}
     </div>
   );
 };

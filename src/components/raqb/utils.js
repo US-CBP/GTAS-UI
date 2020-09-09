@@ -1,5 +1,5 @@
 import { Utils as QbUtils } from "react-awesome-query-builder";
-import { hasData } from "../../utils/utils";
+import { hasData, asHash53 } from "../../utils/utils";
 import { operatorMap, valueTypeMap, ENTITIESEXT, QB } from "./constants";
 
 // import raw QueryObject from the DB and convert it to a jsontree object for the RAQB component.
@@ -59,7 +59,6 @@ const importRule = raw => {
   };
 
   rule.children1 = children1;
-  // console.log("IMPORTING RULE", raw, rule);
 
   return rule;
 };
@@ -85,18 +84,9 @@ const exportGroup = (raw, isFirstLevel) => {
   rulesMap.forEach((rule, key) => {
     const exported = exportToQueryObject(rule);
     if (exported.invalid) {
-      console.log(
-        "MY KEY: ",
-        key,
-        "MY INVALIDS LIST: ",
-        exported.invalid,
-        "MY TYPE: ",
-        rule.type
-      );
       const keyofInvalidRule =
         exported.invalid === true ? [key] : [...exported.invalid, key];
       invalid.push(...keyofInvalidRule);
-      console.log(invalid);
     }
     group.rules.push(exported);
   });
@@ -107,7 +97,7 @@ const exportGroup = (raw, isFirstLevel) => {
 };
 
 const exportRule = raw => {
-  console.log("EXPORTING RULE", raw);
+  // console.log("EXPORTING RULE", raw);
   let terms = {};
   let invalid = false;
 
@@ -116,7 +106,6 @@ const exportRule = raw => {
     terms = Object.entries(Object.entries(raw)[2][1])[0][1].properties;
   } catch {}
 
-  console.log("TERMS", terms);
   if (!hasData(terms)) return { invalid: true };
 
   const entity = raw.properties?.field;
@@ -130,10 +119,6 @@ const exportRule = raw => {
   if (operator !== "IS_NULL" && operator !== "NULL" && !hasData(value0)) invalid = true;
   if ((operator === "BETWEEN" || operator === "NOT_BETWEEN") && !hasData(value[1]))
     invalid = true;
-
-  console.log(field, operator, value);
-
-  console.log("IS INVALID??? ", invalid);
 
   let rule = {
     entity: entity,
@@ -157,7 +142,6 @@ const getValue = (type, val, op, isImporting = true) => {
   if (!hasData(val)) return val;
 
   let convertedVal = val;
-  // console.log(convertedVal);
 
   if (type === "boolean") {
     return isImporting ? [!!val[0]] : [(+val[0]).toString()]; // convert to t/f if importing, "0"/"1" if exporting
@@ -184,12 +168,6 @@ const getValue = (type, val, op, isImporting = true) => {
         .filter(Boolean);
     }
   }
-
-  // if (type === "string" || type === "text") {
-  //   // console.log(convertedVal);
-
-  //   return convertedVal.toUpperCase();
-  // }
 
   return convertedVal;
 };

@@ -37,6 +37,7 @@
 
 .qrm > .space-between > .txtlabel {
   padding-top: 5px;
+  min-width: 100px;
 }
 /* RAQB */
 
@@ -208,7 +209,7 @@ pre {
   margin-top: 1px;
   padding-right: 10px;
   padding-bottom: 0px;
-  margin-bottom: 0px;
+  margin-bottom: 3px;
 }
 
 .group.group-or-rule:not(.rule_group) {
@@ -225,6 +226,12 @@ pre {
   display: none;
 }
 
-.rule-invalid {
-  box-shadow: 0 0 0 0.2rem rgb(255 0 0 / 0.25);
+.qrm-invalid {
+  box-shadow: 0 0 0 0.2rem rgb(255 0 0 / 0.45);
+  outline: 0;
+}
+
+.qrm > .form-group > select:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: 0;
 }

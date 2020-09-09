@@ -480,11 +480,11 @@ export const ENTITIESEXT = {
   ],
   Email: [
     {
-      id: "Email.address",
+      id: "address",
       type: "string"
     },
     {
-      id: "Email.domain",
+      id: "domain",
       type: "string"
     }
   ],
