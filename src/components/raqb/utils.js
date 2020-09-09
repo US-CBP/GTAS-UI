@@ -60,6 +60,7 @@ const importRule = raw => {
 
   rule.children1 = children1;
 
+  console.log("RULE", raw, children1);
   return rule;
 };
 
@@ -143,13 +144,16 @@ const getValue = (type, val, op, isImporting = true) => {
 
   let convertedVal = val;
 
+  console.log(val, type);
   if (type === "boolean") {
     return isImporting ? [!!val[0]] : [(+val[0]).toString()]; // convert to t/f if importing, "0"/"1" if exporting
   }
 
   if (type === "number") return val.map(item => +item);
 
-  if (type === "multiselect") return [convertedVal];
+  if (type === "multiselect") {
+    return [convertedVal];
+  }
 
   if (!isImporting && Array.isArray(convertedVal) && Array.isArray(convertedVal[0])) {
     return convertedVal[0];

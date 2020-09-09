@@ -77,6 +77,10 @@
   width: 220px;
 }
 
+.widget--valuesrc {
+  display: none;
+}
+
 /* select:-internal-list-box option:checked {
   background-color: rgb(137 193 252 / 0.5) !important;
   color: rgb(16, 16, 16) !important;
@@ -229,6 +233,7 @@ pre {
 .qrm-invalid {
   box-shadow: 0 0 0 0.2rem rgb(255 0 0 / 0.45);
   outline: 0;
+  border-radius: 3px;
 }
 
 .qrm > .form-group > select:focus {

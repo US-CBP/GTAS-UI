@@ -113,6 +113,9 @@ const ROLES = `${BASE_URL}gtas/roles/`;
 const CODES_AIRPORT = `${BASE_URL}gtas/api/airport`;
 const CODES_COUNTRY = `${BASE_URL}gtas/api/country`;
 const CODES_CARRIER = `${BASE_URL}gtas/api/carrier`;
+const CODES_AIRPORT_LK = `${BASE_URL}gtas/api/airportLookup`;
+const CODES_COUNTRY_LK = `${BASE_URL}gtas/api/countryLookup`;
+const CODES_CARRIER_LK = `${BASE_URL}gtas/api/carrierLookup`;
 const CODES_RESTOREALL_AIRPORT = `${BASE_URL}gtas/api/airport/restoreAll`;
 const CODES_RESTOREALL_COUNTRY = `${BASE_URL}gtas/api/country/restoreAll`;
 const CODES_RESTOREALL_CARRIER = `${BASE_URL}gtas/api/carrier/restoreAll`;
@@ -296,6 +299,10 @@ export const codeEditor = {
     deleteAirport: id => del(CODES_AIRPORT, BASEHEADER, id)
   }
 };
+
+export const airportLookup = { get: () => get(CODES_AIRPORT_LK, BASEHEADER) };
+export const countryLookup = { get: () => get(CODES_COUNTRY_LK, BASEHEADER) };
+export const carrierLookup = { get: () => get(CODES_CARRIER_LK, BASEHEADER) };
 
 export const login = {
   post: body => {
