@@ -38,6 +38,13 @@ export const ROLE = {
   ANY: "Any"
 };
 
+export const CTX = {
+  CARRIERS: "carriers",
+  COUNTRIES: "countries",
+  AIRPORTS: "airports",
+  RULECATS: "rulecats"
+};
+
 export const TIME = {
   MINUTE: 60000,
   MINUTES_2: 120000,

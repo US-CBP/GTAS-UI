@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import { Button, Container, Tabs, Tab } from "react-bootstrap";
 import { navigate } from "@reach/router";
+import { UserContext } from "../../../context/user/UserContext";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
 import { hasData, getEndpoint } from "../../../utils/utils";
@@ -21,6 +22,7 @@ const Rules = props => {
   const [record, setRecord] = useState();
   const [modalKey, setModalKey] = useState(-1);
   const [tablekey, setTablekey] = useState(0);
+  const ctx = useContext(UserContext);
 
   const cb = res => {};
 
@@ -168,6 +170,8 @@ const Rules = props => {
 
     fetchTableData();
   }, [tab, endpoint]);
+
+  useEffect(() => {});
 
   const tabs = (
     <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs">

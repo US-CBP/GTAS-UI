@@ -9,12 +9,12 @@ import "react-awesome-query-builder/lib/css/styles.css";
 import { txtProps, dateProps, numProps } from "./constants";
 import { operators } from "./config";
 import { importToTreeObject, exportToQueryObject } from "./utils";
-import { asArray } from "../../utils/utils";
-import {
-  airportLookup,
-  countryLookup,
-  carrierLookup
-} from "../../services/serviceWrapper";
+// import { asArray } from "../../utils/utils";
+// import {
+//   airportLookup,
+//   countryLookup,
+//   carrierLookup
+// } from "../../services/serviceWrapper";
 
 const additionalOperators = [
   "equal",
@@ -33,8 +33,7 @@ const additionalOperators = [
 
 let queryValue = {
   id: QbUtils.uuid(),
-  type: "group",
-  children1: {}
+  type: "group"
 };
 
 let outer = {
@@ -42,7 +41,7 @@ let outer = {
   properties: { field: null, operator: null, value: [], valueSrc: [] }
 };
 
-queryValue.children1[QbUtils.uuid()] = outer;
+// queryValue.children1[QbUtils.uuid()] = outer;
 
 const RAQB = props => {
   const dataConfig = props.config;
@@ -69,13 +68,17 @@ const RAQB = props => {
       <div>
         <pre>{JSON.stringify(QbUtils.getTree(immutableTree, config))}</pre>
       </div>
+      <div>
+        Query string:{" "}
+        <pre>{JSON.stringify(QbUtils.queryString(immutableTree, config))}</pre>
+      </div>
     </div>
   );
 
   const onChange = (immutableTree, cfg) => {
     setTree(immutableTree);
-    setConfig(cfg);
-    const exportedObj = exportToQueryObject(QbUtils.getTree(immutableTree, cfg), true);
+    // setConfig(cfg);
+    const exportedObj = exportToQueryObject(QbUtils.getTree(immutableTree, config), true);
 
     props.dataCallback(exportedObj);
   };

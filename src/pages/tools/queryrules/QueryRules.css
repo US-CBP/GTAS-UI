@@ -56,16 +56,18 @@
 }
 
 .widget--widget > select[multiple] {
-  width: 220px;
+  min-width: 220px;
+  width: 350px;
   height: 24px;
   display: inline-flex;
-  position: absolute;
   top: -12px;
 }
 
 .widget--widget > select[multiple]:hover {
-  height: min-content;
+  height: calc(100vh / 6);
   z-index: 200;
+  position: sticky;
+  top: auto;
 }
 
 .widget--widget > input[type="number"] {
@@ -74,7 +76,8 @@
 
 .rule--widget--MULTISELECT > .widget--widget {
   position: relative;
-  width: 220px;
+  width: 350px;
+  height: 20px;
 }
 
 .widget--valuesrc {
