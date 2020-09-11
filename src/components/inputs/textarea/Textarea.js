@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "../Inputs.css";
+import "../Inputs.scss";
 
 const TextareaInput = props => (
   <textarea
