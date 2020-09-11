@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
-const Aux = props => {
+const Auxiliary = props => {
   return <Fragment>{props.children}</Fragment>;
 };
 
-export default Aux;
+export default Auxiliary;
