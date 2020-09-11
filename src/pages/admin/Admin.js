@@ -4,6 +4,7 @@ import { Card, CardDeck, Container } from "react-bootstrap";
 import { hasData, getEndpoint } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./Admin.css";
+import ExternalLink from "../../components/externalLink/ExternalLink";
 
 const Admin = props => {
   const children = props.children?.props?.children;
@@ -19,17 +20,36 @@ const Admin = props => {
             return (
               <Card className="admin-tiles" key={data.path}>
                 <Card.Body>
-                  <Card.Title className="nowrap">
-                    <Link to={data.path} className="card-link">
-                      <i className={`fa ${data.icon}`}></i>
-                      {`  ${data.name}`}
-                    </Link>
-                  </Card.Title>
-                  <div className="admin-text-link">
-                    <Link to={data.path} className="card-link page-card-link">
-                      <Card.Text>{data.desc}</Card.Text>
-                    </Link>
-                  </div>
+                  {data.hasExternalLink ? (
+                    <>
+                      <Card.Title className="nowrap">
+                        <ExternalLink to={data.path} className="card-link">
+                          <i className={`fa ${data.icon}`}></i>
+                          {`  ${data.name}`}
+                        </ExternalLink>
+                      </Card.Title>
+
+                      <div className="admin-text-link">
+                        <ExternalLink to={data.path} className="card-link page-card-link">
+                          <Card.Text>{data.desc}</Card.Text>
+                        </ExternalLink>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <Card.Title className="nowrap">
+                        <Link to={data.path} className="card-link">
+                          <i className={`fa ${data.icon}`}></i>
+                          {`  ${data.name}`}
+                        </Link>
+                      </Card.Title>
+                      <div className="admin-text-link">
+                        <Link to={data.path} className="card-link page-card-link">
+                          <Card.Text>{data.desc}</Card.Text>
+                        </Link>
+                      </div>
+                    </>
+                  )}
                 </Card.Body>
               </Card>
             );
