@@ -42,6 +42,7 @@ const UserProvider = ({ children }) => {
       case "lastRule": {
         let storedUser = JSON.parse(sessionStorage.getItem("user"));
         storedUser.lastRule = action.lastRule;
+        console.log(storedUser);
         setStorage("user", storedUser);
         return action.user;
       }

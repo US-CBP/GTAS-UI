@@ -64,7 +64,7 @@
 }
 
 .widget--widget > select[multiple]:hover {
-  height: calc(100vh / 6);
+  height: calc(100vh / 8);
   z-index: 200;
   position: sticky;
   top: auto;

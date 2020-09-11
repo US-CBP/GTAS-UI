@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Query,
   Builder,
@@ -6,15 +6,9 @@ import {
   Utils as QbUtils
 } from "react-awesome-query-builder";
 import "react-awesome-query-builder/lib/css/styles.css";
-import { txtProps, dateProps, numProps } from "./constants";
+import Loading from "../../components/loading/Loading";
 import { operators } from "./config";
 import { importToTreeObject, exportToQueryObject } from "./utils";
-// import { asArray } from "../../utils/utils";
-// import {
-//   airportLookup,
-//   countryLookup,
-//   carrierLookup
-// } from "../../services/serviceWrapper";
 
 const additionalOperators = [
   "equal",
@@ -36,10 +30,10 @@ let queryValue = {
   type: "group"
 };
 
-let outer = {
-  type: "rule",
-  properties: { field: null, operator: null, value: [], valueSrc: [] }
-};
+// let outer = {
+//   type: "rule",
+//   properties: { field: null, operator: null, value: [], valueSrc: [] }
+// };
 
 // queryValue.children1[QbUtils.uuid()] = outer;
 
@@ -49,6 +43,8 @@ const RAQB = props => {
   initconfig.operators = { ...operators };
   initconfig.types.text.widgets.text.operators = additionalOperators;
   initconfig.settings.addRuleLabel = "Add Condition";
+  initconfig.settings.showNot = true;
+  initconfig.settings.customFieldSelectProps = { showSearch: true };
 
   const convertedInput = props.data ? importToTreeObject(props.data) : queryValue;
   const inputTree = QbUtils.checkTree(QbUtils.loadTree(convertedInput), initconfig);
@@ -63,21 +59,20 @@ const RAQB = props => {
     </div>
   );
 
-  const renderResult = ({ tree: immutableTree, config }) => (
-    <div className="query-builder-result">
-      <div>
-        <pre>{JSON.stringify(QbUtils.getTree(immutableTree, config))}</pre>
-      </div>
-      <div>
-        Query string:{" "}
-        <pre>{JSON.stringify(QbUtils.queryString(immutableTree, config))}</pre>
-      </div>
-    </div>
-  );
+  // const renderResult = ({ tree: immutableTree, config }) => (
+  //   <div className="query-builder-result">
+  //     <div>
+  //       <pre>{JSON.stringify(QbUtils.getTree(immutableTree, config))}</pre>
+  //     </div>
+  //     <div>
+  //       Query string:{" "}
+  //       <pre>{JSON.stringify(QbUtils.queryString(immutableTree, config))}</pre>
+  //     </div>
+  //   </div>
+  // );
 
   const onChange = (immutableTree, cfg) => {
     setTree(immutableTree);
-    // setConfig(cfg);
     const exportedObj = exportToQueryObject(QbUtils.getTree(immutableTree, config), true);
 
     props.dataCallback(exportedObj);
@@ -86,7 +81,7 @@ const RAQB = props => {
   return (
     <div>
       <Query {...config} value={tree} onChange={onChange} renderBuilder={renderBuilder} />
-      {renderResult({ tree: tree, config: config })}
+      {/* {renderResult({ tree: tree, config: config })} */}
     </div>
   );
 };

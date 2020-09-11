@@ -6,7 +6,7 @@ import { navigate } from "@reach/router";
 import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
 import { QR, ACTION, CTX } from "../../../utils/constants";
 import { LookupContext } from "../../../context/data/LookupContext";
-import { UserContext } from "../../../context/user/UserContext";
+
 import {
   watchlistcats,
   airportLookup,
@@ -38,9 +38,6 @@ const QRModal = props => {
   const [refresh, setRefresh] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const isEdit = hasData(props.data);
-
-  const ctx = useContext(UserContext);
-
   const { getLookupState, lookupAction } = useContext(LookupContext);
 
   useEffect(() => {
@@ -51,6 +48,7 @@ const QRModal = props => {
       hasData(categories)
     )
       setLoaded(true);
+    else setLoaded(false);
   }, [countries, carriers, airports, categories]);
 
   const countryProps = useMemo(() => {
@@ -64,15 +62,6 @@ const QRModal = props => {
     };
   }, [countries]);
 
-  // const countryProps = {
-  //   type: "select",
-  //   fieldSettings: {
-  //     allowCustomValues: true,
-  //     listValues: countries
-  //   },
-  //   valueSources: ["value"]
-  // };
-
   const carrierProps = useMemo(() => {
     return {
       type: "select",
@@ -83,16 +72,6 @@ const QRModal = props => {
       valueSources: ["value"]
     };
   }, [carriers]);
-
-  // const carrierProps = {
-  //   type: "select",
-  //   fieldSettings: {
-  //     allowCustomValues: true,
-  //     listValues: carriers
-  //   },
-  //   valueSources: ["value"]
-  // };
-
   const airportProps = useMemo(() => {
     return {
       type: "select",
@@ -104,338 +83,291 @@ const QRModal = props => {
     };
   }, [airports]);
 
-  // const airportProps = {
-  //   type: "select",
-  //   fieldSettings: {
-  //     allowCustomValues: true,
-  //     listValues: airports
-  //   },
-  //   valueSources: ["value"]
-  // };
-
-  // const airportProps = {
-  //   type: "in",
-  //   fieldSettings: {
-  //     allowCustomValues: true
-  //   },
-  //   valueSources: ["value"]
-  // };
-
-  // const FIELDSINT = useMemo(() => {
-  //   return {
-
-  const FIELDSINT = {
-    addressFields: {
-      city: { label: "City", ...txtProps },
-      country: { label: "Country", ...countryProps },
-      line1: { label: "Line 1", ...txtProps },
-      line2: { label: "Line 2", ...txtProps },
-      line3: { label: "Line 3", ...txtProps },
-      postalCode: { label: "Postal Code", ...txtProps },
-      state: { label: "State", ...txtProps }
-    },
-
-    agencyFields: {
-      country: { label: "Country", ...countryProps },
-      identifier: {
-        label: "Identifier",
-        ...txtProps
-      },
-      location: { label: "Location", ...txtProps },
-      name: { label: "Name", ...txtProps },
-      city: { label: "City", ...txtProps },
-      phone: { label: "Phone", ...txtProps }
-    },
-
-    bagFields: {
-      airline: { label: "Airline", ...carrierProps },
-      bagId: { label: "Bag ID", ...txtProps },
-      dataSource: { label: "Data Source", ...txtProps },
-      country: { label: "Destination Country", ...countryProps },
-      destinationAirport: { label: "Destination Airport", ...airportProps },
-      primeFlight: {
-        label: "Is Prime Flight",
-        type: "boolean",
-        valueSources: ["value"]
-      },
-      headPool: {
-        label: "Is Head Of a Baggage Pool",
-        type: "boolean",
-        valueSources: ["value"]
-      },
-      "bagMeasurements.weight": { label: "Bag Weight Measurement (kg)", ...numProps }
-    },
-
-    creditCardFields: {
-      accountHolder: { label: "Account Holder", ...txtProps },
-      expiration: { label: "Expiration Date", ...dateProps },
-      number: { label: "Number", ...txtProps },
-      cardType: { label: "Type", ...txtProps }
-    },
-
-    documentFields: {
-      documentNumber: { label: "Number", ...txtProps },
-      documentType: {
-        label: "Type",
-        type: "select",
-        fieldSettings: {
-          listValues: [
-            { value: "P", title: "Passport" },
-            { value: "V", title: "Visa" }
-          ]
-        },
-        valueSources: ["value"]
-      },
-      issuanceCountry: { label: "Issuance Country", ...countryProps },
-      expirationDate: { label: "Expiration Date", ...dateProps },
-      issuanceDate: { label: "Issuance Date", ...dateProps }
-    },
-
-    emailFields: {
-      address: { label: "Address", ...txtProps },
-      domain: { label: "Domain", ...txtProps }
-    },
-
-    legFields: {
-      origin: { label: "Origin", ...airportProps },
-      destination: { label: "Destination", ...airportProps }
-    },
-
-    flightFields: {
-      destination: { label: "Destination Airport", ...airportProps },
-      origin: { label: "Origin Airport", ...airportProps },
-      carrier: { label: "Carrier", ...carrierProps },
-      destinationCountry: { label: "Destination Country", ...countryProps },
-      originCountry: { label: "Origin Country", ...countryProps },
-      direction: {
-        label: "Direction",
-        type: "select",
-        fieldSettings: {
-          listValues: [
-            { value: "I", title: "Inbound" },
-            { value: "O", title: "Outbound" },
-            { value: "C", title: "Continuance" }
-          ]
-        },
-        valueSources: ["value"]
-      },
-      etdDate: { label: "ETD", ...dateProps },
-      flightNumber: { label: "Number", ...txtProps },
-      "mutableFlightDetails.etaDate": { label: "ETA", ...dateProps }
-    },
-    frequentFlyerFields: {
-      carrier: { label: "Carrier", ...carrierProps },
-      number: { label: "Number", ...txtProps }
-    },
-    passengerFields: {
-      "passengerDetails.age": { label: "Age", ...numProps },
-      "passengerTripDetails.coTravelerCount": {
-        label: "APIS Co-Passenger Count",
-        ...numProps
-      },
-      "passengerTripDetails.hoursBeforeTakeOff": {
-        label: "Hours Before Take Off",
-        ...numProps
-      },
-      "passengerDetails.nationality": { label: "Nationality", ...countryProps },
-      "passengerTripDetails.debarkation": {
-        label: "Debarkation Airport",
-        ...airportProps
-      },
-      "passengerTripDetails.debarkCountry": {
-        label: "Debarkation Country",
-        ...countryProps
-      },
-      "passengerDetails.dob": { label: "DOB", ...dateProps },
-      "passengerTripDetails.embarkation": {
-        label: "Embarkation Airport",
-        ...airportProps
-      },
-      "passengerTripDetails.embarkCountry": {
-        label: "Embarkation Country",
-        ...countryProps
-      },
-      "passengerDetails.gender": {
-        label: "Gender",
-        type: "select",
-        fieldSettings: {
-          listValues: [
-            { value: "F", title: "Female" },
-            { value: "M", title: "Male" },
-            { value: "U", title: "Undisclosed" },
-            { value: "FI", title: "Female Infant" },
-            { value: "MI", title: "Male Infant" }
-          ]
-        },
-        valueSources: ["value"]
-      },
-      "passengerDetails.firstName": { label: "Name - First", ...txtProps },
-      "passengerDetails.lastName": { label: "Name - Last", ...txtProps },
-      "passengerDetails.middleName": { label: "Name - Middle", ...txtProps },
-      "passengerDetails.residencyCountry": {
-        label: "Residency Country",
-        ...countryProps
-      },
-      "passengerDetails.passengerType": {
-        label: "Type",
-        type: "select",
-        fieldSettings: {
-          listValues: [
-            { value: "P", title: "Passenger" },
-            { value: "C", title: "Crew" },
-            { value: "I", title: "Intransit" }
-          ]
-        },
-        valueSources: ["value"]
-      },
-      "passengerTripDetails.travelFrequency": {
-        label: "Travel Frequency",
-        ...numProps
-      }
-    },
-    seatFields: {
-      number: { label: "Seat Number", ...txtProps },
-      cabinClass: { label: "Cabin Class", ...txtProps },
-      apis: { label: "Is APIS", type: "boolean", valueSources: ["value"] }
-    },
-    paymentFormFields: {
-      wholeDollarAmount: { label: "Monetary Amount(No Decimal)", ...numProps },
-      paymentType: {
-        label: "Form of Payment",
-        type: "select",
-        fieldSettings: {
-          listValues: [
-            { value: "CC", title: "Credit Card" },
-            { value: "CA", title: "Cash" },
-            { value: "CK", title: "Check" },
-            { value: "MS", title: "Miscellaneous Charges Order" },
-            { value: "VOC", title: "Voucher" }
-          ]
-        },
-        valueSources: ["value"]
-      }
-    },
-    pnrFields: {
-      bagCount: { label: "Bag - Count", ...numProps },
-      baggageWeight: { label: "Baggage - Weight", ...numProps },
-      dateBooked: { label: "Booking Date", ...dateProps },
-      carrier: { label: "Carrier Code", ...carrierProps },
-      dateReceived: { label: "Date Received", ...dateProps },
-      daysBookedBeforeTravel: { label: "Days Booked Before Travel", ...numProps },
-      departureDate: { label: "Departure Date", ...dateProps },
-      id: { label: "Pnr Id", ...txtProps },
-      origin: { label: "Origin - Airport", ...airportProps },
-      originCountry: { label: "Origin - Country", ...countryProps },
-      passengerCount: { label: "Passenger Count", ...numProps },
-      recordLocator: { label: "Record Locator", ...txtProps },
-      seat: { label: "Seat", ...txtProps },
-      tripType: {
-        label: "Trip Type",
-        type: "select",
-        fieldSettings: {
-          listValues: [
-            { value: "ONE-WAY", title: "One Way" },
-            { value: "ROUND-TRIP", title: "Round Trip" },
-            { value: "NON-CONTIGUOUS", title: "Non Contiguous" },
-            { value: "MULTI-CITY", title: "Multi City" },
-            { value: "OPEN JAW", title: "Open Jaw" }
-          ]
-        },
-        valueSources: ["value"]
-      },
-      tripDuration: { label: "Trip Duration", ...numProps }
-    },
-    phoneFields: { number: { label: "Number", ...txtProps } },
-    dwellTimeFields: {
-      location: { label: "Location", ...txtProps },
-      dwellTime: { label: "Lay over Time", ...numProps }
-    }
-  };
-  // }, [countryProps, carrierProps, airportProps]);
-
   const fieldConfigWithData = {
     fields: {
       Address: {
         label: "Address",
         type: "!group",
-        subfields: FIELDSINT.addressFields
+        subfields: {
+          city: { label: "City", ...txtProps },
+          country: { label: "Country", ...countryProps },
+          line1: { label: "Line 1", ...txtProps },
+          line2: { label: "Line 2", ...txtProps },
+          line3: { label: "Line 3", ...txtProps },
+          postalCode: { label: "Postal Code", ...txtProps },
+          state: { label: "State", ...txtProps }
+        }
       },
       Bag: {
         label: "Bag",
         type: "!group",
-        subfields: FIELDSINT.bagFields
+        subfields: {
+          airline: { label: "Airline", ...carrierProps },
+          bagId: { label: "Bag ID", ...txtProps },
+          dataSource: { label: "Data Source", ...txtProps },
+          country: { label: "Destination Country", ...countryProps },
+          destinationAirport: { label: "Destination Airport", ...airportProps },
+          primeFlight: {
+            label: "Is Prime Flight",
+            type: "boolean",
+            valueSources: ["value"]
+          },
+          headPool: {
+            label: "Is Head Of a Baggage Pool",
+            type: "boolean",
+            valueSources: ["value"]
+          },
+          "bagMeasurements.weight": { label: "Bag Weight Measurement (kg)", ...numProps }
+        }
       },
       CreditCard: {
         label: "Credit Card",
         type: "!group",
-        subfields: FIELDSINT.creditCardFields
+        subfields: {
+          accountHolder: { label: "Account Holder", ...txtProps },
+          expiration: { label: "Expiration Date", ...dateProps },
+          number: { label: "Number", ...txtProps },
+          cardType: { label: "Type", ...txtProps }
+        }
       },
       Document: {
         label: "Document",
         type: "!group",
-        subfields: FIELDSINT.documentFields
+        subfields: {
+          documentNumber: { label: "Number", ...txtProps },
+          documentType: {
+            label: "Type",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "P", title: "Passport" },
+                { value: "V", title: "Visa" }
+              ]
+            },
+            valueSources: ["value"]
+          },
+          issuanceCountry: { label: "Issuance Country", ...countryProps },
+          expirationDate: { label: "Expiration Date", ...dateProps },
+          issuanceDate: { label: "Issuance Date", ...dateProps }
+        }
       },
       DwellTime: {
         label: "Dwell Time",
         type: "!group",
-        subfields: FIELDSINT.dwellTimeFields
+        subfields: {
+          location: { label: "Location", ...txtProps },
+          dwellTime: { label: "Lay over Time", ...numProps }
+        }
       },
       Email: {
         label: "Email",
         type: "!group",
-        subfields: FIELDSINT.emailFields
+        subfields: {
+          address: { label: "Address", ...txtProps },
+          domain: { label: "Domain", ...txtProps }
+        }
       },
       Flight: {
         label: "Flight",
         type: "!group",
-        subfields: FIELDSINT.flightFields
+        subfields: {
+          destination: { label: "Destination Airport", ...airportProps },
+          origin: { label: "Origin Airport", ...airportProps },
+          carrier: { label: "Carrier", ...carrierProps },
+          destinationCountry: { label: "Destination Country", ...countryProps },
+          originCountry: { label: "Origin Country", ...countryProps },
+          direction: {
+            label: "Direction",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "I", title: "Inbound" },
+                { value: "O", title: "Outbound" },
+                { value: "C", title: "Continuance" }
+              ]
+            },
+            valueSources: ["value"]
+          },
+          etdDate: { label: "ETD", ...dateProps },
+          flightNumber: { label: "Number", ...txtProps },
+          "mutableFlightDetails.etaDate": { label: "ETA", ...dateProps }
+        }
       },
       BookingDetail: {
         label: "Flight Leg",
         type: "!group",
-        subfields: FIELDSINT.legFields
+        subfields: {
+          origin: { label: "Origin", ...airportProps },
+          destination: { label: "Destination", ...airportProps }
+        }
       },
       PaymentForm: {
         label: "Form of Payment",
         type: "!group",
-        subfields: FIELDSINT.paymentFormFields
+        subfields: {
+          wholeDollarAmount: { label: "Monetary Amount(No Decimal)", ...numProps },
+          paymentType: {
+            label: "Form of Payment",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "CC", title: "Credit Card" },
+                { value: "CA", title: "Cash" },
+                { value: "CK", title: "Check" },
+                { value: "MS", title: "Miscellaneous Charges Order" },
+                { value: "VOC", title: "Voucher" }
+              ]
+            },
+            valueSources: ["value"]
+          }
+        }
       },
       FrequentFlyer: {
         label: "Frequent Flyer",
         type: "!group",
-        subfields: FIELDSINT.frequentFlyerFields
+        subfields: {
+          carrier: { label: "Carrier", ...carrierProps },
+          number: { label: "Number", ...txtProps }
+        }
       },
       Passenger: {
         label: "Passenger",
         type: "!group",
-        subfields: FIELDSINT.passengerFields
+        subfields: {
+          "passengerDetails.age": { label: "Age", ...numProps },
+          "passengerTripDetails.coTravelerCount": {
+            label: "APIS Co-Passenger Count",
+            ...numProps
+          },
+          "passengerTripDetails.hoursBeforeTakeOff": {
+            label: "Hours Before Take Off",
+            ...numProps
+          },
+          "passengerDetails.nationality": { label: "Nationality", ...countryProps },
+          "passengerTripDetails.debarkation": {
+            label: "Debarkation Airport",
+            ...airportProps
+          },
+          "passengerTripDetails.debarkCountry": {
+            label: "Debarkation Country",
+            ...countryProps
+          },
+          "passengerDetails.dob": { label: "DOB", ...dateProps },
+          "passengerTripDetails.embarkation": {
+            label: "Embarkation Airport",
+            ...airportProps
+          },
+          "passengerTripDetails.embarkCountry": {
+            label: "Embarkation Country",
+            ...countryProps
+          },
+          "passengerDetails.gender": {
+            label: "Gender",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "F", title: "Female" },
+                { value: "M", title: "Male" },
+                { value: "U", title: "Undisclosed" },
+                { value: "FI", title: "Female Infant" },
+                { value: "MI", title: "Male Infant" }
+              ]
+            },
+            valueSources: ["value"]
+          },
+          "passengerDetails.firstName": { label: "Name - First", ...txtProps },
+          "passengerDetails.lastName": { label: "Name - Last", ...txtProps },
+          "passengerDetails.middleName": { label: "Name - Middle", ...txtProps },
+          "passengerDetails.residencyCountry": {
+            label: "Residency Country",
+            ...countryProps
+          },
+          "passengerDetails.passengerType": {
+            label: "Type",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "P", title: "Passenger" },
+                { value: "C", title: "Crew" },
+                { value: "I", title: "Intransit" }
+              ]
+            },
+            valueSources: ["value"]
+          },
+          "passengerTripDetails.travelFrequency": {
+            label: "Travel Frequency",
+            ...numProps
+          }
+        }
       },
       Phone: {
         label: "Phone",
         type: "!group",
-        subfields: FIELDSINT.phoneFields
+        subfields: { number: { label: "Number", ...txtProps } }
       },
       Pnr: {
         label: "PNR",
         type: "!group",
-        subfields: FIELDSINT.pnrFields
+        subfields: {
+          bagCount: { label: "Bag - Count", ...numProps },
+          baggageWeight: { label: "Baggage - Weight", ...numProps },
+          dateBooked: { label: "Booking Date", ...dateProps },
+          carrier: { label: "Carrier Code", ...carrierProps },
+          dateReceived: { label: "Date Received", ...dateProps },
+          daysBookedBeforeTravel: { label: "Days Booked Before Travel", ...numProps },
+          departureDate: { label: "Departure Date", ...dateProps },
+          id: { label: "Pnr Id", ...txtProps },
+          origin: { label: "Origin - Airport", ...airportProps },
+          originCountry: { label: "Origin - Country", ...countryProps },
+          passengerCount: { label: "Passenger Count", ...numProps },
+          recordLocator: { label: "Record Locator", ...txtProps },
+          seat: { label: "Seat", ...txtProps },
+          tripType: {
+            label: "Trip Type",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "ONE-WAY", title: "One Way" },
+                { value: "ROUND-TRIP", title: "Round Trip" },
+                { value: "NON-CONTIGUOUS", title: "Non Contiguous" },
+                { value: "MULTI-CITY", title: "Multi City" },
+                { value: "OPEN JAW", title: "Open Jaw" }
+              ]
+            },
+            valueSources: ["value"]
+          },
+          tripDuration: { label: "Trip Duration", ...numProps }
+        }
       },
       Seat: {
         label: "Seat",
         type: "!group",
-        subfields: FIELDSINT.seatFields
+        subfields: {
+          number: { label: "Seat Number", ...txtProps },
+          cabinClass: { label: "Cabin Class", ...txtProps },
+          apis: { label: "Is APIS", type: "boolean", valueSources: ["value"] }
+        }
       },
       Agency: {
         label: "Travel Agency",
         type: "!group",
-        subfields: FIELDSINT.agencyFields
+        subfields: {
+          country: { label: "Country", ...countryProps },
+          identifier: { label: "Identifier", ...txtProps },
+          location: { label: "Location", ...txtProps },
+          name: { label: "Name", ...txtProps },
+          city: { label: "City", ...txtProps },
+          phone: { label: "Phone", ...txtProps }
+        }
       }
     }
   };
 
   useEffect(() => {
-    setDataConfig(fieldConfigWithData);
-    setKey(key + 1);
+    if (loaded) {
+      setDataConfig(fieldConfigWithData);
+      setKey(key + 1);
+    }
   }, [loaded]);
 
   const cb = ev => {
@@ -471,15 +403,7 @@ const QRModal = props => {
       setRefresh(false);
       return;
     }
-    // const q = getSaveObject();
-    // const invalids = (q.details || q.query || {})?.invalid;
 
-    // if (!invalids) {
-    //   setShowInvalid(false);
-    //   setRefresh(false);
-    //   return;
-    // }
-    // highlightInvalid(invalids);
     validateAll();
     setRefresh(false);
   };
@@ -543,15 +467,9 @@ const QRModal = props => {
   };
 
   const storeRule = () => {
-    ctx.userAction({ lastRule: query, type: "lastRule" });
-  };
+    const saved = getSaveObject();
 
-  const getStoredRule = () => {
-    const storedRule = ctx.getUserState().lastRule;
-  };
-
-  const dropStoredRule = () => {
-    ctx.userAction({ type: "dropRule" });
+    lookupAction({ data: saved, type: "lastRule" });
   };
 
   const clearInvalid = () => {
@@ -567,11 +485,7 @@ const QRModal = props => {
 
     if (!validateAll()) return;
 
-    // setShowInvalid(true);
     const q = getSaveObject();
-    // const invalids = (q.details || q.query || {}).invalid;
-
-    // if (hasData(invalids)) return highlightInvalid(invalids);
 
     const saveMethod = isEdit ? svc.put : svc.post;
     const saveArgs = hasData(id) ? [id, q] : [q];
@@ -627,7 +541,7 @@ const QRModal = props => {
         data: {
           pageNumber: 1,
           pageSize: 10,
-          query: data || query
+          query: query || data
         }
       }
     });
@@ -656,10 +570,10 @@ const QRModal = props => {
 
     setData(props.data?.query);
 
-    const storedCountries = getLookupState("countries");
-    const storedCarriers = getLookupState("carriers");
-    const storedAirports = getLookupState("airports");
-    const storedCategories = getLookupState("categories");
+    const storedCountries = getLookupState(CTX.COUNTRIES);
+    const storedCarriers = getLookupState(CTX.CARRIERS);
+    const storedAirports = getLookupState(CTX.AIRPORTCODES);
+    const storedCategories = getLookupState(CTX.RULECATS);
 
     if (hasData(storedCategories)) {
       setCategories(storedCategories);
@@ -669,7 +583,7 @@ const QRModal = props => {
           return { label: catitem.label, value: catitem.id };
         });
 
-        if (hasData(cats)) lookupAction({ rulecats: cats, type: CTX.RULECATS });
+        if (hasData(cats)) lookupAction({ data: cats, type: CTX.RULECATS });
         setCategories(cats);
       });
     }
@@ -682,8 +596,7 @@ const QRModal = props => {
           return { value: ctyitem.iso3, title: ctyitem.name };
         });
 
-        if (hasData(ctyitems)) lookupAction({ countries: ctyitems, type: CTX.COUNTRIES });
-        // sessionStorage.setItem("countries", JSON.stringify(ctyitems));
+        if (hasData(ctyitems)) lookupAction({ data: ctyitems, type: CTX.COUNTRIES });
         setCountries(ctyitems);
       });
     }
@@ -700,8 +613,7 @@ const QRModal = props => {
           return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
         });
 
-        if (hasData(result)) lookupAction({ carriers: result, type: CTX.CARRIERS });
-        // sessionStorage.setItem("carriers", JSON.stringify(result));
+        if (hasData(result)) lookupAction({ data: result, type: CTX.CARRIERS });
         setCarriers(result);
       });
     }
@@ -711,15 +623,14 @@ const QRModal = props => {
     } else {
       airportLookup.get().then(res => {
         let apitems = asArray(res).map(apitem => {
-          return { title: `${apitem.name} (${apitem.iata})`, value: apitem.iata };
+          return { title: apitem.iata, value: apitem.iata };
         });
 
         const result = apitems.sort(function(a, b) {
           return a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1;
         });
 
-        if (hasData(result)) lookupAction({ carriers: result, type: CTX.AIRPORTS });
-        // sessionStorage.setItem("airports", JSON.stringify(result));
+        if (hasData(result)) lookupAction({ data: result, type: CTX.AIRPORTCODES });
         setAirports(result);
       });
     }
@@ -822,8 +733,7 @@ const QRModal = props => {
                 </Row>
               </>
             )}
-
-            {dataConfig && (
+            {loaded && (
               <RAQB
                 data={data}
                 key={key}
