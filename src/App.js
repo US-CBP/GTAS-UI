@@ -249,13 +249,6 @@ export default class App extends React.Component {
                           icon="fa-search"
                         ></Queries>
                         <QRDetails path="qrdetails" hideTile></QRDetails>
-                        <Auxiliary
-                          name="Neo4j"
-                          path="http://localhost:7474/browser/"
-                          desc="Browse the Neo4j database"
-                          icon="fa-database"
-                          hasExternalLink={true}
-                        ></Auxiliary>
                         <Watchlist
                           path="watchlist"
                           name="Watchlist"
@@ -350,6 +343,13 @@ export default class App extends React.Component {
                             icon="fa-comment"
                             name="Kibana Dashboard"
                             path="https://localhost:5601/login?next=%2F"
+                            hasExternalLink={true}
+                          ></Auxiliary>
+                          <Auxiliary
+                            name="Neo4j"
+                            path="http://localhost:7474/browser/"
+                            desc="Browse the Neo4j database"
+                            icon="fa-database"
                             hasExternalLink={true}
                           ></Auxiliary>
                         </Admin>
