@@ -454,7 +454,7 @@ export const seats = {
 };
 
 export const neo4jUrl = {
-  getl: () => get(NEO4JURL, BASEHEADER)
+  get: () => get(NEO4JURL, BASEHEADER)
 };
 export const kibanaUrl = {
   get: () => get(KIBANAURL, BASEHEADER)
