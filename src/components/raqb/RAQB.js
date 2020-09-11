@@ -44,7 +44,6 @@ const RAQB = props => {
   initconfig.types.text.widgets.text.operators = additionalOperators;
   initconfig.settings.addRuleLabel = "Add Condition";
   initconfig.settings.showNot = true;
-  initconfig.settings.customFieldSelectProps = { showSearch: true };
 
   const convertedInput = props.data ? importToTreeObject(props.data) : queryValue;
   const inputTree = QbUtils.checkTree(QbUtils.loadTree(convertedInput), initconfig);
