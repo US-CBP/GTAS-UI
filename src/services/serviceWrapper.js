@@ -144,8 +144,9 @@ const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
 const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 const SEARCH = `${BASE_URL}gtas/search`;
 const SEATS = `${BASE_URL}gtas/seats`;
-const UPLOADATTACHMENT = `${BASE_URL}gtas/uploadattachments`;
-const GETATTACHMENTS = `${BASE_URL}gtas/getattachments`;
+const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
+const ATTACHMENTSMETA = `${BASE_URL}gtas/attachmentsmeta`;
+
 // ENTITY METHODS
 export const users = {
   get: {
@@ -303,11 +304,20 @@ export const codeEditor = {
 };
 
 export const attachment = {
-  get: (paxId) => {
-    const path = GETATTACHMENTS+`?paxId=${paxId}`;
-    return get(path, BASEHEADER);
+  get: {
+    getAllFullAttachments: paxId => {
+      const path = ATTACHMENTS + `?paxId=${paxId}`;
+      return get(path, BASEHEADER);
+    },
+    getAllAttachmentsMeta: paxId => {
+      const path = ATTACHMENTSMETA + `?paxId=${paxId}`;
+      return get(path, BASEHEADER);
+    }
   },
-  post: body => post(UPLOADATTACHMENT, "", body)
+  post: body => post(ATTACHMENTS, "", body),
+  del: attachmentId => {
+    return del(ATTACHMENTS, BASEHEADER, attachmentId);
+  }
 }
 
 export const login = {
