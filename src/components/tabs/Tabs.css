@@ -1,8 +1,8 @@
-.RRT__showmore {
-  z-index: 50;
+.gtas-tabs {
+  border: none;
+  margin-bottom: 3px;
 }
 
-.RRT__panel {
-  background-color: white;
-  padding: 0px !important;
+.gtas-tabs a {
+  color: #0199b8;
 }
