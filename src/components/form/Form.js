@@ -8,6 +8,7 @@ import { navigate } from "@reach/router";
 
 import { ACTION } from "../../utils/constants";
 import "./Form.css";
+import Confirm from "../confirmationModal/Confirm";
 
 /**
  * **Generic form that can add a new record or fetch and edit an existing one.**
@@ -107,7 +108,7 @@ class Form extends React.Component {
   }
 
   onFormSubmit(e) {
-    e.preventDefault();
+    if (!this.props.shouldConfirm) e.preventDefault();
 
     let operation = this.props.submitService;
 
@@ -172,37 +173,48 @@ class Form extends React.Component {
   render() {
     const showSubmit = this.props.action !== "readonly";
     const disabled = this.canSubmit() ? "" : "disabled";
+    const header = "Form Confirmation";
+    const message = "Please confirm to submit the form.";
 
     return (
       <div>
         {this.props.title && <Title title={this.props.title}></Title>}
-        <RBForm onSubmit={this.onFormSubmit} key={this.state.formkey}>
-          <ErrorBoundary message="Form children could not be rendered">
-            {this.state.kids}
-          </ErrorBoundary>
-          <ButtonToolbar className="container">
-            {this.props.cancellable && (
-              <Button
-                type="button"
-                className="m-2 outline-dark-outline"
-                variant="outline-dark"
-                onClick={this.onFormCancel}
-              >
-                {this.props.cancelText || "Cancel"}
-              </Button>
-            )}
-            {showSubmit && (
-              <Button
-                className={`m-2 button block info fullwidth ${disabled}`}
-                type="submit"
-              >
-                {this.props.submitText || "Submit"}
-              </Button>
-            )}
+        <Confirm header={header} message={message}>
+          {confirm => (
+            <RBForm
+              onSubmit={
+                this.props.shouldConfirm ? confirm(this.onFormSubmit) : this.onFormSubmit
+              }
+              key={this.state.formkey}
+            >
+              <ErrorBoundary message="Form children could not be rendered">
+                {this.state.kids}
+              </ErrorBoundary>
+              <ButtonToolbar className="container">
+                {this.props.cancellable && (
+                  <Button
+                    type="button"
+                    className="m-2 outline-dark-outline"
+                    variant="outline-dark"
+                    onClick={this.onFormCancel}
+                  >
+                    {this.props.cancelText || "Cancel"}
+                  </Button>
+                )}
+                {showSubmit && (
+                  <Button
+                    className={`m-2 button block info fullwidth ${disabled}`}
+                    type="submit"
+                  >
+                    {this.props.submitText || "Submit"}
+                  </Button>
+                )}
 
-            {this.props.customButtons}
-          </ButtonToolbar>
-        </RBForm>
+                {this.props.customButtons}
+              </ButtonToolbar>
+            </RBForm>
+          )}
+        </Confirm>
       </div>
     );
   }
@@ -220,7 +232,8 @@ Form.propTypes = {
   recordId: PropTypes.string,
   data: PropTypes.object,
   callback: PropTypes.func.isRequired,
-  paramCallback: PropTypes.func
+  paramCallback: PropTypes.func,
+  shouldConfirm: PropTypes.bool
 };
 
 export default Form;
