@@ -4,7 +4,7 @@ import "./Tabs.css";
 import { Tab } from "react-bootstrap";
 
 const Tabs = props => {
-  const [key, setKey] = useState("Summary");
+  const [key, setKey] = useState();
   const tablist = props.tabs.map(tab => {
     return (
       <Tab eventKey={tab.title} title={tab.title} key={tab.title}>
