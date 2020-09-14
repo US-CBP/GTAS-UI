@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import "../Inputs.css";
+import "../Inputs.scss";
 import MultiSelect from "react-multi-select-component";
 
 const SelectInput = props => {

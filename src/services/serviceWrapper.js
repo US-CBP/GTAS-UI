@@ -131,6 +131,8 @@ const NOTIFICATION = `${BASE_URL}gtas/users/notify`;
 const HOST = `${BASE_URL}gtas/api/config/`;
 const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
+const NEO4JURL = HOST + "/neo4j/";
+const KIBANAURL = HOST + "/kibanaUrl/";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 const LOGFILE = `${BASE_URL}gtas/api/logs/`;
 const SIGNUP = `${BASE_URL}gtas/user/signup/new`;
@@ -449,4 +451,11 @@ export const search = {
 };
 export const seats = {
   get: flightId => get(SEATS, BASEHEADER, flightId)
+};
+
+export const neo4jUrl = {
+  get: () => get(NEO4JURL, BASEHEADER)
+};
+export const kibanaUrl = {
+  get: () => get(KIBANAURL, BASEHEADER)
 };
