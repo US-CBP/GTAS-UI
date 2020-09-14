@@ -22,6 +22,7 @@ import Login from "./pages/login/Login";
 import SignUp from "./pages/signUp/SignUp";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
+import Auxiliary from "./components/auxiliary/Auxiliary";
 
 const Flights = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")
@@ -86,6 +87,10 @@ const PageUnauthorized = loadable(() =>
 );
 const SeatChart = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
+);
+
+const Search = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/search/Search")
 );
 
 //Admin bundle imports
@@ -246,12 +251,6 @@ export default class App extends React.Component {
                             icon="fa-search"
                           ></Queries>
                           <QRDetails path="qrdetails" hideTile></QRDetails>
-                          <Neo4J
-                            name="Neo4j"
-                            path="neo4j"
-                            desc="Browse the Neo4j database"
-                            icon="fa-database"
-                          ></Neo4J>
                           <Watchlist
                             path="watchlist"
                             name="Watchlist"
@@ -271,6 +270,7 @@ export default class App extends React.Component {
                           ></About>
                         </Tools>
                         <ChangePassword path="user/change-password"></ChangePassword>
+                        <Search path="search/:searchParam"></Search>
                         <ChangePassword path="user/change-password/:userId"></ChangePassword>
                         <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
                         <RoleAuthenticator
@@ -344,6 +344,20 @@ export default class App extends React.Component {
                               name="Note Type Categories"
                               path="notetypecats"
                             ></NoteTypeCats>
+                            <Auxiliary
+                              desc="Got to Kibana Dashboard"
+                              icon="fa-comment"
+                              name="Kibana Dashboard"
+                              path="https://localhost:5601/login?next=%2F"
+                              hasExternalLink={true}
+                            ></Auxiliary>
+                            <Auxiliary
+                              name="Neo4j"
+                              path="http://localhost:7474/browser/"
+                              desc="Browse the Neo4j database"
+                              icon="fa-database"
+                              hasExternalLink={true}
+                            ></Auxiliary>
                           </Admin>
                         </RoleAuthenticator>
                         <PaxDetail path="paxDetail/:flightId/:paxId">

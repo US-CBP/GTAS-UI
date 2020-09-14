@@ -21,6 +21,7 @@ const Settings = ({ name }) => {
             callback={onChange}
             title=""
             action="edit"
+            shouldConfirm={true}
           >
             <LabelledInput
               datafield
@@ -48,14 +49,6 @@ const Settings = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText="Watchlists Matching Flight Range"
-              inputType="number"
-              name="flightRange"
-              callback={cb}
-              alt="nothing"
-            />
-            <LabelledInput
-              datafield
               labelText="Maximum Rule Hits Allowed Per Run on Rule"
               inputType="number"
               name="maxRuleHit"
@@ -71,14 +64,6 @@ const Settings = ({ name }) => {
                 { value: "FALSE", label: "FALSE" }
               ]}
               name="apisOnlyFlag"
-              callback={cb}
-              alt="nothing"
-            />
-            <LabelledInput
-              datafield
-              labelText="APIS Version"
-              inputType="text"
-              name="apisVersion"
               callback={cb}
               alt="nothing"
             />

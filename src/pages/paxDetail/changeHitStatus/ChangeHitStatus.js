@@ -47,7 +47,7 @@ const ChangeHitStatus = props => {
         )}
       </SplitButton>
 
-      <Modal show={show} onHide={handleCancel} centered backdrop="static">
+      <Modal show={show} onHide={handleCancel} centered>
         <Modal.Header>Update Hit Status</Modal.Header>
         <Modal.Body>{`Please confirm to change the status to: ${status}`}</Modal.Body>
         <Modal.Footer>

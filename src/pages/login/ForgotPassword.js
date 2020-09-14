@@ -47,7 +47,7 @@ const ForgotPassword = props => {
             action="add"
             submitText="Submit"
             redirectTo="/login"
-            cancellabl
+            cancellable
           >
             <LabelledInput
               datafield

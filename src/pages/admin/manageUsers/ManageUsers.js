@@ -9,6 +9,7 @@ import { ACTION } from "../../../utils/constants";
 import "./ManageUsers.scss";
 import UserModal from "./UserModal";
 import { navigate } from "@reach/router";
+import Confirm from "../../../components/confirmationModal/Confirm";
 
 const ManageUsers = props => {
   const [data, setData] = useState([]);
@@ -33,9 +34,17 @@ const ManageUsers = props => {
     navigate(`/gtas/user/change-password/${userId}`);
   };
 
+  const deleteUser = rowDetails => {
+    users.del(rowDetails.userId).then(res => {
+      cb(ACTION.DELETE, res);
+    });
+  };
+
   const headers = [
     {
       Accessor: "Edit",
+      disableFilters: true,
+      disableSortBy: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center edit-user">
@@ -49,6 +58,21 @@ const ManageUsers = props => {
               >
                 Change Password
               </Dropdown.Item>
+              <Confirm
+                header="Confirm User Deletion"
+                message={`Please confirm to delete a user with userId: ${row.original.userId}`}
+              >
+                {confirm => (
+                  <Dropdown.Item
+                    as="button"
+                    onClick={confirm(() => {
+                      deleteUser(row.original);
+                    })}
+                  >
+                    Delete User
+                  </Dropdown.Item>
+                )}
+              </Confirm>
             </DropdownButton>
           </div>
         );
@@ -56,6 +80,7 @@ const ManageUsers = props => {
     },
     {
       Accessor: "active",
+      isBoolean: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center">
@@ -74,6 +99,7 @@ const ManageUsers = props => {
     { Accessor: "email" },
     {
       Accessor: "emailEnabledInt",
+      isBoolean: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center">
@@ -88,6 +114,7 @@ const ManageUsers = props => {
     },
     {
       Accessor: "highPriorityEmailInt",
+      isBoolean: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center">
@@ -158,6 +185,7 @@ const ManageUsers = props => {
           callback={cb}
           key={refreshKey}
           header={headers}
+          enableColumnFilter={true}
         ></Table>
         <UserModal
           show={showModal}

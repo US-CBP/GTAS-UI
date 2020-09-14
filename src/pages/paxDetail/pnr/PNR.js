@@ -6,6 +6,9 @@ import { asArray, hasData, localeDate, localeDateOnly } from "../../../utils/uti
 
 const PNR = props => {
   const data = hasData(props.data) ? props.data : {};
+  const segmentTitle = `${data.recordLocator} ${
+    hasData(data.version) ? `(Version: ${data.version})` : ""
+  }`;
 
   const headers = {
     itinerary: {
@@ -151,7 +154,7 @@ const PNR = props => {
     <Row>
       <Col sm="5" md="5" lg="5">
         <SegmentTable
-          title="Segment Table"
+          title={segmentTitle}
           data={rawPnrSegments}
           id="rawPnrSegments"
           ref={segmentRef}

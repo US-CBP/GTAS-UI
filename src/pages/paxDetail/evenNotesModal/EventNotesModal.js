@@ -19,12 +19,16 @@ const EventNotesModal = props => {
 
   useEffect(() => {
     notetypes.get().then(types => {
-      const nTypes = asArray(types).map(type => {
-        return {
-          value: `{"id":"${type.id}", "noteType":"${type.noteType}"}`,
-          label: type.noteType
-        };
+      const nTypes = [];
+      asArray(types).forEach(type => {
+        if (type.noteType !== "DELETED") {
+          nTypes.push({
+            value: `{"id":"${type.id}", "noteType":"${type.noteType}"}`,
+            label: type.noteType
+          });
+        }
       });
+
       setNoteTypes(nTypes);
     });
   }, []);

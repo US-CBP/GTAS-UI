@@ -12,3 +12,10 @@
     display: inline-flex;
   }
 }
+
+.date-picker-container {
+  width: 100%;
+}
+.date-picker-container .react-datepicker-wrapper {
+  width: 100%;
+}
