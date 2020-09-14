@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-// import RRTabs from "react-responsive-tabs";
-// import "react-responsive-tabs/styles.css";
 import { Tabs as RBTabs } from "react-bootstrap";
 import "./Tabs.css";
 import { Tab } from "react-bootstrap";
@@ -15,7 +13,7 @@ const Tabs = props => {
     );
   });
   return (
-    <RBTabs activeKey={key} onSelect={k => setKey(k)}>
+    <RBTabs className="gtas-tabs" activeKey={key} onSelect={k => setKey(k)}>
       {tablist}
     </RBTabs>
   );
