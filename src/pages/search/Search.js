@@ -9,6 +9,7 @@ import "./Search.scss";
 
 const Search = props => {
   const [data, setData] = useState([]);
+  const [refreshKey, setRefreshKey] = useState([]);
   const { searchParam } = useParams();
   const cb = () => {};
   const isSearchedText = text => {
@@ -86,14 +87,23 @@ const Search = props => {
 
   useEffect(() => {
     search.passengers(params).then(res => {
-      if (hasData(res.result)) setData(res.result.passengers);
+      if (hasData(res.result)) {
+        setData(res.result.passengers);
+        setRefreshKey(refreshKey + 1);
+      }
     });
   }, [searchParam]);
 
   return (
     <Container fluid>
       <Title title={`Search Result for ${searchParam.toUpperCase()}`} uri={props.uri} />
-      <Table data={data} id="searchTable" callback={cb} header={Headers} key={data} />
+      <Table
+        data={data}
+        id="searchTable"
+        callback={cb}
+        header={Headers}
+        key={refreshKey}
+      />
     </Container>
   );
 };
