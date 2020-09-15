@@ -15,46 +15,29 @@ const Tools = props => {
       <>
         <Title title="Tools" />
 
-        <CardDeck className="page-deck">
-          {tiles.map(info => {
-            const data = info.props;
-            return (
-              <Card className="page-tiles" key={data.path}>
-                <Card.Body>
-                  {data.hasExternalLink ? (
-                    <>
+        <div className="container">
+          <CardDeck className="page-deck">
+            {tiles.map(info => {
+              const data = info.props;
+              return (
+                <Card className="page-tiles card-shadow" key={data.path}>
+                  <Link to={data.path} className="card-link">
+                    <Card.Body>
                       <Card.Title className="nowrap">
-                        <ExternalLink to={data.path} className="card-link">
-                          <i className={`fa ${data.icon}`}></i>
-                          {`  ${data.name}`}
-                        </ExternalLink>
+                        <i className={`fa fa-3x ${data.icon}`}></i>
+                        {/* {`  ${data.name}`} */}
                       </Card.Title>
-                      <div className="admin-text-link">
-                        <ExternalLink to={data.path} className="card-link page-card-link">
-                          <Card.Text>{data.desc}</Card.Text>
-                        </ExternalLink>
+                      <div className="card-overlay">{data.name}</div>
+                      <div className="card-description">
+                        <Card.Text>{data.desc}</Card.Text>
                       </div>
-                    </>
-                  ) : (
-                    <>
-                      <Card.Title className="nowrap">
-                        <Link to={data.path} className="card-link">
-                          <i className={`fa ${data.icon}`}></i>
-                          {`  ${data.name}`}
-                        </Link>
-                      </Card.Title>
-                      <div className="admin-text-link">
-                        <Link to={data.path} className="card-link page-card-link">
-                          <Card.Text>{data.desc}</Card.Text>
-                        </Link>
-                      </div>
-                    </>
-                  )}
-                </Card.Body>
-              </Card>
-            );
-          })}
-        </CardDeck>
+                    </Card.Body>
+                  </Link>
+                </Card>
+              );
+            })}
+          </CardDeck>
+        </div>
       </>
     );
 

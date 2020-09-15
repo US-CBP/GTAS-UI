@@ -14,47 +14,42 @@ const Admin = props => {
       <>
         <Title title="Admin" />
 
-        <CardDeck className="admin-deck">
-          {children.map(info => {
-            const data = info.props;
-            return (
-              <Card className="admin-tiles" key={data.path}>
-                <Card.Body>
+        <div className="container">
+          <CardDeck className="page-deck">
+            {children.map(info => {
+              const data = info.props;
+              return (
+                <Card className="page-tiles card-shadow" key={data.path}>
                   {data.hasExternalLink ? (
-                    <>
-                      <Card.Title className="nowrap">
-                        <ExternalLink to={data.path} className="card-link">
-                          <i className={`fa ${data.icon}`}></i>
-                          {`  ${data.name}`}
-                        </ExternalLink>
-                      </Card.Title>
-
-                      <div className="admin-text-link">
-                        <ExternalLink to={data.path} className="card-link page-card-link">
+                    <ExternalLink to={data.path} className="card-link">
+                      <Card.Body>
+                        <Card.Title className="nowrap">
+                          <i className={`fa fa-3x ${data.icon}`}></i>
+                        </Card.Title>
+                        <div className="card-overlay">{data.name}</div>
+                        <div className="card-description">
                           <Card.Text>{data.desc}</Card.Text>
-                        </ExternalLink>
-                      </div>
-                    </>
+                        </div>
+                      </Card.Body>
+                    </ExternalLink>
                   ) : (
-                    <>
-                      <Card.Title className="nowrap">
-                        <Link to={data.path} className="card-link">
-                          <i className={`fa ${data.icon}`}></i>
-                          {`  ${data.name}`}
-                        </Link>
-                      </Card.Title>
-                      <div className="admin-text-link">
-                        <Link to={data.path} className="card-link page-card-link">
+                    <Link to={data.path} className="card-link">
+                      <Card.Body>
+                        <Card.Title className="nowrap">
+                          <i className={`fa fa-3x ${data.icon}`}></i>
+                        </Card.Title>
+                        <div className="card-overlay">{data.name}</div>
+                        <div className="card-description">
                           <Card.Text>{data.desc}</Card.Text>
-                        </Link>
-                      </div>
-                    </>
+                        </div>
+                      </Card.Body>
+                    </Link>
                   )}
-                </Card.Body>
-              </Card>
-            );
-          })}
-        </CardDeck>
+                </Card>
+              );
+            })}
+          </CardDeck>
+        </div>
       </>
     );
 
