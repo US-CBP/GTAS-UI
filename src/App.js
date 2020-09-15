@@ -339,7 +339,7 @@ export default class App extends React.Component {
                             path="notetypecats"
                           ></NoteTypeCats>
                           <Auxiliary
-                            desc="Got to Kibana Dashboard"
+                            desc="Go to Kibana Dashboard"
                             icon="fa-comment"
                             name="Kibana Dashboard"
                             path="https://localhost:5601/login?next=%2F"
