@@ -14,7 +14,7 @@ const Search = props => {
   const cb = () => {};
   const searchedTextUpper = searchParam.toUpperCase();
   const getHighlight = text => {
-    return ("" + text).toUpperCase().includes(searchedTextUpper) ? "highlight" : "";
+    return searchedTextUpper.includes(("" + text).toUpperCase()) ? "highlight" : "";
   };
   const Headers = [
     {
