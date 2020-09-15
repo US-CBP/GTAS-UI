@@ -12,72 +12,95 @@ const Search = props => {
   const [refreshKey, setRefreshKey] = useState([]);
   const { searchParam } = useParams();
   const cb = () => {};
-  const isSearchedText = text => {
-    return ("" + text).toUpperCase().includes(searchParam.toUpperCase());
+  const searchedTextUpper = searchParam.toUpperCase();
+  const getHighlight = text => {
+    return ("" + text).toUpperCase().includes(searchedTextUpper) ? "highlight" : "";
   };
   const Headers = [
     {
       Accessor: "passengerId",
       Header: "Id",
       Cell: ({ row }) => {
-        const highlight = isSearchedText(row.original.passengerId) ? "highlight" : "";
-        return <span className={highlight}>{row.original.passengerId}</span>;
+        return (
+          <span className={getHighlight(row.original.passengerId)}>
+            {row.original.passengerId}
+          </span>
+        );
       }
     },
     {
       Accessor: "lastName",
       Header: "Last Name",
       Cell: ({ row }) => {
-        const highlight = isSearchedText(row.original.lastName) ? "highlight" : "";
-        return <span className={highlight}>{row.original.lastName}</span>;
+        return (
+          <span className={getHighlight(row.original.lastName)}>
+            {row.original.lastName}
+          </span>
+        );
       }
     },
     {
       Accessor: "firstName",
       Header: "First Name",
       Cell: ({ row }) => {
-        const highlight = isSearchedText(row.original.firstName) ? "highlight" : "";
-        return <span className={highlight}>{row.original.firstName}</span>;
+        return (
+          <span className={getHighlight(row.original.firstName)}>
+            {row.original.firstName}
+          </span>
+        );
       }
     },
     {
       Accessor: "middleName",
       Header: "Middle Name",
       Cell: ({ row }) => {
-        const highlight = isSearchedText(row.original.middleName) ? "highlight" : "";
-        return <span className={highlight}>{row.original.middleName}</span>;
+        return (
+          <span className={getHighlight(row.original.middleName)}>
+            {row.original.middleName}
+          </span>
+        );
       }
     },
     {
       Accessor: "flightNumber",
       Header: "Flight Number",
       Cell: ({ row }) => {
-        const highlight = isSearchedText(row.original.flightNumber) ? "highlight" : "";
-        return <span className={highlight}>{row.original.flightNumber}</span>;
+        return (
+          <span className={getHighlight(row.original.flightNumber)}>
+            {row.original.flightNumber}
+          </span>
+        );
       }
     },
     {
       Accessor: "origin",
       Header: "Origin",
       Cell: ({ row }) => {
-        const highlight = isSearchedText(row.original.origin) ? "highlight" : "";
-        return <span className={highlight}>{row.original.origin}</span>;
+        return (
+          <span className={getHighlight(row.original.origin)}>{row.original.origin}</span>
+        );
       }
     },
     {
       Accessor: "etd",
       Header: "ETD",
       Cell: ({ row }) => {
-        const highlight = isSearchedText(row.original.etd) ? "highlight" : "";
-        return <span className={highlight}>{localeDate(row.original.etd)}</span>;
+        return (
+          <span className={getHighlight(row.original.etd)}>
+            {localeDate(row.original.etd)}
+          </span>
+        );
       }
     },
     {
       Accessor: "eta",
       Header: "ETA",
       Cell: ({ row }) => {
-        const highlight = isSearchedText(row.original.eta) ? "highlight" : "";
-        return <span className={highlight}>{localeDate(row.original.eta)}</span>;
+        return (
+          <span className={getHighlight(row.original.eta)}>
+            {localeDate(row.original.eta)}
+          </span>
+        );
       }
     }
   ];
