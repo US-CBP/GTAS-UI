@@ -5,7 +5,7 @@ export default function Loading() {
   return (
     <div className="loading">
       <i className="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
-      <span className="sr-only">Loading...</span>
+      <span className="sr-only"></span>
     </div>
   );
 }

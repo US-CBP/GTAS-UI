@@ -14,7 +14,7 @@ const Search = props => {
   const cb = () => {};
   const searchedTextUpper = searchParam.toUpperCase();
   const getHighlight = text => {
-    return ("" + text).toUpperCase().includes(searchedTextUpper) ? "highlight" : "";
+    return searchedTextUpper.includes(("" + text).toUpperCase()) ? "highlight" : "";
   };
   const Headers = [
     {
@@ -119,13 +119,14 @@ const Search = props => {
 
   return (
     <Container fluid>
-      <Title title={`Search Result for ${searchParam.toUpperCase()}`} uri={props.uri} />
+      <Title title={`Search Result for ${searchedTextUpper}`} uri={props.uri} />
       <Table
         data={data}
         id="searchTable"
         callback={cb}
         header={Headers}
         key={refreshKey}
+        enableColumnFilter={true}
       />
     </Container>
   );

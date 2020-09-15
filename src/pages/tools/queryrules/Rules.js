@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import { Button, Container, Tabs, Tab } from "react-bootstrap";
 import { navigate } from "@reach/router";
+import { LookupContext } from "../../../context/data/LookupContext";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
 import { hasData, getEndpoint } from "../../../utils/utils";
@@ -21,6 +22,7 @@ const Rules = props => {
   const [record, setRecord] = useState();
   const [modalKey, setModalKey] = useState(-1);
   const [tablekey, setTablekey] = useState(0);
+  const ctx = useContext(LookupContext);
 
   const cb = res => {};
 
@@ -107,6 +109,7 @@ const Rules = props => {
 
     setModalTitle(title);
     // timestamp as key ensures the modal gets refreshed and displayed on each launch.
+    // APB ????
     setModalKey(Date.now());
   };
 
@@ -168,6 +171,19 @@ const Rules = props => {
 
     fetchTableData();
   }, [tab, endpoint]);
+
+  useEffect(() => {
+    const lastRule = ctx.getLookupState("lastRule");
+
+    if (hasData(lastRule)) {
+      const flatRule = { ...lastRule.summary, query: lastRule.details, id: lastRule.id };
+
+      setId(flatRule.id);
+      setRecord(flatRule);
+      triggerShowModal(flatRule.id);
+      ctx.lookupAction({ type: "removeRule" });
+    }
+  }, []);
 
   const tabs = (
     <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs">
