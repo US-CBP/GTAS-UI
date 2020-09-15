@@ -12,7 +12,7 @@ import { navigate } from "@reach/router";
 import Confirm from "../../../components/confirmationModal/Confirm";
 
 const ManageUsers = props => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(undefined);
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
@@ -186,6 +186,7 @@ const ManageUsers = props => {
           key={refreshKey}
           header={headers}
           enableColumnFilter={true}
+          showPending={true}
         ></Table>
         <UserModal
           show={showModal}
