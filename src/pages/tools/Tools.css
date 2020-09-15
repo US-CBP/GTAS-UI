@@ -4,7 +4,7 @@
   width: 300px;
   margin: 10px;
   min-height: 125px;
-  border: 1px solid #98b4c7;
+  border: 1.5px solid #0077c8;
 }
 
 .page-deck {
@@ -28,4 +28,42 @@
   border: 1px solid #0077c8;
   border-radius: 3px;
   padding: 2px;
+}
+
+.card-link > .card-body,
+.page-tiles > .card-link {
+  height: 100%;
+  position: relative;
+}
+
+.card-overlay {
+  position: absolute;
+  top: 30px;
+  left: 95px;
+  font-weight: 500;
+  font-size: larger;
+}
+
+.card-link > .card-body > .card-title,
+.card-link > .card-body > .card-title > .fa {
+  color: #0077c8;
+}
+
+.card-description {
+  color: black;
+  font-size: initial;
+  height: 48px;
+}
+
+.card-description > .card-text {
+  text-align: center;
+}
+
+.card-shadow {
+  box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.3);
+}
+
+.card-link:hover {
+  text-decoration: none;
+  background-color: #e5f3ff;
 }
