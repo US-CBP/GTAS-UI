@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Table from "../../components/table/Table";
-import { cases, notetypes, usersemails } from "../../services/serviceWrapper";
+import { cases, notetypes, usersemails, ruleCats } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm/FilterForm";
@@ -8,7 +8,6 @@ import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils
 import { Col, Button } from "react-bootstrap";
 import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import "./Vetting.css";
-import { useFetchHitCategories } from "../../services/dataInterface/HitCategoryService";
 import SideNav from "../../components/sidenav/SideNav";
 import Main from "../../components/main/Main";
 import { Link } from "@reach/router";
@@ -74,7 +73,7 @@ const Vetting = props => {
       Header: "Timer",
       Cell: ({ row }) => {
         const future =
-          row.original.countdownTime === "O"
+          row.original.flightDirection === "O"
             ? row.original.flightETDDate
             : row.original.flightETADate;
         return <CountdownBadge future={future} baseline={now} />;
@@ -160,9 +159,8 @@ const Vetting = props => {
   const [startDate, setStartDate] = useState(sDate);
   const [endDate, setEndDate] = useState(eDate);
   const [data, setData] = useState([]);
-  const { hitCategories, loading } = useFetchHitCategories();
   const [hitCategoryOptions, setHitCategoryOptions] = useState();
-  const [refreshKey, setRefreshKey] = useState("");
+  const [refreshKey, setRefreshKey] = useState(0);
   const showDateTimePicker = useRef(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [currentPaxId, setCurrentPaxId] = useState();
@@ -177,7 +175,7 @@ const Vetting = props => {
 
   const toggleDateTimePicker = ev => {
     showDateTimePicker.current = !showDateTimePicker.current;
-    setRefreshKey(ev);
+    setRefreshKey(refreshKey + 1);
   };
 
   const setDataWrapper = data => {
@@ -245,6 +243,17 @@ const Vetting = props => {
       });
       setUsersEmails(emails);
     });
+
+    ruleCats.get().then(res => {
+      const options = asArray(res).map(hitCat => {
+        return {
+          label: hitCat.name,
+          value: hitCat.name
+        };
+      });
+      setHitCategoryOptions(options);
+      setRefreshKey(refreshKey + 1);
+    });
   }, []);
 
   useEffect(() => {
@@ -258,18 +267,6 @@ const Vetting = props => {
       setNoteTypes(nTypes);
     });
   }, []);
-
-  useEffect(() => {
-    if (hitCategories !== undefined) {
-      const options = asArray(hitCategories).map(hitCat => {
-        return {
-          label: hitCat.name,
-          value: hitCat.name
-        };
-      });
-      setHitCategoryOptions(options);
-    }
-  }, [hitCategories, loading]);
 
   const dateRange = (
     <>
@@ -327,63 +324,60 @@ const Vetting = props => {
     />
   );
 
-  let renderedFilter;
-  if (loading) {
-    renderedFilter = <div>Loading Filter!</div>;
-  } else {
-    renderedFilter = (
-      <>
-        <SideNav>
-          <Col>
-            <FilterForm
-              service={cases.get}
-              title="Filter"
-              callback={setDataWrapper}
-              paramAdapter={parameterAdapter}
-              key={refreshKey}
-            >
-              <hr className="horizontal-line" />
-              <LabelledInput
-                datafield="myRulesOnly"
-                name="myRulesOnly"
-                labelText="My Rules Only"
-                inputType="checkbox"
-                inputVal={false}
-                callback={cb}
-                selected={false}
-                alt="nothing"
-                spacebetween
-              />
-              <hr />
-              <LabelledInput
-                name="displayStatusCheckBoxes"
-                datafield="displayStatusCheckBoxes"
-                labelText="Passenger Hit Status"
-                inputType="multiSelect"
-                inputVal={[
-                  {
-                    value: "NEW",
-                    label: "New"
-                  },
-                  {
-                    value: "RE_OPENED",
-                    label: "Re Opened"
-                  }
-                ]}
-                options={hitStatusOptions}
-                callback={cb}
-                alt="nothing"
-              />
-              <LabelledInput
-                name="ruleTypes"
-                datafield="ruleTypes"
-                labelText="Hit Types"
-                inputType="multiSelect"
-                inputVal={hitTypeOptions}
-                options={hitTypeOptions}
-                callback={cb}
-                alt="nothing"
-              />
+  return (
+    <>
+      <SideNav>
+        <Col>
+          <FilterForm
+            service={cases.get}
+            title="Filter"
+            callback={setDataWrapper}
+            paramAdapter={parameterAdapter}
+            key={refreshKey}
+          >
+            <hr className="horizontal-line" />
+            <LabelledInput
+              datafield="myRulesOnly"
+              name="myRulesOnly"
+              labelText="My Rules Only"
+              inputType="checkbox"
+              inputVal={false}
+              callback={cb}
+              selected={false}
+              alt="nothing"
+              spacebetween
+            />
+            <hr />
+            <LabelledInput
+              name="displayStatusCheckBoxes"
+              datafield="displayStatusCheckBoxes"
+              labelText="Passenger Hit Status"
+              inputType="multiSelect"
+              inputVal={[
+                {
+                  value: "NEW",
+                  label: "New"
+                },
+                {
+                  value: "RE_OPENED",
+                  label: "Re Opened"
+                }
+              ]}
+              options={hitStatusOptions}
+              callback={cb}
+              alt="nothing"
+            />
+            <LabelledInput
+              name="ruleTypes"
+              datafield="ruleTypes"
+              labelText="Hit Types"
+              inputType="multiSelect"
+              inputVal={hitTypeOptions}
+              options={hitTypeOptions}
+              callback={cb}
+              alt="nothing"
+            />
+            {hasData(hitCategoryOptions) && (
               <LabelledInput
                 name="ruleCatFilter"
                 datafield="ruleCatFilter"
@@ -394,62 +388,60 @@ const Vetting = props => {
                 callback={cb}
                 alt="nothing"
               />
-              <LabelledInput
-                datafield="lastName"
-                labelText="Passenger Last Name"
-                inputType="text"
-                name="lastName"
-                callback={onTextChange}
-                alt="nothing"
-              />
-              <LabelledInput
-                datafield="flightNumber"
-                labelText="Flight Number"
-                inputType="text"
-                name="flightNumber"
-                callback={onTextChange}
-                alt="nothing"
-              />
-              <hr />
-              <LabelledInput
-                datafield="showDateTimePicker"
-                name="showDateTimePicker"
-                labelText="Show Date Time Picker"
-                inputType="checkbox"
-                inputVal={showDateTimePicker.current}
-                callback={cb}
-                toggleDateTimePicker={toggleDateTimePicker}
-                selected={showDateTimePicker.current}
-                alt="nothing"
-                spacebetween
-              />
-              {showDateTimePicker.current ? dateTimePicker : dateRange}
-            </FilterForm>
-          </Col>
-        </SideNav>
-        <Main>
-          <Title title="Priority Vetting" uri={props.uri} />
-          <Table
-            data={data}
-            id="FlightDataTable"
-            callback={onTableChange}
-            header={Headers}
-            ignoredFields={["countDown", "priorityVettingListRuleTypes", "ruleCatFilter"]}
-            key={data}
-          />
+            )}
+            <LabelledInput
+              datafield="lastName"
+              labelText="Passenger Last Name"
+              inputType="text"
+              name="lastName"
+              callback={onTextChange}
+              alt="Passenger Last Name"
+            />
+            <LabelledInput
+              datafield="flightNumber"
+              labelText="Flight Number"
+              inputType="text"
+              name="flightNumber"
+              callback={onTextChange}
+              alt="Flight Number"
+            />
+            <hr />
+            <LabelledInput
+              datafield="showDateTimePicker"
+              name="showDateTimePicker"
+              labelText="Show Date Time Picker"
+              inputType="checkbox"
+              inputVal={showDateTimePicker.current}
+              callback={cb}
+              toggleDateTimePicker={toggleDateTimePicker}
+              selected={showDateTimePicker.current}
+              alt="Show Date Time Picker"
+              spacebetween
+            />
+            {showDateTimePicker.current ? dateTimePicker : dateRange}
+          </FilterForm>
+        </Col>
+      </SideNav>
+      <Main>
+        <Title title="Priority Vetting" uri={props.uri} />
+        <Table
+          data={data}
+          id="FlightDataTable"
+          callback={onTableChange}
+          header={Headers}
+          key={data}
+        />
 
-          <ReviewPVL
-            paxId={currentPaxId}
-            callback={setRefreshKey}
-            show={showReviewModal}
-            onHide={() => setShowReviewModal(false)}
-            noteTypes={noteTypes}
-          />
-        </Main>
-      </>
-    );
-  }
-  return renderedFilter;
+        <ReviewPVL
+          paxId={currentPaxId}
+          callback={setRefreshKey}
+          show={showReviewModal}
+          onHide={() => setShowReviewModal(false)}
+          noteTypes={noteTypes}
+        />
+      </Main>
+    </>
+  );
 };
 
 export default Vetting;
