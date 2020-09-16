@@ -100,7 +100,6 @@ class Graph extends React.Component {
       origin: this.pax1.embarkation,
       destination: this.pax1.debarkation,
       vaquita: vaquita,
-      // thisPaxFlight: thisPaxFlight,
       paxRelations: paxRelations(
         this.pax1.flightIdTag,
         this.pax1.carrier + this.pax1.flightNumber
@@ -123,6 +122,12 @@ class Graph extends React.Component {
 
   shouldComponentUpdate() {
     return false;
+  }
+
+  componentWillUnmount() {
+    // prevent jquery from attempting updates on the resize event after the component is unmounted
+    // this deregisters the vaquita listener on the window on unmount
+    window.removeEventListener("resize", vaquita.graph.centerRootNode, false);
   }
 
   // documentPath = function() {
