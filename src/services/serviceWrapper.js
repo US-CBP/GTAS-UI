@@ -148,6 +148,7 @@ const SEARCH = `${BASE_URL}gtas/search`;
 const SEATS = `${BASE_URL}gtas/seats`;
 const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
 const ATTACHMENTSMETA = `${BASE_URL}gtas/attachmentsmeta`;
+const DOWNLOADATTACHMENT = `${BASE_URL}gtas/attachment`;
 
 // ENTITY METHODS
 export const users = {
@@ -314,6 +315,10 @@ export const attachment = {
     getAllAttachmentsMeta: paxId => {
       const path = ATTACHMENTSMETA + `?paxId=${paxId}`;
       return get(path, BASEHEADER);
+    },
+    download: attachmentId => {
+      const path = DOWNLOADATTACHMENT + `?attachmentId=${attachmentId}`;
+      window.open(path, "_self");
     }
   },
   post: body => post(ATTACHMENTS, "", body),
