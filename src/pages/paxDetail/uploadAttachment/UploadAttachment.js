@@ -3,42 +3,34 @@ import {attachment} from "../../../services/serviceWrapper";
 import "./UploadAttachment.scss";
 import Title from "../../../components/title/Title";
 import Table from "../../../components/table/Table";
+import {Button, Dropdown, DropdownButton} from "react-bootstrap";
+import Confirm from "../../../components/confirmationModal/Confirm";
+import AttachmentModal from "./AttachmentModal";
+import {ACTION} from "../../../utils/constants";
 
 const UploadAttachment = props => {
-    const cb = function(result) {};
     const [selectedFiles,setSelectedFiles] = useState(null);
     const [filesForDisplay, setFilesForDisplay] = useState([]);
     const [tableKey, setTableKey] = useState(0);
     const [refreshDataKey, setRefreshDataKey] = useState(0);
     const [data, setData] = useState([{}]);
-    const userName = "admin"; //TEST VALUE
-    const description = "Test Description"; //multi import creates problems with this
+    const [showModal, setShowModal] = useState(false);
     const paxId = props.paxId;
 
-    const processFiles = ev => {
-        console.log(selectedFiles);
-        const formData = new FormData();
-        for(var x = 0; x<selectedFiles.length; x++){
-            formData.append("file", selectedFiles[0]);
-        }
-        formData.append("desc", description);
-        formData.append("paxId", paxId);
-        upload(formData);
-    };
+    const cb = (status, resp) => {
+        if (status !== ACTION.CLOSE && status !== ACTION.CANCEL) setRefreshDataKey(refreshDataKey+1);
+    }
 
-    const onChangeCb = ev => {
-        console.log(ev.target.files);
-        if(maxFileSelect(ev) && maxFileSize) {
-            setSelectedFiles(ev.target.files);
-        }
-    };
-
-    const upload = (formData) => {
-        attachment.post(formData).then(resp => {
-            console.log(resp)
-            setSelectedFiles(null);
+    const deleteAttachment = (row) => {
+        console.log(row);
+        attachment.del(row.id).then(resp =>{
             setRefreshDataKey(refreshDataKey+1);
-        });
+        })
+    };
+
+    const downloadAttachment = (row) => {
+        console.log(row);
+        attachment.get.download(row.id);
     };
 
     const maxFileSelect= ev =>{
@@ -50,7 +42,7 @@ const UploadAttachment = props => {
             return false;
         }
         return true;
-    }
+    };
 
     const maxFileSize= ev =>{
         let files = ev.target.files
@@ -67,7 +59,7 @@ const UploadAttachment = props => {
             return false
         }
         return true;
-    }
+    };
 
     useEffect(() => {
         console.log("Testing files");
@@ -88,33 +80,62 @@ const UploadAttachment = props => {
     },[refreshDataKey]);
 
     const headers = [
+        {
+            Accessor: "Actions",
+            disableFilters: true,
+            disableSortBy: true,
+            Cell: ({ row }) => {return (
+            <div className="text-center edit-user">
+                <DropdownButton variant="outline-info" title="Choose Action">
+                    <Confirm
+                        header="Confirm Attachment Deletion"
+                        message={`Please confirm to delete an attachment with File Name: ${row.original.filename}`}
+                    >
+                        {confirm => (
+                            <Dropdown.Item
+                                as="button"
+                                onClick={confirm(() => {
+                                    deleteAttachment(row.original);
+                                })}
+                            >
+                                Delete Attachment
+                            </Dropdown.Item>
+                        )}
+                    </Confirm>
+                    <Dropdown.Item as="button" onClick={() => downloadAttachment(row.original)}>
+                        Download File
+                    </Dropdown.Item>
+                </DropdownButton>
+            </div>
+        );}
+        },
         { Accessor: "filename", Header: "File Name" },
         { Accessor: "contentType", Header: "File Type" },
         { Accessor: "description", Header: "Description" }
     ];
 
+    const button = (
+        <Button
+            variant="ternary"
+            className="btn btn-outline-info"
+            name="Add Attachment"
+            onClick={() => {
+                setShowModal(true);
+            }}
+            required={props.required}
+            value={props.inputVal}
+            alt={props.alt}
+        >
+            Add An Attachment
+        </Button>
+    );
+
     return (
        <div className="container">
-           <div className="row">
-               <div className ="offset-md-3 col-md-6">
-                       <div className="form-group files">
-                           <label>Upload Your File</label>
-                           <input type="file" className="form-control" multiple onChange={onChangeCb}/>
-                        </div>
-                       <button type="button" className="btn btn-sm" onClick={processFiles}>Upload</button>
-                </div>
-           </div>
-           {selectedFiles != null && !selectedFiles.empty ? (
-                <div className="container">
-                   Files To Be Uploaded:
-                    {filesForDisplay.map(data =>{
-                        return <ul> <u>File Name:</u> {data.name}  <u>File Size:</u> {data.size} kbs </ul>;
-                    })}
-               </div>
-           ) : ( <div></div>) }
            <main>
                <Title
                    title="Uploaded Attachments"
+                   rightChild={button}
                />
                <Table
                    data={data}
@@ -123,9 +144,15 @@ const UploadAttachment = props => {
                    key={tableKey}
                    callback={cb}
                />
+               <AttachmentModal
+                   show={showModal}
+                   callback={cb}
+                   onHide={() => setShowModal(false)}
+                   title="Upload Attachment"
+                   paxId={paxId}
+               ></AttachmentModal>
            </main>
        </div>
-
     );
 };
 

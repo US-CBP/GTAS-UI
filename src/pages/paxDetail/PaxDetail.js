@@ -20,7 +20,6 @@ import CreateManualHit from "./createManualHit/CreateManualHit";
 import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import { Link } from "@reach/router";
-import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
 
 const PaxDetail = props => {
@@ -123,7 +122,7 @@ const PaxDetail = props => {
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
     { title: "Link Analysis", link: <LinkAnalysis /> },
-    { title: "Upload Attachment", link: <UploadAttachment paxId={props.paxId}/> }
+    { title: "Attachments", link: <UploadAttachment paxId={props.paxId}/> }
   ];
 
   const updateHitStatus = (status, confirmed) => {
@@ -180,9 +179,6 @@ const PaxDetail = props => {
               callback={setHitSummaryRefreshKey}
             />
             <Notification paxId={props.paxId} />
-            <AttachmentModal
-              paxId={props.paxId}
-            />
             {hasHit && (
               <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
             )}

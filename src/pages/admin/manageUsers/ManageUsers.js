@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Container, DropdownButton, Dropdown } from "react-bootstrap";
 import Table from "../../../components/table/Table";
+import Main from "../../../components/main/Main";
 import { users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import { asArray } from "../../../utils/utils";
@@ -12,7 +13,7 @@ import { navigate } from "@reach/router";
 import Confirm from "../../../components/confirmationModal/Confirm";
 
 const ManageUsers = props => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(undefined);
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
@@ -97,8 +98,10 @@ const ManageUsers = props => {
     { Accessor: "firstName" },
     { Accessor: "lastName" },
     { Accessor: "email" },
+    { Accessor: "phoneNumber" },
     {
       Accessor: "emailEnabledInt",
+      Header: "User Email Notification",
       isBoolean: true,
       Cell: ({ row }) => {
         return (
@@ -114,6 +117,7 @@ const ManageUsers = props => {
     },
     {
       Accessor: "highPriorityEmailInt",
+      Header: "Automated Email Notification",
       isBoolean: true,
       Cell: ({ row }) => {
         return (
@@ -177,7 +181,7 @@ const ManageUsers = props => {
 
   return (
     <>
-      <Container fluid>
+      <Main className="full">
         <Title title="Manage Users" rightChild={button}></Title>
         <Table
           id="users"
@@ -186,6 +190,7 @@ const ManageUsers = props => {
           key={refreshKey}
           header={headers}
           enableColumnFilter={true}
+          showPending={true}
         ></Table>
         <UserModal
           show={showModal}
@@ -195,7 +200,7 @@ const ManageUsers = props => {
           title={modalTitle}
           editRowDetails={editRowDetails}
         />
-      </Container>
+      </Main>
     </>
   );
 };

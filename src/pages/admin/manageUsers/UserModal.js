@@ -71,10 +71,10 @@ const UserModal = props => {
     } else {
       message = res.message;
     }
-    setAlertContent(message);
-    setShowAlert(true);
-    /*props.onHide();
-    props.callback(status);*/
+    /* setAlertContent(message);
+    setShowAlert(true);*/
+    props.onHide();
+    props.callback(status);
   };
 
   const preSubmit = fields => {
