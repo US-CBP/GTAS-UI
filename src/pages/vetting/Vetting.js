@@ -201,8 +201,6 @@ const Vetting = props => {
       paramObject["etaStart"] = etaStart;
       paramObject["etaEnd"] = etaEnd;
 
-      console.log(startRange, endRange);
-      console.log(etaStart, etaEnd);
       delete fieldscopy["startHourRange"];
       delete fieldscopy["endHourRange"];
     }
@@ -231,7 +229,6 @@ const Vetting = props => {
         }
       }
     });
-    console.log(paramObject);
 
     return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
   };
