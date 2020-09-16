@@ -204,6 +204,17 @@ const UserModal = props => {
               callback={cb}
               spacebetween
             />
+            <LabelledInput
+              datafield
+              labelText="Phone Number"
+              inputType="tel"
+              name="phoneNumber"
+              inputVal={row.phoneNumber}
+              alt="nothing"
+              placeholder="optional"
+              callback={cb}
+              spacebetween
+            />
 
             <LabelledInput
               datafield="emailEnabled"
