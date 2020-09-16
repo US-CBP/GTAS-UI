@@ -23,7 +23,7 @@ class FilterForm extends React.Component {
     let datafieldNames = [];
 
     asArray(this.props.children).forEach((child, idx) => {
-      const datafield = child.props.datafield;
+      const datafield = child.props?.datafield;
 
       if (datafield) {
         if (Array.isArray(datafield)) {
@@ -169,7 +169,7 @@ class FilterForm extends React.Component {
   // bind children containing form data (datafield prop) to the ev handler and state
   bindChildren(populatedFields) {
     let boundChildren = asArray(this.props.children).map((child, idx) => {
-      if (!child.props.datafield) return child;
+      if (!child.props?.datafield) return child;
 
       let cleanprops = Object.assign({}, child.props);
       // intercept the callback so FilterForm is notified of input field changes.
