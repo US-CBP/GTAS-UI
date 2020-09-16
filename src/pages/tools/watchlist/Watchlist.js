@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
+import Main from "../../../components/main/Main";
 import Modal from "../../../components/modal/Modal";
 import { Button, Container, Tabs, Tab } from "react-bootstrap";
 import { navigate } from "@reach/router";
@@ -243,7 +244,7 @@ const Watchlist = props => {
   };
 
   return (
-    <Container fluid>
+    <Main className="full">
       <Title
         title="Watchlists"
         leftChild={tabs}
@@ -267,7 +268,7 @@ const Watchlist = props => {
         categories={wlcatData}
         id={id}
       />
-    </Container>
+    </Main>
   );
 };
 

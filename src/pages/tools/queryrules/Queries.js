@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
+import Main from "../../../components/main/Main";
 import { Button, Container } from "react-bootstrap";
 import { QR, ACTION } from "../../../utils/constants";
 
@@ -70,7 +71,7 @@ const Queries = props => {
   };
 
   return (
-    <Container fluid>
+    <Main className="full">
       <Title title="Queries" rightChild={button}></Title>
       <Table
         service={query.get}
@@ -89,7 +90,7 @@ const Queries = props => {
         id={id}
         service={query}
       />
-    </Container>
+    </Main>
   );
 };
 
