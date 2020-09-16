@@ -158,7 +158,7 @@ const Vetting = props => {
   sDate.setHours(sDate.getHours() - 7);
   const [startDate, setStartDate] = useState(sDate);
   const [endDate, setEndDate] = useState(eDate);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
   const [hitCategoryOptions, setHitCategoryOptions] = useState();
   const [refreshKey, setRefreshKey] = useState(0);
   const showDateTimePicker = useRef(false);
@@ -431,6 +431,7 @@ const Vetting = props => {
           callback={onTableChange}
           header={Headers}
           key={data}
+          showPending={true}
         />
 
         <ReviewPVL

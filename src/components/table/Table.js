@@ -13,20 +13,23 @@ import "./Table.css";
 //Attempts to format the header from the column names, but can be passed a header array instead.
 
 const Table = props => {
-  const initData = [];
+  const alternateData = [];
+  const initData = props.data || alternateData;
 
-  const [data, setData] = useState(props.data || initData);
+  const [data, setData] = useState(initData);
   const [header, setHeader] = useState(props.header || []);
   const [columns, setColumns] = useState([]);
   const [rowcount, setRowcount] = useState("");
   const stateVals = props.hasOwnProperty("stateVals") ? altObj(props.stateVals()) : {};
   const [displayColumnFilter, setDisplayColumnFilter] = useState(false);
-  const showPending = props.showPending;
+  const [showPending, setShowPending] = useState(props.showPending || false);
 
   useEffect(() => {
     validateProps();
-    if (!Array.isArray(props.data)) getData();
-    else parseData(props.data);
+    if (hasData(props.service)) {
+      setShowPending(true);
+      getData();
+    } else parseData(initData);
   }, []);
 
   function ColumnFilter({ column: { filterValue, setFilter } }) {
@@ -138,7 +141,7 @@ const Table = props => {
     return (
       <>
         <div className="table-main">
-          {showPending && data === initData && <Loading></Loading>}
+          {showPending && data === alternateData && <Loading></Loading>}
           <RBTable {...getTableProps()} striped bordered hover>
             <thead>
               {headerGroups.map((headerGroup, index) => {
@@ -295,7 +298,8 @@ const Table = props => {
   };
 
   const parseData = data => {
-    if (showPending && data === initData) return;
+    console.log("show pending ???", showPending && data === alternateData);
+    if (showPending && data === alternateData) return;
 
     const noDataFound = "No Data Found";
     let noDataObj = [{}];
