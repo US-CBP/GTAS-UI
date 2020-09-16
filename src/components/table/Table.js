@@ -25,8 +25,8 @@ const Table = props => {
 
   useEffect(() => {
     validateProps();
-    if (!Array.isArray(data)) getData();
-    else parseData(data);
+    if (!Array.isArray(props.data)) getData();
+    else parseData(props.data);
   }, []);
 
   function ColumnFilter({ column: { filterValue, setFilter } }) {
