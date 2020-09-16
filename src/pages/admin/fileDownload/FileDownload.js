@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
 import { logfile, paxdetailsReport, users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Main from "../../../components/main/Main";
 import { Container } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray, hasData } from "../../../utils/utils";
@@ -98,7 +99,7 @@ const FileDownload = ({ name }) => {
   );
 
   return (
-    <Container fluid>
+    <Main className="full">
       <Title title={name} rightChild={fileTypeCtrl}></Title>
       <Table
         id={tblId}
@@ -107,7 +108,7 @@ const FileDownload = ({ name }) => {
         data={data}
         header={headers}
       ></Table>
-    </Container>
+    </Main>
   );
 };
 

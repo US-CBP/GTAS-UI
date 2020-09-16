@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
 import { watchlistcats } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Main from "../../../components/main/Main";
 import { Container, Button, Row, Col, Modal } from "react-bootstrap";
 import WatchlistModal from "./WatchlistModal";
 
@@ -23,7 +24,7 @@ const WatchlistCats = ({ name }) => {
   );
 
   return (
-    <Container fluid>
+    <Main className="full">
       <Title title={name} rightChild={cats}></Title>
       <Table
         service={watchlistcats.get}
@@ -37,7 +38,7 @@ const WatchlistCats = ({ name }) => {
         refresh={refresh}
         callback={cb}
       />
-    </Container>
+    </Main>
   );
 };
 

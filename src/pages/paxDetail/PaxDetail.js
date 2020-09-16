@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
-import { Button, Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SideNav from "../../components/sidenav/SideNav";
@@ -163,7 +163,7 @@ const PaxDetail = props => {
         <hr />
         <FlightLegSegments />
       </SideNav>
-      <Main className="paxdetail-container">
+      <Main className="main paxdetail-container">
         <Navbar>
           <Navbar.Brand>Passenger Detail</Navbar.Brand>
           <Nav className="paxdetails-action-buttons">

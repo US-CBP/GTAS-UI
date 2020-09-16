@@ -12,7 +12,9 @@ const initialState = {
   userPageSize: 25,
   landingPage: undefined,
   emailEnabled: undefined,
-  highPriorityEmail: undefined
+  highPriorityEmail: undefined,
+  lastRule: {},
+  lastQuery: {}
 };
 
 export const UserContext = createContext();
@@ -36,6 +38,19 @@ const UserProvider = ({ children }) => {
         Cookies.remove("JSESSIONID");
         setStorage("user", initialState);
         return initialState;
+      }
+      case "lastRule": {
+        let storedUser = JSON.parse(sessionStorage.getItem("user"));
+        storedUser.lastRule = action.lastRule;
+        console.log(storedUser);
+        setStorage("user", storedUser);
+        return action.user;
+      }
+      case "dropRule": {
+        let storedUser = JSON.parse(sessionStorage.getItem("user"));
+        storedUser.lastQuery = {};
+        setStorage("user", storedUser);
+        return action.user;
       }
       default:
         setStorage("user", initialState);

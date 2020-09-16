@@ -10,7 +10,7 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { hasData } from "../../../utils/utils";
 
 const SignUpRequests = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
   const [refreshKey, setRefreshKey] = useState(0);
   const [fetchData, setFetchData] = useState(0);
   const [show, setShow] = useState(false);
@@ -164,6 +164,7 @@ const SignUpRequests = () => {
           id="SigUpRequest"
           callback={cb}
           key={refreshKey}
+          showPending={true}
         ></Table>
       </Main>
     </>

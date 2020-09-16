@@ -1,23 +1,28 @@
 import React, { useEffect, useState, Fragment } from "react";
 import PropTypes from "prop-types";
-import { hasData, titleCase, asArray, altObj, isObject } from "../../utils/utils";
+import { hasData, titleCase, asArray, altObj } from "../../utils/utils";
 import { useTable, usePagination, useSortBy, useFilters } from "react-table";
 import { navigate } from "@reach/router";
 // import { withTranslation } from 'react-i18next';
 // import Xl8 from '../xl8/Xl8';
-import { Table as RBTable, Col, Pagination } from "react-bootstrap";
+import Loading from "../../components/loading/Loading";
+import { Table as RBTable, Pagination } from "react-bootstrap";
 import "./Table.css";
 
 //Will auto-populate with data retrieved from the given uri
 //Attempts to format the header from the column names, but can be passed a header array instead.
 
 const Table = props => {
-  const [data, setData] = useState(props.data || []);
+  const initData = [];
+
+  const [data, setData] = useState(props.data || initData);
   const [header, setHeader] = useState(props.header || []);
   const [columns, setColumns] = useState([]);
   const [rowcount, setRowcount] = useState("");
   const stateVals = props.hasOwnProperty("stateVals") ? altObj(props.stateVals()) : {};
   const [displayColumnFilter, setDisplayColumnFilter] = useState(false);
+  const showPending = props.showPending;
+
   useEffect(() => {
     validateProps();
     if (!Array.isArray(props.data)) getData();
@@ -133,6 +138,7 @@ const Table = props => {
     return (
       <>
         <div className="table-main">
+          {showPending && data === initData && <Loading></Loading>}
           <RBTable {...getTableProps()} striped bordered hover>
             <thead>
               {headerGroups.map((headerGroup, index) => {
@@ -289,6 +295,8 @@ const Table = props => {
   };
 
   const parseData = data => {
+    if (showPending && data === initData) return;
+
     const noDataFound = "No Data Found";
     let noDataObj = [{}];
     noDataObj[0][props.id] = noDataFound;
@@ -339,13 +347,13 @@ const Table = props => {
     setColumns(columns);
 
     //exclude the No-Data-Found row from the count
-    if (dataArray.length === 1 && dataArray[0][props.id] == noDataFound) setRowcount(0);
+    if (dataArray.length === 1 && dataArray[0][props.id] === noDataFound) setRowcount(0);
     else setRowcount(dataArray.length);
   };
 
   const getData = (params = null) => {
     if (!hasData(props.service)) {
-      parseData({});
+      parseData([]);
       return;
     }
     props
@@ -389,6 +397,7 @@ Table.propTypes = {
   style: PropTypes.string,
   stateCb: PropTypes.func,
   stateVals: PropTypes.func,
+  showPending: PropTypes.bool,
   ignoredFields: PropTypes.arrayOf(PropTypes.string),
   enableColumnFilter: PropTypes.bool
 };
