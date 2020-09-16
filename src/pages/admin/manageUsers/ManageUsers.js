@@ -97,8 +97,10 @@ const ManageUsers = props => {
     { Accessor: "firstName" },
     { Accessor: "lastName" },
     { Accessor: "email" },
+    { Accessor: "phoneNumber" },
     {
       Accessor: "emailEnabledInt",
+      Header: "User Email Notification",
       isBoolean: true,
       Cell: ({ row }) => {
         return (
@@ -114,6 +116,7 @@ const ManageUsers = props => {
     },
     {
       Accessor: "highPriorityEmailInt",
+      Header: "Automated Email Notification",
       isBoolean: true,
       Cell: ({ row }) => {
         return (

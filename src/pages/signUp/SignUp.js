@@ -104,6 +104,16 @@ const SignUp = props => {
           />
           <LabelledInput
             datafield
+            labelText="Phone Number"
+            inputType="tel"
+            name="phoneNumber"
+            inputVal=""
+            alt="nothing"
+            placeholder="optional"
+            callback={cb}
+          />
+          <LabelledInput
+            datafield
             labelText="Location"
             inputType="select"
             name="signupLocationId"
