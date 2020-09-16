@@ -1,10 +1,11 @@
 import React from "react";
+import "./Loading.css";
 
 export default function Loading() {
   return (
-    <div className="col-6 align-self-center offset-5">
-      <i className="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-      <span className="sr-only">Loading...</span>
+    <div className="loading">
+      <i className="fa fa-spinner fa-pulse fa-4x fa-fw"></i>
+      <span className="sr-only"></span>
     </div>
   );
 }

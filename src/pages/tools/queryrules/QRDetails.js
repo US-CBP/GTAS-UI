@@ -8,7 +8,7 @@ import { asArray, getAge, alt, localeDateOnly } from "../../../utils/utils";
 
 const QRDetails = props => {
   const cb = function(result) {};
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
   const [key, setKey] = useState(0);
 
   const parseData = data => {
@@ -72,6 +72,7 @@ const QRDetails = props => {
         header={headers}
         id="Query Details"
         callback={cb}
+        showPending={true}
         key={key}
       ></Table>
     </Container>

@@ -221,6 +221,7 @@ const Rules = props => {
         id="Rules"
         callback={cb}
         header={header}
+        showPending={true}
         key={`table-${tablekey}`}
       ></Table>
       {showModal && (
