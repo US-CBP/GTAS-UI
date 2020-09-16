@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Alert, Button, Container, Modal} from "react-bootstrap";
-import {attachment, paxEventNotesHistory, users} from "../../../services/serviceWrapper";
+import {Alert, Button, Modal} from "react-bootstrap";
+import {attachment} from "../../../services/serviceWrapper";
 import "./UploadAttachment.scss";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
