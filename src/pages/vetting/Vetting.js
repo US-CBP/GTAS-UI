@@ -227,6 +227,7 @@ const Vetting = props => {
         }
       }
     });
+
     return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 

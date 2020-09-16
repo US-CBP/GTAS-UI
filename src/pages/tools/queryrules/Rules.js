@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
-import { Button, Container, Tabs, Tab } from "react-bootstrap";
+import Main from "../../../components/main/Main";
+import { Button, Tabs, Tab } from "react-bootstrap";
 import { navigate } from "@reach/router";
 import { LookupContext } from "../../../context/data/LookupContext";
 
@@ -208,7 +209,7 @@ const Rules = props => {
   );
 
   return (
-    <Container fluid>
+    <Main className="full">
       <Title
         title="Rules"
         key="title"
@@ -237,7 +238,7 @@ const Rules = props => {
           service={rule}
         />
       )}
-    </Container>
+    </Main>
   );
 };
 

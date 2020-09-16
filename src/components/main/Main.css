@@ -30,7 +30,7 @@
 
 .full {
   min-width: 255px;
-  /* margin-left: 20px; */
+  margin-left: 20px;
   margin-right: 20px;
   position: absolute;
   top: auto;

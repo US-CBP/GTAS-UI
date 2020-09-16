@@ -161,7 +161,7 @@ const PaxDetail = props => {
         <hr />
         <FlightLegSegments />
       </SideNav>
-      <Main className="paxdetail-container">
+      <Main className="main paxdetail-container">
         <Navbar>
           <Navbar.Brand>Passenger Detail</Navbar.Brand>
           <Nav className="paxdetails-action-buttons">

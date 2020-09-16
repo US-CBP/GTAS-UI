@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Table from "../../../components/table/Table";
 import { notetypes } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Main from "../../../components/main/Main";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import NoteTypeModal from "../noteTypeCats/NoteTypeModal.js";
 
@@ -21,7 +22,7 @@ const NoteTypeCats = ({ name }) => {
   );
 
   return (
-    <Container fluid>
+    <Main className="full">
       <Title title={name} rightChild={addCat}></Title>
       <Row></Row>
       <Table
@@ -36,7 +37,7 @@ const NoteTypeCats = ({ name }) => {
         refresh={refresh}
         callback={cb}
       />
-    </Container>
+    </Main>
   );
 };
 
