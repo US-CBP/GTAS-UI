@@ -1,39 +1,387 @@
-import React, { useState, useEffect } from "react";
-import QueryBuilder from "../../../components/queryBuilder/QueryBuilder";
+import React, { useState, useEffect, useMemo, useContext } from "react";
+import RAQB from "../../../components/raqb/RAQB";
 import { Button, Modal, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import {
-  buttonConfigQuery,
-  buttonConfigRule
-} from "../../../components/queryBuilder/constants";
 import { navigate } from "@reach/router";
 import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
-import { QR, ACTION } from "../../../utils/constants";
-import { watchlistcats } from "../../../services/serviceWrapper";
+import { QR, ACTION, CTX } from "../../../utils/constants";
+import { LookupContext } from "../../../context/data/LookupContext";
+
+import {
+  watchlistcats,
+  airportLookup,
+  countryLookup,
+  carrierLookup
+} from "../../../services/serviceWrapper";
+
+import { numProps, txtProps, dateProps } from "../../../components/raqb/constants";
 
 const QRModal = props => {
   const id = props.id;
   const svc = props.service;
   const mode = props.mode === QR.RULE ? QR.RULE : QR.QUERY;
-  const buttonConfig = mode === QR.RULE ? buttonConfigRule : buttonConfigQuery;
   const [data, setData] = useState(props.data?.query);
   const [key, setKey] = useState(0);
   const [summaryData, setSummaryData] = useState(
     props.data || { startDate: localeDateOnly(Date.now()), enabled: true }
   );
+
+  const [airports, setAirports] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [carriers, setCarriers] = useState([]);
+  const [dataConfig, setDataConfig] = useState([]);
+
+  const [title, setTitle] = useState(props.data?.title || "");
   const [categories, setCategories] = useState([]);
-  const [query, setQuery] = useState();
+  const [query, setQuery] = useState(props.data?.query);
+  const [showInvalid, setShowInvalid] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const isEdit = hasData(props.data);
+  const { getLookupState, lookupAction } = useContext(LookupContext);
+
+  useEffect(() => {
+    if (
+      hasData(countries) &&
+      hasData(carriers) &&
+      hasData(airports) &&
+      hasData(categories)
+    )
+      setLoaded(true);
+    else setLoaded(false);
+  }, [countries, carriers, airports, categories]);
+
+  const countryProps = useMemo(() => {
+    return {
+      type: "select",
+      fieldSettings: {
+        allowCustomValues: true,
+        listValues: countries
+      },
+      valueSources: ["value"]
+    };
+  }, [countries]);
+
+  const carrierProps = useMemo(() => {
+    return {
+      type: "select",
+      fieldSettings: {
+        allowCustomValues: true,
+        listValues: carriers
+      },
+      valueSources: ["value"]
+    };
+  }, [carriers]);
+  const airportProps = useMemo(() => {
+    return {
+      type: "select",
+      fieldSettings: {
+        allowCustomValues: true,
+        listValues: airports
+      },
+      valueSources: ["value"]
+    };
+  }, [airports]);
+
+  const fieldConfigWithData = {
+    fields: {
+      Address: {
+        label: "Address",
+        type: "!group",
+        subfields: {
+          city: { label: "City", ...txtProps },
+          country: { label: "Country", ...countryProps },
+          line1: { label: "Line 1", ...txtProps },
+          line2: { label: "Line 2", ...txtProps },
+          line3: { label: "Line 3", ...txtProps },
+          postalCode: { label: "Postal Code", ...txtProps },
+          state: { label: "State", ...txtProps }
+        }
+      },
+      Bag: {
+        label: "Bag",
+        type: "!group",
+        subfields: {
+          airline: { label: "Airline", ...carrierProps },
+          bagId: { label: "Bag ID", ...txtProps },
+          dataSource: { label: "Data Source", ...txtProps },
+          country: { label: "Destination Country", ...countryProps },
+          destinationAirport: { label: "Destination Airport", ...airportProps },
+          primeFlight: {
+            label: "Is Prime Flight",
+            type: "boolean",
+            valueSources: ["value"]
+          },
+          headPool: {
+            label: "Is Head Of a Baggage Pool",
+            type: "boolean",
+            valueSources: ["value"]
+          },
+          "bagMeasurements.weight": { label: "Bag Weight Measurement (kg)", ...numProps }
+        }
+      },
+      CreditCard: {
+        label: "Credit Card",
+        type: "!group",
+        subfields: {
+          accountHolder: { label: "Account Holder", ...txtProps },
+          expiration: { label: "Expiration Date", ...dateProps },
+          number: { label: "Number", ...txtProps },
+          cardType: { label: "Type", ...txtProps }
+        }
+      },
+      Document: {
+        label: "Document",
+        type: "!group",
+        subfields: {
+          documentNumber: { label: "Number", ...txtProps },
+          documentType: {
+            label: "Type",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "P", title: "Passport" },
+                { value: "V", title: "Visa" }
+              ]
+            },
+            valueSources: ["value"]
+          },
+          issuanceCountry: { label: "Issuance Country", ...countryProps },
+          expirationDate: { label: "Expiration Date", ...dateProps },
+          issuanceDate: { label: "Issuance Date", ...dateProps }
+        }
+      },
+      DwellTime: {
+        label: "Dwell Time",
+        type: "!group",
+        subfields: {
+          location: { label: "Location", ...txtProps },
+          dwellTime: { label: "Lay over Time", ...numProps }
+        }
+      },
+      Email: {
+        label: "Email",
+        type: "!group",
+        subfields: {
+          address: { label: "Address", ...txtProps },
+          domain: { label: "Domain", ...txtProps }
+        }
+      },
+      Flight: {
+        label: "Flight",
+        type: "!group",
+        subfields: {
+          destination: { label: "Destination Airport", ...airportProps },
+          origin: { label: "Origin Airport", ...airportProps },
+          carrier: { label: "Carrier", ...carrierProps },
+          destinationCountry: { label: "Destination Country", ...countryProps },
+          originCountry: { label: "Origin Country", ...countryProps },
+          direction: {
+            label: "Direction",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "I", title: "Inbound" },
+                { value: "O", title: "Outbound" },
+                { value: "C", title: "Continuance" }
+              ]
+            },
+            valueSources: ["value"]
+          },
+          etdDate: { label: "ETD", ...dateProps },
+          flightNumber: { label: "Number", ...txtProps },
+          "mutableFlightDetails.etaDate": { label: "ETA", ...dateProps }
+        }
+      },
+      BookingDetail: {
+        label: "Flight Leg",
+        type: "!group",
+        subfields: {
+          origin: { label: "Origin", ...airportProps },
+          destination: { label: "Destination", ...airportProps }
+        }
+      },
+      PaymentForm: {
+        label: "Form of Payment",
+        type: "!group",
+        subfields: {
+          wholeDollarAmount: { label: "Monetary Amount(No Decimal)", ...numProps },
+          paymentType: {
+            label: "Form of Payment",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "CC", title: "Credit Card" },
+                { value: "CA", title: "Cash" },
+                { value: "CK", title: "Check" },
+                { value: "MS", title: "Miscellaneous Charges Order" },
+                { value: "VOC", title: "Voucher" }
+              ]
+            },
+            valueSources: ["value"]
+          }
+        }
+      },
+      FrequentFlyer: {
+        label: "Frequent Flyer",
+        type: "!group",
+        subfields: {
+          carrier: { label: "Carrier", ...carrierProps },
+          number: { label: "Number", ...txtProps }
+        }
+      },
+      Passenger: {
+        label: "Passenger",
+        type: "!group",
+        subfields: {
+          "passengerDetails.age": { label: "Age", ...numProps },
+          "passengerTripDetails.coTravelerCount": {
+            label: "APIS Co-Passenger Count",
+            ...numProps
+          },
+          "passengerTripDetails.hoursBeforeTakeOff": {
+            label: "Hours Before Take Off",
+            ...numProps
+          },
+          "passengerDetails.nationality": { label: "Nationality", ...countryProps },
+          "passengerTripDetails.debarkation": {
+            label: "Debarkation Airport",
+            ...airportProps
+          },
+          "passengerTripDetails.debarkCountry": {
+            label: "Debarkation Country",
+            ...countryProps
+          },
+          "passengerDetails.dob": { label: "DOB", ...dateProps },
+          "passengerTripDetails.embarkation": {
+            label: "Embarkation Airport",
+            ...airportProps
+          },
+          "passengerTripDetails.embarkCountry": {
+            label: "Embarkation Country",
+            ...countryProps
+          },
+          "passengerDetails.gender": {
+            label: "Gender",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "F", title: "Female" },
+                { value: "M", title: "Male" },
+                { value: "U", title: "Undisclosed" },
+                { value: "FI", title: "Female Infant" },
+                { value: "MI", title: "Male Infant" }
+              ]
+            },
+            valueSources: ["value"]
+          },
+          "passengerDetails.firstName": { label: "Name - First", ...txtProps },
+          "passengerDetails.lastName": { label: "Name - Last", ...txtProps },
+          "passengerDetails.middleName": { label: "Name - Middle", ...txtProps },
+          "passengerDetails.residencyCountry": {
+            label: "Residency Country",
+            ...countryProps
+          },
+          "passengerDetails.passengerType": {
+            label: "Type",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "P", title: "Passenger" },
+                { value: "C", title: "Crew" },
+                { value: "I", title: "Intransit" }
+              ]
+            },
+            valueSources: ["value"]
+          },
+          "passengerTripDetails.travelFrequency": {
+            label: "Travel Frequency",
+            ...numProps
+          }
+        }
+      },
+      Phone: {
+        label: "Phone",
+        type: "!group",
+        subfields: { number: { label: "Number", ...txtProps } }
+      },
+      Pnr: {
+        label: "PNR",
+        type: "!group",
+        subfields: {
+          bagCount: { label: "Bag - Count", ...numProps },
+          baggageWeight: { label: "Baggage - Weight", ...numProps },
+          dateBooked: { label: "Booking Date", ...dateProps },
+          carrier: { label: "Carrier Code", ...carrierProps },
+          dateReceived: { label: "Date Received", ...dateProps },
+          daysBookedBeforeTravel: { label: "Days Booked Before Travel", ...numProps },
+          departureDate: { label: "Departure Date", ...dateProps },
+          id: { label: "Pnr Id", ...txtProps },
+          origin: { label: "Origin - Airport", ...airportProps },
+          originCountry: { label: "Origin - Country", ...countryProps },
+          passengerCount: { label: "Passenger Count", ...numProps },
+          recordLocator: { label: "Record Locator", ...txtProps },
+          seat: { label: "Seat", ...txtProps },
+          tripType: {
+            label: "Trip Type",
+            type: "select",
+            fieldSettings: {
+              listValues: [
+                { value: "ONE-WAY", title: "One Way" },
+                { value: "ROUND-TRIP", title: "Round Trip" },
+                { value: "NON-CONTIGUOUS", title: "Non Contiguous" },
+                { value: "MULTI-CITY", title: "Multi City" },
+                { value: "OPEN JAW", title: "Open Jaw" }
+              ]
+            },
+            valueSources: ["value"]
+          },
+          tripDuration: { label: "Trip Duration", ...numProps }
+        }
+      },
+      Seat: {
+        label: "Seat",
+        type: "!group",
+        subfields: {
+          number: { label: "Seat Number", ...txtProps },
+          cabinClass: { label: "Cabin Class", ...txtProps },
+          apis: { label: "Is APIS", type: "boolean", valueSources: ["value"] }
+        }
+      },
+      Agency: {
+        label: "Travel Agency",
+        type: "!group",
+        subfields: {
+          country: { label: "Country", ...countryProps },
+          identifier: { label: "Identifier", ...txtProps },
+          location: { label: "Location", ...txtProps },
+          name: { label: "Name", ...txtProps },
+          city: { label: "City", ...txtProps },
+          phone: { label: "Phone", ...txtProps }
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (loaded) {
+      setDataConfig(fieldConfigWithData);
+      setKey(key + 1);
+    }
+  }, [loaded]);
 
   const cb = ev => {
     let newSummary = summaryData;
     newSummary[ev.name] = ev.value;
 
     setSummaryData(newSummary);
+    setTitle(newSummary.title);
+    setRefresh(true);
   };
 
   const dataCallback = formatted => {
     setQuery(formatted);
+    setRefresh(true);
   };
 
   const onDelete = () => {
@@ -44,10 +392,101 @@ const QRModal = props => {
     }
   };
 
+  useEffect(() => {
+    if (refresh) refreshHighlight();
+  }, [refresh]);
+
+  const refreshHighlight = () => {
+    clearInvalid();
+
+    if (!showInvalid) {
+      setRefresh(false);
+      return;
+    }
+
+    validateAll();
+    setRefresh(false);
+  };
+
+  const highlightInvalid = invalidList => {
+    if (invalidList.length === 0) {
+      setShowInvalid(false);
+      return;
+    }
+
+    let highlights = invalidList.map(item =>
+      document.querySelectorAll(
+        `[data-id="${item}"].rule_group.group-or-rule, [data-id="${item}"].rule.group-or-rule`
+      )
+    );
+
+    highlights.forEach(item =>
+      item.forEach(subItem => subItem.classList.add("qrm-invalid"))
+    );
+
+    highlightRequiredFormFields();
+  };
+
+  const highlightRequiredFormFields = () => {
+    if (!title) {
+      document.querySelector('[name="title"]').classList.add("qrm-invalid");
+    }
+    if (!summaryData.ruleCat && mode === QR.RULE) {
+      document.querySelector('[name="ruleCat"]').classList.add("qrm-invalid");
+    }
+  };
+
+  const highlightComponent = () => {
+    let container = document.querySelector('[class="query-builder-container"]');
+
+    if (!!container) container.classList.add("qrm-invalid");
+  };
+
+  const validateAll = () => {
+    let isValid = true;
+
+    setShowInvalid(true);
+    const q = getSaveObject();
+    const details = q.details || q.query;
+    const invalids = details?.invalid;
+
+    if (!details) {
+      highlightComponent();
+      isValid = false;
+    }
+    if (hasData(invalids)) {
+      highlightInvalid(invalids);
+      isValid = false;
+    }
+
+    if (!title || (!summaryData.ruleCat && mode === QR.RULE)) {
+      highlightRequiredFormFields();
+      isValid = false;
+    }
+    return isValid;
+  };
+
+  const storeRule = () => {
+    const saved = getSaveObject();
+
+    lookupAction({ data: saved, type: "lastRule" });
+  };
+
+  const clearInvalid = () => {
+    const marked = document.getElementsByClassName("qrm-invalid");
+
+    while (marked.length > 0) {
+      marked[0].classList.remove("qrm-invalid");
+    }
+  };
+
   const onSave = () => {
     if (!hasData(svc)) return;
 
+    if (!validateAll()) return;
+
     const q = getSaveObject();
+
     const saveMethod = isEdit ? svc.put : svc.post;
     const saveArgs = hasData(id) ? [id, q] : [q];
 
@@ -73,7 +512,8 @@ const QRModal = props => {
           endDate: summaryData.endDate ? new Date(summaryData.endDate) : undefined,
           enabled: summaryData.enabled,
           ruleCat: summaryData.ruleCat,
-          overMaxHits: null
+          overMaxHits: null,
+          tag: query
         }
       };
     }
@@ -82,6 +522,7 @@ const QRModal = props => {
       id: safeid,
       title: summaryData.title,
       description: summaryData.description,
+      tag: query,
       query: query
     };
   };
@@ -91,12 +532,16 @@ const QRModal = props => {
   };
 
   const onRun = () => {
+    if (!validateAll()) return;
+
+    storeRule();
+
     navigate("/gtas/tools/qrdetails", {
       state: {
         data: {
           pageNumber: 1,
           pageSize: 10,
-          query: data || query
+          query: query || data
         }
       }
     });
@@ -105,6 +550,7 @@ const QRModal = props => {
 
   const onClear = () => {
     setData(undefined);
+    setTitle();
 
     setSummaryData({
       title: "",
@@ -114,19 +560,80 @@ const QRModal = props => {
       enabled: true,
       ruleCat: -1
     });
+
     setKey(key + 1);
+    setShowInvalid(false);
   };
 
   useEffect(() => {
-    setData(props.data?.query);
-    watchlistcats.get().then(res => {
-      const cats = asArray(res).map(item => {
-        return { label: item.label, value: item.id };
-      });
+    if (key > 0) return;
 
-      setCategories(cats);
-      setKey(key + 1);
-    });
+    setData(props.data?.query);
+
+    const storedCountries = getLookupState(CTX.COUNTRIES);
+    const storedCarriers = getLookupState(CTX.CARRIERS);
+    const storedAirports = getLookupState(CTX.AIRPORTCODES);
+    const storedCategories = getLookupState(CTX.RULECATS);
+
+    if (hasData(storedCategories)) {
+      setCategories(storedCategories);
+    } else {
+      watchlistcats.get().then(res => {
+        const cats = asArray(res).map(catitem => {
+          return { label: catitem.label, value: catitem.id };
+        });
+
+        if (hasData(cats)) lookupAction({ data: cats, type: CTX.RULECATS });
+        setCategories(cats);
+      });
+    }
+
+    if (hasData(storedCountries)) {
+      setCountries(storedCountries);
+    } else {
+      countryLookup.get().then(res => {
+        const ctyitems = asArray(res).map(ctyitem => {
+          return { value: ctyitem.iso3, title: ctyitem.name };
+        });
+
+        if (hasData(ctyitems)) lookupAction({ data: ctyitems, type: CTX.COUNTRIES });
+        setCountries(ctyitems);
+      });
+    }
+
+    if (hasData(storedCarriers)) {
+      setCarriers(storedCarriers);
+    } else {
+      carrierLookup.get().then(res => {
+        let caritems = asArray(res).map(caritem => {
+          return { title: `${caritem.name} (${caritem.iata})`, value: caritem.iata };
+        });
+
+        const result = caritems.sort(function(a, b) {
+          return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
+        });
+
+        if (hasData(result)) lookupAction({ data: result, type: CTX.CARRIERS });
+        setCarriers(result);
+      });
+    }
+
+    if (hasData(storedAirports)) {
+      setAirports(storedAirports);
+    } else {
+      airportLookup.get().then(res => {
+        let apitems = asArray(res).map(apitem => {
+          return { title: apitem.iata, value: apitem.iata };
+        });
+
+        const result = apitems.sort(function(a, b) {
+          return a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1;
+        });
+
+        if (hasData(result)) lookupAction({ data: result, type: CTX.AIRPORTCODES });
+        setAirports(result);
+      });
+    }
   }, []);
 
   return (
@@ -135,11 +642,14 @@ const QRModal = props => {
         show={props.show}
         onHide={props.onHide}
         size="md"
-        // aria-labelledby="contained-modal-title-vcenter"
+        aria-labelledby="contained-modal-title-vcenter"
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>{props.title}</Modal.Title>
+          <Modal.Title>
+            {`${props.title}: `}
+            <label className="big-name-sidebar">{title}</label>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body className="qbrb-modal-body">
           <Container fluid>
@@ -148,7 +658,6 @@ const QRModal = props => {
                 datafield
                 key={`title${key}`}
                 labelText="Title"
-                required={true}
                 inputType="text"
                 inputVal={summaryData?.title}
                 name="title"
@@ -160,7 +669,6 @@ const QRModal = props => {
                 datafield
                 labelText="Description"
                 key={`desc${key}`}
-                required={true}
                 inputType="text"
                 inputVal={summaryData?.description}
                 name="description"
@@ -220,16 +728,19 @@ const QRModal = props => {
                     callback={cb}
                     alt="rule category"
                     spacebetween
+                    className="rule-cat"
                   />
                 </Row>
               </>
             )}
-            <QueryBuilder
-              data={data}
-              key={key}
-              translations={buttonConfig}
-              dataCallback={dataCallback}
-            ></QueryBuilder>
+            {loaded && (
+              <RAQB
+                data={data}
+                key={key}
+                config={dataConfig}
+                dataCallback={dataCallback}
+              ></RAQB>
+            )}
           </Container>
         </Modal.Body>
         <Modal.Footer>

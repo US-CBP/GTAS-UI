@@ -7,12 +7,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import "./App.css";
 
-import ErrorBoundary from "./components/errorBoundary/ErrorBoundary";
-import Loading from "./components/loading/Loading";
+// import ErrorBoundary from "./components/errorBoundary/ErrorBoundary";
+// import Loading from "./components/loading/Loading";
 
 import Authenticator from "./context/authenticator/Authenticator";
 import RoleAuthenticator from "./context/roleAuthenticator/RoleAuthenticator";
 import UserProvider from "./context/user/UserContext";
+import LookupProvider from "./context/data/LookupContext";
 
 import { ROLE, TIME } from "./utils/constants";
 
@@ -182,192 +183,198 @@ export default class App extends React.Component {
     return (
       <React.StrictMode>
         <UserProvider>
-          <Router>
-            <Redirect from="/" to="/login" noThrow />
-            <Login path="/login"></Login>
-            <SignUp path="/signup"></SignUp>
-            <ResetPassword path="/reset-password/:username/:resetToken"></ResetPassword>
-            <ForgotPassword path="/forgot-password"></ForgotPassword>
-          </Router>
-          {this.state.showModal ? (
-            <GModal>
-              <div>
-                <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
-                <button onClick={this.toggleModal}>OK</button>
-              </div>
-            </GModal>
-          ) : null}
-          <div className="App">
-            <IdleTimer
-              ref={ref => {
-                this.idleTimer = ref;
-              }}
-              element={document}
-              onActive={this.onActive}
-              onIdle={this.onIdle}
-              onAction={this.onAction}
-              debounce={250}
-              timeout={TIME.MINUTES_25}
-            />
-            <Suspense fallback="loading">
-              <Authenticator>
-                <Router>
-                  <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
-                  <RoleAuthenticator
-                    path="/"
-                    alt={UNAUTHED}
-                    roles={[
-                      ROLE.ADMIN,
-                      ROLE.PAXVWR,
-                      ROLE.RULEMGR,
-                      ROLE.CASEMGR,
-                      ROLE.WLMGR,
-                      ROLE.HITMGR,
-                      ROLE.QRYMGR
-                    ]}
-                  >
-                    <Redirect from="/" to="/gtas" noThrow />
-                    <Home path="/gtas">
-                      <Page404 default></Page404>
-                      <Redirect from="/gtas" to="/gtas/flights" noThrow />
-                      <Dashboard path="dashboard"></Dashboard>
-                      <Flights path="flights"></Flights>
-                      <FlightPax path="flightpax/:id"></FlightPax>
-                      <PriorityVetting path="vetting"></PriorityVetting>
-                      <Tools path="tools">
-                        <Rules
-                          name="Rules"
-                          path="rules"
-                          desc="View or edit rules for generating hits"
-                          icon="fa-address-book-o"
-                        ></Rules>
-                        <Rules name="Rules" path="rules/:mode" hideTile></Rules>
-                        <Queries
-                          name="Queries"
-                          path="queries"
-                          desc="View or edit queries of system data"
-                          icon="fa-search"
-                        ></Queries>
-                        <QRDetails path="qrdetails" hideTile></QRDetails>
-                        <Watchlist
-                          path="watchlist"
-                          name="Watchlist"
-                          desc="View or add passenger and document watchlists"
-                          icon="fa-user-secret"
-                        ></Watchlist>
-                        <Watchlist
-                          path="watchlist/:mode"
-                          name="Watchlist"
-                          hideTile
-                        ></Watchlist>
-                        <About
-                          name="About"
-                          path="about"
-                          desc="View system information details"
-                          icon="fa-info-circle"
-                        ></About>
-                      </Tools>
-                      <ChangePassword path="user/change-password"></ChangePassword>
-                      <Search path="search/:searchParam"></Search>
-                      <ChangePassword path="user/change-password/:userId"></ChangePassword>
-                      <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
-                      <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
-                        <Admin path="/">
-                          <ManageUser
-                            name="Manage Users"
-                            path="manageusers"
-                            desc="Manage user profiles and privileges"
-                            icon="fa-users"
-                          ></ManageUser>
-                          <SignUpRequests
-                            desc="Manage system access requests"
-                            icon="fa-user-plus"
-                            name="Sign Up Request"
-                            path="signuprequests"
-                          ></SignUpRequests>
-                          <AuditLog
-                            name="Audit Log"
-                            path="auditlog"
-                            desc="View the system audit log"
-                            icon="fa-question-circle"
-                          ></AuditLog>
-                          <ErrorLog
-                            name="Error Log"
-                            path="errorlog"
-                            desc="View the system error log"
-                            icon="fa-exclamation-triangle"
-                          ></ErrorLog>
-                          <Settings
-                            name="Settings"
-                            path="settings"
-                            desc="View or edit system settings"
-                            icon="fa-toggle-on"
-                          ></Settings>
-                          <FileDownload
-                            desc="Download system log files"
-                            icon="fa-download"
-                            name="File Download"
-                            path="filedownload"
-                          ></FileDownload>
-                          <CodeEditor
-                            desc="View or edit Airport, Carrier, or Country codes"
-                            icon="fa-list-ul"
-                            name="Code Editor"
-                            path="codeeditor"
-                            startTab="countries"
-                          >
-                            <Countries name="Countries" path="countries"></Countries>
-                            <Airports name="Airports" path="airports"></Airports>
-                            <Carriers name="Carriers" path="carriers"></Carriers>
-                          </CodeEditor>
-                          <LoaderStats
-                            desc="View current message loading statistics"
-                            icon="fa-bar-chart"
-                            name="Loader Statistics"
-                            path="loaderstats"
-                          ></LoaderStats>
-                          <WatchlistCats
-                            desc="View or edit Watchlist categories"
+          <LookupProvider>
+            <Router>
+              <Redirect from="/" to="/login" noThrow />
+              <Login path="/login"></Login>
+              <SignUp path="/signup"></SignUp>
+              <ResetPassword path="/reset-password/:username/:resetToken"></ResetPassword>
+              <ForgotPassword path="/forgot-password"></ForgotPassword>
+            </Router>
+            {this.state.showModal ? (
+              <GModal>
+                <div>
+                  <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
+                  <button onClick={this.toggleModal}>OK</button>
+                </div>
+              </GModal>
+            ) : null}
+            <div className="App">
+              <IdleTimer
+                ref={ref => {
+                  this.idleTimer = ref;
+                }}
+                element={document}
+                onActive={this.onActive}
+                onIdle={this.onIdle}
+                onAction={this.onAction}
+                debounce={250}
+                timeout={TIME.MINUTES_25}
+              />
+              <Suspense fallback="loading">
+                <Authenticator>
+                  <Router>
+                    <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
+                    <RoleAuthenticator
+                      path="/"
+                      alt={UNAUTHED}
+                      roles={[
+                        ROLE.ADMIN,
+                        ROLE.PAXVWR,
+                        ROLE.RULEMGR,
+                        ROLE.CASEMGR,
+                        ROLE.WLMGR,
+                        ROLE.HITMGR,
+                        ROLE.QRYMGR
+                      ]}
+                    >
+                      <Redirect from="/" to="/gtas" noThrow />
+                      <Home path="/gtas">
+                        <Page404 default></Page404>
+                        <Redirect from="/gtas" to="/gtas/flights" noThrow />
+                        <Dashboard path="dashboard"></Dashboard>
+                        <Flights path="flights"></Flights>
+                        <FlightPax path="flightpax/:id"></FlightPax>
+                        <PriorityVetting path="vetting"></PriorityVetting>
+                        <Tools path="tools">
+                          <Rules
+                            name="Rules"
+                            path="rules"
+                            desc="View or edit rules for generating hits"
+                            icon="fa-address-book-o"
+                          ></Rules>
+                          <Rules name="Rules" path="rules/:mode" hideTile></Rules>
+                          <Queries
+                            name="Queries"
+                            path="queries"
+                            desc="View or edit queries of system data"
+                            icon="fa-search"
+                          ></Queries>
+                          <QRDetails path="qrdetails" hideTile></QRDetails>
+                          <Watchlist
+                            path="watchlist"
+                            name="Watchlist"
+                            desc="View or add passenger and document watchlists"
                             icon="fa-user-secret"
-                            name="Watchlist Categories"
-                            path="watchlistcats"
-                          ></WatchlistCats>
-                          <NoteTypeCats
-                            desc="View or edit Note Type categories"
-                            icon="fa-comment"
-                            name="Note Type Categories"
-                            path="notetypecats"
-                          ></NoteTypeCats>
-                          <Auxiliary
-                            desc="Got to Kibana Dashboard"
-                            icon="fa-comment"
-                            name="Kibana Dashboard"
-                            path="https://localhost:5601/login?next=%2F"
-                            hasExternalLink={true}
-                          ></Auxiliary>
-                          <Auxiliary
-                            name="Neo4j"
-                            path="http://localhost:7474/browser/"
-                            desc="Browse the Neo4j database"
-                            icon="fa-database"
-                            hasExternalLink={true}
-                          ></Auxiliary>
-                        </Admin>
-                      </RoleAuthenticator>
-                      <PaxDetail path="paxDetail/:flightId/:paxId">
-                        <Summary path="summary" default></Summary>
-                        <APIS path="apis"></APIS>
-                        <PNR path="pnr"></PNR>
-                        <FlightHistory path="flighthistory"></FlightHistory>
-                        <LinkAnalysis path="linkanalysis"></LinkAnalysis>
-                      </PaxDetail>
-                      <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
-                    </Home>
-                  </RoleAuthenticator>
-                </Router>
-              </Authenticator>
-            </Suspense>
-          </div>
+                          ></Watchlist>
+                          <Watchlist
+                            path="watchlist/:mode"
+                            name="Watchlist"
+                            hideTile
+                          ></Watchlist>
+                          <About
+                            name="About"
+                            path="about"
+                            desc="View system information details"
+                            icon="fa-info-circle"
+                          ></About>
+                        </Tools>
+                        <ChangePassword path="user/change-password"></ChangePassword>
+                        <Search path="search/:searchParam"></Search>
+                        <ChangePassword path="user/change-password/:userId"></ChangePassword>
+                        <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
+                        <RoleAuthenticator
+                          path="admin"
+                          alt={UNAUTHED}
+                          roles={[ROLE.ADMIN]}
+                        >
+                          <Admin path="/">
+                            <ManageUser
+                              name="Manage Users"
+                              path="manageusers"
+                              desc="Manage user profiles and privileges"
+                              icon="fa-users"
+                            ></ManageUser>
+                            <SignUpRequests
+                              desc="Manage system access requests"
+                              icon="fa-user-plus"
+                              name="Sign Up Request"
+                              path="signuprequests"
+                            ></SignUpRequests>
+                            <AuditLog
+                              name="Audit Log"
+                              path="auditlog"
+                              desc="View the system audit log"
+                              icon="fa-question-circle"
+                            ></AuditLog>
+                            <ErrorLog
+                              name="Error Log"
+                              path="errorlog"
+                              desc="View the system error log"
+                              icon="fa-exclamation-triangle"
+                            ></ErrorLog>
+                            <Settings
+                              name="Settings"
+                              path="settings"
+                              desc="View or edit system settings"
+                              icon="fa-toggle-on"
+                            ></Settings>
+                            <FileDownload
+                              desc="Download system log files"
+                              icon="fa-download"
+                              name="File Download"
+                              path="filedownload"
+                            ></FileDownload>
+                            <CodeEditor
+                              desc="View or edit Airport, Carrier, or Country codes"
+                              icon="fa-list-ul"
+                              name="Code Editor"
+                              path="codeeditor"
+                              startTab="countries"
+                            >
+                              <Countries name="Countries" path="countries"></Countries>
+                              <Airports name="Airports" path="airports"></Airports>
+                              <Carriers name="Carriers" path="carriers"></Carriers>
+                            </CodeEditor>
+                            <LoaderStats
+                              desc="View current message loading statistics"
+                              icon="fa-bar-chart"
+                              name="Loader Statistics"
+                              path="loaderstats"
+                            ></LoaderStats>
+                            <WatchlistCats
+                              desc="View or edit Watchlist categories"
+                              icon="fa-user-secret"
+                              name="Watchlist Categories"
+                              path="watchlistcats"
+                            ></WatchlistCats>
+                            <NoteTypeCats
+                              desc="View or edit Note Type categories"
+                              icon="fa-comment"
+                              name="Note Type Categories"
+                              path="notetypecats"
+                            ></NoteTypeCats>
+                            <Auxiliary
+                              desc="Got to Kibana Dashboard"
+                              icon="fa-line-chart"
+                              name="Kibana Dashboard"
+                              path="https://localhost:5601/login?next=%2F"
+                              hasExternalLink={true}
+                            ></Auxiliary>
+                            <Auxiliary
+                              name="Neo4j"
+                              path="http://localhost:7474/browser/"
+                              desc="Browse the Neo4j database"
+                              icon="fa-database"
+                              hasExternalLink={true}
+                            ></Auxiliary>
+                          </Admin>
+                        </RoleAuthenticator>
+                        <PaxDetail path="paxDetail/:flightId/:paxId">
+                          <Summary path="summary" default></Summary>
+                          <APIS path="apis"></APIS>
+                          <PNR path="pnr"></PNR>
+                          <FlightHistory path="flighthistory"></FlightHistory>
+                          <LinkAnalysis path="linkanalysis"></LinkAnalysis>
+                        </PaxDetail>
+                        <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
+                      </Home>
+                    </RoleAuthenticator>
+                  </Router>
+                </Authenticator>
+              </Suspense>
+            </div>
+          </LookupProvider>
         </UserProvider>
       </React.StrictMode>
     );

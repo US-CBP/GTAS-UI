@@ -21,8 +21,225 @@
 }
 .queryBuilder {
   min-width: 740px;
+  margin: 0.5rem;
 }
 
 .qrm > .space-between {
   width: 45%;
+  justify-content: flex-start;
+  margin-bottom: 0px !important;
+}
+
+.qrm > .space-between > .undefined {
+  padding-top: 5px;
+  padding-left: 2px;
+}
+
+.qrm > .space-between > .txtlabel {
+  padding-top: 5px;
+  min-width: 100px;
+}
+/* RAQB */
+
+.rule--widget,
+.rule,
+.rule--body {
+  display: flex;
+}
+
+.widget--widget > select {
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  color: rgb(73, 80, 87);
+  padding: 2px 4px;
+}
+
+.widget--widget > select[multiple] {
+  min-width: 220px;
+  width: 350px;
+  height: 24px;
+  display: inline-flex;
+  top: -12px;
+}
+
+.widget--widget > select[multiple]:hover {
+  height: calc(100vh / 8);
+  z-index: 200;
+  position: sticky;
+  top: auto;
+}
+
+.widget--widget > input[type="number"] {
+  width: 75px;
+}
+
+.rule--widget--MULTISELECT > .widget--widget {
+  position: relative;
+  width: 350px;
+  height: 20px;
+}
+
+.widget--valuesrc {
+  display: none;
+}
+
+/* select:-internal-list-box option:checked {
+  background-color: rgb(137 193 252 / 0.5) !important;
+  color: rgb(16, 16, 16) !important;
+} */
+
+.group--actions > button {
+  margin: 0.2rem !important;
+  color: #343a40;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  user-select: none;
+  background-color: white;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  border: 1px solid #6a8eb3;
+  line-height: 1.4rem;
+}
+
+.rule--header > button {
+  margin: 0.3rem !important;
+  color: #343a40;
+  border-color: #343a40;
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  user-select: none;
+  background-color: #ffc8ca;
+  border-radius: 0.25rem;
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 70vw;
+    margin: 1.75rem auto;
+  }
+}
+
+pre {
+  white-space: break-spaces !important;
+}
+
+.group--conjunctions {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px 5px 1px 10px;
+  line-height: 1.5rem;
+  border: 2px solid #6a8eb3;
+  padding-top: 7px;
+}
+
+.group--conjunctions > .group--drag-handler {
+  float: inline-start;
+  margin-left: 0px;
+}
+
+.group--conjunctions > .group--drag-handler > svg {
+  vertical-align: text-bottom;
+}
+
+.group--conjunctions > label,
+.widget--widget > label {
+  margin-right: 14px;
+  margin-left: 4px;
+  margin-bottom: 2px;
+}
+
+.group > .group--actions > button {
+  display: none;
+}
+
+.rule--body--wrapper {
+  align-self: center;
+}
+
+.rule--field,
+.rule--operator,
+.rule--value {
+  align-self: center;
+}
+
+.group {
+  background: rgb(0 119 200 / 0.1);
+  border: 1px solid #6a8eb3;
+}
+
+.rule_group {
+  /* background: rgba(210, 234, 252, 0.1); */
+  background: white;
+  border: 1px solid #bad2eb66;
+}
+
+.rule_group--children {
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+}
+
+.group--children > .group-or-rule-container > .group-or-rule::before,
+.group--children > .group-or-rule-container > .group-or-rule::after {
+  height: calc(50% + 5px);
+  border-color: #6a8eb3;
+}
+
+.group--children.hide--line > .group-or-rule-container > .group-or-rule::before,
+.group--children.hide--line > .group-or-rule-container > .group-or-rule::after {
+  border-color: #6a8eb3;
+}
+.rule {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.group--header {
+  padding-left: 10px;
+  padding-right: 5px;
+  padding-top: 3px;
+  margin-bottom: 0px;
+  border-radius: 3px;
+  padding-bottom: 3px;
+  background-color: #125c8e;
+  margin-top: 0px;
+}
+
+.group-or-rule-container {
+  margin-top: 1px;
+  padding-right: 10px;
+  padding-bottom: 0px;
+  margin-bottom: 3px;
+}
+
+.group.group-or-rule:not(.rule_group) {
+  margin-top: 19px;
+}
+
+.query-builder {
+  margin-top: -10px;
+  overflow: inherit;
+}
+
+.group--conjunctions > input[type="checkbox"],
+.group--conjunctions > label:first-of-type {
+  display: none;
+}
+
+.qrm-invalid {
+  box-shadow: 0 0 0 0.2rem rgb(255 0 0 / 0.45);
+  outline: 0;
+  border-radius: 3px;
+}
+
+.qrm > .form-group > select:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: 0;
 }
