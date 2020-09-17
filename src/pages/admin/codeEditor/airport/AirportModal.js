@@ -1,5 +1,5 @@
-import React from "react";
-import { Modal, Button, Container } from "react-bootstrap";
+import React, {useState} from "react";
+import {Modal, Button, Container, Alert} from "react-bootstrap";
 
 import { codeEditor } from "../../../../services/serviceWrapper";
 import Form from "../../../../components/form/Form";
@@ -7,6 +7,9 @@ import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../../utils/constants";
 
 const AirportModal = props => {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+  const [variant, setVariant] = useState("");
   const cb = function(result) {};
   const data = props.editRowDetails || {};
 
@@ -68,6 +71,13 @@ const AirportModal = props => {
       <Modal.Header closeButton>
         <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
+      <Alert show={showAlert} variant={variant}>
+        {alertContent}
+        <hr />
+        <Button onClick={() => setShowAlert(false)} variant="outline-success">
+          Confirm
+        </Button>
+      </Alert>
       <Modal.Body>
         <Container fluid>
           <Form

@@ -20,6 +20,7 @@ import CreateManualHit from "./createManualHit/CreateManualHit";
 import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import { Link } from "@reach/router";
+import UploadAttachment from "./uploadAttachment/UploadAttachment";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
@@ -120,7 +121,8 @@ const PaxDetail = props => {
       title: "Flight History",
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
-    { title: "Link Analysis", link: <LinkAnalysis /> }
+    { title: "Link Analysis", link: <LinkAnalysis /> },
+    { title: "Attachments", link: <UploadAttachment paxId={props.paxId}/> }
   ];
 
   const updateHitStatus = (status, confirmed) => {
