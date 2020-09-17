@@ -87,7 +87,6 @@ const ErrorLog = ({ name }) => {
           callback={cb}
           header={visibleCols}
           key={refreshKey}
-          showPending={true}
         ></Table>
       </Main>
     </>

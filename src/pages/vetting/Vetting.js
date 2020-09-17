@@ -431,7 +431,6 @@ const Vetting = props => {
           callback={onTableChange}
           header={Headers}
           key={data}
-          showPending={true}
         />
 
         <ReviewPVL

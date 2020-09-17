@@ -19,9 +19,9 @@ import Main from "../../components/main/Main";
 const FlightPax = props => {
   const cb = function(result) {};
 
-  const [data, setData] = useState([]);
-  const [hitData, setHitData] = useState([{}]);
-  const [allData, setAllData] = useState([{}]);
+  const [data, setData] = useState();
+  const [hitData, setHitData] = useState();
+  const [allData, setAllData] = useState();
   const [tab, setTab] = useState("all");
   const [key, setKey] = useState(0);
   const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
