@@ -38,7 +38,6 @@ const AttachmentModal = props => {
     };
 
     const onChangeCb = ev => {
-        console.log(ev.target.files);
         if(maxFileSelect(ev) && maxFileSize) {
             setSelectedFiles(ev.target.files);
         }
@@ -49,7 +48,6 @@ const AttachmentModal = props => {
         if (files.length > 4) {
             const msg = 'Only 4 files may be uploaded at a time';
             ev.target.value = null // discard selected file
-            console.log(msg)
             return false;
         }
         return true;
@@ -66,7 +64,6 @@ const AttachmentModal = props => {
         };
         if (err !== '') {
             ev.target.value = null
-            console.log(err)
             return false
         }
         return true;

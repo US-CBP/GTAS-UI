@@ -22,47 +22,16 @@ const UploadAttachment = props => {
     }
 
     const deleteAttachment = (row) => {
-        console.log(row);
         attachment.del(row.id).then(resp =>{
             setRefreshDataKey(refreshDataKey+1);
         })
     };
 
     const downloadAttachment = (row) => {
-        console.log(row);
         attachment.get.download(row.id);
     };
 
-    const maxFileSelect= ev =>{
-        let files = ev.target.files // create file object
-        if (files.length > 4) {
-            const msg = 'Only 4 files may be uploaded at a time';
-            ev.target.value = null // discard selected file
-            console.log(msg)
-            return false;
-        }
-        return true;
-    };
-
-    const maxFileSize= ev =>{
-        let files = ev.target.files
-        let size = 15000
-        let err = "";
-        for(var x = 0; x<files.length; x++) {
-            if (files[x].size > size) {
-                err += files[x].type+' exceeds file size limit \n';
-            }
-        };
-        if (err !== '') {
-            ev.target.value = null
-            console.log(err)
-            return false
-        }
-        return true;
-    };
-
     useEffect(() => {
-        console.log("Testing files");
         const listItems = [];
         if (selectedFiles != null && typeof selectedFiles != "undefined") {
             for (var x = 0; x < selectedFiles.length; x++) {
