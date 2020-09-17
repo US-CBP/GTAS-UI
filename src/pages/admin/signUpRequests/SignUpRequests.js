@@ -164,7 +164,6 @@ const SignUpRequests = () => {
           id="SigUpRequest"
           callback={cb}
           key={refreshKey}
-          showPending={true}
         ></Table>
       </Main>
     </>

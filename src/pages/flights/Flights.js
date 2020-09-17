@@ -22,9 +22,9 @@ const Flights = props => {
     sortBy: [{ id: "timer", desc: false }]
   };
 
-  const [data, setData] = useState([{}]);
-  const [hitData, setHitData] = useState([{}]);
-  const [allData, setAllData] = useState([{}]);
+  const [data, setData] = useState();
+  const [hitData, setHitData] = useState();
+  const [allData, setAllData] = useState();
   const [tab, setTab] = useState("all");
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);

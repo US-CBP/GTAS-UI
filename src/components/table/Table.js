@@ -13,21 +13,30 @@ import "./Table.css";
 //Attempts to format the header from the column names, but can be passed a header array instead.
 
 const Table = props => {
-  const initData = [];
+  // to show the spinner when data is loading (either from within Table or at the caller), we assume:
+  // props.data === undefined ==> data is pending
+  // props.data === []        ==> fetch is complete, data has no rows
+  // hasData(props.data)      ==> fetch is complete, data has rows
 
-  const [data, setData] = useState(props.data || initData);
+  const [data, setData] = useState(props.data || undefined);
   const [header, setHeader] = useState(props.header || []);
   const [columns, setColumns] = useState([]);
   const [rowcount, setRowcount] = useState("");
   const stateVals = props.hasOwnProperty("stateVals") ? altObj(props.stateVals()) : {};
   const [displayColumnFilter, setDisplayColumnFilter] = useState(false);
-  const showPending = props.showPending;
+  const [showPending, setShowPending] = useState(false);
 
   useEffect(() => {
     validateProps();
-    if (!Array.isArray(props.data)) getData();
-    else parseData(props.data);
+
+    if (hasData(props.data)) parseData(props.data);
+    else if (hasData(props.service)) getData();
+    else parseData();
   }, []);
+
+  useEffect(() => {
+    parseData(data);
+  }, [data]);
 
   function ColumnFilter({ column: { filterValue, setFilter } }) {
     return (
@@ -138,7 +147,7 @@ const Table = props => {
     return (
       <>
         <div className="table-main">
-          {showPending && data === initData && <Loading></Loading>}
+          {showPending && <Loading></Loading>}
           <RBTable {...getTableProps()} striped bordered hover>
             <thead>
               {headerGroups.map((headerGroup, index) => {
@@ -295,8 +304,12 @@ const Table = props => {
   };
 
   const parseData = data => {
-    if (showPending && data === initData) return;
+    if (!data) {
+      setShowPending(true);
+      return;
+    }
 
+    setShowPending(false);
     const noDataFound = "No Data Found";
     let noDataObj = [{}];
     noDataObj[0][props.id] = noDataFound;
@@ -352,18 +365,21 @@ const Table = props => {
   };
 
   const getData = (params = null) => {
+    setShowPending(true);
     if (!hasData(props.service)) {
-      parseData([]);
+      parseData();
       return;
     }
     props
       .service(params)
       .then(response => {
         parseData(response);
+        setShowPending(false);
       })
       .catch(error => {
         console.log(error);
         parseData([]);
+        setShowPending(false);
       });
   };
 
@@ -397,7 +413,6 @@ Table.propTypes = {
   style: PropTypes.string,
   stateCb: PropTypes.func,
   stateVals: PropTypes.func,
-  showPending: PropTypes.bool,
   ignoredFields: PropTypes.arrayOf(PropTypes.string),
   enableColumnFilter: PropTypes.bool
 };

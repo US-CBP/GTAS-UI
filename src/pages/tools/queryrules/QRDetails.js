@@ -72,7 +72,6 @@ const QRDetails = props => {
         header={headers}
         id="Query Details"
         callback={cb}
-        showPending={true}
         key={key}
       ></Table>
     </Container>
