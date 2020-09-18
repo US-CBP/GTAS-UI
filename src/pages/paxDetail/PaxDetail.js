@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, DropdownButton, Dropdown } from "react-bootstrap";
 import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SideNav from "../../components/sidenav/SideNav";
 import Main from "../../components/main/Main";
+import Title from "../../components/title/Title";
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import Summary from "./summary/Summary";
 import PNR from "./pnr/PNR";
@@ -21,6 +22,7 @@ import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import { Link } from "@reach/router";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
+import AttachmentModal from "./uploadAttachment/AttachmentModal";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
@@ -97,10 +99,11 @@ const PaxDetail = props => {
   const [hasOpenHit, setHasOpenHit] = useState(false);
   const [hasHit, setHasHit] = useState(false);
   const [flightLegsSegmentData, setFlightLegsSegmentData] = useState([]);
-  const [hasApisRecord, setHasApisRecod] = useState(false);
+  const [hasApisRecord, setHasApisRecord] = useState(false);
   const [hasPnrRecord, setHasPnrRecord] = useState(false);
   const [watchlistData, setWatchlistData] = useState({});
 
+  const cb = () => {};
   const tabs = [
     {
       title: "Summary",
@@ -122,7 +125,7 @@ const PaxDetail = props => {
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
     { title: "Link Analysis", link: <LinkAnalysis /> },
-    { title: "Attachments", link: <UploadAttachment paxId={props.paxId}/> }
+    { title: "Attachments", link: <UploadAttachment paxId={props.paxId} /> }
   ];
 
   const updateHitStatus = (status, confirmed) => {
@@ -143,7 +146,7 @@ const PaxDetail = props => {
       setPnr(res.pnrVo);
       setApisMessage(res.apisMessageVo);
       setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
-      setHasApisRecod(res.apisMessageVo?.apisRecordExists || false);
+      setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
       setHasPnrRecord(res.pnrVo?.pnrRecordExists || false);
 
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
@@ -155,6 +158,28 @@ const PaxDetail = props => {
     fetchData();
   }, []);
 
+  const actions = (
+    <DropdownButton variant="outline-info" title="Choose Action">
+      <EventNotesModal
+        paxId={props.paxId}
+        setEventNoteRefreshKey={setEventNoteRefreshKey}
+      />
+      <DownloadReport paxId={props.paxId} flightId={props.flightId} />
+      <AddToWatchlist watchlistItems={watchlistData} />
+      <CreateManualHit
+        paxId={props.paxId}
+        flightId={props.flightId}
+        callback={setHitSummaryRefreshKey}
+      />
+      <Notification paxId={props.paxId} />
+      <AttachmentModal callback={cb} paxId={props.paxId}></AttachmentModal>
+      {hasHit && (
+        <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
+      )}
+    </DropdownButton>
+  );
+
+  const tablist = <Tabs tabs={tabs} />;
   return (
     <>
       <SideNav className="paxdetails-side-nav">
@@ -164,28 +189,8 @@ const PaxDetail = props => {
         <FlightLegSegments />
       </SideNav>
       <Main className="main paxdetail-container">
-        <Navbar>
-          <Navbar.Brand>Passenger Detail</Navbar.Brand>
-          <Nav className="paxdetails-action-buttons">
-            <EventNotesModal
-              paxId={props.paxId}
-              setEventNoteRefreshKey={setEventNoteRefreshKey}
-            />
-            <DownloadReport paxId={props.paxId} flightId={props.flightId} />
-            <AddToWatchlist watchlistItems={watchlistData} />
-            <CreateManualHit
-              paxId={props.paxId}
-              flightId={props.flightId}
-              callback={setHitSummaryRefreshKey}
-            />
-            <Notification paxId={props.paxId} />
-            {hasHit && (
-              <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
-            )}
-          </Nav>
-        </Navbar>
-
-        <Tabs tabs={tabs} />
+        <Title title="Passenger Detail" rightChild={actions} leftChild={tablist}></Title>
+        <Navbar></Navbar>
       </Main>
     </>
   );
