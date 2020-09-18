@@ -5,6 +5,7 @@ import { paxEventNotesHistory, notetypes } from "../../../services/serviceWrappe
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
+import Xid from "../../../components/xid/Xid";
 
 const EventNotesModal = props => {
   const [show, setShow] = useState(false);
@@ -47,7 +48,9 @@ const EventNotesModal = props => {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add Event Notes</Modal.Title>
+          <Modal.Title>
+            <Xid xid="12">Add Event Notes</Xid>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form

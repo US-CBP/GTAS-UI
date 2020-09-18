@@ -10,6 +10,8 @@ import "./App.css";
 // import ErrorBoundary from "./components/errorBoundary/ErrorBoundary";
 // import Loading from "./components/loading/Loading";
 
+import Xid from "./components/xid/Xid";
+
 import Authenticator from "./context/authenticator/Authenticator";
 import RoleAuthenticator from "./context/roleAuthenticator/RoleAuthenticator";
 import UserProvider from "./context/user/UserContext";
@@ -22,7 +24,6 @@ import Login from "./pages/login/Login";
 import SignUp from "./pages/signUp/SignUp";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
-import Auxiliary from "./components/auxiliary/Auxiliary";
 
 const Flights = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")
@@ -67,9 +68,6 @@ const QRDetails = loadable(() =>
 const Tools = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/tools/Tools")
 );
-const Neo4J = loadable(() =>
-  import(/* webpackChunkName: "authed" */ "./pages/tools/neo4J/Neo4J")
-);
 const Watchlist = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/tools/watchlist/Watchlist")
 );
@@ -89,7 +87,9 @@ const SeatChart = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
 );
 const UploadAttachment = loadable(() =>
-    import(/* webpackChunkName: "authed" */ "./pages/paxDetail/uploadAttachment/UploadAttachment")
+  import(
+    /* webpackChunkName: "authed" */ "./pages/paxDetail/uploadAttachment/UploadAttachment"
+  )
 );
 
 const Search = loadable(() =>
@@ -143,6 +143,9 @@ const ChangePassword = loadable(() =>
 );
 const SignUpRequests = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/admin/signUpRequests/SignUpRequests")
+);
+const Auxiliary = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./components/auxiliary/Auxiliary")
 );
 
 export default class App extends React.Component {
@@ -241,23 +244,29 @@ export default class App extends React.Component {
                         <PriorityVetting path="vetting"></PriorityVetting>
                         <Tools path="tools">
                           <Rules
-                            name="Rules"
+                            name={<Xid xid="7">Rules</Xid>}
+                            desc={
+                              <Xid xid="7">View or edit rules for generating hits</Xid>
+                            }
                             path="rules"
-                            desc="View or edit rules for generating hits"
                             icon="fa-address-book-o"
                           ></Rules>
                           <Rules name="Rules" path="rules/:mode" hideTile></Rules>
                           <Queries
-                            name="Queries"
+                            name={<Xid xid="7">Queries</Xid>}
+                            desc={<Xid xid="7">View or edit queries of system data</Xid>}
                             path="queries"
-                            desc="View or edit queries of system data"
                             icon="fa-search"
                           ></Queries>
                           <QRDetails path="qrdetails" hideTile></QRDetails>
                           <Watchlist
+                            name={<Xid xid="7">Watchlist</Xid>}
+                            desc={
+                              <Xid xid="7">
+                                View or add passenger and document watchlists
+                              </Xid>
+                            }
                             path="watchlist"
-                            name="Watchlist"
-                            desc="View or add passenger and document watchlists"
                             icon="fa-user-secret"
                           ></Watchlist>
                           <Watchlist
@@ -266,9 +275,9 @@ export default class App extends React.Component {
                             hideTile
                           ></Watchlist>
                           <About
-                            name="About"
+                            name={<Xid xid="7">About</Xid>}
+                            desc={<Xid xid="7">View system information details</Xid>}
                             path="about"
-                            desc="View system information details"
                             icon="fa-info-circle"
                           ></About>
                         </Tools>
@@ -283,81 +292,98 @@ export default class App extends React.Component {
                         >
                           <Admin path="/">
                             <ManageUser
-                              name="Manage Users"
+                              name={<Xid xid="7">Manage Users</Xid>}
                               path="manageusers"
-                              desc="Manage user profiles and privileges"
+                              desc={
+                                <Xid xid="7">Manage user profiles and privileges</Xid>
+                              }
                               icon="fa-users"
                             ></ManageUser>
                             <SignUpRequests
-                              desc="Manage system access requests"
+                              name={<Xid xid="7">Sign Up Requests</Xid>}
+                              desc={<Xid xid="7">Manage system access requests</Xid>}
                               icon="fa-user-plus"
-                              name="Sign Up Request"
                               path="signuprequests"
                             ></SignUpRequests>
                             <AuditLog
-                              name="Audit Log"
+                              name={<Xid xid="7">Audit Log</Xid>}
+                              desc={<Xid xid="7">View the system audit log</Xid>}
                               path="auditlog"
-                              desc="View the system audit log"
                               icon="fa-question-circle"
                             ></AuditLog>
                             <ErrorLog
-                              name="Error Log"
+                              name={<Xid xid="7">Error Log</Xid>}
+                              desc={<Xid xid="7">View the system error log</Xid>}
                               path="errorlog"
-                              desc="View the system error log"
                               icon="fa-exclamation-triangle"
                             ></ErrorLog>
                             <Settings
-                              name="Settings"
+                              name={<Xid xid="7">Settings</Xid>}
+                              desc={<Xid xid="7">View or edit system settings</Xid>}
                               path="settings"
-                              desc="View or edit system settings"
                               icon="fa-toggle-on"
                             ></Settings>
                             <FileDownload
-                              desc="Download system log files"
+                              name={<Xid xid="7">File Download</Xid>}
+                              desc={<Xid xid="7">Download system log files</Xid>}
                               icon="fa-download"
-                              name="File Download"
                               path="filedownload"
                             ></FileDownload>
                             <CodeEditor
-                              desc="View or edit Airport, Carrier, or Country codes"
+                              name={<Xid xid="7">Code Editor</Xid>}
+                              desc={
+                                <Xid xid="7">
+                                  View or edit Airport, Carrier, and Country codes
+                                </Xid>
+                              }
                               icon="fa-list-ul"
-                              name="Code Editor"
                               path="codeeditor"
                               startTab="countries"
                             >
-                              <Countries name="Countries" path="countries"></Countries>
-                              <Airports name="Airports" path="airports"></Airports>
-                              <Carriers name="Carriers" path="carriers"></Carriers>
+                              <Countries
+                                name={<Xid xid="7">Countries</Xid>}
+                                path="countries"
+                              ></Countries>
+                              <Airports
+                                name={<Xid xid="7">Airports</Xid>}
+                                path="airports"
+                              ></Airports>
+                              <Carriers
+                                name={<Xid xid="7">Carriers</Xid>}
+                                path="carriers"
+                              ></Carriers>
                             </CodeEditor>
                             <LoaderStats
-                              desc="View current message loading statistics"
+                              name={<Xid xid="7">Loader Statistics</Xid>}
+                              desc={
+                                <Xid xid="7">View current message loading statistics</Xid>
+                              }
                               icon="fa-bar-chart"
-                              name="Loader Statistics"
                               path="loaderstats"
                             ></LoaderStats>
                             <WatchlistCats
-                              desc="View or edit Watchlist categories"
+                              name={<Xid xid="7">Watchlist Categories</Xid>}
+                              desc={<Xid xid="7">View or edit Watchlist categories</Xid>}
                               icon="fa-user-secret"
-                              name="Watchlist Categories"
                               path="watchlistcats"
                             ></WatchlistCats>
                             <NoteTypeCats
-                              desc="View or edit Note Type categories"
+                              name={<Xid xid="7">Note Type Categories</Xid>}
+                              desc={<Xid xid="7">View or edit Note Type categories</Xid>}
                               icon="fa-comment"
-                              name="Note Type Categories"
                               path="notetypecats"
                             ></NoteTypeCats>
                             <Auxiliary
-                              desc="Got to Kibana Dashboard"
+                              name={<Xid xid="7">Kibana Dashboard</Xid>}
+                              desc={<Xid xid="7">Go to the Kibana Dashboard</Xid>}
                               icon="fa-line-chart"
-                              name="Kibana Dashboard"
                               path="https://localhost:5601/login?next=%2F"
                               hasExternalLink={true}
                             ></Auxiliary>
                             <Auxiliary
-                              name="Neo4j"
+                              name={<Xid xid="7">Neo4j</Xid>}
+                              desc={<Xid xid="7">Browse the Neo4j database</Xid>}
                               path="http://localhost:7474/browser/"
-                              desc="Browse the Neo4j database"
                               icon="fa-database"
                               hasExternalLink={true}
                             ></Auxiliary>

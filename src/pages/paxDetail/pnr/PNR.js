@@ -3,6 +3,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import SegmentTable from "../../../components/segmentTable/SegmentTable";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { asArray, hasData, localeDate, localeDateOnly } from "../../../utils/utils";
+import Xid from "../../../components/xid/Xid";
 
 const PNR = props => {
   const data = hasData(props.data) ? props.data : {};
@@ -13,7 +14,7 @@ const PNR = props => {
   const headers = {
     itinerary: {
       leg: "Leg",
-      flightNumber: "Flight Number",
+      flightNumber: <Xid xid="4">Flight Number</Xid>,
       origin: "Origin",
       destination: "Destination",
       departure: "Departure",

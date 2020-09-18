@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import { Link } from "@reach/router";
@@ -13,6 +13,7 @@ import { TIME } from "../../utils/constants";
 
 import { flights } from "../../services/serviceWrapper";
 import "./Flights.css";
+import Xid from "../../components/xid/Xid";
 
 const Flights = props => {
   const cb = () => {};
@@ -174,41 +175,41 @@ const Flights = props => {
           >
             <br />
             <LabelledInput
-              labelText="Origin Airports"
+              labelText={<Xid xid="7"> Origin Airports</Xid>}
               datafield="originAirports"
               name="originAirports"
               inputType="text"
               callback={cb}
-              alt="Origin Airports"
+              alt={<Xid xid="7">Origin Airports</Xid>}
             />
             <LabelledInput
-              labelText="Destination Airports"
+              labelText={<Xid xid="7"> Destination Airports</Xid>}
               datafield="destinationAirports"
               name="destinationAirports"
               inputType="text"
               callback={cb}
-              alt="Destination Airports"
+              alt={<Xid xid="7"> Destination Airports</Xid>}
             />
             <LabelledInput
               datafield="flightNumber"
-              labelText="Flight Number"
+              labelText={<Xid xid="7">Flight Number</Xid>}
               inputType="text"
               name="flightNumber"
               callback={cb}
-              alt="Flight Number"
+              alt={<Xid xid="7">Flight Number</Xid>}
             />
             <LabelledInput
               datafield="direction"
               inputType="select"
-              labelText="Direction"
+              labelText={<Xid xid="7">Direction</Xid>}
               inputStyle="form-select"
               callback={cb}
               name="direction"
               options={directions}
-              alt="Flight Direction"
+              alt={<Xid xid="7">Flight Direction</Xid>}
             />
             <LabelledInput
-              labelText="Hour Range"
+              labelText={<Xid xid="7">Hour Range</Xid>}
               inputType="select"
               name="hourRange"
               inputVal="96"
@@ -222,14 +223,14 @@ const Flights = props => {
                 { value: "96", label: "+96 hours" }
               ]}
               callback={cb}
-              alt="Hour range"
+              alt={<Xid xid="7">Hour Range</Xid>}
             />
           </FilterForm>
         </Col>
       </SideNavContainer>
       <Main>
         <Title
-          title="Flights"
+          title={<Xid xid="7">Flights</Xid>}
           uri={props.uri}
           leftChild={tabs}
           leftCb={titleTabCallback}

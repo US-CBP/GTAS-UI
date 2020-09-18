@@ -3,7 +3,7 @@ import Table from "../../../components/table/Table";
 import { watchlistcats } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Main from "../../../components/main/Main";
-import { Container, Button, Row, Col, Modal } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import WatchlistModal from "./WatchlistModal";
 
 const WatchlistCats = ({ name }) => {

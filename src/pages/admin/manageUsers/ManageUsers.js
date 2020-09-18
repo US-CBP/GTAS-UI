@@ -4,6 +4,7 @@ import Table from "../../../components/table/Table";
 import Main from "../../../components/main/Main";
 import { users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Xid from "../../../components/xid/Xid";
 import { asArray } from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
 
@@ -49,9 +50,12 @@ const ManageUsers = props => {
       Cell: ({ row }) => {
         return (
           <div className="text-center edit-user">
-            <DropdownButton variant="outline-info" title="Choose Action">
+            <DropdownButton
+              variant="outline-info"
+              title={<Xid xid="6">Choose Action</Xid>}
+            >
               <Dropdown.Item as="button" onClick={() => openEditModal(row.original)}>
-                Edit User
+                <Xid xid="6">Edit User</Xid>
               </Dropdown.Item>
               <Dropdown.Item
                 as="button"
@@ -149,7 +153,7 @@ const ManageUsers = props => {
       value={props.inputVal}
       alt={props.alt}
     >
-      Add New User
+      <Xid xid="6">Add New User</Xid>
     </Button>
   );
 

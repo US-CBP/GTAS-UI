@@ -5,6 +5,7 @@ import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SideNav from "../../components/sidenav/SideNav";
 import Main from "../../components/main/Main";
+import Xid from "../../components/xid/Xid";
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import Summary from "./summary/Summary";
 import PNR from "./pnr/PNR";
@@ -103,7 +104,7 @@ const PaxDetail = props => {
 
   const tabs = [
     {
-      title: "Summary",
+      title: <Xid xid="11">Summary</Xid>,
       link: (
         <Summary
           paxId={props.paxId}
@@ -116,13 +117,15 @@ const PaxDetail = props => {
       )
     },
     ...(hasApisRecord ? [{ title: "APIS", link: <APIS data={apisMessage}></APIS> }] : []),
-    ...(hasPnrRecord ? [{ title: "PNR", link: <PNR data={pnr} /> }] : []),
+    ...(hasPnrRecord
+      ? [{ title: "PNR", tabClassName: "foo", link: <PNR data={pnr} /> }]
+      : []),
     {
       title: "Flight History",
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
     { title: "Link Analysis", link: <LinkAnalysis /> },
-    { title: "Attachments", link: <UploadAttachment paxId={props.paxId}/> }
+    { title: "Attachments", link: <UploadAttachment paxId={props.paxId} /> }
   ];
 
   const updateHitStatus = (status, confirmed) => {

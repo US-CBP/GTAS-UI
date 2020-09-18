@@ -1,6 +1,7 @@
-import React, {useState} from "react";
-import {Modal, Button, Container, Alert} from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../components/form/Form";
+import Xid from "../../../components/xid/Xid";
 import { watchlistcatspost } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../utils/constants";
@@ -9,7 +10,6 @@ const WatchlistModal = props => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
   const [variant, setVariant] = useState("");
-  const title = "Watchlist Category";
   const cb = function(result) {};
   const severityLevels = [
     { value: "Top", label: "Top" },
@@ -32,7 +32,9 @@ const WatchlistModal = props => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
+        <Modal.Title>
+          <Xid xid="2">Add Watchlist Category</Xid>
+        </Modal.Title>
       </Modal.Header>
       <Alert show={showAlert} variant={variant}>
         {alertContent}

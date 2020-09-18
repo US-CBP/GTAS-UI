@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Table from "../../components/table/Table";
 import { flightPassengers } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
+import Xid from "../../components/xid/Xid";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import { Col, Tabs, Tab } from "react-bootstrap";
@@ -99,7 +100,7 @@ const FlightPax = props => {
 
   const tabs = (
     <Tabs defaultActiveKey="all" id="flightPaxTabs">
-      <Tab eventKey="all" title="All"></Tab>
+      <Tab eventKey="all" title={<Xid xid="7">All</Xid>}></Tab>
       <Tab eventKey="hits" title="Hits"></Tab>
     </Tabs>
   );

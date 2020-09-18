@@ -29,9 +29,9 @@ const CodeEditor = props => {
       {tabcontent.map(tab => {
         return (
           <Tab
-            eventKey={tab.props.name.toLowerCase()}
+            eventKey={tab.props.path.toLowerCase()}
             title={tab.props.name}
-            key={tab.props.name}
+            key={tab.props.path}
           ></Tab>
         );
       })}

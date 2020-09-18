@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import { hasData, asArray, isObject, alt } from "../../utils/utils";
 import Title from "../title/Title";
+import Xid from "../xid/Xid";
 import { Button, Form as RBForm, ButtonToolbar } from "react-bootstrap";
 import { navigate } from "@reach/router";
 
@@ -206,7 +207,7 @@ class Form extends React.Component {
                     className={`m-2 button block info fullwidth ${disabled}`}
                     type="submit"
                   >
-                    {this.props.submitText || "Submit"}
+                    {this.props.submitText || <Xid xid="7">Submit</Xid>}
                   </Button>
                 )}
 

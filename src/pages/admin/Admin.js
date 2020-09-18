@@ -1,7 +1,7 @@
 import React from "react";
 import Title from "../../components/title/Title";
-import { Card, CardDeck, Container } from "react-bootstrap";
-import { hasData, getEndpoint } from "../../utils/utils";
+import { Card, CardDeck } from "react-bootstrap";
+import { getEndpoint } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./Admin.css";
 import ExternalLink from "../../components/externalLink/ExternalLink";

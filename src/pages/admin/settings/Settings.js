@@ -4,6 +4,7 @@ import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
+import Xid from "../../../components/xid/Xid";
 
 const Settings = ({ name }) => {
   const onChange = (status, result) => {};
@@ -11,7 +12,7 @@ const Settings = ({ name }) => {
 
   return (
     <Container fluid>
-      <Title title="Settings"></Title>
+      <Title title={<Xid xid="7">Settings</Xid>}></Title>
       <br></br>
       <Container>
         <Col lg={{ span: 4, offset: 4 }}>
@@ -25,11 +26,11 @@ const Settings = ({ name }) => {
           >
             <LabelledInput
               datafield
-              labelText="Matching Threshold"
+              labelText={<Xid xid="7">Matching Threshold</Xid>}
               inputType="number"
               name="matchingThreshold"
               callback={cb}
-              alt="nothing"
+              alt={<Xid xid="7">Matching Threshold</Xid>}
             />
             <LabelledInput
               datafield

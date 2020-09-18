@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
 import { logfile, paxdetailsReport, users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Xid from "../../../components/xid/Xid";
 import Main from "../../../components/main/Main";
 import { Container } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
@@ -89,7 +90,7 @@ const FileDownload = ({ name }) => {
       inputType="select"
       inputStyle="file-type"
       name="severity"
-      placeholder="Choose Log Type..."
+      placeholder="Choose log type"
       options={logTypes}
       required={true}
       alt="nothing"

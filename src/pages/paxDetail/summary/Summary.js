@@ -9,7 +9,8 @@ import {
 import { Container, CardColumns } from "react-bootstrap";
 import "./Summary.scss";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
-import { composeInitialProps } from "react-i18next";
+import Xid from "../../../components/xid/Xid";
+// import { composeInitialProps } from "react-i18next";
 
 const Summary = props => {
   const headers = {
@@ -117,7 +118,8 @@ const Summary = props => {
         <CardWithTable
           data={paxHitSummary}
           headers={headers.paxHitSummary}
-          title="Passenger Current Hits summary"
+          title={<Xid xid="8">Passenger Current Hits summary</Xid>}
+          // title="Passenger Current Hits summary"
         />
 
         <CardWithTable data={documents} headers={headers.documents} title="Documents" />

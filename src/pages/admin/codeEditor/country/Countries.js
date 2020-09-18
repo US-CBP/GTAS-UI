@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
-import Title from "../../../../components/title/Title";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import Xid from "../../../../components/xid/Xid";
+import { Button, Container } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CountryModal from "./CountryModal";
 
@@ -58,7 +58,7 @@ const Countries = ({ name }) => {
             setEditRowDetails({});
           }}
         >
-          Add Country
+          {<Xid xid="7">Add Country</Xid>}
         </Button>
         <Button
           variant="outline-dark"
@@ -68,7 +68,7 @@ const Countries = ({ name }) => {
             });
           }}
         >
-          Restore All Countries
+          {<Xid xid="7">Restore All Countries</Xid>}
         </Button>
       </div>
       <CountryModal

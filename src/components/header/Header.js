@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { Link } from "@reach/router";
 import {
   Nav,
@@ -13,9 +13,10 @@ import { navigate, useLocation } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { ROLE } from "../../utils/constants";
+import { hasData } from "../../utils/utils";
 import "./Header.scss";
 import wcoLogo from "../../images/WCO_GTAS_header_brand.svg";
-import { hasData } from "../../utils/utils";
+import Xid from "../../components/xid/Xid";
 
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
@@ -51,7 +52,7 @@ const Header = () => {
   };
 
   const getActiveClass = tabName => {
-    return currentPath.pathname.startsWith(tabName) ? "active-tab" : "";
+    return currentPath.pathname.startsWith(tabName) ? "active-tab foo" : "foo";
   };
 
   const handleSearchSubmit = () => {
@@ -77,7 +78,7 @@ const Header = () => {
             className={`${getActiveClass(htab.DASH)}`}
             onClick={() => clickTab(htab.DASH)}
           >
-            Dashboard
+            <Xid xid="10">Dashboard</Xid>
           </Nav.Link>
           <Nav.Link
             as={Link}
