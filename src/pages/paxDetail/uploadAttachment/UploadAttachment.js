@@ -105,7 +105,6 @@ const UploadAttachment = props => {
   return (
     <div className="container">
       <main>
-        <Title title="Attachments" rightChild={button} />
         <Table
           data={data}
           id="attachments"
@@ -113,13 +112,6 @@ const UploadAttachment = props => {
           key={tableKey}
           callback={cb}
         />
-        <AttachmentModal
-          show={showModal}
-          callback={cb}
-          onHide={() => setShowModal(false)}
-          title="Upload Attachment"
-          paxId={paxId}
-        ></AttachmentModal>
       </main>
     </div>
   );

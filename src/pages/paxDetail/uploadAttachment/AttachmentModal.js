@@ -11,17 +11,19 @@ const AttachmentModal = props => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [filesForDisplay, setFilesForDisplay] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [alertContent, setAlertContent] = useState("");
   const [variant, setVariant] = useState("");
   const paxId = props.paxId;
 
   const handleClose = (status, res) => {
+    setShowModal(false);
     setShowAlert(false);
     setSelectedFiles([]);
-    props.onHide();
+    // props.onHide();
     props.callback(status, res);
   };
-  const handleShow = () => setShowAlert(true);
+  const handleShow = () => setShowModal(true);
 
   const postSubmit = (status, resp) => {
     if (status === ACTION.CANCEL) {
@@ -102,11 +104,11 @@ const AttachmentModal = props => {
   return (
     <>
       <Button variant="outline-info" size="sm" onClick={handleShow}>
-        <i className="fa fa-pencil"></i> Attachments
+        <i className="fa fa-pencil"></i>Add Attachments
       </Button>
 
       <Modal
-        show={props.show}
+        show={showModal}
         onHide={handleClose}
         size="md"
         aria-labelledby="contained-modal-title-vcenter"

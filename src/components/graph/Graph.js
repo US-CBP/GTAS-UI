@@ -182,8 +182,6 @@ class Graph extends React.Component {
         <div className="flex flex-vert ie-fix-md full-width align-items-center scroll-container-outer">
           <div className="cbp-card-container full-width">
             <div className="cbp-card cbp-card-shadow">
-              <h4 className="h-label no-margin-top">Search</h4>
-
               <div className="ppt-body">
                 <section className="ppt-section-main">
                   <div className="ppt-container-graph row">
