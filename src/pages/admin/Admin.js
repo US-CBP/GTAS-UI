@@ -1,5 +1,6 @@
 import React from "react";
 import Title from "../../components/title/Title";
+import Xid from "../../components/xid/Xid";
 import { Card, CardDeck } from "react-bootstrap";
 import { getEndpoint } from "../../utils/utils";
 import { Link } from "@reach/router";
@@ -12,7 +13,7 @@ const Admin = props => {
   if (getEndpoint(props.location?.pathname) === "admin")
     return (
       <>
-        <Title title="Admin" />
+        <Title title={<Xid xid="10">Admin</Xid>} />
 
         <div className="container">
           <CardDeck className="page-deck">

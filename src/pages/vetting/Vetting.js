@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Table from "../../components/table/Table";
 import { cases, notetypes, usersemails, ruleCats } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
+import Xid from "../../components/xid/Xid";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm/FilterForm";
 import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
@@ -424,7 +425,7 @@ const Vetting = props => {
         </Col>
       </SideNav>
       <Main>
-        <Title title="Priority Vetting" uri={props.uri} />
+        <Title title={<Xid xid="7">Priority Vetting</Xid>} uri={props.uri} />
         <Table
           data={data}
           id="FlightDataTable"

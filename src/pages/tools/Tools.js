@@ -1,10 +1,10 @@
 import React from "react";
 import Title from "../../components/title/Title";
+import Xid from "../../components/xid/Xid";
 import { Card, CardDeck } from "react-bootstrap";
 import { asArray, getEndpoint } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./Tools.css";
-import ExternalLink from "../../components/externalLink/ExternalLink";
 
 const Tools = props => {
   const children = props.children?.props?.children;
@@ -13,7 +13,7 @@ const Tools = props => {
   if (getEndpoint(props.location?.pathname) === "tools")
     return (
       <>
-        <Title title="Tools" />
+        <Title title={<Xid xid="10">Tools</Xid>} />
 
         <div className="container">
           <CardDeck className="page-deck">

@@ -86,7 +86,7 @@ const Header = () => {
             className={`${getActiveClass(htab.FLIGHT)}`}
             onClick={() => clickTab(htab.FLIGHT)}
           >
-            Flights
+            <Xid xid="10">FLights</Xid>
           </Nav.Link>
           <Nav.Link
             as={Link}
@@ -94,7 +94,7 @@ const Header = () => {
             className={`${getActiveClass(htab.VETTING)}`}
             onClick={() => clickTab(htab.VETTING)}
           >
-            Vetting
+            <Xid xid="10">Vetting</Xid>
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
             <Nav.Link
@@ -103,7 +103,7 @@ const Header = () => {
               className={`${getActiveClass(htab.ADMIN)}`}
               onClick={() => clickTab(htab.ADMIN)}
             >
-              Admin
+              <Xid xid="10">Admin</Xid>
             </Nav.Link>
           </RoleAuthenticator>
           <Nav.Link
@@ -112,7 +112,7 @@ const Header = () => {
             className={`${getActiveClass(htab.TOOLS)}`}
             onClick={() => clickTab(htab.TOOLS)}
           >
-            Tools
+            <Xid xid="10">Tools</Xid>
           </Nav.Link>
         </Nav>
         <Nav className="ml-auto">
