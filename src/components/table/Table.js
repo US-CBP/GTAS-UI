@@ -7,7 +7,7 @@ import { navigate } from "@reach/router";
 // import Xl8 from '../xl8/Xl8';
 import Loading from "../../components/loading/Loading";
 import { Table as RBTable, Pagination, Button } from "react-bootstrap";
-import Papa from "papaparse";
+import { jsonToCSV } from "react-papaparse";
 import { useExportData } from "react-table-plugins";
 import "./Table.css";
 
@@ -62,7 +62,7 @@ const Table = props => {
   function getExportFileBlob({ columns, data, fileType, fileName }) {
     if (fileType === "csv") {
       const headerNames = columns.map(col => col.exportValue);
-      const csvString = Papa.unparse({ fields: headerNames, data });
+      const csvString = jsonToCSV({ fields: headerNames, data });
       return new Blob([csvString], { type: "text/csv" });
     }
   }
