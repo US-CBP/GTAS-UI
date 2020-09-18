@@ -190,7 +190,7 @@ const PaxDetail = props => {
       </SideNav>
       <Main className="main paxdetail-container">
         <Title title="Passenger Detail" rightChild={actions} leftChild={tablist}></Title>
-        <Navbar></Navbar>
+        {/* {props.children} */}
       </Main>
     </>
   );

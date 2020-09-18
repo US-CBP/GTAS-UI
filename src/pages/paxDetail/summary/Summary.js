@@ -7,9 +7,9 @@ import {
   paxEventNotesHistory
 } from "../../../services/serviceWrapper";
 import { Container, CardColumns } from "react-bootstrap";
+import Main from "../../../components/main/Main";
 import "./Summary.scss";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
-import { composeInitialProps } from "react-i18next";
 
 const Summary = props => {
   const headers = {
@@ -112,7 +112,7 @@ const Summary = props => {
   }, [props.eventNoteRefreshKey]);
 
   return (
-    <Container fluid className="summary-container">
+    <Main>
       <CardColumns>
         <CardWithTable
           data={paxHitSummary}
@@ -138,7 +138,7 @@ const Summary = props => {
           title={`Previous Notes History (Up to 10)`}
         />
       </CardColumns>
-    </Container>
+    </Main>
   );
 };
 
