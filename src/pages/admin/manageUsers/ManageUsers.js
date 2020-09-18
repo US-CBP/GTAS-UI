@@ -186,7 +186,7 @@ const ManageUsers = props => {
   return (
     <>
       <Main className="full">
-        <Title title="Manage Users" rightChild={button}></Title>
+        <Title title={<Xid xid="7">Manage Users</Xid>} rightChild={button}></Title>
         <Table
           id="users"
           data={data}

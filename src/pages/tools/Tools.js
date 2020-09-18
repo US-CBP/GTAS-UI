@@ -25,7 +25,6 @@ const Tools = props => {
                     <Card.Body>
                       <Card.Title className="nowrap">
                         <i className={`fa fa-3x ${data.icon}`}></i>
-                        {/* {`  ${data.name}`} */}
                       </Card.Title>
                       <div className="card-overlay">{data.name}</div>
                       <div className="card-description">

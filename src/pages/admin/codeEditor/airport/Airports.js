@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
 import Title from "../../../../components/title/Title";
+import Xid from "../../../../components/xid/Xid";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { codeEditor, users } from "../../../../services/serviceWrapper";
 import AirportModal from "./AirportModal";
@@ -71,7 +72,7 @@ const Airports = ({ name }) => {
             setEditRowDetails({});
           }}
         >
-          Add Airport
+          {<Xid xid="7">Add Airport</Xid>}
         </Button>
 
         <Button
@@ -82,7 +83,7 @@ const Airports = ({ name }) => {
             });
           }}
         >
-          Restore All Airports
+          {<Xid xid="7">Restore All Airports</Xid>}
         </Button>
       </div>
 

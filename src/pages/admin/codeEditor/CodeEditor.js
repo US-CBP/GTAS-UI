@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Title from "../../../components/title/Title";
 import { Tabs, Tab, Container } from "react-bootstrap";
-import Main from "../../../components/main/Main";
 import { navigate } from "@reach/router";
 import { titleCase } from "../../../utils/utils";
 
@@ -38,9 +37,14 @@ const CodeEditor = props => {
     </Tabs>
   );
 
+  let tabMap = {};
+  tabcontent.forEach(tab => {
+    tabMap[tab.props.path] = <div {...tab.props.name.props}></div>;
+  });
+
   return (
     <Container fluid>
-      <Title title={titleCase(tab)} leftChild={headerTabs} leftCb={tabHandler} />
+      <Title title={tabMap[tab]} leftChild={headerTabs} leftCb={tabHandler} />
       {props.children}
     </Container>
   );

@@ -17,8 +17,8 @@ const Home = props => {
           console.log(e);
         });
       });
-      console.log("HOME RAN, foo class elements: ", foos);
-    }, 5000);
+      // console.log("HOME RAN, foo class elements: ", foos);
+    }, 1000);
   }, [location]);
 
   return (

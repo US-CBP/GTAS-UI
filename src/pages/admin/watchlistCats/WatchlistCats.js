@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
 import { watchlistcats } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Xid from "../../../components/xid/Xid";
 import Main from "../../../components/main/Main";
 import { Button } from "react-bootstrap";
 import WatchlistModal from "./WatchlistModal";
@@ -19,7 +20,7 @@ const WatchlistCats = ({ name }) => {
 
   const cats = (
     <Button variant="outline-dark" onClick={() => setShowModal(true)}>
-      Add Category
+      {<Xid xid="7">Add Category</Xid>}
     </Button>
   );
 
@@ -28,7 +29,7 @@ const WatchlistCats = ({ name }) => {
       <Title title={name} rightChild={cats}></Title>
       <Table
         service={watchlistcats.get}
-        id="Watchlist Category"
+        id="Watchlist Categories"
         key={refreshKey}
         callback={cb}
       ></Table>
