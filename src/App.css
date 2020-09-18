@@ -106,6 +106,17 @@ input[type="radio"] {
   /* padding: 10px; */
 }
 
-.xl8-notfound {
+.xl8-notfound,
+.xid {
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
   border: 2px solid red !important;
+}
+
+.xid:after {
+  content: "\f044";
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  margin-left: 10px;
 }

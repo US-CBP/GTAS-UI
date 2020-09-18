@@ -12,7 +12,7 @@ const Home = props => {
       const foos = document.querySelectorAll("[xid]");
 
       Array.from(foos).forEach(item => {
-        item.classList.add("xl8-notfound");
+        item.classList.add("xid");
         item.addEventListener("click", function(e) {
           console.log(e);
         });

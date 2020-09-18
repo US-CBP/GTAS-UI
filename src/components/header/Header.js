@@ -40,6 +40,7 @@ const Header = () => {
     FLIGHT: "/gtas/flights",
     VETTING: "/gtas/vetting",
     TOOLS: "/gtas/tools",
+    LANG: "/gtas/langEditor",
     ADMIN: "/gtas/admin"
   };
 
@@ -86,7 +87,7 @@ const Header = () => {
             className={`${getActiveClass(htab.FLIGHT)}`}
             onClick={() => clickTab(htab.FLIGHT)}
           >
-            <Xid xid="10">FLights</Xid>
+            <Xid xid="10">Flights</Xid>
           </Nav.Link>
           <Nav.Link
             as={Link}
@@ -114,6 +115,16 @@ const Header = () => {
           >
             <Xid xid="10">Tools</Xid>
           </Nav.Link>
+          <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
+            <Nav.Link
+              as={Link}
+              to="langEditor"
+              className={`${getActiveClass(htab.LANG)}`}
+              onClick={() => clickTab(htab.LANG)}
+            >
+              <i className="fa fa-language"></i>
+            </Nav.Link>
+          </RoleAuthenticator>
         </Nav>
         <Nav className="ml-auto">
           <Form inline>

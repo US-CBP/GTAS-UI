@@ -147,6 +147,9 @@ const SignUpRequests = loadable(() =>
 const Auxiliary = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./components/auxiliary/Auxiliary")
 );
+const LanguageEditor = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/lang/LanguageEditor")
+);
 
 export default class App extends React.Component {
   constructor(props) {
@@ -285,6 +288,13 @@ export default class App extends React.Component {
                         <Search path="search/:searchParam"></Search>
                         <ChangePassword path="user/change-password/:userId"></ChangePassword>
                         <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
+                        <RoleAuthenticator
+                          path="langEditor"
+                          alt={UNAUTHED}
+                          roles={[ROLE.ADMIN]}
+                        >
+                          <LanguageEditor path="/"></LanguageEditor>
+                        </RoleAuthenticator>
                         <RoleAuthenticator
                           path="admin"
                           alt={UNAUTHED}
