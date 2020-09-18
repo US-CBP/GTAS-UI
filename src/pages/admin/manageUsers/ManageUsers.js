@@ -190,7 +190,6 @@ const ManageUsers = props => {
           key={refreshKey}
           header={headers}
           enableColumnFilter={true}
-          showPending={true}
         ></Table>
         <UserModal
           show={showModal}

@@ -147,6 +147,10 @@ const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
 const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 const SEARCH = `${BASE_URL}gtas/search`;
 const SEATS = `${BASE_URL}gtas/seats`;
+const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
+const ATTACHMENTSMETA = `${BASE_URL}gtas/attachmentsmeta`;
+const DOWNLOADATTACHMENT = `${BASE_URL}gtas/attachment`;
+
 // ENTITY METHODS
 export const users = {
   get: {
@@ -302,6 +306,27 @@ export const codeEditor = {
     deleteAirport: id => del(CODES_AIRPORT, BASEHEADER, id)
   }
 };
+
+export const attachment = {
+  get: {
+    getAllFullAttachments: paxId => {
+      const path = ATTACHMENTS + `?paxId=${paxId}`;
+      return get(path, BASEHEADER);
+    },
+    getAllAttachmentsMeta: paxId => {
+      const path = ATTACHMENTSMETA + `?paxId=${paxId}`;
+      return get(path, BASEHEADER);
+    },
+    download: attachmentId => {
+      const path = DOWNLOADATTACHMENT + `?attachmentId=${attachmentId}`;
+      window.open(path, "_self");
+    }
+  },
+  post: body => post(ATTACHMENTS, "", body),
+  del: attachmentId => {
+    return del(ATTACHMENTS, BASEHEADER, attachmentId);
+  }
+}
 
 export const airportLookup = { get: () => get(CODES_AIRPORT_LK, BASEHEADER) };
 export const countryLookup = { get: () => get(CODES_COUNTRY_LK, BASEHEADER) };

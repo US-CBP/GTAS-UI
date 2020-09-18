@@ -22,7 +22,7 @@ const Watchlist = props => {
   const [showMiniModal, setShowMiniModal] = useState(false);
   const [id, setId] = useState(0);
   const [key, setKey] = useState(0);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
   const [wlcatData, setWlcatData] = useState([]);
   const [editRow, setEditRow] = useState({});
   const [tab, setTab] = useState(isDox ? TAB.DOX : TAB.PAX); // default to pax when no param is in the uri
