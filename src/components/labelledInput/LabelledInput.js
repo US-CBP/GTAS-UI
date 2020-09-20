@@ -206,10 +206,11 @@ class LabelledInput extends Component {
   }
 
   render() {
-    const cls = !!this.props.spacebetween ? "space-between" : "";
+    const cls = !!this.props.spacebetween ? " space-between" : "";
+    const inline = !!this.props.inline ? " input-group-append" : "";
     const textlabelStyle = this.props.inputType === "multiSelect" ? "" : "txtlabel";
     return (
-      <FormGroup className={`${cls} ${this.state.visibleStyle}`}>
+      <FormGroup className={`${this.state.visibleStyle}${cls}${inline}`}>
         <label className={textlabelStyle}>{this.state.labelText}</label>
         {this.getInputByType()}
       </FormGroup>

@@ -115,8 +115,11 @@ input[type="radio"] {
 }
 
 .xid:after {
-  content: "\f044";
   font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
   margin-left: 10px;
+}
+
+.xid:hover:after {
+  content: "\f044";
 }

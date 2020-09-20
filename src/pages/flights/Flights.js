@@ -152,8 +152,8 @@ const Flights = props => {
 
   const tabs = (
     <Tabs defaultActiveKey="all" id="flightTabs">
-      <Tab eventKey="all" title="All"></Tab>
-      <Tab eventKey="hits" title="Hits"></Tab>
+      <Tab eventKey="all" title={<Xid xid="7">All</Xid>}></Tab>
+      <Tab eventKey="hits" title={<Xid xid="7">Hits</Xid>}></Tab>
     </Tabs>
   );
 

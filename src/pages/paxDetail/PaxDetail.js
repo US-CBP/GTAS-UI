@@ -116,16 +116,21 @@ const PaxDetail = props => {
         />
       )
     },
-    ...(hasApisRecord ? [{ title: "APIS", link: <APIS data={apisMessage}></APIS> }] : []),
+    ...(hasApisRecord
+      ? [{ title: <Xid xid="11">APIS</Xid>, link: <APIS data={apisMessage}></APIS> }]
+      : []),
     ...(hasPnrRecord
-      ? [{ title: "PNR", tabClassName: "foo", link: <PNR data={pnr} /> }]
+      ? [{ title: <Xid xid="11">PNR</Xid>, link: <PNR data={pnr} /> }]
       : []),
     {
-      title: "Flight History",
+      title: <Xid xid="11">Flight History</Xid>,
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
-    { title: "Link Analysis", link: <LinkAnalysis /> },
-    { title: "Attachments", link: <UploadAttachment paxId={props.paxId} /> }
+    { title: <Xid xid="11">Link Analysis</Xid>, link: <LinkAnalysis /> },
+    {
+      title: <Xid xid="11">Attachments</Xid>,
+      link: <UploadAttachment paxId={props.paxId} />
+    }
   ];
 
   const updateHitStatus = (status, confirmed) => {

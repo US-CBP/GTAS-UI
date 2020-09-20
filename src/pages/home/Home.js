@@ -1,23 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
+import LangModal from "./LangModal";
+import { hasData } from "../../utils/utils";
 
 const Home = props => {
   const location = props.location?.pathname;
+  const [showModal, setShowModal] = useState(false);
+  const hideModal = () => setShowModal(false);
+  const [xid, setXid] = useState();
 
-  console.log(location);
+  const handleClick = ev => {
+    // show modal with this xid
+    ev.preventDefault();
+    console.log(ev.target.attributes);
+
+    const id = ev.target.attributes["xid"]?.value;
+
+    if (hasData(id)) {
+      setXid(id);
+      setShowModal(true);
+    }
+  };
+
   useEffect(() => {
     setTimeout(function() {
       //Start the timer
-      // const foos = document.getElementsByClassName("foo");
-      const foos = document.querySelectorAll("[xid]");
+      const xids = document.querySelectorAll("[xid]");
 
-      Array.from(foos).forEach(item => {
+      Array.from(xids).forEach(item => {
         item.classList.add("xid");
-        item.addEventListener("click", function(e) {
-          console.log(e);
-        });
+        item.addEventListener("click", handleClick);
       });
-      // console.log("HOME RAN, foo class elements: ", foos);
     }, 1000);
   }, [location]);
 
@@ -25,6 +38,7 @@ const Home = props => {
     <div>
       <Header></Header>
       {props.children}
+      <LangModal show={showModal} onHide={hideModal} xid={xid}></LangModal>
     </div>
   );
 };
