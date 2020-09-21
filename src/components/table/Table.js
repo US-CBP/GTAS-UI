@@ -300,7 +300,14 @@ const Table = props => {
                 </option>
               ))}
             </select>
-            <Button onClick={() => exportData("csv", true)}>Export</Button>
+            <Button
+              className="export-btn"
+              variant="light"
+              size="sm"
+              onClick={() => exportData("csv", true)}
+            >
+              Export
+            </Button>
             <span className="tagrightpag">
               <h3 className="title-default">
                 <i>{rowcount}</i>
