@@ -10,6 +10,7 @@ import LabelInput from "../inputs/label/Label";
 import { hasData, alt } from "../../utils/utils";
 import { FormGroup } from "react-bootstrap";
 import "./LabelledInput.css";
+import ReactDatePicker from "../inputs/datePicker/DatePicker";
 
 const textTypes = ["text", "number", "password", "email", "search", "tel"];
 const boolTypes = ["radio", "checkbox", "toggle"];
@@ -18,6 +19,7 @@ const checkboxGroup = "checkboxGroup";
 const textareaType = "textarea";
 const fileType = "file";
 const REQUIRED = "required";
+const datePicker = "datePicker";
 
 // TODO - refac as a passthru hook!!!
 // Pass props through directly, remove all awareness of specific child types
@@ -29,6 +31,7 @@ class LabelledInput extends Component {
     this.onChange = this.onChange.bind(this);
     this.onChangeArray = this.onChangeArray.bind(this);
     this.onMultiSelecChange = this.onMultiSelecChange.bind(this);
+    this.onChangeDatePicker = this.onChangeDatePicker.bind(this);
 
     this.state = {
       isValid: true,
@@ -75,6 +78,14 @@ class LabelledInput extends Component {
     });
 
     this.props.callback({ value: e, name: this.props.name });
+  }
+
+  onChangeDatePicker(e) {
+    this.setState({
+      inputVal: e,
+      isValid: hasData(e) || this.props.required !== REQUIRED
+    });
+    this.props.callback(e);
   }
 
   //APB - REFACTOR
@@ -202,6 +213,19 @@ class LabelledInput extends Component {
       );
     }
 
+    if (type === datePicker) {
+      return (
+        <ReactDatePicker
+          className={inputStyle}
+          name={this.props.name}
+          inputVal={this.props.inputVal}
+          callback={this.onChangeDatePicker}
+          required={this.state.required}
+          readOnly={this.props.readOnly}
+        />
+      );
+    }
+
     return null;
   }
 
@@ -237,7 +261,8 @@ LabelledInput.propTypes = {
     "tel",
     "label",
     "file",
-    "multiSelect"
+    "multiSelect",
+    "datePicker"
   ]).isRequired,
   callback: PropTypes.func,
   inputVal: PropTypes.any,
