@@ -8,7 +8,7 @@
 
 import React from "react";
 
-const GroupCheckBox = ({ value, onChange, id, name }) => {
+const GroupCheckBox = ({ value, onChange, id, name, disabled }) => {
   const handleChange = event => {
     const text = event.target.value;
     onChange(id, text);
@@ -17,7 +17,7 @@ const GroupCheckBox = ({ value, onChange, id, name }) => {
   return (
     <div className="form-inline space-between">
       <label>{name}</label>
-      <input type="checkbox" onChange={handleChange} checked={value} value={value} />
+      <input type="checkbox" disabled={disabled} onChange={handleChange} checked={value} value={value} />
     </div>
   );
 };
