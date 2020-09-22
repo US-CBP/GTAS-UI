@@ -39,9 +39,11 @@ const WatchlistModal = props => {
       <Alert show={showAlert} variant={variant}>
         {alertContent}
         <hr />
-        <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          Confirm
-        </Button>
+        <Xid xid="7">
+          <Button onClick={() => setShowAlert(false)} variant="outline-success">
+            Confirm
+          </Button>
+        </Xid>
       </Alert>
       <Modal.Body>
         <Container fluid>
@@ -49,13 +51,12 @@ const WatchlistModal = props => {
             submitService={watchlistcatspost.post}
             callback={postSubmit}
             action="add"
-            submitText="Submit"
             cancellable
             afterProcessed={props.onHide}
           >
             <LabelledInput
               datafield
-              labelText="Watchlist Category Name:"
+              labelText={<Xid xid="2">Watchlist Category Name:</Xid>}
               inputType="text"
               name="label"
               required={true}
@@ -64,7 +65,7 @@ const WatchlistModal = props => {
             />
             <LabelledInput
               datafield
-              labelText="Watchlist Category Description:"
+              labelText={<Xid xid="2">Watchlist Category Description:</Xid>}
               inputType="textarea"
               name="description"
               required={true}

@@ -6,15 +6,11 @@ import "../Inputs.scss";
 const TextInput = props => (
   <input
     className={`form-input ${props.className || ""}`}
-    name={props.name}
+    {...props}
     type={props.inputType}
-    placeholder={props.placeholder}
-    onChange={props.callback}
-    required={props.required}
-    aria-required={props.required}
     value={props.inputVal}
-    alt={props.alt}
-    readOnly={props.readOnly}
+    onChange={props.callback}
+    aria-required={props.required}
   />
 );
 
@@ -22,7 +18,7 @@ TextInput.propTypes = {
   inputType: PropTypes.oneOf(["text", "number", "email", "password", "search", "tel"])
     .isRequired,
   name: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
+  alt: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
   callback: PropTypes.func.isRequired,
   inputVal: PropTypes.string.isRequired,
   required: PropTypes.oneOf(["required", true, ""]),

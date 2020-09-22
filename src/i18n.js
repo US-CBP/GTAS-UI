@@ -1,16 +1,16 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import detector from "i18next-browser-languagedetector";
-import backend from "i18next-xhr-backend";
+import LanguageDetector from "i18next-browser-languagedetector";
+import Backend from "i18next-http-backend";
 
 // see translation files at '../public/locales/[lang]/translation.json'
 
 i18n
-  .use(detector)
-  .use(backend)
+  .use(LanguageDetector)
+  .use(Backend)
   .use(initReactI18next)
   .init({
-    // lng: "fr",
+    lng: "fr",
     fallbackLng: "en",
     keySeparator: false,
     // debug: true,

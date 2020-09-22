@@ -220,9 +220,8 @@ class LabelledInput extends Component {
 
 LabelledInput.propTypes = {
   name: PropTypes.string,
-  alt: PropTypes.string.isRequired,
   autoFocus: PropTypes.oneOf([true, ""]),
-  labelText: PropTypes.string,
+  labelText: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
   inputType: PropTypes.oneOf([
     "text",
     "textarea",

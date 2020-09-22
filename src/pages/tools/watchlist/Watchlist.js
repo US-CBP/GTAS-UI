@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
+import Xid from "../../../components/xid/Xid";
 import Main from "../../../components/main/Main";
 import Modal from "../../../components/modal/Modal";
 import { Button, Container, Tabs, Tab } from "react-bootstrap";
@@ -14,7 +15,10 @@ import "./constants.js";
 
 const Watchlist = props => {
   const cb = function(result) {};
-  const TAB = { PAX: ["pax", "Passenger"], DOX: ["dox", "Document"] };
+  const TAB = {
+    PAX: ["pax", <Xid xid="7">Passenger</Xid>],
+    DOX: ["dox", <Xid xid="7">Document</Xid>]
+  };
   const mode = (props.mode || "").toLowerCase();
   const isDox = mode === TAB.DOX[0];
 
@@ -38,7 +42,7 @@ const Watchlist = props => {
       value={props.inputVal}
       alt={props.alt}
     >
-      {`Add ${tab[1]}`}
+      <Xid xid="7">Add</Xid> {tab[1]}
     </Button>
   );
 
@@ -246,7 +250,7 @@ const Watchlist = props => {
   return (
     <Main className="full">
       <Title
-        title="Watchlists"
+        title={<Xid xid="7">Watchlists</Xid>}
         leftChild={tabs}
         leftCb={titleTabCallback}
         rightChild={button}

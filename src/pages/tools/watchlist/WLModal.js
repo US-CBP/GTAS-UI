@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
+import Xid from "../../../components/xid/Xid";
 
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
 import { hasData, asArray } from "../../../utils/utils";
@@ -10,9 +11,16 @@ import { ACTION } from "../../../utils/constants";
 const WLModal = props => {
   const TAB = { PAX: ["pax", "Passenger"], DOX: ["dox", "Document"] };
   const type = (props.type || {})[0] === TAB.DOX[0] ? TAB.DOX : TAB.PAX;
+  const typeXid =
+    (props.type || {})[0] === TAB.DOX[0] ? (
+      <Xid xid="7">Document</Xid>
+    ) : (
+      <Xid xid="7">Passenger</Xid>
+    );
   const id = props.id || 0;
   const mode = id === 0 ? "Add" : "Edit";
-  const title = `${mode} ${type[1]}`;
+  const modeXid = id === 0 ? <Xid xid="7">Add</Xid> : <Xid xid="7">Edit</Xid>;
+  const title = <>modeXid typeXid</>;
 
   const onFormChange = () => {};
 

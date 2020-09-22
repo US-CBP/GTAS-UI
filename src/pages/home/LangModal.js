@@ -1,22 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Container, Alert } from "react-bootstrap";
 import Form from "../../components/form/Form";
 import Xid from "../../components/xid/Xid";
 // import { watchlistcatspost } from "../../../services/serviceWrapper";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../utils/constants";
+import { hasData } from "../../utils/utils";
 
 const LangModal = props => {
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertContent, setAlertContent] = useState("");
-  const [variant, setVariant] = useState("");
   const cb = function(result) {};
+  const [elem, setElem] = useState(props.elem);
+
+  props.elem && props.show && console.log(props.elem);
 
   const postSubmit = (status, res) => {
     props.onHide();
 
     if (status !== ACTION.CANCEL) props.refresh();
   };
+
+  // useEffect(() => {
+  //   if (hasData(props.elem)) {
+  //     console.log(elem.xid.value);
+  //     setXid(elem.xid.value);
+  //     setOrig(elem.deft.value);
+  //   }
+  // }, []);
 
   return (
     <Modal
@@ -27,9 +36,7 @@ const LangModal = props => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>
-          <Xid xid="2">Edit Translation</Xid>
-        </Modal.Title>
+        <Modal.Title>Edit Translation</Modal.Title>
       </Modal.Header>
       {/* <Alert show={showAlert} variant={variant}>
         {alertContent}
@@ -50,30 +57,38 @@ const LangModal = props => {
           >
             <LabelledInput
               datafield
-              labelText={<Xid xid="2">ID:</Xid>}
-              inputVal={props.xid}
+              labelText="ID:"
+              inputVal={props.elem.xid}
               inputType="label"
+              required={true}
+              readOnly
               name="id"
-              alt={<Xid xid="2">Translation ID:</Xid>}
+              alt="Translation ID:"
               callback={cb}
-              inline
+              spacebetween
             />
             <LabelledInput
               datafield
-              labelText={<Xid xid="2">Default Translation:</Xid>}
-              inputType="text"
+              labelText="Default Text:"
+              inputType="label"
+              readOnly
+              inputVal={props.elem.orig}
               name="default"
-              alt={<Xid xid="2">Default Translation:</Xid>}
+              required={true}
+              alt="Default Text:"
               callback={cb}
+              spacebetween
             />
             <LabelledInput
               datafield
-              labelText={<Xid xid="2">Translation:</Xid>}
+              labelText="Translation:"
               inputType="textarea"
+              inputVal={props.elem.trans}
               name="translation"
               required={true}
-              alt={<Xid xid="2">Translation:</Xid>}
+              alt="Translation:"
               callback={cb}
+              spacebetween
             />
           </Form>
         </Container>

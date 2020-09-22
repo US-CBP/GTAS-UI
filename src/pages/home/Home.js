@@ -12,7 +12,7 @@ const Home = props => {
   const handleClick = ev => {
     // show modal with this xid
     ev.preventDefault();
-    console.log(ev.target.attributes);
+    // console.log(ev.target.attributes);
 
     const id = ev.target.attributes["xid"]?.value;
 
@@ -22,23 +22,23 @@ const Home = props => {
     }
   };
 
-  useEffect(() => {
-    setTimeout(function() {
-      //Start the timer
-      const xids = document.querySelectorAll("[xid]");
+  // useEffect(() => {
+  //   setTimeout(function() {
+  //     //Start the timer
+  //     const xids = document.querySelectorAll("[xid]");
 
-      Array.from(xids).forEach(item => {
-        item.classList.add("xid");
-        item.addEventListener("click", handleClick);
-      });
-    }, 1000);
-  }, [location]);
+  //     Array.from(xids).forEach(item => {
+  //       item.classList.add("xid");
+  //       item.addEventListener("click", handleClick);
+  //     });
+  //   }, 1000);
+  // }, [location]);
 
   return (
     <div>
       <Header></Header>
       {props.children}
-      <LangModal show={showModal} onHide={hideModal} xid={xid}></LangModal>
+      {/* <LangModal show={showModal} onHide={hideModal} elem={elem}></LangModal> */}
     </div>
   );
 };

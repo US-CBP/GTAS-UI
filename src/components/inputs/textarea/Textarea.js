@@ -6,14 +6,14 @@ const TextareaInput = props => (
   <textarea
     className="form-input textarea"
     name={props.name}
-    type={props.inputType}
     placeholder={props.placeholder}
-    onChange={props.callback}
     required={props.required}
-    aria-required={props.required}
-    value={props.inputVal}
     alt={props.alt}
     readOnly={props.readOnly}
+    onChange={props.callback}
+    aria-required={props.required}
+    type={props.inputType}
+    value={props.inputVal}
   />
 );
 
@@ -22,8 +22,8 @@ TextareaInput.propTypes = {
   name: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
   callback: PropTypes.func.isRequired,
-  inputVal: PropTypes.string,
-  required: PropTypes.string,
+  inputVal: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
+  required: PropTypes.bool,
   placeHolder: PropTypes.string,
   readOnly: PropTypes.string
 };
