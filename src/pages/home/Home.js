@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Header from "../../components/header/Header";
 import LangModal from "./LangModal";
+import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import { hasData } from "../../utils/utils";
 
 const Home = props => {
@@ -8,19 +9,24 @@ const Home = props => {
   const [showModal, setShowModal] = useState(false);
   const hideModal = () => setShowModal(false);
   const [xid, setXid] = useState();
+  const { getLiveEditState, action, EditModal } = useContext(LiveEditContext);
 
-  const handleClick = ev => {
-    // show modal with this xid
-    ev.preventDefault();
-    // console.log(ev.target.attributes);
+  useEffect(() => {
+    const isEdit = getLiveEditState();
+    setShowModal(isEdit);
+  }, []);
+  // const handleClick = ev => {
+  //   // show modal with this xid
+  //   ev.preventDefault();
+  //   // console.log(ev.target.attributes);
 
-    const id = ev.target.attributes["xid"]?.value;
+  //   const id = ev.target.attributes["xid"]?.value;
 
-    if (hasData(id)) {
-      setXid(id);
-      setShowModal(true);
-    }
-  };
+  //   if (hasData(id)) {
+  //     setXid(id);
+  //     setShowModal(true);
+  //   }
+  // };
 
   // useEffect(() => {
   //   setTimeout(function() {
@@ -38,7 +44,8 @@ const Home = props => {
     <div>
       <Header></Header>
       {props.children}
-      {/* <LangModal show={showModal} onHide={hideModal} elem={elem}></LangModal> */}
+      {EditModal}
+      {/* <LangModal show={showModal} onHide={hideModal} elem={{ xid: "foo" }}></LangModal> */}
     </div>
   );
 };

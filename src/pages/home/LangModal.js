@@ -9,14 +9,14 @@ import { hasData } from "../../utils/utils";
 
 const LangModal = props => {
   const cb = function(result) {};
-  const [elem, setElem] = useState(props.elem);
+  // const [elem, setElem] = useState(props.elem || {});
+  const data = props.elem || {};
 
-  props.elem && props.show && console.log(props.elem);
+  props.elem && props.show && console.log(props.elem.orig);
 
   const postSubmit = (status, res) => {
     props.onHide();
-
-    if (status !== ACTION.CANCEL) props.refresh();
+    // if (status !== ACTION.CANCEL) props.refresh();
   };
 
   // useEffect(() => {
@@ -58,7 +58,7 @@ const LangModal = props => {
             <LabelledInput
               datafield
               labelText="ID:"
-              inputVal={props.elem.xid}
+              inputVal={data.xid}
               inputType="label"
               required={true}
               readOnly
@@ -72,7 +72,7 @@ const LangModal = props => {
               labelText="Default Text:"
               inputType="label"
               readOnly
-              inputVal={props.elem.orig}
+              inputVal={data.orig}
               name="default"
               required={true}
               alt="Default Text:"
@@ -83,7 +83,7 @@ const LangModal = props => {
               datafield
               labelText="Translation:"
               inputType="textarea"
-              inputVal={props.elem.trans}
+              inputVal={data.trans}
               name="translation"
               required={true}
               alt="Translation:"

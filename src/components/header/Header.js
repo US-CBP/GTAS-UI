@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { Link } from "@reach/router";
 import {
   Nav,
@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import { navigate, useLocation } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
+import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { ROLE } from "../../utils/constants";
 import { hasData } from "../../utils/utils";
@@ -20,6 +21,10 @@ import Xid from "../../components/xid/Xid";
 
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
+  const { getLiveEditState, action } = useContext(LiveEditContext);
+
+  const [isEdit, setIsEdit] = useState(getLiveEditState().isEdit);
+
   const searchInputRef = useRef();
 
   const user = getUserState();
@@ -53,7 +58,7 @@ const Header = () => {
   };
 
   const getActiveClass = tabName => {
-    return currentPath.pathname.startsWith(tabName) ? "active-tab foo" : "foo";
+    return currentPath.pathname.startsWith(tabName) ? "active-tab" : "";
   };
 
   const handleSearchSubmit = () => {
@@ -62,6 +67,11 @@ const Header = () => {
       navigate(`/gtas/search/${searchParam}`);
     }
   };
+
+  useEffect(() => {
+    const editstate = getLiveEditState();
+    setIsEdit(editstate.isEdit);
+  }, []);
 
   return (
     <Navbar sticky="top" expand="md" className="header-navbar" variant="light">

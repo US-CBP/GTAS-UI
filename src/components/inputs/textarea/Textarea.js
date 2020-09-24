@@ -4,7 +4,7 @@ import "../Inputs.scss";
 
 const TextareaInput = props => (
   <textarea
-    className="form-input textarea"
+    className="form-input textarea height-auto"
     name={props.name}
     placeholder={props.placeholder}
     required={props.required}

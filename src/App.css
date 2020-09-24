@@ -123,3 +123,7 @@ input[type="radio"] {
 .xid:hover:after {
   content: "\f044";
 }
+
+.height-auto {
+  height: auto !important;
+}

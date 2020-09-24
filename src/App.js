@@ -15,6 +15,7 @@ import Xid from "./components/xid/Xid";
 import Authenticator from "./context/authenticator/Authenticator";
 import RoleAuthenticator from "./context/roleAuthenticator/RoleAuthenticator";
 import UserProvider from "./context/user/UserContext";
+import LiveEditProvider from "./context/translation/LiveEditContext";
 import LookupProvider from "./context/data/LookupContext";
 
 import { ROLE, TIME } from "./utils/constants";
@@ -193,227 +194,237 @@ export default class App extends React.Component {
       <React.StrictMode>
         <UserProvider>
           <LookupProvider>
-            <Router>
-              <Redirect from="/" to="/login" noThrow />
-              <Login path="/login"></Login>
-              <SignUp path="/signup"></SignUp>
-              <ResetPassword path="/reset-password/:username/:resetToken"></ResetPassword>
-              <ForgotPassword path="/forgot-password"></ForgotPassword>
-            </Router>
-            {this.state.showModal ? (
-              <GModal>
-                <div>
-                  <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
-                  <button onClick={this.toggleModal}>OK</button>
-                </div>
-              </GModal>
-            ) : null}
-            <div className="App">
-              <IdleTimer
-                ref={ref => {
-                  this.idleTimer = ref;
-                }}
-                element={document}
-                onActive={this.onActive}
-                onIdle={this.onIdle}
-                onAction={this.onAction}
-                debounce={250}
-                timeout={TIME.MINUTES_25}
-              />
-              <Suspense fallback="loading">
-                <Authenticator>
-                  <Router>
-                    <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
-                    <RoleAuthenticator
-                      path="/"
-                      alt={UNAUTHED}
-                      roles={[
-                        ROLE.ADMIN,
-                        ROLE.PAXVWR,
-                        ROLE.RULEMGR,
-                        ROLE.CASEMGR,
-                        ROLE.WLMGR,
-                        ROLE.HITMGR,
-                        ROLE.QRYMGR
-                      ]}
-                    >
-                      <Redirect from="/" to="/gtas" noThrow />
-                      <Home path="/gtas">
-                        <Page404 default></Page404>
-                        <Redirect from="/gtas" to="/gtas/flights" noThrow />
-                        <Dashboard path="dashboard"></Dashboard>
-                        <Flights path="flights"></Flights>
-                        <FlightPax path="flightpax/:id"></FlightPax>
-                        <PriorityVetting path="vetting"></PriorityVetting>
-                        <Tools path="tools">
-                          <Rules
-                            name={<Xid xid="7">Rules</Xid>}
-                            desc={
-                              <Xid xid="7">View or edit rules for generating hits</Xid>
-                            }
-                            path="rules"
-                            icon="fa-address-book-o"
-                          ></Rules>
-                          <Rules name="Rules" path="rules/:mode" hideTile></Rules>
-                          <Queries
-                            name={<Xid xid="7">Queries</Xid>}
-                            desc={<Xid xid="7">View or edit queries of system data</Xid>}
-                            path="queries"
-                            icon="fa-search"
-                          ></Queries>
-                          <QRDetails path="qrdetails" hideTile></QRDetails>
-                          <Watchlist
-                            name={<Xid xid="7">Watchlist</Xid>}
-                            desc={
-                              <Xid xid="7">
-                                View or add passenger and document watchlists
-                              </Xid>
-                            }
-                            path="watchlist"
-                            icon="fa-user-secret"
-                          ></Watchlist>
-                          <Watchlist
-                            path="watchlist/:mode"
-                            name="Watchlist"
-                            hideTile
-                          ></Watchlist>
-                          <About
-                            name={<Xid xid="7">About</Xid>}
-                            desc={<Xid xid="7">View system information details</Xid>}
-                            path="about"
-                            icon="fa-info-circle"
-                          ></About>
-                        </Tools>
-                        <ChangePassword path="user/change-password"></ChangePassword>
-                        <Search path="search/:searchParam"></Search>
-                        <ChangePassword path="user/change-password/:userId"></ChangePassword>
-                        <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
-                        <RoleAuthenticator
-                          path="langEditor"
-                          alt={UNAUTHED}
-                          roles={[ROLE.ADMIN]}
-                        >
-                          <LanguageEditor path="/"></LanguageEditor>
-                        </RoleAuthenticator>
-                        <RoleAuthenticator
-                          path="admin"
-                          alt={UNAUTHED}
-                          roles={[ROLE.ADMIN]}
-                        >
-                          <Admin path="/">
-                            <ManageUser
-                              name={<Xid xid="7">Manage Users</Xid>}
-                              path="manageusers"
+            <LiveEditProvider>
+              <Router>
+                <Redirect from="/" to="/login" noThrow />
+                <Login path="/login"></Login>
+                <SignUp path="/signup"></SignUp>
+                <ResetPassword path="/reset-password/:username/:resetToken"></ResetPassword>
+                <ForgotPassword path="/forgot-password"></ForgotPassword>
+              </Router>
+              {this.state.showModal ? (
+                <GModal>
+                  <div>
+                    <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
+                    <button onClick={this.toggleModal}>OK</button>
+                  </div>
+                </GModal>
+              ) : null}
+              <div className="App">
+                <IdleTimer
+                  ref={ref => {
+                    this.idleTimer = ref;
+                  }}
+                  element={document}
+                  onActive={this.onActive}
+                  onIdle={this.onIdle}
+                  onAction={this.onAction}
+                  debounce={250}
+                  timeout={TIME.MINUTES_25}
+                />
+                <Suspense fallback="loading">
+                  <Authenticator>
+                    <Router>
+                      {UNAUTHED}
+                      <RoleAuthenticator
+                        path="/"
+                        alt={UNAUTHED}
+                        roles={[
+                          ROLE.ADMIN,
+                          ROLE.PAXVWR,
+                          ROLE.RULEMGR,
+                          ROLE.CASEMGR,
+                          ROLE.WLMGR,
+                          ROLE.HITMGR,
+                          ROLE.QRYMGR
+                        ]}
+                      >
+                        <Redirect from="/" to="/gtas" noThrow />
+                        <Home path="/gtas">
+                          <Page404 default></Page404>
+                          <Redirect from="/gtas" to="/gtas/flights" noThrow />
+                          <Dashboard path="dashboard"></Dashboard>
+                          <Flights path="flights"></Flights>
+                          <FlightPax path="flightpax/:id"></FlightPax>
+                          <PriorityVetting path="vetting"></PriorityVetting>
+                          <Tools path="tools">
+                            <Rules
+                              name={<Xid xid="7">Rules</Xid>}
                               desc={
-                                <Xid xid="7">Manage user profiles and privileges</Xid>
+                                <Xid xid="7">View or edit rules for generating hits</Xid>
                               }
-                              icon="fa-users"
-                            ></ManageUser>
-                            <SignUpRequests
-                              name={<Xid xid="7">Sign Up Requests</Xid>}
-                              desc={<Xid xid="7">Manage system access requests</Xid>}
-                              icon="fa-user-plus"
-                              path="signuprequests"
-                            ></SignUpRequests>
-                            <AuditLog
-                              name={<Xid xid="7">Audit Log</Xid>}
-                              desc={<Xid xid="7">View the system audit log</Xid>}
-                              path="auditlog"
-                              icon="fa-question-circle"
-                            ></AuditLog>
-                            <ErrorLog
-                              name={<Xid xid="7">Error Log</Xid>}
-                              desc={<Xid xid="7">View the system error log</Xid>}
-                              path="errorlog"
-                              icon="fa-exclamation-triangle"
-                            ></ErrorLog>
-                            <Settings
-                              name={<Xid xid="7">Settings</Xid>}
-                              desc={<Xid xid="7">View or edit system settings</Xid>}
-                              path="settings"
-                              icon="fa-toggle-on"
-                            ></Settings>
-                            <FileDownload
-                              name={<Xid xid="7">File Download</Xid>}
-                              desc={<Xid xid="7">Download system log files</Xid>}
-                              icon="fa-download"
-                              path="filedownload"
-                            ></FileDownload>
-                            <CodeEditor
-                              name={<Xid xid="7">Code Editor</Xid>}
+                              path="rules"
+                              icon="fa-address-book-o"
+                            ></Rules>
+                            <Rules name="Rules" path="rules/:mode" hideTile></Rules>
+                            <Queries
+                              name={<Xid xid="7">Queries</Xid>}
+                              desc={
+                                <Xid xid="7">View or edit queries of system data</Xid>
+                              }
+                              path="queries"
+                              icon="fa-search"
+                            ></Queries>
+                            <QRDetails path="qrdetails" hideTile></QRDetails>
+                            <Watchlist
+                              name={<Xid xid="7">Watchlist</Xid>}
                               desc={
                                 <Xid xid="7">
-                                  View or edit Airport, Carrier, and Country codes
+                                  View or add passenger and document watchlists
                                 </Xid>
                               }
-                              icon="fa-list-ul"
-                              path="codeeditor"
-                              startTab="countries"
-                            >
-                              <Countries
-                                name={<Xid xid="7">Countries</Xid>}
-                                path="countries"
-                              ></Countries>
-                              <Airports
-                                name={<Xid xid="7">Airports</Xid>}
-                                path="airports"
-                              ></Airports>
-                              <Carriers
-                                name={<Xid xid="7">Carriers</Xid>}
-                                path="carriers"
-                              ></Carriers>
-                            </CodeEditor>
-                            <LoaderStats
-                              name={<Xid xid="7">Loader Statistics</Xid>}
-                              desc={
-                                <Xid xid="7">View current message loading statistics</Xid>
-                              }
-                              icon="fa-bar-chart"
-                              path="loaderstats"
-                            ></LoaderStats>
-                            <WatchlistCats
-                              name={<Xid xid="7">Watchlist Categories</Xid>}
-                              desc={<Xid xid="7">View or edit Watchlist categories</Xid>}
+                              path="watchlist"
                               icon="fa-user-secret"
-                              path="watchlistcats"
-                            ></WatchlistCats>
-                            <NoteTypeCats
-                              name={<Xid xid="7">Note Type Categories</Xid>}
-                              desc={<Xid xid="7">View or edit Note Type categories</Xid>}
-                              icon="fa-comment"
-                              path="notetypecats"
-                            ></NoteTypeCats>
-                            <Auxiliary
-                              name={<Xid xid="7">Kibana Dashboard</Xid>}
-                              desc={<Xid xid="7">Go to the Kibana Dashboard</Xid>}
-                              icon="fa-line-chart"
-                              path="https://localhost:5601/login?next=%2F"
-                              hasExternalLink={true}
-                            ></Auxiliary>
-                            <Auxiliary
-                              name={<Xid xid="7">Neo4j</Xid>}
-                              desc={<Xid xid="7">Browse the Neo4j database</Xid>}
-                              path="http://localhost:7474/browser/"
-                              icon="fa-database"
-                              hasExternalLink={true}
-                            ></Auxiliary>
-                          </Admin>
-                        </RoleAuthenticator>
-                        <PaxDetail path="paxDetail/:flightId/:paxId">
-                          <Summary path="summary" default></Summary>
-                          <APIS path="apis"></APIS>
-                          <PNR path="pnr"></PNR>
-                          <FlightHistory path="flighthistory"></FlightHistory>
-                          <LinkAnalysis path="linkanalysis"></LinkAnalysis>
-                          <UploadAttachment path="uploadattachment"></UploadAttachment>
-                        </PaxDetail>
-                        <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
-                      </Home>
-                    </RoleAuthenticator>
-                  </Router>
-                </Authenticator>
-              </Suspense>
-            </div>
+                            ></Watchlist>
+                            <Watchlist
+                              path="watchlist/:mode"
+                              name="Watchlist"
+                              hideTile
+                            ></Watchlist>
+                            <About
+                              name={<Xid xid="7">About</Xid>}
+                              desc={<Xid xid="7">View system information details</Xid>}
+                              path="about"
+                              icon="fa-info-circle"
+                            ></About>
+                          </Tools>
+                          <ChangePassword path="user/change-password"></ChangePassword>
+                          <Search path="search/:searchParam"></Search>
+                          <ChangePassword path="user/change-password/:userId"></ChangePassword>
+                          <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
+                          <RoleAuthenticator
+                            path="langEditor"
+                            alt={UNAUTHED}
+                            roles={[ROLE.ADMIN]}
+                          >
+                            <LanguageEditor path="/"></LanguageEditor>
+                          </RoleAuthenticator>
+                          <RoleAuthenticator
+                            path="admin"
+                            alt={UNAUTHED}
+                            roles={[ROLE.ADMIN]}
+                          >
+                            <Admin path="/">
+                              <ManageUser
+                                name={<Xid xid="7">Manage Users</Xid>}
+                                path="manageusers"
+                                desc={
+                                  <Xid xid="7">Manage user profiles and privileges</Xid>
+                                }
+                                icon="fa-users"
+                              ></ManageUser>
+                              <SignUpRequests
+                                name={<Xid xid="7">Sign Up Requests</Xid>}
+                                desc={<Xid xid="7">Manage system access requests</Xid>}
+                                icon="fa-user-plus"
+                                path="signuprequests"
+                              ></SignUpRequests>
+                              <AuditLog
+                                name={<Xid xid="7">Audit Log</Xid>}
+                                desc={<Xid xid="7">View the system audit log</Xid>}
+                                path="auditlog"
+                                icon="fa-question-circle"
+                              ></AuditLog>
+                              <ErrorLog
+                                name={<Xid xid="7">Error Log</Xid>}
+                                desc={<Xid xid="7">View the system error log</Xid>}
+                                path="errorlog"
+                                icon="fa-exclamation-triangle"
+                              ></ErrorLog>
+                              <Settings
+                                name={<Xid xid="7">Settings</Xid>}
+                                desc={<Xid xid="7">View or edit system settings</Xid>}
+                                path="settings"
+                                icon="fa-toggle-on"
+                              ></Settings>
+                              <FileDownload
+                                name={<Xid xid="7">File Download</Xid>}
+                                desc={<Xid xid="7">Download system log files</Xid>}
+                                icon="fa-download"
+                                path="filedownload"
+                              ></FileDownload>
+                              <CodeEditor
+                                name={<Xid xid="7">Code Editor</Xid>}
+                                desc={
+                                  <Xid xid="7">
+                                    View or edit Airport, Carrier, and Country codes
+                                  </Xid>
+                                }
+                                icon="fa-list-ul"
+                                path="codeeditor"
+                                startTab="countries"
+                              >
+                                <Countries
+                                  name={<Xid xid="7">Countries</Xid>}
+                                  path="countries"
+                                ></Countries>
+                                <Airports
+                                  name={<Xid xid="7">Airports</Xid>}
+                                  path="airports"
+                                ></Airports>
+                                <Carriers
+                                  name={<Xid xid="7">Carriers</Xid>}
+                                  path="carriers"
+                                ></Carriers>
+                              </CodeEditor>
+                              <LoaderStats
+                                name={<Xid xid="7">Loader Statistics</Xid>}
+                                desc={
+                                  <Xid xid="7">
+                                    View current message loading statistics
+                                  </Xid>
+                                }
+                                icon="fa-bar-chart"
+                                path="loaderstats"
+                              ></LoaderStats>
+                              <WatchlistCats
+                                name={<Xid xid="7">Watchlist Categories</Xid>}
+                                desc={
+                                  <Xid xid="7">View or edit Watchlist categories</Xid>
+                                }
+                                icon="fa-user-secret"
+                                path="watchlistcats"
+                              ></WatchlistCats>
+                              <NoteTypeCats
+                                name={<Xid xid="7">Note Type Categories</Xid>}
+                                desc={
+                                  <Xid xid="7">View or edit Note Type categories</Xid>
+                                }
+                                icon="fa-comment"
+                                path="notetypecats"
+                              ></NoteTypeCats>
+                              <Auxiliary
+                                name={<Xid xid="7">Kibana Dashboard</Xid>}
+                                desc={<Xid xid="7">Go to the Kibana Dashboard</Xid>}
+                                icon="fa-line-chart"
+                                path="https://localhost:5601/login?next=%2F"
+                                hasExternalLink={true}
+                              ></Auxiliary>
+                              <Auxiliary
+                                name={<Xid xid="7">Neo4j</Xid>}
+                                desc={<Xid xid="7">Browse the Neo4j database</Xid>}
+                                path="http://localhost:7474/browser/"
+                                icon="fa-database"
+                                hasExternalLink={true}
+                              ></Auxiliary>
+                            </Admin>
+                          </RoleAuthenticator>
+                          <PaxDetail path="paxDetail/:flightId/:paxId">
+                            <Summary path="summary" default></Summary>
+                            <APIS path="apis"></APIS>
+                            <PNR path="pnr"></PNR>
+                            <FlightHistory path="flighthistory"></FlightHistory>
+                            <LinkAnalysis path="linkanalysis"></LinkAnalysis>
+                            <UploadAttachment path="uploadattachment"></UploadAttachment>
+                          </PaxDetail>
+                          {UNAUTHED}
+                        </Home>
+                      </RoleAuthenticator>
+                    </Router>
+                  </Authenticator>
+                </Suspense>
+              </div>
+            </LiveEditProvider>
           </LookupProvider>
         </UserProvider>
       </React.StrictMode>

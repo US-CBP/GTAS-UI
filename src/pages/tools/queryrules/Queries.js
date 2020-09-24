@@ -5,7 +5,7 @@ import Main from "../../../components/main/Main";
 import { Button, Container } from "react-bootstrap";
 import { QR, ACTION } from "../../../utils/constants";
 
-import { query } from "../../../services/serviceWrapper";
+import { query, translations } from "../../../services/serviceWrapper";
 import QRModal from "./QRModal";
 import "./QueryRules.css";
 
@@ -53,6 +53,9 @@ const Queries = props => {
     { Accessor: "description" }
   ];
 
+  translations.put().then(res => {
+    console.log(res);
+  });
   const launchModal = (recordId, record) => {
     const title = recordId ? `Edit Query` : `Add Query`;
 
@@ -74,10 +77,10 @@ const Queries = props => {
     <Main className="full">
       <Title title="Queries" rightChild={button}></Title>
       <Table
-        service={query.get}
+        service={translations.get}
         id="Queries"
         callback={cb}
-        header={header}
+        // header={header}
         key={`table${tablekey}`}
       ></Table>
       <QRModal
