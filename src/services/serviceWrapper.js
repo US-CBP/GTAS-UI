@@ -150,12 +150,12 @@ const SEATS = `${BASE_URL}gtas/seats`;
 const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
 const ATTACHMENTSMETA = `${BASE_URL}gtas/attachmentsmeta`;
 const DOWNLOADATTACHMENT = `${BASE_URL}gtas/attachment`;
-const TRANSLATIONS = `${BASE_URL}gtas/api/translation/fr`;
+const TRANSLATIONS = `${BASE_URL}gtas/api/translation`;
 
 // ENTITY METHODS
 
 export const translations = {
-  get: () => get(TRANSLATIONS, BASEHEADER),
+  get: id => get(TRANSLATIONS, BASEHEADER, id),
   post: body =>
     post(
       TRANSLATIONS,

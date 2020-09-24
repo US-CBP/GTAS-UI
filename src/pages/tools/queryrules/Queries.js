@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Main from "../../../components/main/Main";
-import { Button, Container } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { QR, ACTION } from "../../../utils/constants";
 
 import { query, translations } from "../../../services/serviceWrapper";
@@ -53,9 +53,10 @@ const Queries = props => {
     { Accessor: "description" }
   ];
 
-  translations.put().then(res => {
-    console.log(res);
-  });
+  // translations.put().then(res => {
+  //   console.log(res);
+  // });
+
   const launchModal = (recordId, record) => {
     const title = recordId ? `Edit Query` : `Add Query`;
 

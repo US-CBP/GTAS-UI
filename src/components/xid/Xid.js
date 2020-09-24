@@ -7,13 +7,13 @@ import { useTranslation } from "react-i18next";
 const Xid = props => {
   const [t, i18n] = useTranslation();
   const [isEdit, setIsEdit] = useState();
-  // const [showModal, setShowModal] = useState(false);
   const hideModal = () => setShowModal(false);
   const [xid, setXid] = useState();
   const tprops = {
     xid: props.xid,
     orig: props.children.toString(),
-    trans: t(props.children)
+    trans: t(props.children),
+    lang: i18n.language
   };
   const [elem, setElem] = useState(tprops);
   const [translationProps] = useState(tprops);
