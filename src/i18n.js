@@ -16,7 +16,8 @@ const options = {
   credentials: "include"
 };
 
-const testFxn = (options, url, payload, callback) => {};
+// const testFxn = (options, url, payload, callback) => {};
+
 const backendOptions = {
   requestOptions: {
     method: "GET",
@@ -30,7 +31,12 @@ const backendOptions = {
   loadPath: "http://localhost:8080/gtas/api/translation/{{lng}}",
   parse: function(data) {
     console.log(data);
-    return data;
+    let parsed = {};
+    data.forEach(item => {
+      parsed[item["code"]] = item["translation"];
+    });
+
+    return parsed;
   },
   addPath: "/locales/{{lng}}/{{ns}}"
 };
@@ -40,7 +46,7 @@ i18n
   .use(HttpApi)
   .use(initReactI18next)
   .init({
-    lng: "fr",
+    // lng: "fr",
     fallbackLng: "en",
     keySeparator: false,
     backend: backendOptions,
