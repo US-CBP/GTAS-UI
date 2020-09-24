@@ -89,7 +89,9 @@ const SeatChart = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
 );
 const UploadAttachment = loadable(() =>
-    import(/* webpackChunkName: "authed" */ "./pages/paxDetail/uploadAttachment/UploadAttachment")
+  import(
+    /* webpackChunkName: "authed" */ "./pages/paxDetail/uploadAttachment/UploadAttachment"
+  )
 );
 
 const Search = loadable(() =>
@@ -228,7 +230,8 @@ export default class App extends React.Component {
                         ROLE.CASEMGR,
                         ROLE.WLMGR,
                         ROLE.HITMGR,
-                        ROLE.QRYMGR
+                        ROLE.QRYMGR,
+                        ROLE.FLIGHTVWR
                       ]}
                     >
                       <Redirect from="/" to="/gtas" noThrow />

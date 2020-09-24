@@ -6,7 +6,7 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
 import { UserContext } from "../../../context/user/UserContext";
 import { asArray } from "../../../utils/utils";
-import { ACTION } from "../../../utils/constants";
+import { ACTION, ROLE } from "../../../utils/constants";
 import "./ManageUsers.scss";
 
 const UserModal = props => {
@@ -45,16 +45,20 @@ const UserModal = props => {
 
   const transformRoles = asArray(allRoles).map(role => {
     let isChecked = false;
-    if (props.isEdit) {
+    let isDisabled = false;
+    if (props.isEdit && role.roleDescription !== ROLE.FLIGHTVWR) {
       isChecked = isCheckedRole(role, props.editRowDetails.roles);
+    } else if (role.roleDescription === ROLE.FLIGHTVWR) {
+      isChecked = true;
+      isDisabled = true;
     }
-
     return {
       ...role,
       label: role.roleDescription,
       key: role.roleId,
       type: "checkbox",
-      checked: isChecked
+      checked: isChecked,
+      disabled: isDisabled
     };
   });
 
@@ -63,18 +67,22 @@ const UserModal = props => {
     value: transformRoles
   };
 
-  const postSubmit = (status = ACTION.CLOSE, res) => {
-    res.status === "SUCCESS" ? setVariant("success") : setVariant("danger");
-    let message;
-    if (res.message === undefined || res.message === ""){
-      message = "There was an issue with the server for that request.";
+  const postSubmit = (status, res) => {
+    if (status === ACTION.CANCEL) {
+      props.onHide();
     } else {
-      message = res.message;
+      res.status === "SUCCESS" ? setVariant("success") : setVariant("danger");
+      let message;
+      if (res.message === undefined || res.message === "") {
+        message = "There was an issue with the server for that request.";
+      } else {
+        message = res.message;
+      }
+      /* setAlertContent(message);
+      setShowAlert(true);*/
+      props.onHide();
+      props.callback(status);
     }
-    /* setAlertContent(message);
-    setShowAlert(true);*/
-    props.onHide();
-    props.callback(status);
   };
 
   const preSubmit = fields => {
