@@ -10,7 +10,7 @@ import LabelInput from "../inputs/label/Label";
 import { hasData, alt } from "../../utils/utils";
 import { FormGroup } from "react-bootstrap";
 import "./LabelledInput.css";
-import ReactDatePicker from "../inputs/datePicker/DatePicker";
+import ReactDateTimePicker from "../inputs/dateTimePicker/DateTimePicker";
 
 const textTypes = ["text", "number", "password", "email", "search", "tel"];
 const boolTypes = ["radio", "checkbox", "toggle"];
@@ -19,7 +19,7 @@ const checkboxGroup = "checkboxGroup";
 const textareaType = "textarea";
 const fileType = "file";
 const REQUIRED = "required";
-const datePicker = "datePicker";
+const dateTime = "dateTime";
 
 // TODO - refac as a passthru hook!!!
 // Pass props through directly, remove all awareness of specific child types
@@ -85,7 +85,7 @@ class LabelledInput extends Component {
       inputVal: e,
       isValid: hasData(e) || this.props.required !== REQUIRED
     });
-    this.props.callback(e);
+    this.props.callback({ value: e, name: this.props.name });
   }
 
   //APB - REFACTOR
@@ -213,9 +213,9 @@ class LabelledInput extends Component {
       );
     }
 
-    if (type === datePicker) {
+    if (type === dateTime) {
       return (
-        <ReactDatePicker
+        <ReactDateTimePicker
           className={inputStyle}
           name={this.props.name}
           inputVal={this.props.inputVal}
@@ -262,7 +262,7 @@ LabelledInput.propTypes = {
     "label",
     "file",
     "multiSelect",
-    "datePicker"
+    "dateTime"
   ]).isRequired,
   callback: PropTypes.func,
   inputVal: PropTypes.any,

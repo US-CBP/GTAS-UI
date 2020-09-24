@@ -35,7 +35,7 @@
 .date-picker-container input {
   @extend %input-css-properties;
 }
-.react-date-picker {
+.react-datetime-picker {
   width: 100%;
   height: calc(1.2em + 0.75rem + 2px);
   border-color: rgb(206, 212, 218);
@@ -43,15 +43,15 @@
   color: rgb(73, 80, 87);
   border-radius: 5px;
 }
-.react-date-picker__wrapper {
+.react-datetime-picker__wrapper {
   border-radius: 4px;
   border-color: rgb(206, 212, 218) !important;
 }
-.react-date-picker__calendar--open {
+.react-datetime-picker__calendar--open {
   top: 100% !important;
   bottom: unset !important;
 }
-.react-date-picker__inputGroup__input:focus {
+.react-datetime-picker__inputGroup__input:focus {
   border: 0;
 }
 .form-input:focus {
