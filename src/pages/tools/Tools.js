@@ -1,10 +1,10 @@
 import React from "react";
 import Title from "../../components/title/Title";
+import Main from "../../components/main/Main";
 import { Card, CardDeck } from "react-bootstrap";
 import { asArray, getEndpoint } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./Tools.css";
-import ExternalLink from "../../components/externalLink/ExternalLink";
 
 const Tools = props => {
   const children = props.children?.props?.children;
@@ -15,7 +15,7 @@ const Tools = props => {
       <>
         <Title title="Tools" />
 
-        <div className="container">
+        <Main className="full-cards">
           <CardDeck className="page-deck">
             {tiles.map(info => {
               const data = info.props;
@@ -37,7 +37,7 @@ const Tools = props => {
               );
             })}
           </CardDeck>
-        </div>
+        </Main>
       </>
     );
 
