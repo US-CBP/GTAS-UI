@@ -20,20 +20,28 @@ const LabelledDateTimePickerStartEnd = props => {
     setStartDate(event);
     props.startMut(event);
     const update = {
-      name: "etaStart",
-      value: event?.toISOString()
+      etaStart: event,
+      etaEnd: endDate
     };
-    props.callback(update);
+    const dateRangeUpdate ={
+      name: "datepicker",
+      value: update
+    }
+    props.callback(dateRangeUpdate);
   };
 
   const changeEtd = event => {
     setEndDate(event);
     props.endMut(event);
     const update = {
-      name: "etaEnd",
-      value: event?.toISOString()
+      etaStart: startDate,
+      etaEnd: event
     };
-    props.callback(update);
+    const dateRangeUpdate ={
+      name: "datepicker",
+      value: update
+    }
+    props.callback(dateRangeUpdate);
   };
   const [startDate, setStartDate] = useState(props.startDate);
   const [endDate, setEndDate] = useState(props.endDate);
