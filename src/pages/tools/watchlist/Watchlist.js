@@ -3,7 +3,7 @@ import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Main from "../../../components/main/Main";
 import Modal from "../../../components/modal/Modal";
-import { Button, Container, Tabs, Tab, Row } from "react-bootstrap";
+import { Button, Tabs, Tab, Row } from "react-bootstrap";
 import { navigate } from "@reach/router";
 
 import { wlpax, wldocs, watchlistcats } from "../../../services/serviceWrapper";
@@ -27,9 +27,38 @@ const Watchlist = props => {
   const [wlcatData, setWlcatData] = useState([]);
   const [editRow, setEditRow] = useState({});
   const [tab, setTab] = useState(isDox ? TAB.DOX : TAB.PAX); // default to pax when no param is in the uri
-  const handleImportData = data => {
-    console.log(data);
+
+  const handleImportData = results => {
+    const keys = {
+      "First Name": "firstName",
+      "Last Name": "lastName",
+      DOB: "dob",
+      Category: "categoryId",
+      "Document Number": "documentNumber",
+      "Document Type": "documentType"
+    };
+
+    const service = isDox ? wldocs : wlpax;
+    const importedWl = { action: "Create", id: null, wlItems: [] };
+    results.forEach(result => {
+      const item = {};
+
+      for (let key in result.data) {
+        const newKey = keys[key];
+
+        item[newKey] = result.data[key];
+      }
+      const catLabel = item["categoryId"];
+      item["categoryId"] = (wlcatData.find(item => item.label === catLabel) || {}).id;
+      if (item["dob"]) item["dob"].replace("/", "-"); //the rule engine throws error for date formated mm/dd/yyyy
+      importedWl.wlItems.push(item);
+    });
+
+    service.post(importedWl).then(res => {
+      setKey(key + 1); //refresh table
+    });
   };
+
   const button = (
     <Row>
       <Button
