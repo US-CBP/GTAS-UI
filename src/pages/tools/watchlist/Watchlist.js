@@ -55,7 +55,7 @@ const Watchlist = props => {
     });
 
     service.post(importedWl).then(res => {
-      setKey(key + 1); //refresh table
+      if (res.status === "SUCCESS") fetchData(); //get latest dataa
     });
   };
 
