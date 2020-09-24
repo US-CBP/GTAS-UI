@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import DatePicker from "react-date-picker";
+import DateTimePicker from "react-datetime-picker";
 
-const ReactDatePicker = props => {
+const ReactDateTimePicker = props => {
   const [value, setValue] = useState(props.inputVal);
   const onchange = e => {
     setValue(e);
@@ -10,7 +10,7 @@ const ReactDatePicker = props => {
   };
   return (
     <div className="date-picker">
-      <DatePicker
+      <DateTimePicker
         className={`${props.className || ""}`}
         onChange={onchange}
         value={value}
@@ -20,11 +20,13 @@ const ReactDatePicker = props => {
         disabled={props.readOnly === "readOnly" ? true : false}
         clearIcon={null}
         calendarIcon={null}
+        disableClock={true}
+        format="yyyy-MM-dd h:mm aa"
       />
     </div>
   );
 };
 
-DatePicker.propTypes = {};
+DateTimePicker.propTypes = {};
 
-export default ReactDatePicker;
+export default ReactDateTimePicker;
