@@ -61,7 +61,7 @@ const ErrorLog = ({ name }) => {
             />
             <LabelledInput
               datafield
-              inputType="datePicker"
+              inputType="dateTime"
               inputVal={startDate}
               labelText="Start Date"
               name="startDate"
@@ -71,7 +71,7 @@ const ErrorLog = ({ name }) => {
             />
             <LabelledInput
               datafield
-              inputType="datePicker"
+              inputType="dateTime"
               inputVal={endDate}
               labelText="End Date"
               name="endDate"

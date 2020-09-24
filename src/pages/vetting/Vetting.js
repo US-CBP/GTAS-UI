@@ -6,7 +6,6 @@ import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm/FilterForm";
 import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
 import { Col, Button } from "react-bootstrap";
-import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import "./Vetting.css";
 import SideNav from "../../components/sidenav/SideNav";
 import Main from "../../components/main/Main";
@@ -152,12 +151,10 @@ const Vetting = props => {
   const onTextChange = () => {};
   const cb = () => {};
 
-  let sDate = new Date();
-  let eDate = new Date();
-  eDate.setDate(eDate.getDate() + 7);
-  sDate.setHours(sDate.getHours() - 7);
-  const [startDate, setStartDate] = useState(sDate);
-  const [endDate, setEndDate] = useState(eDate);
+  let startDate = new Date();
+  let endDate = new Date();
+  endDate.setDate(endDate.getDate() + 7);
+  startDate.setHours(startDate.getHours() - 7);
   const [data, setData] = useState();
   const [hitCategoryOptions, setHitCategoryOptions] = useState();
   const [refreshKey, setRefreshKey] = useState(0);
@@ -167,7 +164,6 @@ const Vetting = props => {
   const [noteTypes, setNoteTypes] = useState([]);
   const [usersEmails, setUsersEmails] = useState({});
   const now = new Date();
-
   const reviewPVL = paxId => {
     setCurrentPaxId(paxId);
     setShowReviewModal(true);
@@ -205,6 +201,11 @@ const Vetting = props => {
 
     const fieldNames = Object.keys(fieldscopy);
     fieldNames.forEach(name => {
+      if (name === "etaStart" || name === "etaEnd") {
+        const date = new Date(fields[name]);
+        paramObject[name] = date.toISOString();
+      }
+
       if (hasData(fields[name])) {
         if (name === "displayStatusCheckBoxes" || name === "ruleTypes") {
           const selectedBoxes = fields[name];
@@ -268,62 +269,6 @@ const Vetting = props => {
       setNoteTypes(nTypes);
     });
   }, []);
-
-  const dateRange = (
-    <>
-      <LabelledInput
-        labelText="Hour Range (Start)"
-        inputType="select"
-        name="startHourRange"
-        inputVal="96"
-        inputStyle="form-select"
-        datafield="startHourRange"
-        options={[
-          { value: "6", label: "-6 hours" },
-          { value: "12", label: "-12 hours" },
-          { value: "24", label: "-24 hours" },
-          { value: "48", label: "-48 hours" },
-          { value: "96", label: "-96 hours" }
-        ]}
-        callback={cb}
-        alt="Hour range (Start)"
-      />
-      <LabelledInput
-        labelText="Hour Range (End)"
-        inputType="select"
-        name="endHourRange"
-        inputVal="96"
-        inputStyle="form-select"
-        datafield="endHourRange"
-        options={[
-          { value: "6", label: "+6 hours" },
-          { value: "12", label: "+12 hours" },
-          { value: "24", label: "+24 hours" },
-          { value: "48", label: "+48 hours" },
-          { value: "96", label: "+96 hours" }
-        ]}
-        callback={cb}
-        alt="Hour range (End)"
-      />
-    </>
-  );
-  const dateTimePicker = (
-    <LabelledDateTimePickerStartEnd
-      datafield={["etaStart", "etaEnd"]}
-      name={["etaStart", "etaEnd"]}
-      alt="Start/End Datepicker"
-      inputType="dateTime"
-      dateFormat="yyyy-MM-dd h:mm aa"
-      callback={cb}
-      showTimeSelect
-      showYearDropdown
-      inputVal={{ etaStart: startDate, etaEnd: endDate }}
-      startDate={startDate}
-      endDate={endDate}
-      endMut={setEndDate}
-      startMut={setStartDate}
-    />
-  );
 
   return (
     <>
@@ -419,7 +364,68 @@ const Vetting = props => {
               alt="Show Date Time Picker"
               spacebetween
             />
-            {showDateTimePicker.current ? dateTimePicker : dateRange}
+            {showDateTimePicker.current && (
+              <LabelledInput
+                datafield="etaStart"
+                inputType="dateTime"
+                inputVal={startDate}
+                labelText="Start Date"
+                name="etaStart"
+                callback={cb}
+                required={true}
+                alt="Start Date"
+              />
+            )}
+            {showDateTimePicker.current && (
+              <LabelledInput
+                datafield="etaEnd"
+                inputType="dateTime"
+                inputVal={endDate}
+                labelText="End Date"
+                name="etaEnd"
+                callback={cb}
+                required={true}
+                alt="End Date"
+              />
+            )}
+            {!showDateTimePicker.current && (
+              <LabelledInput
+                labelText="Hour Range (Start)"
+                inputType="select"
+                name="startHourRange"
+                inputVal="96"
+                inputStyle="form-select"
+                datafield="startHourRange"
+                options={[
+                  { value: "6", label: "-6 hours" },
+                  { value: "12", label: "-12 hours" },
+                  { value: "24", label: "-24 hours" },
+                  { value: "48", label: "-48 hours" },
+                  { value: "96", label: "-96 hours" }
+                ]}
+                callback={cb}
+                alt="Hour range (Start)"
+              />
+            )}
+            {!showDateTimePicker.current && (
+              <LabelledInput
+                labelText="Hour Range (End)"
+                inputType="select"
+                name="endHourRange"
+                inputVal="96"
+                inputStyle="form-select"
+                datafield="endHourRange"
+                options={[
+                  { value: "6", label: "+6 hours" },
+                  { value: "12", label: "+12 hours" },
+                  { value: "24", label: "+24 hours" },
+                  { value: "48", label: "+48 hours" },
+                  { value: "96", label: "+96 hours" }
+                ]}
+                callback={cb}
+                alt="Hour range (End)"
+              />
+            )}
           </FilterForm>
         </Col>
       </SideNav>
