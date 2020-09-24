@@ -35,6 +35,7 @@ export const ROLE = {
   SYSADMIN: "SysAdmin",
   HITMGR: "Manage Hits",
   CASEMGR: "Manage Cases",
+  FLIGHTVWR: "View Flights",
   ANY: "Any"
 };
 

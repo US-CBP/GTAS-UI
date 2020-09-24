@@ -228,7 +228,8 @@ export default class App extends React.Component {
                         ROLE.CASEMGR,
                         ROLE.WLMGR,
                         ROLE.HITMGR,
-                        ROLE.QRYMGR
+                        ROLE.QRYMGR,
+                        ROLE.FLIGHTVWR
                       ]}
                     >
                       <Redirect from="/" to="/gtas" noThrow />
