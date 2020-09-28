@@ -3,7 +3,7 @@ import Table from "../../components/table/Table";
 import { cases, notetypes, usersemails, ruleCats } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
-import FilterForm from "../../components/filterForm/FilterForm";
+import FilterForm from "../../components/filterForm2/FilterForm";
 import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
 import { Col, Button } from "react-bootstrap";
 import "./Vetting.css";
@@ -41,7 +41,7 @@ const Vetting = props => {
     }
   ];
 
-  const hitStatusOptions = [
+  const hitStatusdefaultValues = [
     {
       value: "NEW",
       label: "New"
@@ -49,7 +49,11 @@ const Vetting = props => {
     {
       value: "REVIEWED",
       label: "Reviewed"
-    },
+    }
+  ];
+
+  const hitStatusOptions = [
+    ...hitStatusdefaultValues,
     {
       value: "RE_OPENED",
       label: "Re Opened"
@@ -164,6 +168,14 @@ const Vetting = props => {
   const [noteTypes, setNoteTypes] = useState([]);
   const [usersEmails, setUsersEmails] = useState({});
   const now = new Date();
+  const initialParamState = {
+    etaStart: startDate,
+    etaEnd: endDate,
+    displayStatusCheckBoxes: hitStatusdefaultValues,
+    ruleTypes: hitTypeOptions,
+    ruleCatFilter: hitCategoryOptions
+  };
+
   const reviewPVL = paxId => {
     setCurrentPaxId(paxId);
     setShowReviewModal(true);
@@ -254,7 +266,6 @@ const Vetting = props => {
         };
       });
       setHitCategoryOptions(options);
-      setRefreshKey(refreshKey + 1);
     });
   }, []);
 
@@ -278,8 +289,9 @@ const Vetting = props => {
             service={cases.get}
             title="Filter"
             callback={setDataWrapper}
-            paramAdapter={parameterAdapter}
+            paramCallback={parameterAdapter}
             key={refreshKey}
+            initialParamState={initialParamState}
           >
             <hr className="horizontal-line" />
             <LabelledInput
@@ -299,16 +311,7 @@ const Vetting = props => {
               datafield="displayStatusCheckBoxes"
               labelText="Passenger Hit Status"
               inputType="multiSelect"
-              inputVal={[
-                {
-                  value: "NEW",
-                  label: "New"
-                },
-                {
-                  value: "RE_OPENED",
-                  label: "Re Opened"
-                }
-              ]}
+              inputVal={hitStatusdefaultValues}
               options={hitStatusOptions}
               callback={cb}
               alt="nothing"
