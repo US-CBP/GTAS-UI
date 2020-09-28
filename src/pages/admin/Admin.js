@@ -1,5 +1,6 @@
 import React from "react";
 import Title from "../../components/title/Title";
+import Main from "../../components/main/Main";
 import { Card, CardDeck, Container } from "react-bootstrap";
 import { hasData, getEndpoint } from "../../utils/utils";
 import { Link } from "@reach/router";
@@ -14,7 +15,7 @@ const Admin = props => {
       <>
         <Title title="Admin" />
 
-        <div className="container">
+        <Main className="full-cards">
           <CardDeck className="page-deck">
             {children.map(info => {
               const data = info.props;
@@ -49,7 +50,7 @@ const Admin = props => {
               );
             })}
           </CardDeck>
-        </div>
+        </Main>
       </>
     );
 
