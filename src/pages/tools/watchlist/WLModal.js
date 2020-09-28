@@ -126,7 +126,7 @@ const WLModal = props => {
     const documentNumber = vals["documentNumber"];
     const firstName = vals["firstName"];
     const lastName = vals["lastName"];
-    const dob = vals["dob"];
+    const dob = vals["dob"]?.replaceAll("/", "-");
     const categoryId = vals["categoryId"];
     const action = mode === "Add" ? "Create" : "Update";
     const recordId = mode === "Add" ? "null" : id;

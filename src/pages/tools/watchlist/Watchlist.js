@@ -50,7 +50,7 @@ const Watchlist = props => {
       }
       const catLabel = item["categoryId"];
       item["categoryId"] = (wlcatData.find(item => item.label === catLabel) || {}).id;
-      if (item["dob"]) item["dob"].replace("/", "-"); //the rule engine throws error for date formated mm/dd/yyyy
+      if (item["dob"]) item["dob"].replaceAll("/", "-"); //the rule engine throws error for date formated mm/dd/yyyy
       importedWl.wlItems.push(item);
     });
 
