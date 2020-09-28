@@ -16,7 +16,7 @@ const ErrorLog = ({ name }) => {
   let endDate = new Date();
   endDate.setDate(endDate.getDate() + 1);
   startDate.setDate(startDate.getDate() - 1);
-
+  const initialParamState = { startDate: startDate, endDate: endDate };
   const visibleCols = ["errorId", "errorCode", "errorDescription", "errorTimestamp"];
 
   const preFetchCallback = params => {
@@ -49,6 +49,7 @@ const ErrorLog = ({ name }) => {
             service={errorlog.get}
             paramCallback={preFetchCallback}
             callback={setDataWrapper}
+            initialParamState={initialParamState}
           >
             <br />
             <LabelledInput
