@@ -3,6 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 import { paxEventNotesHistory, notetypes, cases } from "../../../services/serviceWrapper";
 import { localeDate } from "../../../utils/utils";
 import Form from "../../../components/form/Form";
+import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 
@@ -79,13 +80,12 @@ const ReviewPVL = props => {
       >
         <Modal.Header closeButton>
           <Button variant="outline-danger" size="sm" onClick={updateHitStatus}>
-            Change Status to Review
+            <Xl8 xid="rev001">Change Status to Review</Xl8>
           </Button>
         </Modal.Header>
         <Modal.Body>
           <Form
             title=""
-            submitText="Save Note"
             submitService={paxEventNotesHistory.post}
             callback={cb}
             action="add"

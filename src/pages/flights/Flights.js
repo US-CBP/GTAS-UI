@@ -90,32 +90,37 @@ const Flights = props => {
   const Headers = [
     {
       Accessor: "timer",
+      Xl8: true,
+      Header: ["fl009", "Timer"],
       Cell: ({ row }) => (
         <CountdownBadge future={row.original.timer} baseline={now}></CountdownBadge>
       )
     },
     {
       Accessor: "eta",
-      Header: "Arrival",
+      Xl8: true,
+      Header: ["fl010", "Arrival"],
       Cell: ({ row }) => localeDate(row.original.eta)
     },
     {
       Accessor: "etd",
-      Header: "Departure",
+      Xl8: true,
+      Header: ["fl011", "Departure"],
       Cell: ({ row }) => localeDate(row.original.etd)
     },
     {
       Accessor: "passengerCount",
-      Header: "Passengers",
+      Xl8: true,
+      Header: ["fl012", "Passengers"],
       Cell: ({ row }) => (
         <Link to={"../flightpax/" + row.original.id}>{row.original.passengerCount}</Link>
       )
     },
-    { Accessor: "fullFlightNumber", Header: "Flight" },
-    { Accessor: "origin" },
-    { Accessor: "destination" },
-    { Accessor: "direction" },
-    { Accessor: "severity" }
+    { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl013", "Flight"] },
+    { Accessor: "origin", Xl8: true, Header: ["fl014", "Origin"] },
+    { Accessor: "destination", Xl8: true, Header: ["fl015", "Destination"] },
+    { Accessor: "direction", Xl8: true, Header: ["fl016", "Direction"] },
+    { Accessor: "severity", Xl8: true, Header: ["fl017", "Severity"] }
     // TODO: how to summarize hits??
     // { Accessor: "ruleHitCount" },
     // { Accessor: "listHitCount" },

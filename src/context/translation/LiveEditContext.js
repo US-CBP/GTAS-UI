@@ -14,15 +14,12 @@ const LiveEditProvider = ({ children }) => {
     let updatedState = JSON.parse(sessionStorage.getItem(LIVEEDITSTATE)) || {};
     switch (action.type) {
       case "show": {
-        // updatedState.show = true;
         updatedState.data = action.data;
         sessionStorage.setItem(LIVEEDITSTATE, JSON.stringify(updatedState));
 
         return updatedState;
       }
       case "hide": {
-        // updatedState.show = false;
-        // sessionStorage.setItem(LIVEEDITSTATE, JSON.stringify(updatedState));
         setShowModal(false);
         return updatedState;
       }

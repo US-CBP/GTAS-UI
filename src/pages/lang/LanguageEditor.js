@@ -36,7 +36,7 @@ const LanguageEditor = () => {
     const editstate = getLiveEditState();
     setIsEdit(editstate.isEdit);
 
-    translations.get(currentLanguage).then(res => {
+    translations.get().then(res => {
       setData(res);
     });
   }, []);
@@ -67,11 +67,11 @@ const LanguageEditor = () => {
   return (
     <Main className="full" key={isEdit}>
       <Title
-        title={<Xl8 xid="0">Language Editor</Xl8>}
+        title={<Xl8 xid="led001">Language Editor</Xl8>}
         rightChild={
           <LabelledInput
             inputType="checkbox"
-            labelText={<Xl8 xid="3">Enable Live Edit mode?</Xl8>}
+            labelText={<Xl8 xid="led002">Enable Live Edit mode?</Xl8>}
             selected={isEdit}
             spacebetween
             callback={handleClick}

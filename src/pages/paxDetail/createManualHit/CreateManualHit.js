@@ -84,9 +84,9 @@ const CreateManualHit = props => {
             />
             <LabelledInput
               inputType="select"
-              alt={<Xl8 xid="cmh004">Hit Category:</Xl8>}
+              labelText={<Xl8 xid="cmh004">Hit Category:</Xl8>}
               name="hitCategoryId"
-              labelText={<Xl8 xid="2">Hit Category:</Xl8>}
+              alt={<Xl8 xid="2">Hit Category:</Xl8>}
               datafield
               required
               callback={cb}

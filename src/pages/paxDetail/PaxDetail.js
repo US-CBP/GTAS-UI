@@ -3,7 +3,7 @@ import Tabs from "../../components/tabs/Tabs";
 import { Navbar, Nav } from "react-bootstrap";
 import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
-import SideNav from "../../components/sidenav/SideNav";
+import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
 import { paxdetails, cases } from "../../services/serviceWrapper";
@@ -193,12 +193,12 @@ const PaxDetail = props => {
 
   return (
     <>
-      <SideNav className="paxdetails-side-nav">
+      <SidenavContainer className="paxdetails-side-nav">
         <br />
         <PaxInfo pax={pax} badgeprops={flightBadge}></PaxInfo>
         <hr />
         <FlightLegSegments />
-      </SideNav>
+      </SidenavContainer>
       <Main className="main paxdetail-container">
         <Navbar>
           <Navbar.Brand>

@@ -77,21 +77,13 @@ const Header = () => {
   return (
     <Navbar sticky="top" expand="md" className="header-navbar" variant="light">
       <Navbar.Brand className="header-navbar-brand">
-        <Link to="dashboard" onClick={() => clickTab(htab.DASH)}>
+        <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
           <img src={wcoLogo} />
         </Link>
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" ref={toggleRef} />
       <Navbar.Collapse>
         <Nav variant="tabs" className="left-nav">
-          <Nav.Link
-            as={Link}
-            to="dashboard"
-            className={`${getActiveClass(htab.DASH)}`}
-            onClick={() => clickTab(htab.DASH)}
-          >
-            <Xl8 xid="000">Dashboard</Xl8>
-          </Nav.Link>
           <Nav.Link
             as={Link}
             to="flights"
