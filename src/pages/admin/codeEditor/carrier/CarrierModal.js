@@ -86,7 +86,6 @@ const CarrierModal = props => {
             }
             callback={postSubmit}
             action="add"
-            submitText={props.isEdit ? "Save" : "Submit"}
             cancellable
             customButtons={customButtons}
             paramCallback={preSubmit}

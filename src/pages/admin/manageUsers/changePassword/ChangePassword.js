@@ -70,7 +70,7 @@ const ChangePassword = props => {
 
   return (
     <Container className="change-password-container">
-      <Title title={<Xl8 xid="7">Change Password</Xl8>} uri={props.uri} />
+      <Title title={<Xl8 xid="pass001">Change Password</Xl8>} uri={props.uri} />
       {displayErrorMsg && (
         <Alert variant="danger" dismissible onClose={() => setDisplayErrorMsg(false)}>
           {errorMessage}
@@ -78,7 +78,9 @@ const ChangePassword = props => {
       )}
 
       {displaySuccessMsg ? (
-        <Alert variant="success">Your password has been changed successfully!!</Alert>
+        <Alert variant="success">
+          <Xl8 xid="pass002">Your password has been changed successfully!</Xl8>
+        </Alert>
       ) : (
         <Form
           submitService={service}
@@ -94,7 +96,7 @@ const ChangePassword = props => {
           ) : (
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="7">Old password</Xl8>}
+              labelText={<Xl8 xid="pass003">Old password</Xl8>}
               inputType="password"
               name="oldPassword"
               required={true}
@@ -107,7 +109,7 @@ const ChangePassword = props => {
           )}
           <LabelledInput
             datafield
-            labelText={<Xl8 xid="7">New password</Xl8>}
+            labelText={<Xl8 xid="pass004">New password</Xl8>}
             inputType="password"
             name="newPassword"
             required={true}
@@ -119,7 +121,7 @@ const ChangePassword = props => {
           />
           <LabelledInput
             datafield
-            labelText={<Xl8 xid="7">Confirm new password</Xl8>}
+            labelText={<Xl8 xid="pass005">Confirm new password</Xl8>}
             inputType="password"
             name="confirmPassword"
             required={true}

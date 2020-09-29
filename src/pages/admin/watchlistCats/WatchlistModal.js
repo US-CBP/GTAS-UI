@@ -33,17 +33,15 @@ const WatchlistModal = props => {
     >
       <Modal.Header closeButton>
         <Modal.Title>
-          <Xl8 xid="2">Add Watchlist Category</Xl8>
+          <Xl8 xid="wlm001">Add Watchlist Category</Xl8>
         </Modal.Title>
       </Modal.Header>
       <Alert show={showAlert} variant={variant}>
         {alertContent}
         <hr />
-        <Xl8 xid="7">
-          <Button onClick={() => setShowAlert(false)} variant="outline-success">
-            Confirm
-          </Button>
-        </Xl8>
+        <Button onClick={() => setShowAlert(false)} variant="outline-success">
+          <Xl8 xid="form003">Confirm</Xl8>
+        </Button>
       </Alert>
       <Modal.Body>
         <Container fluid>
@@ -56,7 +54,7 @@ const WatchlistModal = props => {
           >
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="2">Watchlist Category Name:</Xl8>}
+              labelText={<Xl8 xid="wlm002">Watchlist Category Name:</Xl8>}
               inputType="text"
               name="label"
               required={true}
@@ -65,7 +63,7 @@ const WatchlistModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="2">Watchlist Category Description:</Xl8>}
+              labelText={<Xl8 xid="wlm003">Watchlist Category Description:</Xl8>}
               inputType="textarea"
               name="description"
               required={true}
@@ -74,10 +72,9 @@ const WatchlistModal = props => {
             />
             <LabelledInput
               datafield
-              labelText="Watchlist Severity Level:"
+              labelText={<Xl8 xid="wlm002">Watchlist Severity Level:</Xl8>}
               inputType="select"
               name="severity"
-              placeholder="Choose Severity Level..."
               options={severityLevels}
               required={true}
               alt="nothing"

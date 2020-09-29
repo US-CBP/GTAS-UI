@@ -193,13 +193,15 @@ export default class App extends React.Component {
         <UserProvider>
           <LookupProvider>
             <LiveEditProvider>
-              <Router>
-                <Redirect from="/" to="/login" noThrow />
-                <Login path="/login"></Login>
-                <SignUp path="/signup"></SignUp>
-                <ResetPassword path="/reset-password/:username/:resetToken"></ResetPassword>
-                <ForgotPassword path="/forgot-password"></ForgotPassword>
-              </Router>
+              <Suspense fallback="loading">
+                <Router>
+                  <Redirect from="/" to="/login" noThrow />
+                  <Login path="/login"></Login>
+                  <SignUp path="/signup"></SignUp>
+                  <ResetPassword path="/reset-password/:username/:resetToken"></ResetPassword>
+                  <ForgotPassword path="/forgot-password"></ForgotPassword>
+                </Router>
+              </Suspense>
               {this.state.showModal ? (
                 <GModal>
                   <div>

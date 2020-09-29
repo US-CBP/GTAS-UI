@@ -4,6 +4,7 @@ import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { resetPassword } from "../../services/serviceWrapper";
 import { Container, Alert } from "react-bootstrap";
 import Title from "../../components/title/Title";
+import Xl8 from "../../components/xl8/Xl8";
 import { hasData } from "../../utils/utils";
 import { useParams, Link } from "@reach/router";
 
@@ -41,20 +42,25 @@ const ResetPassword = props => {
 
   return (
     <Container className="password-reset-container" fluid>
-      <Title title="Reset Password" uri={props.uri} />
+      <Title title={<Xl8 xid="pass007">Reset Password</Xl8>} uri={props.uri} />
       {validToken ? (
         <>
           {displayErrorMessage && (
             <Alert variant="danger">
               {errorMessage}
               <br />
-              <Link to="/forgot-password">Send another password reset link?</Link>
+              <Link to="/forgot-password">
+                <Xl8 xid="pass006">Send another password reset link?</Xl8>
+              </Link>
             </Alert>
           )}
           {displaySuccessMessage ? (
             <Alert variant="success">
-              Your password has been reset! Clike <Link to="/login">here</Link> to login
-              to GTAS
+              <Xl8 xid="pass009">Your password has been reset! Click </Xl8>
+              <Link to="/login">
+                <Xl8 xid="pass009">here</Xl8>
+              </Link>{" "}
+              <Xl8 xid="pass009">to login to GTAS</Xl8>
             </Alert>
           ) : (
             <Form
@@ -62,14 +68,13 @@ const ResetPassword = props => {
               title=""
               callback={passwordResetCallback}
               action="add"
-              submitText="Submit"
               redirectTo="/login"
               paramCallback={preSubmitCallback}
               cancellable
             >
               <LabelledInput
                 datafield
-                labelText="New Password"
+                labelText={<Xl8 xid="pass004">New password</Xl8>}
                 inputType="password"
                 name="password"
                 required={true}
@@ -80,7 +85,7 @@ const ResetPassword = props => {
               />
               <LabelledInput
                 datafield
-                labelText="Confirm New Password"
+                labelText={<Xl8 xid="pass005">Confirm new password</Xl8>}
                 inputType="password"
                 name="passwordConfirm"
                 required={true}
@@ -93,7 +98,9 @@ const ResetPassword = props => {
           )}
         </>
       ) : (
-        <Alert variant="danger">Invalid token provided. Please try again!</Alert>
+        <Alert variant="danger">
+          <Xl8 xid="pass008">Invalid token provided. Please try again!</Xl8>
+        </Alert>
       )}
     </Container>
   );

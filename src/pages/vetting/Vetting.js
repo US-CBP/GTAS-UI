@@ -9,7 +9,6 @@ import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils
 import { Col, Button } from "react-bootstrap";
 import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import "./Vetting.css";
-import SideNav from "../../components/sidenav/SideNav";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
 import { Link } from "@reach/router";

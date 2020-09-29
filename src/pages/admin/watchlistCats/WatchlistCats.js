@@ -20,7 +20,7 @@ const WatchlistCats = ({ name }) => {
 
   const cats = (
     <Button variant="outline-dark" onClick={() => setShowModal(true)}>
-      {<Xl8 xid="7">Add Category</Xl8>}
+      {<Xl8 xid="wlc001">Add Category</Xl8>}
     </Button>
   );
 
