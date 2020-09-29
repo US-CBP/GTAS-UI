@@ -22,7 +22,7 @@ const FlightInfo = props => {
       </Row>
 
       <Row>
-        <Col onSubmit={3}>
+        <Col sm={3}>
           <b>Arrival:</b>
         </Col>
         <Col sm={9}>
