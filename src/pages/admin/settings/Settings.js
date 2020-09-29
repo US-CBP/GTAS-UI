@@ -12,7 +12,7 @@ const Settings = ({ name }) => {
 
   return (
     <Container fluid>
-      <Title title={<Xl8 xid="7">Settings</Xl8>}></Title>
+      <Title title={<Xl8 xid="set001">Settings</Xl8>}></Title>
       <br></br>
       <Container>
         <Col lg={{ span: 4, offset: 4 }}>
@@ -26,7 +26,7 @@ const Settings = ({ name }) => {
           >
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="7">Matching Threshold</Xl8>}
+              labelText={<Xl8 xid="set002">Matching Threshold</Xl8>}
               inputType="number"
               name="matchingThreshold"
               callback={cb}
@@ -34,7 +34,7 @@ const Settings = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText="Maximum Passenger Query Results"
+              labelText={<Xl8 xid="set001">Maximum Passenger Query Results: </Xl8>}
               inputType="number"
               name="maxPassengerQueryResult"
               callback={cb}
@@ -42,7 +42,7 @@ const Settings = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText="Maximum Flight Query Results"
+              labelText={<Xl8 xid="set001">Maximum Flight Query Results: </Xl8>}
               inputType="number"
               name="maxFlightQueryResult"
               callback={cb}
@@ -50,7 +50,9 @@ const Settings = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText="Maximum Rule Hits Allowed Per Run on Rule"
+              labelText={
+                <Xl8 xid="set001">Maximum Rule Hits Allowed Per Run on Rule: </Xl8>
+              }
               inputType="number"
               name="maxRuleHit"
               callback={cb}
@@ -58,7 +60,7 @@ const Settings = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText="APIS Only Flag"
+              labelText={<Xl8 xid="set001">APIS Only Flag:</Xl8>}
               inputType="select"
               options={[
                 { value: "TRUE", label: "TRUE" },

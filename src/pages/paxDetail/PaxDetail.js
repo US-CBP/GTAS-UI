@@ -27,18 +27,18 @@ const PaxDetail = props => {
   const getPaxInfo = res => {
     return [
       {
-        label: <Xl8 xid="40">Last Name</Xl8>,
+        label: <Xl8 xid="pd007">Last Name</Xl8>,
         value: res.lastName
       },
-      { label: <Xl8 xid="41">First Name</Xl8>, value: res.firstName },
-      { label: <Xl8 xid="42">Middle Name</Xl8>, value: res.middleName },
-      { label: <Xl8 xid="43">Age</Xl8>, value: res.age },
-      { label: <Xl8 xid="44">DOB</Xl8>, value: res.dob },
-      { label: <Xl8 xid="45">Gender</Xl8>, value: res.gender },
-      { label: <Xl8 xid="46">Nationality</Xl8>, value: res.nationality },
-      { label: <Xl8 xid="47">Residence</Xl8>, value: res.residenceCountry },
+      { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
+      { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName },
+      { label: <Xl8 xid="pd010">Age</Xl8>, value: res.age },
+      { label: <Xl8 xid="pd011">DOB</Xl8>, value: res.dob },
+      { label: <Xl8 xid="pd012">Gender</Xl8>, value: res.gender },
+      { label: <Xl8 xid="pd013">Nationality</Xl8>, value: res.nationality },
+      { label: <Xl8 xid="pd014">Residence</Xl8>, value: res.residenceCountry },
       {
-        label: <Xl8 xid="48">Seat</Xl8>,
+        label: <Xl8 xid="pd015">Seat</Xl8>,
         value: (
           <Link
             to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${res.seat}`}
@@ -49,14 +49,17 @@ const PaxDetail = props => {
         )
       },
       {
-        label: <Xl8 xid="49">Passenger Type</Xl8>,
+        label: <Xl8 xid="pd016">Passenger Type</Xl8>,
         value: passengerTypeMapper(res.passengerType)
       },
       {
-        label: <Xl8 xid="400">Last PNR Received</Xl8>,
+        label: <Xl8 xid="pd017">Last PNR Received</Xl8>,
         value: res.pnrVo?.transmissionDate
       },
-      { label: "Last APIS Recieved", value: res.apisMessageVo?.transmissionDate }
+      {
+        label: <Xl8 xid="pd018">Last APIS Received</Xl8>,
+        value: res.apisMessageVo?.transmissionDate
+      }
     ];
   };
 

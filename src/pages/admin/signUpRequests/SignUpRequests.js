@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Button, Alert } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import Table from "../../../components/table/Table";
-import { signuprequests } from "../../../services/serviceWrapper";
 import SideNav from "../../../components/sidenav/SideNav";
 import Main from "../../../components/main/Main";
+import Xl8 from "../../../components/xl8/Xl8";
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { hasData } from "../../../utils/utils";
+import { signuprequests } from "../../../services/serviceWrapper";
 
 const SignUpRequests = () => {
   const [data, setData] = useState();
@@ -94,7 +95,7 @@ const SignUpRequests = () => {
             onClick={() => approve(row.original.id)}
             disabled={row.original.status !== "NEW"}
           >
-            Approve
+            <Xl8 xid="sur001">Approve</Xl8>
           </Button>
           <Button
             variant="outline-danger"
@@ -102,7 +103,7 @@ const SignUpRequests = () => {
             onClick={() => reject(row.original.id)}
             disabled={row.original.status !== "NEW"}
           >
-            Reject
+            <Xl8 xid="sur002">Reject</Xl8>
           </Button>
         </>
       )
@@ -121,7 +122,7 @@ const SignUpRequests = () => {
         >
           <hr />
           <LabelledInput
-            labelText="Username"
+            labelText={<Xl8 xid="sur003">Username</Xl8>}
             datafield
             name="username"
             inputType="text"
@@ -129,7 +130,7 @@ const SignUpRequests = () => {
             alt="Username"
           />
           <LabelledInput
-            labelText="Status"
+            labelText={<Xl8 xid="sur004">Status</Xl8>}
             datafield
             name="status"
             inputType="select"
@@ -140,7 +141,7 @@ const SignUpRequests = () => {
             alt="status"
           />
           <LabelledInput
-            labelText="Location"
+            labelText={<Xl8 xid="sur005">Location</Xl8>}
             datafield
             name="location"
             inputType="text"
@@ -150,12 +151,12 @@ const SignUpRequests = () => {
         </FilterForm>
       </SideNav>
       <Main>
-        <Title title="Sign Up Requests"></Title>
+        <Title title={<Xl8 xid="sur006">Sign Up Requests</Xl8>}></Title>
         <Alert show={show} variant={variant}>
           {alertContent}
           <hr />
           <Button onClick={() => setShow(false)} variant="outline-success">
-            CLOSE
+            <Xl8 xid="sur007">Close</Xl8>
           </Button>
         </Alert>
         <Table

@@ -20,7 +20,7 @@ const Airports = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit Airport");
+    setModalTitle(<Xl8 xid="airp003">Edit Airport</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -67,12 +67,12 @@ const Airports = ({ name }) => {
           variant="outline-dark"
           onClick={() => {
             setShowModal(true);
-            setModalTitle("Add Airport");
+            setModalTitle(<Xl8 xid="airp001">Add Airport</Xl8>);
             setIsEditModal(false);
             setEditRowDetails({});
           }}
         >
-          {<Xl8 xid="7">Add Airport</Xl8>}
+          {<Xl8 xid="airp001">Add Airport</Xl8>}
         </Button>
 
         <Button
@@ -83,7 +83,7 @@ const Airports = ({ name }) => {
             });
           }}
         >
-          {<Xl8 xid="7">Restore All Airports</Xl8>}
+          {<Xl8 xid="airp002">Restore All Airports</Xl8>}
         </Button>
       </div>
 

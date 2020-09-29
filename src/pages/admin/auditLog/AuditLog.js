@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Table from "../../../components/table/Table";
 import { auditlog, errorlog } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Xl8 from "../../../components/xl8/Xl8";
 import { Col, Container } from "react-bootstrap";
-import SideNav from "../../../components/sidenav/SideNav";
+import SidenavContainer from "../../../components/sidenavContainer/SidenavContainer";
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import LabelledDateTimePickerStartEnd from "../../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
@@ -69,7 +70,7 @@ const AuditLog = ({ name }) => {
 
   return (
     <>
-      <SideNav>
+      <SidenavContainer>
         <Col>
           <FilterForm
             service={auditlog.get}
@@ -78,7 +79,7 @@ const AuditLog = ({ name }) => {
           >
             <br />
             <LabelledInput
-              labelText="User"
+              labelText={<Xl8 xid="al001">User</Xl8>}
               datafield="user"
               name="user"
               inputType="text"
@@ -86,18 +87,17 @@ const AuditLog = ({ name }) => {
               alt="User"
             />
             <LabelledInput
-              labelText="Actions"
+              labelText={<Xl8 xid="al002">Actions</Xl8>}
               datafield="action"
               inputType="select"
               name="action"
-              placeholder="Choose Action..."
               options={auditActions}
               required={true}
               alt="nothing"
               callback={cb}
             />
             <LabelledDateTimePickerStartEnd
-              labelText="Date Range"
+              labelText={<Xl8 xid="al003">Date Range</Xl8>}
               inputType="date"
               name="datefield"
               datafield={["dateRange"]}
@@ -111,7 +111,7 @@ const AuditLog = ({ name }) => {
             />
           </FilterForm>
         </Col>
-      </SideNav>
+      </SidenavContainer>
       <Main>
         <Title title={name}></Title>
         <Table

@@ -42,7 +42,7 @@ const CarrierModal = props => {
           key="restore"
           onClick={restoreSpecificCode}
         >
-          <Xl8 xid="0">Restore</Xl8>
+          <Xl8 xid="cem01">Restore</Xl8>
         </Button>,
         <Button
           type="button"
@@ -55,7 +55,7 @@ const CarrierModal = props => {
             });
           }}
         >
-          <Xl8 xid="0">Delete</Xl8>
+          <Xl8 xid="cem02 ">Restore</Xl8>
         </Button>
       ]
     : [];
@@ -75,7 +75,7 @@ const CarrierModal = props => {
         {alertContent}
         <hr />
         <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          <Xl8 xid="0">Confirm</Xl8>
+          <Xl8 xid="form003">Confirm</Xl8>
         </Button>
       </Alert>
       <Modal.Body>
@@ -93,7 +93,7 @@ const CarrierModal = props => {
           >
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="0">IATA:</Xl8>}
+              labelText={<Xl8 xid="iata001">IATA: </Xl8>}
               inputType="text"
               name="iata"
               required={true}
@@ -104,11 +104,11 @@ const CarrierModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="0">Name:</Xl8>}
+              labelText={<Xl8 xid="carm001">Name:</Xl8>}
               inputType="text"
               name="name"
               required={true}
-              alt={<Xl8 xid="0">Name:</Xl8>}
+              alt=""
               inputVal={data.name}
               callback={cb}
               spacebetween

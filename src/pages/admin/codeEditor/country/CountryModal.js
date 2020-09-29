@@ -42,7 +42,7 @@ const CountryModal = props => {
           key="restore"
           onClick={restoreSpecificCode}
         >
-          <Xl8 xid="0">Restore</Xl8>
+          <Xl8 xid="cem001">Restore</Xl8>
         </Button>,
         <Button
           type="button"
@@ -55,7 +55,7 @@ const CountryModal = props => {
             });
           }}
         >
-          <Xl8 xid="0">Delete</Xl8>
+          <Xl8 xid="cem002">Delete</Xl8>
         </Button>
       ]
     : [];
@@ -75,7 +75,7 @@ const CountryModal = props => {
         {alertContent}
         <hr />
         <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          Confirm
+          <Xl8 xid="form003">Confirm</Xl8>
         </Button>
       </Alert>
       <Modal.Body>
@@ -93,7 +93,7 @@ const CountryModal = props => {
           >
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="0">ISO2:</Xl8>}
+              labelText={<Xl8 xid="coum003">ISO2:</Xl8>}
               inputType="text"
               name="iso2"
               required={true}
@@ -104,7 +104,7 @@ const CountryModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="0">ISO3:</Xl8>}
+              labelText={<Xl8 xid="coum004">ISO3:</Xl8>}
               inputType="text"
               name="iso3"
               required={true}
@@ -115,7 +115,7 @@ const CountryModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="0">ISO Numeric:</Xl8>}
+              labelText={<Xl8 xid="coum005">ISO Numeric:</Xl8>}
               inputType="text"
               name="isoNumeric"
               required={true}
@@ -126,7 +126,7 @@ const CountryModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="0">Name:</Xl8>}
+              labelText={<Xl8 xid="coum006">Name:</Xl8>}
               inputType="text"
               name="name"
               required={true}

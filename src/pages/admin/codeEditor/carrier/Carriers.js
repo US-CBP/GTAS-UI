@@ -19,7 +19,7 @@ const Carriers = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle(<Xl8 xid="0">Edit Carrier</Xl8>);
+    setModalTitle(<Xl8 xid="car001">Edit Carrier</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -51,12 +51,12 @@ const Carriers = ({ name }) => {
           variant="outline-dark"
           onClick={() => {
             setShowModal(true);
-            setModalTitle("Add Carrier");
+            setModalTitle(<Xl8 xid="car002">Add Carrier</Xl8>);
             setIsEditModal(false);
             setEditRowDetails({});
           }}
         >
-          {<Xl8 xid="7">Add Carrier</Xl8>}
+          {<Xl8 xid="car002">Add Carrier</Xl8>}
         </Button>
         <Button
           variant="outline-dark"
@@ -66,7 +66,7 @@ const Carriers = ({ name }) => {
             });
           }}
         >
-          {<Xl8 xid="7">Restore All Carriers</Xl8>}
+          {<Xl8 xid="car003">Restore All Carriers</Xl8>}
         </Button>
       </div>
 

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Col } from "react-bootstrap";
 
-import "./SideNav.scss";
-
 const SideNav = props => {
   const [open, setOpen] = useState(false);
 

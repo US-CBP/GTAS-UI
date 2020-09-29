@@ -19,7 +19,7 @@ const Countries = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle(<Xl8 xid="0">Edit Country:</Xl8>);
+    setModalTitle(<Xl8 xid="cou001">Edit Country:</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -53,12 +53,12 @@ const Countries = ({ name }) => {
           variant="outline-dark"
           onClick={() => {
             setShowModal(true);
-            setModalTitle("Add Country");
+            setModalTitle(<Xl8 xid="cou004">Add Country:</Xl8>);
             setIsEditModal(false);
             setEditRowDetails({});
           }}
         >
-          {<Xl8 xid="7">Add Country</Xl8>}
+          {<Xl8 xid="cou002">Add Country</Xl8>}
         </Button>
         <Button
           variant="outline-dark"
@@ -68,7 +68,7 @@ const Countries = ({ name }) => {
             });
           }}
         >
-          {<Xl8 xid="7">Restore All Countries</Xl8>}
+          {<Xl8 xid="cou003">Restore All Countries</Xl8>}
         </Button>
       </div>
       <CountryModal

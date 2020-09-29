@@ -41,15 +41,13 @@ const FlightPax = props => {
   };
 
   const headers = [
-    {
-      Accessor: "rulehit"
-    },
-    {
-      Accessor: "watchhit"
-    },
-    { Accessor: "passengerType", Header: "Type" },
+    { Accessor: "rulehit", Xl8: true, Header: ["fp011", "Rule Hit"] },
+    { Accessor: "watchhit", Xl8: true, Header: ["fp012", "Watch Hit"] },
+    { Accessor: "passengerType", Xl8: true, Header: ["fp013", "Passenger Type"] },
     {
       Accessor: "lastName",
+      Xl8: true,
+      Header: ["fp014", "Last Name"],
       Cell: ({ row }) => {
         return (
           <Link to={`/gtas/paxDetail/${props.id}/${row.original.id}`}>
@@ -58,16 +56,17 @@ const FlightPax = props => {
         );
       }
     },
-    { Accessor: "firstName" },
-    { Accessor: "middleName" },
-    { Accessor: "gender" },
+    { Accessor: "firstName", Xl8: true, Header: ["fp015", "First Name"] },
+    { Accessor: "middleName", Xl8: true, Header: ["fp016", "Middle Name"] },
+    { Accessor: "gender", Xl8: true, Header: ["fp017", "Gender"] },
     {
       Accessor: "dobStr",
-      Header: "DOB",
+      Xl8: true,
+      Header: ["fp018", "DOB"],
       Cell: ({ row }) => <div>{row.original.dobAge}</div>
     },
-    { Accessor: "docNumber" },
-    { Accessor: "nationality" }
+    { Accessor: "docNumber", Xl8: true, Header: ["fp019", "Doc Number"] },
+    { Accessor: "nationality", Xl8: true, Header: ["fp020", "Nationality"] }
   ];
 
   useEffect(() => {

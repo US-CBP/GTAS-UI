@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import Table from "../../../components/table/Table";
 import { errorlog, flights } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Xl8 from "../../../components/xl8/Xl8";
 import { Col, Container } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import Main from "../../../components/main/Main";
 import LabelledDateTimePickerStartEnd from "../../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
-import SideNav from "../../../components/sidenav/SideNav";
+import SidenavContainer from "../../../components/sidenavContainer/SidenavContainer";
 
 const ErrorLog = ({ name }) => {
   const cb = function(result) {};
@@ -46,7 +47,7 @@ const ErrorLog = ({ name }) => {
 
   return (
     <>
-      <SideNav>
+      <SidenavContainer>
         <Col>
           <FilterForm
             service={errorlog.get}
@@ -55,7 +56,7 @@ const ErrorLog = ({ name }) => {
           >
             <br />
             <LabelledInput
-              labelText="Error Code"
+              labelText={<Xl8 xid="el001">Error Code</Xl8>}
               datafield="errorCode"
               name="code"
               inputType="text"
@@ -63,7 +64,7 @@ const ErrorLog = ({ name }) => {
               alt="Error Code"
             />
             <LabelledDateTimePickerStartEnd
-              labelText="Date Range"
+              labelText={<Xl8 xid="el002">Date Range</Xl8>}
               inputType="date"
               name="datepicker"
               datafield={["dateRange"]}
@@ -77,7 +78,7 @@ const ErrorLog = ({ name }) => {
             />
           </FilterForm>
         </Col>
-      </SideNav>
+      </SidenavContainer>
       <Main>
         <Title title={name}></Title>
 

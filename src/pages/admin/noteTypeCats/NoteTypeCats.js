@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Table from "../../../components/table/Table";
 import { notetypes } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Row } from "react-bootstrap";
 import NoteTypeModal from "../noteTypeCats/NoteTypeModal.js";
 
 const NoteTypeCats = ({ name }) => {
@@ -17,7 +18,7 @@ const NoteTypeCats = ({ name }) => {
 
   const addCat = (
     <Button variant="outline-dark" onClick={() => setShowModal(true)}>
-      Add Category
+      <Xl8 xid="ntc001">Add Category</Xl8>
     </Button>
   );
 

@@ -155,13 +155,18 @@ const Table = props => {
                   <Fragment key={index}>
                     <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map(column => {
+                        let hdr = column.render("Header");
+
+                        if (Array.isArray(hdr)) hdr = <Xl8 xid={hdr[0]}>{hdr[1]}</Xl8>;
+
                         return (
                           <th
                             className="table-header"
                             {...column.getHeaderProps(column.getSortByToggleProps())}
                           >
-                            {`${column.render("Header")} `}{" "}
-                            {column.canSort ? sortIcon(column) : ""}
+                            <span>
+                              {hdr} {column.canSort ? sortIcon(column) : ""}
+                            </span>
                           </th>
                         );
                       })}
@@ -252,9 +257,9 @@ const Table = props => {
               <i className="fa fa-fast-forward"></i>
             </Pagination.Last>
             <span className="pag-text mr-10">
-              Page
+              <Xl8 xid="tab002">Page</Xl8>
               <strong className="pag-num">
-                {pageIndex + 1} of {pageOptions.length}
+                {pageIndex + 1} <Xl8 xid="tab003"> of </Xl8> {pageOptions.length}
               </strong>{" "}
             </span>
             {/* <span className="pag-text pag-goto">Go to page: </span>{' '}
@@ -278,7 +283,7 @@ const Table = props => {
             >
               {[10, 25, 50, 100].map(pageSize => (
                 <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
+                  {pageSize}
                 </option>
               ))}
             </select>
@@ -326,9 +331,11 @@ const Table = props => {
 
     (sheader || []).forEach(element => {
       const acc = element.Accessor || element;
+      const isXl8 = element.Xl8 === true;
 
       if (!(props.ignoredFields || []).includes(acc)) {
-        const title = titleCase(element.Header || acc);
+        // Dont titlecase Xl8 headers. Casing must be done manually at the caller.
+        const title = isXl8 ? element.Header : titleCase(element.Header || acc);
         let cellconfig = {
           Header: title,
           accessor: acc,
@@ -350,9 +357,6 @@ const Table = props => {
     setData(sdata);
     setHeader(sheader);
     setColumns(columns);
-
-    console.log(sheader);
-    console.log(columns);
 
     //exclude the No-Data-Found row from the count
     if (dataArray.length === 1 && dataArray[0][props.id] === noDataFound) setRowcount(0);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Title from "../../../components/title/Title";
+import Xl8 from "../../../components/xl8/Xl8";
 import { Tabs, Tab, Container } from "react-bootstrap";
 import { navigate } from "@reach/router";
 import { titleCase } from "../../../utils/utils";
@@ -39,12 +40,12 @@ const CodeEditor = props => {
 
   let tabMap = {};
   tabcontent.forEach(tab => {
-    tabMap[tab.props.path] = <div {...tab.props.name.props}></div>;
+    tabMap[tab.props.path] = tab.props.name;
   });
 
   return (
     <Container fluid>
-      <Title title={tabMap[tab]} leftChild={headerTabs} leftCb={tabHandler} />
+      <Title title={tabMap[tab]} leftChild={headerTabs} leftCb={tabHandler} key={tab} />
       {props.children}
     </Container>
   );
