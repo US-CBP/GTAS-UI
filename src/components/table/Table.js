@@ -4,7 +4,7 @@ import { hasData, titleCase, asArray, altObj } from "../../utils/utils";
 import { useTable, usePagination, useSortBy, useFilters } from "react-table";
 import { navigate } from "@reach/router";
 // import { withTranslation } from 'react-i18next';
-// import Xl8 from '../xl8/Xl8';
+import Xl8 from "../xl8/Xl8";
 import Loading from "../../components/loading/Loading";
 import { Table as RBTable, Pagination } from "react-bootstrap";
 import "./Table.css";
@@ -326,16 +326,8 @@ const Table = props => {
 
     (sheader || []).forEach(element => {
       const acc = element.Accessor || element;
-      // let xl8Title = undefined;
-      // const trans = props.t(element.xid);
-      // TODO - refac. - logic shd be exposed by xl8 or a util.
-      // How to set the class on translation fail for a direct translation?
-      // if (element.xid !== undefined) {
-      //   xl8Title = trans !== element.xid ? trans : undefined;
-      // }
 
       if (!(props.ignoredFields || []).includes(acc)) {
-        // const title = titleCase(xl8Title || element.Header || acc);
         const title = titleCase(element.Header || acc);
         let cellconfig = {
           Header: title,
@@ -358,6 +350,9 @@ const Table = props => {
     setData(sdata);
     setHeader(sheader);
     setColumns(columns);
+
+    console.log(sheader);
+    console.log(columns);
 
     //exclude the No-Data-Found row from the count
     if (dataArray.length === 1 && dataArray[0][props.id] === noDataFound) setRowcount(0);
@@ -389,14 +384,12 @@ const Table = props => {
         <h4 className={`title ${props.style}`}>{props.title}</h4>
       )}
       {props.smalltext !== undefined && <small>{props.smalltext}</small>}
-      {/* <Xl8> */}
       <RTable
         columns={columns}
         data={data}
         rowcount={rowcount}
         initSort={props.initSort || []}
       ></RTable>
-      {/* </Xl8> */}
     </>
   );
 };
@@ -417,5 +410,4 @@ Table.propTypes = {
   enableColumnFilter: PropTypes.bool
 };
 
-// export default withTranslation()(Table);
 export default Table;

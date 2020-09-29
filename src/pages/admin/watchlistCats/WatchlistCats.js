@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
 import { watchlistcats } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
-import Xid from "../../../components/xid/Xid";
+import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import { Button } from "react-bootstrap";
 import WatchlistModal from "./WatchlistModal";
@@ -20,7 +20,7 @@ const WatchlistCats = ({ name }) => {
 
   const cats = (
     <Button variant="outline-dark" onClick={() => setShowModal(true)}>
-      {<Xid xid="7">Add Category</Xid>}
+      {<Xl8 xid="7">Add Category</Xl8>}
     </Button>
   );
 

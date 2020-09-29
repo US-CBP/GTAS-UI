@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../components/form/Form";
-import Xid from "../../../components/xid/Xid";
+import Xl8 from "../../../components/xl8/Xl8";
 import { watchlistcatspost } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../utils/constants";
@@ -33,17 +33,17 @@ const WatchlistModal = props => {
     >
       <Modal.Header closeButton>
         <Modal.Title>
-          <Xid xid="2">Add Watchlist Category</Xid>
+          <Xl8 xid="2">Add Watchlist Category</Xl8>
         </Modal.Title>
       </Modal.Header>
       <Alert show={showAlert} variant={variant}>
         {alertContent}
         <hr />
-        <Xid xid="7">
+        <Xl8 xid="7">
           <Button onClick={() => setShowAlert(false)} variant="outline-success">
             Confirm
           </Button>
-        </Xid>
+        </Xl8>
       </Alert>
       <Modal.Body>
         <Container fluid>
@@ -56,7 +56,7 @@ const WatchlistModal = props => {
           >
             <LabelledInput
               datafield
-              labelText={<Xid xid="2">Watchlist Category Name:</Xid>}
+              labelText={<Xl8 xid="2">Watchlist Category Name:</Xl8>}
               inputType="text"
               name="label"
               required={true}
@@ -65,7 +65,7 @@ const WatchlistModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xid xid="2">Watchlist Category Description:</Xid>}
+              labelText={<Xl8 xid="2">Watchlist Category Description:</Xl8>}
               inputType="textarea"
               name="description"
               required={true}

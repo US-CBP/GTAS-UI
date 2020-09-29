@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Table from "../../components/table/Table";
 import { flightPassengers } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
-import Xid from "../../components/xid/Xid";
+import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import { Col, Tabs, Tab } from "react-bootstrap";
@@ -100,8 +100,8 @@ const FlightPax = props => {
 
   const tabs = (
     <Tabs defaultActiveKey="all" id="flightPaxTabs">
-      <Tab eventKey="all" title={<Xid xid="7">All</Xid>}></Tab>
-      <Tab eventKey="hits" title="Hits"></Tab>
+      <Tab eventKey="all" title={<Xl8 xid="fp001">All</Xl8>}></Tab>
+      <Tab eventKey="hits" title={<Xl8 xid="fp002">Hits</Xl8>}></Tab>
     </Tabs>
   );
 
@@ -118,14 +118,14 @@ const FlightPax = props => {
           <br />
           <LabelledInput
             // labelText="Flight:"
-            alt="Flight"
+            alt={<Xl8 xid="fp003">Flight</Xl8>}
             inputStyle="big-name-sidebar"
             inputType="label"
             inputVal={flightData.fullFlightNumber}
           />
           <LabelledInput
-            labelText="Origin:"
-            alt="Origin"
+            labelText={<Xl8 xid="fp004">Origin:</Xl8>}
+            alt={<Xl8 xid="7">Origin</Xl8>}
             inputType="label"
             inputVal={flightData.origin}
             inputStyle="form-static"
@@ -133,53 +133,46 @@ const FlightPax = props => {
 
           <div>
             <LabelledInput
-              labelText="Destination:"
-              alt="Destination"
+              labelText={<Xl8 xid="fp005">Destination:</Xl8>}
+              alt={<Xl8 xid="7">Destination</Xl8>}
               inputType="label"
               inputVal={flightData.destination}
               inputStyle="form-static"
             />
             <LabelledInput
-              labelText="Direction:"
-              alt="Direction"
+              labelText={<Xl8 xid="fp006">Direction:</Xl8>}
+              alt={<Xl8 xid="7">Direction</Xl8>}
               inputType="label"
               inputVal={flightData.direction}
               inputStyle="form-static"
             />
             <LabelledInput
-              labelText="Arrival:"
-              alt="Arrival"
+              labelText={<Xl8 xid="fp007">Arrival:</Xl8>}
+              alt={<Xl8 xid="7">Arrival</Xl8>}
               inputType="label"
               inputVal={localeDate(flightData.eta)}
               inputStyle="form-static"
             />
             <LabelledInput
-              labelText="Departure:"
-              alt="Departure"
+              labelText={<Xl8 xid="fp008">Departure:</Xl8>}
+              alt={<Xl8 xid="7">Departure</Xl8>}
               inputType="label"
               inputVal={localeDate(flightData.etd)}
               inputStyle="form-static"
             />
             <LabelledInput
-              labelText="Passenger Count:"
-              alt="Passenger Count"
+              labelText={<Xl8 xid="fp009">Passenger Count:</Xl8>}
+              alt={<Xl8 xid="7">Passenger Count</Xl8>}
               inputType="label"
               inputVal={flightData.passengerCount}
               inputStyle="form-static"
             />
-            {/* <LabelledInput
-            labelText="Age:"
-            alt="Age"
-            inputType="label"
-            inputVal={qdata.age}
-            spacebetween
-          /> */}
           </div>
         </Col>
       </SidenavContainer>
       <Main>
         <Title
-          title="Flight Passengers"
+          title={<Xl8 xid="fp010">Flight Passengers</Xl8>}
           leftChild={tabs}
           leftCb={titleTabCallback}
         ></Title>

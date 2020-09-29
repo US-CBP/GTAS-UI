@@ -1,31 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Container, Alert } from "react-bootstrap";
 import Form from "../../components/form/Form";
-import Xid from "../../components/xid/Xid";
-// import { watchlistcatspost } from "../../../services/serviceWrapper";
+import Xl8 from "../../components/xl8/Xl8";
+import { translations } from "../../services/serviceWrapper";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../utils/constants";
 import { hasData } from "../../utils/utils";
 
 const LangModal = props => {
   const cb = function(result) {};
-  // const [elem, setElem] = useState(props.elem || {});
   const data = props.elem || {};
 
-  props.elem && props.show && console.log(props.elem.orig);
-
   const postSubmit = (status, res) => {
+    console.log(status);
     props.onHide();
-    // if (status !== ACTION.CANCEL) props.refresh();
+    if (status === ACTION.SAVE) window.location.reload();
   };
-
-  // useEffect(() => {
-  //   if (hasData(props.elem)) {
-  //     console.log(elem.xid.value);
-  //     setXid(elem.xid.value);
-  //     setOrig(elem.deft.value);
-  //   }
-  // }, []);
 
   return (
     <Modal
@@ -38,43 +28,46 @@ const LangModal = props => {
       <Modal.Header closeButton>
         <Modal.Title>Edit Translation</Modal.Title>
       </Modal.Header>
-      {/* <Alert show={showAlert} variant={variant}>
-        {alertContent}
-        <hr />
-        <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          Confirm
-        </Button>
-      </Alert> */}
       <Modal.Body>
         <Container fluid>
           <Form
-            // submitService={watchlistcatspost.post}
+            submitService={translations.post}
             callback={postSubmit}
             action="add"
-            submitText="Save"
             cancellable
+            cancelText="Cancel"
+            submitText="Submit"
             afterProcessed={props.onHide}
           >
             <LabelledInput
               datafield
-              labelText="ID:"
+              labelText="Code:"
               inputVal={data.xid}
               inputType="label"
               required={true}
               readOnly
-              name="id"
-              alt="Translation ID:"
+              name="code"
+              alt="Translation Code:"
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
+              labelText="Language:"
+              inputType="label"
+              readOnly
+              inputVal={window.navigator.language.split("-")[0]}
+              name="language"
+              alt="Language:"
+              callback={cb}
+              spacebetween
+            />
+            <LabelledInput
               labelText="Default Text:"
               inputType="label"
               readOnly
               inputVal={data.orig}
               name="default"
-              required={true}
               alt="Default Text:"
               callback={cb}
               spacebetween

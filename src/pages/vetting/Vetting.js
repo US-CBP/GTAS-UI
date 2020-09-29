@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Table from "../../components/table/Table";
 import { cases, notetypes, usersemails, ruleCats } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
-import Xid from "../../components/xid/Xid";
+import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm/FilterForm";
 import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
@@ -10,6 +10,7 @@ import { Col, Button } from "react-bootstrap";
 import LabelledDateTimePickerStartEnd from "../../components/inputs/LabelledDateTimePickerStartEnd/LabelledDateTimePickerStartEnd";
 import "./Vetting.css";
 import SideNav from "../../components/sidenav/SideNav";
+import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
 import { Link } from "@reach/router";
 import FlightInfo from "./flightInfo/FlightInfo";
@@ -61,10 +62,18 @@ const Vetting = props => {
   const getBiographicData = pax => {
     return (
       <ul style={{ listStyle: "none", paddingLeft: 0, fontSize: "small" }}>
-        <li>Name: {pax.paxName}</li>
-        <li>DOB: {`${pax.dob} (${getAge(pax.dob)})`} </li>
-        <li>Nationality: {pax.nationality}</li>
-        <li>Document: {`${pax.document} (${pax.docType})`}</li>
+        <li>
+          <Xl8 xid="vet001">Name:</Xl8> {pax.paxName}
+        </li>
+        <li>
+          <Xl8 xid="vet002">DOB:</Xl8> {`${pax.dob} (${getAge(pax.dob)})`}{" "}
+        </li>
+        <li>
+          <Xl8 xid="vet003">Nationality:</Xl8> {pax.nationality}
+        </li>
+        <li>
+          <Xl8 xid="vet004">Document:</Xl8> {`${pax.document} (${pax.docType})`}
+        </li>
       </ul>
     );
   };
@@ -273,7 +282,7 @@ const Vetting = props => {
   const dateRange = (
     <>
       <LabelledInput
-        labelText="Hour Range (Start)"
+        labelText={<Xl8 xid="vet005">Hour Range (Start)</Xl8>}
         inputType="select"
         name="startHourRange"
         inputVal="96"
@@ -287,10 +296,10 @@ const Vetting = props => {
           { value: "96", label: "-96 hours" }
         ]}
         callback={cb}
-        alt="Hour range (Start)"
+        alt={<Xl8 xid="vet005">Hour Range (Start)</Xl8>}
       />
       <LabelledInput
-        labelText="Hour Range (End)"
+        labelText={<Xl8 xid="vet006">Hour Range (End)</Xl8>}
         inputType="select"
         name="endHourRange"
         inputVal="96"
@@ -304,7 +313,7 @@ const Vetting = props => {
           { value: "96", label: "+96 hours" }
         ]}
         callback={cb}
-        alt="Hour range (End)"
+        alt={<Xl8 xid="vet006">Hour Range (End)</Xl8>}
       />
     </>
   );
@@ -328,32 +337,31 @@ const Vetting = props => {
 
   return (
     <>
-      <SideNav>
+      <SidenavContainer>
         <Col>
           <FilterForm
             service={cases.get}
-            title="Filter"
             callback={setDataWrapper}
             paramAdapter={parameterAdapter}
             key={refreshKey}
           >
-            <hr className="horizontal-line" />
+            <br />
             <LabelledInput
               datafield="myRulesOnly"
               name="myRulesOnly"
-              labelText="My Rules Only"
+              labelText={<Xl8 xid="vet007">My Rules Only</Xl8>}
               inputType="checkbox"
               inputVal={false}
               callback={cb}
               selected={false}
-              alt="nothing"
+              alt="My Rules Only"
               spacebetween
             />
             <hr />
             <LabelledInput
               name="displayStatusCheckBoxes"
               datafield="displayStatusCheckBoxes"
-              labelText="Passenger Hit Status"
+              labelText={<Xl8 xid="vet008">Passenger Hit Status</Xl8>}
               inputType="multiSelect"
               inputVal={[
                 {
@@ -367,65 +375,65 @@ const Vetting = props => {
               ]}
               options={hitStatusOptions}
               callback={cb}
-              alt="nothing"
+              alt={<Xl8 xid="3">Passenger Hit Status</Xl8>}
             />
             <LabelledInput
               name="ruleTypes"
               datafield="ruleTypes"
-              labelText="Hit Types"
+              labelText={<Xl8 xid="vet009">Hit Types</Xl8>}
               inputType="multiSelect"
               inputVal={hitTypeOptions}
               options={hitTypeOptions}
               callback={cb}
-              alt="nothing"
+              alt={<Xl8 xid="3">Hit Types</Xl8>}
             />
             {hasData(hitCategoryOptions) && (
               <LabelledInput
                 name="ruleCatFilter"
                 datafield="ruleCatFilter"
-                labelText="Passenger Hit Categories"
+                labelText={<Xl8 xid="vet010">Passenger Hit Categories</Xl8>}
                 inputType="multiSelect"
                 inputVal={hitCategoryOptions}
                 options={hitCategoryOptions}
                 callback={cb}
-                alt="nothing"
+                alt={<Xl8 xid="3">Passenger Hit Categories</Xl8>}
               />
             )}
             <LabelledInput
               datafield="lastName"
-              labelText="Passenger Last Name"
+              labelText={<Xl8 xid="vet011">Last Name</Xl8>}
               inputType="text"
               name="lastName"
               callback={onTextChange}
-              alt="Passenger Last Name"
+              alt={<Xl8 xid="3">Last Name</Xl8>}
             />
             <LabelledInput
               datafield="flightNumber"
-              labelText="Flight Number"
+              labelText={<Xl8 xid="vet012">Flight Number</Xl8>}
               inputType="text"
               name="flightNumber"
               callback={onTextChange}
-              alt="Flight Number"
+              alt={<Xl8 xid="3">Flight Number</Xl8>}
             />
             <hr />
             <LabelledInput
               datafield="showDateTimePicker"
               name="showDateTimePicker"
-              labelText="Show Date Time Picker"
+              labelText={<Xl8 xid="vet013">Show Date Time Picker</Xl8>}
               inputType="checkbox"
               inputVal={showDateTimePicker.current}
               callback={cb}
               toggleDateTimePicker={toggleDateTimePicker}
               selected={showDateTimePicker.current}
-              alt="Show Date Time Picker"
+              alt=""
               spacebetween
             />
             {showDateTimePicker.current ? dateTimePicker : dateRange}
           </FilterForm>
         </Col>
-      </SideNav>
+      </SidenavContainer>
       <Main>
-        <Title title={<Xid xid="7">Priority Vetting</Xid>} uri={props.uri} />
+        <Title title={<Xl8 xid="vet014">Priority Vetting</Xl8>} uri={props.uri} />
         <Table
           data={data}
           id="FlightDataTable"

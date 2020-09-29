@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
-import Xid from "../../../components/xid/Xid";
+import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import Modal from "../../../components/modal/Modal";
 import { Button, Container, Tabs, Tab } from "react-bootstrap";
@@ -16,8 +16,8 @@ import "./constants.js";
 const Watchlist = props => {
   const cb = function(result) {};
   const TAB = {
-    PAX: ["pax", <Xid xid="7">Passenger</Xid>],
-    DOX: ["dox", <Xid xid="7">Document</Xid>]
+    PAX: ["pax", <Xl8 xid="wl001">Passenger</Xl8>],
+    DOX: ["dox", <Xl8 xid="wl002">Document</Xl8>]
   };
   const mode = (props.mode || "").toLowerCase();
   const isDox = mode === TAB.DOX[0];
@@ -36,13 +36,13 @@ const Watchlist = props => {
       variant="ternary"
       className="btn btn-outline-info"
       name={props.name}
-      placeholder={props.placeholder}
       onClick={() => launchModal(0)}
       required={props.required}
       value={props.inputVal}
       alt={props.alt}
+      key={isDox}
     >
-      <Xid xid="7">Add</Xid> {tab[1]}
+      {isDox ? <Xl8 xid="wl003">Add Document</Xl8> : <Xl8 xid="wl004">Add Passenger</Xl8>}
     </Button>
   );
 
@@ -242,15 +242,15 @@ const Watchlist = props => {
 
   const header = tab[0] === TAB.DOX[0] ? doxHeader : paxHeader;
   const deleteText = {
-    message: "Are you sure you want to delete the record?",
-    title: "Delete Confirmation",
+    message: <Xl8 xid="wl005">Are you sure you want to delete the record?</Xl8>,
+    title: <Xl8 xid="wl006">Delete Confirmation</Xl8>,
     style: "danger"
   };
 
   return (
     <Main className="full">
       <Title
-        title={<Xid xid="7">Watchlists</Xid>}
+        title={<Xl8 xid="wl007">Watchlists</Xl8>}
         leftChild={tabs}
         leftCb={titleTabCallback}
         rightChild={button}
@@ -260,8 +260,8 @@ const Watchlist = props => {
         show={showMiniModal}
         onHide={closeMiniModal}
         data={deleteText}
-        submittext="Delete"
-        closetext="Cancel"
+        submittext={<Xl8 xid="wl008">Delete</Xl8>}
+        closetext={<Xl8 xid="wl009">Cancel</Xl8>}
       ></Modal>
       <WLModal
         type={tab}

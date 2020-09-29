@@ -4,7 +4,7 @@ import Table from "../../../components/table/Table";
 import Main from "../../../components/main/Main";
 import { users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
-import Xid from "../../../components/xid/Xid";
+import Xl8 from "../../../components/xl8/Xl8";
 import { asArray } from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
 
@@ -52,10 +52,10 @@ const ManageUsers = props => {
           <div className="text-center edit-user">
             <DropdownButton
               variant="outline-info"
-              title={<Xid xid="6">Choose Action</Xid>}
+              title={<Xl8 xid="6">Choose Action</Xl8>}
             >
               <Dropdown.Item as="button" onClick={() => openEditModal(row.original)}>
-                <Xid xid="6">Edit User</Xid>
+                <Xl8 xid="6">Edit User</Xl8>
               </Dropdown.Item>
               <Dropdown.Item
                 as="button"
@@ -153,7 +153,7 @@ const ManageUsers = props => {
       value={props.inputVal}
       alt={props.alt}
     >
-      <Xid xid="6">Add New User</Xid>
+      <Xl8 xid="6">Add New User</Xl8>
     </Button>
   );
 
@@ -186,7 +186,7 @@ const ManageUsers = props => {
   return (
     <>
       <Main className="full">
-        <Title title={<Xid xid="7">Manage Users</Xid>} rightChild={button}></Title>
+        <Title title={<Xl8 xid="7">Manage Users</Xl8>} rightChild={button}></Title>
         <Table
           id="users"
           data={data}

@@ -13,7 +13,7 @@ import { TIME } from "../../utils/constants";
 
 import { flights } from "../../services/serviceWrapper";
 import "./Flights.css";
-import Xid from "../../components/xid/Xid";
+import Xl8 from "../../components/xl8/Xl8";
 
 const Flights = props => {
   const cb = () => {};
@@ -152,8 +152,8 @@ const Flights = props => {
 
   const tabs = (
     <Tabs defaultActiveKey="all" id="flightTabs">
-      <Tab eventKey="all" title={<Xid xid="7">All</Xid>}></Tab>
-      <Tab eventKey="hits" title={<Xid xid="7">Hits</Xid>}></Tab>
+      <Tab eventKey="all" title={<Xl8 xid="fl001">All</Xl8>}></Tab>
+      <Tab eventKey="hits" title={<Xl8 xid="fl002">Hits</Xl8>}></Tab>
     </Tabs>
   );
 
@@ -175,41 +175,41 @@ const Flights = props => {
           >
             <br />
             <LabelledInput
-              labelText={<Xid xid="7"> Origin Airports</Xid>}
+              labelText={<Xl8 xid="fl003"> Origin Airports</Xl8>}
               datafield="originAirports"
               name="originAirports"
               inputType="text"
               callback={cb}
-              alt={<Xid xid="7">Origin Airports</Xid>}
+              alt={<Xl8 xid="0">Origin Airports</Xl8>}
             />
             <LabelledInput
-              labelText={<Xid xid="7"> Destination Airports</Xid>}
+              labelText={<Xl8 xid="fl004"> Destination Airports</Xl8>}
               datafield="destinationAirports"
               name="destinationAirports"
               inputType="text"
               callback={cb}
-              alt={<Xid xid="7"> Destination Airports</Xid>}
+              alt={<Xl8 xid="1"> Destination Airports</Xl8>}
             />
             <LabelledInput
               datafield="flightNumber"
-              labelText={<Xid xid="7">Flight Number</Xid>}
+              labelText={<Xl8 xid="fl005">Flight Number</Xl8>}
               inputType="text"
               name="flightNumber"
               callback={cb}
-              alt={<Xid xid="7">Flight Number</Xid>}
+              alt={<Xl8 xid="7">Flight Number</Xl8>}
             />
             <LabelledInput
               datafield="direction"
               inputType="select"
-              labelText={<Xid xid="7">Direction</Xid>}
+              labelText={<Xl8 xid="fl006">Direction</Xl8>}
               inputStyle="form-select"
               callback={cb}
               name="direction"
               options={directions}
-              alt={<Xid xid="7">Flight Direction</Xid>}
+              alt={<Xl8 xid="7">Flight Direction</Xl8>}
             />
             <LabelledInput
-              labelText={<Xid xid="7">Hour Range</Xid>}
+              labelText={<Xl8 xid="fl007">Hour Range</Xl8>}
               inputType="select"
               name="hourRange"
               inputVal="96"
@@ -223,14 +223,14 @@ const Flights = props => {
                 { value: "96", label: "+96 hours" }
               ]}
               callback={cb}
-              alt={<Xid xid="7">Hour Range</Xid>}
+              alt=""
             />
           </FilterForm>
         </Col>
       </SideNavContainer>
       <Main>
         <Title
-          title={<Xid xid="7">Flights</Xid>}
+          title={<Xl8 xid="fl008">Flights</Xl8>}
           uri={props.uri}
           leftChild={tabs}
           leftCb={titleTabCallback}

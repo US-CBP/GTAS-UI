@@ -1,5 +1,5 @@
 import React from "react";
-import Table from "../../../components/table/Table";
+import Xl8 from "../../../components/xl8/Xl8";
 import {} from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import { Container } from "react-bootstrap";
@@ -31,21 +31,21 @@ const APIS = props => {
   const passengersOnReservation = asArray(data.passengersOnReservation);
   return (
     <Container fluid className="paxdetail-container">
-      <Title title="APIS"></Title>
+      <Title title={<Xl8 xid="apis001">APIS</Xl8>}></Title>
       <CardWithTable
         data={bags}
         headers={headers.bags}
-        title={`Total APIS Baggage(${bags.length})`}
+        title={<Xl8 xid="apis001">Total APIS Baggage</Xl8>}
       />
       <CardWithTable
         data={phoneNumbers}
         headers={headers.phoneNumbers}
-        title={`Phone Numbers(${phoneNumbers.length})`}
+        title={<Xl8 xid="apis001">Phone Numbers</Xl8>}
       />
       <CardWithTable
         data={passengersOnReservation}
         headers={headers.passengersOnReservation}
-        title={`Passenger on Reservation(${passengersOnReservation.length})`}
+        title={<Xl8 xid="apis001">`Passenger on Reservation</Xl8>}
       />
     </Container>
   );

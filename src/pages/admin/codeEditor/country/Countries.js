@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
-import Xid from "../../../../components/xid/Xid";
+import Xl8 from "../../../../components/xl8/Xl8";
 import { Button, Container } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CountryModal from "./CountryModal";
@@ -19,7 +19,7 @@ const Countries = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit Country");
+    setModalTitle(<Xl8 xid="0">Edit Country:</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -58,7 +58,7 @@ const Countries = ({ name }) => {
             setEditRowDetails({});
           }}
         >
-          {<Xid xid="7">Add Country</Xid>}
+          {<Xl8 xid="7">Add Country</Xl8>}
         </Button>
         <Button
           variant="outline-dark"
@@ -68,7 +68,7 @@ const Countries = ({ name }) => {
             });
           }}
         >
-          {<Xid xid="7">Restore All Countries</Xid>}
+          {<Xl8 xid="7">Restore All Countries</Xl8>}
         </Button>
       </div>
       <CountryModal

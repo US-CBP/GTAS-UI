@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Title from "../../components/title/Title";
 import Table from "../../components/table/Table";
+import Xl8 from "../../components/xl8/Xl8";
 import { search } from "../../services/serviceWrapper";
 import { hasData, localeDate } from "../../utils/utils";
 import { Container } from "react-bootstrap";

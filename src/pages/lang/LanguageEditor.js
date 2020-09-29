@@ -4,15 +4,22 @@ import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import Title from "../../components/title/Title";
 import Table from "../../components/table/Table";
 import Main from "../../components/main/Main";
-import Xid from "../../components/xid/Xid";
+import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
+import { translations } from "../../services/serviceWrapper";
+import { useTranslation } from "react-i18next";
 
 const LanguageEditor = () => {
   const { getLiveEditState, action } = useContext(LiveEditContext);
 
   const [isEdit, setIsEdit] = useState(0);
   const [refresh, setRefresh] = useState(0);
+  const [data, setData] = useState();
+  const [t, i18n] = useTranslation();
 
+  const currentLanguage = window.navigator.language.split("-")[0];
+
+  const cb = () => {};
   const handleClick = ev => {
     const actionText = ev.value ? "edit" : "read";
 
@@ -28,7 +35,10 @@ const LanguageEditor = () => {
   useEffect(() => {
     const editstate = getLiveEditState();
     setIsEdit(editstate.isEdit);
-    console.log("ONLOAD  isedit", editstate.isEdit);
+
+    translations.get(currentLanguage).then(res => {
+      setData(res);
+    });
   }, []);
 
   // useEffect(() => {
@@ -43,7 +53,7 @@ const LanguageEditor = () => {
   // const modeInput = (
   //   <LabelledInput
   //     inputType="text"
-  //     labelText={<Xid xid="0">Enable Live Edit mode?</Xid>}
+  //     labelText={<Xl8 xid="0">Enable Live Edit mode?</Xl8>}
   //     inputVal={isEdit}
   //     spacebetween
   //     callback={handleClick}
@@ -57,17 +67,24 @@ const LanguageEditor = () => {
   return (
     <Main className="full" key={isEdit}>
       <Title
-        title={<Xid xid="0">Language Editor</Xid>}
+        title={<Xl8 xid="0">Language Editor</Xl8>}
         rightChild={
           <LabelledInput
             inputType="checkbox"
-            labelText={<Xid xid="3">Enable Live Edit mode?</Xid>}
+            labelText={<Xl8 xid="3">Enable Live Edit mode?</Xl8>}
             selected={isEdit}
             spacebetween
             callback={handleClick}
           ></LabelledInput>
         }
       ></Title>
+      <Table
+        data={data}
+        id="Queries"
+        callback={cb}
+        key={data}
+        // header={header}
+      ></Table>
     </Main>
   );
 };

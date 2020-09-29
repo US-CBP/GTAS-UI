@@ -1,6 +1,7 @@
-import React, {useState} from "react";
-import {Modal, Button, Container, Alert} from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
+import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import { ACTION } from "../../../../utils/constants";
@@ -41,7 +42,7 @@ const CountryModal = props => {
           key="restore"
           onClick={restoreSpecificCode}
         >
-          Restore
+          <Xl8 xid="0">Restore</Xl8>
         </Button>,
         <Button
           type="button"
@@ -54,7 +55,7 @@ const CountryModal = props => {
             });
           }}
         >
-          Delete
+          <Xl8 xid="0">Delete</Xl8>
         </Button>
       ]
     : [];
@@ -85,7 +86,6 @@ const CountryModal = props => {
             }
             callback={postSubmit}
             action="add"
-            submitText={props.isEdit ? "Save" : "Submit"}
             paramCallback={preSubmit}
             afterProcessed={props.onHide}
             cancellable
@@ -93,44 +93,44 @@ const CountryModal = props => {
           >
             <LabelledInput
               datafield
-              labelText="ISO2:"
+              labelText={<Xl8 xid="0">ISO2:</Xl8>}
               inputType="text"
               name="iso2"
               required={true}
-              alt="nothing"
+              alt={<Xl8 xid="0">ISO2:</Xl8>}
               inputVal={data.iso2}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
-              labelText="ISO3:"
+              labelText={<Xl8 xid="0">ISO3:</Xl8>}
               inputType="text"
               name="iso3"
               required={true}
-              alt="nothing"
+              alt={<Xl8 xid="0">ISO3:</Xl8>}
               inputVal={data.iso3}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
-              labelText="ISO Numeric:"
+              labelText={<Xl8 xid="0">ISO Numeric:</Xl8>}
               inputType="text"
               name="isoNumeric"
               required={true}
-              alt="nothing"
+              alt={<Xl8 xid="0">ISO Numeric:</Xl8>}
               inputVal={data.isoNumeric}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
-              labelText="Name:"
+              labelText={<Xl8 xid="0">Name:</Xl8>}
               inputType="text"
               name="name"
               required={true}
-              alt="nothing"
+              alt={<Xl8 xid="0">Name:</Xl8>}
               inputVal={data.name}
               callback={cb}
               spacebetween

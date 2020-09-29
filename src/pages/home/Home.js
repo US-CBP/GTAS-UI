@@ -8,7 +8,7 @@ const Home = props => {
   const location = props.location?.pathname;
   const [showModal, setShowModal] = useState(false);
   const hideModal = () => setShowModal(false);
-  const [xid, setXid] = useState();
+  const [xid, setXl8] = useState();
   const { getLiveEditState, action, EditModal } = useContext(LiveEditContext);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const Home = props => {
   //   const id = ev.target.attributes["xid"]?.value;
 
   //   if (hasData(id)) {
-  //     setXid(id);
+  //     setXl8(id);
   //     setShowModal(true);
   //   }
   // };

@@ -16,7 +16,9 @@ const options = {
   credentials: "include"
 };
 
-// const testFxn = (options, url, payload, callback) => {};
+// let testlang = window.navigator.language; //.split("-")[0];
+let testlang = window.navigator.language.split("-")[0];
+// console.log(testlang);
 
 const backendOptions = {
   requestOptions: {
@@ -28,30 +30,32 @@ const backendOptions = {
     },
     credentials: "include"
   },
-  loadPath: "http://localhost:8080/gtas/api/translation/{{lng}}",
-  parse: function(data) {
-    console.log(data);
-    let parsed = {};
-    data.forEach(item => {
-      parsed[item["code"]] = item["translation"];
+  loadPath: `http://localhost:8080/gtas/api/translation/${testlang}`,
+  parse: dataset => {
+    let keyvals = {};
+
+    JSON.parse(dataset).forEach(item => {
+      keyvals[item["code"]] = item["translation"];
     });
 
-    return parsed;
-  },
-  addPath: "/locales/{{lng}}/{{ns}}"
+    // console.log(keyvals);
+
+    return keyvals;
+  }
+  // addPath: `/locales/${testlang}/{{ns}}`
 };
 
 i18n
   .use(LanguageDetector)
-  .use(HttpApi)
   .use(initReactI18next)
+  .use(HttpApi)
   .init({
     // lng: "fr",
-    fallbackLng: "en",
+    // fallbackLng: "en",
     keySeparator: false,
-    backend: backendOptions,
-    debug: true,
-    interpolation: { escapeValue: false }
+    backend: backendOptions
+    // debug: true
+    // interpolation: { escapeValue: false }
   });
 
 export default i18n;

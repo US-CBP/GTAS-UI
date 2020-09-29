@@ -9,7 +9,7 @@ import {
 import { Container, CardColumns } from "react-bootstrap";
 import "./Summary.scss";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
-import Xid from "../../../components/xid/Xid";
+import Xl8 from "../../../components/xl8/Xl8";
 // import { composeInitialProps } from "react-i18next";
 
 const Summary = props => {
@@ -118,26 +118,30 @@ const Summary = props => {
         <CardWithTable
           data={paxHitSummary}
           headers={headers.paxHitSummary}
-          title={<Xid xid="8">Passenger Current Hits summary</Xid>}
+          title={<Xl8 xid="8">Passenger Current Hits summary</Xl8>}
           // title="Passenger Current Hits summary"
         />
 
-        <CardWithTable data={documents} headers={headers.documents} title="Documents" />
+        <CardWithTable
+          data={documents}
+          headers={headers.documents}
+          title={<Xl8 xid="8">Documents</Xl8>}
+        />
         <CardWithTable
           data={watchListLinks}
           headers={headers.watchListLinks}
-          title="Watchlist Name Comparison"
+          title={<Xl8 xid="8">Watchlist Name Comparison</Xl8>}
         />
 
         <CardWithTable
           data={eventNotes}
           headers={headers.eventNotes}
-          title="Event Note History"
+          title={<Xl8 xid="8">Event Note History</Xl8>}
         />
         <CardWithTable
           data={historicalEventNotes}
           headers={headers.eventNotes}
-          title={`Previous Notes History (Up to 10)`}
+          title={<Xl8 xid="8">Previous Note History</Xl8>}
         />
       </CardColumns>
     </Container>

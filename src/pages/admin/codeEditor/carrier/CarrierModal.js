@@ -1,6 +1,7 @@
-import React, {useState} from "react";
-import {Modal, Button, Container, Alert} from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
+import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import { ACTION } from "../../../../utils/constants";
@@ -41,7 +42,7 @@ const CarrierModal = props => {
           key="restore"
           onClick={restoreSpecificCode}
         >
-          Restore
+          <Xl8 xid="0">Restore</Xl8>
         </Button>,
         <Button
           type="button"
@@ -54,7 +55,7 @@ const CarrierModal = props => {
             });
           }}
         >
-          Delete
+          <Xl8 xid="0">Delete</Xl8>
         </Button>
       ]
     : [];
@@ -74,7 +75,7 @@ const CarrierModal = props => {
         {alertContent}
         <hr />
         <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          Confirm
+          <Xl8 xid="0">Confirm</Xl8>
         </Button>
       </Alert>
       <Modal.Body>
@@ -92,22 +93,22 @@ const CarrierModal = props => {
           >
             <LabelledInput
               datafield
-              labelText="IATA:"
+              labelText={<Xl8 xid="0">IATA:</Xl8>}
               inputType="text"
               name="iata"
               required={true}
-              alt="nothing"
+              alt={<Xl8 xid="0">IATA:</Xl8>}
               inputVal={data.iata}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
-              labelText="Name:"
+              labelText={<Xl8 xid="0">Name:</Xl8>}
               inputType="text"
               name="name"
               required={true}
-              alt="nothing"
+              alt={<Xl8 xid="0">Name:</Xl8>}
               inputVal={data.name}
               callback={cb}
               spacebetween

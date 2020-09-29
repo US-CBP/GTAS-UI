@@ -10,7 +10,7 @@ import "./App.css";
 // import ErrorBoundary from "./components/errorBoundary/ErrorBoundary";
 // import Loading from "./components/loading/Loading";
 
-import Xid from "./components/xid/Xid";
+import Xl8 from "./components/xl8/Xl8";
 
 import Authenticator from "./context/authenticator/Authenticator";
 import RoleAuthenticator from "./context/roleAuthenticator/RoleAuthenticator";
@@ -25,6 +25,7 @@ import Login from "./pages/login/Login";
 import SignUp from "./pages/signUp/SignUp";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
+import Page404 from "./pages/page404/Page404";
 
 const Flights = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")
@@ -77,9 +78,6 @@ const About = loadable(() =>
 );
 const GModal = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./components/modal/GModal")
-);
-const Page404 = loadable(() =>
-  import(/* webpackChunkName: "authed" */ "./pages/page404/Page404")
 );
 const PageUnauthorized = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
@@ -249,29 +247,33 @@ export default class App extends React.Component {
                           <PriorityVetting path="vetting"></PriorityVetting>
                           <Tools path="tools">
                             <Rules
-                              name={<Xid xid="7">Rules</Xid>}
+                              name={<Xl8 xid="app001">Rules</Xl8>}
                               desc={
-                                <Xid xid="7">View or edit rules for generating hits</Xid>
+                                <Xl8 xid="app002">
+                                  View or edit rules for generating hits
+                                </Xl8>
                               }
                               path="rules"
                               icon="fa-address-book-o"
                             ></Rules>
                             <Rules name="Rules" path="rules/:mode" hideTile></Rules>
                             <Queries
-                              name={<Xid xid="7">Queries</Xid>}
+                              name={<Xl8 xid="app003">Queries</Xl8>}
                               desc={
-                                <Xid xid="7">View or edit queries of system data</Xid>
+                                <Xl8 xid="app004">
+                                  View or edit queries of system data
+                                </Xl8>
                               }
                               path="queries"
                               icon="fa-search"
                             ></Queries>
                             <QRDetails path="qrdetails" hideTile></QRDetails>
                             <Watchlist
-                              name={<Xid xid="7">Watchlist</Xid>}
+                              name={<Xl8 xid="app005">Watchlist</Xl8>}
                               desc={
-                                <Xid xid="7">
+                                <Xl8 xid="app006">
                                   View or add passenger and document watchlists
-                                </Xid>
+                                </Xl8>
                               }
                               path="watchlist"
                               icon="fa-user-secret"
@@ -282,8 +284,10 @@ export default class App extends React.Component {
                               hideTile
                             ></Watchlist>
                             <About
-                              name={<Xid xid="7">About</Xid>}
-                              desc={<Xid xid="7">View system information details</Xid>}
+                              name={<Xl8 xid="app007">About</Xl8>}
+                              desc={
+                                <Xl8 xid="app008">View system information details</Xl8>
+                              }
                               path="about"
                               icon="fa-info-circle"
                             ></About>
@@ -306,103 +310,113 @@ export default class App extends React.Component {
                           >
                             <Admin path="/">
                               <ManageUser
-                                name={<Xid xid="7">Manage Users</Xid>}
+                                name={<Xl8 xid="app009">Manage Users</Xl8>}
                                 path="manageusers"
                                 desc={
-                                  <Xid xid="7">Manage user profiles and privileges</Xid>
+                                  <Xl8 xid="app010">
+                                    Manage user profiles and privileges
+                                  </Xl8>
                                 }
                                 icon="fa-users"
                               ></ManageUser>
                               <SignUpRequests
-                                name={<Xid xid="7">Sign Up Requests</Xid>}
-                                desc={<Xid xid="7">Manage system access requests</Xid>}
+                                name={<Xl8 xid="app010">Sign Up Requests</Xl8>}
+                                desc={
+                                  <Xl8 xid="app011">Manage system access requests</Xl8>
+                                }
                                 icon="fa-user-plus"
                                 path="signuprequests"
                               ></SignUpRequests>
                               <AuditLog
-                                name={<Xid xid="7">Audit Log</Xid>}
-                                desc={<Xid xid="7">View the system audit log</Xid>}
+                                name={<Xl8 xid="app012">Audit Log</Xl8>}
+                                desc={<Xl8 xid="app013">View the system audit log</Xl8>}
                                 path="auditlog"
                                 icon="fa-question-circle"
                               ></AuditLog>
                               <ErrorLog
-                                name={<Xid xid="7">Error Log</Xid>}
-                                desc={<Xid xid="7">View the system error log</Xid>}
+                                name={<Xl8 xid="app014">Error Log</Xl8>}
+                                desc={<Xl8 xid="app015">View the system error log</Xl8>}
                                 path="errorlog"
                                 icon="fa-exclamation-triangle"
                               ></ErrorLog>
                               <Settings
-                                name={<Xid xid="7">Settings</Xid>}
-                                desc={<Xid xid="7">View or edit system settings</Xid>}
+                                name={<Xl8 xid="app016">Settings</Xl8>}
+                                desc={
+                                  <Xl8 xid="app017">View or edit system settings</Xl8>
+                                }
                                 path="settings"
                                 icon="fa-toggle-on"
                               ></Settings>
                               <FileDownload
-                                name={<Xid xid="7">File Download</Xid>}
-                                desc={<Xid xid="7">Download system log files</Xid>}
+                                name={<Xl8 xid="app018">File Download</Xl8>}
+                                desc={<Xl8 xid="app019">Download system log files</Xl8>}
                                 icon="fa-download"
                                 path="filedownload"
                               ></FileDownload>
                               <CodeEditor
-                                name={<Xid xid="7">Code Editor</Xid>}
+                                name={<Xl8 xid="app020">Code Editor</Xl8>}
                                 desc={
-                                  <Xid xid="7">
+                                  <Xl8 xid="app021">
                                     View or edit Airport, Carrier, and Country codes
-                                  </Xid>
+                                  </Xl8>
                                 }
                                 icon="fa-list-ul"
                                 path="codeeditor"
                                 startTab="countries"
                               >
                                 <Countries
-                                  name={<Xid xid="7">Countries</Xid>}
+                                  name={<Xl8 xid="app022">Countries</Xl8>}
                                   path="countries"
                                 ></Countries>
                                 <Airports
-                                  name={<Xid xid="7">Airports</Xid>}
+                                  name={<Xl8 xid="app023">Airports</Xl8>}
                                   path="airports"
                                 ></Airports>
                                 <Carriers
-                                  name={<Xid xid="7">Carriers</Xid>}
+                                  name={<Xl8 xid="app024">Carriers</Xl8>}
                                   path="carriers"
                                 ></Carriers>
                               </CodeEditor>
                               <LoaderStats
-                                name={<Xid xid="7">Loader Statistics</Xid>}
+                                name={<Xl8 xid="app025">Loader Statistics</Xl8>}
                                 desc={
-                                  <Xid xid="7">
+                                  <Xl8 xid="app026">
                                     View current message loading statistics
-                                  </Xid>
+                                  </Xl8>
                                 }
                                 icon="fa-bar-chart"
                                 path="loaderstats"
                               ></LoaderStats>
                               <WatchlistCats
-                                name={<Xid xid="7">Watchlist Categories</Xid>}
+                                name={<Xl8 xid="app027">Watchlist Categories</Xl8>}
                                 desc={
-                                  <Xid xid="7">View or edit Watchlist categories</Xid>
+                                  <Xl8 xid="app028">
+                                    View or edit Watchlist categories
+                                  </Xl8>
                                 }
                                 icon="fa-user-secret"
                                 path="watchlistcats"
                               ></WatchlistCats>
                               <NoteTypeCats
-                                name={<Xid xid="7">Note Type Categories</Xid>}
+                                name={<Xl8 xid="app029">Note Type Categories</Xl8>}
                                 desc={
-                                  <Xid xid="7">View or edit Note Type categories</Xid>
+                                  <Xl8 xid="app030">
+                                    View or edit Note Type categories
+                                  </Xl8>
                                 }
                                 icon="fa-comment"
                                 path="notetypecats"
                               ></NoteTypeCats>
                               <Auxiliary
-                                name={<Xid xid="7">Kibana Dashboard</Xid>}
-                                desc={<Xid xid="7">Go to the Kibana Dashboard</Xid>}
+                                name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
+                                desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}
                                 icon="fa-line-chart"
                                 path="https://localhost:5601/login?next=%2F"
                                 hasExternalLink={true}
                               ></Auxiliary>
                               <Auxiliary
-                                name={<Xid xid="7">Neo4j</Xid>}
-                                desc={<Xid xid="7">Browse the Neo4j database</Xid>}
+                                name={<Xl8 xid="app033">Neo4j</Xl8>}
+                                desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
                                 path="http://localhost:7474/browser/"
                                 icon="fa-database"
                                 hasExternalLink={true}

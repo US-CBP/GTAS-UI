@@ -5,7 +5,7 @@ import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SideNav from "../../components/sidenav/SideNav";
 import Main from "../../components/main/Main";
-import Xid from "../../components/xid/Xid";
+import Xl8 from "../../components/xl8/Xl8";
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import Summary from "./summary/Summary";
 import PNR from "./pnr/PNR";
@@ -27,18 +27,18 @@ const PaxDetail = props => {
   const getPaxInfo = res => {
     return [
       {
-        label: "Last Name",
+        label: <Xl8 xid="40">Last Name</Xl8>,
         value: res.lastName
       },
-      { label: "First Name", value: res.firstName },
-      { label: "Middle Name", value: res.middleName },
-      { label: "Age", value: res.age },
-      { label: "DOB", value: res.dob },
-      { label: "Gender", value: res.gender },
-      { label: "Nationality", value: res.nationality },
-      { label: "Residence", value: res.residenceCountry },
+      { label: <Xl8 xid="41">First Name</Xl8>, value: res.firstName },
+      { label: <Xl8 xid="42">Middle Name</Xl8>, value: res.middleName },
+      { label: <Xl8 xid="43">Age</Xl8>, value: res.age },
+      { label: <Xl8 xid="44">DOB</Xl8>, value: res.dob },
+      { label: <Xl8 xid="45">Gender</Xl8>, value: res.gender },
+      { label: <Xl8 xid="46">Nationality</Xl8>, value: res.nationality },
+      { label: <Xl8 xid="47">Residence</Xl8>, value: res.residenceCountry },
       {
-        label: "Seat",
+        label: <Xl8 xid="48">Seat</Xl8>,
         value: (
           <Link
             to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${res.seat}`}
@@ -48,8 +48,14 @@ const PaxDetail = props => {
           </Link>
         )
       },
-      { label: "Passenger Type", value: passengerTypeMapper(res.passengerType) },
-      { label: "Last PNR Recieved", value: res.pnrVo?.transmissionDate },
+      {
+        label: <Xl8 xid="49">Passenger Type</Xl8>,
+        value: passengerTypeMapper(res.passengerType)
+      },
+      {
+        label: <Xl8 xid="400">Last PNR Received</Xl8>,
+        value: res.pnrVo?.transmissionDate
+      },
       { label: "Last APIS Recieved", value: res.apisMessageVo?.transmissionDate }
     ];
   };
@@ -98,13 +104,14 @@ const PaxDetail = props => {
   const [hasOpenHit, setHasOpenHit] = useState(false);
   const [hasHit, setHasHit] = useState(false);
   const [flightLegsSegmentData, setFlightLegsSegmentData] = useState([]);
-  const [hasApisRecord, setHasApisRecod] = useState(false);
+  const [hasApisRecord, setHasApisRecord] = useState(false);
   const [hasPnrRecord, setHasPnrRecord] = useState(false);
   const [watchlistData, setWatchlistData] = useState({});
 
   const tabs = [
     {
-      title: <Xid xid="11">Summary</Xid>,
+      title: <Xl8 xid="pd001">Summary</Xl8>,
+      titleText: "Summary",
       link: (
         <Summary
           paxId={props.paxId}
@@ -117,18 +124,36 @@ const PaxDetail = props => {
       )
     },
     ...(hasApisRecord
-      ? [{ title: <Xid xid="11">APIS</Xid>, link: <APIS data={apisMessage}></APIS> }]
+      ? [
+          {
+            title: <Xl8 xid="pd002">APIS</Xl8>,
+            titleText: "APIS",
+            link: <APIS data={apisMessage}></APIS>
+          }
+        ]
       : []),
     ...(hasPnrRecord
-      ? [{ title: <Xid xid="11">PNR</Xid>, link: <PNR data={pnr} /> }]
+      ? [
+          {
+            title: <Xl8 xid="pd003">PNR</Xl8>,
+            titleText: "PNR",
+            link: <PNR data={pnr} />
+          }
+        ]
       : []),
     {
-      title: <Xid xid="11">Flight History</Xid>,
+      title: <Xl8 xid="pd004">Flight History</Xl8>,
+      titleText: "Flight History",
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
-    { title: <Xid xid="11">Link Analysis</Xid>, link: <LinkAnalysis /> },
     {
-      title: <Xid xid="11">Attachments</Xid>,
+      title: <Xl8 xid="pd005">Link Analysis</Xl8>,
+      titleText: "Link Analysis",
+      link: <LinkAnalysis />
+    },
+    {
+      titleText: "Attachments",
+      title: <Xl8 xid="pd006">Attachments</Xl8>,
       link: <UploadAttachment paxId={props.paxId} />
     }
   ];
@@ -151,7 +176,7 @@ const PaxDetail = props => {
       setPnr(res.pnrVo);
       setApisMessage(res.apisMessageVo);
       setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
-      setHasApisRecod(res.apisMessageVo?.apisRecordExists || false);
+      setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
       setHasPnrRecord(res.pnrVo?.pnrRecordExists || false);
 
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
@@ -173,7 +198,9 @@ const PaxDetail = props => {
       </SideNav>
       <Main className="main paxdetail-container">
         <Navbar>
-          <Navbar.Brand>Passenger Detail</Navbar.Brand>
+          <Navbar.Brand>
+            <Xl8 xid="11">Passenger Detail</Xl8>
+          </Navbar.Brand>
           <Nav className="paxdetails-action-buttons">
             <EventNotesModal
               paxId={props.paxId}

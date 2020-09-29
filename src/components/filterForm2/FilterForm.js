@@ -4,7 +4,7 @@ import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import { asArray, hasData, getParamList } from "../../utils/utils";
 import { Button, ButtonToolbar, Form as RBForm } from "react-bootstrap";
 import Title from "../../components/title/Title";
-import Xid from "../../components/xid/Xid";
+import Xl8 from "../../components/xl8/Xl8";
 import { useQuery } from "react-query";
 
 import "./FilterForm.css";
@@ -173,11 +173,11 @@ const FilterForm = props => {
         <br></br>
         <ButtonToolbar className="container">
           <Button type="reset" variant="outline-dark m-1 text-white outline-dark-outline">
-            {props.clearText || <Xid xid="7">Reset</Xid>}
+            {props.clearText || <Xl8 xid="ff001">Reset</Xl8>}
           </Button>
           &nbsp;
           <Button type="submit" variant="ternary m-1">
-            {props.submitText || <Xid xid="7">Search</Xid>}
+            {props.submitText || <Xl8 xid="ff002">Search</Xl8>}
           </Button>
         </ButtonToolbar>
       </RBForm>

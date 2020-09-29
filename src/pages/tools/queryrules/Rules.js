@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
+import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import { Button, Tabs, Tab } from "react-bootstrap";
 import { navigate } from "@reach/router";
@@ -13,13 +14,15 @@ import QRModal from "./QRModal";
 import "./QueryRules.css";
 
 const Rules = props => {
+  const addRule = <Xl8 xid="rul001">Add Rule</Xl8>;
+  const editRule = <Xl8 xid="rul002">Edit Rule</Xl8>;
   const endpoint = getEndpoint(props.location.pathname);
   const [tab, setTab] = useState(endpoint === "rules" ? RULETAB.MY : RULETAB.ALL);
   const service = tab === RULETAB.ALL ? rulesall : rule;
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
   const [data, setData] = useState();
-  const [modalTitle, setModalTitle] = useState(`Add Rule`);
+  const [modalTitle, setModalTitle] = useState(addRule);
   const [record, setRecord] = useState();
   const [modalKey, setModalKey] = useState(-1);
   const [tablekey, setTablekey] = useState(0);
@@ -106,7 +109,7 @@ const Rules = props => {
   // so the modal doesn't launch with stale or missing data.
   const triggerShowModal = recId => {
     const recordId = recId;
-    const title = recordId ? `Edit Rule` : `Add Rule`;
+    const title = recordId ? editRule : addRule;
 
     setModalTitle(title);
     // timestamp as key ensures the modal gets refreshed and displayed on each launch.
@@ -188,8 +191,8 @@ const Rules = props => {
 
   const tabs = (
     <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs">
-      <Tab eventKey={RULETAB.MY} title="My Rules"></Tab>
-      <Tab eventKey={RULETAB.ALL} title="All Rules"></Tab>
+      <Tab eventKey={RULETAB.MY} title={<Xl8 xid="rul003">My Rules</Xl8>}></Tab>
+      <Tab eventKey={RULETAB.ALL} title={<Xl8 xid="rul004">All Rules</Xl8>}></Tab>
     </Tabs>
   );
 
@@ -204,14 +207,14 @@ const Rules = props => {
       value={props.inputVal}
       alt={props.alt}
     >
-      Create new Rule
+      {addRule}
     </Button>
   );
 
   return (
     <Main className="full">
       <Title
-        title="Rules"
+        title={<Xl8 xid="rul006">Rules</Xl8>}
         key="title"
         leftChild={tabs}
         leftCb={titleTabCallback}

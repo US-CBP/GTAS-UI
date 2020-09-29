@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
-import Xid from "../../../../components/xid/Xid";
+import Xl8 from "../../../../components/xl8/Xl8";
 import { Button, Container } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CarrierModal from "./CarrierModal";
@@ -19,7 +19,7 @@ const Carriers = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit Carrier");
+    setModalTitle(<Xl8 xid="0">Edit Carrier</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -56,7 +56,7 @@ const Carriers = ({ name }) => {
             setEditRowDetails({});
           }}
         >
-          {<Xid xid="7">Add Carrier</Xid>}
+          {<Xl8 xid="7">Add Carrier</Xl8>}
         </Button>
         <Button
           variant="outline-dark"
@@ -66,7 +66,7 @@ const Carriers = ({ name }) => {
             });
           }}
         >
-          {<Xid xid="7">Restore All Carriers</Xid>}
+          {<Xl8 xid="7">Restore All Carriers</Xl8>}
         </Button>
       </div>
 

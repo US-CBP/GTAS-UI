@@ -17,11 +17,12 @@ import { ROLE } from "../../utils/constants";
 import { hasData } from "../../utils/utils";
 import "./Header.scss";
 import wcoLogo from "../../images/WCO_GTAS_header_brand.svg";
-import Xid from "../../components/xid/Xid";
+import Xl8 from "../../components/xl8/Xl8";
 
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
   const { getLiveEditState, action } = useContext(LiveEditContext);
+  const [currentLang] = useState(window.navigator.language);
 
   const [isEdit, setIsEdit] = useState(getLiveEditState().isEdit);
 
@@ -89,7 +90,7 @@ const Header = () => {
             className={`${getActiveClass(htab.DASH)}`}
             onClick={() => clickTab(htab.DASH)}
           >
-            <Xid xid="10">Dashboard</Xid>
+            <Xl8 xid="000">Dashboard</Xl8>
           </Nav.Link>
           <Nav.Link
             as={Link}
@@ -97,7 +98,7 @@ const Header = () => {
             className={`${getActiveClass(htab.FLIGHT)}`}
             onClick={() => clickTab(htab.FLIGHT)}
           >
-            <Xid xid="10">Flights</Xid>
+            <Xl8 xid="001">Flights</Xl8>
           </Nav.Link>
           <Nav.Link
             as={Link}
@@ -105,7 +106,7 @@ const Header = () => {
             className={`${getActiveClass(htab.VETTING)}`}
             onClick={() => clickTab(htab.VETTING)}
           >
-            <Xid xid="10">Vetting</Xid>
+            <Xl8 xid="002">Vetting</Xl8>
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
             <Nav.Link
@@ -114,7 +115,7 @@ const Header = () => {
               className={`${getActiveClass(htab.ADMIN)}`}
               onClick={() => clickTab(htab.ADMIN)}
             >
-              <Xid xid="10">Admin</Xid>
+              <Xl8 xid="003">Admin</Xl8>
             </Nav.Link>
           </RoleAuthenticator>
           <Nav.Link
@@ -123,7 +124,7 @@ const Header = () => {
             className={`${getActiveClass(htab.TOOLS)}`}
             onClick={() => clickTab(htab.TOOLS)}
           >
-            <Xid xid="10">Tools</Xid>
+            <Xl8 xid="004">Tools</Xl8>
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
             <Nav.Link
@@ -132,7 +133,8 @@ const Header = () => {
               className={`${getActiveClass(htab.LANG)}`}
               onClick={() => clickTab(htab.LANG)}
             >
-              <i className="fa fa-language"></i>
+              <i className="fa fa-language mx-xl-1"></i>
+              {currentLang}
             </Nav.Link>
           </RoleAuthenticator>
         </Nav>
@@ -153,11 +155,11 @@ const Header = () => {
               to={"user/change-password"}
               onClick={() => clickTab("")}
             >
-              Change Password
+              {<Xl8 xid="005">Change password</Xl8>}
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to="#" onClick={logout}>
-              Logout
+              {<Xl8 xid="006">Logout</Xl8>}
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>

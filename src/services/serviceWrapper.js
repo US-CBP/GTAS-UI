@@ -156,19 +156,8 @@ const TRANSLATIONS = `${BASE_URL}gtas/api/translation`;
 
 export const translations = {
   get: id => get(TRANSLATIONS, BASEHEADER, id),
-  post: body =>
-    post(
-      TRANSLATIONS,
-      BASEHEADER,
-      stringify({ code: "3", language: "fr", translation: "trois" })
-    ),
-  put: (id, body) =>
-    put(
-      TRANSLATIONS,
-      BASEHEADER,
-      undefined,
-      stringify({ code: "3", language: "fr", translation: "another trois" })
-    )
+  post: body => post(TRANSLATIONS, BASEHEADER, stringify(body)),
+  put: (id, body) => put(TRANSLATIONS, BASEHEADER, undefined, stringify(body))
 };
 
 export const users = {

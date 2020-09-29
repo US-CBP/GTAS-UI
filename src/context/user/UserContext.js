@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from "react";
 import Cookies from "js-cookie";
 import { hasData } from "../../utils/utils";
 
+const USERSTORE = "user";
 const initialState = {
   authenticated: false,
   fullName: undefined,
@@ -30,42 +31,42 @@ const UserProvider = ({ children }) => {
     switch (action.type) {
       case "refresh":
       case "login": {
-        setStorage("user", action.user);
+        setStorage(USERSTORE, action.user);
         return action.user;
       }
       case "logoff": {
-        sessionStorage.removeItem("user");
+        sessionStorage.removeItem(USERSTORE);
         Cookies.remove("JSESSIONID");
-        setStorage("user", initialState);
+        setStorage(USERSTORE, initialState);
         return initialState;
       }
       case "lastRule": {
-        let storedUser = JSON.parse(sessionStorage.getItem("user"));
+        let storedUser = JSON.parse(sessionStorage.getItem(USERSTORE));
         storedUser.lastRule = action.lastRule;
-        setStorage("user", storedUser);
+        setStorage(USERSTORE, storedUser);
         return action.user;
       }
       case "dropRule": {
-        let storedUser = JSON.parse(sessionStorage.getItem("user"));
+        let storedUser = JSON.parse(sessionStorage.getItem(USERSTORE));
         storedUser.lastQuery = {};
-        setStorage("user", storedUser);
+        setStorage(USERSTORE, storedUser);
         return action.user;
       }
       default:
-        setStorage("user", initialState);
+        setStorage(USERSTORE, initialState);
         return initialState;
     }
   };
 
   const [userState, userAction] = useReducer(
     UserReducer,
-    sessionStorage.getItem("user") || initialState
+    sessionStorage.getItem(USERSTORE) || initialState
   );
 
   const getUserState = () => {
     if (userState.authenticated) return userState;
 
-    const storedUser = JSON.parse(sessionStorage.getItem("user"));
+    const storedUser = JSON.parse(sessionStorage.getItem(USERSTORE));
 
     if (hasData(storedUser) && storedUser.authenticated) {
       return storedUser;

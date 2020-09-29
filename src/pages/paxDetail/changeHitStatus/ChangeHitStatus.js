@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { SplitButton, Dropdown, Modal, Button } from "react-bootstrap";
+import Xl8 from "../../../components/xl8/Xl8";
 
 const ChangeHitStatus = props => {
   const [show, setShow] = useState(false);
