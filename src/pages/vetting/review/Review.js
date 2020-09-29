@@ -117,12 +117,12 @@ const ReviewPVL = props => {
           <CardWithTable
             data={eventNotes}
             headers={eventNotesHeader}
-            title="Event Note History"
+            title={<Xl8 xid="rev002">Event Note History</Xl8>}
           />
           <CardWithTable
             data={historicalEventNotes}
             headers={eventNotesHeader}
-            title={`Previous Notes History (Up to 10)`}
+            title={<Xl8 xid="rev003">Previous Notes History (Up to 10)</Xl8>}
           />
         </Modal.Body>
       </Modal>

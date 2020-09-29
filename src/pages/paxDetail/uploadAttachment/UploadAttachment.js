@@ -58,12 +58,15 @@ const UploadAttachment = props => {
       Cell: ({ row }) => {
         return (
           <div className="text-center edit-user">
-            <DropdownButton variant="outline-info" title="Choose Action">
+            <DropdownButton
+              variant="outline-info"
+              title={<Xl8 xid="att011">Choose Action</Xl8>}
+            >
               <Confirm
-                header={<Xl8 xid="">Confirm Attachment Deletion</Xl8>}
+                header={<Xl8 xid="att01">Confirm Attachment Deletion</Xl8>}
                 message={
                   <div>
-                    <Xl8 xid="">Please confirm attachment deletion for file:</Xl8>
+                    <Xl8 xid="att02">Please confirm attachment deletion for file:</Xl8>
                     {row.original.filename}
                   </div>
                 }
@@ -75,21 +78,21 @@ const UploadAttachment = props => {
                       deleteAttachment(row.original);
                     })}
                   >
-                    <Xl8 xid="">Delete Attachment</Xl8>
+                    <Xl8 xid="att03">Delete Attachment</Xl8>
                   </Dropdown.Item>
                 )}
               </Confirm>
               <Dropdown.Item as="button" onClick={() => downloadAttachment(row.original)}>
-                <Xl8 xid="">Download File</Xl8>
+                <Xl8 xid="att04">Download File</Xl8>
               </Dropdown.Item>
             </DropdownButton>
           </div>
         );
       }
     },
-    { Accessor: "filename", Header: "File Name" },
-    { Accessor: "contentType", Header: "File Type" },
-    { Accessor: "description", Header: "Description" }
+    { Accessor: "filename", Xl8: true, Header: ["att005", "File Name"] },
+    { Accessor: "contentType", Xl8: true, Header: ["att006", "File Type"] },
+    { Accessor: "description", Xl8: true, Header: ["att007", "Description"] }
   ];
 
   const button = (
@@ -104,14 +107,14 @@ const UploadAttachment = props => {
       value={props.inputVal}
       alt={props.alt}
     >
-      <Xl8 xid="">Add an Attachment</Xl8>
+      <Xl8 xid="att008">Add an Attachment</Xl8>
     </Button>
   );
 
   return (
     <div className="container">
       <main>
-        <Title title={<Xl8 xid="">Uploaded Attachments</Xl8>} rightChild={button} />
+        <Title title={<Xl8 xid="att009">Uploaded Attachments</Xl8>} rightChild={button} />
         <Table
           data={data}
           id="attachments"
@@ -123,7 +126,7 @@ const UploadAttachment = props => {
           show={showModal}
           callback={cb}
           onHide={() => setShowModal(false)}
-          title="Upload Attachment"
+          title={<Xl8 xid="att010">Upload Attachments</Xl8>}
           paxId={paxId}
         ></AttachmentModal>
       </main>
