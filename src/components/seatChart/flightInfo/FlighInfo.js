@@ -8,10 +8,10 @@ const FlightInfo = props => {
     <Container>
       <h5>Flight Information</h5>
       <Row>
-        <Col lg={6}>
+        <Col sm={6}>
           <b>Flight Number:</b>
         </Col>
-        <Col lg={6}>
+        <Col sm={6}>
           <LabelledInput
             alt="Flight Number"
             inputStyle="big-name-sidebar fa fa-plane"
@@ -22,10 +22,10 @@ const FlightInfo = props => {
       </Row>
 
       <Row>
-        <Col lg={4}>
+        <Col onSubmit={3}>
           <b>Arrival:</b>
         </Col>
-        <Col lg={8}>
+        <Col sm={9}>
           <i></i>
           <LabelledInput
             alt="Arrival"
@@ -36,11 +36,11 @@ const FlightInfo = props => {
         </Col>
       </Row>
       <Row>
-        <Col lg={4}>
+        <Col sm={4}>
           <b>Departure:</b>
         </Col>
 
-        <Col lg={8}>
+        <Col sm={8}>
           <LabelledInput
             alt="Arrival"
             inputStyle="big-name-sidebar fa fa-arrow-circle-up"

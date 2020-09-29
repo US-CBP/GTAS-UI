@@ -2,6 +2,7 @@
   margin-top: 20px;
   width: calc(100vw - 40px);
   overflow: scroll;
+  border-bottom: 1px solid rgb(185, 183, 183);
 }
 .seat-chart .row {
   flex-wrap: nowrap;
@@ -15,5 +16,10 @@
 
 .seat-info-display {
   margin-top: 20px;
-  border-top: 1px solid rgb(185, 183, 183);
+
+  .card {
+    min-width: 375px;
+    max-width: 400px;
+    margin-bottom: 30px;
+  }
 }

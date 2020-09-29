@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Seat from "./seat/Seat";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, CardDeck, Card } from "react-bootstrap";
 import "./SeatChart.scss";
 import { seats } from "../../services/serviceWrapper";
-import { asArray, hasData } from "../../utils/utils";
-import { useParams, navigate, Link } from "@reach/router";
+import { asArray } from "../../utils/utils";
+import { useParams } from "@reach/router";
 import SeatInfo from "./seatInfo/SeatInfo";
 import Legend from "./legend/Legend";
+import FlightInfo from "./flightInfo/FlighInfo";
+import Loading from "../loading/Loading";
 
-const SeatChart = props => {
+const SeatChart = ({ location }) => {
   const { flightId, currentPaxSeat } = useParams();
   const [reserevedSeatsInfo, setReservedSeatsInfo] = useState({});
   const [columnWithReservedSeat, setColumnWithReservedSeat] = useState([]);
-  const [selectedSeatInfo, setSelectedSeatInfo] = useState();
+  const [selectedSeatInfo, setSelectedSeatInfo] = useState({});
+  const [showPending, setShowPending] = useState(true);
 
   const getRow = letter => {
     const row = [];
@@ -51,6 +54,7 @@ const SeatChart = props => {
   useEffect(() => {
     seats.get(flightId).then(res => {
       processData(res);
+      setShowPending(false);
     });
   }, []);
 
@@ -60,35 +64,41 @@ const SeatChart = props => {
 
   return (
     <Container fluid>
+      {showPending && <Loading></Loading>}
       <div className="seat-chart">
         <div>
-          <Row>{getRow("A")}</Row>
-          <Row>{getRow("B")}</Row>
-          <Row>{getRow("C")}</Row>
-        </div>
-
-        <div className="middle-rows">
-          <Row>{getRow("D")}</Row>
-          <Row>{getRow("E")}</Row>
-          <Row>{getRow("F")}</Row>
-          <Row>{getRow("G")}</Row>
-        </div>
-
-        <div>
-          <Row>{getRow("H")}</Row>
-          <Row>{getRow("J")}</Row>
           <Row>{getRow("K")}</Row>
+          <Row>{getRow("J")}</Row>
+          <Row>{getRow("H")}</Row>
+        </div>
+        <div className="middle-rows">
+          <Row>{getRow("G")}</Row>
+          <Row>{getRow("F")}</Row>
+          <Row>{getRow("E")}</Row>
+          <Row>{getRow("D")}</Row>
+        </div>
+        <div>
+          <Row>{getRow("C")}</Row>
+          <Row>{getRow("B")}</Row>
+          <Row>{getRow("A")}</Row>
         </div>
       </div>
-      <Row className="seat-info-display">
-        <Col xs={12} md={6}>
-          <Legend />
-        </Col>
-
-        <Col xs={12} md={6}>
+      <CardDeck className="seat-info-display">
+        <Card>
+          <Legend cotravellersCount={selectedSeatInfo.coTravellers?.length || 0} />
+        </Card>
+        <Card>
+          <FlightInfo
+            arrival={location.state.arrival}
+            departure={location.state.departure}
+            flightNumber={location.state.flightNumber}
+            flightId={location.state.flightId}
+          />
+        </Card>
+        <Card>
           <SeatInfo info={selectedSeatInfo} />
-        </Col>
-      </Row>
+        </Card>
+      </CardDeck>
     </Container>
   );
 };
