@@ -124,9 +124,9 @@ const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/carrier/restore`;
 const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/country/restore`;
 
 const WLDOCS = `${BASE_URL}gtas/wl/DOCUMENT/Document`;
-const WLDOCSPOST = `${BASE_URL}gtas/wl/DOCUMENT`;
+const WLDOCSPOST = `${BASE_URL}gtas/wl/document`;
 const WLPAX = `${BASE_URL}gtas/wl/PASSENGER/Passenger`;
-const WLPAXPOST = `${BASE_URL}gtas/wl/PASSENGER`;
+const WLPAXPOST = `${BASE_URL}gtas/wl/passenger`;
 const WLITEM = `${BASE_URL}gtas/wl/watchlistItem`;
 
 const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
@@ -420,24 +420,17 @@ export const wlpax = {
       return [];
     });
   },
-  post: body => post(WLPAXPOST, BASEHEADER, stringify(body)),
+  post: body => {
+    return post(WLPAXPOST, BASEHEADER, stringify(body));
+  },
   put: body => put(WLPAXPOST, BASEHEADER, undefined, stringify(body)),
   del: id => del(WLITEM, BASEHEADER, id)
 };
 
 export const addWLItems = {
   post: body => {
-    // TODO find a cleaner way to handle the respone.
-    //Change the backend to accept a list of watchlist items?
-    const responses = [];
-    const paxItem = JSON.parse(body.passenger.replace("{categoryId}", body.categoryId));
-    return post(WLPAXPOST, BASEHEADER, stringify(paxItem)).then(
-      asArray(body.documents).forEach(doc => {
-        const docItem = JSON.parse(doc.replace("{categoryId}", body.categoryId));
-        return post(WLDOCSPOST, BASEHEADER, stringify(docItem)).then(
-          res => responses.push[res]
-        );
-      })
+    return post(WLPAXPOST, BASEHEADER, stringify(body.passenger)).then(
+      post(WLDOCSPOST, BASEHEADER, stringify(body.documents))
     );
   }
 };

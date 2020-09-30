@@ -18,42 +18,46 @@ const AddToWatchlist = props => {
   };
   const handleShow = () => setShow(true);
 
-  const docTemplate = `{"@class":"gov.gtas.model.watchlist.json.WatchlistSpec","name":"Document","entity":"DOCUMENT",
-    "watchlistItems":[
-        {"id":{id},"action":"Create","terms":[
-            {"entity":"DOCUMENT","field":"documentType","type":"string","value":"{documentType}"},
-            {"entity":"DOCUMENT","field":"documentNumber","type":"string","value":"{documentNumber}"},
-            {"entity":"DOCUMENT","field":"categoryId","type":"integer","value":"{categoryId}"}
-          ]}]}`;
+  const paramCallback = fields => {
+    const categoryId = fields[0]["categoryId"];
+    const paxWatchlistItems = getPaxWatchlistItems(categoryId);
+    const docWatchlistItems = getDocWatchlistItems(categoryId);
 
-  const paxTemplate = `{"@class":"gov.gtas.model.watchlist.json.WatchlistSpec","name":"Passenger","entity":"PASSENGER",
-    "watchlistItems":[
-        {"id":{id},"action":"Create","terms":[
-            {"entity":"PASSENGER","field":"firstName","type":"string","value":"{firstName}"},
-            {"entity":"PASSENGER","field":"lastName","type":"string","value":"{lastName}"},
-            {"entity":"PASSENGER","field":"dob","type":"date","value":"{dob}"},
-            {"entity":"PASSENGER","field":"categoryId","type":"integer","value":"{categoryId}"}
-          ]}]}`;
+    const watchlistItems = {
+      passenger: paxWatchlistItems,
+      documents: docWatchlistItems
+    };
+    return [watchlistItems];
+  };
 
-  const watchlistItems = {
-    passenger: paxTemplate
-      .replace("{firstName}", passenger?.firstName)
-      .replace("{lastName}", passenger?.lastName)
-      .replace("{dob}", passenger?.dob)
-      .replace("{id}", null),
+  const getPaxWatchlistItems = categoryId => {
+    return {
+      action: "Create",
+      id: null,
+      wlItems: [
+        {
+          firstName: passenger?.firstName,
+          lastName: passenger?.lastName,
+          dob: passenger?.dob,
+          categoryId: categoryId,
+          id: null
+        }
+      ]
+    };
+  };
 
-    documents: documents?.reduce((accumulator, doc) => {
-      const docTypes = ["V", "P", "v", "p"];
-
-      if (docTypes.includes(doc.documentType)) {
-        const template = docTemplate
-          .replace("{id}", null)
-          .replace("{documentType}", doc.documentType)
-          .replace("{documentNumber}", doc.documentNumber);
-        accumulator.push(template);
-      }
-      return accumulator;
-    }, [])
+  const getDocWatchlistItems = categoryId => {
+    const docWatchlistItems = { action: "Create", id: null, wlItems: [] };
+    asArray(documents).forEach(doc => {
+      const item = {
+        documentType: doc.documentType,
+        documentNumber: doc.documentNumber,
+        categoryId: categoryId,
+        id: null
+      };
+      docWatchlistItems.wlItems.push(item);
+    });
+    return docWatchlistItems;
   };
 
   useEffect(() => {
@@ -96,8 +100,8 @@ const AddToWatchlist = props => {
               title=""
               callback={handleClose}
               action="add"
-              data={watchlistItems}
               cancellable
+              paramCallback={paramCallback}
             >
               <LabelledInput
                 datafield

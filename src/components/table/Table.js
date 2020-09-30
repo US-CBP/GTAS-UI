@@ -6,7 +6,9 @@ import { navigate } from "@reach/router";
 // import { withTranslation } from 'react-i18next';
 import Xl8 from "../xl8/Xl8";
 import Loading from "../../components/loading/Loading";
-import { Table as RBTable, Pagination } from "react-bootstrap";
+import { Table as RBTable, Pagination, Button } from "react-bootstrap";
+import { jsonToCSV } from "react-papaparse";
+import { useExportData } from "react-table-plugins";
 import "./Table.css";
 
 //Will auto-populate with data retrieved from the given uri
@@ -66,6 +68,18 @@ const Table = props => {
     );
   }
 
+  function getExportFileBlob({ columns, data, fileType, fileName }) {
+    if (fileType === "csv") {
+      const headerNames = columns.map(col => col.exportValue);
+      const csvString = jsonToCSV({ fields: headerNames, data });
+      return new Blob([csvString], { type: "text/csv" });
+    }
+  }
+
+  function getExportFileName({ fileType, all }) {
+    return `${all ? "all-" : ""}${props.exportFileName || "data"}`;
+  }
+
   const RTable = ({ columns, data }) => {
     const defaultColumn = React.useMemo(
       () => ({
@@ -87,6 +101,7 @@ const Table = props => {
       nextPage,
       previousPage,
       setPageSize,
+      exportData,
       state: { pageIndex, pageSize, sortBy }
     } = useTable(
       {
@@ -97,11 +112,14 @@ const Table = props => {
           pageIndex: stateVals.pageIndex || 0,
           pageSize: stateVals.pageSize || 25,
           sortBy: stateVals.sortBy || []
-        }
+        },
+        getExportFileBlob,
+        getExportFileName
       },
       useFilters,
       useSortBy,
-      usePagination
+      usePagination,
+      useExportData
     );
 
     const sortIcon = column => {
@@ -275,6 +293,14 @@ const Table = props => {
                 </option>
               ))}
             </select>
+            <Button
+              className="export-btn"
+              variant="light"
+              size="sm"
+              onClick={() => exportData("csv", true)}
+            >
+              Export
+            </Button>
             <span className="tagrightpag">
               <h3 className="title-default">
                 <i>{rowcount}</i>
@@ -334,7 +360,8 @@ const Table = props => {
           Header: title,
           accessor: acc,
           disableFilters: element.disableFilters,
-          disableSortBy: element.disableSortBy
+          disableSortBy: element.disableSortBy,
+          disableExport: element.disableExport
         };
 
         if (element.Cell !== undefined) {
@@ -405,7 +432,8 @@ Table.propTypes = {
   stateCb: PropTypes.func,
   stateVals: PropTypes.func,
   ignoredFields: PropTypes.arrayOf(PropTypes.string),
-  enableColumnFilter: PropTypes.bool
+  enableColumnFilter: PropTypes.bool,
+  exportFileName: PropTypes.string
 };
 
 export default Table;
