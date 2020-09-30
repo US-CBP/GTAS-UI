@@ -47,12 +47,14 @@ const SignUp = props => {
       {displaySuccessMsg ? (
         <>
           <Alert variant="success">
-            <Xl8 xid="sup002">
+            <Xl8 xid="sup009">
               Your request has been sent! You will receive a confirmation email upon
               approval.
             </Xl8>
           </Alert>
-          <Link to="/">Home</Link>
+          <Link to="/">
+            <Xl8 xid="sup010">Home</Xl8>
+          </Link>
         </>
       ) : (
         <Form

@@ -42,7 +42,8 @@ const Queries = props => {
   const header = [
     {
       Accessor: "id",
-      Header: "Edit",
+      Xl8: true,
+      Header: ["q003", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -52,8 +53,8 @@ const Queries = props => {
         </div>
       )
     },
-    { Accessor: "title" },
-    { Accessor: "description" }
+    { Accessor: "title", Xl8: true, Header: ["q004", "Title"] },
+    { Accessor: "description", Xl8: true, Header: ["q005", "Description"] }
   ];
 
   const launchModal = (recordId, record) => {
@@ -78,7 +79,6 @@ const Queries = props => {
       <Title title={<Xl8 xid="q002">Queries</Xl8>} rightChild={button}></Title>
       <Table
         service={query.get}
-        id="Queries"
         callback={cb}
         header={header}
         key={`table${tablekey}`}

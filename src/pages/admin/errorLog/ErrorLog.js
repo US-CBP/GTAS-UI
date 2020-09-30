@@ -18,8 +18,29 @@ const ErrorLog = ({ name }) => {
   endDate.setDate(endDate.getDate() + 1);
   startDate.setDate(startDate.getDate() - 1);
   const initialParamState = { startDate: startDate, endDate: endDate };
-  const visibleCols = ["errorId", "errorCode", "errorDescription", "errorTimestamp"];
 
+  const headers = [
+    {
+      Accessor: "errorId",
+      Xl8: true,
+      Header: ["el005", "Error Id"]
+    },
+    {
+      Accessor: "errorCode",
+      Xl8: true,
+      Header: ["el006", "Error Code"]
+    },
+    {
+      Accessor: "errorDescription",
+      Xl8: true,
+      Header: ["el007", "Error Description"]
+    },
+    {
+      Accessor: "errorTimestamp",
+      Xl8: true,
+      Header: ["el008", "Error Timestamp"]
+    }
+  ];
   const preFetchCallback = params => {
     let parsedParams = "?";
     if (params) {
@@ -91,7 +112,7 @@ const ErrorLog = ({ name }) => {
           data={data}
           id="errorLog"
           callback={cb}
-          header={visibleCols}
+          header={headers}
           key={refreshKey}
         ></Table>
       </Main>

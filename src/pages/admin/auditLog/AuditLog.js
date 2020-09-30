@@ -41,7 +41,6 @@ const AuditLog = ({ name }) => {
     { value: "RULE_HIT_CASE_OPEN", label: "RULE_HIT_CASE_OPEN" },
     { value: "DISPOSITION_STATUS_CHANGE", label: "DISPOSITION_STATUS_CHANGE" }
   ];
-  const visibleCols = ["actionType", "status", "message", "user", "timestamp"];
   const preFetchCallback = params => {
     let parsedParams = "?";
     if (params) {
@@ -60,6 +59,34 @@ const AuditLog = ({ name }) => {
     }
     return parsedParams;
   };
+
+  const headers = [
+    {
+      Accessor: "actionType",
+      Xl8: true,
+      Header: ["al005", "Action Type"]
+    },
+    {
+      Accessor: "status",
+      Xl8: true,
+      Header: ["al006", "Status"]
+    },
+    {
+      Accessor: "message",
+      Xl8: true,
+      Header: ["al007", "Message"]
+    },
+    {
+      Accessor: "user",
+      Xl8: true,
+      Header: ["al008", "User"]
+    },
+    {
+      Accessor: "timestamp",
+      Xl8: true,
+      Header: ["al009", "Timestamp"]
+    }
+  ];
 
   const setDataWrapper = res => {
     setData(res);
@@ -99,7 +126,7 @@ const AuditLog = ({ name }) => {
               datafield
               inputType="dateTime"
               inputVal={startDate}
-              labelText="Start Date"
+              labelText={<Xl8 xid="al003">Start Date</Xl8>}
               name="startDate"
               callback={cb}
               required={true}
@@ -109,7 +136,7 @@ const AuditLog = ({ name }) => {
               datafield
               inputType="dateTime"
               inputVal={endDate}
-              labelText="End Date"
+              labelText={<Xl8 xid="al004">End Date</Xl8>}
               name="endDate"
               callback={cb}
               required={true}
@@ -125,7 +152,7 @@ const AuditLog = ({ name }) => {
           key={refreshKey}
           id="Audit Log"
           callback={cb}
-          header={visibleCols}
+          header={headers}
         ></Table>
       </Main>
     </>

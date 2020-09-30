@@ -11,6 +11,18 @@ const NoteTypeCats = ({ name }) => {
   const cb = function(result) {};
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
+  const headers = [
+    {
+      Accessor: "id",
+      Xl8: true,
+      Header: ["ntc002", "Id"]
+    },
+    {
+      Accessor: "noteType",
+      Xl8: true,
+      Header: ["ntc003", "Note Type"]
+    }
+  ];
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
@@ -28,9 +40,9 @@ const NoteTypeCats = ({ name }) => {
       <Row></Row>
       <Table
         service={notetypes.get}
-        id="noteTypes"
         key={refreshKey}
         callback={cb}
+        header={headers}
       ></Table>
       <NoteTypeModal
         show={showModal}

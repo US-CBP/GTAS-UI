@@ -6,7 +6,7 @@ import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
 import { Col, Tabs, Tab } from "react-bootstrap";
 import Main from "../../components/main/Main";
-import SideNavContainer from "../../components/sidenavContainer/SidenavContainer";
+import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import { hasData, alt, localeDate, asArray } from "../../utils/utils";
 import { TIME } from "../../utils/constants";
@@ -170,7 +170,7 @@ const Flights = props => {
 
   return (
     <>
-      <SideNavContainer>
+      <SidenavContainer>
         <Col>
           <FilterForm
             service={flights.get}
@@ -232,7 +232,7 @@ const Flights = props => {
             />
           </FilterForm>
         </Col>
-      </SideNavContainer>
+      </SidenavContainer>
       <Main>
         <Title
           title={<Xl8 xid="fl008">Flights</Xl8>}
@@ -243,7 +243,6 @@ const Flights = props => {
         <Table
           data={data}
           key={tablekey}
-          id="Flights"
           header={Headers}
           callback={cb}
           stateVals={getTableState}

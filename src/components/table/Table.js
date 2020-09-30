@@ -262,18 +262,6 @@ const Table = props => {
                 {pageIndex + 1} <Xl8 xid="tab003"> of </Xl8> {pageOptions.length}
               </strong>{" "}
             </span>
-            {/* <span className="pag-text pag-goto">Go to page: </span>{' '}
-            <input
-              className="pag pag-input pag-goto mr-10"
-              type="number"
-              min="1"
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                gotoPage(page);
-                e.target.value = page;
-              }}
-              style={{ width: '100px' }}
-            /> */}
             <select
               className="pag"
               value={pageSize}
@@ -316,6 +304,12 @@ const Table = props => {
 
     setShowPending(false);
     const noDataFound = "No Data Found";
+    const noDataFoundHeader = {
+      Accessor: "NoData",
+      Xl8: true,
+      Header: ["nodata001", "No Data Found"]
+    };
+
     let noDataObj = [{}];
     noDataObj[0][props.id] = noDataFound;
 
@@ -326,7 +320,7 @@ const Table = props => {
       ? hasData(header)
         ? header
         : Object.keys(dataArray[0])
-      : [props.id];
+      : [noDataFoundHeader];
     let columns = [];
 
     (sheader || []).forEach(element => {

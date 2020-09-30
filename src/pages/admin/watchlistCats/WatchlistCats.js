@@ -11,9 +11,30 @@ const WatchlistCats = ({ name }) => {
   const cb = function() {};
 
   const [showModal, setShowModal] = useState(false);
-  const [data, setData] = useState([{}]);
   const [refreshKey, setRefreshKey] = useState(1);
 
+  const headers = [
+    {
+      Accessor: "id",
+      Xl8: true,
+      Header: ["wlc002", "Id"]
+    },
+    {
+      Accessor: "label",
+      Xl8: true,
+      Header: ["wlc003", "Label"]
+    },
+    {
+      Accessor: "description",
+      Xl8: true,
+      Header: ["wlc004", "Description"]
+    },
+    {
+      Accessor: "severity",
+      Xl8: true,
+      Header: ["wlc005", "Severity"]
+    }
+  ];
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
   };
@@ -29,9 +50,9 @@ const WatchlistCats = ({ name }) => {
       <Title title={name} rightChild={cats}></Title>
       <Table
         service={watchlistcats.get}
-        id="Watchlist Categories"
         key={refreshKey}
         callback={cb}
+        header={headers}
       ></Table>
       <WatchlistModal
         show={showModal}

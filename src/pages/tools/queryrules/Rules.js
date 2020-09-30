@@ -39,7 +39,8 @@ const Rules = props => {
   const header = [
     {
       Accessor: "id",
-      Header: "Edit",
+      Xl8: true,
+      Header: ["rul006", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -51,27 +52,36 @@ const Rules = props => {
     },
     {
       Accessor: "title",
+      Xl8: true,
+      Header: ["rul007", "Title"],
       Cell: ({ row }) => <div className="wide-col">{row.original.title}</div>
     },
     {
       Accessor: "description",
+      Xl8: true,
+      Header: ["rul008", "Description"],
       Cell: ({ row }) => <div className="wide-col">{row.original.description}</div>
     },
     {
       Accessor: "hitCount",
-      Header: "Hits"
+      Xl8: true,
+      Header: ["rul009", "Hits"]
     },
     {
       Accessor: "overMaxHits",
+      Xl8: true,
+      Header: ["rul010", "Over Max Hits"],
       Cell: ({ row }) => (
         <div className="icon-col">{row.original.overMaxHits ? "Yes" : "No"}</div>
       )
     },
-    { Accessor: "modifiedOn" },
-    { Accessor: "modifiedBy" },
-    { Accessor: "author" },
+    { Accessor: "modifiedOn", Xl8: true, Header: ["rul011", "Modified On"] },
+    { Accessor: "modifiedBy", Xl8: true, Header: ["rul012", "Modified By"] },
+    { Accessor: "author", Xl8: true, Header: ["rul013", "Author"] },
     {
       Accessor: "enabled",
+      Xl8: true,
+      Header: ["rul014", "Enabled"],
       Cell: ({ row }) => {
         if (row.original.enabled === true) {
           return (
@@ -220,13 +230,7 @@ const Rules = props => {
         leftCb={titleTabCallback}
         rightChild={button}
       ></Title>
-      <Table
-        data={data}
-        id="Rules"
-        callback={cb}
-        header={header}
-        key={`table-${tablekey}`}
-      ></Table>
+      <Table data={data} callback={cb} header={header} key={`table-${tablekey}`}></Table>
       {showModal && (
         <QRModal
           show="true"

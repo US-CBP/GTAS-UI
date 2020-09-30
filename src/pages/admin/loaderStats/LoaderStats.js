@@ -25,7 +25,13 @@ const LoaderStats = ({ name }) => {
       <br></br>
       <Container>
         <Col lg={{ span: 4, offset: 4 }}>
-          <Form data={data} key={key} title="" callback={cb} submitText="Refresh">
+          <Form
+            data={data}
+            key={key}
+            title=""
+            callback={cb}
+            submitText={<Xl8 xid="ls008">Refresh</Xl8>}
+          >
             <LabelledInput
               datafield
               labelText={<Xl8 xid="ls004">Last message received:</Xl8>}

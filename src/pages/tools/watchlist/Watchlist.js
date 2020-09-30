@@ -172,7 +172,8 @@ const Watchlist = props => {
   const doxHeader = [
     {
       Accessor: "id",
-      Header: "Edit",
+      Xl8: true,
+      Header: ["wl010", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -185,12 +186,13 @@ const Watchlist = props => {
         </div>
       )
     },
-    { Accessor: "documentType" },
-    { Accessor: "documentNumber" },
-    { Accessor: "category" },
+    { Accessor: "documentType", Xl8: true, Header: ["wl011", "Document Type"] },
+    { Accessor: "documentNumber", Xl8: true, Header: ["wl012", "Document Number"] },
+    { Accessor: "category", Xl8: true, Header: ["wl013", "Category"] },
     {
       Accessor: "delete",
-      Header: "Delete",
+      Xl8: true,
+      Header: ["wl014", "Delete"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -207,7 +209,8 @@ const Watchlist = props => {
   const paxHeader = [
     {
       Accessor: "id",
-      Header: "Edit",
+      Xl8: true,
+      Header: ["wl010", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -220,13 +223,14 @@ const Watchlist = props => {
         </div>
       )
     },
-    { Accessor: "firstName" },
-    { Accessor: "lastName" },
-    { Accessor: "dob", Header: "DOB" },
-    { Accessor: "category" },
+    { Accessor: "firstName", Xl8: true, Header: ["wl015", "First Name"] },
+    { Accessor: "lastName", Xl8: true, Header: ["wl016", "Last Name"] },
+    { Accessor: "dob", Xl8: true, Header: ["wl016", "DOB"] },
+    { Accessor: "category", Xl8: true, Header: ["wl017", "Category"] },
     {
       Accessor: "delete",
-      Header: "Delete",
+      Xl8: true,
+      Header: ["wl014", "Delete"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -255,7 +259,7 @@ const Watchlist = props => {
         leftCb={titleTabCallback}
         rightChild={button}
       ></Title>
-      <Table data={data} key={key} id={tab[0]} header={header} callback={cb}></Table>
+      <Table data={data} key={key} header={header} callback={cb}></Table>
       <Modal
         show={showMiniModal}
         onHide={closeMiniModal}

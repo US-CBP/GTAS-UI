@@ -82,7 +82,8 @@ const Vetting = props => {
   const Headers = [
     {
       Accessor: "countdownTime",
-      Header: "Timer",
+      Xl8: true,
+      Header: ["wl018", "Timer"],
       Cell: ({ row }) => {
         const future =
           row.original.flightDirection === "O"
@@ -93,7 +94,8 @@ const Vetting = props => {
     },
     {
       Accessor: "flightNumber",
-      Header: "Flight Id",
+      Xl8: true,
+      Header: ["wl019", "Flight ID"],
       Cell: ({ row }) => (
         <FlightInfo
           flightNumber={row.original.flightNumber}
@@ -107,7 +109,8 @@ const Vetting = props => {
     },
     {
       Accessor: "hitNames",
-      Header: "Hits",
+      Xl8: true,
+      Header: ["wl020", "Hits"],
       Cell: ({ row }) => {
         const listdata = asArray(row.original.hitNames).map((hit, index) => {
           const triggerOverlay = !isShortText(hit, 20);
@@ -126,7 +129,8 @@ const Vetting = props => {
     },
     {
       Accessor: "paxName",
-      Header: "Biographic Information",
+      Xl8: true,
+      Header: ["wl021", "Biographic Information"],
       Cell: ({ row }) => (
         <Link
           to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}
@@ -138,12 +142,14 @@ const Vetting = props => {
     },
     {
       Accessor: "status",
-      Header: "Status",
+      Xl8: true,
+      Header: ["wl022", "Status"],
       Cell: ({ row }) => <div className="text-center">{row.original.status}</div>
     },
     {
       Accessor: "paxId",
-      Header: "Actions",
+      Xl8: true,
+      Header: ["wl023", "Actions"],
       Cell: ({ row }) => (
         <div className="text-center">
           <Button
@@ -380,7 +386,7 @@ const Vetting = props => {
                 datafield="etaStart"
                 inputType="dateTime"
                 inputVal={startDate}
-                labelText="Start Date"
+                labelText={<Xl8 xid="vet014">Start Date</Xl8>}
                 name="etaStart"
                 callback={cb}
                 required={true}
@@ -392,7 +398,7 @@ const Vetting = props => {
                 datafield="etaEnd"
                 inputType="dateTime"
                 inputVal={endDate}
-                labelText="End Date"
+                labelText={<Xl8 xid="vet015">End Date</Xl8>}
                 name="etaEnd"
                 callback={cb}
                 required={true}
@@ -401,7 +407,7 @@ const Vetting = props => {
             )}
             {!showDateTimePicker.current && (
               <LabelledInput
-                labelText="Hour Range (Start)"
+                labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
                 inputType="select"
                 name="startHourRange"
                 inputVal="96"
@@ -420,7 +426,7 @@ const Vetting = props => {
             )}
             {!showDateTimePicker.current && (
               <LabelledInput
-                labelText="Hour Range (End)"
+                labelText={<Xl8 xid="vet017">Hour Range (End)</Xl8>}
                 inputType="select"
                 name="endHourRange"
                 inputVal="96"
@@ -442,13 +448,7 @@ const Vetting = props => {
       </SidenavContainer>
       <Main>
         <Title title={<Xl8 xid="vet014">Priority Vetting</Xl8>} uri={props.uri} />
-        <Table
-          data={data}
-          id="FlightDataTable"
-          callback={onTableChange}
-          header={Headers}
-          key={data}
-        />
+        <Table data={data} callback={onTableChange} header={Headers} key={data} />
 
         <ReviewPVL
           paxId={currentPaxId}
