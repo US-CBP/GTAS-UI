@@ -9,10 +9,6 @@
   margin: 10px 0px;
 }
 
-// .middle-rows {
-//   margin-top: 30px;
-//   margin-bottom: 30px;
-// }
 .right-of-middle-rows {
   margin-top: 30px !important;
 }
@@ -28,5 +24,7 @@
     min-width: 375px;
     max-width: 400px;
     margin-bottom: 30px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.25);
   }
 }
