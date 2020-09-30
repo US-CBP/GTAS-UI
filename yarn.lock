@@ -1693,6 +1693,13 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
+"@types/papaparse@^5.0.4":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@types/papaparse/-/papaparse-5.2.2.tgz#225c34ec6b2d55932375c86e56baad8d9d259ec3"
+  integrity sha512-e+3C4Mw/15uNC70ctfeehGooRlGv/h7fW8cf8HfBNDUngC/Ajtc6dqizx+ncDz7nj3/R1cshmYZnu86xZHvwRw==
+  dependencies:
+    "@types/node" "*"
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
@@ -9356,6 +9363,11 @@ pako@~1.0.5:
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.11.tgz#6c9599d340d54dfd3946380252a35705a6b992bf"
   integrity sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==
 
+papaparse@^5.2.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.3.0.tgz#ab1702feb96e79ab4309652f36db9536563ad05a"
+  integrity sha512-Lb7jN/4bTpiuGPrYy4tkKoUS8sTki8zacB5ke1p5zolhcSE4TlWgrlsxjrDTbG/dFVh07ck7X36hUf/b5V68pg==
+
 parallel-transform@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/parallel-transform/-/parallel-transform-1.2.0.tgz#9049ca37d6cb2182c3b1d2c720be94d14a5814fc"
@@ -10901,6 +10913,14 @@ react-overlays@^4.0.0:
     uncontrollable "^7.0.0"
     warning "^4.0.3"
 
+react-papaparse@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/react-papaparse/-/react-papaparse-3.8.0.tgz#493752590c88096a1f59c191808298123fd223f1"
+  integrity sha512-JAzUIiUUOTrkyl1xbKp2jqEC1azs7pqCcVp4jC2DymvYF/bNQ1L09o9B3DJn18tAPfrBw+YLOrhWead5xLWdgA==
+  dependencies:
+    "@types/papaparse" "^5.0.4"
+    papaparse "^5.2.0"
+
 react-query@0.3.20:
   version "0.3.20"
   resolved "https://registry.yarnpkg.com/react-query/-/react-query-0.3.20.tgz#f00d4f95337be0ecefb99751d94f18483e0bda6b"
@@ -11099,6 +11119,11 @@ react-styleguidist@^11.0.5:
     unist-util-visit "^2.0.0"
     webpack-dev-server "^3.9.0"
     webpack-merge "^4.2.2"
+
+react-table-plugins@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/react-table-plugins/-/react-table-plugins-1.3.1.tgz#5d0d106acd43f49c38c8b15599d4a3e50d99a7a6"
+  integrity sha512-LFCTAcqCSh4VnNjukarrkSb+xuKufIuL77Wk46Kayy3R0Ggqatxj0LDqCw5jBkVggOGM1kMPrgFkR9xYjsXldA==
 
 react-table@^7.0.0-rc.15:
   version "7.3.2"

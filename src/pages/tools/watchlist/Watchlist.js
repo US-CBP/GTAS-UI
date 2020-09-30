@@ -3,7 +3,7 @@ import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Main from "../../../components/main/Main";
 import Modal from "../../../components/modal/Modal";
-import { Button, Container, Tabs, Tab } from "react-bootstrap";
+import { Button, Tabs, Tab, Row } from "react-bootstrap";
 import { navigate } from "@reach/router";
 
 import { wlpax, wldocs, watchlistcats } from "../../../services/serviceWrapper";
@@ -11,6 +11,7 @@ import { hasData } from "../../../utils/utils";
 import WLModal from "./WLModal";
 import "./Watchlist.css";
 import "./constants.js";
+import CSVReader from "../../../components/CSVReader/CSVReader";
 
 const Watchlist = props => {
   const cb = function(result) {};
@@ -27,19 +28,53 @@ const Watchlist = props => {
   const [editRow, setEditRow] = useState({});
   const [tab, setTab] = useState(isDox ? TAB.DOX : TAB.PAX); // default to pax when no param is in the uri
 
+  const handleImportData = results => {
+    const keys = {
+      "First Name": "firstName",
+      "Last Name": "lastName",
+      DOB: "dob",
+      Category: "categoryId",
+      "Document Number": "documentNumber",
+      "Document Type": "documentType"
+    };
+
+    const service = isDox ? wldocs : wlpax;
+    const importedWl = { action: "Create", id: null, wlItems: [] };
+    results.forEach(result => {
+      const item = {};
+
+      for (let key in result.data) {
+        const newKey = keys[key];
+
+        item[newKey] = result.data[key];
+      }
+      const catLabel = item["categoryId"];
+      item["categoryId"] = (wlcatData.find(item => item.label === catLabel) || {}).id;
+      if (item["dob"]) item["dob"].replaceAll("/", "-"); //the rule engine throws error for date formated mm/dd/yyyy
+      importedWl.wlItems.push(item);
+    });
+
+    service.post(importedWl).then(res => {
+      if (res.status === "SUCCESS") fetchData(); //get latest dataa
+    });
+  };
+
   const button = (
-    <Button
-      variant="ternary"
-      className="btn btn-outline-info"
-      name={props.name}
-      placeholder={props.placeholder}
-      onClick={() => launchModal(0)}
-      required={props.required}
-      value={props.inputVal}
-      alt={props.alt}
-    >
-      {`Add ${tab[1]}`}
-    </Button>
+    <Row>
+      <Button
+        variant="ternary"
+        className="btn btn-outline-info"
+        name={props.name}
+        placeholder={props.placeholder}
+        onClick={() => launchModal(0)}
+        required={props.required}
+        value={props.inputVal}
+        alt={props.alt}
+      >
+        {`Add ${tab[1]}`}
+      </Button>
+      <CSVReader callback={handleImportData} />
+    </Row>
   );
 
   const launchModal = recordId => {
@@ -169,6 +204,7 @@ const Watchlist = props => {
     {
       Accessor: "id",
       Header: "Edit",
+      disableExport: true,
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -187,6 +223,7 @@ const Watchlist = props => {
     {
       Accessor: "delete",
       Header: "Delete",
+      disableExport: true,
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -204,6 +241,7 @@ const Watchlist = props => {
     {
       Accessor: "id",
       Header: "Edit",
+      disableExport: true,
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -223,6 +261,7 @@ const Watchlist = props => {
     {
       Accessor: "delete",
       Header: "Delete",
+      disableExport: true,
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -237,6 +276,7 @@ const Watchlist = props => {
   ];
 
   const header = tab[0] === TAB.DOX[0] ? doxHeader : paxHeader;
+  const wlType = tab[0] === TAB.DOX[0] ? "document" : "passenger";
   const deleteText = {
     message: "Are you sure you want to delete the record?",
     title: "Delete Confirmation",
@@ -251,7 +291,14 @@ const Watchlist = props => {
         leftCb={titleTabCallback}
         rightChild={button}
       ></Title>
-      <Table data={data} key={key} id={tab[0]} header={header} callback={cb}></Table>
+      <Table
+        data={data}
+        key={key}
+        id={tab[0]}
+        header={header}
+        callback={cb}
+        exportFileName={`watchlists-${wlType}`}
+      ></Table>
       <Modal
         show={showMiniModal}
         onHide={closeMiniModal}

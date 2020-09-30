@@ -31,23 +31,6 @@ const WLModal = props => {
     return { label: item.label, value: item.id };
   });
 
-  const docTemplate = `{"@class":"gov.gtas.model.watchlist.json.WatchlistSpec","name":"Document","entity":"DOCUMENT",
-    "watchlistItems":[
-        {"id":{id},"action":"{action}","terms":[
-            {"entity":"DOCUMENT","field":"documentType","type":"string","value":"{documentType}"},
-            {"entity":"DOCUMENT","field":"documentNumber","type":"string","value":"{documentNumber}"},
-            {"entity":"DOCUMENT","field":"categoryId","type":"integer","value":"{categoryId}"}
-          ]}]}`;
-
-  const paxTemplate = `{"@class":"gov.gtas.model.watchlist.json.WatchlistSpec","name":"Passenger","entity":"PASSENGER",
-    "watchlistItems":[
-        {"id":{id},"action":"{action}","terms":[
-            {"entity":"PASSENGER","field":"firstName","type":"string","value":"{firstName}"},
-            {"entity":"PASSENGER","field":"lastName","type":"string","value":"{lastName}"},
-            {"entity":"PASSENGER","field":"dob","type":"date","value":"{dob}"},
-            {"entity":"PASSENGER","field":"categoryId","type":"integer","value":"{categoryId}"}
-          ]}]}`;
-
   const docFields = (
     <>
       <LabelledInput
@@ -134,7 +117,6 @@ const WLModal = props => {
   const fields = type[0] === TAB.DOX[0] ? docFields : paxFields;
   const serviceType = type[0] === TAB.DOX[0] ? wldocs : wlpax;
   const service = mode === "Add" ? serviceType.post : serviceType.put;
-  const template = type[0] === TAB.DOX[0] ? docTemplate : paxTemplate;
 
   const preSubmit = values => {
     if (!hasData(values[0])) return [];
@@ -144,22 +126,40 @@ const WLModal = props => {
     const documentNumber = vals["documentNumber"];
     const firstName = vals["firstName"];
     const lastName = vals["lastName"];
-    const dob = vals["dob"];
+    const dob = vals["dob"]?.replaceAll("/", "-");
     const categoryId = vals["categoryId"];
     const action = mode === "Add" ? "Create" : "Update";
     const recordId = mode === "Add" ? "null" : id;
 
-    const result = template
-      .replace("{documentType}", documentType)
-      .replace("{documentNumber}", documentNumber)
-      .replace("{firstName}", firstName)
-      .replace("{lastName}", lastName)
-      .replace("{dob}", dob)
-      .replace("{categoryId}", categoryId)
-      .replace("{action}", action)
-      .replace("{id}", recordId);
+    const result =
+      type[0] === TAB.DOX[0]
+        ? {
+            action: action,
+            id: recordId,
+            wlItems: [
+              {
+                documentType: documentType,
+                documentNumber: documentNumber,
+                categoryId: categoryId,
+                id: recordId
+              }
+            ]
+          }
+        : {
+            action: action,
+            id: recordId,
+            wlItems: [
+              {
+                firstName: firstName,
+                lastName: lastName,
+                dob: dob,
+                categoryId: categoryId,
+                id: recordId
+              }
+            ]
+          };
 
-    return [JSON.parse(result)];
+    return [result];
   };
 
   return (
