@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
 import { Navbar, Nav } from "react-bootstrap";
-import "./PaxDetail.scss";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
-import { paxdetails, cases } from "../../services/serviceWrapper";
 import Summary from "./summary/Summary";
 import PNR from "./pnr/PNR";
 import APIS from "./apis/APIS";
 import FlightHistory from "./flightHistory/FlightHistory";
 import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
-import { passengerTypeMapper, asArray } from "../../utils/utils";
 import EventNotesModal from "./evenNotesModal/EventNotesModal";
 import DownloadReport from "./downloadReports/DownloadReports";
 import Notification from "./notification/Notification";
@@ -20,8 +17,11 @@ import ChangeHitStatus from "./changeHitStatus/ChangeHitStatus";
 import CreateManualHit from "./createManualHit/CreateManualHit";
 import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
-import { Link } from "@reach/router";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
+import { paxdetails, cases } from "../../services/serviceWrapper";
+import { passengerTypeMapper, asArray } from "../../utils/utils";
+import { Link } from "@reach/router";
+import "./PaxDetail.scss";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {

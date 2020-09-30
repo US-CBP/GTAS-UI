@@ -5,16 +5,16 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
 
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
-import { hasData, asArray } from "../../../utils/utils";
+import { hasData, asArray, titleCase } from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
 
 const WLModal = props => {
-  const TAB = { PAX: ["pax", "Passenger"], DOX: ["dox", "Document"] };
-  const type = (props.type || {})[0] === TAB.DOX[0] ? TAB.DOX : TAB.PAX;
+  const TAB = { PAX: "passenger", DOX: "document" };
+  const type = (props.type || {}) === TAB.PAX ? TAB.PAX : TAB.DOX;
   const id = props.id || 0;
   const mode = id === 0 ? "Add" : "Edit";
   const title =
-    (type || {})[0] === TAB.DOX[0] ? (
+    (type || {}) === TAB.DOX ? (
       id === 0 ? (
         <Xl8 xid="wlm001"> Add Document</Xl8>
       ) : (
@@ -126,8 +126,8 @@ const WLModal = props => {
     </>
   );
 
-  const fields = type[0] === TAB.DOX[0] ? docFields : paxFields;
-  const serviceType = type[0] === TAB.DOX[0] ? wldocs : wlpax;
+  const fields = type === TAB.DOX ? docFields : paxFields;
+  const serviceType = type === TAB.DOX ? wldocs : wlpax;
   const service = mode === "Add" ? serviceType.post : serviceType.put;
 
   const preSubmit = values => {
@@ -144,7 +144,7 @@ const WLModal = props => {
     const recordId = mode === "Add" ? "null" : id;
 
     const result =
-      type[0] === TAB.DOX[0]
+      type === TAB.DOX
         ? {
             action: action,
             id: recordId,

@@ -4,7 +4,7 @@ import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import { useTranslation } from "react-i18next";
 
 const Xl8 = props => {
-  const [t, i18n] = useTranslation();
+  const { t } = useTranslation();
   const [isEdit, setIsEdit] = useState();
 
   const tprops = {
@@ -33,7 +33,7 @@ const Xl8 = props => {
       {t(props.xid, props.children)}
     </span>
   ) : (
-    <span xid={props.xid}>{t(props.xid, props.children)}</span>
+    <span {...props}>{t(props.xid, props.children)}</span>
   );
 };
 

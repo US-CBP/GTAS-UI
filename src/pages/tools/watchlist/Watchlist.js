@@ -15,13 +15,11 @@ import "./constants.js";
 import CSVReader from "../../../components/CSVReader/CSVReader";
 
 const Watchlist = props => {
+  console.log("rerendering");
   const cb = function(result) {};
-  const TAB = {
-    PAX: ["pax", <Xl8 xid="wl001">Passenger</Xl8>],
-    DOX: ["dox", <Xl8 xid="wl002">Document</Xl8>]
-  };
+  const TAB = { PAX: "passenger", DOX: "document" };
   const mode = (props.mode || "").toLowerCase();
-  const isDox = mode === TAB.DOX[0];
+  const isDox = mode === TAB.DOX;
 
   const [showModal, setShowModal] = useState(false);
   const [showMiniModal, setShowMiniModal] = useState(false);
@@ -31,6 +29,7 @@ const Watchlist = props => {
   const [wlcatData, setWlcatData] = useState([]);
   const [editRow, setEditRow] = useState({});
   const [tab, setTab] = useState(isDox ? TAB.DOX : TAB.PAX); // default to pax when no param is in the uri
+  const [buttonTypeText, setButtonTypeText] = useState(); // default to pax when no param is in the uri
 
   const handleImportData = results => {
     const keys = {
@@ -63,29 +62,6 @@ const Watchlist = props => {
     });
   };
 
-  const button = (
-    <Row>
-      <Button
-        variant="ternary"
-        className="btn btn-outline-info"
-        name={props.name}
-        placeholder={props.placeholder}
-        onClick={() => launchModal(0)}
-        required={props.required}
-        value={props.inputVal}
-        alt={props.alt}
-        key={isDox}
-      >
-        {isDox ? (
-          <Xl8 xid="wl003">Add Document</Xl8>
-        ) : (
-          <Xl8 xid="wl004">Add Passenger</Xl8>
-        )}
-      </Button>
-      <CSVReader callback={handleImportData} />
-    </Row>
-  );
-
   const launchModal = recordId => {
     setId(recordId);
     setShowModal(true);
@@ -117,9 +93,23 @@ const Watchlist = props => {
   };
 
   const tabs = (
-    <Tabs defaultActiveKey={tab[0]} id="wlTabs">
-      <Tab eventKey={TAB.PAX[0]} title={TAB.PAX[1]}></Tab>
-      <Tab eventKey={TAB.DOX[0]} title={TAB.DOX[1]}></Tab>
+    <Tabs defaultActiveKey={TAB} id="wlTabs">
+      <Tab
+        eventKey={TAB.PAX}
+        title={
+          <Xl8 xid="wl001" id="wlTabs-tab-passenger">
+            Passenger
+          </Xl8>
+        }
+      ></Tab>
+      <Tab
+        eventKey={TAB.DOX}
+        title={
+          <Xl8 xid="wl002" id="wlTabs-tab-document">
+            Document
+          </Xl8>
+        }
+      ></Tab>
     </Tabs>
   );
 
@@ -129,10 +119,10 @@ const Watchlist = props => {
     if (ev.length === 0) return;
 
     const id = ev.split("-")[2];
-    const newTab = (id || "").toLowerCase() === TAB.DOX[0] ? TAB.DOX : TAB.PAX;
+    const newTab = (id || "").toLowerCase() === TAB.PAX ? TAB.PAX : TAB.DOX;
 
     setTab(newTab);
-    navigate(`/gtas/tools/watchlist/${newTab[0]}`);
+    // navigate(`/gtas/tools/watchlist/${newTab[0]}`);
   };
 
   /**
@@ -145,6 +135,12 @@ const Watchlist = props => {
 
     fetchData();
   }, [tab, wlcatData]);
+
+  useEffect(() => {
+    tab === TAB.PAX
+      ? setButtonTypeText(<Xl8 xid="wl004">Add Passenger</Xl8>)
+      : setButtonTypeText(<Xl8 xid="wl003">Add Document</Xl8>);
+  }, [tab, TAB.DOX]);
 
   // fetch the wl cats on page load.
   useEffect(() => {
@@ -288,13 +284,31 @@ const Watchlist = props => {
     }
   ];
 
-  const header = tab[0] === TAB.DOX[0] ? doxHeader : paxHeader;
-  const wlType = tab[0] === TAB.DOX[0] ? "document" : "passenger";
+  const header = tab === TAB.DOX ? doxHeader : paxHeader;
+  const wlType = tab;
   const deleteText = {
     message: <Xl8 xid="wl005">Are you sure you want to delete the record?</Xl8>,
     title: <Xl8 xid="wl006">Delete Confirmation</Xl8>,
     style: "danger"
   };
+
+  const button = (
+    <Row>
+      <Button
+        variant="ternary"
+        className="btn btn-outline-info"
+        name={props.name}
+        placeholder={props.placeholder}
+        onClick={() => launchModal(0)}
+        required={props.required}
+        value={props.inputVal}
+        alt={props.alt}
+      >
+        {buttonTypeText}
+      </Button>
+      <CSVReader callback={handleImportData} />
+    </Row>
+  );
 
   return (
     <Main className="full">
@@ -303,6 +317,7 @@ const Watchlist = props => {
         leftChild={tabs}
         leftCb={titleTabCallback}
         rightChild={button}
+        key={tab}
       ></Title>
       <Table
         data={data}

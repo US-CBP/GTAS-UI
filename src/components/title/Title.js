@@ -7,9 +7,7 @@ const Title = props => {
   const cb = ev => {
     const id = ev.target.id;
 
-    if (hasData(leftCb)) {
-      leftCb(ev.target.id || ev.target.innerText);
-    }
+    if (hasData(leftCb)) leftCb(id);
   };
 
   return (

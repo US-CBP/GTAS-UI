@@ -4,10 +4,12 @@ import Title from "../../components/title/Title";
 import { Link } from "@reach/router";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
-import { Col, Tabs, Tab } from "react-bootstrap";
 import Main from "../../components/main/Main";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
+// import Tabs from "../../components/tabs/Tabs";
+
+import { Col, Tabs, Tab } from "react-bootstrap";
 import { hasData, alt, localeDate, asArray } from "../../utils/utils";
 import { TIME } from "../../utils/constants";
 
@@ -157,15 +159,29 @@ const Flights = props => {
 
   const tabs = (
     <Tabs defaultActiveKey="all" id="flightTabs">
-      <Tab eventKey="all" title={<Xl8 xid="fl001">All</Xl8>}></Tab>
-      <Tab eventKey="hits" title={<Xl8 xid="fl002">Hits</Xl8>}></Tab>
+      <Tab
+        eventKey="all"
+        title={
+          <Xl8 xid="fl001" id="flightTabs-tab-all">
+            All
+          </Xl8>
+        }
+      ></Tab>
+      <Tab
+        eventKey="hits"
+        title={
+          <Xl8 xid="fl002" id="flightTabs-tab-hits">
+            Hits
+          </Xl8>
+        }
+      ></Tab>
     </Tabs>
   );
 
   const titleTabCallback = ev => {
-    const id = ev.split("-")[2] || ev.toLowerCase();
+    const id = ev.split("-")[2];
 
-    setTab(id);
+    if (id) setTab(id);
   };
 
   return (
