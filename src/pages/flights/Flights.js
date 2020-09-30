@@ -163,7 +163,7 @@ const Flights = props => {
   );
 
   const titleTabCallback = ev => {
-    const id = ev.split("-")[2];
+    const id = ev.split("-")[2] || ev.toLowerCase();
 
     setTab(id);
   };

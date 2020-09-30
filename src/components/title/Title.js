@@ -8,7 +8,7 @@ const Title = props => {
     const id = ev.target.id;
 
     if (hasData(leftCb)) {
-      leftCb(id);
+      leftCb(ev.target.id || ev.target.innerText);
     }
   };
 
