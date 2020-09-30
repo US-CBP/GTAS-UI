@@ -6,7 +6,7 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
 import { UserContext } from "../../../context/user/UserContext";
 import { asArray } from "../../../utils/utils";
-import {ACTION, ROLE} from "../../../utils/constants";
+import { ACTION, ROLE } from "../../../utils/constants";
 import "./ManageUsers.scss";
 
 const UserModal = props => {
@@ -48,7 +48,7 @@ const UserModal = props => {
     let isDisabled = false;
     if (props.isEdit && role.roleDescription !== ROLE.FLIGHTVWR) {
       isChecked = isCheckedRole(role, props.editRowDetails.roles);
-    } else if (role.roleDescription === ROLE.FLIGHTVWR){
+    } else if (role.roleDescription === ROLE.FLIGHTVWR) {
       isChecked = true;
       isDisabled = true;
     }
@@ -68,7 +68,7 @@ const UserModal = props => {
   };
 
   const postSubmit = (status, res) => {
-    if(status === ACTION.CANCEL){
+    if (status === ACTION.CANCEL) {
       props.onHide();
     } else {
       res.status === "SUCCESS" ? setVariant("success") : setVariant("danger");
