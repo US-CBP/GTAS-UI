@@ -43,6 +43,7 @@ const PaxDetail = props => {
           <Link
             to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${res.seat}`}
             style={{ color: "#8fdeef" }}
+            state={{ ...flightBadgeData(res), flightId: res.flightId }}
           >
             {res.seat}
           </Link>
@@ -67,7 +68,7 @@ const PaxDetail = props => {
     return {
       arrival: `${res.flightDestination} ${res.etaLocalTZ}`,
       departure: `${res.flightOrigin} ${res.etdLocalTZ}`,
-      flightnumber: `${res.carrier}${res.flightNumber}`
+      flightNumber: `${res.carrier}${res.flightNumber}`
     };
   };
 
