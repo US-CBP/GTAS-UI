@@ -114,14 +114,14 @@ const ErrorLog = loadable(() =>
 const CodeEditor = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/CodeEditor")
 );
-const Airports = loadable(() =>
-  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/airport/Airports")
+const Airport = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/airport/Airport")
 );
-const Carriers = loadable(() =>
-  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/carrier/Carriers")
+const Carrier = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/carrier/Carrier")
 );
-const Countries = loadable(() =>
-  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/country/Countries")
+const Country = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/country/Country")
 );
 const LoaderStats = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/admin/loaderStats/LoaderStats")
@@ -364,20 +364,20 @@ export default class App extends React.Component {
                                 }
                                 icon="fa-list-ul"
                                 path="codeeditor"
-                                startTab="countries"
+                                startTab="country"
                               >
-                                <Countries
-                                  name={<Xl8 xid="app022">Countries</Xl8>}
-                                  path="countries"
-                                ></Countries>
-                                <Airports
-                                  name={<Xl8 xid="app023">Airports</Xl8>}
-                                  path="airports"
-                                ></Airports>
-                                <Carriers
-                                  name={<Xl8 xid="app024">Carriers</Xl8>}
-                                  path="carriers"
-                                ></Carriers>
+                                <Country
+                                  name={<Xl8 xid="app022">Country</Xl8>}
+                                  path="country"
+                                ></Country>
+                                <Airport
+                                  name={<Xl8 xid="app023">Airport</Xl8>}
+                                  path="airport"
+                                ></Airport>
+                                <Carrier
+                                  name={<Xl8 xid="app024">Carrier</Xl8>}
+                                  path="carrier"
+                                ></Carrier>
                               </CodeEditor>
                               <LoaderStats
                                 name={<Xl8 xid="app025">Loader Statistics</Xl8>}

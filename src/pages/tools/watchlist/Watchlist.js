@@ -173,7 +173,7 @@ const Watchlist = props => {
     {
       Accessor: "id",
       Xl8: true,
-      Header: ["wl010", "Edit"],
+      Header: ["edit001", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -210,7 +210,7 @@ const Watchlist = props => {
     {
       Accessor: "id",
       Xl8: true,
-      Header: ["wl010", "Edit"],
+      Header: ["edit001", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i

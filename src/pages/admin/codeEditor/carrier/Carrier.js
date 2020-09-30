@@ -27,8 +27,8 @@ const Carriers = ({ name }) => {
   const headers = [
     {
       Accessor: "Edit",
-      disableFilters: true,
-      disableSortBy: true,
+      Xl8: true,
+      Header: ["edit001", "Edit"],
       Cell: ({ row }) => {
         return (
           <div className="icon-col">
@@ -40,8 +40,8 @@ const Carriers = ({ name }) => {
         );
       }
     },
-    { Accessor: "iata" },
-    { Accessor: "name" }
+    { Accessor: "iata", Xl8: true, Header: ["iata001", "IATA"] },
+    { Accessor: "name", Xl8: true, Header: ["car005", "Name"] }
   ];
 
   return (
@@ -82,7 +82,6 @@ const Carriers = ({ name }) => {
 
       <Table
         service={codeEditor.get.carrierCodes}
-        id="carriers"
         callback={cb}
         header={headers}
         key={refreshKey}

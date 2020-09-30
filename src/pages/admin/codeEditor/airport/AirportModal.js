@@ -106,7 +106,7 @@ const AirportModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="airm002">ICAO: </Xl8>}
+              labelText={<Xl8 xid="icao001">ICAO: </Xl8>}
               inputType="text"
               name="icao"
               required={true}
@@ -150,7 +150,7 @@ const AirportModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="airm006">Latitude: </Xl8>}
+              labelText={<Xl8 xid="lati001">Latitude: </Xl8>}
               inputType="text"
               name="latitude"
               required={true}
@@ -161,7 +161,7 @@ const AirportModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="airm007">Longitude: </Xl8>}
+              labelText={<Xl8 xid="long001">Longitude: </Xl8>}
               inputType="text"
               name="longitude"
               required={true}

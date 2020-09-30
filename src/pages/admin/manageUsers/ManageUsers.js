@@ -47,7 +47,7 @@ const ManageUsers = props => {
     {
       Accessor: "Edit",
       Xl8: true,
-      Header: ["manu010", "Edit"],
+      Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
       Cell: ({ row }) => {

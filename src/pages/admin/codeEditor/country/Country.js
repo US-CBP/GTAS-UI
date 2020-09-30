@@ -27,6 +27,8 @@ const Countries = ({ name }) => {
   const headers = [
     {
       Accessor: "Edit",
+      Xl8: true,
+      Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
       Cell: ({ row }) => {
@@ -40,10 +42,10 @@ const Countries = ({ name }) => {
         );
       }
     },
-    { Accessor: "iso2" },
-    { Accessor: "iso3" },
-    { Accessor: "isoNumeric" },
-    { Accessor: "name" }
+    { Accessor: "iso2", Xl8: true, Header: ["iso2001", "ISO2"] },
+    { Accessor: "iso3", Xl8: true, Header: ["iso3001", "ISO3"] },
+    { Accessor: "isoNumeric", Xl8: true, Header: ["isonum001", "ISO Numeric"] },
+    { Accessor: "name", Xl8: true, Header: ["cou005", "Name"] }
   ];
 
   return (
@@ -83,7 +85,6 @@ const Countries = ({ name }) => {
 
       <Table
         service={codeEditor.get.countryCodes}
-        id="countries"
         callback={cb}
         header={headers}
         key={refreshKey}

@@ -40,7 +40,7 @@ const Rules = props => {
     {
       Accessor: "id",
       Xl8: true,
-      Header: ["rul006", "Edit"],
+      Header: ["edit001", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i

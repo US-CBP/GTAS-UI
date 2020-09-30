@@ -43,7 +43,7 @@ const Queries = props => {
     {
       Accessor: "id",
       Xl8: true,
-      Header: ["q003", "Edit"],
+      Header: ["edit001", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i

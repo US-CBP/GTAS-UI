@@ -14,13 +14,16 @@ const Airports = ({ name }) => {
   const [modalTitle, setModalTitle] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
 
+  const addAirport = <Xl8 xid="airp002">Add Airport</Xl8>;
+  const editAirport = <Xl8 xid="airp003">Edit Airport</Xl8>;
+
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
   };
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle(<Xl8 xid="airp003">Edit Airport</Xl8>);
+    setModalTitle(editAirport);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -28,6 +31,8 @@ const Airports = ({ name }) => {
   const headers = [
     {
       Accessor: "Edit",
+      Xl8: true,
+      Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
       Cell: ({ row }) => {
@@ -41,13 +46,13 @@ const Airports = ({ name }) => {
         );
       }
     },
-    { Accessor: "iata" },
-    { Accessor: "icao" },
-    { Accessor: "name" },
-    { Accessor: "city" },
-    { Accessor: "country" },
-    { Accessor: "latitude" },
-    { Accessor: "longitude" }
+    { Accessor: "iata", Xl8: true, Header: ["iata001", "IATA"] },
+    { Accessor: "icao", Xl8: true, Header: ["icao001", "ICAO"] },
+    { Accessor: "name", Xl8: true, Header: ["airp005", "Name"] },
+    { Accessor: "city", Xl8: true, Header: ["airp006", "City"] },
+    { Accessor: "country", Xl8: true, Header: ["airp007", "Country"] },
+    { Accessor: "latitude", Xl8: true, Header: ["lati001", "Latitude"] },
+    { Accessor: "longitude", Xl8: true, Header: ["long001", "Longitude"] }
   ];
 
   return (
@@ -67,12 +72,12 @@ const Airports = ({ name }) => {
           variant="outline-dark"
           onClick={() => {
             setShowModal(true);
-            setModalTitle(<Xl8 xid="airp001">Add Airport</Xl8>);
+            setModalTitle(addAirport);
             setIsEditModal(false);
             setEditRowDetails({});
           }}
         >
-          {<Xl8 xid="airp001">Add Airport</Xl8>}
+          {addAirport}
         </Button>
 
         <Button
@@ -89,7 +94,6 @@ const Airports = ({ name }) => {
 
       <Table
         service={codeEditor.get.airportCodes}
-        id="airports"
         callback={cb}
         header={headers}
         key={refreshKey}
