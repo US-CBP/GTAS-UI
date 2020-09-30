@@ -69,9 +69,10 @@ const FilterForm = props => {
 
   const onReset = e => {
     let fields = [];
+    const initialParamState = props.initialParamState || {};
 
     datafieldNames.forEach(function(name) {
-      fields[name] = "";
+      fields[name] = initialParamState[name] || "";
     });
 
     setFields(fields);
@@ -103,7 +104,7 @@ const FilterForm = props => {
   // bind children containing form data (datafield prop) to the ev handler and state
   const bindChildren = populatedFields => {
     let boundChildren = asArray(props.children).map((child, idx) => {
-      if (!child.props.datafield) return child;
+      if (!child.props?.datafield) return child;
 
       let cleanprops = Object.assign({}, child.props);
       // intercept the callback so FilterForm is notified of input field changes.
@@ -133,7 +134,7 @@ const FilterForm = props => {
     let fMap = fieldMap;
 
     asArray(props.children).forEach((child, idx) => {
-      const datafield = child.props.datafield;
+      const datafield = child.props?.datafield;
 
       if (datafield) {
         const noname = `unnamedfield${idx}`;
@@ -193,7 +194,8 @@ FilterForm.propTypes = {
   id: PropTypes.string,
   callback: PropTypes.func.isRequired,
   paramCallback: PropTypes.func,
-  interval: PropTypes.number
+  interval: PropTypes.number,
+  initialParamState: PropTypes.object
 };
 
 export default FilterForm;

@@ -40,6 +40,18 @@
   height: calc(100vh - 60px);
 }
 
+.full-cards {
+  min-width: 255px;
+  margin-left: 20px;
+  margin-right: 20px;
+  position: absolute;
+  top: auto;
+  overflow: auto;
+  padding: 10px;
+  width: calc(100vw - 40px);
+  height: calc(100vh - 106px);
+}
+
 @media (max-width: 768px) {
   .main {
     left: 34px !important;

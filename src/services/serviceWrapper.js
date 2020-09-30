@@ -195,7 +195,9 @@ export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, para
 export const auditlog = { get: params => get(AUDITLOG, BASEHEADER, undefined, params) };
 export const errorlog = { get: params => get(ERRORLOG, BASEHEADER, undefined, params) };
 export const cases = {
-  get: (id, params) => get(CASES, BASEHEADER, undefined, params),
+  get: params => {
+    return get(CASES, BASEHEADER, undefined, params);
+  },
   updateStatus: (paxId, status) => {
     const body = { passengerId: paxId, status: status };
     return post(CASES, BASEHEADER, stringify(body));

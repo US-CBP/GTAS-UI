@@ -1,11 +1,12 @@
 import React from "react";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
-import { Card, CardDeck } from "react-bootstrap";
-import { getEndpoint } from "../../utils/utils";
+import Main from "../../components/main/Main";
+import ExternalLink from "../../components/externalLink/ExternalLink";
+import { Card, CardDeck, Container } from "react-bootstrap";
+import { hasData, getEndpoint } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./Admin.css";
-import ExternalLink from "../../components/externalLink/ExternalLink";
 
 const Admin = props => {
   const children = props.children?.props?.children;
@@ -15,7 +16,7 @@ const Admin = props => {
       <>
         <Title title={<Xl8 xid="adm001">Admin</Xl8>} />
 
-        <div className="container">
+        <Main className="full-cards">
           <CardDeck className="page-deck">
             {children.map(info => {
               const data = info.props;
@@ -50,7 +51,7 @@ const Admin = props => {
               );
             })}
           </CardDeck>
-        </div>
+        </Main>
       </>
     );
 

@@ -21,7 +21,7 @@ const Rules = props => {
   const service = tab === RULETAB.ALL ? rulesall : rule;
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
-  const [data, setData] = useState();
+  const [data, setData] = useState({});
   const [modalTitle, setModalTitle] = useState(addRule);
   const [record, setRecord] = useState();
   const [modalKey, setModalKey] = useState(-1);

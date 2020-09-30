@@ -1,6 +1,7 @@
 import React from "react";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
+import Main from "../../components/main/Main";
 import { Card, CardDeck } from "react-bootstrap";
 import { asArray, getEndpoint } from "../../utils/utils";
 import { Link } from "@reach/router";
@@ -15,7 +16,7 @@ const Tools = props => {
       <>
         <Title title={<Xl8 xid="too001">Tools</Xl8>} />
 
-        <div className="container">
+        <Main className="full-cards">
           <CardDeck className="page-deck">
             {tiles.map(info => {
               const data = info.props;
@@ -36,7 +37,7 @@ const Tools = props => {
               );
             })}
           </CardDeck>
-        </div>
+        </Main>
       </>
     );
 
