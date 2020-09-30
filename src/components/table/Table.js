@@ -299,7 +299,7 @@ const Table = props => {
               size="sm"
               onClick={() => exportData("csv", true)}
             >
-              Export
+              {<Xl8 xid="tab004">Export</Xl8>}
             </Button>
             <span className="tagrightpag">
               <h3 className="title-default">
