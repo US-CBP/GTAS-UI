@@ -1,4 +1,5 @@
 import React from "react";
+import Title from "../../title/Title";
 import "./Legend.scss";
 
 const Legend = props => {

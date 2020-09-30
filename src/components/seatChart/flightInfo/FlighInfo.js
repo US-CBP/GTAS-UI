@@ -2,11 +2,11 @@ import { Link } from "@reach/router";
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../labelledInput/LabelledInput";
+import Title from "../../title/Title";
 
 const FlightInfo = props => {
   return (
     <Container>
-      <h5>Flight Information</h5>
       <Row>
         <Col sm={6}>
           <b>Flight Number:</b>

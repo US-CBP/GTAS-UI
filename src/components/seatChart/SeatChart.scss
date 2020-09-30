@@ -9,9 +9,16 @@
   margin: 10px 0px;
 }
 
-.middle-rows {
-  margin-top: 30px;
-  margin-bottom: 30px;
+// .middle-rows {
+//   margin-top: 30px;
+//   margin-bottom: 30px;
+// }
+.right-of-middle-rows {
+  margin-top: 30px !important;
+}
+
+.left-of-middle-rows {
+  margin-bottom: 30px !important;
 }
 
 .seat-info-display {

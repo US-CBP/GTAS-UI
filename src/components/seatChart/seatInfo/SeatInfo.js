@@ -4,13 +4,13 @@ import { Link } from "@reach/router";
 import { hasData } from "../../../utils/utils";
 import { Col, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../labelledInput/LabelledInput";
+import Title from "../../title/Title";
 
 const SeatInfo = props => {
   const selectedSeatInfo = props.info;
 
   return hasData(selectedSeatInfo) ? (
     <Container fluid>
-      <h5>Selected Passenger Seat's Information</h5>
       <Row>
         <Col>
           <b>First Name:</b>
