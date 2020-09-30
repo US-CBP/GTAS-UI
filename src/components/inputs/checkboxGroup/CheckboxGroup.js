@@ -6,10 +6,10 @@
  *
  */
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import GroupCheckBox from "./GroupCheckBox";
 import LabelledInputDisplayWrapper from "../LabelledInputDecorator";
-import {roles} from "../../../services/serviceWrapper";
+import { roles } from "../../../services/serviceWrapper";
 
 const CheckboxGroup = props => {
   const [values, setValues] = useState([...props.inputVal]);
@@ -26,13 +26,13 @@ const CheckboxGroup = props => {
   };
 
   //This is to load init values into the form the checkbox belongs to. i.e. default check values
-  const init = () =>{
-      const filterFormUpdate = {
-          name:props.name,
-          value:values
-        };
-    props.callback(filterFormUpdate)
-  }
+  const init = () => {
+    const filterFormUpdate = {
+      name: props.name,
+      value: values
+    };
+    props.callback(filterFormUpdate);
+  };
 
   //This is to trigger initial form state for default values. Otherwise they're empty if no change is ever made.
   useEffect(() => {

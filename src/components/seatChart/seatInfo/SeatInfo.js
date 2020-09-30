@@ -2,31 +2,71 @@ import React from "react";
 import PropsTypes from "prop-types";
 import { Link } from "@reach/router";
 import { hasData } from "../../../utils/utils";
+import { Col, Container, Row } from "react-bootstrap";
+import LabelledInput from "../../labelledInput/LabelledInput";
+import Title from "../../title/Title";
 
 const SeatInfo = props => {
   const selectedSeatInfo = props.info;
 
   return hasData(selectedSeatInfo) ? (
-    <>
-      <h5>Selected passenger seat's data</h5>
-      <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-        <li>
-          <b>First Name:</b> {selectedSeatInfo.firstName}
-        </li>
-        <li>
-          <b>Last Name:</b> {selectedSeatInfo.lastName}
-        </li>
-        <li>
-          <b>Middle Name:</b> {selectedSeatInfo.middleInitial}
-        </li>
-        <li>
-          <b>Seat Number:</b> {selectedSeatInfo.number}
-        </li>
-      </ul>
+    <Container fluid>
+      <Row>
+        <Col>
+          <b>First Name:</b>
+        </Col>
+        <Col>
+          <LabelledInput
+            alt="First Name"
+            inputStyle="big-name-sidebar"
+            inputType="label"
+            inputVal={selectedSeatInfo.firstName}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <b>Last Name:</b>
+        </Col>
+        <Col>
+          <LabelledInput
+            alt="Last Name"
+            inputStyle="big-name-sidebar"
+            inputType="label"
+            inputVal={selectedSeatInfo.lastName}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <b>Middle Name:</b>
+        </Col>
+        <Col>
+          <LabelledInput
+            alt="Middle Name"
+            inputStyle="big-name-sidebar"
+            inputType="label"
+            inputVal={selectedSeatInfo.middleInitial}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <b>Seat Number:</b>
+        </Col>
+        <Col>
+          <LabelledInput
+            alt="Seat Number"
+            inputStyle="big-name-sidebar"
+            inputType="label"
+            inputVal={selectedSeatInfo.number}
+          />
+        </Col>
+      </Row>
       <Link to={`/gtas/paxDetail/${selectedSeatInfo.flightId}/${selectedSeatInfo.paxId}`}>
-        Show passenger details
+        Back to Passenger Details
       </Link>
-    </>
+    </Container>
   ) : (
     ""
   );

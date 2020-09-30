@@ -1,4 +1,5 @@
 import React from "react";
+import Title from "../../title/Title";
 import "./Legend.scss";
 
 const Legend = props => {
@@ -8,7 +9,8 @@ const Legend = props => {
         <span className="legend-icon legend-reserved"></span>Resereved Seats
       </div>
       <div className="seat-legend">
-        <span className="legend-icon legend-co-traveler"></span>Co-Traveler
+        <span className="legend-icon legend-co-traveler"></span>
+        {`Co-Traveler (${props.cotravellersCount})`}
       </div>
       <div className="seat-legend">
         <span className="legend-icon legend-hit"></span> Has Hit

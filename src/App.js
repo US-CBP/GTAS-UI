@@ -89,7 +89,9 @@ const SeatChart = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
 );
 const UploadAttachment = loadable(() =>
-    import(/* webpackChunkName: "authed" */ "./pages/paxDetail/uploadAttachment/UploadAttachment")
+  import(
+    /* webpackChunkName: "authed" */ "./pages/paxDetail/uploadAttachment/UploadAttachment"
+  )
 );
 
 const Search = loadable(() =>

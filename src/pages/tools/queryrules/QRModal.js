@@ -103,10 +103,12 @@ const QRModal = props => {
         type: "!group",
         subfields: {
           airline: { label: "Airline", ...carrierProps },
+          "bagMeasurements.bagCount": { label: "Bag Count", ...numProps },
           bagId: { label: "Bag ID", ...txtProps },
+          "bagMeasurements.weight": { label: "Bag Weight (kg)", ...numProps },
           dataSource: { label: "Data Source", ...txtProps },
-          country: { label: "Destination Country", ...countryProps },
           destinationAirport: { label: "Destination Airport", ...airportProps },
+          country: { label: "Destination Country", ...countryProps },
           primeFlight: {
             label: "Is Prime Flight",
             type: "boolean",
@@ -116,8 +118,7 @@ const QRModal = props => {
             label: "Is Head Of a Baggage Pool",
             type: "boolean",
             valueSources: ["value"]
-          },
-          "bagMeasurements.weight": { label: "Bag Weight Measurement (kg)", ...numProps }
+          }
         }
       },
       CreditCard: {
