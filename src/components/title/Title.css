@@ -2,8 +2,6 @@
   /* text-shadow: aqua; */
   display: flex;
   text-align: center;
-  font-weight: 600;
-  font-size: x-large;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding: 5px;
   position: relative;
@@ -11,7 +9,8 @@
 }
 
 .title-span {
-  /* flex-grow: 1; */
+  font-weight: 600;
+  font-size: x-large;
 }
 
 .left-span {
@@ -25,4 +24,16 @@
   position: absolute;
   right: 0px;
   top: 0px;
+}
+
+.right-span > .space-between {
+  display: flex;
+}
+
+.right-span > .space-between > label {
+  padding-top: 3px;
+}
+
+.right-span > .space-between > select {
+  width: 120px;
 }

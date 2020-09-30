@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
 import { logfile } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
-// import Xl8 from "../../../components/xl8/Xl8";
+import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray, hasData } from "../../../utils/utils";
@@ -86,12 +86,13 @@ const FileDownload = ({ name }) => {
   const fileTypeCtrl = (
     <LabelledInput
       inputType="select"
+      labelText={<Xl8 xid="fdl006">Log Type</Xl8>}
       inputStyle="file-type"
       name="severity"
-      placeholder="Choose log type"
       options={logTypes}
       required={true}
       alt="nothing"
+      spacebetween
       callback={onLogTypeSelect}
       key={selRefreshKey}
     />
