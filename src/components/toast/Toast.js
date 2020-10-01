@@ -14,7 +14,9 @@ function Toast(props) {
         autohide
         className={props.variant}
       >
-        <RBToast.Header>{props.header}</RBToast.Header>
+        <RBToast.Header>
+          <b className="mr-auto">{props.header}</b>
+        </RBToast.Header>
         <RBToast.Body>{props.body}</RBToast.Body>
       </RBToast>
     </div>
