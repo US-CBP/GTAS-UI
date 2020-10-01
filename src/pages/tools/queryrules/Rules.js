@@ -201,8 +201,22 @@ const Rules = props => {
 
   const tabs = (
     <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs">
-      <Tab eventKey={RULETAB.MY} title={<Xl8 xid="rul003">My Rules</Xl8>}></Tab>
-      <Tab eventKey={RULETAB.ALL} title={<Xl8 xid="rul004">All Rules</Xl8>}></Tab>
+      <Tab
+        eventKey={RULETAB.MY}
+        title={
+          <Xl8 xid="rul003" id="qrTabs-tab-my">
+            My Rules
+          </Xl8>
+        }
+      ></Tab>
+      <Tab
+        eventKey={RULETAB.ALL}
+        title={
+          <Xl8 xid="rul004" id="qrTabs-tab-all">
+            All Rules
+          </Xl8>
+        }
+      ></Tab>
     </Tabs>
   );
 

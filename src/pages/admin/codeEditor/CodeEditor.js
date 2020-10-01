@@ -24,9 +24,58 @@ const CodeEditor = props => {
     navigate(`/gtas/admin/codeeditor/${tab}`);
   }, [tab]);
 
+  // const tabs = (
+  //   <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs">
+  //     <Tab
+  //       eventKey={RULETAB.MY}
+  //       title={
+  //         <Xl8 xid="rul003" id="qrTabs-tab-my">
+  //           My Rules
+  //         </Xl8>
+  //       }
+  //     ></Tab>
+  //     <Tab
+  //       eventKey={RULETAB.ALL}
+  //       title={
+  //         <Xl8 xid="rul004" id="qrTabs-tab-all">
+  //           All Rules
+  //         </Xl8>
+  //       }
+  //     ></Tab>
+  //   </Tabs>
+  // );
+
   const headerTabs = (
     <Tabs defaultActiveKey={props.startTab} id="codeTabs">
-      {tabcontent.map(tab => {
+      <Tab
+        eventKey="country"
+        title={
+          <Xl8 xid="app022" id="codeTabs-tab-country">
+            Country
+          </Xl8>
+        }
+        key="country"
+      ></Tab>
+      <Tab
+        eventKey="airport"
+        title={
+          <Xl8 xid="app023" id="codeTabs-tab-airport">
+            Airport
+          </Xl8>
+        }
+        key="airport"
+      ></Tab>
+      <Tab
+        eventKey="carrier"
+        title={
+          <Xl8 xid="app024" id="codeTabs-tab-carrier">
+            Carrier
+          </Xl8>
+        }
+        key="carrier"
+      ></Tab>
+
+      {/* {tabcontent.map(tab => {
         return (
           <Tab
             eventKey={tab.props.path.toLowerCase()}
@@ -34,7 +83,7 @@ const CodeEditor = props => {
             key={tab.props.path}
           ></Tab>
         );
-      })}
+      })} */}
     </Tabs>
   );
 
