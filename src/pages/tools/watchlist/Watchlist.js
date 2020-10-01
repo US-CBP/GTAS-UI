@@ -15,7 +15,6 @@ import "./constants.js";
 import CSVReader from "../../../components/CSVReader/CSVReader";
 
 const Watchlist = props => {
-  console.log("rerendering");
   const cb = function(result) {};
   const TAB = { PAX: "passenger", DOX: "document" };
   const mode = (props.mode || "").toLowerCase();
