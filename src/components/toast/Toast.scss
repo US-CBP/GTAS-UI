@@ -1,0 +1,26 @@
+$success_color: rgba(0, 128, 0, 0.65);
+$danger_color: rgba(255, 0, 0, 0.65);
+
+.toast-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.toast-container .success {
+  border: 1px solid $success_color;
+  box-shadow: 1px 1px 5px $success_color;
+
+  .toast-header {
+    background-color: $success_color;
+  }
+}
+
+.toast-container .danger {
+  border: 1px solid $danger_color;
+  box-shadow: 1px 1px 5px $danger_color;
+
+  .toast-header {
+    background-color: $danger_color;
+  }
+}
