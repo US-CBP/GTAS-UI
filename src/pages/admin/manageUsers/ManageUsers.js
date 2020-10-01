@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Container, DropdownButton, Dropdown } from "react-bootstrap";
+import React, { useContext, useEffect, useState } from "react";
+import { Button, DropdownButton, Dropdown } from "react-bootstrap";
 import Table from "../../../components/table/Table";
 import Main from "../../../components/main/Main";
 import { users } from "../../../services/serviceWrapper";
@@ -9,8 +9,10 @@ import { ACTION } from "../../../utils/constants";
 
 import "./ManageUsers.scss";
 import UserModal from "./UserModal";
-import { navigate } from "@reach/router";
 import Confirm from "../../../components/confirmationModal/Confirm";
+import ChangePasswordModal from "./changePasswordModal/ChangePasswordModal";
+import Toast from "../../../components/toast/Toast";
+import { UserContext } from "../../../context/user/UserContext";
 
 const ManageUsers = props => {
   const [data, setData] = useState(undefined);
@@ -19,7 +21,19 @@ const ManageUsers = props => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("Add New User");
   const [editRowDetails, setEditRowDetails] = useState({});
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState();
+  const [showTost, setShowToast] = useState(false);
+  const [toastHeader, setToastHeader] = useState("");
+  const [toastBodyText, setToastBodyText] = useState("");
+  const [toastVariant, setToastVariant] = useState("");
 
+  const { getUserState } = useContext(UserContext);
+
+  const isLoggedinUser = userId => {
+    const loggedinUser = getUserState();
+    return loggedinUser.userId === userId;
+  };
   const cb = function(status = ACTION.CLOSE, result) {
     if (status !== ACTION.CLOSE && status !== ACTION.CANCEL) fetchData();
   };
@@ -32,7 +46,19 @@ const ManageUsers = props => {
   };
 
   const changePassword = userId => {
-    navigate(`/gtas/user/change-password/${userId}`);
+    setSelectedUserId(userId);
+    setShowChangePasswordModal(true);
+  };
+
+  const changePasswordCallback = (status, res) => {
+    setShowChangePasswordModal(false);
+
+    if (status !== ACTION.CANCEL) {
+      setToastHeader("Change Password: " + res.status);
+      setToastBodyText(res.message);
+      setToastVariant(res.status === "FAILURE" ? "danger" : "success");
+      setShowToast(true);
+    }
   };
 
   const deleteUser = rowDetails => {
@@ -63,16 +89,18 @@ const ManageUsers = props => {
                 header="Confirm User Deletion"
                 message={`Please confirm to delete a user with userId: ${row.original.userId}`}
               >
-                {confirm => (
-                  <Dropdown.Item
-                    as="button"
-                    onClick={confirm(() => {
-                      deleteUser(row.original);
-                    })}
-                  >
-                    Delete User
-                  </Dropdown.Item>
-                )}
+                {confirm =>
+                  !isLoggedinUser(row.original.userId) && (
+                    <Dropdown.Item
+                      as="button"
+                      onClick={confirm(() => {
+                        deleteUser(row.original);
+                      })}
+                    >
+                      Delete User
+                    </Dropdown.Item>
+                  )
+                }
               </Confirm>
             </DropdownButton>
           </div>
@@ -198,6 +226,19 @@ const ManageUsers = props => {
           isEdit={isEditModal}
           title={modalTitle}
           editRowDetails={editRowDetails}
+        />
+        <ChangePasswordModal
+          show={showChangePasswordModal}
+          onHide={() => setShowChangePasswordModal(false)}
+          userId={selectedUserId}
+          callback={changePasswordCallback}
+        />
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showTost}
+          header={toastHeader}
+          body={toastBodyText}
+          variant={toastVariant}
         />
       </Main>
     </>
