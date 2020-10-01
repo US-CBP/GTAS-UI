@@ -19,10 +19,11 @@ const ChangePassword = props => {
   const [displayErrorMsg, setDisplayErrorMsg] = useState(false);
 
   const params = useParams();
-  const service = hasData(params.userId)
-    ? changePassword.byAdmin
-    : changePassword.byloggedInUser;
-  const recordId = hasData(params.userId) ? params.userId : "";
+  const chagneByAdmin = hasData(props.userId);
+
+  const service = chagneByAdmin ? changePassword.byAdmin : changePassword.byloggedInUser;
+
+  const recordId = props.userId || "";
 
   const checkPasswordMatch = () => {
     if (confirmedPassword === newPassword) {
@@ -42,7 +43,6 @@ const ChangePassword = props => {
     }
   };
 
-  //
   useEffect(() => {
     if (confirmedPassword?.length >= 10 && confirmedPassword === newPassword) {
       setStyle("passwords-match");
@@ -53,7 +53,9 @@ const ChangePassword = props => {
 
   const cb = () => {};
   const passwordChangeCallback = (status, res) => {
-    if (status === "Cancel") navigate(-1);
+    if (hasData(props.callback)) {
+      props.callback(status, res);
+    } else if (status === "Cancel") navigate(-1);
     else {
       const responseStatus = hasData(res) ? res.status : "";
       const message = hasData(res) ? res.message : "";
@@ -91,7 +93,7 @@ const ChangePassword = props => {
           key={style}
           recordId={recordId}
         >
-          {hasData(params.userId) ? (
+          {chagneByAdmin ? (
             <></>
           ) : (
             <LabelledInput
@@ -121,12 +123,12 @@ const ChangePassword = props => {
           />
           <LabelledInput
             datafield
-            labelText={<Xl8 xid="pass005">Confirm new password</Xl8>}
+            labelText={<Xl8 xid="pass005">Confirm password</Xl8>}
             inputType="password"
             name="confirmPassword"
             required={true}
             inputVal={confirmedPassword}
-            alt={<Xl8 xid="7">Confirm new password</Xl8>}
+            alt="nothing"
             callback={cb}
             onChange={changeInput}
             className={style}

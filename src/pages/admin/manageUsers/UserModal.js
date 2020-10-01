@@ -20,7 +20,15 @@ const UserModal = props => {
 
   const cb = function(result) {};
   const row = props.editRowDetails || {};
-  const user = getUserState();
+  const loggedinUser = getUserState();
+
+  const isLoggedinUser = userId => {
+    return loggedinUser.userId === userId;
+  };
+  const loggedinUserHasAdminRole = () => {
+    const roles = loggedinUser.userRoles;
+    return roles.includes(ROLE.ADMIN);
+  };
 
   const cbRoles = function(result) {
     const coll = result.value
@@ -47,6 +55,9 @@ const UserModal = props => {
   const transformRoles = asArray(allRoles).map(role => {
     let isChecked = false;
     let isDisabled = false;
+    if (props.isEdit && isLoggedinUser(row.userId) && loggedinUserHasAdminRole()) {
+      isDisabled = true;
+    }
     if (props.isEdit && role.roleDescription !== ROLE.FLIGHTVWR) {
       isChecked = isCheckedRole(role, props.editRowDetails.roles);
     } else if (role.roleDescription === ROLE.FLIGHTVWR) {
@@ -91,7 +102,7 @@ const UserModal = props => {
     //TODO selectedRoles is empty if no change occurs, which makes hard to apply default values
     res.roles = selectedRoles;
     res.password = props.isEdit ? null : res.password;
-    res.isCurrentlyLoggedInUser = row.userId === user.userId;
+    res.isCurrentlyLoggedInUser = isLoggedinUser(row.userId);
     res.active = res.active ? 1 : 0;
 
     return [res];
@@ -278,6 +289,7 @@ const UserModal = props => {
                 inputVal={!!row.active}
                 callback={cb}
                 selected={!!row.active}
+                readOnly={isLoggedinUser(row.userId)}
                 spacebetween
               />
             ) : (
