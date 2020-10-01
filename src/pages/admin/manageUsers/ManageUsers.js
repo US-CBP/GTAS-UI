@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, DropdownButton, Dropdown } from "react-bootstrap";
 import Table from "../../../components/table/Table";
 import Main from "../../../components/main/Main";
@@ -12,6 +12,7 @@ import UserModal from "./UserModal";
 import Confirm from "../../../components/confirmationModal/Confirm";
 import ChangePasswordModal from "./changePasswordModal/ChangePasswordModal";
 import Toast from "../../../components/toast/Toast";
+import { UserContext } from "../../../context/user/UserContext";
 
 const ManageUsers = props => {
   const [data, setData] = useState(undefined);
@@ -27,6 +28,12 @@ const ManageUsers = props => {
   const [toastBodyText, setToastBodyText] = useState("");
   const [toastVariant, setToastVariant] = useState("");
 
+  const { getUserState } = useContext(UserContext);
+
+  const isLoggedinUser = userId => {
+    const loggedinUser = getUserState();
+    return loggedinUser.userId === userId;
+  };
   const cb = function(status = ACTION.CLOSE, result) {
     if (status !== ACTION.CLOSE && status !== ACTION.CANCEL) fetchData();
   };
@@ -82,16 +89,18 @@ const ManageUsers = props => {
                 header="Confirm User Deletion"
                 message={`Please confirm to delete a user with userId: ${row.original.userId}`}
               >
-                {confirm => (
-                  <Dropdown.Item
-                    as="button"
-                    onClick={confirm(() => {
-                      deleteUser(row.original);
-                    })}
-                  >
-                    Delete User
-                  </Dropdown.Item>
-                )}
+                {confirm =>
+                  !isLoggedinUser(row.original.userId) && (
+                    <Dropdown.Item
+                      as="button"
+                      onClick={confirm(() => {
+                        deleteUser(row.original);
+                      })}
+                    >
+                      Delete User
+                    </Dropdown.Item>
+                  )
+                }
               </Confirm>
             </DropdownButton>
           </div>
