@@ -41,28 +41,28 @@ const LanguageEditor = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   // setKey((key || 0) + 1);
-  //   console.log("ON ISEDIT CHANGE isedit", isEdit);
-  // }, [isEdit]);
-
-  // useEffect(() => {
-  //   console.log("key:", key);
-  // }, [key]);
-
-  // const modeInput = (
-  //   <LabelledInput
-  //     inputType="text"
-  //     labelText={<Xl8 xid="0">Enable Live Edit mode?</Xl8>}
-  //     inputVal={isEdit}
-  //     spacebetween
-  //     callback={handleClick}
-  //     onClick={handleClick}
-  //     key={key}
-  //   >
-  //     {isEdit}
-  //   </LabelledInput>
-  // );
+  const header = [
+    {
+      Accessor: "id",
+      Xl8: true,
+      Header: ["led003", "ID"]
+    },
+    {
+      Accessor: "code",
+      Xl8: true,
+      Header: ["led004", "Code"]
+    },
+    {
+      Accessor: "language",
+      Xl8: true,
+      Header: ["led005", "Language"]
+    },
+    {
+      Accessor: "translation",
+      Xl8: true,
+      Header: ["led006", "Translation"]
+    }
+  ];
 
   return (
     <Main className="full" key={isEdit}>
@@ -78,13 +78,7 @@ const LanguageEditor = () => {
           ></LabelledInput>
         }
       ></Title>
-      <Table
-        data={data}
-        id="Queries"
-        callback={cb}
-        key={data}
-        // header={header}
-      ></Table>
+      <Table data={data} id="Queries" callback={cb} key={data} header={header}></Table>
     </Main>
   );
 };
