@@ -5,9 +5,9 @@ import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import { Button, Row } from "react-bootstrap";
-import NoteTypeModal from "../noteTypeCats/NoteTypeModal.js";
+import NoteTypeModal from "./NoteModal.js";
 
-const NoteTypeCats = ({ name }) => {
+const NoteCats = ({ name }) => {
   const cb = function(result) {};
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
@@ -54,4 +54,4 @@ const NoteTypeCats = ({ name }) => {
   );
 };
 
-export default NoteTypeCats;
+export default NoteCats;
