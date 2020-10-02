@@ -150,8 +150,15 @@ const SEATS = `${BASE_URL}gtas/seats`;
 const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
 const ATTACHMENTSMETA = `${BASE_URL}gtas/attachmentsmeta`;
 const DOWNLOADATTACHMENT = `${BASE_URL}gtas/attachment`;
+const TRANSLATIONS = `${BASE_URL}gtas/api/translation`;
 
 // ENTITY METHODS
+
+export const translations = {
+  get: id => get(TRANSLATIONS, BASEHEADER, id),
+  post: body => post(TRANSLATIONS, BASEHEADER, stringify(body))
+};
+
 export const users = {
   get: {
     getAll: (id, params) => get(USERS + "/", BASEHEADER, id, params),
@@ -199,7 +206,10 @@ export const cases = {
 export const ruleCats = { get: (id, params) => get(RULE_CATS, BASEHEADER) };
 export const settingsinfo = {
   get: (id, params) => get(SETTINGSINFO, BASEHEADER),
-  put: body => putNoId(SETTINGSINFO, BASEHEADER, stringify(body))
+  put: body => {
+    console.log(body);
+    putNoId(SETTINGSINFO, BASEHEADER, stringify(body));
+  }
 };
 export const getrulecats = { get: (id, params) => get(GETRULECATS, BASEHEADER) };
 export const paxdetails = {

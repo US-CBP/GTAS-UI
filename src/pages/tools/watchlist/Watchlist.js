@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
+import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import Modal from "../../../components/modal/Modal";
 import { Button, Tabs, Tab, Row } from "react-bootstrap";
@@ -15,9 +16,9 @@ import CSVReader from "../../../components/CSVReader/CSVReader";
 
 const Watchlist = props => {
   const cb = function(result) {};
-  const TAB = { PAX: ["pax", "Passenger"], DOX: ["dox", "Document"] };
+  const TAB = { PAX: "passenger", DOX: "document" };
   const mode = (props.mode || "").toLowerCase();
-  const isDox = mode === TAB.DOX[0];
+  const isDox = mode === TAB.DOX;
 
   const [showModal, setShowModal] = useState(false);
   const [showMiniModal, setShowMiniModal] = useState(false);
@@ -27,6 +28,7 @@ const Watchlist = props => {
   const [wlcatData, setWlcatData] = useState([]);
   const [editRow, setEditRow] = useState({});
   const [tab, setTab] = useState(isDox ? TAB.DOX : TAB.PAX); // default to pax when no param is in the uri
+  const [buttonTypeText, setButtonTypeText] = useState(); // default to pax when no param is in the uri
 
   const handleImportData = results => {
     const keys = {
@@ -59,24 +61,6 @@ const Watchlist = props => {
     });
   };
 
-  const button = (
-    <Row>
-      <Button
-        variant="ternary"
-        className="btn btn-outline-info"
-        name={props.name}
-        placeholder={props.placeholder}
-        onClick={() => launchModal(0)}
-        required={props.required}
-        value={props.inputVal}
-        alt={props.alt}
-      >
-        {`Add ${tab[1]}`}
-      </Button>
-      <CSVReader callback={handleImportData} />
-    </Row>
-  );
-
   const launchModal = recordId => {
     setId(recordId);
     setShowModal(true);
@@ -108,9 +92,23 @@ const Watchlist = props => {
   };
 
   const tabs = (
-    <Tabs defaultActiveKey={tab[0]} id="wlTabs">
-      <Tab eventKey={TAB.PAX[0]} title={TAB.PAX[1]}></Tab>
-      <Tab eventKey={TAB.DOX[0]} title={TAB.DOX[1]}></Tab>
+    <Tabs defaultActiveKey={TAB} id="wlTabs">
+      <Tab
+        eventKey={TAB.PAX}
+        title={
+          <Xl8 xid="wl001" id="wlTabs-tab-passenger">
+            Passenger
+          </Xl8>
+        }
+      ></Tab>
+      <Tab
+        eventKey={TAB.DOX}
+        title={
+          <Xl8 xid="wl002" id="wlTabs-tab-document">
+            Document
+          </Xl8>
+        }
+      ></Tab>
     </Tabs>
   );
 
@@ -120,10 +118,10 @@ const Watchlist = props => {
     if (ev.length === 0) return;
 
     const id = ev.split("-")[2];
-    const newTab = (id || "").toLowerCase() === TAB.DOX[0] ? TAB.DOX : TAB.PAX;
+    const newTab = (id || "").toLowerCase() === TAB.PAX ? TAB.PAX : TAB.DOX;
 
     setTab(newTab);
-    navigate(`/gtas/tools/watchlist/${newTab[0]}`);
+    // navigate(`/gtas/tools/watchlist/${newTab[0]}`);
   };
 
   /**
@@ -136,6 +134,12 @@ const Watchlist = props => {
 
     fetchData();
   }, [tab, wlcatData]);
+
+  useEffect(() => {
+    tab === TAB.PAX
+      ? setButtonTypeText(<Xl8 xid="wl004">Add Passenger</Xl8>)
+      : setButtonTypeText(<Xl8 xid="wl003">Add Document</Xl8>);
+  }, [tab, TAB.DOX]);
 
   // fetch the wl cats on page load.
   useEffect(() => {
@@ -203,7 +207,8 @@ const Watchlist = props => {
   const doxHeader = [
     {
       Accessor: "id",
-      Header: "Edit",
+      Xl8: true,
+      Header: ["edit001", "Edit"],
       disableExport: true,
       Cell: ({ row }) => (
         <div className="icon-col">
@@ -217,12 +222,13 @@ const Watchlist = props => {
         </div>
       )
     },
-    { Accessor: "documentType" },
-    { Accessor: "documentNumber" },
-    { Accessor: "category" },
+    { Accessor: "documentType", Xl8: true, Header: ["wl011", "Document Type"] },
+    { Accessor: "documentNumber", Xl8: true, Header: ["wl012", "Document Number"] },
+    { Accessor: "category", Xl8: true, Header: ["wl013", "Category"] },
     {
       Accessor: "delete",
-      Header: "Delete",
+      Xl8: true,
+      Header: ["wl014", "Delete"],
       disableExport: true,
       Cell: ({ row }) => (
         <div className="icon-col">
@@ -240,8 +246,9 @@ const Watchlist = props => {
   const paxHeader = [
     {
       Accessor: "id",
-      Header: "Edit",
+      Xl8: true,
       disableExport: true,
+      Header: ["edit001", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -254,14 +261,15 @@ const Watchlist = props => {
         </div>
       )
     },
-    { Accessor: "firstName" },
-    { Accessor: "lastName" },
-    { Accessor: "dob", Header: "DOB" },
-    { Accessor: "category" },
+    { Accessor: "firstName", Xl8: true, Header: ["wl015", "First Name"] },
+    { Accessor: "lastName", Xl8: true, Header: ["wl016", "Last Name"] },
+    { Accessor: "dob", Xl8: true, Header: ["wl016", "DOB"] },
+    { Accessor: "category", Xl8: true, Header: ["wl017", "Category"] },
     {
       Accessor: "delete",
-      Header: "Delete",
+      Xl8: true,
       disableExport: true,
+      Header: ["wl014", "Delete"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -275,26 +283,44 @@ const Watchlist = props => {
     }
   ];
 
-  const header = tab[0] === TAB.DOX[0] ? doxHeader : paxHeader;
-  const wlType = tab[0] === TAB.DOX[0] ? "document" : "passenger";
+  const header = tab === TAB.DOX ? doxHeader : paxHeader;
+  const wlType = tab;
   const deleteText = {
-    message: "Are you sure you want to delete the record?",
-    title: "Delete Confirmation",
+    message: <Xl8 xid="wl005">Are you sure you want to delete the record?</Xl8>,
+    title: <Xl8 xid="wl006">Delete Confirmation</Xl8>,
     style: "danger"
   };
+
+  const button = (
+    <Row>
+      <Button
+        variant="ternary"
+        className="btn btn-outline-info"
+        name={props.name}
+        placeholder={props.placeholder}
+        onClick={() => launchModal(0)}
+        required={props.required}
+        value={props.inputVal}
+        alt={props.alt}
+      >
+        {buttonTypeText}
+      </Button>
+      <CSVReader callback={handleImportData} />
+    </Row>
+  );
 
   return (
     <Main className="full">
       <Title
-        title="Watchlists"
+        title={<Xl8 xid="wl007">Watchlists</Xl8>}
         leftChild={tabs}
         leftCb={titleTabCallback}
         rightChild={button}
+        key={tab}
       ></Title>
       <Table
         data={data}
         key={key}
-        id={tab[0]}
         header={header}
         callback={cb}
         exportFileName={`watchlists-${wlType}`}
@@ -303,8 +329,8 @@ const Watchlist = props => {
         show={showMiniModal}
         onHide={closeMiniModal}
         data={deleteText}
-        submittext="Delete"
-        closetext="Cancel"
+        submittext={<Xl8 xid="wl008">Delete</Xl8>}
+        closetext={<Xl8 xid="wl009">Cancel</Xl8>}
       ></Modal>
       <WLModal
         type={tab}

@@ -1,17 +1,13 @@
 import React from "react";
 import "./Title.css";
-// import { Tabs, Tab } from "react-bootstrap";
 import { hasData } from "../../utils/utils";
-// import Breadcrumbs from "../breadcrumbs/Breadcrumbs";
 
 const Title = props => {
   const leftCb = props.leftCb;
   const cb = ev => {
     const id = ev.target.id;
 
-    if (hasData(leftCb)) {
-      leftCb(id);
-    }
+    if (hasData(leftCb)) leftCb(id);
   };
 
   return (

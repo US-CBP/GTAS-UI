@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { Link } from "@reach/router";
 import {
   Nav,
@@ -11,14 +11,21 @@ import {
 } from "react-bootstrap";
 import { navigate, useLocation } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
+import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { ROLE } from "../../utils/constants";
+import { hasData } from "../../utils/utils";
 import "./Header.scss";
 import wcoLogo from "../../images/WCO_GTAS_header_brand.svg";
-import { hasData } from "../../utils/utils";
+import Xl8 from "../../components/xl8/Xl8";
 
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
+  const { getLiveEditState, action } = useContext(LiveEditContext);
+  const [currentLang] = useState(window.navigator.language);
+
+  const [isEdit, setIsEdit] = useState(getLiveEditState().isEdit);
+
   const searchInputRef = useRef();
 
   const user = getUserState();
@@ -39,6 +46,7 @@ const Header = () => {
     FLIGHT: "/gtas/flights",
     VETTING: "/gtas/vetting",
     TOOLS: "/gtas/tools",
+    LANG: "/gtas/langEditor",
     ADMIN: "/gtas/admin"
   };
 
@@ -61,10 +69,15 @@ const Header = () => {
     }
   };
 
+  useEffect(() => {
+    const editstate = getLiveEditState();
+    setIsEdit(editstate.isEdit);
+  }, []);
+
   return (
     <Navbar sticky="top" expand="md" className="header-navbar" variant="light">
       <Navbar.Brand className="header-navbar-brand">
-        <Link to="dashboard" onClick={() => clickTab(htab.DASH)}>
+        <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
           <img src={wcoLogo} />
         </Link>
       </Navbar.Brand>
@@ -73,19 +86,11 @@ const Header = () => {
         <Nav variant="tabs" className="left-nav">
           <Nav.Link
             as={Link}
-            to="dashboard"
-            className={`${getActiveClass(htab.DASH)}`}
-            onClick={() => clickTab(htab.DASH)}
-          >
-            Dashboard
-          </Nav.Link>
-          <Nav.Link
-            as={Link}
             to="flights"
             className={`${getActiveClass(htab.FLIGHT)}`}
             onClick={() => clickTab(htab.FLIGHT)}
           >
-            Flights
+            <Xl8 xid="001">Flights</Xl8>
           </Nav.Link>
           <Nav.Link
             as={Link}
@@ -93,7 +98,7 @@ const Header = () => {
             className={`${getActiveClass(htab.VETTING)}`}
             onClick={() => clickTab(htab.VETTING)}
           >
-            Vetting
+            <Xl8 xid="002">Vetting</Xl8>
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
             <Nav.Link
@@ -102,7 +107,7 @@ const Header = () => {
               className={`${getActiveClass(htab.ADMIN)}`}
               onClick={() => clickTab(htab.ADMIN)}
             >
-              Admin
+              <Xl8 xid="003">Admin</Xl8>
             </Nav.Link>
           </RoleAuthenticator>
           <Nav.Link
@@ -111,8 +116,19 @@ const Header = () => {
             className={`${getActiveClass(htab.TOOLS)}`}
             onClick={() => clickTab(htab.TOOLS)}
           >
-            Tools
+            <Xl8 xid="004">Tools</Xl8>
           </Nav.Link>
+          <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
+            <Nav.Link
+              as={Link}
+              to="langEditor"
+              className={`${getActiveClass(htab.LANG)}`}
+              onClick={() => clickTab(htab.LANG)}
+            >
+              <i className="fa fa-language mx-xl-1"></i>
+              {currentLang}
+            </Nav.Link>
+          </RoleAuthenticator>
         </Nav>
         <Nav className="ml-auto">
           <Form inline>
@@ -131,11 +147,11 @@ const Header = () => {
               to={"user/change-password"}
               onClick={() => clickTab("")}
             >
-              Change Password
+              {<Xl8 xid="005">Change password</Xl8>}
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to="#" onClick={logout}>
-              Logout
+              {<Xl8 xid="006">Logout</Xl8>}
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>

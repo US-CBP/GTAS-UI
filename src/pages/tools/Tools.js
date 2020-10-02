@@ -1,5 +1,6 @@
 import React from "react";
 import Title from "../../components/title/Title";
+import Xl8 from "../../components/xl8/Xl8";
 import Main from "../../components/main/Main";
 import { Card, CardDeck } from "react-bootstrap";
 import { asArray, getEndpoint } from "../../utils/utils";
@@ -13,7 +14,7 @@ const Tools = props => {
   if (getEndpoint(props.location?.pathname) === "tools")
     return (
       <>
-        <Title title="Tools" />
+        <Title title={<Xl8 xid="too001">Tools</Xl8>} />
 
         <Main className="full-cards">
           <CardDeck className="page-deck">
@@ -25,7 +26,6 @@ const Tools = props => {
                     <Card.Body>
                       <Card.Title className="nowrap">
                         <i className={`fa fa-3x ${data.icon}`}></i>
-                        {/* {`  ${data.name}`} */}
                       </Card.Title>
                       <div className="card-overlay">{data.name}</div>
                       <div className="card-description">

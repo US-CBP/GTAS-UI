@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { Button, Alert } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import Table from "../../../components/table/Table";
-import { signuprequests } from "../../../services/serviceWrapper";
-import SideNav from "../../../components/sidenav/SideNav";
+import SidenavContainer from "../../../components/sidenavContainer/SidenavContainer";
 import Main from "../../../components/main/Main";
+import Xl8 from "../../../components/xl8/Xl8";
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { hasData } from "../../../utils/utils";
+import { signuprequests } from "../../../services/serviceWrapper";
 
 const SignUpRequests = () => {
   const [data, setData] = useState();
@@ -68,24 +69,15 @@ const SignUpRequests = () => {
   ];
 
   const headers = [
-    {
-      Accessor: "username"
-    },
-    {
-      Accessor: "firstName"
-    },
-    {
-      Accessor: "lastName"
-    },
-    {
-      Accessor: "signupLocation"
-    },
-    {
-      Accessor: "status"
-    },
+    { Accessor: "username", Xl8: true, Header: ["sur008", "Username"] },
+    { Accessor: "firstName", Xl8: true, Header: ["sur009", "First Name"] },
+    { Accessor: "lastName", Xl8: true, Header: ["sur010", "Last Name"] },
+    { Accessor: "signupLocation", Xl8: true, Header: ["sur011", "Signup Location"] },
+    { Accessor: "status", Xl8: true, Header: ["sur012", "Status"] },
     {
       Accessor: "id",
-      Header: "Action",
+      Xl8: true,
+      Header: ["sur013", "Action"],
       Cell: ({ row }) => (
         <>
           <Button
@@ -94,7 +86,7 @@ const SignUpRequests = () => {
             onClick={() => approve(row.original.id)}
             disabled={row.original.status !== "NEW"}
           >
-            Approve
+            <Xl8 xid="sur001">Approve</Xl8>
           </Button>
           <Button
             variant="outline-danger"
@@ -102,7 +94,7 @@ const SignUpRequests = () => {
             onClick={() => reject(row.original.id)}
             disabled={row.original.status !== "NEW"}
           >
-            Reject
+            <Xl8 xid="sur002">Reject</Xl8>
           </Button>
         </>
       )
@@ -111,7 +103,7 @@ const SignUpRequests = () => {
 
   return (
     <>
-      <SideNav>
+      <SidenavContainer>
         <FilterForm
           title="Filter"
           service={signuprequests.get}
@@ -121,7 +113,7 @@ const SignUpRequests = () => {
         >
           <hr />
           <LabelledInput
-            labelText="Username"
+            labelText={<Xl8 xid="sur003">Username</Xl8>}
             datafield
             name="username"
             inputType="text"
@@ -129,7 +121,7 @@ const SignUpRequests = () => {
             alt="Username"
           />
           <LabelledInput
-            labelText="Status"
+            labelText={<Xl8 xid="sur004">Status</Xl8>}
             datafield
             name="status"
             inputType="select"
@@ -140,7 +132,7 @@ const SignUpRequests = () => {
             alt="status"
           />
           <LabelledInput
-            labelText="Location"
+            labelText={<Xl8 xid="sur005">Location</Xl8>}
             datafield
             name="location"
             inputType="text"
@@ -148,23 +140,17 @@ const SignUpRequests = () => {
             alt="Location"
           />
         </FilterForm>
-      </SideNav>
+      </SidenavContainer>
       <Main>
-        <Title title="Sign Up Requests"></Title>
+        <Title title={<Xl8 xid="sur006">Sign Up Requests</Xl8>}></Title>
         <Alert show={show} variant={variant}>
           {alertContent}
           <hr />
           <Button onClick={() => setShow(false)} variant="outline-success">
-            CLOSE
+            <Xl8 xid="sur007">Close</Xl8>
           </Button>
         </Alert>
-        <Table
-          data={data}
-          header={headers}
-          id="SigUpRequest"
-          callback={cb}
-          key={refreshKey}
-        ></Table>
+        <Table data={data} header={headers} callback={cb} key={refreshKey}></Table>
       </Main>
     </>
   );

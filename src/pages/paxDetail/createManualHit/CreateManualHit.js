@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 import { manualHit, watchlistcats } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
+import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
 
@@ -35,7 +36,7 @@ const CreateManualHit = props => {
   return (
     <>
       <Button variant="outline-danger" size="sm" onClick={handleShow}>
-        Create Manual Hit
+        <Xl8 xid="cmh001">Create Manual Hit</Xl8>
       </Button>
 
       <Modal
@@ -46,12 +47,13 @@ const CreateManualHit = props => {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Create Manual Hit</Modal.Title>
+          <Modal.Title>
+            <Xl8 xid="cmh001">Create Manual Hit</Xl8>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form
             title=""
-            submitText="SAVE"
             submitService={manualHit.post}
             callback={handleClose}
             action="add"
@@ -60,7 +62,7 @@ const CreateManualHit = props => {
           >
             <LabelledInput
               datafield
-              labelText="Passenger ID"
+              labelText={<Xl8 xid="cmh002">Passenger ID:</Xl8>}
               inputType="text"
               name="paxId"
               inputVal={paxId || ""}
@@ -71,20 +73,20 @@ const CreateManualHit = props => {
             />
             <LabelledInput
               datafield
-              labelText="flight ID"
+              labelText={<Xl8 xid="cmh003">Flight ID:</Xl8>}
               inputType="text"
               name="flightId"
               inputVal={flightId || ""}
-              alt="nothing"
+              alt={<Xl8 xid="2">Flight ID:</Xl8>}
               callback={cb}
               readOnly={true}
               spacebetween
             />
             <LabelledInput
               inputType="select"
-              alt="Nothing"
+              labelText={<Xl8 xid="cmh004">Hit Category:</Xl8>}
               name="hitCategoryId"
-              labelText="Choose Hit Category"
+              alt={<Xl8 xid="2">Hit Category:</Xl8>}
               datafield
               required
               callback={cb}
@@ -93,12 +95,12 @@ const CreateManualHit = props => {
             />
             <LabelledInput
               datafield
-              labelText="Description"
+              labelText={<Xl8 xid="cmh005">Description:</Xl8>}
               inputType="text"
               name="description"
               required=""
               inputVal=""
-              alt="nothing"
+              alt={<Xl8 xid="2">Description:</Xl8>}
               callback={cb}
               spacebetween
             />

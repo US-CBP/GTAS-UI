@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useContext } from "react";
 import RAQB from "../../../components/raqb/RAQB";
 import { Button, Modal, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
+import Xl8 from "../../../components/xl8/Xl8";
 import { navigate } from "@reach/router";
 import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
 import { QR, ACTION, CTX } from "../../../utils/constants";
@@ -31,7 +32,7 @@ const QRModal = props => {
   const [carriers, setCarriers] = useState([]);
   const [dataConfig, setDataConfig] = useState([]);
 
-  const [title, setTitle] = useState(props.data?.title || "");
+  const [title, setTitle] = useState(props.title);
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState(props.data?.query);
   const [showInvalid, setShowInvalid] = useState(false);
@@ -648,8 +649,8 @@ const QRModal = props => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {`${props.title}: `}
-            <label className="big-name-sidebar">{title}</label>
+            <span>{props.title} </span>
+            <label className="big-name-sidebar">{summaryData?.title}</label>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="qbrb-modal-body">
@@ -658,7 +659,7 @@ const QRModal = props => {
               <LabelledInput
                 datafield
                 key={`title${key}`}
-                labelText="Title"
+                labelText={<Xl8 xid="qrm001">Title</Xl8>}
                 inputType="text"
                 inputVal={summaryData?.title}
                 name="title"
@@ -668,7 +669,7 @@ const QRModal = props => {
               />
               <LabelledInput
                 datafield
-                labelText="Description"
+                labelText={<Xl8 xid="qrm002">Description</Xl8>}
                 key={`desc${key}`}
                 inputType="text"
                 inputVal={summaryData?.description}
@@ -683,7 +684,7 @@ const QRModal = props => {
                 <Row className="card-columns qrm">
                   <LabelledInput
                     datafield
-                    labelText="Start Date"
+                    labelText={<Xl8 xid="qrm003">Start Date</Xl8>}
                     key={`sd${key}`}
                     required={true}
                     inputType="text"
@@ -695,7 +696,7 @@ const QRModal = props => {
                   />
                   <LabelledInput
                     datafield
-                    labelText="End Date"
+                    labelText={<Xl8 xid="qrm004">End Date</Xl8>}
                     key={`ed${key}`}
                     inputType="text"
                     inputVal={localeDateOnly(summaryData?.endDate)}
@@ -709,7 +710,7 @@ const QRModal = props => {
                   <LabelledInput
                     key={`en${key}`}
                     datafield
-                    labelText="Enabled"
+                    labelText={<Xl8 xid="qrm005">Enabled</Xl8>}
                     inputType="checkbox"
                     name="enabled"
                     alt="query or rule is enabled"
@@ -720,14 +721,14 @@ const QRModal = props => {
                   <LabelledInput
                     datafield
                     key={`rc${key}`}
-                    labelText="Rule Category"
+                    labelText={<Xl8 xid="qrm006">Rule Category</Xl8>}
                     inputType="select"
                     options={categories}
                     inputVal={summaryData?.ruleCat}
                     required={true}
                     name="ruleCat"
                     callback={cb}
-                    alt="rule category"
+                    alt="alt"
                     spacebetween
                     className="rule-cat"
                   />
@@ -752,7 +753,7 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onClose}
           >
-            Close
+            <Xl8 xid="">Close</Xl8>
           </Button>
           <Button
             type="button"
@@ -761,7 +762,7 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onClear}
           >
-            Clear
+            <Xl8 xid="">Clear</Xl8>
           </Button>
           <Button
             key="save"
@@ -770,7 +771,7 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onSave}
           >
-            Save
+            <Xl8 xid="">Save</Xl8>
           </Button>
           <Button
             key="run"
@@ -779,7 +780,7 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onRun}
           >
-            Run
+            <Xl8 xid="">Run</Xl8>
           </Button>
           {isEdit && (
             <Button
@@ -789,7 +790,7 @@ const QRModal = props => {
               variant="outline-dark"
               onClick={onDelete}
             >
-              Delete
+              <Xl8 xid="">Delete</Xl8>
             </Button>
           )}
         </Modal.Footer>

@@ -5,6 +5,7 @@ import { signup, physicalLocations } from "../../services/serviceWrapper";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import "./SignUp.scss";
 import Title from "../../components/title/Title";
+import Xl8 from "../../components/xl8/Xl8";
 import { asArray, hasData } from "../../utils/utils";
 import { Link } from "@reach/router";
 
@@ -36,7 +37,7 @@ const SignUp = props => {
 
   return (
     <Container className="sign-up-container" fluid>
-      <Title title="Sign Up" />
+      <Title title={<Xl8 xid="sup001">Sign Up</Xl8>} />
       {displayErrorMsg && (
         <Alert variant="danger" dismissible onClose={() => setDisplayErrorMsg(false)}>
           {errorMsg}
@@ -46,10 +47,14 @@ const SignUp = props => {
       {displaySuccessMsg ? (
         <>
           <Alert variant="success">
-            Your request has been sent! You will receive a confirmation email upon
-            approval.
+            <Xl8 xid="sup009">
+              Your request has been sent! You will receive a confirmation email upon
+              approval.
+            </Xl8>
           </Alert>
-          <Link to="/">Home</Link>
+          <Link to="/">
+            <Xl8 xid="sup010">Home</Xl8>
+          </Link>
         </>
       ) : (
         <Form
@@ -57,14 +62,13 @@ const SignUp = props => {
           title=""
           callback={signupCallback}
           action="add"
-          submitText="Submit"
           redirectTo="/login"
           cancellable
           key={locations}
         >
           <LabelledInput
             datafield
-            labelText="First Name"
+            labelText={<Xl8 xid="sup002">First Name</Xl8>}
             inputType="text"
             name="firstName"
             required={true}
@@ -74,7 +78,7 @@ const SignUp = props => {
           />
           <LabelledInput
             datafield
-            labelText="Last Name"
+            labelText={<Xl8 xid="sup003">Last Name</Xl8>}
             inputType="text"
             name="lastName"
             required={true}
@@ -84,7 +88,7 @@ const SignUp = props => {
           />
           <LabelledInput
             datafield
-            labelText="User Name"
+            labelText={<Xl8 xid="sup004">User Name</Xl8>}
             inputType="text"
             name="username"
             required={true}
@@ -94,7 +98,7 @@ const SignUp = props => {
           />
           <LabelledInput
             datafield
-            labelText="Email"
+            labelText={<Xl8 xid="sup005">Email</Xl8>}
             inputType="email"
             name="email"
             required={true}
@@ -104,7 +108,7 @@ const SignUp = props => {
           />
           <LabelledInput
             datafield
-            labelText="Phone Number"
+            labelText={<Xl8 xid="sup006">Phone Number</Xl8>}
             inputType="tel"
             name="phoneNumber"
             inputVal=""
@@ -114,7 +118,7 @@ const SignUp = props => {
           />
           <LabelledInput
             datafield
-            labelText="Location"
+            labelText={<Xl8 xid="sup007">Location</Xl8>}
             inputType="select"
             name="signupLocationId"
             required={true}
@@ -125,7 +129,7 @@ const SignUp = props => {
           />
           <LabelledInput
             datafield
-            labelText="Supervisor"
+            labelText={<Xl8 xid="sup008">Supervisor</Xl8>}
             inputType="text"
             name="supervisor"
             required={true}

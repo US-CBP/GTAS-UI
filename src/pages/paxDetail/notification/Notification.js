@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal, Container } from "react-bootstrap";
 import { notification, usersemails } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
+import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
 import "./Notification.scss";
@@ -41,7 +42,7 @@ const Notification = props => {
   return (
     <>
       <Button variant="outline-info" size="sm" onClick={handleShow}>
-        <i className="fa fa-bullhorn"></i> Notify
+        <i className="fa fa-bullhorn"></i> <Xl8 xid="not001">Notify</Xl8>
       </Button>
 
       <Modal
@@ -52,13 +53,15 @@ const Notification = props => {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Notify Users</Modal.Title>
+          <Modal.Title>
+            <Xl8 xid="not002">Notify Users</Xl8>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container fluid>
             <Form
               title=""
-              submitText="NOTIFY"
+              submitText={<Xl8 xid="not003">Notify</Xl8>}
               submitService={notification.post}
               callback={handleClose}
               action="add"
@@ -72,7 +75,7 @@ const Notification = props => {
                   datafield
                   inputType="checkboxGroup"
                   inputVal={usersEmails}
-                  labelText="Users in Current Group:"
+                  labelText={<Xl8 xid="not004">Users in current group:</Xl8>}
                   name="to"
                   alt="nothing"
                   callback={cb}
@@ -83,7 +86,7 @@ const Notification = props => {
                 inputType="email"
                 alt="nothing"
                 name="externalUsersEmail"
-                labelText="External Users Email:"
+                labelText={<Xl8 xid="not005">External user emails:</Xl8>}
                 placeholder="email@example.com"
                 datafield
                 inputVal=""
@@ -92,13 +95,12 @@ const Notification = props => {
 
               <LabelledInput
                 inputType="textarea"
-                alt="Add note here..."
+                labelText={<Xl8 xid="not006">Notes</Xl8>}
                 name="note"
-                labelText=""
-                placeholder="Add note here..."
                 datafield="note"
                 inputVal=""
                 callback={cb}
+                spacebetween
               />
             </Form>
           </Container>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Title from "../../../components/title/Title";
+import Xl8 from "../../../components/xl8/Xl8";
 import { Tabs, Tab, Container } from "react-bootstrap";
-import Main from "../../../components/main/Main";
 import { navigate } from "@reach/router";
 import { titleCase } from "../../../utils/utils";
 
@@ -26,21 +26,44 @@ const CodeEditor = props => {
 
   const headerTabs = (
     <Tabs defaultActiveKey={props.startTab} id="codeTabs">
-      {tabcontent.map(tab => {
-        return (
-          <Tab
-            eventKey={tab.props.name.toLowerCase()}
-            title={tab.props.name}
-            key={tab.props.name}
-          ></Tab>
-        );
-      })}
+      <Tab
+        eventKey="country"
+        title={
+          <Xl8 xid="app022" id="codeTabs-tab-country">
+            Country
+          </Xl8>
+        }
+        key="country"
+      ></Tab>
+      <Tab
+        eventKey="airport"
+        title={
+          <Xl8 xid="app023" id="codeTabs-tab-airport">
+            Airport
+          </Xl8>
+        }
+        key="airport"
+      ></Tab>
+      <Tab
+        eventKey="carrier"
+        title={
+          <Xl8 xid="app024" id="codeTabs-tab-carrier">
+            Carrier
+          </Xl8>
+        }
+        key="carrier"
+      ></Tab>
     </Tabs>
   );
 
+  let tabMap = {};
+  tabcontent.forEach(tab => {
+    tabMap[tab.props.path] = tab.props.name;
+  });
+
   return (
     <Container fluid>
-      <Title title={titleCase(tab)} leftChild={headerTabs} leftCb={tabHandler} />
+      <Title title={tabMap[tab]} leftChild={headerTabs} leftCb={tabHandler} key={tab} />
       {props.children}
     </Container>
   );

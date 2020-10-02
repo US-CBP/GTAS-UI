@@ -1,6 +1,7 @@
-import React, {useState} from "react";
-import {Modal, Button, Container, Alert} from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../components/form/Form";
+import Xl8 from "../../../components/xl8/Xl8";
 import { watchlistcatspost } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../utils/constants";
@@ -9,7 +10,6 @@ const WatchlistModal = props => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
   const [variant, setVariant] = useState("");
-  const title = "Watchlist Category";
   const cb = function(result) {};
   const severityLevels = [
     { value: "Top", label: "Top" },
@@ -32,13 +32,15 @@ const WatchlistModal = props => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
+        <Modal.Title>
+          <Xl8 xid="wlm001">Add Watchlist Category</Xl8>
+        </Modal.Title>
       </Modal.Header>
       <Alert show={showAlert} variant={variant}>
         {alertContent}
         <hr />
         <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          Confirm
+          <Xl8 xid="form003">Confirm</Xl8>
         </Button>
       </Alert>
       <Modal.Body>
@@ -47,13 +49,12 @@ const WatchlistModal = props => {
             submitService={watchlistcatspost.post}
             callback={postSubmit}
             action="add"
-            submitText="Submit"
             cancellable
             afterProcessed={props.onHide}
           >
             <LabelledInput
               datafield
-              labelText="Watchlist Category Name:"
+              labelText={<Xl8 xid="wlm002">Watchlist Category Name:</Xl8>}
               inputType="text"
               name="label"
               required={true}
@@ -62,7 +63,7 @@ const WatchlistModal = props => {
             />
             <LabelledInput
               datafield
-              labelText="Watchlist Category Description:"
+              labelText={<Xl8 xid="wlm003">Watchlist Category Description:</Xl8>}
               inputType="textarea"
               name="description"
               required={true}
@@ -71,10 +72,9 @@ const WatchlistModal = props => {
             />
             <LabelledInput
               datafield
-              labelText="Watchlist Severity Level:"
+              labelText={<Xl8 xid="wlm002">Watchlist Severity Level:</Xl8>}
               inputType="select"
               name="severity"
-              placeholder="Choose Severity Level..."
               options={severityLevels}
               required={true}
               alt="nothing"

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import { hasData, asArray, isObject, alt } from "../../utils/utils";
 import Title from "../title/Title";
+import Xl8 from "../xl8/Xl8";
 import { Button, Form as RBForm, ButtonToolbar } from "react-bootstrap";
 import { navigate } from "@reach/router";
 
@@ -198,7 +199,7 @@ class Form extends React.Component {
                     variant="outline-dark"
                     onClick={this.onFormCancel}
                   >
-                    {this.props.cancelText || "Cancel"}
+                    {this.props.cancelText || <Xl8 xid="form001">Cancel</Xl8>}
                   </Button>
                 )}
                 {showSubmit && (
@@ -206,7 +207,7 @@ class Form extends React.Component {
                     className={`m-2 button block info fullwidth ${disabled}`}
                     type="submit"
                   >
-                    {this.props.submitText || "Submit"}
+                    {this.props.submitText || <Xl8 xid="form002">Submit</Xl8>}
                   </Button>
                 )}
 

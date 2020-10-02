@@ -4,6 +4,7 @@ import { changePassword } from "../../../../services/serviceWrapper";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { Container, Alert } from "react-bootstrap";
 import Title from "../../../../components/title/Title";
+import Xl8 from "../../../../components/xl8/Xl8";
 import "./ChangePassword.scss";
 import { hasData } from "../../../../utils/utils";
 import { navigate, useParams } from "@reach/router";
@@ -71,7 +72,7 @@ const ChangePassword = props => {
 
   return (
     <Container className="change-password-container">
-      <Title title="Change Password" uri={props.uri} />
+      <Title title={<Xl8 xid="pass001">Change Password</Xl8>} uri={props.uri} />
       {displayErrorMsg && (
         <Alert variant="danger" dismissible onClose={() => setDisplayErrorMsg(false)}>
           {errorMessage}
@@ -79,14 +80,15 @@ const ChangePassword = props => {
       )}
 
       {displaySuccessMsg ? (
-        <Alert variant="success">Your password has been changed successfully!!</Alert>
+        <Alert variant="success">
+          <Xl8 xid="pass002">Your password has been changed successfully!</Xl8>
+        </Alert>
       ) : (
         <Form
           submitService={service}
           title=""
           callback={passwordChangeCallback}
           action="add"
-          submitText="Submit"
           cancellable
           key={style}
           recordId={recordId}
@@ -96,12 +98,12 @@ const ChangePassword = props => {
           ) : (
             <LabelledInput
               datafield
-              labelText="Old Password"
+              labelText={<Xl8 xid="pass003">Old password</Xl8>}
               inputType="password"
               name="oldPassword"
               required={true}
               inputVal={oldPassword}
-              alt="nothing"
+              alt={<Xl8 xid="7">Old password</Xl8>}
               callback={cb}
               onChange={changeInput}
               spacebetween
@@ -109,19 +111,19 @@ const ChangePassword = props => {
           )}
           <LabelledInput
             datafield
-            labelText="New Password"
+            labelText={<Xl8 xid="pass004">New password</Xl8>}
             inputType="password"
             name="newPassword"
             required={true}
             inputVal={newPassword}
-            alt="nothing"
+            alt={<Xl8 xid="7">New password</Xl8>}
             callback={cb}
             onChange={changeInput}
             spacebetween
           />
           <LabelledInput
             datafield
-            labelText="Confirm Password"
+            labelText={<Xl8 xid="pass005">Confirm password</Xl8>}
             inputType="password"
             name="confirmPassword"
             required={true}

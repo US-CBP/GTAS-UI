@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
-import Title from "../../../../components/title/Title";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import Xl8 from "../../../../components/xl8/Xl8";
+import { Button, Container } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
-import CountryModal from "./CountryModal";
+import CarrierModal from "./CarrierModal";
 
-const Countries = ({ name }) => {
+const Carriers = ({ name }) => {
   const cb = function(result) {};
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
@@ -19,7 +19,7 @@ const Countries = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit Country");
+    setModalTitle(<Xl8 xid="car001">Edit Carrier</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -27,8 +27,8 @@ const Countries = ({ name }) => {
   const headers = [
     {
       Accessor: "Edit",
-      disableFilters: true,
-      disableSortBy: true,
+      Xl8: true,
+      Header: ["edit001", "Edit"],
       Cell: ({ row }) => {
         return (
           <div className="icon-col">
@@ -40,10 +40,8 @@ const Countries = ({ name }) => {
         );
       }
     },
-    { Accessor: "iso2" },
-    { Accessor: "iso3" },
-    { Accessor: "isoNumeric" },
-    { Accessor: "name" }
+    { Accessor: "iata", Xl8: true, Header: ["iata001", "IATA"] },
+    { Accessor: "name", Xl8: true, Header: ["car005", "Name"] }
   ];
 
   return (
@@ -53,25 +51,26 @@ const Countries = ({ name }) => {
           variant="outline-dark"
           onClick={() => {
             setShowModal(true);
-            setModalTitle("Add Country");
+            setModalTitle(<Xl8 xid="car002">Add Carrier</Xl8>);
             setIsEditModal(false);
             setEditRowDetails({});
           }}
         >
-          Add Country
+          {<Xl8 xid="car002">Add Carrier</Xl8>}
         </Button>
         <Button
           variant="outline-dark"
           onClick={() => {
-            codeEditor.put.restoreCountriesAll().then(res => {
+            codeEditor.put.restoreCarriersAll().then(res => {
               refresh();
             });
           }}
         >
-          Restore All Countries
+          {<Xl8 xid="car003">Restore All Carriers</Xl8>}
         </Button>
       </div>
-      <CountryModal
+
+      <CarrierModal
         show={showModal}
         onHide={() => setShowModal(false)}
         isEdit={isEditModal}
@@ -82,8 +81,7 @@ const Countries = ({ name }) => {
       />
 
       <Table
-        service={codeEditor.get.countryCodes}
-        id="countries"
+        service={codeEditor.get.carrierCodes}
         callback={cb}
         header={headers}
         key={refreshKey}
@@ -93,4 +91,4 @@ const Countries = ({ name }) => {
   );
 };
 
-export default Countries;
+export default Carriers;

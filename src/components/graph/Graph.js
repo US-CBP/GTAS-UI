@@ -1,5 +1,6 @@
 import React from "react";
 import "../../services/configService";
+import Xl8 from "../../components/xl8/Xl8";
 import { cypher, cypherAuth } from "../../services/serviceWrapper";
 import { provider, paxRelations, saves, palette } from "./structure";
 import "./Graph.css";
@@ -182,14 +183,17 @@ class Graph extends React.Component {
         <div className="flex flex-vert ie-fix-md full-width align-items-center scroll-container-outer">
           <div className="cbp-card-container full-width">
             <div className="cbp-card cbp-card-shadow">
-              <h4 className="h-label no-margin-top">Search</h4>
-
+              <h4 className="h-label no-margin-top">
+                <Xl8 xid="link001">Search</Xl8>
+              </h4>
               <div className="ppt-body">
                 <section className="ppt-section-main">
                   <div className="ppt-container-graph row">
                     <nav id="popoto-saves" className="col-lg-2 ppt-taxo-nav">
                       <div id="saves">
-                        <span className="ppt-header-span">This Passenger:</span>
+                        <span className="ppt-header-span">
+                          <Xl8 xid="link002">This Passenger:</Xl8>
+                        </span>
                         <table className="ppt-saved-ul">
                           <tr id="Pax" onClick={() => this.onClickSavedGraph("pax")}>
                             <td>
@@ -197,7 +201,7 @@ class Graph extends React.Component {
                             </td>
                             <td>
                               <span className="ppt-label" title="Passenger links">
-                                Passenger
+                                <Xl8 xid="link003">Passenger</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -213,7 +217,7 @@ class Graph extends React.Component {
                                 class="ppt-label"
                                 title="Addresses used by this passenger"
                               >
-                                Address
+                                <Xl8 xid="link004">Address</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -229,7 +233,7 @@ class Graph extends React.Component {
                                 class="ppt-label"
                                 title="Credit cards used by this passenger"
                               >
-                                Credit Card
+                                <Xl8 xid="link005">Credit Card</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -242,7 +246,7 @@ class Graph extends React.Component {
                                 class="ppt-label"
                                 title="Phone numbers used by this passenger"
                               >
-                                Phone
+                                <Xl8 xid="link006">Phone</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -255,7 +259,7 @@ class Graph extends React.Component {
                                 class="ppt-label"
                                 title="Email addresses used by this passenger"
                               >
-                                Emails
+                                <Xl8 xid="link007">Emails</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -265,7 +269,7 @@ class Graph extends React.Component {
                             </td>
                             <td>
                               <span class="ppt-label" title="Hits for this passenger">
-                                Hits
+                                <Xl8 xid="link008">Hits</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -285,7 +289,7 @@ class Graph extends React.Component {
                                 class="ppt-label"
                                 title="Documents used by this passenger"
                               >
-                                Documents
+                                <Xl8 xid="link009">Documents</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -293,7 +297,9 @@ class Graph extends React.Component {
                         <hr />
                         <br />
 
-                        <span class="ppt-header-span">This FLight:</span>
+                        <span class="ppt-header-span">
+                          <Xl8 xid="link010">This FLight:</Xl8>
+                        </span>
                         <table class="ppt-saved-ul">
                           <tr
                             id="Flight"
@@ -304,7 +310,7 @@ class Graph extends React.Component {
                             </td>
                             <td>
                               <span class="ppt-label" title="Flight links">
-                                Flight
+                                <Xl8 xid="link011">Flight</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -320,7 +326,7 @@ class Graph extends React.Component {
                                 class="ppt-label"
                                 title="All passenger addresses for this flight"
                               >
-                                All Addresses
+                                <Xl8 xid="link012">All Addresses</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -336,7 +342,7 @@ class Graph extends React.Component {
                                 class="ppt-label"
                                 title="All passenger credit cards for this flight"
                               >
-                                All Credit Cards
+                                <Xl8 xid="link013">All Credit Cards</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -352,7 +358,7 @@ class Graph extends React.Component {
                                 class="ppt-label"
                                 title="All passenger phone numbers for this flight"
                               >
-                                All Phones
+                                <Xl8 xid="link014">All Phones</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -368,7 +374,7 @@ class Graph extends React.Component {
                                 class="ppt-label"
                                 title="All passenger email addresses for this flight"
                               >
-                                All Emails
+                                <Xl8 xid="link015">All Emails</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -381,7 +387,7 @@ class Graph extends React.Component {
                                 class="ppt-label"
                                 title="All passenger hits for this flight"
                               >
-                                All Hits
+                                <Xl8 xid="link016">All Hits</Xl8>
                               </span>
                             </td>
                           </tr>
@@ -401,7 +407,7 @@ class Graph extends React.Component {
                                 class="ppt-label"
                                 title="All passenger documents for this flight"
                               >
-                                All Documents
+                                <Xl8 xid="link017">All Documents</Xl8>
                               </span>
                             </td>
                           </tr>

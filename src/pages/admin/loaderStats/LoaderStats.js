@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
+import Xl8 from "../../../components/xl8/Xl8";
 import { loaderStats } from "../../../services/serviceWrapper";
 import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
@@ -20,14 +21,20 @@ const LoaderStats = ({ name }) => {
 
   return (
     <Container fluid>
-      <Title title="Loader Statistics"></Title>
+      <Title title={<Xl8 xid="ls001">Loader Statistics</Xl8>}></Title>
       <br></br>
       <Container>
         <Col lg={{ span: 4, offset: 4 }}>
-          <Form data={data} key={key} title="" callback={cb} submitText="Refresh">
+          <Form
+            data={data}
+            key={key}
+            title=""
+            callback={cb}
+            submitText={<Xl8 xid="ls008">Refresh</Xl8>}
+          >
             <LabelledInput
               datafield
-              labelText="Last message received:"
+              labelText={<Xl8 xid="ls004">Last message received:</Xl8>}
               inputType="text"
               name="lastMessageInSystem"
               alt="Last message received"
@@ -36,7 +43,7 @@ const LoaderStats = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText="Last message analyzed:"
+              labelText={<Xl8 xid="ls002">Last message analyzed:</Xl8>}
               inputType="text"
               name="lastMessageAnalyzedByDrools"
               callback={onChange}
@@ -45,7 +52,9 @@ const LoaderStats = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText="Most recent rule hit (Partial excluded) timestamp:"
+              labelText={
+                <Xl8 xid="ls003">Most recent rule hit (Partial excluded) timestamp:</Xl8>
+              }
               inputType="text"
               name="mostRecentRuleHit"
               callback={onChange}
@@ -54,7 +63,7 @@ const LoaderStats = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText="Passengers Count from past 500 messages:"
+              labelText={<Xl8 xid="ls005">Passengers Count from past 500 messages:</Xl8>}
               inputType="text"
               name="passengerCount"
               callback={onChange}
@@ -63,7 +72,7 @@ const LoaderStats = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText="Loading/Parsing errors past 500 messages:"
+              labelText={<Xl8 xid="ls006">Loading/Parsing errors past 500 messages:</Xl8>}
               inputType="text"
               name="totalLoadingParsingErrors"
               callback={onChange}
@@ -73,7 +82,7 @@ const LoaderStats = ({ name }) => {
 
             <LabelledInput
               datafield
-              labelText="Rule errors last 500 messages:"
+              labelText={<Xl8 xid="ls007">Rule errors last 500 messages:</Xl8>}
               inputType="text"
               name="totalRuleErros"
               callback={onChange}

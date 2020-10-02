@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
+import Xl8 from "../../../../components/xl8/Xl8";
 import { Button, Container } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
-import CarrierModal from "./CarrierModal";
+import CountryModal from "./CountryModal";
 
-const Carriers = ({ name }) => {
+const Countries = ({ name }) => {
   const cb = function(result) {};
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
@@ -18,7 +19,7 @@ const Carriers = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit Carrier");
+    setModalTitle(<Xl8 xid="cou001">Edit Country:</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -26,6 +27,8 @@ const Carriers = ({ name }) => {
   const headers = [
     {
       Accessor: "Edit",
+      Xl8: true,
+      Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
       Cell: ({ row }) => {
@@ -39,8 +42,10 @@ const Carriers = ({ name }) => {
         );
       }
     },
-    { Accessor: "iata" },
-    { Accessor: "name" }
+    { Accessor: "iso2", Xl8: true, Header: ["iso2001", "ISO2"] },
+    { Accessor: "iso3", Xl8: true, Header: ["iso3001", "ISO3"] },
+    { Accessor: "isoNumeric", Xl8: true, Header: ["isonum001", "ISO Numeric"] },
+    { Accessor: "name", Xl8: true, Header: ["cou005", "Name"] }
   ];
 
   return (
@@ -50,26 +55,25 @@ const Carriers = ({ name }) => {
           variant="outline-dark"
           onClick={() => {
             setShowModal(true);
-            setModalTitle("Add Carrier");
+            setModalTitle(<Xl8 xid="cou004">Add Country:</Xl8>);
             setIsEditModal(false);
             setEditRowDetails({});
           }}
         >
-          Add Carrier
+          {<Xl8 xid="cou002">Add Country</Xl8>}
         </Button>
         <Button
           variant="outline-dark"
           onClick={() => {
-            codeEditor.put.restoreCarriersAll().then(res => {
+            codeEditor.put.restoreCountriesAll().then(res => {
               refresh();
             });
           }}
         >
-          Restore All Carriers
+          {<Xl8 xid="cou003">Restore All Countries</Xl8>}
         </Button>
       </div>
-
-      <CarrierModal
+      <CountryModal
         show={showModal}
         onHide={() => setShowModal(false)}
         isEdit={isEditModal}
@@ -80,8 +84,7 @@ const Carriers = ({ name }) => {
       />
 
       <Table
-        service={codeEditor.get.carrierCodes}
-        id="carriers"
+        service={codeEditor.get.countryCodes}
         callback={cb}
         header={headers}
         key={refreshKey}
@@ -91,4 +94,4 @@ const Carriers = ({ name }) => {
   );
 };
 
-export default Carriers;
+export default Countries;

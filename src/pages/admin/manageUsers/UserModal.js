@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { Modal, Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../components/form/Form";
+import Xl8 from "../../../components/xl8/Xl8";
 import { users, roles } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
@@ -113,7 +114,7 @@ const UserModal = props => {
     ) : (
       <LabelledInput
         datafield
-        labelText="Password"
+        labelText={<Xl8 xid="um01">Password</Xl8>}
         inputType="password"
         name="password"
         required={true}
@@ -143,7 +144,7 @@ const UserModal = props => {
             });
           }}
         >
-          Delete
+          {<Xl8 xid="um02">Delete</Xl8>}
         </Button>
       ]
     : [];
@@ -163,7 +164,7 @@ const UserModal = props => {
         {alertContent}
         <hr />
         <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          Confirm
+          {<Xl8 xid="form003">Confirm</Xl8>}
         </Button>
       </Alert>
       <Modal.Body>
@@ -173,7 +174,6 @@ const UserModal = props => {
             title=""
             callback={postSubmit}
             action="add"
-            submitText="Submit"
             paramCallback={preSubmit}
             cancellable
             customButtons={buttons}
@@ -181,7 +181,7 @@ const UserModal = props => {
             {props.isEdit ? (
               <LabelledInput
                 datafield
-                labelText="User ID"
+                labelText={<Xl8 xid="um003">User ID:</Xl8>}
                 inputType="text"
                 name="userId"
                 required={true}
@@ -194,7 +194,7 @@ const UserModal = props => {
             ) : (
               <LabelledInput
                 datafield
-                labelText="User ID"
+                labelText={<Xl8 xid="um003">User ID:</Xl8>}
                 inputType="text"
                 name="userId"
                 required={true}
@@ -209,7 +209,7 @@ const UserModal = props => {
 
             <LabelledInput
               datafield
-              labelText="First Name"
+              labelText={<Xl8 xid="um004">First Name:</Xl8>}
               inputType="text"
               name="firstName"
               required={true}
@@ -218,10 +218,9 @@ const UserModal = props => {
               callback={cb}
               spacebetween
             />
-
             <LabelledInput
               datafield
-              labelText="Last Name"
+              labelText={<Xl8 xid="um005">Last Name:</Xl8>}
               inputType="text"
               name="lastName"
               required={true}
@@ -233,7 +232,7 @@ const UserModal = props => {
 
             <LabelledInput
               datafield
-              labelText="Email"
+              labelText={<Xl8 xid="um006">Email:</Xl8>}
               inputType="email"
               name="email"
               required={true}
@@ -244,7 +243,7 @@ const UserModal = props => {
             />
             <LabelledInput
               datafield
-              labelText="Phone Number"
+              labelText={<Xl8 xid="um007">Phone Number:</Xl8>}
               inputType="tel"
               name="phoneNumber"
               inputVal={row.phoneNumber}
@@ -256,7 +255,7 @@ const UserModal = props => {
 
             <LabelledInput
               datafield="emailEnabled"
-              labelText="Enable User Email Notification"
+              labelText={<Xl8 xid="um007">Enable User Email Notification:</Xl8>}
               inputType="checkbox"
               name="emailEnabled"
               required={true}
@@ -269,7 +268,7 @@ const UserModal = props => {
 
             <LabelledInput
               datafield
-              labelText="Automated Email Notification"
+              labelText={<Xl8 xid="um007">Automated Email Notification:</Xl8>}
               inputType="checkbox"
               name="highPriorityEmail"
               required={true}
@@ -282,7 +281,7 @@ const UserModal = props => {
             {props.isEdit ? (
               <LabelledInput
                 datafield
-                labelText="User Is Enabled"
+                labelText={<Xl8 xid="um007">User Is Enabled:</Xl8>}
                 inputType="checkbox"
                 name="active"
                 required={true}
@@ -296,7 +295,7 @@ const UserModal = props => {
             ) : (
               <LabelledInput
                 datafield
-                labelText="User Is Enabled"
+                labelText={<Xl8 xid="um007">User Is Enabled:</Xl8>}
                 inputType="checkbox"
                 name="active"
                 required={true}
@@ -313,7 +312,7 @@ const UserModal = props => {
                 datafield
                 callback={cbRoles}
                 inputVal={rcb.value}
-                labelText="Roles"
+                labelText={<Xl8 xid="um007">Roles:</Xl8>}
                 name="roles"
               />
             </div>
