@@ -110,14 +110,14 @@ const AttachmentModal = props => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            <Xl8 xid="">Attachments</Xl8>
+            <Xl8 xid="attm001">Attachments</Xl8>
           </Modal.Title>
         </Modal.Header>
         <Alert show={showAlert} variant={variant}>
           {alertContent}
           <hr />
           <Button onClick={() => setShowAlert(false)} variant="outline-success">
-            <Xl8 xid="">Confirm</Xl8>
+            <Xl8 xid="form003">Confirm</Xl8>
           </Button>
         </Alert>
         <Modal.Body>
@@ -130,18 +130,18 @@ const AttachmentModal = props => {
           !filesForDisplay.empty &&
           filesForDisplay.length > 0 ? (
             <div className="container">
-              <Xl8 xid="">Files To Be Uploaded:</Xl8>
+              <Xl8 xid="attm002">Files To Be Uploaded:</Xl8>
 
               <ul>
                 {filesForDisplay.map((data, index) => {
                   return (
                     <li key={index}>
                       <u>
-                        <Xl8 xid="">File Name:</Xl8>
-                      </u>{" "}
-                      {data.name} <br></br>{" "}
+                        <Xl8 xid="attm003">File Name:</Xl8>
+                      </u>
+                      {data.name} <br></br>
                       <u>
-                        <Xl8 xid="">File Size:</Xl8>
+                        <Xl8 xid="attm004">File Size:</Xl8>
                       </u>
                       {data.size} kbs
                     </li>
@@ -157,14 +157,14 @@ const AttachmentModal = props => {
             title=""
             callback={postSubmit}
             action="add"
-            submitText={<Xl8 xid="">Upload</Xl8>}
+            submitText={<Xl8 xid="attm005">Upload</Xl8>}
             paramCallback={preSubmit}
             cancellable
           >
             <LabelledInput
               datafield="description"
               inputType="textarea"
-              labelText={<Xl8 xid="">Description:</Xl8>}
+              labelText={<Xl8 xid="attm006">Description:</Xl8>}
               name="description"
               required={true}
               alt="nothing"
