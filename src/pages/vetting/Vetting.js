@@ -157,7 +157,7 @@ const Vetting = props => {
             size="sm"
             onClick={() => reviewPVL(row.original.paxId)}
           >
-            <i className="fa fa-pencil"></i> Review
+            <i className="fa fa-pencil"></i> <Xl8 xid="rev018">Review</Xl8>
           </Button>
           <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
