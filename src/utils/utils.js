@@ -49,6 +49,7 @@ export function getEndpoint(str) {
     .split("/")
     .pop()
     .split("\\")
+    .filter(Boolean)
     .pop();
 }
 

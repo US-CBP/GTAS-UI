@@ -123,6 +123,11 @@ const Carrier = loadable(() =>
 const Country = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/country/Country")
 );
+const CreditCardType = loadable(() =>
+  import(
+    /* webpackChunkName: "admin" */ "./pages/admin/codeEditor/creditcardtype/CreditCardType"
+  )
+);
 const LoaderStats = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/admin/loaderStats/LoaderStats")
 );
@@ -378,6 +383,10 @@ export default class App extends React.Component {
                                   name={<Xl8 xid="app024">Carrier</Xl8>}
                                   path="carrier"
                                 ></Carrier>
+                                <CreditCardType
+                                  name={<Xl8 xid="app035">Card Types</Xl8>}
+                                  path="cctype"
+                                ></CreditCardType>
                               </CodeEditor>
                               <LoaderStats
                                 name={<Xl8 xid="app025">Loader Statistics</Xl8>}
