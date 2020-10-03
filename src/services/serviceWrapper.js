@@ -454,7 +454,7 @@ export const physicalLocations = {
 
 export const signuprequests = {
   get: params => get(SIGNUPREQUESTS, BASEHEADER, undefined, params),
-  approve: id => put(SIGNUPREQUESTAPPROVE, BASEHEADER, id),
+  approve: body => post(SIGNUPREQUESTAPPROVE, BASEHEADER, stringify(body)),
   reject: id => put(SIGNUPREQUESTSREJECT, BASEHEADER, id)
 };
 

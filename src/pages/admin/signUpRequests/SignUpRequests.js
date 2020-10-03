@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import Table from "../../../components/table/Table";
 import { signuprequests } from "../../../services/serviceWrapper";
@@ -8,37 +8,59 @@ import Main from "../../../components/main/Main";
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { hasData } from "../../../utils/utils";
+import SignUpRequestModal from "./SignUpRequestModal";
+import { ACTION, STATUS } from "../../../utils/constants";
+import Toast from "../../../components/toast/Toast";
+import Confirm from "../../../components/confirmationModal/Confirm";
 
 const SignUpRequests = () => {
   const [data, setData] = useState();
   const [refreshKey, setRefreshKey] = useState(0);
   const [fetchData, setFetchData] = useState(0);
-  const [show, setShow] = useState(false);
-  const [alertContent, setAlertContent] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastContent, setToastContent] = useState("");
+  const [toastHeader, setToastHeader] = useState("");
   const [variant, setVariant] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [requestId, setRequestId] = useState();
   const cb = () => {};
-
+  const actions = { REJECT: "Reject", APPROVE: "Approve" };
   const setDataWrapper = data => {
     setData(data);
     setRefreshKey(refreshKey + 1);
   };
-  const handleResponse = res => {
+
+  const handleResponse = (res, actionType) => {
     const status = res.status;
     const message = res.message;
-    setAlertContent(`${status} : ${message}`);
-    status === "SUCCESS" ? setVariant("success") : setVariant("danger");
-    setShow(true);
-    setFetchData(setFetchData + 1);
+
+    if (status === STATUS.SUCCESS) {
+      setVariant("success");
+    } else {
+      setVariant("danger");
+    }
+    setToastContent(message);
+    setToastHeader(`${actionType} Sign up Request`);
+    setToastHeader(status);
+    setToastContent(message); //TODO: the front end should decide what message to dispaly
+    setShowModal(false);
+    setShowToast(true);
+    setFetchData(fetchData + 1);
   };
+
   const approve = requestId => {
-    signuprequests.approve(requestId).then(res => {
-      handleResponse(res);
-    });
+    setRequestId(requestId);
+    setShowModal(true);
+  };
+
+  const postApproveCallback = (status, res) => {
+    if (status === ACTION.CANCEL) setShowModal(false);
+    else handleResponse(res, actions.APPROVE);
   };
 
   const reject = requestId => {
     signuprequests.reject(requestId).then(res => {
-      handleResponse(res);
+      handleResponse(res, actions.REJECT);
     });
   };
 
@@ -96,14 +118,21 @@ const SignUpRequests = () => {
           >
             Approve
           </Button>
-          <Button
-            variant="outline-danger"
-            className="fa fa-thumbs-down"
-            onClick={() => reject(row.original.id)}
-            disabled={row.original.status !== "NEW"}
+          <Confirm
+            header="Reject Sign up Request"
+            message={`Please confirm to reject the sign up request by ${row.original.firstName} ${row.original.lastName}`}
           >
-            Reject
-          </Button>
+            {confirm => (
+              <Button
+                variant="outline-danger"
+                className="fa fa-thumbs-down"
+                onClick={confirm(() => reject(row.original.id))}
+                disabled={row.original.status !== "NEW"}
+              >
+                Reject
+              </Button>
+            )}
+          </Confirm>
         </>
       )
     }
@@ -151,13 +180,7 @@ const SignUpRequests = () => {
       </SideNav>
       <Main>
         <Title title="Sign Up Requests"></Title>
-        <Alert show={show} variant={variant}>
-          {alertContent}
-          <hr />
-          <Button onClick={() => setShow(false)} variant="outline-success">
-            CLOSE
-          </Button>
-        </Alert>
+
         <Table
           data={data}
           header={headers}
@@ -165,6 +188,20 @@ const SignUpRequests = () => {
           callback={cb}
           key={refreshKey}
         ></Table>
+
+        <SignUpRequestModal
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          callback={postApproveCallback}
+          requestId={requestId}
+        />
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+          header={toastHeader}
+          body={toastContent}
+          variant={variant}
+        ></Toast>
       </Main>
     </>
   );
