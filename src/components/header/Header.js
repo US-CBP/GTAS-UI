@@ -90,7 +90,7 @@ const Header = () => {
             className={`${getActiveClass(htab.FLIGHT)}`}
             onClick={() => clickTab(htab.FLIGHT)}
           >
-            <Xl8 xid="001">Flights</Xl8>
+            <Xl8 xid="head001">Flights</Xl8>
           </Nav.Link>
           <Nav.Link
             as={Link}
@@ -98,7 +98,7 @@ const Header = () => {
             className={`${getActiveClass(htab.VETTING)}`}
             onClick={() => clickTab(htab.VETTING)}
           >
-            <Xl8 xid="002">Vetting</Xl8>
+            <Xl8 xid="head002">Vetting</Xl8>
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
             <Nav.Link
@@ -107,7 +107,7 @@ const Header = () => {
               className={`${getActiveClass(htab.ADMIN)}`}
               onClick={() => clickTab(htab.ADMIN)}
             >
-              <Xl8 xid="003">Admin</Xl8>
+              <Xl8 xid="head003">Admin</Xl8>
             </Nav.Link>
           </RoleAuthenticator>
           <Nav.Link
@@ -116,7 +116,7 @@ const Header = () => {
             className={`${getActiveClass(htab.TOOLS)}`}
             onClick={() => clickTab(htab.TOOLS)}
           >
-            <Xl8 xid="004">Tools</Xl8>
+            <Xl8 xid="head004">Tools</Xl8>
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
             <Nav.Link
@@ -147,11 +147,11 @@ const Header = () => {
               to={"user/change-password"}
               onClick={() => clickTab("")}
             >
-              {<Xl8 xid="005">Change password</Xl8>}
+              {<Xl8 xid="head005">Change password</Xl8>}
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to="#" onClick={logout}>
-              {<Xl8 xid="006">Logout</Xl8>}
+              {<Xl8 xid="head006">Logout</Xl8>}
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>
