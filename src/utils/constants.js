@@ -26,6 +26,11 @@ export const ACTION = {
   RUN: "Run"
 };
 
+export const STATUS = {
+  SUCCESS: "SUCCESS",
+  FAILURE: "FAILURE"
+};
+
 export const ROLE = {
   ADMIN: "Admin",
   QRYMGR: "Manage Queries",
