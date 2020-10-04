@@ -152,12 +152,12 @@ export function localeDate(val) {
 // Locale Date-only formatter
 export function localeDateOnly(val) {
   if (!hasData(val)) return "";
-  // const locale = i18n.language;
+
   const locale = window.navigator.language;
   const options = {
     localeMatcher: "lookup",
     year: "numeric",
-    month: "short",
+    month: "2-digit",
     day: "2-digit"
   };
   return new Date(val).toLocaleString(locale, options);
