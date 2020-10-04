@@ -23,7 +23,6 @@ const CreditCardTypeModal = props => {
     res.id = data.id || 0;
     res.originId = data.originId || 0;
 
-    console.log(res);
     return [res];
   };
 
