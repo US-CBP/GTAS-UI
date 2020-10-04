@@ -295,11 +295,11 @@ const QRModal = props => {
               ]
             },
             valueSources: ["value"]
-          },
-          "passengerTripDetails.travelFrequency": {
-            label: "Travel Frequency",
-            ...numProps
           }
+          // "passengerTripDetails.travelFrequency": {
+          //   label: "Travel Frequency",
+          //   ...numProps
+          // }
         }
       },
       Phone: {
