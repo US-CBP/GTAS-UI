@@ -320,10 +320,7 @@ export const codeEditor = {
     createCarrier: body => post(CODES_CARRIER, BASEHEADER, stringify(body)),
     createCountry: body => post(CODES_COUNTRY, BASEHEADER, stringify(body)),
     createAirport: body => post(CODES_AIRPORT, BASEHEADER, stringify(body)),
-    createCctype: body => {
-      console.log(body);
-      return post(CODES_CCTYPE, BASEHEADER, stringify(body));
-    }
+    createCctype: body => post(CODES_CCTYPE, BASEHEADER, stringify(body))
   },
   delete: {
     deleteCarrier: id => del(CODES_CARRIER, BASEHEADER, id),

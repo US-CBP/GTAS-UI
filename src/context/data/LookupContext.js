@@ -34,6 +34,10 @@ const LookupProvider = ({ children }) => {
         setStorage(CTX.RULECATS, action.data);
         return action.data;
       }
+      case CTX.CCTYPES: {
+        setStorage(CTX.CCTYPES, action.data);
+        return action.data;
+      }
       case "lastRule": {
         setStorage("lastRule", action.data);
         return action.data;
