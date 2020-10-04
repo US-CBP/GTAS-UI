@@ -7,6 +7,7 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
 import { ROLE } from "../../../utils/constants";
 import Title from "../../../components/title/Title";
+import Xl8 from "../../../components/xl8/Xl8";
 
 function SignUpRequestModal(props) {
   const [allRoles, setAllRoles] = useState([]);
@@ -56,7 +57,7 @@ function SignUpRequestModal(props) {
       centered
     >
       <Modal.Header>
-        <Title title="Select Roles" />
+        <Title title={<Xl8 xid="surm001">Select Roles</Xl8>}></Title>
       </Modal.Header>
       <Modal.Body>
         <Form
@@ -64,7 +65,7 @@ function SignUpRequestModal(props) {
           title=""
           callback={props.callback}
           action="add"
-          submitText="Approve"
+          submitText={<Xl8 xid="surm002">Approve</Xl8>}
           paramCallback={preSubmit}
           cancellable
           recordId={props.requestId}
@@ -73,7 +74,7 @@ function SignUpRequestModal(props) {
             datafield
             inputType="checkboxGroup"
             inputVal={allRoles}
-            labelText="Roles:"
+            labelText={<Xl8 xid="surm003">Roles:</Xl8>}
             name="roles"
             alt="Roles"
             callback={cb}
