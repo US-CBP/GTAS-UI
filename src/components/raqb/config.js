@@ -1,6 +1,3 @@
-import React from "react";
-import Xl8 from "../../components/xl8/Xl8";
-
 export const operators = {
   equal: {
     label: "Equals",
