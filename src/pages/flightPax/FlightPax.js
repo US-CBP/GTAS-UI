@@ -99,8 +99,22 @@ const FlightPax = props => {
 
   const tabs = (
     <Tabs defaultActiveKey="all" id="flightPaxTabs">
-      <Tab eventKey="all" title={<Xl8 xid="fp001">All</Xl8>}></Tab>
-      <Tab eventKey="hits" title={<Xl8 xid="fp002">Hits</Xl8>}></Tab>
+      <Tab
+        eventKey="all"
+        title={
+          <Xl8 xid="fp001" id="flightPaxTabs-tab-all">
+            All
+          </Xl8>
+        }
+      ></Tab>
+      <Tab
+        eventKey="hits"
+        title={
+          <Xl8 xid="fp002" id="flightPaxTabs-tab-hits">
+            Hits
+          </Xl8>
+        }
+      ></Tab>
     </Tabs>
   );
 
