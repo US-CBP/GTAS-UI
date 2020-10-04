@@ -1,7 +1,10 @@
+import React from "react";
+import Xl8 from "../../components/xl8/Xl8";
+
 export const operators = {
   equal: {
-    label: "==",
-    labelForFormat: "==",
+    label: "Equals",
+    labelForFormat: "Equals",
     sqlOp: "=",
     reversedOp: "not_equal",
     formatOp: (
@@ -22,8 +25,8 @@ export const operators = {
     jsonLogic: "=="
   },
   not_equal: {
-    label: "!=",
-    labelForFormat: "!=",
+    label: "Not Equals",
+    labelForFormat: "Not Equals",
     sqlOp: "<>",
     reversedOp: "equal",
     formatOp: (
