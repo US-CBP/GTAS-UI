@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { asArray, hasData } from "../../../utils/utils";
 import { Button, Modal, Container, Alert } from "react-bootstrap";
-import { addWLItems, watchlistcats } from "../../../services/serviceWrapper";
+import { addWLItems, hitcats } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
@@ -61,7 +61,7 @@ const AddToWatchlist = props => {
   };
 
   useEffect(() => {
-    watchlistcats.get().then(res => {
+    hitcats.get().then(res => {
       const wlc = asArray(res).map(wl => {
         return {
           label: wl.label,

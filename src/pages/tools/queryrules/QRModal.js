@@ -9,7 +9,7 @@ import { QR, ACTION, CTX } from "../../../utils/constants";
 import { LookupContext } from "../../../context/data/LookupContext";
 
 import {
-  watchlistcats,
+  hitcats,
   airportLookup,
   countryLookup,
   carrierLookup
@@ -580,7 +580,7 @@ const QRModal = props => {
     if (hasData(storedCategories)) {
       setCategories(storedCategories);
     } else {
-      watchlistcats.get().then(res => {
+      hitcats.get().then(res => {
         const cats = asArray(res).map(catitem => {
           return { label: catitem.label, value: catitem.id };
         });

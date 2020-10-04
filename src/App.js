@@ -129,11 +129,11 @@ const LoaderStats = loadable(() =>
 const Settings = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/admin/settings/Settings")
 );
-const WatchlistCats = loadable(() =>
-  import(/* webpackChunkName: "admin" */ "./pages/admin/watchlistCats/WatchlistCats")
+const HitCats = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/hitCats/HitCats")
 );
-const NoteTypeCats = loadable(() =>
-  import(/* webpackChunkName: "admin" */ "./pages/admin/noteTypeCats/NoteTypeCats")
+const NoteCats = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/noteCats/NoteCats")
 );
 const ChangePassword = loadable(() =>
   import(
@@ -389,26 +389,20 @@ export default class App extends React.Component {
                                 icon="fa-bar-chart"
                                 path="loaderstats"
                               ></LoaderStats>
-                              <WatchlistCats
-                                name={<Xl8 xid="app027">Watchlist Categories</Xl8>}
-                                desc={
-                                  <Xl8 xid="app028">
-                                    View or edit Watchlist categories
-                                  </Xl8>
-                                }
+                              <HitCats
+                                name={<Xl8 xid="app027">Hit Categories</Xl8>}
+                                desc={<Xl8 xid="app028">View or edit Hit categories</Xl8>}
                                 icon="fa-user-secret"
-                                path="watchlistcats"
-                              ></WatchlistCats>
-                              <NoteTypeCats
-                                name={<Xl8 xid="app029">Note Type Categories</Xl8>}
+                                path="hitcats"
+                              ></HitCats>
+                              <NoteCats
+                                name={<Xl8 xid="app029">Note Categories</Xl8>}
                                 desc={
-                                  <Xl8 xid="app030">
-                                    View or edit Note Type categories
-                                  </Xl8>
+                                  <Xl8 xid="app030">View or edit Note categories</Xl8>
                                 }
                                 icon="fa-comment"
-                                path="notetypecats"
-                              ></NoteTypeCats>
+                                path="notecats"
+                              ></NoteCats>
                               <Auxiliary
                                 name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
                                 desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}

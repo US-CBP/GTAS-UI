@@ -89,8 +89,8 @@ const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
 const USERSNONARCHIVED = `${USERS}/nonarchived`;
 const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
 const CHANGEPASSWORD = `${BASE_URL}gtas/user/change-password`;
-const WLCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
-const WLCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
+const HITCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
+const HITCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
 const FLIGHTS = `${BASE_URL}gtas/api/flights`;
 const AUDITLOG = `${BASE_URL}gtas/auditlog`;
 const ERRORLOG = `${BASE_URL}gtas/errorlog`;
@@ -174,14 +174,14 @@ export const users = {
 export const usersemails = {
   get: () => get(USERSEMAIL, BASEHEADER)
 };
-export const watchlistcats = {
-  get: (id, params) => get(WLCATS, BASEHEADER, id, params),
-  post: body => post(WLCATS, BASEHEADER, body)
+export const hitcats = {
+  get: (id, params) => get(HITCATS, BASEHEADER, id, params),
+  post: body => post(HITCATS, BASEHEADER, body)
 };
 
-export const watchlistcatspost = {
+export const hitcatspost = {
   post: body => {
-    return post(WLCATSPOST, BASEHEADER, stringify(body));
+    return post(HITCATSPOST, BASEHEADER, stringify(body));
   }
 };
 export const userService = {

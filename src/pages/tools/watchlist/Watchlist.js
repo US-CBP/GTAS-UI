@@ -7,7 +7,7 @@ import Modal from "../../../components/modal/Modal";
 import { Button, Tabs, Tab, Row } from "react-bootstrap";
 import { navigate } from "@reach/router";
 
-import { wlpax, wldocs, watchlistcats } from "../../../services/serviceWrapper";
+import { wlpax, wldocs, hitcats } from "../../../services/serviceWrapper";
 import { hasData } from "../../../utils/utils";
 import WLModal from "./WLModal";
 import "./Watchlist.css";
@@ -121,7 +121,6 @@ const Watchlist = props => {
     const newTab = (id || "").toLowerCase() === TAB.PAX ? TAB.PAX : TAB.DOX;
 
     setTab(newTab);
-    // navigate(`/gtas/tools/watchlist/${newTab[0]}`);
   };
 
   /**
@@ -147,7 +146,7 @@ const Watchlist = props => {
   }, []);
 
   const getCats = () => {
-    watchlistcats.get().then(res => {
+    hitcats.get().then(res => {
       setWlcatData(res);
     });
   };

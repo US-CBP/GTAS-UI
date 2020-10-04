@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
-import { manualHit, watchlistcats } from "../../../services/serviceWrapper";
+import { manualHit, hitcats } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
@@ -21,7 +21,7 @@ const CreateManualHit = props => {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    watchlistcats.get().then(res => {
+    hitcats.get().then(res => {
       const wlc = asArray(res).map(wl => {
         return {
           label: wl.label,
