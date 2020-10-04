@@ -1,5 +1,6 @@
 import React from "react";
 import { paxdetailsReport } from "../../../services/serviceWrapper";
+import Xl8 from "../../../components/xl8/Xl8";
 import { Button } from "react-bootstrap";
 
 const DownloadReport = props => {
@@ -23,7 +24,7 @@ const DownloadReport = props => {
 
   return (
     <Button variant="outline-info" size="sm" onClick={dowload}>
-      <i className="fa fa-download"></i> Report
+      <i className="fa fa-download"></i> <Xl8 xid="rep001">Report</Xl8>
     </Button>
   );
 };

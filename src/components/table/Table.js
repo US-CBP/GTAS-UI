@@ -4,7 +4,7 @@ import { hasData, titleCase, asArray, altObj } from "../../utils/utils";
 import { useTable, usePagination, useSortBy, useFilters } from "react-table";
 import { navigate } from "@reach/router";
 // import { withTranslation } from 'react-i18next';
-// import Xl8 from '../xl8/Xl8';
+import Xl8 from "../xl8/Xl8";
 import Loading from "../../components/loading/Loading";
 import { Table as RBTable, Pagination, Button } from "react-bootstrap";
 import { jsonToCSV } from "react-papaparse";
@@ -173,13 +173,18 @@ const Table = props => {
                   <Fragment key={index}>
                     <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map(column => {
+                        let hdr = column.render("Header");
+
+                        if (Array.isArray(hdr)) hdr = <Xl8 xid={hdr[0]}>{hdr[1]}</Xl8>;
+
                         return (
                           <th
                             className="table-header"
                             {...column.getHeaderProps(column.getSortByToggleProps())}
                           >
-                            {`${column.render("Header")} `}{" "}
-                            {column.canSort ? sortIcon(column) : ""}
+                            <span>
+                              {hdr} {column.canSort ? sortIcon(column) : ""}
+                            </span>
                           </th>
                         );
                       })}
@@ -270,23 +275,11 @@ const Table = props => {
               <i className="fa fa-fast-forward"></i>
             </Pagination.Last>
             <span className="pag-text mr-10">
-              Page
+              <Xl8 xid="tab002">Page</Xl8>
               <strong className="pag-num">
-                {pageIndex + 1} of {pageOptions.length}
+                {pageIndex + 1} <Xl8 xid="tab003"> of </Xl8> {pageOptions.length}
               </strong>{" "}
             </span>
-            {/* <span className="pag-text pag-goto">Go to page: </span>{' '}
-            <input
-              className="pag pag-input pag-goto mr-10"
-              type="number"
-              min="1"
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                gotoPage(page);
-                e.target.value = page;
-              }}
-              style={{ width: '100px' }}
-            /> */}
             <select
               className="pag"
               value={pageSize}
@@ -296,7 +289,7 @@ const Table = props => {
             >
               {[10, 25, 50, 100].map(pageSize => (
                 <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
+                  {pageSize}
                 </option>
               ))}
             </select>
@@ -306,7 +299,7 @@ const Table = props => {
               size="sm"
               onClick={() => exportData("csv", true)}
             >
-              Export
+              {<Xl8 xid="tab004">Export</Xl8>}
             </Button>
             <span className="tagrightpag">
               <h3 className="title-default">
@@ -337,6 +330,12 @@ const Table = props => {
 
     setShowPending(false);
     const noDataFound = "No Data Found";
+    const noDataFoundHeader = {
+      Accessor: "NoData",
+      Xl8: true,
+      Header: ["nodata001", "No Data Found"]
+    };
+
     let noDataObj = [{}];
     noDataObj[0][props.id] = noDataFound;
 
@@ -347,22 +346,16 @@ const Table = props => {
       ? hasData(header)
         ? header
         : Object.keys(dataArray[0])
-      : [props.id];
+      : [noDataFoundHeader];
     let columns = [];
 
     (sheader || []).forEach(element => {
       const acc = element.Accessor || element;
-      // let xl8Title = undefined;
-      // const trans = props.t(element.xid);
-      // TODO - refac. - logic shd be exposed by xl8 or a util.
-      // How to set the class on translation fail for a direct translation?
-      // if (element.xid !== undefined) {
-      //   xl8Title = trans !== element.xid ? trans : undefined;
-      // }
+      const isXl8 = element.Xl8 === true;
 
       if (!(props.ignoredFields || []).includes(acc)) {
-        // const title = titleCase(xl8Title || element.Header || acc);
-        const title = titleCase(element.Header || acc);
+        // Dont titlecase Xl8 headers. Casing must be done manually at the caller.
+        const title = isXl8 ? element.Header : titleCase(element.Header || acc);
         let cellconfig = {
           Header: title,
           accessor: acc,
@@ -416,14 +409,12 @@ const Table = props => {
         <h4 className={`title ${props.style}`}>{props.title}</h4>
       )}
       {props.smalltext !== undefined && <small>{props.smalltext}</small>}
-      {/* <Xl8> */}
       <RTable
         columns={columns}
         data={data}
         rowcount={rowcount}
         initSort={props.initSort || []}
       ></RTable>
-      {/* </Xl8> */}
     </>
   );
 };
@@ -445,5 +436,4 @@ Table.propTypes = {
   exportFileName: PropTypes.string
 };
 
-// export default withTranslation()(Table);
 export default Table;

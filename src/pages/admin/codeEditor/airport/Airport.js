@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
-import Title from "../../../../components/title/Title";
-import { Button, Col, Container, Row } from "react-bootstrap";
-import { codeEditor, users } from "../../../../services/serviceWrapper";
+// import Title from "../../../../components/title/Title";
+import Xl8 from "../../../../components/xl8/Xl8";
+import { Button, Container } from "react-bootstrap";
+import { codeEditor } from "../../../../services/serviceWrapper";
 import AirportModal from "./AirportModal";
 
 const Airports = ({ name }) => {
@@ -13,13 +14,16 @@ const Airports = ({ name }) => {
   const [modalTitle, setModalTitle] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
 
+  const addAirport = <Xl8 xid="airp002">Add Airport</Xl8>;
+  const editAirport = <Xl8 xid="airp003">Edit Airport</Xl8>;
+
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
   };
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit Airport");
+    setModalTitle(editAirport);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -27,6 +31,8 @@ const Airports = ({ name }) => {
   const headers = [
     {
       Accessor: "Edit",
+      Xl8: true,
+      Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
       Cell: ({ row }) => {
@@ -40,13 +46,13 @@ const Airports = ({ name }) => {
         );
       }
     },
-    { Accessor: "iata" },
-    { Accessor: "icao" },
-    { Accessor: "name" },
-    { Accessor: "city" },
-    { Accessor: "country" },
-    { Accessor: "latitude" },
-    { Accessor: "longitude" }
+    { Accessor: "iata", Xl8: true, Header: ["iata001", "IATA"] },
+    { Accessor: "icao", Xl8: true, Header: ["icao001", "ICAO"] },
+    { Accessor: "name", Xl8: true, Header: ["airp005", "Name"] },
+    { Accessor: "city", Xl8: true, Header: ["airp006", "City"] },
+    { Accessor: "country", Xl8: true, Header: ["airp007", "Country"] },
+    { Accessor: "latitude", Xl8: true, Header: ["lati001", "Latitude"] },
+    { Accessor: "longitude", Xl8: true, Header: ["long001", "Longitude"] }
   ];
 
   return (
@@ -66,12 +72,12 @@ const Airports = ({ name }) => {
           variant="outline-dark"
           onClick={() => {
             setShowModal(true);
-            setModalTitle("Add Airport");
+            setModalTitle(addAirport);
             setIsEditModal(false);
             setEditRowDetails({});
           }}
         >
-          Add Airport
+          {addAirport}
         </Button>
 
         <Button
@@ -82,13 +88,12 @@ const Airports = ({ name }) => {
             });
           }}
         >
-          Restore All Airports
+          {<Xl8 xid="airp002">Restore All Airports</Xl8>}
         </Button>
       </div>
 
       <Table
         service={codeEditor.get.airportCodes}
-        id="airports"
         callback={cb}
         header={headers}
         key={refreshKey}

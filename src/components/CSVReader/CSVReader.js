@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import PropTypes from "prop-types";
+import Xl8 from "../xl8/Xl8";
 import { CSVReader as RCSVReader } from "react-papaparse";
 import { Button } from "react-bootstrap";
 
@@ -29,7 +29,7 @@ const CSVReader = props => {
     >
       {({ file }) => (
         <Button variant="outline-info" onClick={handleOpenDialog}>
-          Import CSV
+          <Xl8 xid="csv001">Import CSV</Xl8>
         </Button>
       )}
     </RCSVReader>

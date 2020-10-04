@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Table from "../../../components/table/Table";
 import { auditlog } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Xl8 from "../../../components/xl8/Xl8";
 import { Col } from "react-bootstrap";
-import SideNav from "../../../components/sidenav/SideNav";
+import SidenavContainer from "../../../components/sidenavContainer/SidenavContainer";
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Main from "../../../components/main/Main";
@@ -40,7 +41,6 @@ const AuditLog = ({ name }) => {
     { value: "RULE_HIT_CASE_OPEN", label: "RULE_HIT_CASE_OPEN" },
     { value: "DISPOSITION_STATUS_CHANGE", label: "DISPOSITION_STATUS_CHANGE" }
   ];
-  const visibleCols = ["actionType", "status", "message", "user", "timestamp"];
   const preFetchCallback = params => {
     let parsedParams = "?";
     if (params) {
@@ -60,6 +60,34 @@ const AuditLog = ({ name }) => {
     return parsedParams;
   };
 
+  const headers = [
+    {
+      Accessor: "actionType",
+      Xl8: true,
+      Header: ["al005", "Action Type"]
+    },
+    {
+      Accessor: "status",
+      Xl8: true,
+      Header: ["al006", "Status"]
+    },
+    {
+      Accessor: "message",
+      Xl8: true,
+      Header: ["al007", "Message"]
+    },
+    {
+      Accessor: "user",
+      Xl8: true,
+      Header: ["al008", "User"]
+    },
+    {
+      Accessor: "timestamp",
+      Xl8: true,
+      Header: ["al009", "Timestamp"]
+    }
+  ];
+
   const setDataWrapper = res => {
     setData(res);
     setRefreshKey(refreshKey + 1);
@@ -67,7 +95,7 @@ const AuditLog = ({ name }) => {
 
   return (
     <>
-      <SideNav>
+      <SidenavContainer>
         <Col>
           <FilterForm
             service={auditlog.get}
@@ -77,7 +105,7 @@ const AuditLog = ({ name }) => {
           >
             <br />
             <LabelledInput
-              labelText="User"
+              labelText={<Xl8 xid="al001">User</Xl8>}
               datafield="user"
               name="user"
               inputType="text"
@@ -85,11 +113,10 @@ const AuditLog = ({ name }) => {
               alt="User"
             />
             <LabelledInput
-              labelText="Actions"
+              labelText={<Xl8 xid="al002">Actions</Xl8>}
               datafield="action"
               inputType="select"
               name="action"
-              placeholder="Choose Action..."
               options={auditActions}
               required={true}
               alt="nothing"
@@ -99,7 +126,7 @@ const AuditLog = ({ name }) => {
               datafield
               inputType="dateTime"
               inputVal={startDate}
-              labelText="Start Date"
+              labelText={<Xl8 xid="al003">Start Date</Xl8>}
               name="startDate"
               callback={cb}
               required={true}
@@ -109,7 +136,7 @@ const AuditLog = ({ name }) => {
               datafield
               inputType="dateTime"
               inputVal={endDate}
-              labelText="End Date"
+              labelText={<Xl8 xid="al004">End Date</Xl8>}
               name="endDate"
               callback={cb}
               required={true}
@@ -117,7 +144,7 @@ const AuditLog = ({ name }) => {
             />
           </FilterForm>
         </Col>
-      </SideNav>
+      </SidenavContainer>
       <Main>
         <Title title={name}></Title>
         <Table
@@ -125,7 +152,7 @@ const AuditLog = ({ name }) => {
           key={refreshKey}
           id="Audit Log"
           callback={cb}
-          header={visibleCols}
+          header={headers}
         ></Table>
       </Main>
     </>

@@ -4,6 +4,7 @@ import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { forgotPassword } from "../../services/serviceWrapper";
 import { Container, Alert } from "react-bootstrap";
 import Title from "../../components/title/Title";
+import Xl8 from "../../components/xl8/Xl8";
 import { hasData } from "../../utils/utils";
 import { Link } from "@reach/router";
 
@@ -27,7 +28,7 @@ const ForgotPassword = props => {
 
   return (
     <Container className="password-reset-container" fluid>
-      <Title title="Reset Password" uri={props.uri} />
+      <Title title={<Xl8 xid="fopa001">Reset Password</Xl8>} uri={props.uri} />
 
       {resetLinkSent ? (
         <>
@@ -45,7 +46,6 @@ const ForgotPassword = props => {
             title=""
             callback={forgotPasswordCallback}
             action="add"
-            submitText="Submit"
             redirectTo="/login"
             cancellable
           >

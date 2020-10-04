@@ -4,6 +4,7 @@ import Table from "../../../components/table/Table";
 import Main from "../../../components/main/Main";
 import { users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Xl8 from "../../../components/xl8/Xl8";
 import { asArray } from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
 
@@ -15,11 +16,12 @@ import Toast from "../../../components/toast/Toast";
 import { UserContext } from "../../../context/user/UserContext";
 
 const ManageUsers = props => {
+  const addNewUser = <Xl8 xid="manu007">Add New User</Xl8>;
   const [data, setData] = useState(undefined);
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState("Add New User");
+  const [modalTitle, setModalTitle] = useState(addNewUser);
   const [editRowDetails, setEditRowDetails] = useState({});
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState();
@@ -40,7 +42,7 @@ const ManageUsers = props => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit User");
+    setModalTitle(<Xl8 xid="manu001">Edit User</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -70,24 +72,34 @@ const ManageUsers = props => {
   const headers = [
     {
       Accessor: "Edit",
+      Xl8: true,
+      Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center edit-user">
-            <DropdownButton variant="outline-info" title="Choose Action">
+            <DropdownButton
+              variant="outline-info"
+              title={<Xl8 xid="manu002">Choose Action</Xl8>}
+            >
               <Dropdown.Item as="button" onClick={() => openEditModal(row.original)}>
-                Edit User
+                <Xl8 xid="manu001">Edit User</Xl8>
               </Dropdown.Item>
               <Dropdown.Item
                 as="button"
                 onClick={() => changePassword(row.original.userId)}
               >
-                Change Password
+                <Xl8 xid="manu003">Change Password</Xl8>
               </Dropdown.Item>
               <Confirm
-                header="Confirm User Deletion"
-                message={`Please confirm to delete a user with userId: ${row.original.userId}`}
+                header={<Xl8 xid="manu004">Confirm User Deletion</Xl8>}
+                message={
+                  <span>
+                    <Xl8 xid="manu005">Please confirm to delete a user with userId: </Xl8>{" "}
+                    {row.original.userId}
+                  </span>
+                }
               >
                 {confirm =>
                   !isLoggedinUser(row.original.userId) && (
@@ -97,7 +109,7 @@ const ManageUsers = props => {
                         deleteUser(row.original);
                       })}
                     >
-                      Delete User
+                      <Xl8 xid="manu006">Delete User</Xl8>
                     </Dropdown.Item>
                   )
                 }
@@ -109,6 +121,8 @@ const ManageUsers = props => {
     },
     {
       Accessor: "active",
+      Xl8: true,
+      Header: ["manu011", "Active"],
       isBoolean: true,
       Cell: ({ row }) => {
         return (
@@ -122,14 +136,15 @@ const ManageUsers = props => {
         );
       }
     },
-    { Accessor: "userId" },
-    { Accessor: "firstName" },
-    { Accessor: "lastName" },
-    { Accessor: "email" },
-    { Accessor: "phoneNumber" },
+    { Accessor: "userId", Xl8: true, Header: ["manu012", "User ID"] },
+    { Accessor: "firstName", Xl8: true, Header: ["manu013", "First Name"] },
+    { Accessor: "lastName", Xl8: true, Header: ["manu014", "Last Name"] },
+    { Accessor: "email", Xl8: true, Header: ["manu015", "Email"] },
+    { Accessor: "phoneNumber", Xl8: true, Header: ["manu016", "Phone Number"] },
     {
       Accessor: "emailEnabledInt",
-      Header: "User Email Notification",
+      Xl8: true,
+      Header: ["manu017", "User Email Notification"],
       isBoolean: true,
       Cell: ({ row }) => {
         return (
@@ -145,7 +160,8 @@ const ManageUsers = props => {
     },
     {
       Accessor: "highPriorityEmailInt",
-      Header: "Automated Email Notification",
+      Xl8: true,
+      Header: ["manu017", "Automated Email Notification"],
       isBoolean: true,
       Cell: ({ row }) => {
         return (
@@ -169,7 +185,7 @@ const ManageUsers = props => {
       placeholder={props.placeholder}
       onClick={() => {
         setShowModal(true);
-        setModalTitle("Add New User");
+        setModalTitle(addNewUser);
         setIsEditModal(false);
         setEditRowDetails({});
       }}
@@ -177,7 +193,7 @@ const ManageUsers = props => {
       value={props.inputVal}
       alt={props.alt}
     >
-      Add New User
+      {addNewUser}
     </Button>
   );
 
@@ -210,7 +226,7 @@ const ManageUsers = props => {
   return (
     <>
       <Main className="full">
-        <Title title="Manage Users" rightChild={button}></Title>
+        <Title title={<Xl8 xid="manu008">Manage Users</Xl8>} rightChild={button}></Title>
         <Table
           id="users"
           data={data}

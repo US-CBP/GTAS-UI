@@ -103,5 +103,33 @@ input[type="radio"] {
   -webkit-transform: scale(1.2);
   -o-transform: scale(1.2);
   transform: scale(1.2);
-  /* padding: 10px; */
+}
+
+.xid {
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  border: 2px solid red !important;
+  background-color: white;
+  color: darkred;
+  padding: 0px 5px;
+  border-radius: 6px;
+}
+
+.xid:after {
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  margin-left: 10px;
+}
+
+.xid:hover {
+  cursor: pointer;
+}
+
+.xid:hover:after {
+  content: "\f044";
+}
+
+.height-auto {
+  height: auto !important;
 }

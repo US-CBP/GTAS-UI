@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
+import Xl8 from "../xl8/Xl8";
 import "./Confirm.scss";
 
 class Confirm extends React.Component {
@@ -49,8 +50,12 @@ class Confirm extends React.Component {
           <Modal.Header>{header}</Modal.Header>
           <Modal.Body>{body}</Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.confirm}>Confirm</Button>
-            <Button onClick={this.hideConfirmationModal}>Cancel</Button>
+            <Button onClick={this.hideConfirmationModal} variant="light">
+              <Xl8 xid="form001">Cancel</Xl8>
+            </Button>
+            <Button onClick={this.confirm}>
+              <Xl8 xid="form003">Confirm</Xl8>
+            </Button>
           </Modal.Footer>
         </Modal>
       </React.Fragment>

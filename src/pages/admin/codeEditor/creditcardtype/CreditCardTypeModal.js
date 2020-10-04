@@ -6,13 +6,13 @@ import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import { ACTION } from "../../../../utils/constants";
 
-const CarrierModal = props => {
+const CreditCardTypeModal = props => {
   const [showAlert, setShowAlert] = useState(false);
-  const [alertContent, setAlertContent] = useState("");
-  const [variant, setVariant] = useState("");
+  const [alertContent] = useState("");
   const cb = function(result) {};
   const data = props.editRowDetails || {};
 
+  // console.log(data);
   const postSubmit = (status = ACTION.CANCEL, results) => {
     props.onHide();
 
@@ -21,14 +21,15 @@ const CarrierModal = props => {
 
   const preSubmit = fields => {
     let res = { ...fields[0] };
-    //Id is lacking for updates in the body
-    res.id = data.id;
-    res.originId = data.originId;
+    res.id = data.id || 0;
+    res.originId = data.originId || 0;
+
+    console.log(res);
     return [res];
   };
 
   const restoreSpecificCode = () => {
-    codeEditor.put.restoreCarrier(data).then(res => {
+    codeEditor.put.restoreCctype(data).then(res => {
       postSubmit(ACTION.UPDATE);
     });
   };
@@ -42,7 +43,7 @@ const CarrierModal = props => {
           key="restore"
           onClick={restoreSpecificCode}
         >
-          <Xl8 xid="cem01">Restore</Xl8>
+          <Xl8 xid="cctm001">Restore</Xl8>
         </Button>,
         <Button
           type="button"
@@ -50,12 +51,12 @@ const CarrierModal = props => {
           variant="outline-dark"
           key="delete"
           onClick={() => {
-            codeEditor.delete.deleteCarrier(data.id).then(res => {
+            codeEditor.delete.deleteCctype(data.id).then(res => {
               postSubmit(ACTION.DELETE);
             });
           }}
         >
-          <Xl8 xid="cem02 ">Restore</Xl8>
+          <Xl8 xid="cctm002">Delete</Xl8>
         </Button>
       ]
     : [];
@@ -71,7 +72,7 @@ const CarrierModal = props => {
       <Modal.Header closeButton>
         <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
-      <Alert show={showAlert} variant={variant}>
+      <Alert show={showAlert}>
         {alertContent}
         <hr />
         <Button onClick={() => setShowAlert(false)} variant="outline-success">
@@ -82,33 +83,35 @@ const CarrierModal = props => {
         <Container fluid>
           <Form
             submitService={
-              props.isEdit ? codeEditor.put.updateCarrier : codeEditor.post.createCarrier
+              props.isEdit ? codeEditor.put.updateCctype : codeEditor.post.createCctype
             }
             callback={postSubmit}
             action="add"
+            paramCallback={preSubmit}
+            afterProcessed={props.onHide}
             cancellable
             customButtons={customButtons}
-            paramCallback={preSubmit}
           >
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="iata001">IATA: </Xl8>}
+              labelText={<Xl8 xid="cct002">Code:</Xl8>}
               inputType="text"
-              name="iata"
+              max-length="2"
+              name="code"
               required={true}
-              alt={<Xl8 xid="0">IATA:</Xl8>}
-              inputVal={data.iata}
+              alt="nothing"
+              inputVal={data.code}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="carm001">Name:</Xl8>}
+              labelText={<Xl8 xid="cct003">Description:</Xl8>}
               inputType="text"
-              name="name"
+              name="description"
               required={true}
-              alt=""
-              inputVal={data.name}
+              alt="nothing"
+              inputVal={data.description}
               callback={cb}
               spacebetween
             />
@@ -119,4 +122,4 @@ const CarrierModal = props => {
   );
 };
 
-export default CarrierModal;
+export default CreditCardTypeModal;

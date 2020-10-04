@@ -2,12 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import Table from "../../components/table/Table";
 import { cases, notetypes, usersemails, ruleCats } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
+import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
 import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
 import { Col, Button } from "react-bootstrap";
 import "./Vetting.css";
-import SideNav from "../../components/sidenav/SideNav";
+import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
 import { Link } from "@reach/router";
 import FlightInfo from "./flightInfo/FlightInfo";
@@ -63,17 +64,26 @@ const Vetting = props => {
   const getBiographicData = pax => {
     return (
       <ul style={{ listStyle: "none", paddingLeft: 0, fontSize: "small" }}>
-        <li>Name: {pax.paxName}</li>
-        <li>DOB: {`${pax.dob} (${getAge(pax.dob)})`} </li>
-        <li>Nationality: {pax.nationality}</li>
-        <li>Document: {`${pax.document} (${pax.docType})`}</li>
+        <li>
+          <Xl8 xid="vet001">Name:</Xl8> {pax.paxName}
+        </li>
+        <li>
+          <Xl8 xid="vet002">DOB:</Xl8> {`${pax.dob} (${getAge(pax.dob)})`}{" "}
+        </li>
+        <li>
+          <Xl8 xid="vet003">Nationality:</Xl8> {pax.nationality}
+        </li>
+        <li>
+          <Xl8 xid="vet004">Document:</Xl8> {`${pax.document} (${pax.docType})`}
+        </li>
       </ul>
     );
   };
   const Headers = [
     {
       Accessor: "countdownTime",
-      Header: "Timer",
+      Xl8: true,
+      Header: ["wl018", "Timer"],
       Cell: ({ row }) => {
         const future =
           row.original.flightDirection === "O"
@@ -84,7 +94,8 @@ const Vetting = props => {
     },
     {
       Accessor: "flightNumber",
-      Header: "Flight Id",
+      Xl8: true,
+      Header: ["wl019", "Flight ID"],
       Cell: ({ row }) => (
         <FlightInfo
           flightNumber={row.original.flightNumber}
@@ -98,7 +109,8 @@ const Vetting = props => {
     },
     {
       Accessor: "hitNames",
-      Header: "Hits",
+      Xl8: true,
+      Header: ["wl020", "Hits"],
       Cell: ({ row }) => {
         const listdata = asArray(row.original.hitNames).map((hit, index) => {
           const triggerOverlay = !isShortText(hit, 20);
@@ -117,7 +129,8 @@ const Vetting = props => {
     },
     {
       Accessor: "paxName",
-      Header: "Biographic Information",
+      Xl8: true,
+      Header: ["wl021", "Biographic Information"],
       Cell: ({ row }) => (
         <Link
           to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}
@@ -129,12 +142,14 @@ const Vetting = props => {
     },
     {
       Accessor: "status",
-      Header: "Status",
+      Xl8: true,
+      Header: ["wl022", "Status"],
       Cell: ({ row }) => <div className="text-center">{row.original.status}</div>
     },
     {
       Accessor: "paxId",
-      Header: "Actions",
+      Xl8: true,
+      Header: ["wl023", "Actions"],
       Cell: ({ row }) => (
         <div className="text-center">
           <Button
@@ -142,7 +157,7 @@ const Vetting = props => {
             size="sm"
             onClick={() => reviewPVL(row.original.paxId)}
           >
-            <i className="fa fa-pencil"></i> Review
+            <i className="fa fa-pencil"></i> <Xl8 xid="rev018">Review</Xl8>
           </Button>
           <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
@@ -283,88 +298,87 @@ const Vetting = props => {
 
   return (
     <>
-      <SideNav>
+      <SidenavContainer>
         <Col>
           <FilterForm
             service={cases.get}
-            title="Filter"
             callback={setDataWrapper}
             paramCallback={parameterAdapter}
             key={refreshKey}
             initialParamState={initialParamState}
           >
-            <hr className="horizontal-line" />
+            <br />
             <LabelledInput
               datafield="myRulesOnly"
               name="myRulesOnly"
-              labelText="My Rules Only"
+              labelText={<Xl8 xid="vet007">My Rules Only</Xl8>}
               inputType="checkbox"
               inputVal={false}
               callback={cb}
               selected={false}
-              alt="nothing"
+              alt="My Rules Only"
               spacebetween
             />
             <hr />
             <LabelledInput
               name="displayStatusCheckBoxes"
               datafield="displayStatusCheckBoxes"
-              labelText="Passenger Hit Status"
+              labelText={<Xl8 xid="vet008">Passenger Hit Status</Xl8>}
               inputType="multiSelect"
               inputVal={hitStatusdefaultValues}
               options={hitStatusOptions}
               callback={cb}
-              alt="nothing"
+              alt={<Xl8 xid="3">Passenger Hit Status</Xl8>}
             />
             <LabelledInput
               name="ruleTypes"
               datafield="ruleTypes"
-              labelText="Hit Types"
+              labelText={<Xl8 xid="vet009">Hit Types</Xl8>}
               inputType="multiSelect"
               inputVal={hitTypeOptions}
               options={hitTypeOptions}
               callback={cb}
-              alt="nothing"
+              alt={<Xl8 xid="3">Hit Types</Xl8>}
             />
             {hasData(hitCategoryOptions) && (
               <LabelledInput
                 name="ruleCatFilter"
                 datafield="ruleCatFilter"
-                labelText="Passenger Hit Categories"
+                labelText={<Xl8 xid="vet010">Passenger Hit Categories</Xl8>}
                 inputType="multiSelect"
                 inputVal={hitCategoryOptions}
                 options={hitCategoryOptions}
                 callback={cb}
-                alt="nothing"
+                alt={<Xl8 xid="3">Passenger Hit Categories</Xl8>}
               />
             )}
             <LabelledInput
               datafield="lastName"
-              labelText="Passenger Last Name"
+              labelText={<Xl8 xid="vet011">Last Name</Xl8>}
               inputType="text"
               name="lastName"
               callback={onTextChange}
-              alt="Passenger Last Name"
+              alt={<Xl8 xid="3">Last Name</Xl8>}
             />
             <LabelledInput
               datafield="flightNumber"
-              labelText="Flight Number"
+              labelText={<Xl8 xid="vet012">Flight Number</Xl8>}
               inputType="text"
               name="flightNumber"
               callback={onTextChange}
-              alt="Flight Number"
+              alt={<Xl8 xid="3">Flight Number</Xl8>}
             />
             <hr />
             <LabelledInput
               datafield="showDateTimePicker"
               name="showDateTimePicker"
-              labelText="Show Date Time Picker"
+              labelText={<Xl8 xid="vet013">Show Date Time Picker</Xl8>}
               inputType="checkbox"
               inputVal={showDateTimePicker.current}
               callback={cb}
               toggleDateTimePicker={toggleDateTimePicker}
               selected={showDateTimePicker.current}
-              alt="Show Date Time Picker"
+              alt=""
               spacebetween
             />
             {showDateTimePicker.current && (
@@ -372,7 +386,7 @@ const Vetting = props => {
                 datafield="etaStart"
                 inputType="dateTime"
                 inputVal={startDate}
-                labelText="Start Date"
+                labelText={<Xl8 xid="vet014">Start Date</Xl8>}
                 name="etaStart"
                 callback={cb}
                 required={true}
@@ -384,7 +398,7 @@ const Vetting = props => {
                 datafield="etaEnd"
                 inputType="dateTime"
                 inputVal={endDate}
-                labelText="End Date"
+                labelText={<Xl8 xid="vet015">End Date</Xl8>}
                 name="etaEnd"
                 callback={cb}
                 required={true}
@@ -393,7 +407,7 @@ const Vetting = props => {
             )}
             {!showDateTimePicker.current && (
               <LabelledInput
-                labelText="Hour Range (Start)"
+                labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
                 inputType="select"
                 name="startHourRange"
                 inputVal="96"
@@ -412,7 +426,7 @@ const Vetting = props => {
             )}
             {!showDateTimePicker.current && (
               <LabelledInput
-                labelText="Hour Range (End)"
+                labelText={<Xl8 xid="vet017">Hour Range (End)</Xl8>}
                 inputType="select"
                 name="endHourRange"
                 inputVal="96"
@@ -431,16 +445,10 @@ const Vetting = props => {
             )}
           </FilterForm>
         </Col>
-      </SideNav>
+      </SidenavContainer>
       <Main>
-        <Title title="Priority Vetting" uri={props.uri} />
-        <Table
-          data={data}
-          id="FlightDataTable"
-          callback={onTableChange}
-          header={Headers}
-          key={data}
-        />
+        <Title title={<Xl8 xid="vet014">Priority Vetting</Xl8>} uri={props.uri} />
+        <Table data={data} callback={onTableChange} header={Headers} key={data} />
 
         <ReviewPVL
           paxId={currentPaxId}

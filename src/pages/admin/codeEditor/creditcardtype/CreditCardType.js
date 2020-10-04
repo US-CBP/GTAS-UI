@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
+import Xl8 from "../../../../components/xl8/Xl8";
 import { Button, Container } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
-import CarrierModal from "./CarrierModal";
+import CreditCardTypeModal from "./CreditCardTypeModal";
 
-const Carriers = ({ name }) => {
+const CreditCardType = ({ name }) => {
   const cb = function(result) {};
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
@@ -18,7 +19,7 @@ const Carriers = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle("Edit Carrier");
+    setModalTitle(<Xl8 xid="cct001">Edit Type</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -26,6 +27,8 @@ const Carriers = ({ name }) => {
   const headers = [
     {
       Accessor: "Edit",
+      Xl8: true,
+      Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
       Cell: ({ row }) => {
@@ -39,8 +42,8 @@ const Carriers = ({ name }) => {
         );
       }
     },
-    { Accessor: "iata" },
-    { Accessor: "name" }
+    { Accessor: "code", Xl8: true, Header: ["cct002", "Code"] },
+    { Accessor: "description", Xl8: true, Header: ["cct003", "Description"] }
   ];
 
   return (
@@ -50,26 +53,25 @@ const Carriers = ({ name }) => {
           variant="outline-dark"
           onClick={() => {
             setShowModal(true);
-            setModalTitle("Add Carrier");
+            setModalTitle(<Xl8 xid="cct004">Add Type</Xl8>);
             setIsEditModal(false);
             setEditRowDetails({});
           }}
         >
-          Add Carrier
+          {<Xl8 xid="cct004">Add Type</Xl8>}
         </Button>
         <Button
           variant="outline-dark"
           onClick={() => {
-            codeEditor.put.restoreCarriersAll().then(res => {
+            codeEditor.put.restoreCctypeAll().then(res => {
               refresh();
             });
           }}
         >
-          Restore All Carriers
+          {<Xl8 xid="cou005">Restore All Types</Xl8>}
         </Button>
       </div>
-
-      <CarrierModal
+      <CreditCardTypeModal
         show={showModal}
         onHide={() => setShowModal(false)}
         isEdit={isEditModal}
@@ -80,8 +82,7 @@ const Carriers = ({ name }) => {
       />
 
       <Table
-        service={codeEditor.get.carrierCodes}
-        id="carriers"
+        service={codeEditor.get.cctypeCodes}
         callback={cb}
         header={headers}
         key={refreshKey}
@@ -91,4 +92,4 @@ const Carriers = ({ name }) => {
   );
 };
 
-export default Carriers;
+export default CreditCardType;
