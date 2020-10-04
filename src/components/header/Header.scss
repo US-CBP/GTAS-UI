@@ -107,3 +107,8 @@ $wco-gray: rgb(141, 144, 147);
   color: #16181b;
   background-color: rgba(0, 0, 0, 0.075);
 }
+
+.dropdown > .dropdown-menu {
+  right: 0;
+  left: auto;
+}
