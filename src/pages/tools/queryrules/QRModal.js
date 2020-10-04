@@ -657,7 +657,7 @@ const QRModal = props => {
     } else {
       codeEditor.get.cctypeCodes().then(res => {
         let ccitem = asArray(res).map(ccitem => {
-          return { title: ccitem.description, value: ccitem.code };
+          return { title: `${ccitem.description} (${ccitem.code})`, value: ccitem.code };
         });
 
         const result = ccitem.sort(function(a, b) {
