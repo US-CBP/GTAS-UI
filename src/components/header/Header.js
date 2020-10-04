@@ -100,16 +100,6 @@ const Header = () => {
           >
             <Xl8 xid="head002">Vetting</Xl8>
           </Nav.Link>
-          <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
-            <Nav.Link
-              as={Link}
-              to="admin"
-              className={`${getActiveClass(htab.ADMIN)}`}
-              onClick={() => clickTab(htab.ADMIN)}
-            >
-              <Xl8 xid="head003">Admin</Xl8>
-            </Nav.Link>
-          </RoleAuthenticator>
           <Nav.Link
             as={Link}
             to="tools"
@@ -119,6 +109,14 @@ const Header = () => {
             <Xl8 xid="head004">Tools</Xl8>
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
+            <Nav.Link
+              as={Link}
+              to="admin"
+              className={`${getActiveClass(htab.ADMIN)}`}
+              onClick={() => clickTab(htab.ADMIN)}
+            >
+              <Xl8 xid="head003">Admin</Xl8>
+            </Nav.Link>
             <Nav.Link
               as={Link}
               to="langEditor"

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
-import { watchlistcats } from "../../../services/serviceWrapper";
+import { hitcats } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import { Button } from "react-bootstrap";
-import WatchlistModal from "./WatchlistModal";
+import HitModal from "./HitModal";
 
-const WatchlistCats = ({ name }) => {
+const HitCats = ({ name }) => {
   const cb = function() {};
 
   const [showModal, setShowModal] = useState(false);
@@ -49,12 +49,12 @@ const WatchlistCats = ({ name }) => {
     <Main className="full">
       <Title title={name} rightChild={cats}></Title>
       <Table
-        service={watchlistcats.get}
+        service={hitcats.get}
         key={refreshKey}
         callback={cb}
         header={headers}
       ></Table>
-      <WatchlistModal
+      <HitModal
         show={showModal}
         onHide={() => setShowModal(false)}
         refresh={refresh}
@@ -64,4 +64,4 @@ const WatchlistCats = ({ name }) => {
   );
 };
 
-export default WatchlistCats;
+export default HitCats;

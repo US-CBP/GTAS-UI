@@ -1,31 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import { Tabs, Tab, Container } from "react-bootstrap";
 import { navigate } from "@reach/router";
-import { titleCase } from "../../../utils/utils";
+import { getEndpoint, titleCase } from "../../../utils/utils";
 
 import "./CodeEditor.css";
 
 const CodeEditor = props => {
+  const endpoint = getEndpoint(props.location?.pathname);
+  const startTab = endpoint === "codeeditor" ? "country" : endpoint;
   const tabcontent = props.children.props.children;
-  const [tab, setTab] = useState(props.startTab);
+  const [tab, setTab] = useState(startTab);
 
-  const tabHandler = ev => {
+  function tabHandler(ev) {
     const tabname = ev
       .split("-")
       .pop()
       .toLowerCase();
 
     setTab(tabname);
-  };
+  }
 
   useEffect(() => {
     navigate(`/gtas/admin/codeeditor/${tab}`);
   }, [tab]);
 
   const headerTabs = (
-    <Tabs defaultActiveKey={props.startTab} id="codeTabs">
+    <Tabs defaultActiveKey={endpoint} id="codeTabs">
       <Tab
         eventKey="country"
         title={
@@ -33,7 +35,6 @@ const CodeEditor = props => {
             Country
           </Xl8>
         }
-        key="country"
       ></Tab>
       <Tab
         eventKey="airport"
@@ -42,7 +43,6 @@ const CodeEditor = props => {
             Airport
           </Xl8>
         }
-        key="airport"
       ></Tab>
       <Tab
         eventKey="carrier"
@@ -51,19 +51,26 @@ const CodeEditor = props => {
             Carrier
           </Xl8>
         }
-        key="carrier"
+      ></Tab>
+      <Tab
+        eventKey="cctype"
+        title={
+          <Xl8 xid="app035" id="codeTabs-tab-cctype">
+            Card Types
+          </Xl8>
+        }
       ></Tab>
     </Tabs>
   );
 
   let tabMap = {};
-  tabcontent.forEach(tab => {
+  tabcontent.forEach(function(tab) {
     tabMap[tab.props.path] = tab.props.name;
   });
 
   return (
     <Container fluid>
-      <Title title={tabMap[tab]} leftChild={headerTabs} leftCb={tabHandler} key={tab} />
+      <Title title={tabMap[tab]} leftChild={headerTabs} leftCb={tabHandler} />
       {props.children}
     </Container>
   );

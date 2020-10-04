@@ -6,7 +6,7 @@ import { notetypes } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../utils/constants";
 
-const NoteTypeModal = props => {
+const NoteModal = props => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
   const [variant, setVariant] = useState("");
@@ -27,7 +27,7 @@ const NoteTypeModal = props => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>{<Xl8 xid="ntm001">Add Note Type Category</Xl8>}</Modal.Title>
+        <Modal.Title>{<Xl8 xid="ntm001">Add Note Category</Xl8>}</Modal.Title>
       </Modal.Header>
       <Alert show={showAlert} variant={variant}>
         {alertContent}
@@ -62,4 +62,4 @@ const NoteTypeModal = props => {
   );
 };
 
-export default NoteTypeModal;
+export default NoteModal;
