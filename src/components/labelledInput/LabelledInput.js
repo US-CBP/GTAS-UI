@@ -30,7 +30,7 @@ class LabelledInput extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onChangeArray = this.onChangeArray.bind(this);
-    this.onMultiSelecChange = this.onMultiSelecChange.bind(this);
+    this.onMultiSelectChange = this.onMultiSelectChange.bind(this);
     this.onChangeDatePicker = this.onChangeDatePicker.bind(this);
 
     this.state = {
@@ -71,7 +71,7 @@ class LabelledInput extends Component {
     this.props.callback(e);
   }
 
-  onMultiSelecChange(e) {
+  onMultiSelectChange(e) {
     this.setState({
       inputVal: e,
       isValid: hasData(e) || this.props.required !== REQUIRED
@@ -131,10 +131,11 @@ class LabelledInput extends Component {
           name={this.props.name}
           inputType={this.props.inputType}
           inputVal={alt(this.state.inputVal)}
-          callback={this.onChange}
           required={this.state.required}
           placeholder={this.state.placeholder}
+          maxlength={this.props.maxlength}
           readOnly={this.props.readOnly}
+          callback={this.onChange}
         />
       );
     }
@@ -147,7 +148,7 @@ class LabelledInput extends Component {
           name={this.props.name}
           inputType={this.props.inputType}
           selected={this.props.inputVal}
-          callback={type === "select" ? this.onChange : this.onMultiSelecChange}
+          callback={type === "select" ? this.onChange : this.onMultiSelectChange}
           required={this.state.required}
           placeholder={this.state.placeholder}
           options={this.state.options}
