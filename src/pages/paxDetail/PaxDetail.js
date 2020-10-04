@@ -203,7 +203,7 @@ const PaxDetail = props => {
       <Main className="main paxdetail-container">
         <Navbar>
           <Navbar.Brand>
-            <Xl8 xid="11">Passenger Detail</Xl8>
+            <Xl8 xid="pd019">Passenger Detail</Xl8>
           </Navbar.Brand>
           <Nav className="paxdetails-action-buttons">
             <EventNotesModal
