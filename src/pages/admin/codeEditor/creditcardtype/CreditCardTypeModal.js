@@ -12,7 +12,6 @@ const CreditCardTypeModal = props => {
   const cb = function(result) {};
   const data = props.editRowDetails || {};
 
-  // console.log(data);
   const postSubmit = (status = ACTION.CANCEL, results) => {
     props.onHide();
 
@@ -24,7 +23,6 @@ const CreditCardTypeModal = props => {
     res.id = data.id || 0;
     res.originId = data.originId || 0;
 
-    console.log(res);
     return [res];
   };
 
@@ -34,8 +32,11 @@ const CreditCardTypeModal = props => {
     });
   };
 
-  const customButtons = props.isEdit
-    ? [
+  let customButtons = [];
+
+  if (props.isEdit) {
+    if (data.originId) {
+      customButtons.push(
         <Button
           type="button"
           className="m-2 outline-dark-outline"
@@ -44,22 +45,25 @@ const CreditCardTypeModal = props => {
           onClick={restoreSpecificCode}
         >
           <Xl8 xid="cctm001">Restore</Xl8>
-        </Button>,
-        <Button
-          type="button"
-          className="m-2 outline-dark-outline"
-          variant="outline-dark"
-          key="delete"
-          onClick={() => {
-            codeEditor.delete.deleteCctype(data.id).then(res => {
-              postSubmit(ACTION.DELETE);
-            });
-          }}
-        >
-          <Xl8 xid="cctm002">Delete</Xl8>
         </Button>
-      ]
-    : [];
+      );
+    }
+    customButtons.push(
+      <Button
+        type="button"
+        className="m-2 outline-dark-outline"
+        variant="outline-dark"
+        key="delete"
+        onClick={() => {
+          codeEditor.delete.deleteCctype(data.id).then(res => {
+            postSubmit(ACTION.DELETE);
+          });
+        }}
+      >
+        <Xl8 xid="cctm002">Delete</Xl8>
+      </Button>
+    );
+  }
 
   return (
     <Modal
@@ -99,8 +103,9 @@ const CreditCardTypeModal = props => {
               max-length="2"
               name="code"
               required={true}
+              maxlength="2"
               alt="nothing"
-              inputVal={data.code}
+              inputVal={data.code?.toUpperCase()}
               callback={cb}
               spacebetween
             />
