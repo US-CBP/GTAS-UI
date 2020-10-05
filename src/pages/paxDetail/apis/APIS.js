@@ -35,7 +35,12 @@ const APIS = props => {
       <CardWithTable
         data={bags}
         headers={headers.bags}
-        title={<Xl8 xid="apis002">Total APIS Baggage</Xl8>}
+        title={
+          <span>
+            <Xl8 xid="apis002">Total APIS Baggage</Xl8> ({data.bagWeight || 0}
+            <Xl8 xid="apis014">kg</Xl8>)
+          </span>
+        }
       />
       <CardWithTable
         data={phoneNumbers}
@@ -45,7 +50,7 @@ const APIS = props => {
       <CardWithTable
         data={passengersOnReservation}
         headers={headers.passengersOnReservation}
-        title={<Xl8 xid="apis004">`Passenger on Reservation</Xl8>}
+        title={<Xl8 xid="apis004">Passenger on Reservation</Xl8>}
       />
     </Container>
   );
