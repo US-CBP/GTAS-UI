@@ -161,7 +161,8 @@ export const ENTITIESEXT = {
     },
     {
       id: "cardType",
-      type: "string"
+      type: "string",
+      ...getMult()
     }
   ],
   Document: [

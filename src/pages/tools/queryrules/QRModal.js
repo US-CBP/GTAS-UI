@@ -12,7 +12,8 @@ import {
   hitcats,
   airportLookup,
   countryLookup,
-  carrierLookup
+  carrierLookup,
+  codeEditor
 } from "../../../services/serviceWrapper";
 
 import { numProps, txtProps, dateProps } from "../../../components/raqb/constants";
@@ -30,6 +31,7 @@ const QRModal = props => {
   const [airports, setAirports] = useState([]);
   const [countries, setCountries] = useState([]);
   const [carriers, setCarriers] = useState([]);
+  const [ccTypes, setCcTypes] = useState([]);
   const [dataConfig, setDataConfig] = useState([]);
 
   const [title, setTitle] = useState(props.title);
@@ -46,11 +48,12 @@ const QRModal = props => {
       hasData(countries) &&
       hasData(carriers) &&
       hasData(airports) &&
+      hasData(ccTypes) &&
       hasData(categories)
     )
       setLoaded(true);
     else setLoaded(false);
-  }, [countries, carriers, airports, categories]);
+  }, [countries, carriers, airports, ccTypes, categories]);
 
   const countryProps = useMemo(() => {
     return {
@@ -83,6 +86,16 @@ const QRModal = props => {
       valueSources: ["value"]
     };
   }, [airports]);
+  const ccTypeProps = useMemo(() => {
+    return {
+      type: "select",
+      fieldSettings: {
+        allowCustomValues: false,
+        listValues: ccTypes
+      },
+      valueSources: ["value"]
+    };
+  }, [ccTypes]);
 
   const fieldConfigWithData = {
     fields: {
@@ -129,7 +142,7 @@ const QRModal = props => {
           accountHolder: { label: "Account Holder", ...txtProps },
           expiration: { label: "Expiration Date", ...dateProps },
           number: { label: "Number", ...txtProps },
-          cardType: { label: "Type", ...txtProps }
+          cardType: { label: "Type", ...ccTypeProps }
         }
       },
       Document: {
@@ -576,7 +589,9 @@ const QRModal = props => {
     const storedCarriers = getLookupState(CTX.CARRIERS);
     const storedAirports = getLookupState(CTX.AIRPORTCODES);
     const storedCategories = getLookupState(CTX.RULECATS);
+    const storedCcTypes = getLookupState(CTX.CCTYPES);
 
+    // move to context.
     if (hasData(storedCategories)) {
       setCategories(storedCategories);
     } else {
@@ -634,6 +649,23 @@ const QRModal = props => {
 
         if (hasData(result)) lookupAction({ data: result, type: CTX.AIRPORTCODES });
         setAirports(result);
+      });
+    }
+
+    if (hasData(storedCcTypes)) {
+      setCcTypes(storedCcTypes);
+    } else {
+      codeEditor.get.cctypeCodes().then(res => {
+        let ccitem = asArray(res).map(ccitem => {
+          return { title: `${ccitem.description} (${ccitem.code})`, value: ccitem.code };
+        });
+
+        const result = ccitem.sort(function(a, b) {
+          return a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1;
+        });
+
+        if (hasData(result)) lookupAction({ data: result, type: CTX.CCTYPES });
+        setCcTypes(result);
       });
     }
   }, []);

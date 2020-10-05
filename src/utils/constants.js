@@ -49,6 +49,7 @@ export const CTX = {
   COUNTRIES: "countries",
   AIRPORTS: "airports",
   AIRPORTCODES: "airportcodes",
+  CCTYPES: "cctypes",
   RULECATS: "rulecats"
 };
 
