@@ -92,7 +92,7 @@ const Watchlist = props => {
   };
 
   const tabs = (
-    <Tabs defaultActiveKey={TAB} id="wlTabs">
+    <Tabs defaultActiveKey={tab} id="wlTabs">
       <Tab
         eventKey={TAB.PAX}
         title={
@@ -138,7 +138,7 @@ const Watchlist = props => {
     tab === TAB.PAX
       ? setButtonTypeText(<Xl8 xid="wl004">Add Passenger</Xl8>)
       : setButtonTypeText(<Xl8 xid="wl003">Add Document</Xl8>);
-  }, [tab, TAB.DOX]);
+  }, [tab]);
 
   // fetch the wl cats on page load.
   useEffect(() => {
@@ -159,7 +159,7 @@ const Watchlist = props => {
   };
 
   const fetchData = () => {
-    const service = tab[0] === TAB.DOX[0] ? wldocs : wlpax;
+    const service = tab === TAB.DOX ? wldocs : wlpax;
 
     service.get().then(res => {
       let parsed = [];
@@ -178,7 +178,7 @@ const Watchlist = props => {
           const category = (wlcatData.find(item => item.id == categoryId) || {}).label; // allow coersion. item.id is an int, categoryId is a string.
 
           //TODO: consolidate pax/doc fetches??
-          if (tab[0] === TAB.PAX[0])
+          if (tab === TAB.PAX)
             return {
               id: item.id,
               firstName: firstName,
