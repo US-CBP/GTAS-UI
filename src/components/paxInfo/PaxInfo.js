@@ -12,7 +12,7 @@ const PaxInfo = props => {
     //don't display label with a null value (a good example is last apis/pnr recieved)
     if (hasData(value)) {
       const row = (
-        <tr key={label} className="pax-info-row">
+        <tr key={label.props?.xid} className="pax-info-row">
           <td className="left-label">{label}</td>
           <td className="right-label">{value}</td>
         </tr>
