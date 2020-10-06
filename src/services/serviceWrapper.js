@@ -134,7 +134,7 @@ const WLITEM = `${BASE_URL}gtas/wl/watchlistItem`;
 
 const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
 const NOTIFICATION = `${BASE_URL}gtas/users/notify`;
-const HOST = `${BASE_URL}gtas/api/config/`;
+const HOST = `${BASE_URL}gtas/config/`;
 const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
 const NEO4JURL = HOST + "/neo4j/";
