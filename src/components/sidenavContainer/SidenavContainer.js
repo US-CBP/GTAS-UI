@@ -17,7 +17,7 @@ const SideNav = props => {
         onClick={() => toggleOpen(false)}
       ></div>
       <div className="filter-toggle" onClick={() => toggleOpen(!open)}>
-        <div className="text-center margintop20">
+        <div className="text-center toggle-arrow">
           <i className={`${open ? "arrow-hide" : "arrow-open"} fa fa-2x arrow`}></i>
         </div>
       </div>
