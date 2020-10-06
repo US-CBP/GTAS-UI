@@ -130,17 +130,17 @@ $wco-gray: rgb(141, 144, 147);
   max-width: 150px;
 }
 
-.navbar-light .navbar-toggler-icon {
-  width: unset;
-  height: unset;
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  background-image: unset !important;
-}
+// .navbar-light .navbar-toggler-icon {
+//   width: unset;
+//   height: unset;
+//   display: inline-block;
+//   font: normal normal normal 14px/1 FontAwesome;
+//   font-size: inherit;
+//   text-rendering: auto;
+//   -webkit-font-smoothing: antialiased;
+//   background-image: unset !important;
+// }
 
-.navbar-toggler-icon::before {
-  content: "\f0c9";
-}
+// .navbar-toggler-icon::before {
+//   content: "\f0c9";
+// }

@@ -75,7 +75,7 @@ const Header = () => {
   }, []);
 
   return (
-    <Navbar sticky="top" expand="md" className="header-navbar" variant="light">
+    <Navbar sticky="top" expand="md" className="header-navbar" variant="dark">
       <Navbar.Brand className="header-navbar-brand">
         <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
           <img src={wcoLogo} />
