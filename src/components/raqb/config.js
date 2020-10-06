@@ -1,7 +1,7 @@
 export const operators = {
   equal: {
-    label: "==",
-    labelForFormat: "==",
+    label: "Equals",
+    labelForFormat: "Equals",
     sqlOp: "=",
     reversedOp: "not_equal",
     formatOp: (
@@ -22,8 +22,8 @@ export const operators = {
     jsonLogic: "=="
   },
   not_equal: {
-    label: "!=",
-    labelForFormat: "!=",
+    label: "Not Equals",
+    labelForFormat: "Not Equals",
     sqlOp: "<>",
     reversedOp: "equal",
     formatOp: (
@@ -268,7 +268,7 @@ export const operators = {
     jsonLogic: "!!"
   },
   select_equals: {
-    label: "==",
+    label: "Equals",
     labelForFormat: "==",
     sqlOp: "=", // enum/set
     formatOp: (
@@ -287,7 +287,7 @@ export const operators = {
     jsonLogic: "=="
   },
   select_not_equals: {
-    label: "!=",
+    label: "Not equals",
     labelForFormat: "!=",
     sqlOp: "<>", // enum/set
     formatOp: (
