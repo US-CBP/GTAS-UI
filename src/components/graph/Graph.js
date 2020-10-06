@@ -17,46 +17,36 @@ class Graph extends React.Component {
     this.activateGraph = this.activateGraph.bind(this);
 
     this.pax1 = {
-      dob: "1967-05-22",
-      updatedAt: "2019-07-16T17:12:31.561000000",
-      paxId: 23,
-      idTag: "c957ff6158dbd9d8145971f44c3ea66156338261",
-      firstName: "HIEU",
-      middleName: "EV?EN",
-      lastName: "KORANDAK",
-      id: 70456,
-      createdAt: 1575796218000,
-      createdBy: "SYSTEM",
-      updatedBy: null,
-      suffix: null,
-      gender: "M",
-      nationality: "ERI",
-      passengerType: "P",
-      seat: null,
-      flightId: "1",
-      flightNumber: "0037",
-      fullFlightNumber: "UA0861",
-      carrier: "UA",
-      etd: 1576032600000,
-      eta: 1576084800000,
-      flightOrigin: "IAD",
-      flightDestination: "GRU",
-      onRuleHitList: true,
-      onGraphHitList: false,
-      onWatchList: false,
-      onWatchListDoc: false,
-      onWatchListLink: false,
-      documents: [
-        {
-          documentType: "P",
-          documentNumber: "374330695",
-          expirationDate: "2025-03-02",
-          issuanceDate: null,
-          issuanceCountry: "ERI",
-          firstName: null,
-          lastName: null
-        }
-      ]
+      dob: this.props.paxData?.dob,
+      updatedAt: this.props.paxData?.updatedAt,
+      paxId: this.props.paxData?.paxId,
+      idTag: this.props.paxData?.paxIdTag,
+      firstName: this.props.paxData?.firstName,
+      middleName: this.props.paxData?.middleName,
+      lastName: this.props.paxData?.lastName,
+      id: this.props.paxData?.id,
+      createdAt: this.props.paxData?.createdAt,
+      createdBy: this.props.paxData?.createdBy,
+      updatedBy: this.props.paxData?.updatedBy,
+      suffix: this.props.paxData?.suffix,
+      gender: this.props.paxData?.gender,
+      nationality: this.props.paxData?.nationality,
+      passengerType: this.props.paxData?.passengerType,
+      seat: this.props.paxData?.seat,
+      flightId: this.props.paxData?.flightId,
+      flightNumber: this.props.paxData?.flightNumber,
+      paxFullFlightNumber: `${this.props.paxData?.carrier}${this.props.paxData?.flightNumber}`.toUpperCase(),
+      carrier: this.props.paxData?.carrier,
+      etd: this.props.paxData?.etd,
+      eta: this.props.paxData?.eta,
+      flightOrigin: this.props.paxData?.flightOrigin,
+      flightDestination: this.props.paxData?.flightDestination,
+      onRuleHitList: this.props.paxData?.onRuleHitList,
+      onGraphHitList: this.props.paxData?.onGraphHitList,
+      onWatchList: this.props.paxData?.onWatchList,
+      onWatchListDoc: this.props.paxData?.onWatchListDoc,
+      onWatchListLink: this.props.paxData?.onWatchListLink,
+      documents: this.props.paxData?.documents
     };
 
     this.setRef = componentNode => {
@@ -110,12 +100,12 @@ class Graph extends React.Component {
   }
 
   componentDidMount() {
-    cypher.get().then(function(result) {
-      vaquita.rest.CYPHER_URL = "http://localhost:7474/db/data/transaction/commit"; //result;
+    cypher.get().then(function(res) {
+      vaquita.rest.CYPHER_URL = res.result; //result;
     });
 
-    cypherAuth.get().then(function(result) {
-      vaquita.rest.AUTHORIZATION = "fake neo4j auth secret"; //result;
+    cypherAuth.get().then(function(res) {
+      vaquita.rest.AUTHORIZATION = `${res.result}`; //result;
     });
 
     this.activateGraph();
@@ -195,236 +185,249 @@ class Graph extends React.Component {
                           <Xl8 xid="link002">This Passenger:</Xl8>
                         </span>
                         <table className="ppt-saved-ul">
-                          <tr id="Pax" onClick={() => this.onClickSavedGraph("pax")}>
-                            <td>
-                              <i className="fa fa-user-circle-o pptpassenger"></i>
-                            </td>
-                            <td>
-                              <span className="ppt-label" title="Passenger links">
-                                <Xl8 xid="link003">Passenger</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr
-                            id="Address"
-                            onClick={() => this.onClickSavedGraph("address")}
-                          >
-                            <td>
-                              <i class="fa fa-home pptaddress"></i>
-                            </td>
-                            <td>
-                              <span
-                                class="ppt-label"
-                                title="Addresses used by this passenger"
-                              >
-                                <Xl8 xid="link004">Address</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr
-                            id="CreditCard"
-                            onClick={() => this.onClickSavedGraph("creditcard")}
-                          >
-                            <td>
-                              <i class="fa fa-credit-card-alt pptcreditcard"></i>
-                            </td>
-                            <td>
-                              <span
-                                class="ppt-label"
-                                title="Credit cards used by this passenger"
-                              >
-                                <Xl8 xid="link005">Credit Card</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr id="Phone" onClick={() => this.onClickSavedGraph("phone")}>
-                            <td>
-                              <i class="fa fa-phone pptphone"></i>
-                            </td>
-                            <td>
-                              <span
-                                class="ppt-label"
-                                title="Phone numbers used by this passenger"
-                              >
-                                <Xl8 xid="link006">Phone</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr id="Email" onClick={() => this.onClickSavedGraph("email")}>
-                            <td>
-                              <i class="fa fa-envelope pptemail"></i>
-                            </td>
-                            <td>
-                              <span
-                                class="ppt-label"
-                                title="Email addresses used by this passenger"
-                              >
-                                <Xl8 xid="link007">Emails</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr id="Hit" onClick={() => this.onClickSavedGraph("hit")}>
-                            <td>
-                              <i class="fa fa-exclamation-circle ppthit"></i>
-                            </td>
-                            <td>
-                              <span class="ppt-label" title="Hits for this passenger">
-                                <Xl8 xid="link008">Hits</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr
-                            id="Document"
-                            onClick={() => this.onClickSavedGraph("document")}
-                          >
-                            <td>
-                              <img
-                                alt=""
-                                src="resources/img/document.svg"
-                                class="pptdocument"
-                              ></img>
-                            </td>
-                            <td>
-                              <span
-                                class="ppt-label"
-                                title="Documents used by this passenger"
-                              >
-                                <Xl8 xid="link009">Documents</Xl8>
-                              </span>
-                            </td>
-                          </tr>
+                          <tbody>
+                            <tr id="Pax" onClick={() => this.onClickSavedGraph("pax")}>
+                              <td>
+                                <i className="fa fa-user-circle-o pptpassenger"></i>
+                              </td>
+                              <td>
+                                <span className="ppt-label" title="Passenger links">
+                                  <Xl8 xid="link003">Passenger</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr
+                              id="Address"
+                              onClick={() => this.onClickSavedGraph("address")}
+                            >
+                              <td>
+                                <i className="fa fa-home pptaddress"></i>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="Addresses used by this passenger"
+                                >
+                                  <Xl8 xid="link004">Address</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr
+                              id="CreditCard"
+                              onClick={() => this.onClickSavedGraph("creditcard")}
+                            >
+                              <td>
+                                <i className="fa fa-credit-card-alt pptcreditcard"></i>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="Credit cards used by this passenger"
+                                >
+                                  <Xl8 xid="link005">Credit Card</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr
+                              id="Phone"
+                              onClick={() => this.onClickSavedGraph("phone")}
+                            >
+                              <td>
+                                <i className="fa fa-phone pptphone"></i>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="Phone numbers used by this passenger"
+                                >
+                                  <Xl8 xid="link006">Phone</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr
+                              id="Email"
+                              onClick={() => this.onClickSavedGraph("email")}
+                            >
+                              <td>
+                                <i className="fa fa-envelope pptemail"></i>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="Email addresses used by this passenger"
+                                >
+                                  <Xl8 xid="link007">Emails</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr id="Hit" onClick={() => this.onClickSavedGraph("hit")}>
+                              <td>
+                                <i className="fa fa-exclamation-circle ppthit"></i>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="Hits for this passenger"
+                                >
+                                  <Xl8 xid="link008">Hits</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr
+                              id="Document"
+                              onClick={() => this.onClickSavedGraph("document")}
+                            >
+                              <td>
+                                <img
+                                  alt=""
+                                  src="resources/img/document.svg"
+                                  className="pptdocument"
+                                ></img>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="Documents used by this passenger"
+                                >
+                                  <Xl8 xid="link009">Documents</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                          </tbody>
                         </table>
                         <hr />
                         <br />
 
-                        <span class="ppt-header-span">
+                        <span className="ppt-header-span">
                           <Xl8 xid="link010">This FLight:</Xl8>
                         </span>
-                        <table class="ppt-saved-ul">
-                          <tr
-                            id="Flight"
-                            onClick={() => this.onClickSavedGraph("flight")}
-                          >
-                            <td>
-                              <i class="fa fa-plane pptflight"></i>
-                            </td>
-                            <td>
-                              <span class="ppt-label" title="Flight links">
-                                <Xl8 xid="link011">Flight</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr
-                            id="Address"
-                            onClick={() => this.onClickSavedGraph("addressall")}
-                          >
-                            <td>
-                              <i class="fa fa-home pptaddress"></i>
-                            </td>
-                            <td>
-                              <span
-                                class="ppt-label"
-                                title="All passenger addresses for this flight"
-                              >
-                                <Xl8 xid="link012">All Addresses</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr
-                            id="CreditCard"
-                            onClick={() => this.onClickSavedGraph("creditcardall")}
-                          >
-                            <td>
-                              <i class="fa fa-credit-card-alt pptcreditcard"></i>
-                            </td>
-                            <td>
-                              <span
-                                class="ppt-label"
-                                title="All passenger credit cards for this flight"
-                              >
-                                <Xl8 xid="link013">All Credit Cards</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr
-                            id="Phone"
-                            onClick={() => this.onClickSavedGraph("phoneall")}
-                          >
-                            <td>
-                              <i class="fa fa-phone pptphone"></i>
-                            </td>
-                            <td>
-                              <span
-                                class="ppt-label"
-                                title="All passenger phone numbers for this flight"
-                              >
-                                <Xl8 xid="link014">All Phones</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr
-                            id="Email"
-                            onClick={() => this.onClickSavedGraph("emailall")}
-                          >
-                            <td>
-                              <i class="fa fa-envelope pptemail"></i>
-                            </td>
-                            <td>
-                              <span
-                                class="ppt-label"
-                                title="All passenger email addresses for this flight"
-                              >
-                                <Xl8 xid="link015">All Emails</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr id="Hit" onClick={() => this.onClickSavedGraph("hitall")}>
-                            <td>
-                              <i class="fa fa-exclamation-circle ppthit"></i>
-                            </td>
-                            <td>
-                              <span
-                                class="ppt-label"
-                                title="All passenger hits for this flight"
-                              >
-                                <Xl8 xid="link016">All Hits</Xl8>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr
-                            id="Document"
-                            onClick={() => this.onClickSavedGraph("documentall")}
-                          >
-                            <td>
-                              <img
-                                alt=""
-                                src="resources/img/document.svg"
-                                class="pptdocument"
-                              ></img>
-                            </td>
-                            <td>
-                              <span
-                                class="ppt-label"
-                                title="All passenger documents for this flight"
-                              >
-                                <Xl8 xid="link017">All Documents</Xl8>
-                              </span>
-                            </td>
-                          </tr>
+                        <table className="ppt-saved-ul">
+                          <tbody>
+                            <tr
+                              id="Flight"
+                              onClick={() => this.onClickSavedGraph("flight")}
+                            >
+                              <td>
+                                <i className="fa fa-plane pptflight"></i>
+                              </td>
+                              <td>
+                                <span className="ppt-label" title="Flight links">
+                                  <Xl8 xid="link011">Flight</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr
+                              id="Address"
+                              onClick={() => this.onClickSavedGraph("addressall")}
+                            >
+                              <td>
+                                <i className="fa fa-home pptaddress"></i>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="All passenger addresses for this flight"
+                                >
+                                  <Xl8 xid="link012">All Addresses</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr
+                              id="CreditCard"
+                              onClick={() => this.onClickSavedGraph("creditcardall")}
+                            >
+                              <td>
+                                <i className="fa fa-credit-card-alt pptcreditcard"></i>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="All passenger credit cards for this flight"
+                                >
+                                  <Xl8 xid="link013">All Credit Cards</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr
+                              id="Phone"
+                              onClick={() => this.onClickSavedGraph("phoneall")}
+                            >
+                              <td>
+                                <i className="fa fa-phone pptphone"></i>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="All passenger phone numbers for this flight"
+                                >
+                                  <Xl8 xid="link014">All Phones</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr
+                              id="Email"
+                              onClick={() => this.onClickSavedGraph("emailall")}
+                            >
+                              <td>
+                                <i className="fa fa-envelope pptemail"></i>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="All passenger email addresses for this flight"
+                                >
+                                  <Xl8 xid="link015">All Emails</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr id="Hit" onClick={() => this.onClickSavedGraph("hitall")}>
+                              <td>
+                                <i className="fa fa-exclamation-circle ppthit"></i>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="All passenger hits for this flight"
+                                >
+                                  <Xl8 xid="link016">All Hits</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                            <tr
+                              id="Document"
+                              onClick={() => this.onClickSavedGraph("documentall")}
+                            >
+                              <td>
+                                <img
+                                  alt=""
+                                  src="resources/img/document.svg"
+                                  className="pptdocument"
+                                ></img>
+                              </td>
+                              <td>
+                                <span
+                                  className="ppt-label"
+                                  title="All passenger documents for this flight"
+                                >
+                                  <Xl8 xid="link017">All Documents</Xl8>
+                                </span>
+                              </td>
+                            </tr>
+                          </tbody>
                         </table>
                       </div>
                     </nav>
-                    <div id="popoto-graph" class="col-lg-10 ppt-div-graph"></div>
+                    <div id="popoto-graph" className="col-lg-10 ppt-div-graph"></div>
                   </div>
 
-                  <div id="popoto-query" class="ppt-container-query"></div>
+                  <div id="popoto-query" className="ppt-container-query"></div>
 
                   <div class="ppt-section-header">
                     RESULTS
-                    <span id="result-total-count" class="ppt-count-results"></span>
+                    <span id="result-total-count" className="ppt-count-results"></span>
                   </div>
 
-                  <div id="popoto-results" class="ppt-container-results"></div>
+                  <div id="popoto-results" className="ppt-container-results"></div>
                 </section>
               </div>
             </div>
