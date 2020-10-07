@@ -55,6 +55,10 @@ $transparent: rgba(223, 231, 247, 0);
   }
 }
 
+.toggle-arrow {
+  margin-top: 10px;
+}
+
 @include media-breakpoint-up(md) {
   .filter-toggle {
     display: none;

@@ -75,7 +75,7 @@ const Header = () => {
   }, []);
 
   return (
-    <Navbar sticky="top" expand="md" className="header-navbar" variant="light">
+    <Navbar sticky="top" expand="md" className="header-navbar" variant="dark">
       <Navbar.Brand className="header-navbar-brand">
         <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
           <img src={wcoLogo} />
@@ -120,10 +120,10 @@ const Header = () => {
             <Nav.Link
               as={Link}
               to="langEditor"
-              className={`${getActiveClass(htab.LANG)}`}
+              className={`${getActiveClass(htab.LANG)} optional`}
               onClick={() => clickTab(htab.LANG)}
             >
-              <i className="fa fa-language mx-xl-1"></i>
+              <i className="fa fa-language mx-sm-1"></i>
               {currentLang}
             </Nav.Link>
           </RoleAuthenticator>
@@ -131,7 +131,12 @@ const Header = () => {
         <Nav className="ml-auto">
           <Form inline>
             <InputGroup>
-              <FormControl type="text" placeholder="Search" ref={searchInputRef} />
+              <FormControl
+                type="text"
+                placeholder="Search"
+                ref={searchInputRef}
+                className="search-150"
+              />
               <InputGroup.Append>
                 <Button variant="light" onClick={handleSearchSubmit}>
                   <i className="fa fa-search"></i>
