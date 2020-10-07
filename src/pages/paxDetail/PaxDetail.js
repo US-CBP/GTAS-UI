@@ -19,7 +19,7 @@ import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import { paxdetails, cases } from "../../services/serviceWrapper";
-import { passengerTypeMapper, asArray } from "../../utils/utils";
+import { passengerTypeMapper, asArray, hasData } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./PaxDetail.scss";
 
@@ -111,6 +111,7 @@ const PaxDetail = props => {
   const [hasApisRecord, setHasApisRecord] = useState(false);
   const [hasPnrRecord, setHasPnrRecord] = useState(false);
   const [watchlistData, setWatchlistData] = useState({});
+  const [paxDetailsData, setPaxDetailsData] = useState();
 
   const tabs = [
     {
@@ -150,11 +151,15 @@ const PaxDetail = props => {
       titleText: "Flight History",
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
-    {
-      title: <Xl8 xid="pd005">Link Analysis</Xl8>,
-      titleText: "Link Analysis",
-      link: <LinkAnalysis />
-    },
+    ...(hasData(paxDetailsData)
+      ? [
+          {
+            title: <Xl8 xid="pd005">Link Analysis</Xl8>,
+            titleText: "Link Analysis",
+            link: <LinkAnalysis paxData={paxDetailsData} />
+          }
+        ]
+      : []),
     {
       titleText: "Attachments",
       title: <Xl8 xid="pd006">Attachments</Xl8>,
@@ -182,7 +187,7 @@ const PaxDetail = props => {
       setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
       setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
       setHasPnrRecord(res.pnrVo?.pnrRecordExists || false);
-
+      setPaxDetailsData(res);
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
       setWatchlistData({ passenger: p, documents: res.documents });
     });
