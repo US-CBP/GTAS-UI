@@ -284,7 +284,7 @@ export const thisPaxFlight = pax => {
           label: "Flight",
           value: [
             {
-              flight_id_tag: pax.flightId,
+              flight_id_tag: pax.flightIdTag,
               full_flight_number: pax.fullFlightNumber
             }
           ]
@@ -306,7 +306,7 @@ export const saves = pax => {
           last_name: pax.lastName
         }
       ],
-      rel: paxRelations(pax.flightId, pax.fullFlightId)
+      rel: paxRelations(pax.flightIdTag, pax.fullFlightNumber)
     },
     flight: {
       // this flight, all pax, ports
@@ -314,7 +314,7 @@ export const saves = pax => {
       horiz: 1,
       value: [
         {
-          flight_id_tag: pax.flightId,
+          flight_id_tag: pax.flightIdTag,
           full_flight_number: pax.fullFlightNumber
         }
       ],
