@@ -389,6 +389,7 @@ const Vetting = props => {
                 labelText={<Xl8 xid="vet014">Start Date</Xl8>}
                 name="etaStart"
                 callback={cb}
+                className="dtp-vetting-upper"
                 required={true}
                 alt="Start Date"
               />
@@ -402,6 +403,7 @@ const Vetting = props => {
                 name="etaEnd"
                 callback={cb}
                 required={true}
+                className="dtp-vetting-lower"
                 alt="End Date"
               />
             )}

@@ -5,8 +5,8 @@ import "../Inputs.scss";
 
 const TextInput = props => (
   <input
-    className={`form-input ${props.className || ""}`}
     {...props}
+    className={`form-input ${props.className || ""}`}
     type={props.inputType}
     value={props.inputVal}
     onChange={props.callback}

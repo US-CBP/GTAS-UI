@@ -5,20 +5,26 @@
 // Primary colors
 $hover-color: rgb(177, 172, 172);
 $gtas-white: rgba(255, 255, 255, 0.9);
-$wco-blue: rgb(0, 119, 200);
+$wco-blue: #0082c3;
 $wco-gray: rgb(141, 144, 147);
 
 .header-navbar {
   padding: 0.25rem 1rem !important;
   background-color: $wco-blue;
   border-bottom: 3px solid $wco-gray;
+  white-space: nowrap;
+  height: 54px;
+  min-width: 375px;
 }
 .header-navbar-brand {
   background-color: white;
-  min-width: 200px;
-  align-self: baseline;
+  height: 40px;
   text-align: center;
-  border-radius: 10px 0 10px 0 !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  margin-top: 3px;
+  margin-left: 20px;
+  margin-right: 27px;
   a {
     img {
       height: 40px;
@@ -26,7 +32,7 @@ $wco-gray: rgb(141, 144, 147);
   }
 }
 .header-navbar-brand:hover {
-  background-color: darken($gtas-white, 10%);
+  // background-color: darken($gtas-white, 10%);
 }
 
 .header-navbar .nav-tabs {
@@ -53,7 +59,7 @@ $wco-gray: rgb(141, 144, 147);
   border-color: $gtas-white !important;
   position: absolute;
   right: 20px;
-  top: 8px;
+  top: 5px;
   z-index: 100;
 }
 
@@ -61,8 +67,6 @@ $wco-gray: rgb(141, 144, 147);
   color: $gtas-white !important;
 }
 
-.navbar-search {
-}
 @include media-breakpoint-up(md) {
   .navbar-expand-md .navbar-collapse {
     display: flex !important;
@@ -71,7 +75,7 @@ $wco-gray: rgb(141, 144, 147);
   }
 
   .header-navbar {
-    height: 60px;
+    height: 54px;
   }
 }
 
@@ -96,8 +100,17 @@ $wco-gray: rgb(141, 144, 147);
   .nav-tabs {
     margin-right: 15px;
   }
-  .header-navbar-brand {
-    margin-left: 15% !important;
+}
+
+@media (max-width: 1050px) {
+  .optional {
+    display: none;
+  }
+}
+
+@media (max-width: 950px) {
+  .form-inline {
+    display: none;
   }
 }
 
@@ -112,3 +125,22 @@ $wco-gray: rgb(141, 144, 147);
   right: 0;
   left: auto;
 }
+
+.search-150 {
+  max-width: 150px;
+}
+
+// .navbar-light .navbar-toggler-icon {
+//   width: unset;
+//   height: unset;
+//   display: inline-block;
+//   font: normal normal normal 14px/1 FontAwesome;
+//   font-size: inherit;
+//   text-rendering: auto;
+//   -webkit-font-smoothing: antialiased;
+//   background-image: unset !important;
+// }
+
+// .navbar-toggler-icon::before {
+//   content: "\f0c9";
+// }
