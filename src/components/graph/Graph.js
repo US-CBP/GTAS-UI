@@ -46,7 +46,10 @@ class Graph extends React.Component {
       onWatchList: this.props.paxData?.onWatchList,
       onWatchListDoc: this.props.paxData?.onWatchListDoc,
       onWatchListLink: this.props.paxData?.onWatchListLink,
-      documents: this.props.paxData?.documents
+      documents: this.props.paxData?.documents,
+      origin: this.props.paxData.embarkation,
+      destination: this.props.paxData.debarkation,
+      paxFlightIdTag: this.props.paxData.flightIdTag
     };
 
     this.setRef = componentNode => {
@@ -87,30 +90,32 @@ class Graph extends React.Component {
       paxIdTag: this.pax1.paxIdTag,
       paxLastName: this.pax1.lastName,
       paxFlightIdTag: this.pax1.flightIdTag,
-      paxFullFlightNumber: this.pax1.carrier + this.pax1.flightNumber,
-      origin: this.pax1.embarkation,
-      destination: this.pax1.debarkation,
+      paxFullFlightNumber: this.pax1.paxFullFlightNumber,
+      origin: this.pax1.origin,
+      destination: this.pax1.destination,
       vaquita: vaquita,
-      paxRelations: paxRelations(
-        this.pax1.flightIdTag,
-        this.pax1.carrier + this.pax1.flightNumber
-      ),
-      saves: saves(this.pax1)
+      paxRelations: paxRelations(this.pax1.paxFlightIdTag, this.pax1.paxFullFlightNumber),
+      saves: saves(this.pax1),
+      auth: ""
     };
   }
 
   componentDidMount() {
+    this.setCypherUrl();
+    this.setAuthorization();
+    this.activateGraph();
+  }
+  setCypherUrl() {
     cypher.get().then(function(res) {
       vaquita.rest.CYPHER_URL = res.result; //result;
     });
-
-    cypherAuth.get().then(function(res) {
-      vaquita.rest.AUTHORIZATION = `${res.result}`; //result;
-    });
-
-    this.activateGraph();
   }
-
+  setAuthorization() {
+    cypherAuth.get().then(function(res) {
+      // this.setState({ auth: res.result });
+      vaquita.rest.AUTHORIZATION = res.result; //result;
+    });
+  }
   shouldComponentUpdate() {
     return false;
   }
@@ -422,7 +427,7 @@ class Graph extends React.Component {
 
                   <div id="popoto-query" className="ppt-container-query"></div>
 
-                  <div class="ppt-section-header">
+                  <div className="ppt-section-header">
                     RESULTS
                     <span id="result-total-count" className="ppt-count-results"></span>
                   </div>
