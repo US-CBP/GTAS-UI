@@ -16,7 +16,7 @@ import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator
 import { ROLE } from "../../utils/constants";
 import { hasData } from "../../utils/utils";
 import "./Header.scss";
-import wcoLogo from "../../images/WCO_GTAS_header_brand.svg";
+import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
 import Xl8 from "../../components/xl8/Xl8";
 
 const Header = () => {
