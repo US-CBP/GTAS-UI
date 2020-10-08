@@ -61,17 +61,6 @@ const Vetting = props => {
     }
   ];
 
-  const noteTypeOptions = [
-    {
-      value: "GENERAL_PASSENGER",
-      label: "GENERAL_PASSENGER"
-    },
-    {
-      value: "TEST",
-      label: "TEST"
-    }
-  ];
-
   const getBiographicData = pax => {
     return (
       <ul style={{ listStyle: "none", paddingLeft: 0, fontSize: "small" }}>
@@ -303,13 +292,17 @@ const Vetting = props => {
     });
 
     notetypes.get().then(types => {
-      const nTypes = asArray(types).map(type => {
-        return {
-          value: type.id,
-          label: type.noteType
-        };
-      });
+      const nTypes = asArray(types).reduce((acc, type) => {
+        if (type.noteType !== "DELETED") {
+          acc.push({
+            value: type.id,
+            label: type.noteType
+          });
+        }
+        return acc;
+      }, []);
       setNoteTypes(nTypes);
+      setRefreshKey(nTypes);
     });
   };
 
@@ -367,7 +360,7 @@ const Vetting = props => {
               labelText={<Xl8 xid="vet019">Note Type</Xl8>}
               inputType="multiSelect"
               inputVal={[]}
-              options={noteTypeOptions}
+              options={noteTypes}
               callback={cb}
               alt={<Xl8 xid="vet019">Note Type</Xl8>}
             />
