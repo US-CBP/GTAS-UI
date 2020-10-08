@@ -254,7 +254,7 @@ const Vetting = props => {
         } else if (name === "noteTypes") {
           const selectedNoteTypes = asArray(fields[name]).map(noteType => {
             return {
-              type: noteType.value
+              type: noteType.label
             };
           });
           paramObject[name] = selectedNoteTypes;
