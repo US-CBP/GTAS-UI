@@ -61,6 +61,17 @@ const Vetting = props => {
     }
   ];
 
+  const noteTypeOptions = [
+    {
+      value: "GENERAL_PASSENGER",
+      label: "GENERAL_PASSENGER"
+    },
+    {
+      value: "TEST",
+      label: "TEST"
+    }
+  ];
+
   const getBiographicData = pax => {
     return (
       <ul style={{ listStyle: "none", paddingLeft: 0, fontSize: "small" }}>
@@ -188,7 +199,8 @@ const Vetting = props => {
     etaEnd: endDate,
     displayStatusCheckBoxes: hitStatusdefaultValues,
     ruleTypes: hitTypeOptions,
-    ruleCatFilter: hitCategoryOptions
+    ruleCatFilter: hitCategoryOptions,
+    notetypes: []
   };
 
   const reviewPVL = paxId => {
@@ -250,6 +262,13 @@ const Vetting = props => {
             return { name: name, value: value };
           });
           paramObject[name] = [...morphedArray];
+        } else if (name === "noteTypes") {
+          const selectedNoteTypes = asArray(fields[name]).map(noteType => {
+            return {
+              type: noteType.value
+            };
+          });
+          paramObject[name] = selectedNoteTypes;
         } else {
           paramObject[name] = fields[name];
         }
@@ -259,7 +278,7 @@ const Vetting = props => {
     return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 
-  useEffect(() => {
+  const fetchData = () => {
     usersemails.get().then(res => {
       const emails = asArray(res).map(userEmail => {
         return {
@@ -282,18 +301,20 @@ const Vetting = props => {
       });
       setHitCategoryOptions(options);
     });
-  }, []);
 
-  useEffect(() => {
     notetypes.get().then(types => {
       const nTypes = asArray(types).map(type => {
         return {
-          value: `{"id":"${type.id}", "noteType":"${type.noteType}"}`,
+          value: type.id,
           label: type.noteType
         };
       });
       setNoteTypes(nTypes);
     });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (
@@ -339,6 +360,16 @@ const Vetting = props => {
               options={hitTypeOptions}
               callback={cb}
               alt={<Xl8 xid="3">Hit Types</Xl8>}
+            />
+            <LabelledInput
+              datafield
+              name="noteTypes"
+              labelText={<Xl8 xid="vet019">Note Type</Xl8>}
+              inputType="multiSelect"
+              inputVal={[]}
+              options={noteTypeOptions}
+              callback={cb}
+              alt={<Xl8 xid="vet019">Note Type</Xl8>}
             />
             {hasData(hitCategoryOptions) && (
               <LabelledInput
@@ -449,7 +480,7 @@ const Vetting = props => {
         </Col>
       </SidenavContainer>
       <Main>
-        <Title title={<Xl8 xid="vet014">Priority Vetting</Xl8>} uri={props.uri} />
+        <Title title={<Xl8 xid="vet018">Priority Vetting</Xl8>} uri={props.uri} />
         <Table data={data} callback={onTableChange} header={Headers} key={data} />
 
         <ReviewPVL
