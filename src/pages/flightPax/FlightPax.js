@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../components/table/Table";
-import { flightPassengers } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import { Col, Tabs, Tab } from "react-bootstrap";
+import Main from "../../components/main/Main";
+import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { Link } from "@reach/router";
+import { flightPassengers } from "../../services/serviceWrapper";
 import {
   asArray,
   hasData,
@@ -15,7 +17,7 @@ import {
   localeDateOnly,
   localeDate
 } from "../../utils/utils";
-import Main from "../../components/main/Main";
+import { ROLE } from "../../utils/constants";
 
 const FlightPax = props => {
   const cb = function(result) {};
@@ -50,9 +52,14 @@ const FlightPax = props => {
       Header: ["fp014", "Last Name"],
       Cell: ({ row }) => {
         return (
-          <Link to={`/gtas/paxDetail/${props.id}/${row.original.id}`}>
-            {row.original.lastName}
-          </Link>
+          <RoleAuthenticator
+            alt={row.original.lastName}
+            roles={[ROLE.ADMIN, ROLE.PAXVWR]}
+          >
+            <Link to={`/gtas/paxDetail/${props.id}/${row.original.id}`}>
+              {row.original.lastName}
+            </Link>
+          </RoleAuthenticator>
         );
       }
     },

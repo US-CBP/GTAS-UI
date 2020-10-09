@@ -37,9 +37,9 @@ export const ROLE = {
   PAXVWR: "View Passenger",
   WLMGR: "Manage Watch List",
   RULEMGR: "Manage Rules",
-  SYSADMIN: "SysAdmin",
+  SYSADMIN: "SysAdmin", //TODO remove?
   HITMGR: "Manage Hits",
-  CASEMGR: "Manage Cases",
+  CASEMGR: "Manage Cases", //TODO remove?
   FLIGHTVWR: "View Flights",
   ANY: "Any"
 };

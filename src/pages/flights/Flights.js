@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
-import { Link } from "@reach/router";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
 import Main from "../../components/main/Main";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
-// import Tabs from "../../components/tabs/Tabs";
 
 import { Col, Tabs, Tab } from "react-bootstrap";
-import { hasData, alt, localeDate, asArray } from "../../utils/utils";
-import { TIME } from "../../utils/constants";
-
-import { flights } from "../../services/serviceWrapper";
-import "./Flights.css";
 import Xl8 from "../../components/xl8/Xl8";
+import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
+import { UserContext } from "../../context/user/UserContext";
+
+import { Link } from "@reach/router";
+import { flights } from "../../services/serviceWrapper";
+import { hasData, alt, localeDate, asArray } from "../../utils/utils";
+import { TIME, ROLE } from "../../utils/constants";
+import "./Flights.css";
 
 const Flights = props => {
   const cb = () => {};
@@ -25,6 +26,7 @@ const Flights = props => {
     sortBy: [{ id: "timer", desc: false }]
   };
 
+  const { getUserState } = useContext(UserContext);
   const [data, setData] = useState();
   const [hitData, setHitData] = useState();
   const [allData, setAllData] = useState();
@@ -35,10 +37,14 @@ const Flights = props => {
   const setDataWrapper = (data, retainState) => {
     if (!retainState) setTableState(initTableState);
 
+    const roles = getUserState().userRoles;
+
     const parsedAll = asArray(data).map(item => {
       const future = item.direction === "O" ? item.etd : item.eta;
       item.timer = future;
-      item.sendRowToLink = `/gtas/flightpax/${item.id}`;
+
+      if (roles.includes(ROLE.ADMIN) || roles.includes(ROLE.PAXVWR))
+        item.sendRowToLink = `/gtas/flightpax/${item.id}`;
 
       const severity = alt(item.ruleHitCount, 0) + alt(item.listHitCount, 0);
       item.severity = severity > 0 ? severity : "";
@@ -115,7 +121,14 @@ const Flights = props => {
       Xl8: true,
       Header: ["fl012", "Passengers"],
       Cell: ({ row }) => (
-        <Link to={"../flightpax/" + row.original.id}>{row.original.passengerCount}</Link>
+        <RoleAuthenticator
+          alt={row.original.passengerCount}
+          roles={[ROLE.ADMIN, ROLE.PAXVWR]}
+        >
+          <Link to={"../flightpax/" + row.original.id}>
+            {row.original.passengerCount}
+          </Link>
+        </RoleAuthenticator>
       )
     },
     { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl013", "Flight"] },
