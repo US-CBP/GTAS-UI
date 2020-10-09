@@ -1,11 +1,15 @@
-import React from "react";
-import { Modal, Button, Container } from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
+import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import { ACTION } from "../../../../utils/constants";
 
 const CarrierModal = props => {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+  const [variant, setVariant] = useState("");
   const cb = function(result) {};
   const data = props.editRowDetails || {};
 
@@ -38,7 +42,7 @@ const CarrierModal = props => {
           key="restore"
           onClick={restoreSpecificCode}
         >
-          Restore
+          <Xl8 xid="cem01">Restore</Xl8>
         </Button>,
         <Button
           type="button"
@@ -51,7 +55,7 @@ const CarrierModal = props => {
             });
           }}
         >
-          Delete
+          <Xl8 xid="cem02 ">Restore</Xl8>
         </Button>
       ]
     : [];
@@ -67,6 +71,13 @@ const CarrierModal = props => {
       <Modal.Header closeButton>
         <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
+      <Alert show={showAlert} variant={variant}>
+        {alertContent}
+        <hr />
+        <Button onClick={() => setShowAlert(false)} variant="outline-success">
+          <Xl8 xid="form003">Confirm</Xl8>
+        </Button>
+      </Alert>
       <Modal.Body>
         <Container fluid>
           <Form
@@ -75,29 +86,28 @@ const CarrierModal = props => {
             }
             callback={postSubmit}
             action="add"
-            submitText={props.isEdit ? "Save" : "Submit"}
             cancellable
             customButtons={customButtons}
             paramCallback={preSubmit}
           >
             <LabelledInput
               datafield
-              labelText="IATA:"
+              labelText={<Xl8 xid="iata001">IATA: </Xl8>}
               inputType="text"
               name="iata"
               required={true}
-              alt="nothing"
+              alt={<Xl8 xid="0">IATA:</Xl8>}
               inputVal={data.iata}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
-              labelText="Name:"
+              labelText={<Xl8 xid="carm001">Name:</Xl8>}
               inputType="text"
               name="name"
               required={true}
-              alt="nothing"
+              alt=""
               inputVal={data.name}
               callback={cb}
               spacebetween

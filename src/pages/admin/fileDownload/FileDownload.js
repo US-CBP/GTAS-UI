@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
-import { logfile, paxdetailsReport, users } from "../../../services/serviceWrapper";
+import { logfile } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
-import { Container } from "react-bootstrap";
+import Xl8 from "../../../components/xl8/Xl8";
+import Main from "../../../components/main/Main";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray, hasData } from "../../../utils/utils";
 import "./fileDownload.css";
@@ -12,7 +13,6 @@ const FileDownload = ({ name }) => {
   const [data, setData] = useState([]);
   const [selRefreshKey, setSelRefreshKey] = useState(0); //Should be safe as should only ever be updated once.
   const [tblRefreshKey, setTblRefreshKey] = useState(2);
-  const [tblId, setTblId] = useState("No Log Files Found");
   const [currentLogType, setCurrentLogType] = useState("");
   const cb = function(result) {};
 
@@ -20,11 +20,9 @@ const FileDownload = ({ name }) => {
     let logFileType = target.selectedOptions[0].value;
     if (hasData(logFileType) && logFileType != "") {
       getLogFilesList(logFileType);
-      setTblId(logFileType);
       setCurrentLogType(logFileType);
     } else {
       setData([]);
-      setTblId("No Log Files Found");
       setTblRefreshKey(tblRefreshKey + 1);
       setCurrentLogType("");
     }
@@ -75,39 +73,36 @@ const FileDownload = ({ name }) => {
             ></i>
           </div>
         );
-      }
+      },
+      Xl8: true,
+      Header: ["fdl002", "Download"]
     },
-    { Accessor: "fileName" },
-    { Accessor: "size" },
-    { Accessor: "createDate" },
-    { Accessor: "lastModified" }
+    { Accessor: "fileName", Xl8: true, Header: ["fdl003", "File Name"] },
+    { Accessor: "size", Xl8: true, Header: ["fdl004", "Size"] },
+    { Accessor: "createDate", Xl8: true, Header: ["fdl005", "Create Date"] },
+    { Accessor: "lastModified", Xl8: true, Header: ["fdl006", "Last Modified"] }
   ];
 
   const fileTypeCtrl = (
     <LabelledInput
       inputType="select"
+      labelText={<Xl8 xid="fdl006">Log Type</Xl8>}
       inputStyle="file-type"
       name="severity"
-      placeholder="Choose Log Type..."
       options={logTypes}
       required={true}
       alt="nothing"
+      spacebetween
       callback={onLogTypeSelect}
       key={selRefreshKey}
     />
   );
 
   return (
-    <Container fluid>
+    <Main className="full">
       <Title title={name} rightChild={fileTypeCtrl}></Title>
-      <Table
-        id={tblId}
-        callback={cb}
-        key={tblRefreshKey}
-        data={data}
-        header={headers}
-      ></Table>
-    </Container>
+      <Table callback={cb} key={tblRefreshKey} data={data} header={headers}></Table>
+    </Main>
   );
 };
 

@@ -2,55 +2,52 @@ import React, { useEffect, useState } from "react";
 import { Modal, Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
+import Xl8 from "../../../components/xl8/Xl8";
 
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
-import { hasData, asArray } from "../../../utils/utils";
+import { hasData, asArray, titleCase } from "../../../utils/utils";
+import { ACTION } from "../../../utils/constants";
 
 const WLModal = props => {
-  const TAB = { PAX: ["pax", "Passenger"], DOX: ["dox", "Document"] };
-  const type = (props.type || {})[0] === TAB.DOX[0] ? TAB.DOX : TAB.PAX;
+  const TAB = { PAX: "passenger", DOX: "document" };
+  const type = (props.type || {}) === TAB.PAX ? TAB.PAX : TAB.DOX;
   const id = props.id || 0;
   const mode = id === 0 ? "Add" : "Edit";
-  const title = `${mode} ${type[1]}`;
+  const title =
+    (type || {}) === TAB.DOX ? (
+      id === 0 ? (
+        <Xl8 xid="wlm001"> Add Document</Xl8>
+      ) : (
+        <Xl8 xid="wlm002"> Edit Document</Xl8>
+      )
+    ) : id === 0 ? (
+      <Xl8 xid="wlm003"> Add Passenger</Xl8>
+    ) : (
+      <Xl8 xid="wlm004"> Edit Passenger</Xl8>
+    );
 
   const onFormChange = () => {};
 
   // Form submitted or closed
-  const onFormExit = (status, ev) => {
+  const onFormExit = (action, ev) => {
     //Currently the backend returns a success message or nothing.
     //Form inserts a message with status = "CANCELED", so the page will receive either
     // "SUCCESS", "CANCELED" or null. Need to standardize the return vals so we can pass
     // the error back to the users in the alert/modal whatever.
     // Here we will keep the modal form up if there's an error so the user can review the inputs.
-    if (hasData(ev)) props.onHide(ev.status);
+    const status = ev?.status;
+    if (hasData(status) || action === ACTION.CANCEL) props.onHide(status);
   };
 
   const categories = asArray(props.categories).map(item => {
     return { label: item.label, value: item.id };
   });
 
-  const docTemplate = `{"@class":"gov.gtas.model.watchlist.json.WatchlistSpec","name":"Document","entity":"DOCUMENT",
-    "watchlistItems":[
-        {"id":{id},"action":"{action}","terms":[
-            {"entity":"DOCUMENT","field":"documentType","type":"string","value":"{documentType}"},
-            {"entity":"DOCUMENT","field":"documentNumber","type":"string","value":"{documentNumber}"},
-            {"entity":"DOCUMENT","field":"categoryId","type":"integer","value":"{categoryId}"}
-          ]}]}`;
-
-  const paxTemplate = `{"@class":"gov.gtas.model.watchlist.json.WatchlistSpec","name":"Passenger","entity":"PASSENGER",
-    "watchlistItems":[
-        {"id":{id},"action":"{action}","terms":[
-            {"entity":"PASSENGER","field":"firstName","type":"string","value":"{firstName}"},
-            {"entity":"PASSENGER","field":"lastName","type":"string","value":"{lastName}"},
-            {"entity":"PASSENGER","field":"dob","type":"date","value":"{dob}"},
-            {"entity":"PASSENGER","field":"categoryId","type":"integer","value":"{categoryId}"}
-          ]}]}`;
-
   const docFields = (
     <>
       <LabelledInput
         datafield
-        labelText="Document Type"
+        labelText={<Xl8 xid="wlm005"> Document Type</Xl8>}
         inputType="select"
         name="documentType"
         options={[
@@ -63,7 +60,7 @@ const WLModal = props => {
       />
       <LabelledInput
         datafield
-        labelText="Document Number"
+        labelText={<Xl8 xid="wlm006"> Document Number</Xl8>}
         inputType="text"
         name="documentNumber"
         required={true}
@@ -73,7 +70,7 @@ const WLModal = props => {
       />
       <LabelledInput
         datafield
-        labelText="Category ID"
+        labelText={<Xl8 xid="wlm007"> Category ID</Xl8>}
         inputType="select"
         options={categories}
         name="categoryId"
@@ -89,7 +86,7 @@ const WLModal = props => {
     <>
       <LabelledInput
         datafield
-        labelText="First Name"
+        labelText={<Xl8 xid="wlm008"> First Name</Xl8>}
         inputType="text"
         name="firstName"
         callback={onFormChange}
@@ -98,7 +95,7 @@ const WLModal = props => {
       />
       <LabelledInput
         datafield
-        labelText="Last Name"
+        labelText={<Xl8 xid="wlm009"> Last Name</Xl8>}
         inputType="text"
         name="lastName"
         callback={onFormChange}
@@ -107,7 +104,7 @@ const WLModal = props => {
       />
       <LabelledInput
         datafield
-        labelText="Date of Birth"
+        labelText={<Xl8 xid="wlm010"> Date of Birth</Xl8>}
         inputType="text"
         name="dob"
         required={true}
@@ -117,7 +114,7 @@ const WLModal = props => {
       />
       <LabelledInput
         datafield
-        labelText="Category ID"
+        labelText={<Xl8 xid="wlm007"> Category ID</Xl8>}
         inputType="select"
         options={categories}
         name="categoryId"
@@ -129,10 +126,9 @@ const WLModal = props => {
     </>
   );
 
-  const fields = type[0] === TAB.DOX[0] ? docFields : paxFields;
-  const serviceType = type[0] === TAB.DOX[0] ? wldocs : wlpax;
+  const fields = type === TAB.DOX ? docFields : paxFields;
+  const serviceType = type === TAB.DOX ? wldocs : wlpax;
   const service = mode === "Add" ? serviceType.post : serviceType.put;
-  const template = type[0] === TAB.DOX[0] ? docTemplate : paxTemplate;
 
   const preSubmit = values => {
     if (!hasData(values[0])) return [];
@@ -142,22 +138,40 @@ const WLModal = props => {
     const documentNumber = vals["documentNumber"];
     const firstName = vals["firstName"];
     const lastName = vals["lastName"];
-    const dob = vals["dob"];
+    const dob = vals["dob"]?.replaceAll("/", "-");
     const categoryId = vals["categoryId"];
     const action = mode === "Add" ? "Create" : "Update";
     const recordId = mode === "Add" ? "null" : id;
 
-    const result = template
-      .replace("{documentType}", documentType)
-      .replace("{documentNumber}", documentNumber)
-      .replace("{firstName}", firstName)
-      .replace("{lastName}", lastName)
-      .replace("{dob}", dob)
-      .replace("{categoryId}", categoryId)
-      .replace("{action}", action)
-      .replace("{id}", recordId);
+    const result =
+      type === TAB.DOX
+        ? {
+            action: action,
+            id: recordId,
+            wlItems: [
+              {
+                documentType: documentType,
+                documentNumber: documentNumber,
+                categoryId: categoryId,
+                id: recordId
+              }
+            ]
+          }
+        : {
+            action: action,
+            id: recordId,
+            wlItems: [
+              {
+                firstName: firstName,
+                lastName: lastName,
+                dob: dob,
+                categoryId: categoryId,
+                id: recordId
+              }
+            ]
+          };
 
-    return [JSON.parse(result)];
+    return [result];
   };
 
   return (

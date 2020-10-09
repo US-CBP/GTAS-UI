@@ -1,33 +1,61 @@
 import React from "react";
 import Title from "../../components/title/Title";
-import Tabs from "../../components/tabs/Tabs";
-import Banner from "../../components/banner/Banner";
-import { Container } from "react-bootstrap";
+import Xl8 from "../../components/xl8/Xl8";
+import Main from "../../components/main/Main";
+import ExternalLink from "../../components/externalLink/ExternalLink";
+import { Card, CardDeck, Container } from "react-bootstrap";
+import { hasData, getEndpoint } from "../../utils/utils";
+import { Link } from "@reach/router";
+import "./Admin.css";
 
 const Admin = props => {
-  const tabcontent = props.children.props.children;
+  const children = props.children?.props?.children;
 
-  const tablist = tabcontent.map((tab, idx) => {
-    return { title: tab.props.name, key: tab.props.name, link: tab };
-  });
+  if (getEndpoint(props.location?.pathname) === "admin")
+    return (
+      <>
+        <Title title={<Xl8 xid="adm001">Admin</Xl8>} />
 
-  // use cases for banner vs notification?
-  const showBanner = () => {
-    return false;
-  };
+        <Main className="full-cards">
+          <CardDeck className="page-deck">
+            {children.map(info => {
+              const data = info.props;
+              return (
+                <Card className="page-tiles card-shadow" key={data.path}>
+                  {data.hasExternalLink ? (
+                    <ExternalLink to={data.path} className="card-link">
+                      <Card.Body>
+                        <Card.Title className="nowrap">
+                          <i className={`fa fa-3x ${data.icon}`}></i>
+                        </Card.Title>
+                        <div className="card-overlay">{data.name}</div>
+                        <div className="card-description">
+                          <Card.Text>{data.desc}</Card.Text>
+                        </div>
+                      </Card.Body>
+                    </ExternalLink>
+                  ) : (
+                    <Link to={data.path} className="card-link">
+                      <Card.Body>
+                        <Card.Title className="nowrap">
+                          <i className={`fa fa-3x ${data.icon}`}></i>
+                        </Card.Title>
+                        <div className="card-overlay">{data.name}</div>
+                        <div className="card-description">
+                          <Card.Text>{data.desc}</Card.Text>
+                        </div>
+                      </Card.Body>
+                    </Link>
+                  )}
+                </Card>
+              );
+            })}
+          </CardDeck>
+        </Main>
+      </>
+    );
 
-  return (
-    <>
-      <Banner
-        id="banner"
-        styleName="warning"
-        text="Something has happened."
-        defaultState={showBanner}
-      />
-      {props.children}
-      {/* <Tabs tabs={tablist} /> */}
-    </>
-  );
+  return <>{props.children}</>;
 };
 
 export default Admin;

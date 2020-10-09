@@ -1,0 +1,30 @@
+.seat-chart {
+  margin-top: 20px;
+  width: calc(100vw - 40px);
+  overflow: scroll;
+  border-bottom: 1px solid rgb(185, 183, 183);
+}
+.seat-chart .row {
+  flex-wrap: nowrap;
+  margin: 10px 0px;
+}
+
+.right-of-middle-rows {
+  margin-top: 30px !important;
+}
+
+.left-of-middle-rows {
+  margin-bottom: 30px !important;
+}
+
+.seat-info-display {
+  margin-top: 20px;
+
+  .card {
+    min-width: 375px;
+    max-width: 400px;
+    margin-bottom: 30px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.25);
+  }
+}

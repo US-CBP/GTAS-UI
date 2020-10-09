@@ -5,7 +5,7 @@ import LabelledInput from "../labelledInput/LabelledInput";
 const FlightBadge = props => {
   const arrival = props.arrival;
   const departure = props.departure;
-  const flightNumebr = props.flightnumber;
+  const flightNumebr = props.flightNumber;
   return (
     <>
       <LabelledInput

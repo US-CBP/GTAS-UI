@@ -1,17 +1,17 @@
 import React from "react";
 import Title from "../../components/title/Title";
-import { Link } from "@reach/router";
+import Xl8 from "../../components/xl8/Xl8";
 
 const PageUnauthorized = () => {
   return (
     <div className="container">
-      <Title title="Custom Unauthorized Page"></Title>
+      <Title title={<Xl8 xid="una001">Unauthorized User</Xl8>}></Title>
 
       <div className="columns">
         <div className="column">
           <div className="box2">
             <div className="top">
-              <Link to="/flights">Flights</Link>
+              {<Xl8 xid="una001">You are not authorized to view this page.</Xl8>}
             </div>
           </div>
         </div>

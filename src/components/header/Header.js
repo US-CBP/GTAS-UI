@@ -1,15 +1,32 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { Link } from "@reach/router";
-import { Nav, Navbar, NavDropdown, Form, FormControl, Button } from "react-bootstrap";
+import {
+  Nav,
+  Navbar,
+  NavDropdown,
+  Form,
+  FormControl,
+  Button,
+  InputGroup
+} from "react-bootstrap";
 import { navigate, useLocation } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
+import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { ROLE } from "../../utils/constants";
+import { hasData } from "../../utils/utils";
 import "./Header.scss";
-import wcoLogo from "../../images/WCO_GTAS_header_brand.svg";
+import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
+import Xl8 from "../../components/xl8/Xl8";
 
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
+  const { getLiveEditState, action } = useContext(LiveEditContext);
+  const [currentLang] = useState(window.navigator.language);
+
+  const [isEdit, setIsEdit] = useState(getLiveEditState().isEdit);
+
+  const searchInputRef = useRef();
 
   const user = getUserState();
   const currentPath = useLocation();
@@ -30,6 +47,7 @@ const Header = () => {
     FLIGHT: "/gtas/flights",
     VETTING: "/gtas/vetting",
     TOOLS: "/gtas/tools",
+    LANG: "/gtas/langEditor",
     ADMIN: "/gtas/admin"
   };
 
@@ -45,10 +63,22 @@ const Header = () => {
     return currentPath.pathname.startsWith(tabName) ? "active-tab" : "";
   };
 
+  const handleSearchSubmit = () => {
+    const searchParam = searchInputRef.current.value;
+    if (hasData(searchParam)) {
+      navigate(`/gtas/search/${searchParam}`);
+    }
+  };
+
+  useEffect(() => {
+    const editstate = getLiveEditState();
+    setIsEdit(editstate.isEdit);
+  }, []);
+
   return (
-    <Navbar sticky="top" expand="md" className="header-navbar" variant="light">
+    <Navbar sticky="top" expand="md" className="header-navbar" variant="dark">
       <Navbar.Brand className="header-navbar-brand">
-        <Link to="dashboard" onClick={() => clickTab(htab.DASH)}>
+        <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
           <img src={wcoLogo} />
         </Link>
       </Navbar.Brand>
@@ -57,11 +87,11 @@ const Header = () => {
         <Nav variant="tabs" className="left-nav">
           <Nav.Link
             as={Link}
-            to="dashboard"
-            className={`${getActiveClass(htab.DASH)}`}
-            onClick={() => clickTab(htab.DASH)}
+            to="flights"
+            className={`${getActiveClass(htab.FLIGHT)}`}
+            onClick={() => clickTab(htab.FLIGHT)}
           >
-            Dashboard
+            <Xl8 xid="head001">Flights</Xl8>
           </Nav.Link>
           <Nav.Link
             as={Link}
@@ -73,110 +103,67 @@ const Header = () => {
           </Nav.Link>
           <Nav.Link
             as={Link}
-            to="flights"
-            className={`${getActiveClass(htab.FLIGHT)}`}
-            onClick={() => clickTab(htab.FLIGHT)}
-          >
-            Flights
-          </Nav.Link>
-          <Nav.Link
-            as={Link}
             to="vetting"
             className={`${getActiveClass(htab.VETTING)}`}
             onClick={() => clickTab(htab.VETTING)}
           >
-            Vetting
+            <Xl8 xid="head002">Vetting</Xl8>
+          </Nav.Link>
+          <Nav.Link
+            as={Link}
+            to="tools"
+            className={`${getActiveClass(htab.TOOLS)}`}
+            onClick={() => clickTab(htab.TOOLS)}
+          >
+            <Xl8 xid="head004">Tools</Xl8>
           </Nav.Link>
           <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
-            <NavDropdown
-              title="Admin"
-              id="nav-dropdown"
-              className={`${getActiveClass(htab.ADMIN)}`}
-            >
-              <NavDropdown.Item
-                as={Link}
-                to="admin/manageusers"
-                onClick={() => clickTab(htab.ADMIN)}
-              >
-                Manage Users
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/auditlog">
-                Audit Log
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/errorlog">
-                Error Log
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/settings">
-                Settings
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/filedownload">
-                File Download
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/codeeditor">
-                Code Editor
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/loaderstats">
-                Loader Statistics
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/watchlistcats">
-                Watchlist Categories
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/notetypecats">
-                Note Type Categories
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="admin/signuprequests">
-                Sign Up Requests
-              </NavDropdown.Item>
-            </NavDropdown>
-          </RoleAuthenticator>
-          <NavDropdown
-            title="Tools"
-            id="nav-dropdown"
-            className={`${getActiveClass(htab.TOOLS)}`}
-          >
-            <NavDropdown.Item as={Link} to="tools/queries">
-              <i className="fa fa-filter"></i> Queries
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item
+            <Nav.Link
               as={Link}
-              to="tools/rules"
-              onClick={() => clickTab(htab.TOOLS)}
+              to="admin"
+              className={`${getActiveClass(htab.ADMIN)}`}
+              onClick={() => clickTab(htab.ADMIN)}
             >
-              <i className="fa fa-flag"></i> Rules
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="tools/watchlist" onClick={() => clickTab("")}>
-              <i className="fa fa-eye"></i> Watchlist
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="tools/neo4j" onClick={() => clickTab("")}>
-              <i className="fa fa-filter"></i> Neo4J Browser
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="tools/about" onClick={() => clickTab("")}>
-              <i className="fa fa-info-circle"></i> About
-            </NavDropdown.Item>
-          </NavDropdown>
+              <Xl8 xid="head003">Admin</Xl8>
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
+              to="langEditor"
+              className={`${getActiveClass(htab.LANG)} optional`}
+              onClick={() => clickTab(htab.LANG)}
+            >
+              <i className="fa fa-language mx-sm-1"></i>
+              {currentLang}
+            </Nav.Link>
+          </RoleAuthenticator>
         </Nav>
-        <Nav className="navbar-search">
+        <Nav className="ml-auto">
           <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-light">Search</Button>
+            <InputGroup>
+              <FormControl
+                type="text"
+                placeholder="Search"
+                ref={searchInputRef}
+                className="search-150"
+              />
+              <InputGroup.Append>
+                <Button variant="light" onClick={handleSearchSubmit}>
+                  <i className="fa fa-search"></i>
+                </Button>
+              </InputGroup.Append>
+            </InputGroup>
           </Form>
-        </Nav>
-        <Nav variant="tabs" className="ml-auto">
           <NavDropdown title={userFullName} id="basic-nav-dropdown" className="right">
             <NavDropdown.Item
               as={Link}
               to={"user/change-password"}
               onClick={() => clickTab("")}
             >
-              Change Password
+              {<Xl8 xid="head005">Change password</Xl8>}
             </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to="#" onClick={logout}>
-              Logout
+              {<Xl8 xid="head006">Logout</Xl8>}
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>

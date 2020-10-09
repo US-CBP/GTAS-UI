@@ -1,19 +1,21 @@
-import React from "react";
-import RRTabs from "react-responsive-tabs";
-import "react-responsive-tabs/styles.css";
+import React, { useState } from "react";
+import { Tabs as RBTabs } from "react-bootstrap";
 import "./Tabs.css";
-
-// const tabs = [{ title: 'Settings', link: '/tools/settings' }, { title: 'Audit Log', link: '/tools/auditLog' }, { title: 'Code Editor', link: '/tools/codeEditor' }];
+import { Tab } from "react-bootstrap";
 
 const Tabs = props => {
-  const tablist = props.tabs.map((tab, index) => ({
-    title: tab.title,
-    getContent: () => tab.link,
-    key: index,
-    tabClassName: "tab",
-    panelClassName: "panel"
-  }));
-
-  return <RRTabs items={tablist} className="is-fullwidth" showInkBar={true} />;
+  const [key, setKey] = useState();
+  const tablist = props.tabs.map(tab => {
+    return (
+      <Tab eventKey={tab.titleText} key={tab.titleText} {...tab}>
+        {tab.link}
+      </Tab>
+    );
+  });
+  return (
+    <RBTabs className="gtas-tabs" activeKey={key} onSelect={k => setKey(k)}>
+      {tablist}
+    </RBTabs>
+  );
 };
 export default Tabs;

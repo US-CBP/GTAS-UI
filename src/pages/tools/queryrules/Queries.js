@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
-import { Button, Container } from "react-bootstrap";
+import Xl8 from "../../../components/xl8/Xl8";
+import Main from "../../../components/main/Main";
+import { Button } from "react-bootstrap";
 import { QR, ACTION } from "../../../utils/constants";
 
 import { query } from "../../../services/serviceWrapper";
@@ -16,13 +18,15 @@ const Queries = props => {
     }
   };
 
+  const addQuery = <Xl8 xid="">Add Query</Xl8>;
+  const editQuery = <Xl8 xid="">Edit Query</Xl8>;
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState(0);
   const [record, setRecord] = useState({});
   const [key, setKey] = useState(0);
   const [tablekey, setTablekey] = useState(0);
 
-  const [modalTitle, setModalTitle] = useState(`Add Query`);
+  const [modalTitle, setModalTitle] = useState(addQuery);
 
   const button = (
     <Button
@@ -31,14 +35,15 @@ const Queries = props => {
       onClick={() => launchModal()}
       alt={props.alt}
     >
-      Create new Query
+      {addQuery}
     </Button>
   );
 
   const header = [
     {
       Accessor: "id",
-      Header: "Edit",
+      Xl8: true,
+      Header: ["edit001", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -48,12 +53,12 @@ const Queries = props => {
         </div>
       )
     },
-    { Accessor: "title" },
-    { Accessor: "description" }
+    { Accessor: "title", Xl8: true, Header: ["q004", "Title"] },
+    { Accessor: "description", Xl8: true, Header: ["q005", "Description"] }
   ];
 
   const launchModal = (recordId, record) => {
-    const title = recordId ? `Edit Query` : `Add Query`;
+    const title = recordId ? editQuery : addQuery;
 
     setKey(key + 1);
     setId(recordId);
@@ -70,11 +75,10 @@ const Queries = props => {
   };
 
   return (
-    <Container fluid>
-      <Title title="Queries" rightChild={button}></Title>
+    <Main className="full">
+      <Title title={<Xl8 xid="q002">Queries</Xl8>} rightChild={button}></Title>
       <Table
         service={query.get}
-        id="Queries"
         callback={cb}
         header={header}
         key={`table${tablekey}`}
@@ -89,7 +93,7 @@ const Queries = props => {
         id={id}
         service={query}
       />
-    </Container>
+    </Main>
   );
 };
 

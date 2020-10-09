@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { SplitButton, Dropdown, Modal, Button } from "react-bootstrap";
+import Xl8 from "../../../components/xl8/Xl8";
 
 const ChangeHitStatus = props => {
   const [show, setShow] = useState(false);
@@ -18,7 +19,7 @@ const ChangeHitStatus = props => {
     <>
       <SplitButton
         key="paxHitStatus"
-        title="Change Status"
+        title={<Xl8 xid="chs001">Change Status</Xl8>}
         variant="outline-info"
         size="sm"
       >
@@ -30,6 +31,7 @@ const ChangeHitStatus = props => {
               setStatus("REVIEWED");
             }}
           >
+            {/* <Xl8 xid="chs002">Reviewed</Xl8> */}
             Reviewed
           </Dropdown.Item>
         )}
@@ -42,14 +44,19 @@ const ChangeHitStatus = props => {
               setStatus("Re_Opened");
             }}
           >
-            Re_Opened
+            {/* <Xl8 xid="chs003">Re-opened</Xl8> */}
+            Re-opened
           </Dropdown.Item>
         )}
       </SplitButton>
 
-      <Modal show={show} onHide={handleCancel} centered backdrop="static">
-        <Modal.Header>Update Hit Status</Modal.Header>
-        <Modal.Body>{`Please confirm to change the status to: ${status}`}</Modal.Body>
+      <Modal show={show} onHide={handleCancel} centered>
+        <Modal.Header>
+          <Xl8 xid="chs004">Update Hit Status</Xl8>
+        </Modal.Header>
+        <Modal.Body>
+          <Xl8 xid="chs005">Please confirm to change the status to:</Xl8> {status}
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="outline-success" onClick={handleConfirm}>
             Confirm

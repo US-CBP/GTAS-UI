@@ -1,63 +1,159 @@
 import React, { Suspense } from "react";
 import { Router, Redirect, navigate } from "@reach/router";
 import IdleTimer from "react-idle-timer";
-// import logo from './logo.svg';
-import Login from "./pages/login/Login";
-import Flights from "./pages/flights/Flights";
-import PriorityVetting from "./pages/vetting/Vetting";
-import Home from "./pages/home/Home";
+import loadable from "@loadable/component";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "font-awesome/css/font-awesome.min.css";
 import "./App.css";
-import Dashboard from "./pages/dashboard/Dashboard";
-import PaxDetail from "./pages/paxDetail/PaxDetail";
-import Summary from "./pages/paxDetail/summary/Summary";
-import APIS from "./pages/paxDetail/apis/APIS";
-import PNR from "./pages/paxDetail/pnr/PNR";
-import FlightHistory from "./pages/paxDetail/flightHistory/FlightHistory";
-import FlightPax from "./pages/flightPax/FlightPax";
-import Admin from "./pages/admin/Admin";
-import ManageUser from "./pages/admin/manageUsers/ManageUsers";
-import POE from "./pages/poe/POE";
 
-import FileDownload from "./pages/admin/fileDownload/FileDownload";
-import AuditLog from "./pages/admin/auditLog/AuditLog";
-import ErrorLog from "./pages/admin/errorLog/ErrorLog";
-import CodeEditor from "./pages/admin/codeEditor/CodeEditor";
-import Airports from "./pages/admin/codeEditor/airport/Airports";
-import Carriers from "./pages/admin/codeEditor/carrier/Carriers";
-import Countries from "./pages/admin/codeEditor/country/Countries";
-import LoaderStats from "./pages/admin/loaderStats/LoaderStats";
-import Settings from "./pages/admin/settings/Settings";
-import WatchlistCats from "./pages/admin/watchlistCats/WatchlistCats";
-import NoteTypeCats from "./pages/admin/noteTypeCats/NoteTypeCats";
-import QueryRules from "./pages/tools/queryrules/Rules";
-import Queries from "./pages/tools/queryrules/Queries";
-import QRDetails from "./pages/tools/queryrules/QRDetails";
-import Neo4J from "./pages/tools/neo4J/Neo4J";
-import Watchlist from "./pages/tools/watchlist/Watchlist";
-import About from "./pages/tools/about/About";
-import GModal from "./components/modal/GModal";
+// import ErrorBoundary from "./components/errorBoundary/ErrorBoundary";
+// import Loading from "./components/loading/Loading";
 
-import Page404 from "./pages/page404/Page404";
-import PageUnauthorized from "./pages/pageUnauthorized/PageUnauthorized";
-import ErrorBoundary from "./components/errorBoundary/ErrorBoundary";
-import Loading from "./components/loading/Loading";
+import Xl8 from "./components/xl8/Xl8";
 
 import Authenticator from "./context/authenticator/Authenticator";
 import RoleAuthenticator from "./context/roleAuthenticator/RoleAuthenticator";
 import UserProvider from "./context/user/UserContext";
+import LiveEditProvider from "./context/translation/LiveEditContext";
+import LookupProvider from "./context/data/LookupContext";
 
 import { ROLE, TIME } from "./utils/constants";
-import ChangePassword from "./pages/admin/manageUsers/changePassword/ChangePassword";
-import SignUp from "./pages/signUp/SignUp";
-import SignUpRequests from "./pages/admin/signUpRequests/SignUpRequests";
-import ResetPassword from "./pages/admin/manageUsers/changePassword/ResetPassword";
-import ForgotPassword from "./pages/admin/manageUsers/changePassword/ForgotPassword";
 
-//Split Link Analysis (Graph component, d3, jquery deps) into a separate bundle
-const LinkAnalysis = React.lazy(() =>
-  import("./pages/paxDetail/linkAnalysis/LinkAnalysis")
+//login bundle
+import Login from "./pages/login/Login";
+import SignUp from "./pages/signUp/SignUp";
+import ResetPassword from "./pages/login/ResetPassword";
+import ForgotPassword from "./pages/login/ForgotPassword";
+import Page404 from "./pages/page404/Page404";
+
+const Flights = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")
+);
+const PriorityVetting = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/vetting/Vetting")
+);
+const Home = loadable(() => import(/* webpackChunkName: "authed" */ "./pages/home/Home"));
+const Dashboard = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/dashboard/Dashboard")
+);
+const PaxDetail = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/PaxDetail")
+);
+const Summary = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/summary/Summary")
+);
+const APIS = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/apis/APIS")
+);
+const PNR = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/pnr/PNR")
+);
+const FlightHistory = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/flightHistory/FlightHistory")
+);
+const FlightPax = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/flightPax/FlightPax")
+);
+const LinkAnalysis = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/paxDetail/linkAnalysis/LinkAnalysis")
+);
+const Rules = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/Rules")
+);
+const Queries = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/Queries")
+);
+const QRDetails = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/QRDetails")
+);
+const POE = loadable(() => import(/* webpackChunkName: "authed" */ "./pages/poe/POE"));
+const Tools = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/Tools")
+);
+const Watchlist = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/watchlist/Watchlist")
+);
+const About = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/tools/about/About")
+);
+const GModal = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./components/modal/GModal")
+);
+const PageUnauthorized = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
+);
+const SeatChart = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
+);
+const UploadAttachment = loadable(() =>
+  import(
+    /* webpackChunkName: "authed" */ "./pages/paxDetail/uploadAttachment/UploadAttachment"
+  )
+);
+
+const Search = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./pages/search/Search")
+);
+
+//Admin bundle imports
+const Admin = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/Admin")
+);
+const ManageUser = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/manageUsers/ManageUsers")
+);
+const FileDownload = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/fileDownload/FileDownload")
+);
+const AuditLog = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/auditLog/AuditLog")
+);
+const ErrorLog = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/errorLog/ErrorLog")
+);
+const CodeEditor = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/CodeEditor")
+);
+const Airport = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/airport/Airport")
+);
+const Carrier = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/carrier/Carrier")
+);
+const Country = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/codeEditor/country/Country")
+);
+const CreditCardType = loadable(() =>
+  import(
+    /* webpackChunkName: "admin" */ "./pages/admin/codeEditor/creditcardtype/CreditCardType"
+  )
+);
+const LoaderStats = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/loaderStats/LoaderStats")
+);
+const Settings = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/settings/Settings")
+);
+const HitCats = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/hitCats/HitCats")
+);
+const NoteCats = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/noteCats/NoteCats")
+);
+const ChangePassword = loadable(() =>
+  import(
+    /* webpackChunkName: "admin" */ "./pages/admin/manageUsers/changePassword/ChangePassword"
+  )
+);
+const SignUpRequests = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/signUpRequests/SignUpRequests")
+);
+const Auxiliary = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./components/auxiliary/Auxiliary")
+);
+const LanguageEditor = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/lang/LanguageEditor")
 );
 
 export default class App extends React.Component {
@@ -96,135 +192,261 @@ export default class App extends React.Component {
   }
 
   render() {
-    // if (this.state.redirect) {
-    //   this.setState({ redirect: false });
-    //   // logout and ...
-    //   return <Redirect to="/login" />;
-    // }
-
     const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
 
     return (
       <React.StrictMode>
         <UserProvider>
-          <Router>
-            <Redirect from="/" to="/login" noThrow />
-            <Login path="/login"></Login>
-            <SignUp path="/signup"></SignUp>
-            <ResetPassword path="/reset-password/:username/:resetToken"></ResetPassword>
-            <ForgotPassword path="/forgot-password"></ForgotPassword>
-          </Router>
-          {this.state.showModal ? (
-            <GModal>
-              <div>
-                <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
-                <button onClick={this.toggleModal}>OK</button>
-              </div>
-            </GModal>
-          ) : null}
-          <div className="App">
-            <IdleTimer
-              ref={ref => {
-                this.idleTimer = ref;
-              }}
-              element={document}
-              onActive={this.onActive}
-              onIdle={this.onIdle}
-              onAction={this.onAction}
-              debounce={250}
-              timeout={TIME.MINUTES_25}
-            />
-            <Suspense fallback="loading">
-              <Authenticator>
+          <LookupProvider>
+            <LiveEditProvider>
+              <Suspense fallback="loading">
                 <Router>
-                  <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
-                  <RoleAuthenticator
-                    path="/"
-                    alt={UNAUTHED}
-                    roles={[
-                      ROLE.ADMIN,
-                      ROLE.PAXVWR,
-                      ROLE.RULEMGR,
-                      ROLE.CASEMGR,
-                      ROLE.WLMGR,
-                      ROLE.HITMGR,
-                      ROLE.QRYMGR
-                    ]}
-                  >
-                    <Redirect from="/" to="/gtas" noThrow />
-                    <Home path="/gtas">
-                      <Page404 default></Page404>
-                      <Redirect from="/gtas" to="/gtas/flights" noThrow />
-                      <Dashboard path="dashboard"></Dashboard>
-                      <POE path="poe"></POE>
-                      <Flights path="flights"></Flights>
-                      <FlightPax path="flightpax/:id"></FlightPax>
-                      <PriorityVetting path="vetting"></PriorityVetting>
-                      <QueryRules path="tools/rules"></QueryRules>
-                      <QueryRules path="tools/rules/:mode"></QueryRules>
-                      <Queries path="tools/queries"></Queries>
-                      <QRDetails path="tools/qrdetails"></QRDetails>
-                      <Neo4J path="tools/neo4j"></Neo4J>
-                      <Redirect from="tools/watchlist" to="pax" noThrow />
-                      <Watchlist path="tools/watchlist/:mode"></Watchlist>
-                      <About path="tools/about"></About>
-                      <ChangePassword path="user/change-password"></ChangePassword>
-                      <ChangePassword path="user/change-password/:userId"></ChangePassword>
-                      <RoleAuthenticator path="admin" alt={UNAUTHED} roles={[ROLE.ADMIN]}>
-                        <Admin path="/">
-                          <ManageUser name="Manage Users" path="manageusers"></ManageUser>
-                          <AuditLog name="Audit Log" path="auditlog"></AuditLog>
-                          <ErrorLog name="Error Log" path="errorlog"></ErrorLog>
-                          <Settings name="Settings" path="settings"></Settings>
-                          <FileDownload
-                            name="File Download"
-                            path="filedownload"
-                          ></FileDownload>
-                          <CodeEditor
-                            name="Code Editor"
-                            path="/codeeditor"
-                            startTab="countries"
-                          >
-                            <Countries name="Countries" path="countries"></Countries>
-                            <Airports name="Airports" path="airports"></Airports>
-                            <Carriers name="Carriers" path="carriers"></Carriers>
-                          </CodeEditor>
-                          <LoaderStats
-                            name="Loader Statistics"
-                            path="loaderstats"
-                          ></LoaderStats>
-                          <WatchlistCats
-                            name="Watchlist Categories"
-                            path="watchlistcats"
-                          ></WatchlistCats>
-                          <NoteTypeCats
-                            name="Note Type Categories"
-                            path="notetypecats"
-                          ></NoteTypeCats>
-                          <SignUpRequests
-                            name="Sign Up Request"
-                            path="signuprequests"
-                          ></SignUpRequests>
-                        </Admin>
-                      </RoleAuthenticator>
-                      <PaxDetail path="paxDetail/:flightId/:paxId">
-                        <Summary path="summary" default></Summary>
-                        <APIS path="apis"></APIS>
-                        <PNR path="pnr"></PNR>
-                        <FlightHistory path="flighthistory"></FlightHistory>
-                        <ErrorBoundary>
-                          <Suspense fallback={<Loading></Loading>}>
-                            <LinkAnalysis path="linkanalysis"></LinkAnalysis>
-                          </Suspense>
-                        </ErrorBoundary>
-                      </PaxDetail>
-                      <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>
-                    </Home>
-                  </RoleAuthenticator>
+                  <Redirect from="/" to="/login" noThrow />
+                  <Login path="/login"></Login>
+                  <SignUp path="/signup"></SignUp>
+                  <ResetPassword path="/reset-password/:username/:resetToken"></ResetPassword>
+                  <ForgotPassword path="/forgot-password"></ForgotPassword>
                 </Router>
-              </Authenticator>
-            </Suspense>
-          </div>
+              </Suspense>
+              {this.state.showModal ? (
+                <GModal>
+                  <div>
+                    <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
+                    <button onClick={this.toggleModal}>OK</button>
+                  </div>
+                </GModal>
+              ) : null}
+              <div className="App">
+                <IdleTimer
+                  ref={ref => {
+                    this.idleTimer = ref;
+                  }}
+                  element={document}
+                  onActive={this.onActive}
+                  onIdle={this.onIdle}
+                  onAction={this.onAction}
+                  debounce={250}
+                  timeout={TIME.MINUTES_25}
+                />
+                <Suspense fallback="loading">
+                  <Authenticator>
+                    <Router>
+                      {UNAUTHED}
+                      <RoleAuthenticator
+                        path="/"
+                        alt={UNAUTHED}
+                        roles={[
+                          ROLE.ADMIN,
+                          ROLE.PAXVWR,
+                          ROLE.RULEMGR,
+                          ROLE.CASEMGR,
+                          ROLE.WLMGR,
+                          ROLE.HITMGR,
+                          ROLE.QRYMGR,
+                          ROLE.FLIGHTVWR
+                        ]}
+                      >
+                        <Redirect from="/" to="/gtas" noThrow />
+                        <Home path="/gtas">
+                          <Page404 default></Page404>
+                          <Redirect from="/gtas" to="/gtas/flights" noThrow />
+                          <Flights path="flights"></Flights>
+                          <FlightPax path="flightpax/:id"></FlightPax>
+                          <POE path="poe"></POE>
+                          <PriorityVetting path="vetting"></PriorityVetting>
+                          <Tools path="tools">
+                            <Rules
+                              name={<Xl8 xid="app001">Rules</Xl8>}
+                              desc={
+                                <Xl8 xid="app002">
+                                  View or edit rules for generating hits
+                                </Xl8>
+                              }
+                              path="rules"
+                              icon="fa-address-book-o"
+                            ></Rules>
+                            <Rules name="Rules" path="rules/:mode" hideTile></Rules>
+                            <Queries
+                              name={<Xl8 xid="app003">Queries</Xl8>}
+                              desc={
+                                <Xl8 xid="app004">
+                                  View or edit queries of system data
+                                </Xl8>
+                              }
+                              path="queries"
+                              icon="fa-search"
+                            ></Queries>
+                            <QRDetails path="qrdetails" hideTile></QRDetails>
+                            <Watchlist
+                              name={<Xl8 xid="app005">Watchlist</Xl8>}
+                              desc={
+                                <Xl8 xid="app006">
+                                  View or add passenger and document watchlists
+                                </Xl8>
+                              }
+                              path="watchlist"
+                              icon="fa-user-secret"
+                            ></Watchlist>
+                            <Watchlist
+                              path="watchlist/:mode"
+                              name="Watchlist"
+                              hideTile
+                            ></Watchlist>
+                            <About
+                              name={<Xl8 xid="app007">About</Xl8>}
+                              desc={
+                                <Xl8 xid="app008">View system information details</Xl8>
+                              }
+                              path="about"
+                              icon="fa-info-circle"
+                            ></About>
+                          </Tools>
+                          <ChangePassword path="user/change-password"></ChangePassword>
+                          <Search path="search/:searchParam"></Search>
+                          <ChangePassword path="user/change-password/:userId"></ChangePassword>
+                          <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
+                          <RoleAuthenticator
+                            path="langEditor"
+                            alt={UNAUTHED}
+                            roles={[ROLE.ADMIN]}
+                          >
+                            <LanguageEditor path="/"></LanguageEditor>
+                          </RoleAuthenticator>
+                          <RoleAuthenticator
+                            path="admin"
+                            alt={UNAUTHED}
+                            roles={[ROLE.ADMIN]}
+                          >
+                            <Admin path="/">
+                              <ManageUser
+                                name={<Xl8 xid="app009">Manage Users</Xl8>}
+                                path="manageusers"
+                                desc={
+                                  <Xl8 xid="app010">
+                                    Manage user profiles and privileges
+                                  </Xl8>
+                                }
+                                icon="fa-users"
+                              ></ManageUser>
+                              <SignUpRequests
+                                name={<Xl8 xid="app010">Sign Up Requests</Xl8>}
+                                desc={
+                                  <Xl8 xid="app011">Manage system access requests</Xl8>
+                                }
+                                icon="fa-user-plus"
+                                path="signuprequests"
+                              ></SignUpRequests>
+                              <AuditLog
+                                name={<Xl8 xid="app012">Audit Log</Xl8>}
+                                desc={<Xl8 xid="app013">View the system audit log</Xl8>}
+                                path="auditlog"
+                                icon="fa-question-circle"
+                              ></AuditLog>
+                              <ErrorLog
+                                name={<Xl8 xid="app014">Error Log</Xl8>}
+                                desc={<Xl8 xid="app015">View the system error log</Xl8>}
+                                path="errorlog"
+                                icon="fa-exclamation-triangle"
+                              ></ErrorLog>
+                              <Settings
+                                name={<Xl8 xid="app016">Settings</Xl8>}
+                                desc={
+                                  <Xl8 xid="app017">View or edit system settings</Xl8>
+                                }
+                                path="settings"
+                                icon="fa-toggle-on"
+                              ></Settings>
+                              <FileDownload
+                                name={<Xl8 xid="app018">File Download</Xl8>}
+                                desc={<Xl8 xid="app019">Download system log files</Xl8>}
+                                icon="fa-download"
+                                path="filedownload"
+                              ></FileDownload>
+                              <CodeEditor
+                                name={<Xl8 xid="app020">Code Editor</Xl8>}
+                                desc={
+                                  <Xl8 xid="app021">
+                                    View or edit Airport, Carrier, and Country codes
+                                  </Xl8>
+                                }
+                                icon="fa-list-ul"
+                                path="codeeditor"
+                                startTab="country"
+                              >
+                                <Country
+                                  name={<Xl8 xid="app022">Country</Xl8>}
+                                  path="country"
+                                ></Country>
+                                <Airport
+                                  name={<Xl8 xid="app023">Airport</Xl8>}
+                                  path="airport"
+                                ></Airport>
+                                <Carrier
+                                  name={<Xl8 xid="app024">Carrier</Xl8>}
+                                  path="carrier"
+                                ></Carrier>
+                                <CreditCardType
+                                  name={<Xl8 xid="app035">Card Types</Xl8>}
+                                  path="cctype"
+                                ></CreditCardType>
+                              </CodeEditor>
+                              <LoaderStats
+                                name={<Xl8 xid="app025">Loader Statistics</Xl8>}
+                                desc={
+                                  <Xl8 xid="app026">
+                                    View current message loading statistics
+                                  </Xl8>
+                                }
+                                icon="fa-bar-chart"
+                                path="loaderstats"
+                              ></LoaderStats>
+                              <HitCats
+                                name={<Xl8 xid="app027">Hit Categories</Xl8>}
+                                desc={<Xl8 xid="app028">View or edit Hit categories</Xl8>}
+                                icon="fa-user-secret"
+                                path="hitcats"
+                              ></HitCats>
+                              <NoteCats
+                                name={<Xl8 xid="app029">Note Categories</Xl8>}
+                                desc={
+                                  <Xl8 xid="app030">View or edit Note categories</Xl8>
+                                }
+                                icon="fa-comment"
+                                path="notecats"
+                              ></NoteCats>
+                              <Auxiliary
+                                name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
+                                desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}
+                                icon="fa-line-chart"
+                                path="https://localhost:5601/login?next=%2F"
+                                hasExternalLink={true}
+                              ></Auxiliary>
+                              <Auxiliary
+                                name={<Xl8 xid="app033">Neo4j</Xl8>}
+                                desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
+                                path="http://localhost:7474/browser/"
+                                icon="fa-database"
+                                hasExternalLink={true}
+                              ></Auxiliary>
+                            </Admin>
+                          </RoleAuthenticator>
+                          <PaxDetail path="paxDetail/:flightId/:paxId">
+                            <Summary path="summary" default></Summary>
+                            <APIS path="apis"></APIS>
+                            <PNR path="pnr"></PNR>
+                            <FlightHistory path="flighthistory"></FlightHistory>
+                            <LinkAnalysis path="linkanalysis"></LinkAnalysis>
+                            <UploadAttachment path="uploadattachment"></UploadAttachment>
+                          </PaxDetail>
+                          {UNAUTHED}
+                        </Home>
+                      </RoleAuthenticator>
+                    </Router>
+                  </Authenticator>
+                </Suspense>
+              </div>
+            </LiveEditProvider>
+          </LookupProvider>
         </UserProvider>
       </React.StrictMode>
     );

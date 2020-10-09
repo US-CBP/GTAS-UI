@@ -1,30 +1,92 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import PropTypes from "prop-types";
-import { hasData, titleCase, asArray, altObj, isObject } from "../../utils/utils";
-import { useTable, usePagination, useSortBy } from "react-table";
+import { hasData, titleCase, asArray, altObj } from "../../utils/utils";
+import { useTable, usePagination, useSortBy, useFilters } from "react-table";
 import { navigate } from "@reach/router";
 // import { withTranslation } from 'react-i18next';
-// import Xl8 from '../xl8/Xl8';
-import { Table as RBTable, Col, Pagination } from "react-bootstrap";
+import Xl8 from "../xl8/Xl8";
+import Loading from "../../components/loading/Loading";
+import { Table as RBTable, Pagination, Button } from "react-bootstrap";
+import { jsonToCSV } from "react-papaparse";
+import { useExportData } from "react-table-plugins";
 import "./Table.css";
 
 //Will auto-populate with data retrieved from the given uri
 //Attempts to format the header from the column names, but can be passed a header array instead.
 
 const Table = props => {
-  const [data, setData] = useState(props.data || []);
+  // to show the spinner when data is loading (either from within Table or at the caller), we assume:
+  // props.data === undefined ==> data is pending
+  // props.data === []        ==> fetch is complete, data has no rows
+  // hasData(props.data)      ==> fetch is complete, data has rows
+
+  const [data, setData] = useState(props.data || undefined);
   const [header, setHeader] = useState(props.header || []);
   const [columns, setColumns] = useState([]);
   const [rowcount, setRowcount] = useState("");
   const stateVals = props.hasOwnProperty("stateVals") ? altObj(props.stateVals()) : {};
+  const [displayColumnFilter, setDisplayColumnFilter] = useState(false);
+  const [showPending, setShowPending] = useState(false);
 
   useEffect(() => {
     validateProps();
-    if (!Array.isArray(props.data)) getData();
-    else parseData(props.data);
+
+    if (hasData(props.data)) parseData(props.data);
+    else if (hasData(props.service)) getData();
+    else parseData();
   }, []);
 
+  useEffect(() => {
+    parseData(data);
+  }, [data]);
+
+  function ColumnFilter({ column: { filterValue, setFilter } }) {
+    return (
+      <input
+        className="table-filter-form"
+        value={filterValue || ""}
+        onChange={e => {
+          setFilter(e.target.value || undefined);
+        }}
+      />
+    );
+  }
+
+  function BooleanFilter({ column: { filterValue, setFilter } }) {
+    return (
+      <select
+        className="table-filter-form"
+        value={filterValue}
+        onChange={e => {
+          setFilter(e.target.value || undefined);
+        }}
+      >
+        <option value="">All</option>
+        <option value={1}>True</option>
+        <option value={0}>False</option>
+      </select>
+    );
+  }
+
+  function getExportFileBlob({ columns, data, fileType, fileName }) {
+    if (fileType === "csv") {
+      const headerNames = columns.map(col => col.exportValue);
+      const csvString = jsonToCSV({ fields: headerNames, data });
+      return new Blob([csvString], { type: "text/csv" });
+    }
+  }
+
+  function getExportFileName({ fileType, all }) {
+    return `${all ? "all-" : ""}${props.exportFileName || "data"}`;
+  }
+
   const RTable = ({ columns, data }) => {
+    const defaultColumn = React.useMemo(
+      () => ({
+        Filter: ColumnFilter
+      }),
+      []
+    );
     const {
       getTableProps,
       getTableBodyProps,
@@ -39,19 +101,25 @@ const Table = props => {
       nextPage,
       previousPage,
       setPageSize,
+      exportData,
       state: { pageIndex, pageSize, sortBy }
     } = useTable(
       {
         columns,
         data,
+        defaultColumn,
         initialState: {
           pageIndex: stateVals.pageIndex || 0,
           pageSize: stateVals.pageSize || 25,
           sortBy: stateVals.sortBy || []
-        }
+        },
+        getExportFileBlob,
+        getExportFileName
       },
+      useFilters,
       useSortBy,
-      usePagination
+      usePagination,
+      useExportData
     );
 
     const sortIcon = column => {
@@ -97,22 +165,44 @@ const Table = props => {
     return (
       <>
         <div className="table-main">
+          {showPending && <Loading></Loading>}
           <RBTable {...getTableProps()} striped bordered hover>
             <thead>
-              {headerGroups.map(headerGroup => {
+              {headerGroups.map((headerGroup, index) => {
                 return (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(column => {
-                      return (
-                        <th
-                          className="table-header"
-                          {...column.getHeaderProps(column.getSortByToggleProps())}
-                        >
-                          {`${column.render("Header")} `} {sortIcon(column)}
-                        </th>
-                      );
-                    })}
-                  </tr>
+                  <Fragment key={index}>
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map(column => {
+                        let hdr = column.render("Header");
+
+                        if (Array.isArray(hdr)) hdr = <Xl8 xid={hdr[0]}>{hdr[1]}</Xl8>;
+
+                        return (
+                          <th
+                            className="table-header"
+                            {...column.getHeaderProps(column.getSortByToggleProps())}
+                          >
+                            <span>
+                              {hdr} {column.canSort ? sortIcon(column) : ""}
+                            </span>
+                          </th>
+                        );
+                      })}
+                    </tr>
+                    {props.enableColumnFilter && displayColumnFilter ? (
+                      <tr>
+                        {headerGroup.headers.map(column => {
+                          return (
+                            <th className="table-header" key={column.id}>
+                              <div>
+                                {column.canFilter ? column.render("Filter") : null}
+                              </div>
+                            </th>
+                          );
+                        })}
+                      </tr>
+                    ) : null}
+                  </Fragment>
                 );
               })}
             </thead>
@@ -185,23 +275,11 @@ const Table = props => {
               <i className="fa fa-fast-forward"></i>
             </Pagination.Last>
             <span className="pag-text mr-10">
-              Page
+              <Xl8 xid="tab002">Page</Xl8>
               <strong className="pag-num">
-                {pageIndex + 1} of {pageOptions.length}
+                {pageIndex + 1} <Xl8 xid="tab003"> of </Xl8> {pageOptions.length}
               </strong>{" "}
             </span>
-            {/* <span className="pag-text pag-goto">Go to page: </span>{' '}
-            <input
-              className="pag pag-input pag-goto mr-10"
-              type="number"
-              min="1"
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                gotoPage(page);
-                e.target.value = page;
-              }}
-              style={{ width: '100px' }}
-            /> */}
             <select
               className="pag"
               value={pageSize}
@@ -211,10 +289,18 @@ const Table = props => {
             >
               {[10, 25, 50, 100].map(pageSize => (
                 <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
+                  {pageSize}
                 </option>
               ))}
             </select>
+            <Button
+              className="export-btn"
+              variant="light"
+              size="sm"
+              onClick={() => exportData("csv", true)}
+            >
+              {<Xl8 xid="tab004">Export</Xl8>}
+            </Button>
             <span className="tagrightpag">
               <h3 className="title-default">
                 <i>{rowcount}</i>
@@ -237,67 +323,83 @@ const Table = props => {
   };
 
   const parseData = data => {
+    if (!data) {
+      setShowPending(true);
+      return;
+    }
+
+    setShowPending(false);
     const noDataFound = "No Data Found";
+    const noDataFoundHeader = {
+      Accessor: "NoData",
+      Xl8: true,
+      Header: ["nodata001", "No Data Found"]
+    };
+
     let noDataObj = [{}];
     noDataObj[0][props.id] = noDataFound;
 
     let dataArray = asArray(data);
     const isPopulated = hasData(dataArray);
     const sdata = isPopulated ? dataArray : noDataObj;
-
     const sheader = isPopulated
       ? hasData(header)
         ? header
         : Object.keys(dataArray[0])
-      : [props.id];
-
+      : [noDataFoundHeader];
     let columns = [];
 
     (sheader || []).forEach(element => {
       const acc = element.Accessor || element;
-      // let xl8Title = undefined;
-      // const trans = props.t(element.xid);
-      // TODO - refac. - logic shd be exposed by xl8 or a util.
-      // How to set the class on translation fail for a direct translation?
-      // if (element.xid !== undefined) {
-      //   xl8Title = trans !== element.xid ? trans : undefined;
-      // }
+      const isXl8 = element.Xl8 === true;
 
       if (!(props.ignoredFields || []).includes(acc)) {
-        // const title = titleCase(xl8Title || element.Header || acc);
-        const title = titleCase(element.Header || acc);
-        let cellconfig = { Header: title, accessor: acc };
+        // Dont titlecase Xl8 headers. Casing must be done manually at the caller.
+        const title = isXl8 ? element.Header : titleCase(element.Header || acc);
+        let cellconfig = {
+          Header: title,
+          accessor: acc,
+          disableFilters: element.disableFilters,
+          disableSortBy: element.disableSortBy,
+          disableExport: element.disableExport
+        };
 
         if (element.Cell !== undefined) {
           cellconfig.Cell = element.Cell;
+        }
+        if (element.isBoolean) {
+          cellconfig.Filter = BooleanFilter;
         }
 
         columns.push(cellconfig);
       }
     });
-
+    setDisplayColumnFilter(isPopulated);
     setData(sdata);
     setHeader(sheader);
     setColumns(columns);
 
     //exclude the No-Data-Found row from the count
-    if (dataArray.length === 1 && dataArray[0][props.id] == noDataFound) setRowcount(0);
+    if (dataArray.length === 1 && dataArray[0][props.id] === noDataFound) setRowcount(0);
     else setRowcount(dataArray.length);
   };
 
   const getData = (params = null) => {
+    setShowPending(true);
     if (!hasData(props.service)) {
-      parseData({});
+      parseData();
       return;
     }
     props
       .service(params)
       .then(response => {
         parseData(response);
+        setShowPending(false);
       })
       .catch(error => {
         console.log(error);
         parseData([]);
+        setShowPending(false);
       });
   };
 
@@ -307,14 +409,12 @@ const Table = props => {
         <h4 className={`title ${props.style}`}>{props.title}</h4>
       )}
       {props.smalltext !== undefined && <small>{props.smalltext}</small>}
-      {/* <Xl8> */}
       <RTable
         columns={columns}
         data={data}
         rowcount={rowcount}
         initSort={props.initSort || []}
       ></RTable>
-      {/* </Xl8> */}
     </>
   );
 };
@@ -331,8 +431,9 @@ Table.propTypes = {
   style: PropTypes.string,
   stateCb: PropTypes.func,
   stateVals: PropTypes.func,
-  ignoredFields: PropTypes.arrayOf(PropTypes.string)
+  ignoredFields: PropTypes.arrayOf(PropTypes.string),
+  enableColumnFilter: PropTypes.bool,
+  exportFileName: PropTypes.string
 };
 
-// export default withTranslation()(Table);
 export default Table;

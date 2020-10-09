@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
-import { Button, Navbar, Nav } from "react-bootstrap";
-import "./PaxDetail.scss";
+import { Navbar, Nav } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
-import SideNav from "../../components/sidenav/SideNav";
+import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
-import { paxdetails, cases } from "../../services/serviceWrapper";
+import Xl8 from "../../components/xl8/Xl8";
 import Summary from "./summary/Summary";
 import PNR from "./pnr/PNR";
 import APIS from "./apis/APIS";
 import FlightHistory from "./flightHistory/FlightHistory";
 import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
-import { passengerTypeMapper, asArray } from "../../utils/utils";
 import EventNotesModal from "./evenNotesModal/EventNotesModal";
 import DownloadReport from "./downloadReports/DownloadReports";
 import Notification from "./notification/Notification";
@@ -19,25 +17,50 @@ import ChangeHitStatus from "./changeHitStatus/ChangeHitStatus";
 import CreateManualHit from "./createManualHit/CreateManualHit";
 import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
+import UploadAttachment from "./uploadAttachment/UploadAttachment";
+import { paxdetails, cases } from "../../services/serviceWrapper";
+import { passengerTypeMapper, asArray, hasData } from "../../utils/utils";
+import { Link } from "@reach/router";
+import "./PaxDetail.scss";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
     return [
       {
-        label: "Last Name",
+        label: <Xl8 xid="pd007">Last Name</Xl8>,
         value: res.lastName
       },
-      { label: "First Name", value: res.firstName },
-      { label: "Middle Name", value: res.middleName },
-      { label: "Age", value: res.age },
-      { label: "DOB", value: res.dob },
-      { label: "Gender", value: res.gender },
-      { label: "Nationality", value: res.nationality },
-      { label: "Residence", value: res.residenceCountry },
-      { label: "Seat", value: res.seat },
-      { label: "Passenger Type", value: passengerTypeMapper(res.passengerType) },
-      { label: "Last PNR Recieved", value: res.pnrVo?.transmissionDate },
-      { label: "Last APIS Recieved", value: res.apisMessageVo?.transmissionDate }
+      { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
+      { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName },
+      { label: <Xl8 xid="pd010">Age</Xl8>, value: res.age },
+      { label: <Xl8 xid="pd011">DOB</Xl8>, value: res.dob },
+      { label: <Xl8 xid="pd012">Gender</Xl8>, value: res.gender },
+      { label: <Xl8 xid="pd013">Nationality</Xl8>, value: res.nationality },
+      { label: <Xl8 xid="pd014">Residence</Xl8>, value: res.residenceCountry },
+      {
+        label: <Xl8 xid="pd015">Seat</Xl8>,
+        value: (
+          <Link
+            to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${res.seat}`}
+            style={{ color: "#8fdeef" }}
+            state={{ ...flightBadgeData(res), flightId: res.flightId }}
+          >
+            {res.seat}
+          </Link>
+        )
+      },
+      {
+        label: <Xl8 xid="pd016">Passenger Type</Xl8>,
+        value: passengerTypeMapper(res.passengerType)
+      },
+      {
+        label: <Xl8 xid="pd017">Last PNR Received</Xl8>,
+        value: res.pnrVo?.transmissionDate
+      },
+      {
+        label: <Xl8 xid="pd018">Last APIS Received</Xl8>,
+        value: res.apisMessageVo?.transmissionDate
+      }
     ];
   };
 
@@ -45,7 +68,7 @@ const PaxDetail = props => {
     return {
       arrival: `${res.flightDestination} ${res.etaLocalTZ}`,
       departure: `${res.flightOrigin} ${res.etdLocalTZ}`,
-      flightnumber: `${res.carrier}${res.flightNumber}`
+      flightNumber: `${res.carrier}${res.flightNumber}`
     };
   };
 
@@ -85,13 +108,15 @@ const PaxDetail = props => {
   const [hasOpenHit, setHasOpenHit] = useState(false);
   const [hasHit, setHasHit] = useState(false);
   const [flightLegsSegmentData, setFlightLegsSegmentData] = useState([]);
-  const [hasApisRecord, setHasApisRecod] = useState(false);
+  const [hasApisRecord, setHasApisRecord] = useState(false);
   const [hasPnrRecord, setHasPnrRecord] = useState(false);
   const [watchlistData, setWatchlistData] = useState({});
+  const [paxDetailsData, setPaxDetailsData] = useState();
 
   const tabs = [
     {
-      title: "Summary",
+      title: <Xl8 xid="pd001">Summary</Xl8>,
+      titleText: "Summary",
       link: (
         <Summary
           paxId={props.paxId}
@@ -103,13 +128,43 @@ const PaxDetail = props => {
         />
       )
     },
-    ...(hasApisRecord ? [{ title: "APIS", link: <APIS data={apisMessage}></APIS> }] : []),
-    ...(hasPnrRecord ? [{ title: "PNR", link: <PNR data={pnr} /> }] : []),
+    ...(hasApisRecord
+      ? [
+          {
+            title: <Xl8 xid="pd002">APIS</Xl8>,
+            titleText: "APIS",
+            link: <APIS data={apisMessage}></APIS>
+          }
+        ]
+      : []),
+    ...(hasPnrRecord
+      ? [
+          {
+            title: <Xl8 xid="pd003">PNR</Xl8>,
+            titleText: "PNR",
+            link: <PNR data={pnr} />
+          }
+        ]
+      : []),
     {
-      title: "Flight History",
+      title: <Xl8 xid="pd004">Flight History</Xl8>,
+      titleText: "Flight History",
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
-    { title: "Link Analysis", link: <LinkAnalysis /> }
+    ...(hasData(paxDetailsData)
+      ? [
+          {
+            title: <Xl8 xid="pd005">Link Analysis</Xl8>,
+            titleText: "Link Analysis",
+            link: <LinkAnalysis paxData={paxDetailsData} />
+          }
+        ]
+      : []),
+    {
+      titleText: "Attachments",
+      title: <Xl8 xid="pd006">Attachments</Xl8>,
+      link: <UploadAttachment paxId={props.paxId} />
+    }
   ];
 
   const updateHitStatus = (status, confirmed) => {
@@ -130,9 +185,9 @@ const PaxDetail = props => {
       setPnr(res.pnrVo);
       setApisMessage(res.apisMessageVo);
       setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
-      setHasApisRecod(res.apisMessageVo?.apisRecordExists || false);
+      setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
       setHasPnrRecord(res.pnrVo?.pnrRecordExists || false);
-
+      setPaxDetailsData(res);
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
       setWatchlistData({ passenger: p, documents: res.documents });
     });
@@ -144,15 +199,17 @@ const PaxDetail = props => {
 
   return (
     <>
-      <SideNav className="paxdetails-side-nav">
+      <SidenavContainer className="paxdetails-side-nav">
         <br />
         <PaxInfo pax={pax} badgeprops={flightBadge}></PaxInfo>
         <hr />
         <FlightLegSegments />
-      </SideNav>
-      <Main className="paxdetail-container">
+      </SidenavContainer>
+      <Main className="main paxdetail-container">
         <Navbar>
-          <Navbar.Brand>Passenger Detail</Navbar.Brand>
+          <Navbar.Brand>
+            <Xl8 xid="pd019">Passenger Detail</Xl8>
+          </Navbar.Brand>
           <Nav className="paxdetails-action-buttons">
             <EventNotesModal
               paxId={props.paxId}

@@ -10,6 +10,7 @@ import LabelInput from "../inputs/label/Label";
 import { hasData, alt } from "../../utils/utils";
 import { FormGroup } from "react-bootstrap";
 import "./LabelledInput.css";
+import ReactDateTimePicker from "../inputs/dateTimePicker/DateTimePicker";
 
 const textTypes = ["text", "number", "password", "email", "search", "tel"];
 const boolTypes = ["radio", "checkbox", "toggle"];
@@ -18,6 +19,7 @@ const checkboxGroup = "checkboxGroup";
 const textareaType = "textarea";
 const fileType = "file";
 const REQUIRED = "required";
+const dateTime = "dateTime";
 
 // TODO - refac as a passthru hook!!!
 // Pass props through directly, remove all awareness of specific child types
@@ -28,7 +30,8 @@ class LabelledInput extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onChangeArray = this.onChangeArray.bind(this);
-    this.onMultiSelecChange = this.onMultiSelecChange.bind(this);
+    this.onMultiSelectChange = this.onMultiSelectChange.bind(this);
+    this.onChangeDatePicker = this.onChangeDatePicker.bind(this);
 
     this.state = {
       isValid: true,
@@ -68,12 +71,20 @@ class LabelledInput extends Component {
     this.props.callback(e);
   }
 
-  onMultiSelecChange(e) {
+  onMultiSelectChange(e) {
     this.setState({
       inputVal: e,
       isValid: hasData(e) || this.props.required !== REQUIRED
     });
 
+    this.props.callback({ value: e, name: this.props.name });
+  }
+
+  onChangeDatePicker(e) {
+    this.setState({
+      inputVal: e,
+      isValid: hasData(e) || this.props.required !== REQUIRED
+    });
     this.props.callback({ value: e, name: this.props.name });
   }
 
@@ -120,10 +131,11 @@ class LabelledInput extends Component {
           name={this.props.name}
           inputType={this.props.inputType}
           inputVal={alt(this.state.inputVal)}
-          callback={this.onChange}
           required={this.state.required}
           placeholder={this.state.placeholder}
+          maxlength={this.props.maxlength}
           readOnly={this.props.readOnly}
+          callback={this.onChange}
         />
       );
     }
@@ -136,7 +148,7 @@ class LabelledInput extends Component {
           name={this.props.name}
           inputType={this.props.inputType}
           selected={this.props.inputVal}
-          callback={type === "select" ? this.onChange : this.onMultiSelecChange}
+          callback={type === "select" ? this.onChange : this.onMultiSelectChange}
           required={this.state.required}
           placeholder={this.state.placeholder}
           options={this.state.options}
@@ -202,14 +214,28 @@ class LabelledInput extends Component {
       );
     }
 
+    if (type === dateTime) {
+      return (
+        <ReactDateTimePicker
+          className={inputStyle}
+          name={this.props.name}
+          inputVal={this.props.inputVal}
+          callback={this.onChangeDatePicker}
+          required={this.state.required}
+          readOnly={this.props.readOnly}
+        />
+      );
+    }
+
     return null;
   }
 
   render() {
-    const cls = !!this.props.spacebetween ? "space-between" : "";
+    const cls = !!this.props.spacebetween ? " space-between" : "";
+    const inline = !!this.props.inline ? " input-group-append" : "";
     const textlabelStyle = this.props.inputType === "multiSelect" ? "" : "txtlabel";
     return (
-      <FormGroup className={`${cls} ${this.state.visibleStyle}`}>
+      <FormGroup className={`${this.state.visibleStyle}${cls}${inline}`}>
         <label className={textlabelStyle}>{this.state.labelText}</label>
         {this.getInputByType()}
       </FormGroup>
@@ -219,9 +245,8 @@ class LabelledInput extends Component {
 
 LabelledInput.propTypes = {
   name: PropTypes.string,
-  alt: PropTypes.string.isRequired,
   autoFocus: PropTypes.oneOf([true, ""]),
-  labelText: PropTypes.string,
+  labelText: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
   inputType: PropTypes.oneOf([
     "text",
     "textarea",
@@ -237,7 +262,8 @@ LabelledInput.propTypes = {
     "tel",
     "label",
     "file",
-    "multiSelect"
+    "multiSelect",
+    "dateTime"
   ]).isRequired,
   callback: PropTypes.func,
   inputVal: PropTypes.any,

@@ -2,6 +2,7 @@ import React from "react";
 import { Row } from "react-bootstrap";
 import { alt } from "../../utils/utils";
 import "./CountdownBadge.css";
+import Xl8 from "../xl8/Xl8";
 
 //TODO - refactor. clean and possibly move the calcs to utils.
 const CountdownBadge = props => {
@@ -9,6 +10,9 @@ const CountdownBadge = props => {
 
   const incoming = new Date(props.future);
   const now = props.now || new Date();
+  const deltaRaw = (incoming - now) / 1000;
+  const isPos = deltaRaw >= 0;
+  const delta = Math.abs(deltaRaw);
 
   const pad = val => {
     if (isNaN(val)) return 0;
@@ -25,17 +29,43 @@ const CountdownBadge = props => {
     return val;
   };
 
-  const delta = (incoming - now) / 1000;
-  const isPos = delta >= 0;
-  const round = isPos ? Math.floor : Math.ceil;
+  const sign = isPos ? "" : "-";
   const parse = (val, alt) => altZero(pad(val), alt);
 
-  const dayraw = round(delta / 86400);
-  const hrsraw = round(delta / 3600) % 24;
-  const minraw = round(delta / 60) % 60;
+  const dayraw = Math.floor(delta / 86400);
+  const hrsraw = Math.floor(delta / 3600) % 24;
+  const minraw = Math.floor(delta / 60) % 60;
   const days = altZero(dayraw);
   const hours = !days ? parse(hrsraw) : pad(Math.abs(hrsraw));
   const minutes = !days && !hours ? parse(minraw, "00") : pad(Math.abs(minraw));
+
+  const d = <Xl8 xid="cdb001">d</Xl8>;
+  const h = <Xl8 xid="cdb002">h</Xl8>;
+  const m = <Xl8 xid="cdb003">m</Xl8>;
+  const formatedDays = days ? (
+    <span>
+      {days}
+      {d}
+    </span>
+  ) : (
+    days
+  );
+  const formatedHours = hours ? (
+    <span>
+      {hours}
+      {h}
+    </span>
+  ) : (
+    hours
+  );
+  const formatedMinutes = minutes ? (
+    <span>
+      {minutes}
+      {m}
+    </span>
+  ) : (
+    minutes
+  );
 
   const getStyle = () => {
     if (dayraw > 1) return "";
@@ -50,9 +80,10 @@ const CountdownBadge = props => {
 
   return (
     <Row flex="true" no-wrap="true" className={`cdb-row ${getStyle()}`}>
-      <div className="cdb-days-div">{days}</div>
-      <div>{hours}</div>
-      <div>:{minutes}</div>
+      <span>{sign}</span>
+      <span className="cdb-days-div">{formatedDays}</span>
+      <span className="cdb-days-div">{formatedHours}</span>
+      <span className="cdb-days-div">{formatedMinutes}</span>
     </Row>
   );
 };

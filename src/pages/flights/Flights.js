@@ -1,18 +1,21 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import { Link } from "@reach/router";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
-import { Col, Tabs, Tab } from "react-bootstrap";
 import Main from "../../components/main/Main";
-import SideNavContainer from "../../components/sidenavContainer/SidenavContainer";
+import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
+// import Tabs from "../../components/tabs/Tabs";
+
+import { Col, Tabs, Tab } from "react-bootstrap";
 import { hasData, alt, localeDate, asArray } from "../../utils/utils";
 import { TIME } from "../../utils/constants";
 
 import { flights } from "../../services/serviceWrapper";
 import "./Flights.css";
+import Xl8 from "../../components/xl8/Xl8";
 
 const Flights = props => {
   const cb = () => {};
@@ -22,9 +25,9 @@ const Flights = props => {
     sortBy: [{ id: "timer", desc: false }]
   };
 
-  const [data, setData] = useState([{}]);
-  const [hitData, setHitData] = useState([{}]);
-  const [allData, setAllData] = useState([{}]);
+  const [data, setData] = useState();
+  const [hitData, setHitData] = useState();
+  const [allData, setAllData] = useState();
   const [tab, setTab] = useState("all");
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
@@ -89,32 +92,37 @@ const Flights = props => {
   const Headers = [
     {
       Accessor: "timer",
+      Xl8: true,
+      Header: ["fl009", "Timer"],
       Cell: ({ row }) => (
         <CountdownBadge future={row.original.timer} baseline={now}></CountdownBadge>
       )
     },
     {
       Accessor: "eta",
-      Header: "Arrival",
+      Xl8: true,
+      Header: ["fl010", "Arrival"],
       Cell: ({ row }) => localeDate(row.original.eta)
     },
     {
       Accessor: "etd",
-      Header: "Departure",
+      Xl8: true,
+      Header: ["fl011", "Departure"],
       Cell: ({ row }) => localeDate(row.original.etd)
     },
     {
       Accessor: "passengerCount",
-      Header: "Passengers",
+      Xl8: true,
+      Header: ["fl012", "Passengers"],
       Cell: ({ row }) => (
         <Link to={"../flightpax/" + row.original.id}>{row.original.passengerCount}</Link>
       )
     },
-    { Accessor: "fullFlightNumber", Header: "Flight" },
-    { Accessor: "origin" },
-    { Accessor: "destination" },
-    { Accessor: "direction" },
-    { Accessor: "severity" }
+    { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl013", "Flight"] },
+    { Accessor: "origin", Xl8: true, Header: ["fl014", "Origin"] },
+    { Accessor: "destination", Xl8: true, Header: ["fl015", "Destination"] },
+    { Accessor: "direction", Xl8: true, Header: ["fl016", "Direction"] },
+    { Accessor: "severity", Xl8: true, Header: ["fl017", "Severity"] }
     // TODO: how to summarize hits??
     // { Accessor: "ruleHitCount" },
     // { Accessor: "listHitCount" },
@@ -151,20 +159,34 @@ const Flights = props => {
 
   const tabs = (
     <Tabs defaultActiveKey="all" id="flightTabs">
-      <Tab eventKey="all" title="All"></Tab>
-      <Tab eventKey="hits" title="Hits"></Tab>
+      <Tab
+        eventKey="all"
+        title={
+          <Xl8 xid="fl001" id="flightTabs-tab-all">
+            All
+          </Xl8>
+        }
+      ></Tab>
+      <Tab
+        eventKey="hits"
+        title={
+          <Xl8 xid="fl002" id="flightTabs-tab-hits">
+            Hits
+          </Xl8>
+        }
+      ></Tab>
     </Tabs>
   );
 
   const titleTabCallback = ev => {
     const id = ev.split("-")[2];
 
-    setTab(id);
+    if (id) setTab(id);
   };
 
   return (
     <>
-      <SideNavContainer>
+      <SidenavContainer>
         <Col>
           <FilterForm
             service={flights.get}
@@ -174,41 +196,41 @@ const Flights = props => {
           >
             <br />
             <LabelledInput
-              labelText="Origin Airports"
+              labelText={<Xl8 xid="fl003"> Origin Airports</Xl8>}
               datafield="originAirports"
               name="originAirports"
               inputType="text"
               callback={cb}
-              alt="Origin Airports"
+              alt={<Xl8 xid="0">Origin Airports</Xl8>}
             />
             <LabelledInput
-              labelText="Destination Airports"
+              labelText={<Xl8 xid="fl004"> Destination Airports</Xl8>}
               datafield="destinationAirports"
               name="destinationAirports"
               inputType="text"
               callback={cb}
-              alt="Destination Airports"
+              alt={<Xl8 xid="1"> Destination Airports</Xl8>}
             />
             <LabelledInput
               datafield="flightNumber"
-              labelText="Flight Number"
+              labelText={<Xl8 xid="fl005">Flight Number</Xl8>}
               inputType="text"
               name="flightNumber"
               callback={cb}
-              alt="Flight Number"
+              alt={<Xl8 xid="7">Flight Number</Xl8>}
             />
             <LabelledInput
               datafield="direction"
               inputType="select"
-              labelText="Direction"
+              labelText={<Xl8 xid="fl006">Direction</Xl8>}
               inputStyle="form-select"
               callback={cb}
               name="direction"
               options={directions}
-              alt="Flight Direction"
+              alt={<Xl8 xid="7">Flight Direction</Xl8>}
             />
             <LabelledInput
-              labelText="Hour Range"
+              labelText={<Xl8 xid="fl007">Hour Range</Xl8>}
               inputType="select"
               name="hourRange"
               inputVal="96"
@@ -222,14 +244,14 @@ const Flights = props => {
                 { value: "96", label: "+96 hours" }
               ]}
               callback={cb}
-              alt="Hour range"
+              alt=""
             />
           </FilterForm>
         </Col>
-      </SideNavContainer>
+      </SidenavContainer>
       <Main>
         <Title
-          title="Flights"
+          title={<Xl8 xid="fl008">Flights</Xl8>}
           uri={props.uri}
           leftChild={tabs}
           leftCb={titleTabCallback}
@@ -237,7 +259,6 @@ const Flights = props => {
         <Table
           data={data}
           key={tablekey}
-          id="Flights"
           header={Headers}
           callback={cb}
           stateVals={getTableState}

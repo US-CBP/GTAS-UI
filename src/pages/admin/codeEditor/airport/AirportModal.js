@@ -1,12 +1,16 @@
-import React from "react";
-import { Modal, Button, Container } from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button, Container, Alert } from "react-bootstrap";
 
 import { codeEditor } from "../../../../services/serviceWrapper";
 import Form from "../../../../components/form/Form";
+import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../../utils/constants";
 
 const AirportModal = props => {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
+  const [variant, setVariant] = useState("");
   const cb = function(result) {};
   const data = props.editRowDetails || {};
 
@@ -39,7 +43,7 @@ const AirportModal = props => {
           key="restore"
           onClick={() => restoreSpecificCode()}
         >
-          Restore
+          <Xl8 xid="cem01">Restore</Xl8>
         </Button>,
         <Button
           type="button"
@@ -52,7 +56,7 @@ const AirportModal = props => {
             });
           }}
         >
-          Delete
+          <Xl8 xid="cem002">Delete</Xl8>
         </Button>
       ]
     : [];
@@ -68,6 +72,13 @@ const AirportModal = props => {
       <Modal.Header closeButton>
         <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
+      <Alert show={showAlert} variant={variant}>
+        {alertContent}
+        <hr />
+        <Button onClick={() => setShowAlert(false)} variant="outline-success">
+          <Xl8 xid="form003">Confirm</Xl8>
+        </Button>
+      </Alert>
       <Modal.Body>
         <Container fluid>
           <Form
@@ -77,7 +88,6 @@ const AirportModal = props => {
             title=""
             callback={postSubmit}
             action="add"
-            submitText={props.isEdit ? "Save" : "Submit"}
             paramCallback={preSubmit}
             afterProcessed={props.onHide}
             cancellable
@@ -85,7 +95,7 @@ const AirportModal = props => {
           >
             <LabelledInput
               datafield
-              labelText="IATA:"
+              labelText={<Xl8 xid="iata001">IATA: </Xl8>}
               inputType="text"
               name="iata"
               required={true}
@@ -96,7 +106,7 @@ const AirportModal = props => {
             />
             <LabelledInput
               datafield
-              labelText="ICAO:"
+              labelText={<Xl8 xid="icao001">ICAO: </Xl8>}
               inputType="text"
               name="icao"
               required={true}
@@ -107,7 +117,7 @@ const AirportModal = props => {
             />
             <LabelledInput
               datafield
-              labelText="Name:"
+              labelText={<Xl8 xid="airm003">Name: </Xl8>}
               inputType="text"
               name="name"
               required={true}
@@ -118,7 +128,7 @@ const AirportModal = props => {
             />
             <LabelledInput
               datafield
-              labelText="City:"
+              labelText={<Xl8 xid="airm004">City: </Xl8>}
               inputType="text"
               name="city"
               required={true}
@@ -129,7 +139,7 @@ const AirportModal = props => {
             />
             <LabelledInput
               datafield
-              labelText="Country"
+              labelText={<Xl8 xid="airm005">Country: </Xl8>}
               inputType="text"
               name="country"
               required={true}
@@ -140,7 +150,7 @@ const AirportModal = props => {
             />
             <LabelledInput
               datafield
-              labelText="Latitude:"
+              labelText={<Xl8 xid="lati001">Latitude: </Xl8>}
               inputType="text"
               name="latitude"
               required={true}
@@ -151,7 +161,7 @@ const AirportModal = props => {
             />
             <LabelledInput
               datafield
-              labelText="Longitude:"
+              labelText={<Xl8 xid="long001">Longitude: </Xl8>}
               inputType="text"
               name="longitude"
               required={true}

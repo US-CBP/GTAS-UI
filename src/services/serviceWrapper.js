@@ -89,8 +89,8 @@ const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
 const USERSNONARCHIVED = `${USERS}/nonarchived`;
 const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
 const CHANGEPASSWORD = `${BASE_URL}gtas/user/change-password`;
-const WLCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
-const WLCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
+const HITCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
+const HITCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
 const FLIGHTS = `${BASE_URL}gtas/api/flights`;
 const AUDITLOG = `${BASE_URL}gtas/auditlog`;
 const ERRORLOG = `${BASE_URL}gtas/errorlog`;
@@ -113,24 +113,32 @@ const ROLES = `${BASE_URL}gtas/roles/`;
 const CODES_AIRPORT = `${BASE_URL}gtas/api/airport`;
 const CODES_COUNTRY = `${BASE_URL}gtas/api/country`;
 const CODES_CARRIER = `${BASE_URL}gtas/api/carrier`;
+const CODES_CCTYPE = `${BASE_URL}gtas/api/cctype`;
+const CODES_AIRPORT_LK = `${BASE_URL}gtas/api/airportLookup`;
+const CODES_COUNTRY_LK = `${BASE_URL}gtas/api/countryLookup`;
+const CODES_CARRIER_LK = `${BASE_URL}gtas/api/carrierLookup`;
 const CODES_RESTOREALL_AIRPORT = `${BASE_URL}gtas/api/airport/restoreAll`;
 const CODES_RESTOREALL_COUNTRY = `${BASE_URL}gtas/api/country/restoreAll`;
 const CODES_RESTOREALL_CARRIER = `${BASE_URL}gtas/api/carrier/restoreAll`;
+const CODES_RESTOREALL_CCTYPE = `${BASE_URL}gtas/api/cctype/restoreAll`;
 const CODES_RESTORE_AIRPORT = `${BASE_URL}gtas/api/airport/restore`;
 const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/carrier/restore`;
 const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/country/restore`;
+const CODES_RESTORE_CCTYPE = `${BASE_URL}gtas/api/cctype/restore`;
 
 const WLDOCS = `${BASE_URL}gtas/wl/DOCUMENT/Document`;
-const WLDOCSPOST = `${BASE_URL}gtas/wl/DOCUMENT`;
+const WLDOCSPOST = `${BASE_URL}gtas/wl/document`;
 const WLPAX = `${BASE_URL}gtas/wl/PASSENGER/Passenger`;
-const WLPAXPOST = `${BASE_URL}gtas/wl/PASSENGER`;
+const WLPAXPOST = `${BASE_URL}gtas/wl/passenger`;
 const WLITEM = `${BASE_URL}gtas/wl/watchlistItem`;
 
 const PAXDETAILSREPORT = `${BASE_URL}gtas/paxdetailreport`;
 const NOTIFICATION = `${BASE_URL}gtas/users/notify`;
-const HOST = `${BASE_URL}gtas/api/config/`;
+const HOST = `${BASE_URL}gtas/config/`;
 const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
+const NEO4JURL = HOST + "/neo4j/";
+const KIBANAURL = HOST + "/kibanaUrl/";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 const LOGFILE = `${BASE_URL}gtas/api/logs/`;
 const SIGNUP = `${BASE_URL}gtas/user/signup/new`;
@@ -140,7 +148,20 @@ const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
 const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
 const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
 const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
+const SEARCH = `${BASE_URL}gtas/search`;
+const SEATS = `${BASE_URL}gtas/seats`;
+const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
+const ATTACHMENTSMETA = `${BASE_URL}gtas/attachmentsmeta`;
+const DOWNLOADATTACHMENT = `${BASE_URL}gtas/attachment`;
+const TRANSLATIONS = `${BASE_URL}gtas/api/translation`;
+
 // ENTITY METHODS
+
+export const translations = {
+  get: id => get(TRANSLATIONS, BASEHEADER, id),
+  post: body => post(TRANSLATIONS, BASEHEADER, stringify(body))
+};
+
 export const users = {
   get: {
     getAll: (id, params) => get(USERS + "/", BASEHEADER, id, params),
@@ -156,14 +177,14 @@ export const users = {
 export const usersemails = {
   get: () => get(USERSEMAIL, BASEHEADER)
 };
-export const watchlistcats = {
-  get: (id, params) => get(WLCATS, BASEHEADER, id, params),
-  post: body => post(WLCATS, BASEHEADER, body)
+export const hitcats = {
+  get: (id, params) => get(HITCATS, BASEHEADER, id, params),
+  post: body => post(HITCATS, BASEHEADER, body)
 };
 
-export const watchlistcatspost = {
+export const hitcatspost = {
   post: body => {
-    return post(WLCATSPOST, BASEHEADER, stringify(body));
+    return post(HITCATSPOST, BASEHEADER, stringify(body));
   }
 };
 export const userService = {
@@ -177,7 +198,9 @@ export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, para
 export const auditlog = { get: params => get(AUDITLOG, BASEHEADER, undefined, params) };
 export const errorlog = { get: params => get(ERRORLOG, BASEHEADER, undefined, params) };
 export const cases = {
-  get: (id, params) => get(CASES, BASEHEADER, undefined, params),
+  get: params => {
+    return get(CASES, BASEHEADER, undefined, params);
+  },
   updateStatus: (paxId, status) => {
     const body = { passengerId: paxId, status: status };
     return post(CASES, BASEHEADER, stringify(body));
@@ -186,7 +209,10 @@ export const cases = {
 export const ruleCats = { get: (id, params) => get(RULE_CATS, BASEHEADER) };
 export const settingsinfo = {
   get: (id, params) => get(SETTINGSINFO, BASEHEADER),
-  put: body => putNoId(SETTINGSINFO, BASEHEADER, stringify(body))
+  put: body => {
+    console.log(body);
+    putNoId(SETTINGSINFO, BASEHEADER, stringify(body));
+  }
 };
 export const getrulecats = { get: (id, params) => get(GETRULECATS, BASEHEADER) };
 export const paxdetails = {
@@ -271,30 +297,63 @@ export const codeEditor = {
   get: {
     carrierCodes: () => get(CODES_CARRIER, BASEHEADER),
     countryCodes: () => get(CODES_COUNTRY, BASEHEADER),
-    airportCodes: () => get(CODES_AIRPORT, BASEHEADER)
+    airportCodes: () => get(CODES_AIRPORT, BASEHEADER),
+    cctypeCodes: () => get(CODES_CCTYPE, BASEHEADER)
   },
   put: {
     updateCarrier: body => putNoId(CODES_CARRIER, BASEHEADER, stringify(body)),
     updateCountry: body => putNoId(CODES_COUNTRY, BASEHEADER, stringify(body)),
     updateAirport: body => putNoId(CODES_AIRPORT, BASEHEADER, stringify(body)),
+    updateCctype: body => putNoId(CODES_CCTYPE, BASEHEADER, stringify(body)),
+
     restoreCarriersAll: body => putNoId(CODES_RESTOREALL_CARRIER, BASEHEADER, body),
     restoreCountriesAll: body => putNoId(CODES_RESTOREALL_COUNTRY, BASEHEADER, body),
     restoreAirportsAll: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
+    restoreCctypeAll: body => putNoId(CODES_RESTOREALL_CCTYPE, BASEHEADER, body),
+
     restoreCarrier: body => putNoId(CODES_RESTORE_CARRIER, BASEHEADER, stringify(body)),
     restoreCountry: body => putNoId(CODES_RESTORE_COUNTRY, BASEHEADER, stringify(body)),
-    restoreAirport: body => putNoId(CODES_RESTORE_AIRPORT, BASEHEADER, stringify(body))
+    restoreAirport: body => putNoId(CODES_RESTORE_AIRPORT, BASEHEADER, stringify(body)),
+    restoreCctype: body => putNoId(CODES_RESTORE_CCTYPE, BASEHEADER, stringify(body))
   },
   post: {
     createCarrier: body => post(CODES_CARRIER, BASEHEADER, stringify(body)),
     createCountry: body => post(CODES_COUNTRY, BASEHEADER, stringify(body)),
-    createAirport: body => post(CODES_AIRPORT, BASEHEADER, stringify(body))
+    createAirport: body => post(CODES_AIRPORT, BASEHEADER, stringify(body)),
+    createCctype: body => post(CODES_CCTYPE, BASEHEADER, stringify(body))
   },
   delete: {
     deleteCarrier: id => del(CODES_CARRIER, BASEHEADER, id),
     deleteCountry: id => del(CODES_COUNTRY, BASEHEADER, id),
-    deleteAirport: id => del(CODES_AIRPORT, BASEHEADER, id)
+    deleteAirport: id => del(CODES_AIRPORT, BASEHEADER, id),
+    deleteCctype: id => del(CODES_CCTYPE, BASEHEADER, id)
   }
 };
+
+export const attachment = {
+  get: {
+    getAllFullAttachments: paxId => {
+      const path = ATTACHMENTS + `?paxId=${paxId}`;
+      return get(path, BASEHEADER);
+    },
+    getAllAttachmentsMeta: paxId => {
+      const path = ATTACHMENTSMETA + `?paxId=${paxId}`;
+      return get(path, BASEHEADER);
+    },
+    download: attachmentId => {
+      const path = DOWNLOADATTACHMENT + `?attachmentId=${attachmentId}`;
+      window.open(path, "_self");
+    }
+  },
+  post: body => post(ATTACHMENTS, "", body),
+  del: attachmentId => {
+    return del(ATTACHMENTS, BASEHEADER, attachmentId);
+  }
+};
+
+export const airportLookup = { get: () => get(CODES_AIRPORT_LK, BASEHEADER) };
+export const countryLookup = { get: () => get(CODES_COUNTRY_LK, BASEHEADER) };
+export const carrierLookup = { get: () => get(CODES_CARRIER_LK, BASEHEADER) };
 
 export const login = {
   post: body => {
@@ -372,24 +431,17 @@ export const wlpax = {
       return [];
     });
   },
-  post: body => post(WLPAXPOST, BASEHEADER, stringify(body)),
+  post: body => {
+    return post(WLPAXPOST, BASEHEADER, stringify(body));
+  },
   put: body => put(WLPAXPOST, BASEHEADER, undefined, stringify(body)),
   del: id => del(WLITEM, BASEHEADER, id)
 };
 
 export const addWLItems = {
   post: body => {
-    // TODO find a cleaner way to handle the respone.
-    //Change the backend to accept a list of watchlist items?
-    const responses = [];
-    const paxItem = JSON.parse(body.passenger.replace("{categoryId}", body.categoryId));
-    return post(WLPAXPOST, BASEHEADER, stringify(paxItem)).then(
-      asArray(body.documents).forEach(doc => {
-        const docItem = JSON.parse(doc.replace("{categoryId}", body.categoryId));
-        return post(WLDOCSPOST, BASEHEADER, stringify(docItem)).then(
-          res => responses.push[res]
-        );
-      })
+    return post(WLPAXPOST, BASEHEADER, stringify(body.passenger)).then(
+      post(WLDOCSPOST, BASEHEADER, stringify(body.documents))
     );
   }
 };
@@ -423,7 +475,7 @@ export const physicalLocations = {
 
 export const signuprequests = {
   get: params => get(SIGNUPREQUESTS, BASEHEADER, undefined, params),
-  approve: id => put(SIGNUPREQUESTAPPROVE, BASEHEADER, id),
+  approve: body => post(SIGNUPREQUESTAPPROVE, BASEHEADER, stringify(body)),
   reject: id => put(SIGNUPREQUESTSREJECT, BASEHEADER, id)
 };
 
@@ -437,4 +489,21 @@ export const forgotPassword = {
 export const resetPassword = {
   post: body => post(RESETPASSWORD, SIGNUPHEADER, stringify(body)),
   isValidToken: token => get(RESETPASSWORD, SIGNUPHEADER, undefined, token)
+};
+
+export const search = {
+  passengers: params => {
+    const url = `${SEARCH}/queryPassengers`;
+    return get(url, BASEHEADER, undefined, params);
+  }
+};
+export const seats = {
+  get: flightId => get(SEATS, BASEHEADER, flightId)
+};
+
+export const neo4jUrl = {
+  get: () => get(NEO4JURL, BASEHEADER)
+};
+export const kibanaUrl = {
+  get: () => get(KIBANAURL, BASEHEADER)
 };

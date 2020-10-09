@@ -1,0 +1,33 @@
+.seat-legend {
+  margin: 10px;
+}
+.legend-icon {
+  max-height: 26px;
+  max-width: 26px;
+  min-height: 22px;
+  min-width: 22px;
+  margin: 3px;
+  outline: none;
+  font-size: 10px;
+  line-height: 16px;
+  border-radius: 5px;
+  float: left;
+}
+
+.legend-reserved {
+  background-color: rgb(6, 146, 81);
+}
+
+.legend-co-traveler {
+  background-color: rgb(243, 93, 39);
+}
+.legend-hit {
+  border: 2px solid red;
+}
+.legend-unavailable {
+  background-color: rgb(184, 182, 182);
+}
+
+.selected-pax-seat {
+  background-color: rgb(118, 6, 141);
+}

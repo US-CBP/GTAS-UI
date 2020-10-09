@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
-import { manualHit, watchlistcats } from "../../../services/serviceWrapper";
+import { manualHit, hitcats } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
+import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
 
@@ -20,15 +21,13 @@ const CreateManualHit = props => {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    watchlistcats.get().then(res => {
+    hitcats.get().then(res => {
       const wlc = asArray(res).map(wl => {
-        {
-          return {
-            label: wl.label,
-            value: wl.id,
-            key: wl.id
-          };
-        }
+        return {
+          label: wl.label,
+          value: wl.id,
+          key: wl.id
+        };
       });
       setWlCategories(wlc);
     });
@@ -37,24 +36,24 @@ const CreateManualHit = props => {
   return (
     <>
       <Button variant="outline-danger" size="sm" onClick={handleShow}>
-        Create Manual Hit
+        <Xl8 xid="cmh001">Create Manual Hit</Xl8>
       </Button>
 
       <Modal
         show={show}
         onHide={handleClose}
         size="md"
-        backdrop="static"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Create Manual Hit</Modal.Title>
+          <Modal.Title>
+            <Xl8 xid="cmh001">Create Manual Hit</Xl8>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form
             title=""
-            submitText="SAVE"
             submitService={manualHit.post}
             callback={handleClose}
             action="add"
@@ -63,46 +62,47 @@ const CreateManualHit = props => {
           >
             <LabelledInput
               datafield
-              labelText="Passenger ID"
+              labelText={<Xl8 xid="cmh002">Passenger ID:</Xl8>}
               inputType="text"
               name="paxId"
-              required={true}
               inputVal={paxId || ""}
               alt="nothing"
-              callback={cb}
+              readOnly={true}
               spacebetween
+              callback={cb}
             />
             <LabelledInput
               datafield
-              labelText="flight ID"
+              labelText={<Xl8 xid="cmh003">Flight ID:</Xl8>}
               inputType="text"
               name="flightId"
-              required={true}
               inputVal={flightId || ""}
-              alt="nothing"
+              alt={<Xl8 xid="2">Flight ID:</Xl8>}
               callback={cb}
+              readOnly={true}
               spacebetween
             />
             <LabelledInput
               inputType="select"
-              alt="Nothing"
+              labelText={<Xl8 xid="cmh004">Hit Category:</Xl8>}
               name="hitCategoryId"
-              labelText=""
-              placeholder="Choose Hit Category"
+              alt={<Xl8 xid="2">Hit Category:</Xl8>}
               datafield
               required
               callback={cb}
               options={wlCategories}
+              spacebetween
             />
             <LabelledInput
               datafield
-              labelText="Description"
+              labelText={<Xl8 xid="cmh005">Description:</Xl8>}
               inputType="text"
               name="description"
               required=""
               inputVal=""
-              alt="nothing"
+              alt={<Xl8 xid="2">Description:</Xl8>}
               callback={cb}
+              spacebetween
             />
           </Form>
         </Modal.Body>
