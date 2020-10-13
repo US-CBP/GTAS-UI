@@ -26,6 +26,16 @@ const FlightPax = props => {
   const [tab, setTab] = useState("all");
   const [key, setKey] = useState(0);
   const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
+  const [initSort, setInitSort] = useState({sortBy: [
+      {
+        id: 'coTravellerId',
+        desc: false
+      }
+    ]});
+
+  const getInitSort = () => {
+    return initSort;
+  };
 
   const parseData = data => {
     return asArray(data).map(item => {
@@ -66,7 +76,8 @@ const FlightPax = props => {
       Cell: ({ row }) => <div>{row.original.dobAge}</div>
     },
     { Accessor: "docNumber", Xl8: true, Header: ["fp019", "Doc Number"] },
-    { Accessor: "nationality", Xl8: true, Header: ["fp020", "Nationality"] }
+    { Accessor: "nationality", Xl8: true, Header: ["fp020", "Nationality"] },
+    { Accessor: "coTravellerId", Xl8: true, Header: ["fp021", "Co-Traveller"] }
   ];
 
   useEffect(() => {
@@ -195,6 +206,7 @@ const FlightPax = props => {
           data={data}
           id="Flight Passengers"
           callback={cb}
+          stateVals={getInitSort}
         ></Table>
       </Main>
     </>
