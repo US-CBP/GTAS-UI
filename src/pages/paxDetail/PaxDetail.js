@@ -19,12 +19,25 @@ import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import { paxdetails, cases } from "../../services/serviceWrapper";
-import { passengerTypeMapper, asArray, hasData } from "../../utils/utils";
+import {
+  passengerTypeMapper,
+  asArray,
+  hasData,
+  localeDate,
+  localeDateOnly
+} from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./PaxDetail.scss";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
+    const lastPnrRecieved = hasData(res.pnrVo?.transmissionDate)
+      ? Date.parse(res.pnrVo?.transmissionDate)
+      : undefined;
+    const lastApisRecieved = hasData(res.apisMessageVo?.transmissionDate)
+      ? Date.parse(res.apisMessageVo?.transmissionDate)
+      : undefined;
+    const dob = Date.parse(res.dob);
     return [
       {
         label: <Xl8 xid="pd007">Last Name</Xl8>,
@@ -33,7 +46,7 @@ const PaxDetail = props => {
       { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
       { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName },
       { label: <Xl8 xid="pd010">Age</Xl8>, value: res.age },
-      { label: <Xl8 xid="pd011">DOB</Xl8>, value: res.dob },
+      { label: <Xl8 xid="pd011">DOB</Xl8>, value: localeDateOnly(dob) },
       { label: <Xl8 xid="pd012">Gender</Xl8>, value: res.gender },
       { label: <Xl8 xid="pd013">Nationality</Xl8>, value: res.nationality },
       { label: <Xl8 xid="pd014">Residence</Xl8>, value: res.residenceCountry },
@@ -55,19 +68,19 @@ const PaxDetail = props => {
       },
       {
         label: <Xl8 xid="pd017">Last PNR Received</Xl8>,
-        value: res.pnrVo?.transmissionDate
+        value: localeDate(lastPnrRecieved)
       },
       {
         label: <Xl8 xid="pd018">Last APIS Received</Xl8>,
-        value: res.apisMessageVo?.transmissionDate
+        value: localeDate(lastApisRecieved)
       }
     ];
   };
 
   const flightBadgeData = res => {
     return {
-      arrival: `${res.flightDestination} ${res.etaLocalTZ}`,
-      departure: `${res.flightOrigin} ${res.etdLocalTZ}`,
+      arrival: `${res.flightDestination} ${localeDate(res.eta)}`,
+      departure: `${res.flightOrigin} ${localeDate(res.etd)}`,
       flightNumber: `${res.carrier}${res.flightNumber}`
     };
   };
@@ -112,6 +125,7 @@ const PaxDetail = props => {
   const [hasPnrRecord, setHasPnrRecord] = useState(false);
   const [watchlistData, setWatchlistData] = useState({});
   const [paxDetailsData, setPaxDetailsData] = useState();
+  const [paxDocuments, setPaxDocuments] = useState([]);
 
   const tabs = [
     {
@@ -125,6 +139,7 @@ const PaxDetail = props => {
           eventNoteRefreshKey={eventNoteRefreshKey}
           setHasOpenHit={setHasOpenHit}
           setHasHit={setHasHit}
+          documents={paxDocuments}
         />
       )
     },
@@ -190,6 +205,7 @@ const PaxDetail = props => {
       setPaxDetailsData(res);
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
       setWatchlistData({ passenger: p, documents: res.documents });
+      setPaxDocuments(res.documents);
     });
   };
 
