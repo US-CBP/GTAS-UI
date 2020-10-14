@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { localeDate, asArray, hasData } from "../../../utils/utils";
+import { localeDate, asArray, hasData, localeDateOnly } from "../../../utils/utils";
 import {
   paxdetails,
   paxWatchListLink,
@@ -51,11 +51,23 @@ const Summary = props => {
   const [eventNotes, setEventNotes] = useState([]);
   const [historicalEventNotes, setHistoricalEventNotes] = useState([]);
 
+  const parseDocumentData = documents => {
+    const parsedDocs = asArray(documents).map(document => {
+      const expirationDate = Date.parse(document.expirationDate);
+      return {
+        ...document,
+        expirationDate: localeDateOnly(expirationDate)
+      };
+    });
+    return parsedDocs;
+  };
   useEffect(() => {
     paxWatchListLink.get(null, props.paxId).then(res => {
       const data = asArray(res).map(pwl => {
+        const watchListDOB = Date.parse(pwl.watchListDOB);
         return {
           ...pwl,
+          watchListDOB: localeDateOnly(watchListDOB),
           percentMatch: `${pwl.percentMatch * 100}%`
         };
       });
@@ -115,7 +127,7 @@ const Summary = props => {
         />
 
         <CardWithTable
-          data={props.documents}
+          data={parseDocumentData(props.documents)}
           headers={headers.documents}
           title={<Xl8 xid="sum022">Documents</Xl8>}
         />
