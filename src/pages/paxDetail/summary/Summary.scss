@@ -6,11 +6,6 @@ $wco-blue: rgb(0, 119, 200);
 $gtas-white: rgba(255, 255, 255, 0.9);
 
 .summary-container {
-  max-height: 70vh;
-  overflow: scroll;
-}
-
-.summary-container {
   .card-columns {
     column-count: 1 !important;
   }
