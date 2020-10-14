@@ -46,17 +46,10 @@ const Summary = props => {
 
   const setHasOpenHit = props.setHasOpenHit;
   const setHasHit = props.setHasHit;
-  const [documents, setDocuments] = useState([]);
   const [watchListLinks, setWatchListLinks] = useState([]);
   const [paxHitSummary, setPaxHitSummary] = useState([]);
   const [eventNotes, setEventNotes] = useState([]);
   const [historicalEventNotes, setHistoricalEventNotes] = useState([]);
-
-  useEffect(() => {
-    paxdetails.get(props.flightId, props.paxId).then(res => {
-      setDocuments(res.documents);
-    });
-  }, []);
 
   useEffect(() => {
     paxWatchListLink.get(null, props.paxId).then(res => {
@@ -122,7 +115,7 @@ const Summary = props => {
         />
 
         <CardWithTable
-          data={documents}
+          data={props.documents}
           headers={headers.documents}
           title={<Xl8 xid="sum022">Documents</Xl8>}
         />
