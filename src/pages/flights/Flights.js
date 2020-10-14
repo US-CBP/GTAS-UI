@@ -113,7 +113,7 @@ const Flights = props => {
     { Accessor: "listHitCount", Xl8: true, Header: ["fl013", "Watchlist Hits"] },
     { Accessor: "ruleHitCount", Xl8: true, Header: ["fl014", "Rule Hits"] },
     { Accessor: "graphHitCount", Xl8: true, Header: ["fl015", "Graph Hits"] },
-    { Accessor: "fuzzyHitCount", Xl8: true, Header: ["fl016", "Watchlist Name Comparison"] },
+    { Accessor: "fuzzyHitCount", Xl8: true, Header: ["fl016", "Partial Hits"] },
     { Accessor: "externalHitCount", Xl8: true, Header: ["fl017", "External Hits"] },
     {
       Accessor: "passengerCount",
@@ -217,7 +217,7 @@ const Flights = props => {
               inputType="text"
               name="flightNumber"
               callback={cb}
-              alt={<Xl8 xid="7">Flight Number</Xl8>}
+               alt={<Xl8 xid="7">Flight Number</Xl8>}
             />
             <LabelledInput
               datafield="direction"

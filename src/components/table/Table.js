@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import { hasData, titleCase, asArray, altObj } from "../../utils/utils";
-import { useTable, usePagination, useSortBy, useFilters } from "react-table";
+import {useTable, usePagination,useGroupBy, useSortBy, useExpanded, useFilters} from "react-table";
 import { navigate } from "@reach/router";
 // import { withTranslation } from 'react-i18next';
 import Xl8 from "../xl8/Xl8";
@@ -117,7 +117,9 @@ const Table = props => {
         getExportFileName
       },
       useFilters,
+      useGroupBy,
       useSortBy,
+      useExpanded,
       usePagination,
       useExportData
     );
@@ -180,11 +182,18 @@ const Table = props => {
                         return (
                           <th
                             className="table-header"
-                            {...column.getHeaderProps(column.getSortByToggleProps())}
                           >
-                            <span>
+                            <span
+                                {...column.getHeaderProps(column.getSortByToggleProps())}
+                            >
                               {hdr} {column.canSort ? sortIcon(column) : ""}
                             </span>
+                            {(props.hasOwnProperty("disableGroupBy") && !props.disableGroupBy && column.canGroupBy) ? (<span
+                                {...column.getGroupByToggleProps()}
+                            >
+                              {props.disableGroupBy ? "" : (column.isGrouped ? '🛑' : '👊 ')}
+                            </span>
+                              ) : ""}
                           </th>
                         );
                       })}
@@ -209,8 +218,9 @@ const Table = props => {
             <tbody {...getTableBodyProps()}>
               {page.map((row, i) => {
                 prepareRow(row);
-                const link = row.original.link;
-                const sendRowToLink = row.original.sendRowToLink;
+                const isGroupBy = row.isGrouped;
+                const link = !isGroupBy ? row.original.link : "";
+                const sendRowToLink = !isGroupBy ? row.original.sendRowToLink: "";
                 const linked = link ? "linked" : "";
                 return (
                   <tr {...row.getRowProps()} className={linked}>
@@ -229,7 +239,7 @@ const Table = props => {
                           >
                             {cell.render("Cell")}
                           </td>
-                        );
+                        )
                       } else if (sendRowToLink) {
                         return (
                           <td
@@ -244,6 +254,26 @@ const Table = props => {
                             {cell.render("Cell")}
                           </td>
                         );
+                      } else if (isGroupBy){
+                        return(
+                            <td>
+                          {cell.isGrouped ? (
+                              // If it's a grouped cell, add an expander and row count
+                              <>
+                            <span {...row.getToggleRowExpandedProps()}>
+                              {row.isExpanded ? 'V' : '>'}
+                            </span>{' '}
+                                {cell.render("Cell")} ({row.subRows.length})
+                              </>
+                          ) : cell.isAggregated ? (
+                              // If the cell is aggregated, use the Aggregated
+                              // renderer for cell
+                              cell.render("Aggregated")
+                          ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
+                              // Otherwise, just render the regular cell
+                              cell.render("Cell")
+                          )}</td>
+                        )
                       }
                       return (
                         <td className={` p-1 ${style}`} {...cell.getCellProps()}>
@@ -359,9 +389,12 @@ const Table = props => {
         let cellconfig = {
           Header: title,
           accessor: acc,
+          aggregate: element.aggregate,
+          Aggregated: element.Aggregated,
           disableFilters: element.disableFilters,
           disableSortBy: element.disableSortBy,
-          disableExport: element.disableExport
+          disableExport: element.disableExport,
+          disableGroupBy: element.disableGroupBy
         };
 
         if (element.Cell !== undefined) {

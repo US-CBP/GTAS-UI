@@ -26,16 +26,6 @@ const FlightPax = props => {
   const [tab, setTab] = useState("all");
   const [key, setKey] = useState(0);
   const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
-  const [initSort, setInitSort] = useState({sortBy: [
-      {
-        id: 'coTravellerId',
-        desc: false
-      }
-    ]});
-
-  const getInitSort = () => {
-    return initSort;
-  };
 
   const parseData = data => {
     return asArray(data).map(item => {
@@ -51,33 +41,38 @@ const FlightPax = props => {
   };
 
   const headers = [
-    { Accessor: "rulehit", Xl8: true, Header: ["fp011", "Rule Hit"] },
-    { Accessor: "watchhit", Xl8: true, Header: ["fp012", "Watch Hit"] },
-    { Accessor: "passengerType", Xl8: true, Header: ["fp013", "Passenger Type"] },
+    { Accessor: "rulehit", Xl8: true, Header: ["fp011", "Rule Hit"], disableGroupBy:true, aggregate: 'sum', Aggregated: ({ value }) => `${value} Hits`},
+    { Accessor: "watchhit", Xl8: true, Header: ["fp012", "Watch Hit"], disableGroupBy:true, aggregate: 'sum', Aggregated: ({ value }) => `${value} Hits` },
+    { Accessor: "passengerType", Xl8: true, Header: ["fp013", "Passenger Type"], disableGroupBy:true },
     {
       Accessor: "lastName",
       Xl8: true,
       Header: ["fp014", "Last Name"],
       Cell: ({ row }) => {
-        return (
-          <Link to={`/gtas/paxDetail/${props.id}/${row.original.id}`}>
+        return (<Link to={`/gtas/paxDetail/${props.id}/${row.original.id}`}>
             {row.original.lastName}
           </Link>
         );
-      }
+      },
+      disableGroupBy:true,
+      aggregate: 'count',
+      Aggregated: ({ }) => ``
     },
-    { Accessor: "firstName", Xl8: true, Header: ["fp015", "First Name"] },
-    { Accessor: "middleName", Xl8: true, Header: ["fp016", "Middle Name"] },
-    { Accessor: "gender", Xl8: true, Header: ["fp017", "Gender"] },
+    { Accessor: "firstName", Xl8: true, Header: ["fp015", "First Name"], disableGroupBy:true },
+    { Accessor: "middleName", Xl8: true, Header: ["fp016", "Middle Name"], disableGroupBy:true },
+    { Accessor: "gender", Xl8: true, Header: ["fp017", "Gender"], disableGroupBy:true },
     {
       Accessor: "dobStr",
       Xl8: true,
       Header: ["fp018", "DOB"],
-      Cell: ({ row }) => <div>{row.original.dobAge}</div>
+      Cell: ({ row}) => <div>{row.original.dobAge}</div>,
+      disableGroupBy:true,
+      aggregate: 'count',
+      Aggregated: ({ }) => ``
     },
-    { Accessor: "docNumber", Xl8: true, Header: ["fp019", "Doc Number"] },
-    { Accessor: "nationality", Xl8: true, Header: ["fp020", "Nationality"] },
-    { Accessor: "coTravellerId", Xl8: true, Header: ["fp021", "Co-Traveller"] }
+    { Accessor: "docNumber", Xl8: true, Header: ["fp019", "Doc Number"], disableGroupBy:true },
+    { Accessor: "nationality", Xl8: true, Header: ["fp020", "Nationality"], disableGroupBy:true },
+    { Accessor: "coTravellerId", Xl8: true, Header: ["fp021", "PNR Record Loc."] }
   ];
 
   useEffect(() => {
@@ -206,7 +201,7 @@ const FlightPax = props => {
           data={data}
           id="Flight Passengers"
           callback={cb}
-          stateVals={getInitSort}
+          disableGroupBy={false}
         ></Table>
       </Main>
     </>
