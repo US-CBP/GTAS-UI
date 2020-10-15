@@ -69,7 +69,7 @@ const Graph = props => {
   };
 
   vaquita.result.onTotalResultCount(function(count) {
-    document.getElementById("result-total-count").innerHTML = "(" + count + ")";
+    // document.getElementById("result-total-count").innerHTML = "(" + count + ")";
   });
 
   const setCypherUrl = () => {
@@ -136,12 +136,12 @@ const Graph = props => {
         <div className="cbp-card-container full-width">
           <div className="cbp-card cbp-card-shadow">
             <h4 className="h-label no-margin-top">
-              <Xl8 xid="link001">Search</Xl8>
+              {/* <Xl8 xid="link001">Search</Xl8> */}
             </h4>
             <div className="ppt-body">
               <section className="ppt-section-main">
                 <div className="ppt-container-graph row">
-                  <nav id="popoto-saves" className="col-lg-2 ppt-taxo-nav">
+                  <nav id="popoto-saves" className="ppt-taxo-nav">
                     <div id="saves">
                       <span className="ppt-header-span">
                         <Xl8 xid="link002">This Passenger:</Xl8>
@@ -358,14 +358,14 @@ const Graph = props => {
                   <div id="popoto-graph" className="col-lg-10 ppt-div-graph"></div>
                 </div>
 
-                <div id="popoto-query" className="ppt-container-query"></div>
+                {/* <div id="popoto-query" className="ppt-container-query"></div>
 
                 <div className="ppt-section-header">
                   RESULTS
                   <span id="result-total-count" className="ppt-count-results"></span>
                 </div>
 
-                <div id="popoto-results" className="ppt-container-results"></div>
+                <div id="popoto-results" className="ppt-container-results"></div> */}
               </section>
             </div>
           </div>

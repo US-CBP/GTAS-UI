@@ -119,7 +119,17 @@ const PaxDetail = props => {
   const tabs = [
     {
       title: <Xl8 xid="pd001">Summary</Xl8>,
-      titleText: "Summary"
+      titleText: "Summary",
+      link: (
+        <Summary
+          paxId={props.paxId}
+          flightId={props.flightId}
+          hitSummaryRefreshKey={hitSummaryRefreshKey}
+          eventNoteRefreshKey={eventNoteRefreshKey}
+          setHasOpenHit={setHasOpenHit}
+          setHasHit={setHasHit}
+        />
+      )
     },
     ...(hasApisRecord
       ? [
@@ -227,14 +237,6 @@ const PaxDetail = props => {
           rightChild={actions}
           leftChild={tablist}
         ></Title>
-        <Summary
-          paxId={props.paxId}
-          flightId={props.flightId}
-          hitSummaryRefreshKey={hitSummaryRefreshKey}
-          eventNoteRefreshKey={eventNoteRefreshKey}
-          setHasOpenHit={setHasOpenHit}
-          setHasHit={setHasHit}
-        />
         {/* {props.children} */}
       </Main>
     </>

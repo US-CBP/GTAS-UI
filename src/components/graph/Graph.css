@@ -143,17 +143,29 @@
 .ppt-node__path--root--disabled {
   fill: #484848 !important;
 }
+
 .ppt-taxo-nav {
   border: 1px solid #00416a !important;
   background: white !important;
+  height: calc(100vh - 135px);
+  width: 212px;
+  padding: 10px;
 }
-.ppt-container-graph,
-.ppt-taxo-nav,
+
 .ppt-div-graph {
-  height: 70vh !important;
+  height: calc(100vh - 135px);
+  min-width: 700px;
+}
+
+.ppt-container-graph {
+  height: calc(100vh - 130px);
+  width: calc(100vw - 325px);
+  min-width: 600px;
+  flex-wrap: nowrap !important;
 }
 .ppt-body {
-  margin: 0px 10px !important;
+  /* margin: 0px 10px !important; */
+  width: calc(100vw - 325px);
 }
 .ppt-glink {
   stroke-width: 4px;
@@ -164,7 +176,7 @@
 .ppt-header-span {
   font-family: Roboto, Calibri, Tahoma, Arial, sans-serif;
   color: #333333 !important;
-  font-size: 14px;
+  font-size: larger;
   text-align: center;
   line-height: 24px;
   padding: 12px 24px;
@@ -195,6 +207,9 @@
   display: block;
   padding: 0;
   margin: 0;
+  white-space: nowrap;
+  text-align: initial;
+  min-width: 180px;
 }
 .ppt-saved-ul > tbody > tr > td {
   padding: 0px 5px;
