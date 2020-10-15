@@ -94,7 +94,7 @@ const Header = () => {
           >
             <Xl8 xid="head001">Flights</Xl8>
           </Nav.Link>
-          <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.CASEMGR]} alt={<></>}>
+          <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.PAXVWR]} alt={<></>}>
             <Nav.Link
               as={Link}
               to="vetting"

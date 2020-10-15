@@ -272,7 +272,7 @@ export default class App extends React.Component {
                           </RoleAuthenticator>
                           <RoleAuthenticator
                             path="vetting"
-                            roles={[ROLE.ADMIN, ROLE.CASEMGR]}
+                            roles={[ROLE.ADMIN, ROLE.PAXVWR]}
                           >
                             <PriorityVetting path="/"></PriorityVetting>
                           </RoleAuthenticator>

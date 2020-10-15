@@ -7,7 +7,6 @@ import {
 } from "react-awesome-query-builder";
 import "react-awesome-query-builder/lib/css/styles.css";
 import Xl8 from "../../components/xl8/Xl8";
-// import Loading from "../../components/loading/Loading";
 import { operators } from "./config";
 import { importToTreeObject, exportToQueryObject } from "./utils";
 
