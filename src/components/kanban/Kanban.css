@@ -15,3 +15,16 @@
 .krrJph {
   background-color: #a8d0ea !important;
 }
+
+.poe-countdown-inner {
+  position: absolute;
+  right: 0px;
+  bottom: -3px;
+  color: black;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.poe-countdown-outer {
+  position: relative;
+}
