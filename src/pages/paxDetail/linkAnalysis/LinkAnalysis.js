@@ -4,13 +4,13 @@ import React from "react";
 import Graph from "../../../components/graph/Graph";
 import ErrorBoundary from "../../../components/errorBoundary/ErrorBoundary";
 
-const LinkAnalysis = () => {
+const LinkAnalysis = props => {
   return (
     <div className="container">
       <div className="columns">
         <div className="top">
           <ErrorBoundary message="something went wrong here ...">
-            <Graph></Graph>
+            <Graph paxData={props.paxData}></Graph>
           </ErrorBoundary>
         </div>
       </div>

@@ -4,6 +4,7 @@ import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import { asArray, hasData, getParamList } from "../../utils/utils";
 import { Button, ButtonToolbar, Form as RBForm } from "react-bootstrap";
 import Title from "../../components/title/Title";
+import Xl8 from "../../components/xl8/Xl8";
 import { useQuery } from "react-query";
 
 import "./FilterForm.css";
@@ -68,9 +69,10 @@ const FilterForm = props => {
 
   const onReset = e => {
     let fields = [];
+    const initialParamState = props.initialParamState || {};
 
     datafieldNames.forEach(function(name) {
-      fields[name] = "";
+      fields[name] = initialParamState[name] || "";
     });
 
     setFields(fields);
@@ -102,7 +104,7 @@ const FilterForm = props => {
   // bind children containing form data (datafield prop) to the ev handler and state
   const bindChildren = populatedFields => {
     let boundChildren = asArray(props.children).map((child, idx) => {
-      if (!child.props.datafield) return child;
+      if (!child.props?.datafield) return child;
 
       let cleanprops = Object.assign({}, child.props);
       // intercept the callback so FilterForm is notified of input field changes.
@@ -132,7 +134,7 @@ const FilterForm = props => {
     let fMap = fieldMap;
 
     asArray(props.children).forEach((child, idx) => {
-      const datafield = child.props.datafield;
+      const datafield = child.props?.datafield;
 
       if (datafield) {
         const noname = `unnamedfield${idx}`;
@@ -172,11 +174,11 @@ const FilterForm = props => {
         <br></br>
         <ButtonToolbar className="container">
           <Button type="reset" variant="outline-dark m-1 text-white outline-dark-outline">
-            {props.clearText || "Reset"}
+            {props.clearText || <Xl8 xid="ff001">Reset</Xl8>}
           </Button>
           &nbsp;
           <Button type="submit" variant="ternary m-1">
-            {props.submitText || "Search"}
+            {props.submitText || <Xl8 xid="ff002">Search</Xl8>}
           </Button>
         </ButtonToolbar>
       </RBForm>
@@ -192,7 +194,8 @@ FilterForm.propTypes = {
   id: PropTypes.string,
   callback: PropTypes.func.isRequired,
   paramCallback: PropTypes.func,
-  interval: PropTypes.number
+  interval: PropTypes.number,
+  initialParamState: PropTypes.object
 };
 
 export default FilterForm;

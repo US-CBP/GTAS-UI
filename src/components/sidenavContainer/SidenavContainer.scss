@@ -1,3 +1,15 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+$background-image-url: "../../images/WCO_background1000.png";
+$wco-blue: rgb(0, 119, 200);
+$wco-blue-dark: darken($wco-blue, 20%);
+$wco-gray: rgb(141, 144, 147);
+$wco-gray-dark: darken($wco-gray, 20%);
+$gtas-white: rgba(255, 255, 255, 0.9);
+$transparent: rgba(223, 231, 247, 0);
+
 .profile {
   font-size: 200px;
 }
@@ -6,7 +18,7 @@
   border: 2px solid #e0e0e0;
   text-align: center;
   margin-bottom: 20px;
-  margin-top: 40px;
+  margin-top: 20px;
   width: 230px !important;
   height: 205px !important;
   overflow: hidden;
@@ -15,19 +27,11 @@
   padding: 2px;
 }
 
-.white-bg {
-  background-color: white !important;
-}
-
-.container-screen {
-  height: 100% !important;
-}
-
 .filter-container {
   z-index: 1020;
 }
 
-@media (max-width: 768px) {
+@include media-breakpoint-down(sm) {
   .filter-container,
   .filter {
     width: 34px !important;
@@ -47,11 +51,15 @@
     cursor: pointer;
   }
   .filter-toggle:hover {
-    background-color: rgba(1, 153, 184, 0.3);
+    background-color: $transparent;
   }
 }
 
-@media (min-width: 769px) {
+.toggle-arrow {
+  margin-top: 10px;
+}
+
+@include media-breakpoint-up(md) {
   .filter-toggle {
     display: none;
   }
@@ -67,7 +75,7 @@
 }
 
 .arrow {
-  color: #2f99b8;
+  color: $gtas-white;
   font-weight: 400;
 }
 
@@ -112,26 +120,11 @@
 }
 
 .filter-bg {
-  /* z-index: 5;
-  background: linear-gradient(hsla(190, 100%, 4%, 1), hsla(190, 100%, 4%, 1), #003f4cb3),
-    url('../../images/krzysztof-hepner-TH7TW20de9s-unsplash_10x6.jpg') no-repeat;
+  z-index: 5;
+  background: linear-gradient($wco-blue, $transparent),
+    url($background-image-url) no-repeat no-repeat;
   background-position: center center;
-  background-size: cover; */
-}
-
-.filter-screen {
-  /* z-index: 5;
-  background: linear-gradient(rgb(0, 5, 8), rgba(0, 5, 8, 0.5));
   background-size: cover;
-  background-position: center center; */
-  /* background-color: #040606; */
-  /* opacity: 0.8; */
-}
-
-.fg {
-  /* temp placeholder for distinguishing Input styling between dark and light backgrounds.
-  Need to find a better pattern for this.
-   */
 }
 
 hr {

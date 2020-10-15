@@ -6,40 +6,41 @@ import {
   flightpaxHitSummary,
   paxEventNotesHistory
 } from "../../../services/serviceWrapper";
-import { Container, CardColumns } from "react-bootstrap";
+import { CardColumns } from "react-bootstrap";
 import Main from "../../../components/main/Main";
 import "./Summary.scss";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
+import Xl8 from "../../../components/xl8/Xl8";
 
 const Summary = props => {
   const headers = {
     documents: {
-      documentNumber: "Document Number",
-      documentType: "Type",
-      issuanceCountry: "Issuance Country",
-      expirationDate: "Expiration Date",
-      messageType: "Source"
+      documentNumber: <Xl8 xid="sum001">Document Number</Xl8>,
+      documentType: <Xl8 xid="sum002">Type</Xl8>,
+      issuanceCountry: <Xl8 xid="sum003">Issuance Country</Xl8>,
+      expirationDate: <Xl8 xid="sum004">Expiration Date</Xl8>,
+      messageType: <Xl8 xid="sum005">Source</Xl8>
     },
     watchListLinks: {
-      watchlistCategory: "Category",
-      watchListLastName: "Last Name",
-      watchListFirstName: "First Name",
-      watchListDOB: "DOB",
-      percentMatch: "Match %"
+      watchlistCategory: <Xl8 xid="sum006">Category</Xl8>,
+      watchListLastName: <Xl8 xid="sum007">Last Name</Xl8>,
+      watchListFirstName: <Xl8 xid="sum008">First Name</Xl8>,
+      watchListDOB: <Xl8 xid="sum009">DOB</Xl8>,
+      percentMatch: <Xl8 xid="sum010">Match %</Xl8>
     },
     paxHitSummary: {
-      status: "Status",
-      severity: "Severity",
-      author: "Author",
-      category: "Category",
-      ruleDesc: "Title",
-      ruleConditions: "Conditions"
+      status: <Xl8 xid="sum011">Status</Xl8>,
+      severity: <Xl8 xid="sum012">Severity</Xl8>,
+      author: <Xl8 xid="sum013">Author</Xl8>,
+      category: <Xl8 xid="sum014">Category</Xl8>,
+      ruleDesc: <Xl8 xid="sum015">Title</Xl8>,
+      ruleConditions: <Xl8 xid="sum016">Conditions</Xl8>
     },
     eventNotes: {
-      plainTextNote: "Note",
-      noteType: "Note Type",
-      createdBy: "Created By",
-      createdAt: "Created At"
+      plainTextNote: <Xl8 xid="sum017">Note</Xl8>,
+      noteType: <Xl8 xid="sum018">Note Type</Xl8>,
+      createdBy: <Xl8 xid="sum019">Created By</Xl8>,
+      createdAt: <Xl8 xid="sum020">Created At</Xl8>
     }
   };
 
@@ -117,25 +118,29 @@ const Summary = props => {
         <CardWithTable
           data={paxHitSummary}
           headers={headers.paxHitSummary}
-          title="Passenger Current Hits summary"
+          title={<Xl8 xid="sum021">Passenger Current Hits summary</Xl8>}
         />
 
-        <CardWithTable data={documents} headers={headers.documents} title="Documents" />
+        <CardWithTable
+          data={documents}
+          headers={headers.documents}
+          title={<Xl8 xid="sum022">Documents</Xl8>}
+        />
         <CardWithTable
           data={watchListLinks}
           headers={headers.watchListLinks}
-          title="Watchlist Name Comparison"
+          title={<Xl8 xid="sum023">Watchlist Name Comparison</Xl8>}
         />
 
         <CardWithTable
           data={eventNotes}
           headers={headers.eventNotes}
-          title="Event Note History"
+          title={<Xl8 xid="sum024">Event Note History</Xl8>}
         />
         <CardWithTable
           data={historicalEventNotes}
           headers={headers.eventNotes}
-          title={`Previous Notes History (Up to 10)`}
+          title={<Xl8 xid="sum025">Previous Note History</Xl8>}
         />
       </CardColumns>
     </Main>

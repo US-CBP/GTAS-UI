@@ -26,6 +26,11 @@ export const ACTION = {
   RUN: "Run"
 };
 
+export const STATUS = {
+  SUCCESS: "SUCCESS",
+  FAILURE: "FAILURE"
+};
+
 export const ROLE = {
   ADMIN: "Admin",
   QRYMGR: "Manage Queries",
@@ -35,6 +40,7 @@ export const ROLE = {
   SYSADMIN: "SysAdmin",
   HITMGR: "Manage Hits",
   CASEMGR: "Manage Cases",
+  FLIGHTVWR: "View Flights",
   ANY: "Any"
 };
 
@@ -43,6 +49,7 @@ export const CTX = {
   COUNTRIES: "countries",
   AIRPORTS: "airports",
   AIRPORTCODES: "airportcodes",
+  CCTYPES: "cctypes",
   RULECATS: "rulecats"
 };
 

@@ -2,16 +2,18 @@ import React, { useState, useEffect, useMemo, useContext } from "react";
 import RAQB from "../../../components/raqb/RAQB";
 import { Button, Modal, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
+import Xl8 from "../../../components/xl8/Xl8";
 import { navigate } from "@reach/router";
 import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
 import { QR, ACTION, CTX } from "../../../utils/constants";
 import { LookupContext } from "../../../context/data/LookupContext";
 
 import {
-  watchlistcats,
+  hitcats,
   airportLookup,
   countryLookup,
-  carrierLookup
+  carrierLookup,
+  codeEditor
 } from "../../../services/serviceWrapper";
 
 import { numProps, txtProps, dateProps } from "../../../components/raqb/constants";
@@ -29,9 +31,10 @@ const QRModal = props => {
   const [airports, setAirports] = useState([]);
   const [countries, setCountries] = useState([]);
   const [carriers, setCarriers] = useState([]);
+  const [ccTypes, setCcTypes] = useState([]);
   const [dataConfig, setDataConfig] = useState([]);
 
-  const [title, setTitle] = useState(props.data?.title || "");
+  const [title, setTitle] = useState(props.title);
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState(props.data?.query);
   const [showInvalid, setShowInvalid] = useState(false);
@@ -45,11 +48,12 @@ const QRModal = props => {
       hasData(countries) &&
       hasData(carriers) &&
       hasData(airports) &&
+      hasData(ccTypes) &&
       hasData(categories)
     )
       setLoaded(true);
     else setLoaded(false);
-  }, [countries, carriers, airports, categories]);
+  }, [countries, carriers, airports, ccTypes, categories]);
 
   const countryProps = useMemo(() => {
     return {
@@ -82,6 +86,16 @@ const QRModal = props => {
       valueSources: ["value"]
     };
   }, [airports]);
+  const ccTypeProps = useMemo(() => {
+    return {
+      type: "select",
+      fieldSettings: {
+        allowCustomValues: false,
+        listValues: ccTypes
+      },
+      valueSources: ["value"]
+    };
+  }, [ccTypes]);
 
   const fieldConfigWithData = {
     fields: {
@@ -103,10 +117,12 @@ const QRModal = props => {
         type: "!group",
         subfields: {
           airline: { label: "Airline", ...carrierProps },
+          "bagMeasurements.bagCount": { label: "Bag Count", ...numProps },
           bagId: { label: "Bag ID", ...txtProps },
+          "bagMeasurements.weight": { label: "Bag Weight (kg)", ...numProps },
           dataSource: { label: "Data Source", ...txtProps },
-          country: { label: "Destination Country", ...countryProps },
           destinationAirport: { label: "Destination Airport", ...airportProps },
+          country: { label: "Destination Country", ...countryProps },
           primeFlight: {
             label: "Is Prime Flight",
             type: "boolean",
@@ -116,8 +132,7 @@ const QRModal = props => {
             label: "Is Head Of a Baggage Pool",
             type: "boolean",
             valueSources: ["value"]
-          },
-          "bagMeasurements.weight": { label: "Bag Weight Measurement (kg)", ...numProps }
+          }
         }
       },
       CreditCard: {
@@ -127,7 +142,7 @@ const QRModal = props => {
           accountHolder: { label: "Account Holder", ...txtProps },
           expiration: { label: "Expiration Date", ...dateProps },
           number: { label: "Number", ...txtProps },
-          cardType: { label: "Type", ...txtProps }
+          cardType: { label: "Type", ...ccTypeProps }
         }
       },
       Document: {
@@ -293,11 +308,11 @@ const QRModal = props => {
               ]
             },
             valueSources: ["value"]
-          },
-          "passengerTripDetails.travelFrequency": {
-            label: "Travel Frequency",
-            ...numProps
           }
+          // "passengerTripDetails.travelFrequency": {
+          //   label: "Travel Frequency",
+          //   ...numProps
+          // }
         }
       },
       Phone: {
@@ -574,11 +589,13 @@ const QRModal = props => {
     const storedCarriers = getLookupState(CTX.CARRIERS);
     const storedAirports = getLookupState(CTX.AIRPORTCODES);
     const storedCategories = getLookupState(CTX.RULECATS);
+    const storedCcTypes = getLookupState(CTX.CCTYPES);
 
+    // move to context.
     if (hasData(storedCategories)) {
       setCategories(storedCategories);
     } else {
-      watchlistcats.get().then(res => {
+      hitcats.get().then(res => {
         const cats = asArray(res).map(catitem => {
           return { label: catitem.label, value: catitem.id };
         });
@@ -634,6 +651,23 @@ const QRModal = props => {
         setAirports(result);
       });
     }
+
+    if (hasData(storedCcTypes)) {
+      setCcTypes(storedCcTypes);
+    } else {
+      codeEditor.get.cctypeCodes().then(res => {
+        let ccitem = asArray(res).map(ccitem => {
+          return { title: `${ccitem.description} (${ccitem.code})`, value: ccitem.code };
+        });
+
+        const result = ccitem.sort(function(a, b) {
+          return a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1;
+        });
+
+        if (hasData(result)) lookupAction({ data: result, type: CTX.CCTYPES });
+        setCcTypes(result);
+      });
+    }
   }, []);
 
   return (
@@ -647,8 +681,8 @@ const QRModal = props => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {`${props.title}: `}
-            <label className="big-name-sidebar">{title}</label>
+            <span>{props.title} </span>
+            <label className="big-name-sidebar">{summaryData?.title}</label>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="qbrb-modal-body">
@@ -657,7 +691,7 @@ const QRModal = props => {
               <LabelledInput
                 datafield
                 key={`title${key}`}
-                labelText="Title"
+                labelText={<Xl8 xid="qrm001">Title</Xl8>}
                 inputType="text"
                 inputVal={summaryData?.title}
                 name="title"
@@ -667,7 +701,7 @@ const QRModal = props => {
               />
               <LabelledInput
                 datafield
-                labelText="Description"
+                labelText={<Xl8 xid="qrm002">Description</Xl8>}
                 key={`desc${key}`}
                 inputType="text"
                 inputVal={summaryData?.description}
@@ -682,7 +716,7 @@ const QRModal = props => {
                 <Row className="card-columns qrm">
                   <LabelledInput
                     datafield
-                    labelText="Start Date"
+                    labelText={<Xl8 xid="qrm003">Start Date</Xl8>}
                     key={`sd${key}`}
                     required={true}
                     inputType="text"
@@ -694,7 +728,7 @@ const QRModal = props => {
                   />
                   <LabelledInput
                     datafield
-                    labelText="End Date"
+                    labelText={<Xl8 xid="qrm004">End Date</Xl8>}
                     key={`ed${key}`}
                     inputType="text"
                     inputVal={localeDateOnly(summaryData?.endDate)}
@@ -708,7 +742,7 @@ const QRModal = props => {
                   <LabelledInput
                     key={`en${key}`}
                     datafield
-                    labelText="Enabled"
+                    labelText={<Xl8 xid="qrm005">Enabled</Xl8>}
                     inputType="checkbox"
                     name="enabled"
                     alt="query or rule is enabled"
@@ -719,14 +753,14 @@ const QRModal = props => {
                   <LabelledInput
                     datafield
                     key={`rc${key}`}
-                    labelText="Rule Category"
+                    labelText={<Xl8 xid="qrm006">Rule Category</Xl8>}
                     inputType="select"
                     options={categories}
                     inputVal={summaryData?.ruleCat}
                     required={true}
                     name="ruleCat"
                     callback={cb}
-                    alt="rule category"
+                    alt="alt"
                     spacebetween
                     className="rule-cat"
                   />
@@ -751,7 +785,7 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onClose}
           >
-            Close
+            <Xl8 xid="">Close</Xl8>
           </Button>
           <Button
             type="button"
@@ -760,7 +794,7 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onClear}
           >
-            Clear
+            <Xl8 xid="">Clear</Xl8>
           </Button>
           <Button
             key="save"
@@ -769,7 +803,7 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onSave}
           >
-            Save
+            <Xl8 xid="">Save</Xl8>
           </Button>
           <Button
             key="run"
@@ -778,7 +812,7 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onRun}
           >
-            Run
+            <Xl8 xid="">Run</Xl8>
           </Button>
           {isEdit && (
             <Button
@@ -788,7 +822,7 @@ const QRModal = props => {
               variant="outline-dark"
               onClick={onDelete}
             >
-              Delete
+              <Xl8 xid="">Delete</Xl8>
             </Button>
           )}
         </Modal.Footer>

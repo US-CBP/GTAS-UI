@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { paxEventNotesHistory, notetypes, cases } from "../../../services/serviceWrapper";
-import { localeDate } from "../../../utils/utils";
+import { asArray, localeDate } from "../../../utils/utils";
 import Form from "../../../components/form/Form";
+import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 
@@ -18,6 +19,12 @@ const ReviewPVL = props => {
   const [historicalEventNotes, setHistoricalEventNotes] = useState([]);
   const paxId = props.paxId;
   const isMountedRef = useRef(null);
+  const noteTypes = asArray(props.noteTypes).map(type => {
+    return {
+      value: `{"id":"${type.value}", "noteType":"${type.label}"}`,
+      label: type.label
+    };
+  });
 
   const cb = () => {};
 
@@ -79,13 +86,12 @@ const ReviewPVL = props => {
       >
         <Modal.Header closeButton>
           <Button variant="outline-danger" size="sm" onClick={updateHitStatus}>
-            Change Status to Review
+            <Xl8 xid="rev001">Change Status to Review</Xl8>
           </Button>
         </Modal.Header>
         <Modal.Body>
           <Form
             title=""
-            submitText="Save Note"
             submitService={paxEventNotesHistory.post}
             callback={cb}
             action="add"
@@ -101,7 +107,7 @@ const ReviewPVL = props => {
               placeholder="Choose note type"
               datafield="noteType"
               required="required"
-              options={props.noteTypes}
+              options={noteTypes}
             />
             <LabelledInput
               inputType="textarea"
@@ -117,12 +123,12 @@ const ReviewPVL = props => {
           <CardWithTable
             data={eventNotes}
             headers={eventNotesHeader}
-            title="Event Note History"
+            title={<Xl8 xid="rev002">Event Note History</Xl8>}
           />
           <CardWithTable
             data={historicalEventNotes}
             headers={eventNotesHeader}
-            title={`Previous Notes History (Up to 10)`}
+            title={<Xl8 xid="rev003">Previous Notes History (Up to 10)</Xl8>}
           />
         </Modal.Body>
       </Modal>

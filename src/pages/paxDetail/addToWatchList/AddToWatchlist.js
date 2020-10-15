@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { asArray, hasData } from "../../../utils/utils";
 import { Button, Modal, Container, Alert } from "react-bootstrap";
-import { addWLItems, watchlistcats } from "../../../services/serviceWrapper";
+import { addWLItems, hitcats } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
+import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 
 const AddToWatchlist = props => {
@@ -17,54 +18,56 @@ const AddToWatchlist = props => {
   };
   const handleShow = () => setShow(true);
 
-  const docTemplate = `{"@class":"gov.gtas.model.watchlist.json.WatchlistSpec","name":"Document","entity":"DOCUMENT",
-    "watchlistItems":[
-        {"id":{id},"action":"Create","terms":[
-            {"entity":"DOCUMENT","field":"documentType","type":"string","value":"{documentType}"},
-            {"entity":"DOCUMENT","field":"documentNumber","type":"string","value":"{documentNumber}"},
-            {"entity":"DOCUMENT","field":"categoryId","type":"integer","value":"{categoryId}"}
-          ]}]}`;
+  const paramCallback = fields => {
+    const categoryId = fields[0]["categoryId"];
+    const paxWatchlistItems = getPaxWatchlistItems(categoryId);
+    const docWatchlistItems = getDocWatchlistItems(categoryId);
 
-  const paxTemplate = `{"@class":"gov.gtas.model.watchlist.json.WatchlistSpec","name":"Passenger","entity":"PASSENGER",
-    "watchlistItems":[
-        {"id":{id},"action":"Create","terms":[
-            {"entity":"PASSENGER","field":"firstName","type":"string","value":"{firstName}"},
-            {"entity":"PASSENGER","field":"lastName","type":"string","value":"{lastName}"},
-            {"entity":"PASSENGER","field":"dob","type":"date","value":"{dob}"},
-            {"entity":"PASSENGER","field":"categoryId","type":"integer","value":"{categoryId}"}
-          ]}]}`;
+    const watchlistItems = {
+      passenger: paxWatchlistItems,
+      documents: docWatchlistItems
+    };
+    return [watchlistItems];
+  };
 
-  const watchlistItems = {
-    passenger: paxTemplate
-      .replace("{firstName}", passenger?.firstName)
-      .replace("{lastName}", passenger?.lastName)
-      .replace("{dob}", passenger?.dob)
-      .replace("{id}", null),
+  const getPaxWatchlistItems = categoryId => {
+    return {
+      action: "Create",
+      id: null,
+      wlItems: [
+        {
+          firstName: passenger?.firstName,
+          lastName: passenger?.lastName,
+          dob: passenger?.dob,
+          categoryId: categoryId,
+          id: null
+        }
+      ]
+    };
+  };
 
-    documents: documents?.reduce((accumulator, doc) => {
-      const docTypes = ["V", "P", "v", "p"];
-
-      if (docTypes.includes(doc.documentType)) {
-        const template = docTemplate
-          .replace("{id}", null)
-          .replace("{documentType}", doc.documentType)
-          .replace("{documentNumber}", doc.documentNumber);
-        accumulator.push(template);
-      }
-      return accumulator;
-    }, [])
+  const getDocWatchlistItems = categoryId => {
+    const docWatchlistItems = { action: "Create", id: null, wlItems: [] };
+    asArray(documents).forEach(doc => {
+      const item = {
+        documentType: doc.documentType,
+        documentNumber: doc.documentNumber,
+        categoryId: categoryId,
+        id: null
+      };
+      docWatchlistItems.wlItems.push(item);
+    });
+    return docWatchlistItems;
   };
 
   useEffect(() => {
-    watchlistcats.get().then(res => {
+    hitcats.get().then(res => {
       const wlc = asArray(res).map(wl => {
-        {
-          return {
-            label: wl.label,
-            value: wl.id,
-            key: wl.id
-          };
-        }
+        return {
+          label: wl.label,
+          value: wl.id,
+          key: wl.id
+        };
       });
       setWlCategories(wlc);
     });
@@ -73,7 +76,7 @@ const AddToWatchlist = props => {
   return (
     <>
       <Button variant="outline-danger" size="sm" onClick={handleShow}>
-        Add to Watchlist
+        <Xl8 xid="atw001">Add to Watchlist</Xl8>
       </Button>
 
       <Modal
@@ -84,27 +87,25 @@ const AddToWatchlist = props => {
         aria-labelledby="contained-modal-title-vcenter"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add Passenger/Document to Watchlist</Modal.Title>
+          <Modal.Title>
+            <Xl8 xid="atw002">Add Passenger/Document to Watchlist</Xl8>
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <Container fluid>
-            <Alert variant="warning">
-              This will add {passenger?.firstName} {passenger?.lastName} and their
-              applicable documents to the watchlist.
-            </Alert>
             <Form
               submitService={addWLItems.post}
-              submitText="Add to Watchlist"
+              submitText={<Xl8 xid="atw003">Add to Watchlist</Xl8>}
               title=""
               callback={handleClose}
               action="add"
-              data={watchlistItems}
               cancellable
+              paramCallback={paramCallback}
             >
               <LabelledInput
                 datafield
-                labelText="Choose Category ID"
+                labelText={<Xl8 xid="atw004">Category ID:</Xl8>}
                 inputType="select"
                 options={wlCategories}
                 name="categoryId"
@@ -112,6 +113,13 @@ const AddToWatchlist = props => {
                 alt="Category ID"
                 callback={cb}
               />
+              <Alert variant="warning">
+                <Xl8 xid="atw005">
+                  This will add the following passenger and their applicable documents to
+                  the watchlist:
+                </Xl8>
+                {passenger?.firstName} {passenger?.lastName}
+              </Alert>
             </Form>
           </Container>
         </Modal.Body>

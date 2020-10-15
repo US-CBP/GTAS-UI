@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Table from "../../components/table/Table";
 import { flightPassengers } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
+import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import { Col, Tabs, Tab } from "react-bootstrap";
@@ -41,32 +42,77 @@ const FlightPax = props => {
 
   const headers = [
     {
-      Accessor: "rulehit"
+      Accessor: "rulehit",
+      Xl8: true,
+      Header: ["fp011", "Rule Hit"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => `${value} Hits`
     },
     {
-      Accessor: "watchhit"
+      Accessor: "watchhit",
+      Xl8: true,
+      Header: ["fp012", "Watch Hit"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => `${value} Hits`
     },
-    { Accessor: "passengerType", Header: "Type" },
+    {
+      Accessor: "passengerType",
+      Xl8: true,
+      Header: ["fp013", "Passenger Type"],
+      disableGroupBy: true
+    },
     {
       Accessor: "lastName",
+      Xl8: true,
+      Header: ["fp014", "Last Name"],
       Cell: ({ row }) => {
         return (
           <Link to={`/gtas/paxDetail/${props.id}/${row.original.id}`}>
             {row.original.lastName}
           </Link>
         );
-      }
+      },
+      disableGroupBy: true,
+      aggregate: "count",
+      Aggregated: ({}) => ``
     },
-    { Accessor: "firstName" },
-    { Accessor: "middleName" },
-    { Accessor: "gender" },
+    {
+      Accessor: "firstName",
+      Xl8: true,
+      Header: ["fp015", "First Name"],
+      disableGroupBy: true
+    },
+    {
+      Accessor: "middleName",
+      Xl8: true,
+      Header: ["fp016", "Middle Name"],
+      disableGroupBy: true
+    },
+    { Accessor: "gender", Xl8: true, Header: ["fp017", "Gender"], disableGroupBy: true },
     {
       Accessor: "dobStr",
-      Header: "DOB",
-      Cell: ({ row }) => <div>{row.original.dobAge}</div>
+      Xl8: true,
+      Header: ["fp018", "DOB"],
+      Cell: ({ row }) => <div>{row.original.dobAge}</div>,
+      disableGroupBy: true,
+      aggregate: "count",
+      Aggregated: ({}) => ``
     },
-    { Accessor: "docNumber" },
-    { Accessor: "nationality" }
+    {
+      Accessor: "docNumber",
+      Xl8: true,
+      Header: ["fp019", "Doc Number"],
+      disableGroupBy: true
+    },
+    {
+      Accessor: "nationality",
+      Xl8: true,
+      Header: ["fp020", "Nationality"],
+      disableGroupBy: true
+    },
+    { Accessor: "coTravellerId", Xl8: true, Header: ["fp021", "PNR Record Loc."] }
   ];
 
   useEffect(() => {
@@ -99,8 +145,22 @@ const FlightPax = props => {
 
   const tabs = (
     <Tabs defaultActiveKey="all" id="flightPaxTabs">
-      <Tab eventKey="all" title="All"></Tab>
-      <Tab eventKey="hits" title="Hits"></Tab>
+      <Tab
+        eventKey="all"
+        title={
+          <Xl8 xid="fp001" id="flightPaxTabs-tab-all">
+            All
+          </Xl8>
+        }
+      ></Tab>
+      <Tab
+        eventKey="hits"
+        title={
+          <Xl8 xid="fp002" id="flightPaxTabs-tab-hits">
+            Hits
+          </Xl8>
+        }
+      ></Tab>
     </Tabs>
   );
 
@@ -117,14 +177,14 @@ const FlightPax = props => {
           <br />
           <LabelledInput
             // labelText="Flight:"
-            alt="Flight"
+            alt={<Xl8 xid="fp003">Flight</Xl8>}
             inputStyle="big-name-sidebar"
             inputType="label"
             inputVal={flightData.fullFlightNumber}
           />
           <LabelledInput
-            labelText="Origin:"
-            alt="Origin"
+            labelText={<Xl8 xid="fp004">Origin:</Xl8>}
+            alt={<Xl8 xid="7">Origin</Xl8>}
             inputType="label"
             inputVal={flightData.origin}
             inputStyle="form-static"
@@ -132,53 +192,46 @@ const FlightPax = props => {
 
           <div>
             <LabelledInput
-              labelText="Destination:"
-              alt="Destination"
+              labelText={<Xl8 xid="fp005">Destination:</Xl8>}
+              alt={<Xl8 xid="7">Destination</Xl8>}
               inputType="label"
               inputVal={flightData.destination}
               inputStyle="form-static"
             />
             <LabelledInput
-              labelText="Direction:"
-              alt="Direction"
+              labelText={<Xl8 xid="fp006">Direction:</Xl8>}
+              alt={<Xl8 xid="7">Direction</Xl8>}
               inputType="label"
               inputVal={flightData.direction}
               inputStyle="form-static"
             />
             <LabelledInput
-              labelText="Arrival:"
-              alt="Arrival"
+              labelText={<Xl8 xid="fp007">Arrival:</Xl8>}
+              alt={<Xl8 xid="7">Arrival</Xl8>}
               inputType="label"
               inputVal={localeDate(flightData.eta)}
               inputStyle="form-static"
             />
             <LabelledInput
-              labelText="Departure:"
-              alt="Departure"
+              labelText={<Xl8 xid="fp008">Departure:</Xl8>}
+              alt={<Xl8 xid="7">Departure</Xl8>}
               inputType="label"
               inputVal={localeDate(flightData.etd)}
               inputStyle="form-static"
             />
             <LabelledInput
-              labelText="Passenger Count:"
-              alt="Passenger Count"
+              labelText={<Xl8 xid="fp009">Passenger Count:</Xl8>}
+              alt={<Xl8 xid="7">Passenger Count</Xl8>}
               inputType="label"
               inputVal={flightData.passengerCount}
               inputStyle="form-static"
             />
-            {/* <LabelledInput
-            labelText="Age:"
-            alt="Age"
-            inputType="label"
-            inputVal={qdata.age}
-            spacebetween
-          /> */}
           </div>
         </Col>
       </SidenavContainer>
       <Main>
         <Title
-          title="Flight Passengers"
+          title={<Xl8 xid="fp010">Flight Passengers</Xl8>}
           leftChild={tabs}
           leftCb={titleTabCallback}
         ></Title>
@@ -188,6 +241,7 @@ const FlightPax = props => {
           data={data}
           id="Flight Passengers"
           callback={cb}
+          disableGroupBy={false}
         ></Table>
       </Main>
     </>

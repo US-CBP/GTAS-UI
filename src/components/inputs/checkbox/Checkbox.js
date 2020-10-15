@@ -28,6 +28,7 @@ const CheckboxInput = props => {
         type={props.inputType}
         value={props.inputVal}
         checked={selected}
+        disabled={props.disabled || props.readOnly}
       />
     </div>
   );
@@ -41,6 +42,9 @@ CheckboxInput.propTypes = {
   // options: PropTypes.array.isRequired,
   required: PropTypes.oneOf(["required", true, ""]),
   selected: PropTypes.oneOf(["true", "", undefined, true, false]),
-  callback: PropTypes.func.isRequired
+  callback: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  className: PropTypes.bool
 };
 export default CheckboxInput;

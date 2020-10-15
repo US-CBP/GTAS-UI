@@ -2,6 +2,7 @@ import React from "react";
 import { Row } from "react-bootstrap";
 import { alt } from "../../utils/utils";
 import "./CountdownBadge.css";
+import Xl8 from "../xl8/Xl8";
 
 //TODO - refactor. clean and possibly move the calcs to utils.
 const CountdownBadge = props => {
@@ -38,9 +39,33 @@ const CountdownBadge = props => {
   const hours = !days ? parse(hrsraw) : pad(Math.abs(hrsraw));
   const minutes = !days && !hours ? parse(minraw, "00") : pad(Math.abs(minraw));
 
-  const formatedDays = days ? `${days}d` : days;
-  const formatedHours = hours ? `${hours}h` : hours;
-  const formatedMinutes = minutes ? `${minutes}m` : minutes;
+  const d = <Xl8 xid="cdb001">d</Xl8>;
+  const h = <Xl8 xid="cdb002">h</Xl8>;
+  const m = <Xl8 xid="cdb003">m</Xl8>;
+  const formatedDays = days ? (
+    <span>
+      {days}
+      {d}
+    </span>
+  ) : (
+    days
+  );
+  const formatedHours = hours ? (
+    <span>
+      {hours}
+      {h}
+    </span>
+  ) : (
+    hours
+  );
+  const formatedMinutes = minutes ? (
+    <span>
+      {minutes}
+      {m}
+    </span>
+  ) : (
+    minutes
+  );
 
   const getStyle = () => {
     if (dayraw > 1) return "";

@@ -139,3 +139,12 @@
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+.export-btn,
+.export-btn:hover {
+  color: black;
+  border: 1px solid #495057;
+  border-radius: 0.25rem;
+}
+.export-btn:hover {
+  background-color: rgba(67, 74, 82, 0.24);
+}

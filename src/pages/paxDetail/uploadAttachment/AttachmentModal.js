@@ -4,6 +4,7 @@ import { attachment } from "../../../services/serviceWrapper";
 import "./UploadAttachment.scss";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
+import Xl8 from "../../../components/xl8/Xl8";
 import { ACTION } from "../../../utils/constants";
 
 const AttachmentModal = props => {
@@ -23,7 +24,7 @@ const AttachmentModal = props => {
     // props.onHide();
     props.callback(status, res);
   };
-  const handleShow = () => setShowModal(true);
+  // const handleShow = () => setShowModal(true);
 
   const postSubmit = (status, resp) => {
     if (status === ACTION.CANCEL) {
@@ -103,7 +104,7 @@ const AttachmentModal = props => {
 
   return (
     <>
-      <Button variant="outline-info" size="sm" onClick={handleShow}>
+      {/* <Button variant="outline-info" size="sm" onClick={handleShow}>
         <i className="fa fa-pencil"></i>Add Attachments
       </Button>
 
@@ -134,12 +135,49 @@ const AttachmentModal = props => {
           !filesForDisplay.empty &&
           filesForDisplay.length > 0 ? (
             <div className="container">
-              Files To Be Uploaded:
+              Files To Be Uploaded: */}
+      <Modal
+        show={props.show}
+        onHide={handleClose}
+        size="md"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <Xl8 xid="attm001">Attachments</Xl8>
+          </Modal.Title>
+        </Modal.Header>
+        <Alert show={showAlert} variant={variant}>
+          {alertContent}
+          <hr />
+          <Button onClick={() => setShowAlert(false)} variant="outline-success">
+            <Xl8 xid="form003">Confirm</Xl8>
+          </Button>
+        </Alert>
+        <Modal.Body>
+          <div className="container">
+            <div className="files">
+              <input type="file" multiple onChange={onChangeCb} />
+            </div>
+          </div>
+          {filesForDisplay != null &&
+          !filesForDisplay.empty &&
+          filesForDisplay.length > 0 ? (
+            <div className="container">
+              <Xl8 xid="attm002">Files To Be Uploaded:</Xl8>
+
               <ul>
                 {filesForDisplay.map((data, index) => {
                   return (
                     <li key={index}>
-                      <u>File Name:</u> {data.name} <br></br> <u>File Size: </u>
+                      <u>
+                        <Xl8 xid="attm003">File Name:</Xl8>
+                      </u>
+                      {data.name} <br></br>
+                      <u>
+                        <Xl8 xid="attm004">File Size:</Xl8>
+                      </u>
                       {data.size} kbs
                     </li>
                   );
@@ -154,15 +192,14 @@ const AttachmentModal = props => {
             title=""
             callback={postSubmit}
             action="add"
-            submitText="Upload"
+            submitText={<Xl8 xid="attm005">Upload</Xl8>}
             paramCallback={preSubmit}
             cancellable
           >
             <LabelledInput
               datafield="description"
               inputType="textarea"
-              labelText=""
-              placeholder="Add description for entire upload here..."
+              labelText={<Xl8 xid="attm006">Description:</Xl8>}
               name="description"
               required={true}
               alt="nothing"

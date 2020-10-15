@@ -5,6 +5,7 @@ import { paxEventNotesHistory, notetypes } from "../../../services/serviceWrappe
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
+import Xl8 from "../../../components/xl8/Xl8";
 
 const EventNotesModal = props => {
   const [show, setShow] = useState(false);
@@ -36,7 +37,7 @@ const EventNotesModal = props => {
   return (
     <>
       <Button variant="outline-info" size="sm" onClick={handleShow}>
-        <i className="fa fa-pencil"></i> Notes
+        <i className="fa fa-pencil"></i> <Xl8 xid="evn001">Notes</Xl8>
       </Button>
 
       <Modal
@@ -47,12 +48,14 @@ const EventNotesModal = props => {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add Event Notes</Modal.Title>
+          <Modal.Title>
+            <Xl8 xid="evn002">Add Event Notes</Xl8>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form
             title=""
-            submitText="SAVE"
+            submitText={<Xl8 xid="evn003">Save</Xl8>}
             submitService={paxEventNotesHistory.post}
             callback={handleClose}
             action="add"
@@ -65,18 +68,16 @@ const EventNotesModal = props => {
               inputType="select"
               alt="Choose not type"
               name="noteType"
-              labelText="Note Type"
-              placeholder="Choose note type"
+              labelText={<Xl8 xid="evn004">Note Type</Xl8>}
               datafield="noteType"
               required="required"
               options={notTypes}
             />
             <LabelledInput
               inputType="textarea"
-              alt="Add note here..."
+              labelText={<Xl8 xid="evn001">Notes</Xl8>}
               name="plainTextNote"
-              labelText=""
-              placeholder="Add note here..."
+              alt={<Xl8 xid="11">Notes</Xl8>}
               datafield="plainTextNote"
               required="required"
               inputVal=""

@@ -1,16 +1,21 @@
-import React, {useState} from "react";
-import {Modal, Container, Alert, Button} from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../components/form/Form";
-import { notetypes } from "../../../services/serviceWrapper";
+import Xl8 from "../../../components/xl8/Xl8";
+import { hitcatspost } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../utils/constants";
 
-const NoteTypeModal = props => {
+const HitModal = props => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
   const [variant, setVariant] = useState("");
-  const title = "Note Type Category";
   const cb = function(result) {};
+  const severityLevels = [
+    { value: "Top", label: "Top" },
+    { value: "High", label: "High" },
+    { value: "Normal", label: "Normal" }
+  ];
 
   const postSubmit = (status, res) => {
     props.onHide();
@@ -27,31 +32,50 @@ const NoteTypeModal = props => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
+        <Modal.Title>
+          <Xl8 xid="wlm001">Add Hit Category</Xl8>
+        </Modal.Title>
       </Modal.Header>
       <Alert show={showAlert} variant={variant}>
         {alertContent}
         <hr />
         <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          Confirm
+          <Xl8 xid="form003">Confirm</Xl8>
         </Button>
       </Alert>
       <Modal.Body>
         <Container fluid>
           <Form
-            submitService={notetypes.post}
-            title=""
+            submitService={hitcatspost.post}
             callback={postSubmit}
             action="add"
-            submitText="Submit"
             cancellable
             afterProcessed={props.onHide}
           >
             <LabelledInput
               datafield
-              labelText="Note Type Category Name:"
+              labelText={<Xl8 xid="wlm002">Name:</Xl8>}
               inputType="text"
-              name="noteType"
+              name="label"
+              required={true}
+              alt="nothing"
+              callback={cb}
+            />
+            <LabelledInput
+              datafield
+              labelText={<Xl8 xid="wlm003">Description:</Xl8>}
+              inputType="textarea"
+              name="description"
+              required={true}
+              alt="nothing"
+              callback={cb}
+            />
+            <LabelledInput
+              datafield
+              labelText={<Xl8 xid="wlm002">Severity Level:</Xl8>}
+              inputType="select"
+              name="severity"
+              options={severityLevels}
               required={true}
               alt="nothing"
               callback={cb}
@@ -63,4 +87,4 @@ const NoteTypeModal = props => {
   );
 };
 
-export default NoteTypeModal;
+export default HitModal;

@@ -1,44 +1,67 @@
 import React, { useState } from "react";
-import { Button, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import Table from "../../../components/table/Table";
 import { signuprequests } from "../../../services/serviceWrapper";
-import SideNav from "../../../components/sidenav/SideNav";
+import SidenavContainer from "../../../components/sidenavContainer/SidenavContainer";
 import Main from "../../../components/main/Main";
+import Xl8 from "../../../components/xl8/Xl8";
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { hasData } from "../../../utils/utils";
+import SignUpRequestModal from "./SignUpRequestModal";
+import { ACTION, STATUS } from "../../../utils/constants";
+import Toast from "../../../components/toast/Toast";
+import Confirm from "../../../components/confirmationModal/Confirm";
 
 const SignUpRequests = () => {
   const [data, setData] = useState();
   const [refreshKey, setRefreshKey] = useState(0);
   const [fetchData, setFetchData] = useState(0);
-  const [show, setShow] = useState(false);
-  const [alertContent, setAlertContent] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastContent, setToastContent] = useState("");
+  const [toastHeader, setToastHeader] = useState("");
   const [variant, setVariant] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [requestId, setRequestId] = useState();
   const cb = () => {};
-
+  const actions = { REJECT: "Reject", APPROVE: "Approve" };
   const setDataWrapper = data => {
     setData(data);
     setRefreshKey(refreshKey + 1);
   };
-  const handleResponse = res => {
+
+  const handleResponse = (res, actionType) => {
     const status = res.status;
     const message = res.message;
-    setAlertContent(`${status} : ${message}`);
-    status === "SUCCESS" ? setVariant("success") : setVariant("danger");
-    setShow(true);
-    setFetchData(setFetchData + 1);
+
+    if (status === STATUS.SUCCESS) {
+      setVariant("success");
+    } else {
+      setVariant("danger");
+    }
+    setToastContent(message);
+    setToastHeader(`${actionType} Sign up Request`);
+    setToastHeader(status);
+    setToastContent(message); //TODO: the front end should decide what message to dispaly
+    setShowModal(false);
+    setShowToast(true);
+    setFetchData(fetchData + 1);
   };
+
   const approve = requestId => {
-    signuprequests.approve(requestId).then(res => {
-      handleResponse(res);
-    });
+    setRequestId(requestId);
+    setShowModal(true);
+  };
+
+  const postApproveCallback = (status, res) => {
+    if (status === ACTION.CANCEL) setShowModal(false);
+    else handleResponse(res, actions.APPROVE);
   };
 
   const reject = requestId => {
     signuprequests.reject(requestId).then(res => {
-      handleResponse(res);
+      handleResponse(res, actions.REJECT);
     });
   };
 
@@ -68,24 +91,15 @@ const SignUpRequests = () => {
   ];
 
   const headers = [
-    {
-      Accessor: "username"
-    },
-    {
-      Accessor: "firstName"
-    },
-    {
-      Accessor: "lastName"
-    },
-    {
-      Accessor: "signupLocation"
-    },
-    {
-      Accessor: "status"
-    },
+    { Accessor: "username", Xl8: true, Header: ["sur008", "Username"] },
+    { Accessor: "firstName", Xl8: true, Header: ["sur009", "First Name"] },
+    { Accessor: "lastName", Xl8: true, Header: ["sur010", "Last Name"] },
+    { Accessor: "signupLocation", Xl8: true, Header: ["sur011", "Signup Location"] },
+    { Accessor: "status", Xl8: true, Header: ["sur012", "Status"] },
     {
       Accessor: "id",
-      Header: "Action",
+      Xl8: true,
+      Header: ["sur013", "Action"],
       Cell: ({ row }) => (
         <>
           <Button
@@ -94,16 +108,23 @@ const SignUpRequests = () => {
             onClick={() => approve(row.original.id)}
             disabled={row.original.status !== "NEW"}
           >
-            Approve
+            <Xl8 xid="sur001">Approve</Xl8>
           </Button>
-          <Button
-            variant="outline-danger"
-            className="fa fa-thumbs-down"
-            onClick={() => reject(row.original.id)}
-            disabled={row.original.status !== "NEW"}
+          <Confirm
+            header="Reject Sign up Request"
+            message={`Please confirm to reject the sign up request by ${row.original.firstName} ${row.original.lastName}`}
           >
-            Reject
-          </Button>
+            {confirm => (
+              <Button
+                variant="outline-danger"
+                className="fa fa-thumbs-down"
+                onClick={confirm(() => reject(row.original.id))}
+                disabled={row.original.status !== "NEW"}
+              >
+                <Xl8 xid="sur002">Reject</Xl8>
+              </Button>
+            )}
+          </Confirm>
         </>
       )
     }
@@ -111,7 +132,7 @@ const SignUpRequests = () => {
 
   return (
     <>
-      <SideNav>
+      <SidenavContainer>
         <FilterForm
           title="Filter"
           service={signuprequests.get}
@@ -121,7 +142,7 @@ const SignUpRequests = () => {
         >
           <hr />
           <LabelledInput
-            labelText="Username"
+            labelText={<Xl8 xid="sur003">Username</Xl8>}
             datafield
             name="username"
             inputType="text"
@@ -129,7 +150,7 @@ const SignUpRequests = () => {
             alt="Username"
           />
           <LabelledInput
-            labelText="Status"
+            labelText={<Xl8 xid="sur004">Status</Xl8>}
             datafield
             name="status"
             inputType="select"
@@ -140,7 +161,7 @@ const SignUpRequests = () => {
             alt="status"
           />
           <LabelledInput
-            labelText="Location"
+            labelText={<Xl8 xid="sur005">Location</Xl8>}
             datafield
             name="location"
             inputType="text"
@@ -148,16 +169,10 @@ const SignUpRequests = () => {
             alt="Location"
           />
         </FilterForm>
-      </SideNav>
+      </SidenavContainer>
       <Main>
-        <Title title="Sign Up Requests"></Title>
-        <Alert show={show} variant={variant}>
-          {alertContent}
-          <hr />
-          <Button onClick={() => setShow(false)} variant="outline-success">
-            CLOSE
-          </Button>
-        </Alert>
+        <Title title={<Xl8 xid="sur006">Sign Up Requests</Xl8>}></Title>
+
         <Table
           data={data}
           header={headers}
@@ -165,6 +180,20 @@ const SignUpRequests = () => {
           callback={cb}
           key={refreshKey}
         ></Table>
+
+        <SignUpRequestModal
+          show={showModal}
+          onHide={() => setShowModal(false)}
+          callback={postApproveCallback}
+          requestId={requestId}
+        />
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+          header={toastHeader}
+          body={toastContent}
+          variant={variant}
+        ></Toast>
       </Main>
     </>
   );

@@ -9,10 +9,13 @@
   min-width: 30px;
   padding: 0.15px 0.15px;
   transform: rotate(-90deg);
+  margin-bottom: 2px;
 }
 
 .seat:disabled {
-  background-color: rgb(184, 182, 182) !important;
+  background-color: rgb(214, 211, 211) !important;
+  color: black;
+  border-color: rgb(170, 167, 167) !important;
 }
 
 .seat:focus,

@@ -6,7 +6,8 @@ import {
   Utils as QbUtils
 } from "react-awesome-query-builder";
 import "react-awesome-query-builder/lib/css/styles.css";
-import Loading from "../../components/loading/Loading";
+import Xl8 from "../../components/xl8/Xl8";
+// import Loading from "../../components/loading/Loading";
 import { operators } from "./config";
 import { importToTreeObject, exportToQueryObject } from "./utils";
 
@@ -42,13 +43,16 @@ const RAQB = props => {
   let initconfig = { ...BasicConfig, ...dataConfig };
   initconfig.operators = { ...operators };
   initconfig.types.text.widgets.text.operators = additionalOperators;
-  initconfig.settings.addRuleLabel = "Add Condition";
+  initconfig.settings.addRuleLabel = <Xl8 xid="raqb001">Add Condition</Xl8>;
+  initconfig.settings.addGroupLabel = <Xl8 xid="raqb002">Add Group</Xl8>;
   initconfig.settings.showNot = true;
+  initconfig.conjunctions["AND"].label = <Xl8 xid="raqb003">And</Xl8>;
+  initconfig.conjunctions["OR"].label = <Xl8 xid="raqb004">OR</Xl8>;
 
   const convertedInput = props.data ? importToTreeObject(props.data) : queryValue;
   const inputTree = QbUtils.checkTree(QbUtils.loadTree(convertedInput), initconfig);
   const [tree, setTree] = useState(inputTree);
-  const [config, setConfig] = useState(initconfig);
+  const [config] = useState(initconfig);
 
   const renderBuilder = props => (
     <div className="query-builder-container" style={{ padding: "10px" }}>

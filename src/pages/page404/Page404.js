@@ -1,17 +1,22 @@
 import React from "react";
 import Title from "../../components/title/Title";
+import Xl8 from "../../components/xl8/Xl8";
 import { Link } from "@reach/router";
 
 const Page404 = () => {
   return (
     <div className="container">
-      <Title title="Page Not found"></Title>
+      <Title title={<Xl8 xid="una001">Page Not Found</Xl8>}></Title>
 
       <div className="columns">
         <div className="column">
           <div className="box2">
             <div className="top">
-              <Link to="/gtas/flights">Flights</Link>
+              {
+                <Xl8 xid="una001">
+                  You have attempted to browse to an unknown resource.
+                </Xl8>
+              }
             </div>
           </div>
         </div>
