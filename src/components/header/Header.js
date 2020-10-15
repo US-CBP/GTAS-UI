@@ -95,19 +95,19 @@ const Header = () => {
           </Nav.Link>
           <Nav.Link
             as={Link}
-            to="poe"
-            className={`${getActiveClass(htab.POE)}`}
-            onClick={() => clickTab(htab.POE)}
-          >
-            POE
-          </Nav.Link>
-          <Nav.Link
-            as={Link}
             to="vetting"
             className={`${getActiveClass(htab.VETTING)}`}
             onClick={() => clickTab(htab.VETTING)}
           >
             <Xl8 xid="head002">Vetting</Xl8>
+          </Nav.Link>
+          <Nav.Link
+            as={Link}
+            to="poe"
+            className={`${getActiveClass(htab.POE)}`}
+            onClick={() => clickTab(htab.POE)}
+          >
+            <Xl8 xid="head007">POE</Xl8>
           </Nav.Link>
           <Nav.Link
             as={Link}

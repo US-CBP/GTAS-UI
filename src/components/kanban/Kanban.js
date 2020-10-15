@@ -1,167 +1,151 @@
-import React from "react";
-import Board from "react-trello";
+import React, { useState } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Xl8 from "../../components/xl8/Xl8";
 
 import "./Kanban.css";
 
 const Kanban = props => {
-  const data = {
-    lanes: [
-      {
-        id: "lane0",
-        title: "Active Lookout",
-        label: "20/70",
-        style: {
-          width: 280
+  const actives = [
+    { id: "1001", content: "Last Name:" },
+    { id: "1002", content: "Second task" },
+    { id: "1003", content: "Third task" },
+    { id: "1004", content: "Fourth task" },
+    { id: "1005", content: "Fifth task" }
+  ];
+  const enroutes = [
+    { id: "1011", content: "Last Name:" },
+    { id: "1012", content: "Second task" },
+    { id: "1013", content: "Third task" }
+  ];
+
+  const columnsFromBackend = {
+    ["9001"]: {
+      name: <Xl8 xid="poe0001">Active Lookout</Xl8>,
+      items: actives,
+      background: "lightpink"
+    },
+    ["9002"]: {
+      name: <Xl8 xid="poe0002">Officer En Route</Xl8>,
+      items: enroutes,
+      background: "lightyellow"
+    },
+    ["9003"]: {
+      name: <Xl8 xid="poe0003">Lookout Encountered</Xl8>,
+      items: [],
+      background: "lightgreen"
+    },
+    ["9004"]: {
+      name: <Xl8 xid="poe0004">Lookout Referred</Xl8>,
+      items: [],
+      background: "lightblue"
+    }
+  };
+  const [columns, setColumns] = useState(columnsFromBackend);
+
+  const onDragEnd = (result, columns, setColumns) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+
+    if (source.droppableId !== destination.droppableId) {
+      const sourceColumn = columns[source.droppableId];
+      const destColumn = columns[destination.droppableId];
+      const sourceItems = [...sourceColumn.items];
+      const destItems = [...destColumn.items];
+      const [removed] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...sourceColumn,
+          items: sourceItems
         },
-        cards: [
-          {
-            id: "Milk",
-            title: "Buy milk",
-            label: "15 mins",
-            description: "2 Gallons of milk at the Deli store"
-          },
-          {
-            id: "Plan2",
-            title: "Dispose Garbage",
-            label: "10 mins",
-            description: "Sort out recyclable and waste as needed"
-          },
-          {
-            id: "Plan3",
-            title: "Write Blog",
-            label: "30 mins",
-            description: "Can AI make memes?"
-          },
-          {
-            id: "Plan4",
-            title: "Pay Rent",
-            label: "5 mins",
-            description: "Transfer to bank account"
-          }
-        ]
-      },
-      {
-        id: "lane1",
-        title: "Officer En Route",
-        label: "10/20",
-        style: {
-          width: 280
-        },
-        cards: [
-          {
-            id: "Wip1",
-            title: "Clean House",
-            label: "30 mins",
-            description:
-              "Soap wash and polish floor. Polish windows and doors. Scrap all broken glasses"
-          }
-        ]
-      },
-      {
-        id: "lane2",
-        title: "Lookout Encountered",
-        label: "0/0",
-        style: {
-          width: 280
-        },
-        cards: []
-      },
-      {
-        id: "lane3",
-        title: "Lookout Referred",
-        style: {
-          width: 280
-        },
-        label: "2/5",
-        cards: [
-          {
-            id: "Completed1",
-            title: "Practice Meditation",
-            label: "15 mins",
-            description: "Use Headspace app"
-          },
-          {
-            id: "Completed2",
-            title: "Maintain Daily Journal",
-            label: "15 mins",
-            description: "Use Spreadsheet for now"
-          }
-        ]
-      },
-      {
-        id: "lane4",
-        title: "Did Not Board",
-        style: {
-          width: 280
-        },
-        label: "1/1",
-        cards: [
-          {
-            id: "Repeat1",
-            title: "Morning Jog",
-            label: "30 mins",
-            description: "Track using fitbit"
-          }
-        ]
-      },
-      {
-        id: "lane5",
-        title: "Lookout Missed",
-        style: {
-          width: 280
-        },
-        label: "1/1",
-        cards: [
-          {
-            id: "Archived1",
-            title: "Go Trekking",
-            label: "300 mins",
-            description: "Completed 10km on cycle"
-          }
-        ]
-      },
-      {
-        id: "lane6",
-        title: "Secondary Positive",
-        style: {
-          width: 280
-        },
-        label: "1/1",
-        cards: [
-          {
-            id: "Archived2",
-            title: "Go Jogging",
-            label: "300 mins",
-            description: "Completed 10km on cycle"
-          }
-        ]
-      },
-      {
-        id: "lane7",
-        title: "Secondary Negative",
-        style: {
-          width: 280
-        },
-        label: "1/1",
-        cards: [
-          {
-            id: "Archived3",
-            title: "Go Cycling",
-            label: "300 mins",
-            description: "Completed 10km on cycle"
-          }
-        ]
-      }
-    ]
+        [destination.droppableId]: {
+          ...destColumn,
+          items: destItems
+        }
+      });
+    } else {
+      const column = columns[source.droppableId];
+      const copiedItems = [...column.items];
+      const [removed] = copiedItems.splice(source.index, 1);
+      copiedItems.splice(destination.index, 0, removed);
+      setColumns({
+        ...columns,
+        [source.droppableId]: {
+          ...column,
+          items: copiedItems
+        }
+      });
+    }
   };
 
   return (
-    <Board
-      data={data}
-      cardDragClass="draggingCard"
-      laneDragClass="draggingLane"
-      draggable
-    />
+    <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
+      <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
+        {Object.entries(columns).map(([columnId, column], index) => {
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center"
+              }}
+              key={columnId}
+            >
+              <h5>{column.name}</h5>
+              <div style={{ margin: 8 }}>
+                <Droppable droppableId={columnId} key={columnId}>
+                  {(provided, snapshot) => {
+                    return (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={{
+                          background: snapshot.isDraggingOver ? "#c0ddec" : "#f0f0f0",
+                          padding: 4,
+                          width: 250,
+                          minHeight: 500
+                        }}
+                      >
+                        {column.items.map((item, index) => {
+                          return (
+                            <Draggable key={item.id} draggableId={item.id} index={index}>
+                              {(provided, snapshot) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={{
+                                      userSelect: "none",
+                                      padding: 16,
+                                      margin: "0 0 8px 0",
+                                      minHeight: "50px",
+                                      backgroundColor: "#0082c3",
+                                      color: "white",
+                                      ...provided.draggableProps.style,
+                                      border: "1px solid black",
+                                      borderRadius: "5px"
+                                    }}
+                                  >
+                                    {item.content}
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+              </div>
+            </div>
+          );
+        })}
+      </DragDropContext>
+    </div>
   );
 };
 
