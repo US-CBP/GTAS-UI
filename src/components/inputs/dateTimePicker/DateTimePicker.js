@@ -21,7 +21,7 @@ const ReactDateTimePicker = props => {
         clearIcon={null}
         calendarIcon={null}
         disableClock={true}
-        format="yyyy-MM-dd h:mm aa"
+        format="MM/dd/yyyy hh:mm aa"
       />
     </div>
   );
