@@ -119,17 +119,7 @@ const PaxDetail = props => {
   const tabs = [
     {
       title: <Xl8 xid="pd001">Summary</Xl8>,
-      titleText: "Summary",
-      link: (
-        <Summary
-          paxId={props.paxId}
-          flightId={props.flightId}
-          hitSummaryRefreshKey={hitSummaryRefreshKey}
-          eventNoteRefreshKey={eventNoteRefreshKey}
-          setHasOpenHit={setHasOpenHit}
-          setHasHit={setHasHit}
-        />
-      )
+      titleText: "Summary"
     },
     ...(hasApisRecord
       ? [
@@ -200,8 +190,9 @@ const PaxDetail = props => {
     fetchData();
   }, []);
 
+  // TODO: refac tabs as child routes, load data per page.
   const actions = (
-    <DropdownButton variant="outline-info" title="Choose Action">
+    <DropdownButton variant="outline-info" title="Choose Action" className="m-1">
       <EventNotesModal
         paxId={props.paxId}
         setEventNoteRefreshKey={setEventNoteRefreshKey}
@@ -230,12 +221,20 @@ const PaxDetail = props => {
         <hr />
         <FlightLegSegments />
       </SidenavContainer>
-      <Main className="main paxdetail-container">
+      <Main className="main">
         <Title
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
           rightChild={actions}
           leftChild={tablist}
         ></Title>
+        <Summary
+          paxId={props.paxId}
+          flightId={props.flightId}
+          hitSummaryRefreshKey={hitSummaryRefreshKey}
+          eventNoteRefreshKey={eventNoteRefreshKey}
+          setHasOpenHit={setHasOpenHit}
+          setHasHit={setHasHit}
+        />
         {/* {props.children} */}
       </Main>
     </>

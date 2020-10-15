@@ -113,37 +113,37 @@ const Summary = props => {
   }, [props.eventNoteRefreshKey]);
 
   return (
-    <Main>
-      <CardColumns>
-        <CardWithTable
-          data={paxHitSummary}
-          headers={headers.paxHitSummary}
-          title={<Xl8 xid="sum021">Passenger Current Hits summary</Xl8>}
-        />
+    // <Main>
+    <CardColumns>
+      <CardWithTable
+        data={paxHitSummary}
+        headers={headers.paxHitSummary}
+        title={<Xl8 xid="sum021">Passenger Current Hits summary</Xl8>}
+      />
 
-        <CardWithTable
-          data={documents}
-          headers={headers.documents}
-          title={<Xl8 xid="sum022">Documents</Xl8>}
-        />
-        <CardWithTable
-          data={watchListLinks}
-          headers={headers.watchListLinks}
-          title={<Xl8 xid="sum023">Watchlist Name Comparison</Xl8>}
-        />
+      <CardWithTable
+        data={documents}
+        headers={headers.documents}
+        title={<Xl8 xid="sum022">Documents</Xl8>}
+      />
+      <CardWithTable
+        data={watchListLinks}
+        headers={headers.watchListLinks}
+        title={<Xl8 xid="sum023">Watchlist Name Comparison</Xl8>}
+      />
 
-        <CardWithTable
-          data={eventNotes}
-          headers={headers.eventNotes}
-          title={<Xl8 xid="sum024">Event Note History</Xl8>}
-        />
-        <CardWithTable
-          data={historicalEventNotes}
-          headers={headers.eventNotes}
-          title={<Xl8 xid="sum025">Previous Note History</Xl8>}
-        />
-      </CardColumns>
-    </Main>
+      <CardWithTable
+        data={eventNotes}
+        headers={headers.eventNotes}
+        title={<Xl8 xid="sum024">Event Note History</Xl8>}
+      />
+      <CardWithTable
+        data={historicalEventNotes}
+        headers={headers.eventNotes}
+        title={<Xl8 xid="sum025">Previous Note History</Xl8>}
+      />
+    </CardColumns>
+    // </Main>
   );
 };
 

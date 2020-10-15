@@ -32,7 +32,7 @@ const FlightHistory = props => {
   }, []);
 
   return (
-    <Container fluid className="paxdetail-container">
+    <>
       <Title title={<Xl8 xid="fh008">Flight History</Xl8>}></Title>
       <CardWithTable
         data={currentFlightHistory}
@@ -44,7 +44,7 @@ const FlightHistory = props => {
         headers={headers}
         title={<Xl8 xid="fh010">Total Flight History</Xl8>}
       />
-    </Container>
+    </>
   );
 };
 
