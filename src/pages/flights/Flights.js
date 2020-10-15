@@ -116,10 +116,15 @@ const Flights = props => {
       Header: ["fl011", "Departure"],
       Cell: ({ row }) => localeDate(row.original.etd)
     },
+    { Accessor: "listHitCount", Xl8: true, Header: ["fl013", "Watchlist Hits"] },
+    { Accessor: "ruleHitCount", Xl8: true, Header: ["fl014", "Rule Hits"] },
+    { Accessor: "graphHitCount", Xl8: true, Header: ["fl015", "Graph Hits"] },
+    { Accessor: "fuzzyHitCount", Xl8: true, Header: ["fl016", "Partial Hits"] },
+    { Accessor: "externalHitCount", Xl8: true, Header: ["fl017", "External Hits"] },
     {
       Accessor: "passengerCount",
       Xl8: true,
-      Header: ["fl012", "Passengers"],
+      Header: ["fl018", "Passengers"],
       Cell: ({ row }) => (
         <RoleAuthenticator
           alt={row.original.passengerCount}
@@ -131,15 +136,10 @@ const Flights = props => {
         </RoleAuthenticator>
       )
     },
-    { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl013", "Flight"] },
-    { Accessor: "origin", Xl8: true, Header: ["fl014", "Origin"] },
-    { Accessor: "destination", Xl8: true, Header: ["fl015", "Destination"] },
-    { Accessor: "direction", Xl8: true, Header: ["fl016", "Direction"] },
-    { Accessor: "severity", Xl8: true, Header: ["fl017", "Severity"] }
-    // TODO: how to summarize hits??
-    // { Accessor: "ruleHitCount" },
-    // { Accessor: "listHitCount" },
-    // { Accessor: "graphHitCount" }
+    { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl019", "Flight"] },
+    { Accessor: "origin", Xl8: true, Header: ["fl020", "Origin"] },
+    { Accessor: "destination", Xl8: true, Header: ["fl021", "Destination"] },
+    { Accessor: "direction", Xl8: true, Header: ["fl022", "Direction"] }
   ];
 
   useEffect(() => {

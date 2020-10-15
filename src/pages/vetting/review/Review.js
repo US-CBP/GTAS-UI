@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { paxEventNotesHistory, notetypes, cases } from "../../../services/serviceWrapper";
-import { localeDate } from "../../../utils/utils";
+import { asArray, localeDate } from "../../../utils/utils";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
@@ -19,6 +19,12 @@ const ReviewPVL = props => {
   const [historicalEventNotes, setHistoricalEventNotes] = useState([]);
   const paxId = props.paxId;
   const isMountedRef = useRef(null);
+  const noteTypes = asArray(props.noteTypes).map(type => {
+    return {
+      value: `{"id":"${type.value}", "noteType":"${type.label}"}`,
+      label: type.label
+    };
+  });
 
   const cb = () => {};
 
@@ -101,7 +107,7 @@ const ReviewPVL = props => {
               placeholder="Choose note type"
               datafield="noteType"
               required="required"
-              options={props.noteTypes}
+              options={noteTypes}
             />
             <LabelledInput
               inputType="textarea"
