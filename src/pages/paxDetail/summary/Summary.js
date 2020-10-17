@@ -6,7 +6,7 @@ import {
   flightpaxHitSummary,
   paxEventNotesHistory
 } from "../../../services/serviceWrapper";
-import { Card, CardDeck, CardColumns } from "react-bootstrap";
+import { Card, CardColumns } from "react-bootstrap";
 import Main from "../../../components/main/Main";
 import "./Summary.scss";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";

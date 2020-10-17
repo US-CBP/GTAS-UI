@@ -1,8 +1,30 @@
 .gtas-tabs {
   border: none;
   margin-bottom: 3px;
+  max-width: 30%;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .gtas-tabs a {
   color: #0199b8;
+}
+
+* {
+  /* scrollbar-width: thin; */
+  scrollbar-color: blue orange;
+}
+
+/* Works on Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  width: 17px;
+}
+*::-webkit-scrollbar-track {
+  background: white;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #446a92;
+  border-radius: 12px;
+  border: 5px solid white;
 }
