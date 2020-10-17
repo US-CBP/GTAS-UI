@@ -113,17 +113,23 @@ const UploadAttachment = props => {
 
   return (
     <div className="container">
-      {/* <main> */}
-      <Title title={<Xl8 xid="att009">Uploaded Attachments</Xl8>} rightChild={button} />
-      <Table data={data} id="attachments" header={headers} key={tableKey} callback={cb} />
-      <AttachmentModal
-        show={showModal}
-        callback={cb}
-        onHide={() => setShowModal(false)}
-        title={<Xl8 xid="att010">Upload Attachments</Xl8>}
-        paxId={paxId}
-      ></AttachmentModal>
-      {/* </main> */}
+      <main className="one-column-container">
+        {/* <Title title={<Xl8 xid="att009">Uploaded Attachments</Xl8>} rightChild={button} /> */}
+        <Table
+          data={data}
+          id="attachments"
+          header={headers}
+          key={tableKey}
+          callback={cb}
+        />
+        <AttachmentModal
+          show={showModal}
+          callback={cb}
+          onHide={() => setShowModal(false)}
+          title={<Xl8 xid="att010">Upload Attachments</Xl8>}
+          paxId={paxId}
+        ></AttachmentModal>
+      </main>
     </div>
   );
 };
