@@ -218,11 +218,7 @@ const Graph = props => {
                     </tr>
                     <tr id="Document" onClick={() => onClickSavedGraph("document")}>
                       <td>
-                        <img
-                          alt=""
-                          src="resources/img/document.svg"
-                          className="pptdocument"
-                        ></img>
+                        <div alt="" className="pptdocument"></div>
                       </td>
                       <td>
                         <span
@@ -323,11 +319,7 @@ const Graph = props => {
                     </tr>
                     <tr id="Document" onClick={() => onClickSavedGraph("documentall")}>
                       <td>
-                        <img
-                          alt=""
-                          src="resources/img/document.svg"
-                          className="pptdocument"
-                        ></img>
+                        <div alt="" className="pptdocument"></div>
                       </td>
                       <td>
                         <span

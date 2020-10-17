@@ -95,6 +95,9 @@
   color: rgb(205, 221, 201);
   height: 18px;
   fill: #219e00;
+  background: url("../../images/document.svg") no-repeat center center;
+  height: 18px;
+  width: 18px;
 }
 .pptemail {
   color: #d77b00;

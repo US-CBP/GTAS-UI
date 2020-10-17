@@ -7,11 +7,11 @@ import { Button, Tabs, Tab, Row } from "react-bootstrap";
 import { wlpax, wldocs, hitcats } from "../../../services/serviceWrapper";
 import { hasData } from "../../../utils/utils";
 import WLModal from "./WLModal";
-import "./Watchlist.css";
 import "./constants.js";
-import CSVReader from "../../../components/CSVReader/CSVReader";
+import CSVReader from "../../../components/csvReader/CSVReader";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
+import "./Watchlist.css";
 
 const Watchlist = props => {
   const cb = function(result) {};
