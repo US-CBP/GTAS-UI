@@ -1,7 +1,11 @@
 .segment-table {
-  max-height: 70vh;
-  overflow: scroll;
+  /* height is calculated by the parent paxdetail */
+  overflow: auto;
   font-size: smaller;
+}
+
+.segment-table > .table-responsive {
+  overflow-x: unset;
 }
 
 .highlight {

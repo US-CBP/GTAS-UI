@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
-import { Container } from "react-bootstrap";
+import { CardColumns } from "react-bootstrap";
+import Main from "../../../components/main/Main";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { paxFlightHistory, paxFullTravelHistory } from "../../../services/serviceWrapper";
 
@@ -32,19 +32,20 @@ const FlightHistory = props => {
   }, []);
 
   return (
-    <>
-      <Title title={<Xl8 xid="fh008">Flight History</Xl8>}></Title>
-      <CardWithTable
-        data={currentFlightHistory}
-        headers={headers}
-        title={<Xl8 xid="fh009">Current Itinerary</Xl8>}
-      />
-      <CardWithTable
-        data={fullTravelHistory}
-        headers={headers}
-        title={<Xl8 xid="fh010">Total Flight History</Xl8>}
-      />
-    </>
+    <Main className="one-column-container">
+      <CardColumns>
+        <CardWithTable
+          data={currentFlightHistory}
+          headers={headers}
+          title={<Xl8 xid="fh009">Current Itinerary</Xl8>}
+        />
+        <CardWithTable
+          data={fullTravelHistory}
+          headers={headers}
+          title={<Xl8 xid="fh010">Total Flight History</Xl8>}
+        />
+      </CardColumns>
+    </Main>
   );
 };
 

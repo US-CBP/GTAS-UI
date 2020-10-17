@@ -153,7 +153,7 @@ const PNR = props => {
 
   return (
     <Row>
-      <Col sm="5" md="5" lg="5">
+      <Col className="p-0" md="6">
         <SegmentTable
           title={segmentTitle}
           data={rawPnrSegments}
@@ -161,7 +161,7 @@ const PNR = props => {
           ref={segmentRef}
         />
       </Col>
-      <Col>
+      <Col className="p-0">
         <Container fluid className="paxdetail-container">
           <CardWithTable
             data={itinerary}

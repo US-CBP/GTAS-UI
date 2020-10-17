@@ -41,6 +41,8 @@ $transparent: rgba(0, 0, 0, 0.65);
 }
 
 .one-column-container {
+  height: calc(100vh - 125px);
+  overflow-y: auto;
   .card-columns {
     column-count: 1 !important;
   }
@@ -52,4 +54,8 @@ $transparent: rgba(0, 0, 0, 0.65);
 
 .paxdetail-container > .title > .left-span > .gtas-tabs > a {
   padding: 0.5rem 0.5rem;
+}
+
+.segment-table {
+  height: calc(100vh - 128px);
 }
