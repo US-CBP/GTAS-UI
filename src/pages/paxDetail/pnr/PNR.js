@@ -93,8 +93,10 @@ const PNR = props => {
     };
   });
   const documents = asArray(data.documents).map(doc => {
+    const expirationDate = Date.parse(doc.expirationDate);
     return {
       ...doc,
+      expirationDate: localeDateOnly(expirationDate),
       key: `DOCS${doc.documentNumber} `
     };
   });
