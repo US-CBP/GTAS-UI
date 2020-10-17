@@ -8,9 +8,9 @@ import {
 } from "../../../services/serviceWrapper";
 import { Card, CardColumns } from "react-bootstrap";
 import Main from "../../../components/main/Main";
-import "./Summary.scss";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Xl8 from "../../../components/xl8/Xl8";
+import "./Summary.scss";
 
 const Summary = props => {
   const headers = {
