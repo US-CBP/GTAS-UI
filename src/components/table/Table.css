@@ -27,6 +27,7 @@
 .table-header {
   white-space: nowrap !important;
   padding: 0.3rem !important;
+  vertical-align: middle !important;
 }
 
 .pagination {

@@ -3,9 +3,8 @@ import { Router, Redirect, navigate } from "@reach/router";
 import IdleTimer from "react-idle-timer";
 import loadable from "@loadable/component";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "font-awesome/css/font-awesome.min.css";
 import "./App.css";
+import "font-awesome/css/font-awesome.min.css";
 
 // import ErrorBoundary from "./components/errorBoundary/ErrorBoundary";
 // import Loading from "./components/loading/Loading";

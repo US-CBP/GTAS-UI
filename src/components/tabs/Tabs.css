@@ -9,12 +9,13 @@
 }
 
 .gtas-tabs a {
-  color: #0199b8;
+  color: #0082c3;
+  padding: 0.2rem 0.5rem;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #446a92 white;
+  scrollbar-color: #575756 white;
 }
 
 /* Works on Chrome/Edge/Safari */
@@ -25,7 +26,7 @@
   background: white;
 }
 *::-webkit-scrollbar-thumb {
-  background-color: #446a92;
+  background-color: #575756;
   border-radius: 12px;
   border: 5px solid white;
 }

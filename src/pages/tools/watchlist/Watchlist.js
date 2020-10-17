@@ -115,7 +115,7 @@ const Watchlist = props => {
     return (
       <div className="icon-col">
         <i
-          className="fa fa-pencil-square-o qbrb-icon"
+          className="fa fa-pencil-square-o qbrb-icon-edit"
           onClick={() => {
             launchModal(item.id);
             setEditRow(item);

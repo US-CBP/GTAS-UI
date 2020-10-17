@@ -1,8 +1,6 @@
 .title {
-  /* text-shadow: aqua; */
   display: flex;
   text-align: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding: 5px;
   position: relative;
   justify-content: center;

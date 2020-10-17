@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Tabs as RBTabs } from "react-bootstrap";
-import "./Tabs.css";
 import { Tab } from "react-bootstrap";
+import "./Tabs.css";
 
 const Tabs = props => {
   const [key, setKey] = useState();

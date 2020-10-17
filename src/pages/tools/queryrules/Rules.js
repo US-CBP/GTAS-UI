@@ -44,7 +44,7 @@ const Rules = props => {
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
-            className="fa fa-pencil-square-o qbrb-icon"
+            className="fa fa-pencil-square-o qbrb-icon-edit"
             onClick={() => fetchDetail(row.original.id)}
           ></i>
         </div>
@@ -86,7 +86,7 @@ const Rules = props => {
         if (row.original.enabled === true) {
           return (
             <div className="icon-col">
-              <i className="fa fa-check-square qbrb-icon"></i>
+              <i className="fa fa-check-square qbrb-icon-check"></i>
             </div>
           );
         }

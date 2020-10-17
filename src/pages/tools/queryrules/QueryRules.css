@@ -2,9 +2,14 @@
   width: unset !important;
 }
 
-.qbrb-icon {
+.qbrb-icon-edit {
   font-size: 1.4em;
-  color: #007bff;
+  color: #0082c3;
+}
+
+.qbrb-icon-check {
+  font-size: 1.4em;
+  color: #0082c3;
 }
 
 .qbrb-icon-black {
