@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Form from "../../../../components/form/Form";
 import { changePassword } from "../../../../services/serviceWrapper";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
@@ -7,28 +7,64 @@ import Title from "../../../../components/title/Title";
 import Xl8 from "../../../../components/xl8/Xl8";
 import "./ChangePassword.scss";
 import { hasData } from "../../../../utils/utils";
-import { navigate, useParams } from "@reach/router";
+import { navigate } from "@reach/router";
 
 const ChangePassword = props => {
   const [oldPassword, setOldPassword] = useState();
   const [newPassword, setNewPassword] = useState();
   const [confirmedPassword, setConfirmedPassword] = useState();
-  const [style, setStyle] = useState("passwords-do-not-match");
   const [displaySuccessMsg, setDisplaySuccessMsg] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [displayErrorMsg, setDisplayErrorMsg] = useState(false);
-
-  const params = useParams();
   const chagneByAdmin = hasData(props.userId);
 
   const service = chagneByAdmin ? changePassword.byAdmin : changePassword.byloggedInUser;
 
   const recordId = props.userId || "";
 
-  const checkPasswordMatch = () => {
-    if (confirmedPassword === newPassword) {
-      setStyle("passwords-match");
-    } else setStyle("passwords-do-not-match");
+  const passwordRule = (
+    <ul>
+      <li style={{ "list-style-type": "none" }}>
+        <h5>
+          <Xl8 xid="pass014">Your password should contain:</Xl8>
+        </h5>
+      </li>
+      <li>
+        <Xl8 xid="pass006">10 to 20 characters</Xl8>
+      </li>
+      <li>
+        <Xl8 xid="pass007">{`At least one special character (!@#$%^&?*)`}</Xl8>
+      </li>
+      <li>
+        <Xl8 xid="pass008">At least one number</Xl8>
+      </li>
+      <li>
+        <Xl8 xid="pass009">At least one letter</Xl8>
+      </li>
+      <li>
+        <Xl8 xid="pass010">At least one upper case character</Xl8>
+      </li>
+      <li>
+        <Xl8 xid="pass011">At least one lower case character</Xl8>
+      </li>
+    </ul>
+  );
+
+  const passwordsDoNotMatchError = (
+    <Xl8 xid="pass012">The Passwords you entered do not match</Xl8>
+  );
+  const invalidPasswordError = (
+    <Xl8 xid="pass013">
+      The password you entered does not satisfy the password criteria.
+    </Xl8>
+  );
+  const passwordChangeSuccess = (
+    <Xl8 xid="pass002">Your password has been changed successfully!</Xl8>
+  );
+
+  const showAlert = message => {
+    setErrorMessage(message);
+    setDisplayErrorMsg(true);
   };
 
   const changeInput = input => {
@@ -42,14 +78,29 @@ const ChangePassword = props => {
       setConfirmedPassword(input.value);
     }
   };
+  const isValidPassword = password => {
+    const passwordConstraint = new RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{10,20})"
+    );
+    return passwordConstraint.test(password);
+  };
+
+  const validateInputs = fields => {
+    const passwordsMatch = confirmedPassword === newPassword;
+    const validPassword = isValidPassword(newPassword);
+
+    if (!validPassword) {
+      showAlert(invalidPasswordError);
+    } else if (!passwordsMatch) {
+      showAlert(passwordsDoNotMatchError);
+    }
+
+    return passwordsMatch && validPassword;
+  };
 
   useEffect(() => {
-    if (confirmedPassword?.length >= 10 && confirmedPassword === newPassword) {
-      setStyle("passwords-match");
-    } else {
-      setStyle("passwords-do-not-match");
-    }
-  }, [oldPassword, newPassword, confirmedPassword]);
+    setDisplayErrorMsg(false);
+  }, [newPassword]);
 
   const cb = () => {};
   const passwordChangeCallback = (status, res) => {
@@ -64,6 +115,8 @@ const ChangePassword = props => {
         setDisplayErrorMsg(false);
         setDisplaySuccessMsg(true);
       } else {
+        //Incase the user provided wrong password for the old password field
+        //Or other System errors
         setErrorMessage(message);
         setDisplayErrorMsg(true);
       }
@@ -73,6 +126,7 @@ const ChangePassword = props => {
   return (
     <Container className="change-password-container">
       <Title title={<Xl8 xid="pass001">Change Password</Xl8>} uri={props.uri} />
+      <div className="password-rules">{passwordRule}</div>
       {displayErrorMsg && (
         <Alert variant="danger" dismissible onClose={() => setDisplayErrorMsg(false)}>
           {errorMessage}
@@ -80,17 +134,15 @@ const ChangePassword = props => {
       )}
 
       {displaySuccessMsg ? (
-        <Alert variant="success">
-          <Xl8 xid="pass002">Your password has been changed successfully!</Xl8>
-        </Alert>
+        <Alert variant="success">{passwordChangeSuccess}</Alert>
       ) : (
         <Form
           submitService={service}
           title=""
           callback={passwordChangeCallback}
+          validateInputs={validateInputs}
           action="add"
           cancellable
-          key={style}
           recordId={recordId}
         >
           {chagneByAdmin ? (
@@ -131,7 +183,6 @@ const ChangePassword = props => {
             alt="nothing"
             callback={cb}
             onChange={changeInput}
-            className={style}
             spacebetween
           />
         </Form>
