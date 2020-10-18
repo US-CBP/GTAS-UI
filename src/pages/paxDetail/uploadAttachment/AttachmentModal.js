@@ -24,7 +24,7 @@ const AttachmentModal = props => {
     // props.onHide();
     props.callback(status, res);
   };
-  // const handleShow = () => setShowModal(true);
+  const handleShow = () => setShowModal(true);
 
   const postSubmit = (status, resp) => {
     if (status === ACTION.CANCEL) {
@@ -104,10 +104,10 @@ const AttachmentModal = props => {
 
   return (
     <>
-      {/* <Button variant="outline-info" size="sm" onClick={handleShow}>
+      <Button variant="outline-info" size="sm" onClick={handleShow}>
         <i className="fa fa-pencil"></i>Add Attachments
       </Button>
-
+      {/*
       <Modal
         show={showModal}
         onHide={handleClose}
@@ -137,7 +137,7 @@ const AttachmentModal = props => {
             <div className="container">
               Files To Be Uploaded: */}
       <Modal
-        show={props.show}
+        show={showModal}
         onHide={handleClose}
         size="md"
         aria-labelledby="contained-modal-title-vcenter"

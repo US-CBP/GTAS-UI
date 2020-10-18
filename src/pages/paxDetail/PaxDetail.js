@@ -253,7 +253,6 @@ const PaxDetail = props => {
           rightChild={actions}
           leftChild={tablist}
         ></Title>
-        {/* {props.children} */}
       </Main>
     </>
   );

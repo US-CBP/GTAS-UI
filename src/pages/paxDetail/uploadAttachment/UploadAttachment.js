@@ -10,7 +10,7 @@ import AttachmentModal from "./AttachmentModal";
 import { ACTION } from "../../../utils/constants";
 
 const UploadAttachment = props => {
-  const [selectedFiles, setSelectedFiles] = useState(null);
+  const [selectedFiles] = useState(null);
   const [filesForDisplay, setFilesForDisplay] = useState([]);
   const [tableKey, setTableKey] = useState(0);
   const [refreshDataKey, setRefreshDataKey] = useState(0);
@@ -108,13 +108,6 @@ const UploadAttachment = props => {
       alt={props.alt}
     >
       <Xl8 xid="att008">Add an Attachment</Xl8>
-    </Button>
-  );
-
-  return (
-    <main className="one-column-container">
-      {/* <Title title={<Xl8 xid="att009">Uploaded Attachments</Xl8>} rightChild={button} /> */}
-      <Table data={data} id="attachments" header={headers} key={tableKey} callback={cb} />
       <AttachmentModal
         show={showModal}
         callback={cb}
@@ -122,6 +115,13 @@ const UploadAttachment = props => {
         title={<Xl8 xid="att010">Upload Attachments</Xl8>}
         paxId={paxId}
       ></AttachmentModal>
+    </Button>
+  );
+
+  return (
+    <main className="one-column-container">
+      {/* <Title title={<Xl8 xid="att009">Uploaded Attachments</Xl8>} rightChild={button} /> */}
+      <Table data={data} id="attachments" header={headers} key={tableKey} callback={cb} />
     </main>
   );
 };

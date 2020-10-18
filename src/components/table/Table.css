@@ -149,3 +149,7 @@
 .export-btn:hover {
   background-color: rgba(67, 74, 82, 0.24);
 }
+
+.th {
+  text-align: start;
+}
