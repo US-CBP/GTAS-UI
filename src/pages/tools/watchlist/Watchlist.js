@@ -8,7 +8,7 @@ import { wlpax, wldocs, hitcats } from "../../../services/serviceWrapper";
 import { hasData } from "../../../utils/utils";
 import WLModal from "./WLModal";
 import "./constants.js";
-import CSVReader from "../../../components/csvReader/CSVReader";
+import CSVReader from "../../../components/CSVReader/CSVReader";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
 import "./Watchlist.css";
