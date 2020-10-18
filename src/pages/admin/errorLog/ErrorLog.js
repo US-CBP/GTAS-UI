@@ -8,6 +8,7 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import { Col } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import FilterForm from "../../../components/filterForm2/FilterForm";
+import { localeDate } from "../../../utils/utils";
 
 const ErrorLog = ({ name }) => {
   const cb = function(result) {};
@@ -36,9 +37,10 @@ const ErrorLog = ({ name }) => {
       Header: ["el007", "Error Description"]
     },
     {
-      Accessor: "errorTimestamp",
+      Accessor: "timestamp",
       Xl8: true,
-      Header: ["el008", "Error Timestamp"]
+      Header: ["el008", "Error Timestamp"],
+      Cell: ({ row }) => localeDate(row.original.timestamp)
     }
   ];
   const preFetchCallback = params => {
