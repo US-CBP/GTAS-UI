@@ -177,7 +177,7 @@ pre {
 
 .group {
   background: rgb(0 119 200 / 0.1);
-  border: 1px solid #6a8eb3;
+  border: 1px solid #005aa7;
 }
 
 .rule_group {
@@ -213,7 +213,7 @@ pre {
   margin-bottom: 0px;
   border-radius: 3px;
   padding-bottom: 3px;
-  background-color: #125c8e;
+  background-color: #005aa7;
   margin-top: 0px;
 }
 
@@ -231,6 +231,7 @@ pre {
 .query-builder {
   margin-top: -10px;
   overflow: inherit;
+  font-family: Lato;
 }
 
 .group--conjunctions > input[type="checkbox"],
@@ -247,4 +248,23 @@ pre {
 .qrm > .form-group > select:focus {
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   outline: 0;
+}
+
+.rule--operator > select,
+.widget--widget > input,
+.group--field > select,
+.rule--field > select {
+  display: block;
+  width: 100%;
+  height: calc(1.2em + 0.75rem);
+  padding: 0.175rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid darkgray;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
