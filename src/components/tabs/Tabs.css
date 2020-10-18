@@ -11,6 +11,7 @@
 .gtas-tabs a {
   color: #0082c3;
   padding: 0.2rem 0.5rem;
+  border-color: #d0d0d0 #d0d0d0 #d0d0d0 !important;
 }
 
 * {

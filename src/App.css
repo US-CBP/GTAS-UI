@@ -1,5 +1,7 @@
 body {
   font-family: Lato !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .on-top {

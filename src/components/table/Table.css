@@ -121,7 +121,7 @@
 
 .p-1 > .icon-col {
   width: 50px;
-  text-align: -webkit-center;
+  text-align: center;
   cursor: pointer;
 }
 
