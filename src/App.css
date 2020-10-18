@@ -1,5 +1,5 @@
 body {
-  font-family: Lato !important;
+  font-family: "Lato script=latin rev=1", sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
