@@ -14,9 +14,8 @@ const Tools = props => {
   if (getEndpoint(props.location?.pathname) === "tools")
     return (
       <>
-        <Title title={<Xl8 xid="too001">Tools</Xl8>} />
-
         <Main className="full-cards">
+          <Title title={<Xl8 xid="too001">Tools</Xl8>} />
           <CardDeck className="page-deck">
             {tiles.map(info => {
               const data = info.props;
