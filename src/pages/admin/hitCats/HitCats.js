@@ -39,13 +39,13 @@ const HitCats = ({ name }) => {
                   title={<Xl8 xid="manc002">Choose Action</Xl8>}
               >
                 <Dropdown.Item as="button" onClick={() => openEditModal(row.original)}>
-                  <Xl8 xid="manc001">Edit Category</Xl8>
+                  <Xl8 xid="wlc006">Edit Category</Xl8>
                 </Dropdown.Item>
                 <Confirm
                     header={<Xl8 xid="manc004">Confirm Category Deletion</Xl8>}
                     message={
                       <span>
-                    <Xl8 xid="manc005">Please confirm to delete a category with categoryId: </Xl8>{" "}
+                    <Xl8 xid="wlc007">Please confirm to delete a category with categoryId: </Xl8>{" "}
                         {row.original.id}
                   </span>
                     }
@@ -58,7 +58,7 @@ const HitCats = ({ name }) => {
                                 deleteCat(row.original);
                               })}
                           >
-                            <Xl8 xid="manc006">Delete Hit Category</Xl8>
+                            <Xl8 xid="wlc008">Delete Hit Category</Xl8>
                           </Dropdown.Item>
                       )
                   }
