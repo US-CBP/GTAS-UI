@@ -14,6 +14,7 @@ const ChangePassword = props => {
   const [confirmedPassword, setConfirmedPassword] = useState();
   const [errorMessage, setErrorMessage] = useState("");
   const [displayErrorMsg, setDisplayErrorMsg] = useState(false);
+  const [style, setStyle] = useState("passwords-do-not-match");
   const chagneByAdmin = hasData(props.userId);
 
   const service = chagneByAdmin ? changePassword.byAdmin : changePassword.byloggedInUser;
@@ -95,7 +96,12 @@ const ChangePassword = props => {
 
   useEffect(() => {
     setDisplayErrorMsg(false);
-  }, [newPassword]);
+    if (confirmedPassword?.length >= 10 && confirmedPassword === newPassword) {
+      setStyle("passwords-match");
+    } else {
+      setStyle("passwords-do-not-match");
+    }
+  }, [newPassword, confirmedPassword]);
 
   const cb = () => {};
   const passwordChangeCallback = (status, res) => {
@@ -136,6 +142,7 @@ const ChangePassword = props => {
         action="add"
         cancellable
         recordId={recordId}
+        key={style}
       >
         {chagneByAdmin ? (
           <></>
@@ -175,6 +182,7 @@ const ChangePassword = props => {
           alt="nothing"
           callback={cb}
           onChange={changeInput}
+          className={style}
           spacebetween
         />
       </Form>
