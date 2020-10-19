@@ -10,6 +10,7 @@ const NoteModal = props => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
   const [variant, setVariant] = useState("");
+  const row = props.editRowDetails || {};
   const cb = function(result) {};
 
   const postSubmit = (status, res) => {
@@ -17,6 +18,12 @@ const NoteModal = props => {
 
     if (status !== ACTION.CANCEL) props.refresh();
   };
+
+  const preSubmit = fields => {
+    let res = { ...fields[0] };
+    res.id =  props.isEdit ? row.id : "";
+    return [res];
+  }
 
   return (
     <Modal
@@ -27,7 +34,7 @@ const NoteModal = props => {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>{<Xl8 xid="ntm001">Add Note Category</Xl8>}</Modal.Title>
+        <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
       <Alert show={showAlert} variant={variant}>
         {alertContent}
@@ -39,9 +46,10 @@ const NoteModal = props => {
       <Modal.Body>
         <Container fluid>
           <Form
-            submitService={notetypes.post}
+            submitService={props.isEdit? notetypes.put : notetypes.post}
             title=""
             callback={postSubmit}
+            paramCallback={preSubmit}
             action="add"
             cancellable
             afterProcessed={props.onHide}
@@ -50,6 +58,7 @@ const NoteModal = props => {
               datafield
               labelText={<Xl8 xid="ntm002">Category</Xl8>}
               inputType="text"
+              inputVal={row.noteType}
               name="noteType"
               required={true}
               alt="nothing"

@@ -10,6 +10,7 @@ const HitModal = props => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
   const [variant, setVariant] = useState("");
+  const row = props.editRowDetails || {};
   const cb = function(result) {};
   const severityLevels = [
     { value: "Top", label: "Top" },
@@ -23,6 +24,12 @@ const HitModal = props => {
     if (status !== ACTION.CANCEL) props.refresh();
   };
 
+  const preSubmit = fields => {
+    let res = { ...fields[0] };
+    res.id =  props.isEdit ? row.id : "";
+    return [res];
+  }
+
   return (
     <Modal
       show={props.show}
@@ -33,7 +40,7 @@ const HitModal = props => {
     >
       <Modal.Header closeButton>
         <Modal.Title>
-          <Xl8 xid="wlm001">Add Hit Category</Xl8>
+          {props.title}
         </Modal.Title>
       </Modal.Header>
       <Alert show={showAlert} variant={variant}>
@@ -46,8 +53,9 @@ const HitModal = props => {
       <Modal.Body>
         <Container fluid>
           <Form
-            submitService={hitcatspost.post}
+            submitService={props.isEdit ? hitcatspost.put : hitcatspost.post}
             callback={postSubmit}
+            paramCallback={preSubmit}
             action="add"
             cancellable
             afterProcessed={props.onHide}
@@ -56,6 +64,7 @@ const HitModal = props => {
               datafield
               labelText={<Xl8 xid="wlm002">Name:</Xl8>}
               inputType="text"
+              inputVal={row.label}
               name="label"
               required={true}
               alt="nothing"
@@ -65,6 +74,7 @@ const HitModal = props => {
               datafield
               labelText={<Xl8 xid="wlm003">Description:</Xl8>}
               inputType="textarea"
+              inputVal={row.description}
               name="description"
               required={true}
               alt="nothing"
@@ -75,6 +85,7 @@ const HitModal = props => {
               labelText={<Xl8 xid="wlm002">Severity Level:</Xl8>}
               inputType="select"
               name="severity"
+              inputVal={row.severity}
               options={severityLevels}
               required={true}
               alt="nothing"
