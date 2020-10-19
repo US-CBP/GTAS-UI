@@ -1,0 +1,14 @@
+@import "./fonts/Lato/Lato-Bold.ttf";
+@import "./fonts/Lato/Lato-Regular.ttf";
+
+// WCO theme overrides for bootstrap colors
+$blue: #0082c3;
+$primary: #0082c3;
+$info: #009e92;
+$danger: #e83944;
+$dark: #575756;
+$purple: #aa2585;
+$indigo: #aa2585;
+$gray: #d0d0d0;
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";

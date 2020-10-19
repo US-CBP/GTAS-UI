@@ -95,9 +95,11 @@ const Header = () => {
     <>
       <Navbar sticky="top" expand="md" className="header-navbar" variant="dark">
         <Navbar.Brand className="header-navbar-brand">
-          <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
-            <img src={wcoLogo} />
-          </Link>
+          <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]} alt={<></>}>
+            <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
+              <img src={wcoLogo} />
+            </Link>
+          </RoleAuthenticator>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" ref={toggleRef} />
         <Navbar.Collapse>
@@ -110,14 +112,16 @@ const Header = () => {
             >
               <Xl8 xid="head001">Flights</Xl8>
             </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="vetting"
-              className={`${getActiveClass(htab.VETTING)}`}
-              onClick={() => clickTab(htab.VETTING)}
-            >
-              <Xl8 xid="head002">Vetting</Xl8>
-            </Nav.Link>
+            <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.PAXVWR]} alt={<></>}>
+              <Nav.Link
+                as={Link}
+                to="vetting"
+                className={`${getActiveClass(htab.VETTING)}`}
+                onClick={() => clickTab(htab.VETTING)}
+              >
+                <Xl8 xid="head002">Vetting</Xl8>
+              </Nav.Link>
+            </RoleAuthenticator>
             <Nav.Link
               as={Link}
               to="tools"
@@ -126,7 +130,7 @@ const Header = () => {
             >
               <Xl8 xid="head004">Tools</Xl8>
             </Nav.Link>
-            <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
+            <RoleAuthenticator roles={[ROLE.ADMIN]} alt={<></>}>
               <Nav.Link
                 as={Link}
                 to="admin"
@@ -163,11 +167,7 @@ const Header = () => {
               </InputGroup>
             </Form>
             <NavDropdown title={userFullName} id="basic-nav-dropdown" className="right">
-              <NavDropdown.Item
-                // as={Link}
-                // to={"user/change-password"}
-                onClick={() => setShowChangePasswordModal(true)}
-              >
+              <NavDropdown.Item onClick={() => setShowChangePasswordModal(true)}>
                 {<Xl8 xid="head005">Change password</Xl8>}
               </NavDropdown.Item>
               <NavDropdown.Divider />

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { asArray, hasData } from "../../../utils/utils";
 import { Button, Modal, Container, Alert } from "react-bootstrap";
-import { addWLItems, hitcats } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
+import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
+import { ROLE } from "../../../utils/constants";
+import { addWLItems, hitcats } from "../../../services/serviceWrapper";
+
+import { asArray } from "../../../utils/utils";
 
 const AddToWatchlist = props => {
   const cb = () => {};
@@ -74,7 +77,7 @@ const AddToWatchlist = props => {
   }, []);
 
   return (
-    <>
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.WLMGR]} alt={<></>}>
       <Button variant="outline-danger" size="sm" onClick={handleShow}>
         <Xl8 xid="atw001">Add to Watchlist</Xl8>
       </Button>
@@ -124,7 +127,7 @@ const AddToWatchlist = props => {
           </Container>
         </Modal.Body>
       </Modal>
-    </>
+    </RoleAuthenticator>
   );
 };
 

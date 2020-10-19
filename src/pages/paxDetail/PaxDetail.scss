@@ -14,12 +14,49 @@ $transparent: rgba(0, 0, 0, 0.65);
 }
 
 .paxdetail-container {
-  max-height: 100vh;
+  height: calc(100vh - 125px);
   overflow: scroll;
+}
+
+@media (max-width: 1499px) {
+  .paxdetail-container {
+    .card-columns {
+      column-count: 1 !important;
+    }
+  }
+}
+
+@media (min-width: 1500px) {
+  .paxdetail-container {
+    .card-columns {
+      column-count: 2 !important;
+    }
+  }
 }
 
 .paxdetails-action-buttons {
   button {
     margin: 1px;
   }
+}
+
+.one-column-container {
+  height: calc(100vh - 125px);
+  width: calc(100vw - 300px);
+  overflow-y: auto;
+  .card-columns {
+    column-count: 1 !important;
+  }
+}
+
+.right-span > .dropdown > .dropdown-menu {
+  display: inline-grid;
+}
+
+.paxdetail-container > .title > .left-span > .gtas-tabs > a {
+  padding: 0.5rem 0.5rem;
+}
+
+.segment-table {
+  height: calc(100vh - 128px);
 }

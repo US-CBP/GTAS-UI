@@ -6,11 +6,11 @@ import {
   flightpaxHitSummary,
   paxEventNotesHistory
 } from "../../../services/serviceWrapper";
-import { Container, CardColumns } from "react-bootstrap";
-import "./Summary.scss";
+import { Card, CardColumns } from "react-bootstrap";
+import Main from "../../../components/main/Main";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Xl8 from "../../../components/xl8/Xl8";
-// import { composeInitialProps } from "react-i18next";
+import "./Summary.scss";
 
 const Summary = props => {
   const headers = {
@@ -118,7 +118,7 @@ const Summary = props => {
   }, [props.eventNoteRefreshKey]);
 
   return (
-    <Container fluid className="summary-container">
+    <Main className="paxdetail-container">
       <CardColumns>
         <CardWithTable
           data={paxHitSummary}
@@ -148,7 +148,7 @@ const Summary = props => {
           title={<Xl8 xid="sum025">Previous Note History</Xl8>}
         />
       </CardColumns>
-    </Container>
+    </Main>
   );
 };
 

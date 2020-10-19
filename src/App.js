@@ -3,12 +3,8 @@ import { Router, Redirect, navigate } from "@reach/router";
 import IdleTimer from "react-idle-timer";
 import loadable from "@loadable/component";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "font-awesome/css/font-awesome.min.css";
 import "./App.css";
-
-// import ErrorBoundary from "./components/errorBoundary/ErrorBoundary";
-// import Loading from "./components/loading/Loading";
+import "font-awesome/css/font-awesome.min.css";
 
 import Xl8 from "./components/xl8/Xl8";
 
@@ -228,7 +224,6 @@ export default class App extends React.Component {
                       {UNAUTHED}
                       <RoleAuthenticator
                         path="/"
-                        alt={UNAUTHED}
                         roles={[
                           ROLE.ADMIN,
                           ROLE.PAXVWR,
@@ -244,63 +239,55 @@ export default class App extends React.Component {
                         <Home path="/gtas">
                           <Page404 default></Page404>
                           <Redirect from="/gtas" to="/gtas/flights" noThrow />
-                          <Flights path="flights"></Flights>
-                          <FlightPax path="flightpax/:id"></FlightPax>
-                          <PriorityVetting path="vetting"></PriorityVetting>
+                          <RoleAuthenticator
+                            path="flights"
+                            roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]}
+                          >
+                            <Flights path="/"></Flights>
+                          </RoleAuthenticator>
+                          <RoleAuthenticator
+                            path="flightpax"
+                            roles={[ROLE.ADMIN, ROLE.PAXVWR]}
+                          >
+                            <FlightPax path="/:id"></FlightPax>
+                          </RoleAuthenticator>
+                          <RoleAuthenticator
+                            path="paxDetail/:flightId/:paxId"
+                            roles={[ROLE.ADMIN, ROLE.PAXVWR]}
+                          >
+                            <PaxDetail path="/">
+                              <Summary path="summary" default></Summary>
+                              <APIS path="apis"></APIS>
+                              <PNR path="pnr"></PNR>
+                              <FlightHistory path="flighthistory"></FlightHistory>
+                              <LinkAnalysis path="linkanalysis"></LinkAnalysis>
+                              <UploadAttachment path="uploadattachment"></UploadAttachment>
+                            </PaxDetail>
+                          </RoleAuthenticator>
+                          <RoleAuthenticator
+                            path="vetting"
+                            roles={[ROLE.ADMIN, ROLE.PAXVWR]}
+                          >
+                            <PriorityVetting path="/"></PriorityVetting>
+                          </RoleAuthenticator>
                           <Tools path="tools">
-                            <Rules
-                              name={<Xl8 xid="app001">Rules</Xl8>}
-                              desc={
-                                <Xl8 xid="app002">
-                                  View or edit rules for generating hits
-                                </Xl8>
-                              }
-                              path="rules"
-                              icon="fa-address-book-o"
-                            ></Rules>
-                            <Rules name="Rules" path="rules/:mode" hideTile></Rules>
-                            <Queries
-                              name={<Xl8 xid="app003">Queries</Xl8>}
-                              desc={
-                                <Xl8 xid="app004">
-                                  View or edit queries of system data
-                                </Xl8>
-                              }
-                              path="queries"
-                              icon="fa-search"
-                            ></Queries>
-                            <QRDetails path="qrdetails" hideTile></QRDetails>
-                            <Watchlist
-                              name={<Xl8 xid="app005">Watchlist</Xl8>}
-                              desc={
-                                <Xl8 xid="app006">
-                                  View or add passenger and document watchlists
-                                </Xl8>
-                              }
-                              path="watchlist"
-                              icon="fa-user-secret"
-                            ></Watchlist>
-                            <Watchlist
-                              path="watchlist/:mode"
-                              name="Watchlist"
-                              hideTile
-                            ></Watchlist>
-                            <About
-                              name={<Xl8 xid="app007">About</Xl8>}
-                              desc={
-                                <Xl8 xid="app008">View system information details</Xl8>
-                              }
-                              path="about"
-                              icon="fa-info-circle"
-                            ></About>
+                            <Rules path="rules"></Rules>
+                            <Rules path="rules/:mode"></Rules>
+                            <Queries path="queries"></Queries>
+                            <QRDetails path="qrdetails"></QRDetails>
+                            <Watchlist path="watchlist"></Watchlist>
+                            <Watchlist path="watchlist/:mode"></Watchlist>
+                            <About path="about"></About>
                           </Tools>
                           <Search path="search/:searchParam"></Search>
                           <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
                           <RoleAuthenticator
-                            path="langEditor"
-                            alt={UNAUTHED}
-                            roles={[ROLE.ADMIN]}
+                            path="seat-chart/:flightId/:paxId/:currentPaxSeat"
+                            roles={[ROLE.ADMIN, ROLE.PAXVWR]}
                           >
+                            <SeatChart path="/"></SeatChart>
+                          </RoleAuthenticator>
+                          <RoleAuthenticator path="langEditor" roles={[ROLE.ADMIN]}>
                             <LanguageEditor path="/"></LanguageEditor>
                           </RoleAuthenticator>
                           <RoleAuthenticator
@@ -421,14 +408,6 @@ export default class App extends React.Component {
                               ></Auxiliary>
                             </Admin>
                           </RoleAuthenticator>
-                          <PaxDetail path="paxDetail/:flightId/:paxId">
-                            <Summary path="summary" default></Summary>
-                            <APIS path="apis"></APIS>
-                            <PNR path="pnr"></PNR>
-                            <FlightHistory path="flighthistory"></FlightHistory>
-                            <LinkAnalysis path="linkanalysis"></LinkAnalysis>
-                            <UploadAttachment path="uploadattachment"></UploadAttachment>
-                          </PaxDetail>
                           {UNAUTHED}
                         </Home>
                       </RoleAuthenticator>
