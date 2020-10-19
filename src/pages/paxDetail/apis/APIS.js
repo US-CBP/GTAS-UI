@@ -1,9 +1,8 @@
 import React from "react";
 import Xl8 from "../../../components/xl8/Xl8";
-import {} from "../../../services/serviceWrapper";
-import Title from "../../../components/title/Title";
-import { Container } from "react-bootstrap";
+import { CardColumns } from "react-bootstrap";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
+import Main from "../../../components/main/Main";
 import { hasData, asArray } from "../../../utils/utils";
 
 const APIS = props => {
@@ -30,29 +29,30 @@ const APIS = props => {
   const phoneNumbers = asArray(data.phoneNumbers);
   const passengersOnReservation = asArray(data.passengersOnReservation);
   return (
-    <Container fluid className="paxdetail-container">
-      <Title title={<Xl8 xid="apis001">APIS</Xl8>}></Title>
-      <CardWithTable
-        data={bags}
-        headers={headers.bags}
-        title={
-          <span>
-            <Xl8 xid="apis002">Total APIS Baggage</Xl8> ({data.bagWeight || 0}
-            <Xl8 xid="apis014">kg</Xl8>)
-          </span>
-        }
-      />
-      <CardWithTable
-        data={phoneNumbers}
-        headers={headers.phoneNumbers}
-        title={<Xl8 xid="apis003">Phone Numbers</Xl8>}
-      />
-      <CardWithTable
-        data={passengersOnReservation}
-        headers={headers.passengersOnReservation}
-        title={<Xl8 xid="apis004">Passenger on Reservation</Xl8>}
-      />
-    </Container>
+    <Main className="one-column-container">
+      <CardColumns>
+        <CardWithTable
+          data={bags}
+          headers={headers.bags}
+          title={
+            <span>
+              <Xl8 xid="apis002">Total APIS Baggage</Xl8> ({data.bagWeight || 0}
+              <Xl8 xid="apis014">kg</Xl8>)
+            </span>
+          }
+        />
+        <CardWithTable
+          data={phoneNumbers}
+          headers={headers.phoneNumbers}
+          title={<Xl8 xid="apis003">Phone Numbers</Xl8>}
+        />
+        <CardWithTable
+          data={passengersOnReservation}
+          headers={headers.passengersOnReservation}
+          title={<Xl8 xid="apis004">Passenger on Reservation</Xl8>}
+        />
+      </CardColumns>
+    </Main>
   );
 };
 

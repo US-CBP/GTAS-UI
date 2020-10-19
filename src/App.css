@@ -1,3 +1,9 @@
+body {
+  font-family: "Lato script=latin rev=1", sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .on-top {
   z-index: 999;
 }
@@ -57,8 +63,6 @@
   font-size: 14px;
   font-weight: 700;
   color: #8f99a3;
-}
-.card-footer-item:hover {
 }
 .card-table .table {
   margin-bottom: 0;
@@ -132,4 +136,31 @@ input[type="radio"] {
 
 .height-auto {
   height: auto !important;
+}
+
+.nav-link.active {
+  color: white !important;
+  background-color: #005aa7 !important;
+}
+
+.table-responsive > .table {
+  margin-bottom: 0px !important;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #575756 white;
+}
+
+/* Works on Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  width: 17px;
+}
+*::-webkit-scrollbar-track {
+  background: white;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #575756;
+  border-radius: 12px;
+  border: 5px solid white;
 }

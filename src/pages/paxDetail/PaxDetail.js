@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, DropdownButton, Dropdown } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
+import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import Summary from "./summary/Summary";
 import PNR from "./pnr/PNR";
@@ -18,6 +19,7 @@ import CreateManualHit from "./createManualHit/CreateManualHit";
 import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
+import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import {
   passengerTypeMapper,
@@ -127,6 +129,7 @@ const PaxDetail = props => {
   const [paxDetailsData, setPaxDetailsData] = useState();
   const [paxDocuments, setPaxDocuments] = useState([]);
 
+  const cb = () => {};
   const tabs = [
     {
       title: <Xl8 xid="pd001">Summary</Xl8>,
@@ -213,6 +216,29 @@ const PaxDetail = props => {
     fetchData();
   }, []);
 
+  // TODO: refac tabs as child routes, load data per page.
+  const actions = (
+    <DropdownButton variant="outline-info" title="Choose Action" className="m-1">
+      <EventNotesModal
+        paxId={props.paxId}
+        setEventNoteRefreshKey={setEventNoteRefreshKey}
+      />
+      <DownloadReport paxId={props.paxId} flightId={props.flightId} />
+      <AddToWatchlist watchlistItems={watchlistData} />
+      <CreateManualHit
+        paxId={props.paxId}
+        flightId={props.flightId}
+        callback={setHitSummaryRefreshKey}
+      />
+      <Notification paxId={props.paxId} />
+      <AttachmentModal callback={cb} paxId={props.paxId}></AttachmentModal>
+      {hasHit && (
+        <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
+      )}
+    </DropdownButton>
+  );
+
+  const tablist = <Tabs tabs={tabs} />;
   return (
     <>
       <SidenavContainer className="paxdetails-side-nav">
@@ -221,31 +247,12 @@ const PaxDetail = props => {
         <hr />
         <FlightLegSegments />
       </SidenavContainer>
-      <Main className="main paxdetail-container">
-        <Navbar>
-          <Navbar.Brand>
-            <Xl8 xid="pd019">Passenger Detail</Xl8>
-          </Navbar.Brand>
-          <Nav className="paxdetails-action-buttons">
-            <EventNotesModal
-              paxId={props.paxId}
-              setEventNoteRefreshKey={setEventNoteRefreshKey}
-            />
-            <DownloadReport paxId={props.paxId} flightId={props.flightId} />
-            <AddToWatchlist watchlistItems={watchlistData} />
-            <CreateManualHit
-              paxId={props.paxId}
-              flightId={props.flightId}
-              callback={setHitSummaryRefreshKey}
-            />
-            <Notification paxId={props.paxId} />
-            {hasHit && (
-              <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
-            )}
-          </Nav>
-        </Navbar>
-
-        <Tabs tabs={tabs} />
+      <Main className="main">
+        <Title
+          title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
+          rightChild={actions}
+          leftChild={tablist}
+        ></Title>
       </Main>
     </>
   );

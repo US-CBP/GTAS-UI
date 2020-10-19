@@ -48,7 +48,7 @@ const Queries = props => {
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
-            className="fa fa-pencil-square-o qbrb-icon"
+            className="fa fa-pencil-square-o qbrb-icon-edit"
             onClick={() => launchModal(row.original.id, row.original)}
           ></i>
         </div>

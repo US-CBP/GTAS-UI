@@ -35,8 +35,8 @@ class Confirm extends React.Component {
   };
 
   render() {
-    const header = this.props.header || "Confirm";
-    const body = this.props.message || "Please confirm";
+    const header = this.props.header || <Xl8 xid="form003">Confirm</Xl8>;
+    const body = this.props.message || <Xl8 xid="cfm002">Please confirm</Xl8>;
     return (
       <React.Fragment>
         {this.props.children(this.openConfirmationModal)}
@@ -47,7 +47,7 @@ class Confirm extends React.Component {
           onHide={this.hideConfirmationModal}
           centered
         >
-          <Modal.Header>{header}</Modal.Header>
+          <Modal.Header variant="primary">{header}</Modal.Header>
           <Modal.Body>{body}</Modal.Body>
           <Modal.Footer>
             <Button onClick={this.hideConfirmationModal} variant="light">
