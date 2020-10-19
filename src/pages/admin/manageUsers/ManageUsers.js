@@ -26,9 +26,14 @@ const ManageUsers = props => {
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState();
   const [showTost, setShowToast] = useState(false);
-  const [toastHeader, setToastHeader] = useState("");
-  const [toastBodyText, setToastBodyText] = useState("");
-  const [toastVariant, setToastVariant] = useState("");
+
+  const PASSWORD_CHANGE_CONFIRMATION = (
+    <>
+      <Xl8 xid="manu018"> You have changed a password for: </Xl8>
+      <span>{selectedUserId}</span>
+    </>
+  );
+  const PASSWORD_CHANGE_CONFIRMATION_HEADER = <Xl8 xid="manu019">Change Password</Xl8>;
 
   const { getUserState } = useContext(UserContext);
 
@@ -56,9 +61,6 @@ const ManageUsers = props => {
     setShowChangePasswordModal(false);
 
     if (status !== ACTION.CANCEL) {
-      setToastHeader("Change Password: " + res.status);
-      setToastBodyText(res.message);
-      setToastVariant(res.status === "FAILURE" ? "danger" : "success");
       setShowToast(true);
     }
   };
@@ -86,12 +88,14 @@ const ManageUsers = props => {
               <Dropdown.Item as="button" onClick={() => openEditModal(row.original)}>
                 <Xl8 xid="manu001">Edit User</Xl8>
               </Dropdown.Item>
-              <Dropdown.Item
-                as="button"
-                onClick={() => changePassword(row.original.userId)}
-              >
-                <Xl8 xid="manu003">Change Password</Xl8>
-              </Dropdown.Item>
+              {!isLoggedinUser(row.original.userId) && (
+                <Dropdown.Item
+                  as="button"
+                  onClick={() => changePassword(row.original.userId)}
+                >
+                  <Xl8 xid="manu003">Change Password</Xl8>
+                </Dropdown.Item>
+              )}
               <Confirm
                 header={<Xl8 xid="manu004">Confirm User Deletion</Xl8>}
                 message={
@@ -252,9 +256,9 @@ const ManageUsers = props => {
         <Toast
           onClose={() => setShowToast(false)}
           show={showTost}
-          header={toastHeader}
-          body={toastBodyText}
-          variant={toastVariant}
+          header={PASSWORD_CHANGE_CONFIRMATION_HEADER}
+          body={PASSWORD_CHANGE_CONFIRMATION}
+          variant={"success"}
         />
       </Main>
     </>
