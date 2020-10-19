@@ -13,21 +13,3 @@
   padding: 0.2rem 0.5rem;
   border-color: #d0d0d0 #d0d0d0 #d0d0d0 !important;
 }
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #575756 white;
-}
-
-/* Works on Chrome/Edge/Safari */
-*::-webkit-scrollbar {
-  width: 17px;
-}
-*::-webkit-scrollbar-track {
-  background: white;
-}
-*::-webkit-scrollbar-thumb {
-  background-color: #575756;
-  border-radius: 12px;
-  border: 5px solid white;
-}

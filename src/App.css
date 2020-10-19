@@ -146,3 +146,21 @@ input[type="radio"] {
 .table-responsive > .table {
   margin-bottom: 0px !important;
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #575756 white;
+}
+
+/* Works on Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  width: 17px;
+}
+*::-webkit-scrollbar-track {
+  background: white;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #575756;
+  border-radius: 12px;
+  border: 5px solid white;
+}
