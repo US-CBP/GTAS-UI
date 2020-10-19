@@ -118,7 +118,7 @@ const Summary = props => {
   }, [props.eventNoteRefreshKey]);
 
   return (
-    <Main className="paxdetail-container">
+    <div className="paxdetail-container">
       <CardColumns>
         <CardWithTable
           data={paxHitSummary}
@@ -148,7 +148,7 @@ const Summary = props => {
           title={<Xl8 xid="sum025">Previous Note History</Xl8>}
         />
       </CardColumns>
-    </Main>
+    </div>
   );
 };
 

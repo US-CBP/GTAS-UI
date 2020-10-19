@@ -33,7 +33,7 @@ body {
   font-weight: 700;
 }
 .card {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
+  /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18); */
   margin-bottom: 2rem;
 }
 .card-header-title {
@@ -149,7 +149,7 @@ input[type="radio"] {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #575756 white;
+  scrollbar-color: #575756 transparent;
 }
 
 /* Works on Chrome/Edge/Safari */
@@ -157,10 +157,15 @@ input[type="radio"] {
   width: 17px;
 }
 *::-webkit-scrollbar-track {
-  background: white;
+  background: transparent;
 }
 *::-webkit-scrollbar-thumb {
   background-color: #575756;
   border-radius: 12px;
   border: 5px solid white;
+}
+
+.dropdown-menu {
+  background-color: white !important;
+  border: 1px solid black !important;
 }

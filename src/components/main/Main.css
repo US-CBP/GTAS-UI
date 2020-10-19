@@ -48,6 +48,14 @@
   width: 100vw;
   height: calc(100vh - 60px);
   background-color: #f3f3f3;
+  padding: 0px 20px;
+}
+
+/* main-inner is just to set a relative parent to contain absolutely positioned children correctlu */
+.main-inner {
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 @media (max-width: 768px) {

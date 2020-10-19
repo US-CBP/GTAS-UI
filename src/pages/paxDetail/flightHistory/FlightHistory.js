@@ -47,7 +47,7 @@ const FlightHistory = props => {
   }, []);
 
   return (
-    <Main className="one-column-container">
+    <div className="one-column-container">
       <CardColumns>
         <CardWithTable
           data={currentFlightHistory}
@@ -60,7 +60,7 @@ const FlightHistory = props => {
           title={<Xl8 xid="fh010">Total Flight History</Xl8>}
         />
       </CardColumns>
-    </Main>
+    </div>
   );
 };
 

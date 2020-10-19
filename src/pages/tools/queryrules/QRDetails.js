@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
+import Main from "../../../components/main/Main";
 import { querypax } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
@@ -69,10 +70,10 @@ const QRDetails = props => {
   //TOOD - need a back button or some way to get back to the query/rule page that brought us here.
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]}>
-      <Container fluid>
+      <Main className="full">
         <Title title={<Xl8 xid="">Query Details</Xl8>}></Title>
         <Table data={data} header={headers} callback={cb} key={key}></Table>
-      </Container>
+      </Main>
     </RoleAuthenticator>
   );
 };

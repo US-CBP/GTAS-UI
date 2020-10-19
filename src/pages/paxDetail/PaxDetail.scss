@@ -42,13 +42,19 @@ $transparent: rgba(0, 0, 0, 0.65);
 
 .one-column-container {
   height: calc(100vh - 125px);
-  width: calc(100vw - 300px);
+  width: calc(100vw - 290px);
   overflow-y: auto;
   .card-columns {
     column-count: 1 !important;
   }
 }
 
+.one-column-grid-container {
+  height: calc(100vh - 106px);
+  width: calc(100vw - 290px);
+  position: relative;
+  margin-top: -7px;
+}
 .right-span > .dropdown > .dropdown-menu {
   display: inline-grid;
 }

@@ -119,10 +119,10 @@ const UploadAttachment = props => {
   );
 
   return (
-    <main className="one-column-container">
+    <div className="one-column-grid-container">
       {/* <Title title={<Xl8 xid="att009">Uploaded Attachments</Xl8>} rightChild={button} /> */}
       <Table data={data} id="attachments" header={headers} key={tableKey} callback={cb} />
-    </main>
+    </div>
   );
 };
 

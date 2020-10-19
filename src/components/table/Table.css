@@ -10,9 +10,11 @@
 .table-main {
   height: 100%;
   padding: 0px;
-  max-height: calc(100vh - 170px);
+  max-height: calc(100vh - 160px);
   overflow: auto;
-  border: 1px solid #cfd3d6;
+  border: 1px solid #d0d0d0;
+  background-color: white;
+  border-radius: 3px;
 }
 
 @media (min-width: 768px) {
@@ -31,11 +33,15 @@
 }
 
 .pagination {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   margin: unset;
   margin-bottom: 10px;
   align-items: center !important;
+  width: 100%;
+  border: 1px solid #d0d0d0;
+  background-color: white;
+  border-radius: 3px;
 }
 
 .mr-10 {
@@ -95,14 +101,14 @@
 
 .tagrightpag {
   position: fixed;
-  bottom: 0px;
+  bottom: 10px;
   z-index: 2000;
-  right: 20px;
+  right: 30px;
   font-size: 28px;
-  line-height: 1.7;
+  line-height: 1;
   color: #003f4cb3;
   margin-left: 8px;
-  background-color: white;
+  background-color: transparent;
 }
 .table-hover tbody tr.linked:hover {
   color: rgba(0, 123, 255, 1);
@@ -152,4 +158,9 @@
 
 .th {
   text-align: start;
+}
+
+.table-hover tbody tr:hover {
+  color: #212529;
+  background-color: rgba(280, 280, 0, 0.2);
 }

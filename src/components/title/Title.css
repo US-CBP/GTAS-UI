@@ -21,11 +21,13 @@
   top: 5px;
   font-size: initial;
   width: -webkit-fill-available;
+  padding: 0px 15px;
 }
 
 .right-span {
   position: absolute;
   right: 0px;
+  padding: 0px 15px;
   top: 0px;
 }
 
