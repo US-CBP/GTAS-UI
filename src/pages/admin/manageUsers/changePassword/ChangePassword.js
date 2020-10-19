@@ -7,13 +7,11 @@ import Title from "../../../../components/title/Title";
 import Xl8 from "../../../../components/xl8/Xl8";
 import "./ChangePassword.scss";
 import { hasData } from "../../../../utils/utils";
-import { navigate } from "@reach/router";
 
 const ChangePassword = props => {
   const [oldPassword, setOldPassword] = useState();
   const [newPassword, setNewPassword] = useState();
   const [confirmedPassword, setConfirmedPassword] = useState();
-  const [displaySuccessMsg, setDisplaySuccessMsg] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [displayErrorMsg, setDisplayErrorMsg] = useState(false);
   const chagneByAdmin = hasData(props.userId);
@@ -58,9 +56,6 @@ const ChangePassword = props => {
       The password you entered does not satisfy the password criteria.
     </Xl8>
   );
-  const passwordChangeSuccess = (
-    <Xl8 xid="pass002">Your password has been changed successfully!</Xl8>
-  );
 
   const showAlert = message => {
     setErrorMessage(message);
@@ -104,16 +99,16 @@ const ChangePassword = props => {
 
   const cb = () => {};
   const passwordChangeCallback = (status, res) => {
-    if (hasData(props.callback)) {
-      props.callback(status, res);
-    } else if (status === "Cancel") navigate(-1);
+    const callback = props.callback || cb;
+
+    if (status === "Cancel") callback(status);
     else {
       const responseStatus = hasData(res) ? res.status : "";
       const message = hasData(res) ? res.message : "";
 
       if (responseStatus === "SUCCESS") {
         setDisplayErrorMsg(false);
-        setDisplaySuccessMsg(true);
+        callback(status);
       } else {
         //Incase the user provided wrong password for the old password field
         //Or other System errors
@@ -133,60 +128,56 @@ const ChangePassword = props => {
         </Alert>
       )}
 
-      {displaySuccessMsg ? (
-        <Alert variant="success">{passwordChangeSuccess}</Alert>
-      ) : (
-        <Form
-          submitService={service}
-          title=""
-          callback={passwordChangeCallback}
-          validateInputs={validateInputs}
-          action="add"
-          cancellable
-          recordId={recordId}
-        >
-          {chagneByAdmin ? (
-            <></>
-          ) : (
-            <LabelledInput
-              datafield
-              labelText={<Xl8 xid="pass003">Old password</Xl8>}
-              inputType="password"
-              name="oldPassword"
-              required={true}
-              inputVal={oldPassword}
-              alt={<Xl8 xid="7">Old password</Xl8>}
-              callback={cb}
-              onChange={changeInput}
-              spacebetween
-            />
-          )}
+      <Form
+        submitService={service}
+        title=""
+        callback={passwordChangeCallback}
+        validateInputs={validateInputs}
+        action="add"
+        cancellable
+        recordId={recordId}
+      >
+        {chagneByAdmin ? (
+          <></>
+        ) : (
           <LabelledInput
             datafield
-            labelText={<Xl8 xid="pass004">New password</Xl8>}
+            labelText={<Xl8 xid="pass003">Old password</Xl8>}
             inputType="password"
-            name="newPassword"
+            name="oldPassword"
             required={true}
-            inputVal={newPassword}
-            alt={<Xl8 xid="7">New password</Xl8>}
+            inputVal={oldPassword}
+            alt={<Xl8 xid="7">Old password</Xl8>}
             callback={cb}
             onChange={changeInput}
             spacebetween
           />
-          <LabelledInput
-            datafield
-            labelText={<Xl8 xid="pass005">Confirm password</Xl8>}
-            inputType="password"
-            name="confirmPassword"
-            required={true}
-            inputVal={confirmedPassword}
-            alt="nothing"
-            callback={cb}
-            onChange={changeInput}
-            spacebetween
-          />
-        </Form>
-      )}
+        )}
+        <LabelledInput
+          datafield
+          labelText={<Xl8 xid="pass004">New password</Xl8>}
+          inputType="password"
+          name="newPassword"
+          required={true}
+          inputVal={newPassword}
+          alt={<Xl8 xid="7">New password</Xl8>}
+          callback={cb}
+          onChange={changeInput}
+          spacebetween
+        />
+        <LabelledInput
+          datafield
+          labelText={<Xl8 xid="pass005">Confirm password</Xl8>}
+          inputType="password"
+          name="confirmPassword"
+          required={true}
+          inputVal={confirmedPassword}
+          alt="nothing"
+          callback={cb}
+          onChange={changeInput}
+          spacebetween
+        />
+      </Form>
     </Container>
   );
 };

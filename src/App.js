@@ -140,11 +140,6 @@ const HitCats = loadable(() =>
 const NoteCats = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/admin/noteCats/NoteCats")
 );
-const ChangePassword = loadable(() =>
-  import(
-    /* webpackChunkName: "admin" */ "./pages/admin/manageUsers/changePassword/ChangePassword"
-  )
-);
 const SignUpRequests = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/admin/signUpRequests/SignUpRequests")
 );
@@ -299,9 +294,7 @@ export default class App extends React.Component {
                               icon="fa-info-circle"
                             ></About>
                           </Tools>
-                          <ChangePassword path="user/change-password"></ChangePassword>
                           <Search path="search/:searchParam"></Search>
-                          <ChangePassword path="user/change-password/:userId"></ChangePassword>
                           <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
                           <RoleAuthenticator
                             path="langEditor"
