@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { SplitButton, Dropdown, Modal, Button } from "react-bootstrap";
+import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import Xl8 from "../../../components/xl8/Xl8";
+import { ROLE } from "../../../utils/constants";
 
 const ChangeHitStatus = props => {
   const [show, setShow] = useState(false);
@@ -16,7 +18,7 @@ const ChangeHitStatus = props => {
     setShow(false);
   };
   return (
-    <>
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.CASEMGR]} alt={<></>}>
       <SplitButton
         key="paxHitStatus"
         title={<Xl8 xid="chs001">Change Status</Xl8>}
@@ -66,7 +68,7 @@ const ChangeHitStatus = props => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </RoleAuthenticator>
   );
 };
 

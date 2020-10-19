@@ -1,9 +1,12 @@
 import React, { useContext } from "react";
 import { UserContext } from "../user/UserContext";
 import { asArray, titleCase } from "../../utils/utils";
+import PageUnauthorized from "../../pages/pageUnauthorized/PageUnauthorized";
+
+const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
 
 const RoleAuthenticator = props => {
-  const alt = props.alt ?? <></>;
+  const alt = props.alt ?? UNAUTHED;
   const { getUserState } = useContext(UserContext);
 
   let hasRole = false;
