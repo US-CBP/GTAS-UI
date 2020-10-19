@@ -3,6 +3,7 @@ import "./Title.css";
 import { hasData } from "../../utils/utils";
 
 const Title = props => {
+  const className = props.style || "title";
   const leftCb = props.leftCb;
   const cb = ev => {
     const id = ev.target.id;
@@ -11,7 +12,7 @@ const Title = props => {
   };
 
   return (
-    <div className="title">
+    <div className={className}>
       <span className="left-span" onClick={ev => cb(ev)}>
         {props.leftChild}
       </span>

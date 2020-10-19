@@ -34,7 +34,7 @@
   position: absolute;
   top: auto;
   overflow: auto;
-  padding: 10px 20px;
+  padding: 0px 20px;
   width: 100vw;
   height: calc(100vh - 60px);
   background-color: #f3f3f3;

@@ -133,14 +133,13 @@ const SignUpRequests = () => {
   return (
     <>
       <SidenavContainer>
+        <br />
         <FilterForm
-          title="Filter"
           service={signuprequests.get}
           paramCallback={preFetchCallback}
           callback={setDataWrapper}
           key={fetchData}
         >
-          <hr />
           <LabelledInput
             labelText={<Xl8 xid="sur003">Username</Xl8>}
             datafield
