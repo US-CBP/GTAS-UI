@@ -5,9 +5,9 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
 import { navigate } from "@reach/router";
 import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
-import { QR, ACTION, CTX } from "../../../utils/constants";
+import { QR, ACTION, CTX, ROLE } from "../../../utils/constants";
 import { LookupContext } from "../../../context/data/LookupContext";
-
+import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import {
   hitcats,
   airportLookup,
@@ -785,7 +785,7 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onClose}
           >
-            <Xl8 xid="">Close</Xl8>
+            <Xl8 xid="qrm007">Close</Xl8>
           </Button>
           <Button
             type="button"
@@ -794,7 +794,7 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onClear}
           >
-            <Xl8 xid="">Clear</Xl8>
+            <Xl8 xid="QRM008">Clear</Xl8>
           </Button>
           <Button
             key="save"
@@ -803,17 +803,20 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onSave}
           >
-            <Xl8 xid="">Save</Xl8>
+            <Xl8 xid="qrm009">Save</Xl8>
           </Button>
-          <Button
-            key="run"
-            type="button"
-            className="m-2 outline-dark-outline"
-            variant="outline-dark"
-            onClick={onRun}
-          >
-            <Xl8 xid="">Run</Xl8>
-          </Button>
+
+          <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]} alt={<></>}>
+            <Button
+              key="run"
+              type="button"
+              className="m-2 outline-dark-outline"
+              variant="outline-dark"
+              onClick={onRun}
+            >
+              <Xl8 xid="qrm010">Run</Xl8>
+            </Button>
+          </RoleAuthenticator>
           {isEdit && (
             <Button
               key="delete"
@@ -822,7 +825,7 @@ const QRModal = props => {
               variant="outline-dark"
               onClick={onDelete}
             >
-              <Xl8 xid="">Delete</Xl8>
+              <Xl8 xid="qrm011">Delete</Xl8>
             </Button>
           )}
         </Modal.Footer>

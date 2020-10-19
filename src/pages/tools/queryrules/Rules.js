@@ -9,7 +9,8 @@ import { LookupContext } from "../../../context/data/LookupContext";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
 import { hasData, getEndpoint } from "../../../utils/utils";
-import { QR, ACTION, RULETAB } from "../../../utils/constants";
+import { QR, ACTION, RULETAB, ROLE } from "../../../utils/constants";
+import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import QRModal from "./QRModal";
 import "./QueryRules.css";
 
@@ -236,29 +237,36 @@ const Rules = props => {
   );
 
   return (
-    <Main className="full">
-      <Title
-        title={<Xl8 xid="rul006">Rules</Xl8>}
-        key="title"
-        leftChild={tabs}
-        leftCb={titleTabCallback}
-        rightChild={button}
-      ></Title>
-      <Table data={data} callback={cb} header={header} key={`table-${tablekey}`}></Table>
-      {showModal && (
-        <QRModal
-          show="true"
-          onHide={closeModal}
-          callback={modalCb}
-          mode={QR.RULE}
-          key={modalKey}
-          data={record}
-          title={modalTitle}
-          id={id}
-          service={rule}
-        />
-      )}
-    </Main>
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.RULEMGR]}>
+      <Main className="full">
+        <Title
+          title={<Xl8 xid="rul006">Rules</Xl8>}
+          key="title"
+          leftChild={tabs}
+          leftCb={titleTabCallback}
+          rightChild={button}
+        ></Title>
+        <Table
+          data={data}
+          callback={cb}
+          header={header}
+          key={`table-${tablekey}`}
+        ></Table>
+        {showModal && (
+          <QRModal
+            show="true"
+            onHide={closeModal}
+            callback={modalCb}
+            mode={QR.RULE}
+            key={modalKey}
+            data={record}
+            title={modalTitle}
+            id={id}
+            service={rule}
+          />
+        )}
+      </Main>
+    </RoleAuthenticator>
   );
 };
 
