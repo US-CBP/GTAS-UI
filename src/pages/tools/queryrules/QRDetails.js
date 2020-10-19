@@ -3,9 +3,11 @@ import Table from "../../../components/table/Table";
 import { querypax } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
+import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { Link } from "@reach/router";
 import { Container } from "react-bootstrap";
 import { asArray, getAge, alt, localeDateOnly } from "../../../utils/utils";
+import { ROLE } from "../../../utils/constants";
 
 const QRDetails = props => {
   const cb = function(result) {};
@@ -66,16 +68,12 @@ const QRDetails = props => {
 
   //TOOD - need a back button or some way to get back to the query/rule page that brought us here.
   return (
-    <Container fluid>
-      <Title title={<Xl8 xid="">Query Details</Xl8>}></Title>
-      <Table
-        data={data}
-        header={headers}
-        id="Query Details"
-        callback={cb}
-        key={key}
-      ></Table>
-    </Container>
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]}>
+      <Container fluid>
+        <Title title={<Xl8 xid="">Query Details</Xl8>}></Title>
+        <Table data={data} header={headers} callback={cb} key={key}></Table>
+      </Container>
+    </RoleAuthenticator>
   );
 };
 

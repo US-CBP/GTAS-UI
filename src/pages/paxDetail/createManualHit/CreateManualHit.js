@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
-import { manualHit, hitcats } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
+import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { asArray } from "../../../utils/utils";
+import { ROLE } from "../../../utils/constants";
+import { manualHit, hitcats } from "../../../services/serviceWrapper";
 
 const CreateManualHit = props => {
   const cb = () => {};
@@ -34,7 +36,7 @@ const CreateManualHit = props => {
   }, []);
 
   return (
-    <>
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
       <Button variant="outline-danger" size="sm" onClick={handleShow}>
         <Xl8 xid="cmh001">Create Manual Hit</Xl8>
       </Button>
@@ -107,7 +109,7 @@ const CreateManualHit = props => {
           </Form>
         </Modal.Body>
       </Modal>
-    </>
+    </RoleAuthenticator>
   );
 };
 CreateManualHit.propTypes = {

@@ -1,7 +1,14 @@
 import React, { useEffect, useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import { hasData, titleCase, asArray, altObj } from "../../utils/utils";
-import {useTable, usePagination,useGroupBy, useSortBy, useExpanded, useFilters} from "react-table";
+import {
+  useTable,
+  usePagination,
+  useGroupBy,
+  useSortBy,
+  useExpanded,
+  useFilters
+} from "react-table";
 import { navigate } from "@reach/router";
 // import { withTranslation } from 'react-i18next';
 import Xl8 from "../xl8/Xl8";
@@ -180,20 +187,25 @@ const Table = props => {
                         if (Array.isArray(hdr)) hdr = <Xl8 xid={hdr[0]}>{hdr[1]}</Xl8>;
 
                         return (
-                          <th
-                            className="table-header"
-                          >
+                          <th className="table-header">
                             <span
-                                {...column.getHeaderProps(column.getSortByToggleProps())}
+                              {...column.getHeaderProps(column.getSortByToggleProps())}
                             >
                               {hdr} {column.canSort ? sortIcon(column) : ""}
                             </span>
-                            {(props.hasOwnProperty("disableGroupBy") && !props.disableGroupBy && column.canGroupBy) ? (<span
-                                {...column.getGroupByToggleProps()}
-                            >
-                              {props.disableGroupBy ? "" : (column.isGrouped ? '🛑' : '👊 ')}
-                            </span>
-                              ) : ""}
+                            {props.hasOwnProperty("disableGroupBy") &&
+                            !props.disableGroupBy &&
+                            column.canGroupBy ? (
+                              <span {...column.getGroupByToggleProps()}>
+                                {props.disableGroupBy
+                                  ? ""
+                                  : column.isGrouped
+                                  ? "🛑"
+                                  : "👊 "}
+                              </span>
+                            ) : (
+                              ""
+                            )}
                           </th>
                         );
                       })}
@@ -220,7 +232,7 @@ const Table = props => {
                 prepareRow(row);
                 const isGroupBy = row.isGrouped;
                 const link = !isGroupBy ? row.original.link : "";
-                const sendRowToLink = !isGroupBy ? row.original.sendRowToLink: "";
+                const sendRowToLink = !isGroupBy ? row.original.sendRowToLink : "";
                 const linked = link ? "linked" : "";
                 return (
                   <tr {...row.getRowProps()} className={linked}>
@@ -239,7 +251,7 @@ const Table = props => {
                           >
                             {cell.render("Cell")}
                           </td>
-                        )
+                        );
                       } else if (sendRowToLink) {
                         return (
                           <td
@@ -254,26 +266,27 @@ const Table = props => {
                             {cell.render("Cell")}
                           </td>
                         );
-                      } else if (isGroupBy){
-                        return(
-                            <td>
-                          {cell.isGrouped ? (
+                      } else if (isGroupBy) {
+                        return (
+                          <td>
+                            {cell.isGrouped ? (
                               // If it's a grouped cell, add an expander and row count
                               <>
-                            <span {...row.getToggleRowExpandedProps()}>
-                              {row.isExpanded ? 'V' : '>'}
-                            </span>{' '}
+                                <span {...row.getToggleRowExpandedProps()}>
+                                  {row.isExpanded ? "V" : ">"}
+                                </span>{" "}
                                 {cell.render("Cell")} ({row.subRows.length})
                               </>
-                          ) : cell.isAggregated ? (
+                            ) : cell.isAggregated ? (
                               // If the cell is aggregated, use the Aggregated
                               // renderer for cell
                               cell.render("Aggregated")
-                          ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
+                            ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
                               // Otherwise, just render the regular cell
                               cell.render("Cell")
-                          )}</td>
-                        )
+                            )}
+                          </td>
+                        );
                       }
                       return (
                         <td className={` p-1 ${style}`} {...cell.getCellProps()}>
