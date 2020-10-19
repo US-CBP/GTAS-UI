@@ -86,12 +86,14 @@ const ManageUsers = props => {
               <Dropdown.Item as="button" onClick={() => openEditModal(row.original)}>
                 <Xl8 xid="manu001">Edit User</Xl8>
               </Dropdown.Item>
-              <Dropdown.Item
-                as="button"
-                onClick={() => changePassword(row.original.userId)}
-              >
-                <Xl8 xid="manu003">Change Password</Xl8>
-              </Dropdown.Item>
+              {!isLoggedinUser(row.original.userId) && (
+                <Dropdown.Item
+                  as="button"
+                  onClick={() => changePassword(row.original.userId)}
+                >
+                  <Xl8 xid="manu003">Change Password</Xl8>
+                </Dropdown.Item>
+              )}
               <Confirm
                 header={<Xl8 xid="manu004">Confirm User Deletion</Xl8>}
                 message={
