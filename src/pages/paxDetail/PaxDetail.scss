@@ -19,9 +19,17 @@ $transparent: rgba(0, 0, 0, 0.65);
 
   // -- for single page repositioning
   position: absolute;
+  top: 50px;
   left: 20px;
   padding-right: 40px;
   width: 100%;
+}
+
+.paxdetail-container-col {
+  width: 100%;
+  margin-left: 15px;
+  height: calc(100vh - 128px);
+  overflow: auto;
 }
 
 @media (max-width: 1499px) {
@@ -52,8 +60,9 @@ $transparent: rgba(0, 0, 0, 0.65);
   overflow-y: auto;
 
   // -- for single page repositioning
-  left: 20px;
   position: absolute;
+  top: 50px;
+  left: 20px;
   // -- end
 
   .card-columns {
@@ -64,11 +73,11 @@ $transparent: rgba(0, 0, 0, 0.65);
 .one-column-grid-container {
   height: calc(100vh - 126px);
   width: calc(100vw - 290px);
-  position: absolute;
-  top: 46px;
   overflow-y: auto;
 
   // -- for single page repositioning
+  position: absolute;
+  top: 50px;
   left: 20px;
   // -- end
 

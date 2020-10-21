@@ -165,7 +165,7 @@ const PNR = props => {
           />
         </Col>
         <Col className="p-0">
-          <Container fluid className="paxdetail-container">
+          <Container fluid className="paxdetail-container-col">
             <CardWithTable
               data={itinerary}
               headers={headers.itinerary}
