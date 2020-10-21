@@ -3,32 +3,28 @@
   text-align: center;
   padding: 5px;
   position: relative;
-  justify-content: center;
   background-color: white;
   border-bottom: 1px solid #d0d0d0;
   margin: 0px -20px;
+  height: 48px;
 }
 
 .title-span {
   font-weight: 600;
   font-size: x-large;
   z-index: 100;
+  align-self: center;
+  padding: 0px 20px;
+  white-space: nowrap;
 }
 
-.left-span {
-  position: absolute;
-  left: 0px;
-  top: 15px;
-  font-size: initial;
-  width: -webkit-fill-available;
+.tab-span {
   padding: 0px 15px;
 }
 
-.right-span {
-  position: absolute;
-  right: 0px;
+.action-span {
   padding: 0px 15px;
-  top: 0px;
+  width: 240px;
 }
 
 .right-span > .space-between {

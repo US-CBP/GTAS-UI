@@ -5,6 +5,7 @@ import loadable from "@loadable/component";
 
 import "./App.css";
 import "font-awesome/css/font-awesome.min.css";
+import "@fortawesome/free-solid-svg-icons";
 
 import Xl8 from "./components/xl8/Xl8";
 

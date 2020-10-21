@@ -55,7 +55,7 @@ const CarrierModal = props => {
             });
           }}
         >
-          <Xl8 xid="cem02 ">Restore</Xl8>
+          <Xl8 xid="cem02 ">Delete</Xl8>
         </Button>
       ]
     : [];

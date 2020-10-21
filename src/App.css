@@ -82,10 +82,6 @@ body {
   padding: 1.25rem;
 }
 
-.title {
-  text-align: center;
-}
-
 .pad-top-20 {
   padding-top: 20px;
 }
@@ -140,7 +136,7 @@ input[type="radio"] {
 
 .nav-link.active {
   color: white !important;
-  background-color: #005aa7 !important;
+  background-color: #0082c3 !important;
 }
 
 .table-responsive > .table {

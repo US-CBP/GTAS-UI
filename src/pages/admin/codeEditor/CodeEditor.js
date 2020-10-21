@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Title from "../../../components/title/Title";
+import Main from "../../../components/main/Main";
 import Xl8 from "../../../components/xl8/Xl8";
 import { Tabs, Tab, Container } from "react-bootstrap";
 import { navigate } from "@reach/router";
@@ -27,7 +28,7 @@ const CodeEditor = props => {
   }, [tab]);
 
   const headerTabs = (
-    <Tabs defaultActiveKey={endpoint} id="codeTabs">
+    <Tabs defaultActiveKey="country" id="codeTabs">
       <Tab
         eventKey="country"
         title={
@@ -56,7 +57,7 @@ const CodeEditor = props => {
         eventKey="cctype"
         title={
           <Xl8 xid="app035" id="codeTabs-tab-cctype">
-            Card Types
+            Credit Card Type
           </Xl8>
         }
       ></Tab>
@@ -69,10 +70,10 @@ const CodeEditor = props => {
   });
 
   return (
-    <Container fluid>
-      <Title title={tabMap[tab]} leftChild={headerTabs} leftCb={tabHandler} />
+    <Main className="full">
+      <Title title="Code Editor" leftChild={headerTabs} leftCb={tabHandler} />
       {props.children}
-    </Container>
+    </Main>
   );
 };
 

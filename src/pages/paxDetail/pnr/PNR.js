@@ -154,81 +154,83 @@ const PNR = props => {
   };
 
   return (
-    <Row>
-      <Col className="p-0" md="6">
-        <SegmentTable
-          title={segmentTitle}
-          data={rawPnrSegments}
-          id="rawPnrSegments"
-          ref={segmentRef}
-        />
-      </Col>
-      <Col className="p-0">
-        <Container fluid className="paxdetail-container">
-          <CardWithTable
-            data={itinerary}
-            headers={headers.itinerary}
-            title={<Xl8 xid="pnr041">Itinerary</Xl8>}
-            callback={setActiveKeyWrapper}
+    <div className="paxdetail-container">
+      <Row>
+        <Col className="p-0" md="6">
+          <SegmentTable
+            title={segmentTitle}
+            data={rawPnrSegments}
+            id="rawPnrSegments"
+            ref={segmentRef}
           />
-          <CardWithTable
-            data={passengers}
-            headers={headers.passengers}
-            title={<Xl8 xid="pnr042">PNR Names</Xl8>}
-            callback={setActiveKeyWrapper}
-          />
-          <CardWithTable
-            data={documents}
-            headers={headers.documents}
-            title={<Xl8 xid="pnr043">Documents</Xl8>}
-            callback={setActiveKeyWrapper}
-          />
-          <CardWithTable
-            data={addresses}
-            headers={headers.addresses}
-            title={<Xl8 xid="pnr044">Addresses</Xl8>}
-            callback={setActiveKeyWrapper}
-          />
-          <CardWithTable
-            data={phoneNumbers}
-            headers={headers.phoneNumbers}
-            title={<Xl8 xid="pnr045">Phone Numbers</Xl8>}
-            callback={setActiveKeyWrapper}
-          />
-          <CardWithTable
-            data={emails}
-            headers={headers.emails}
-            title={<Xl8 xid="pnr046">Email Addresses</Xl8>}
-            callback={setActiveKeyWrapper}
-          />
-          <CardWithTable
-            data={creditCards}
-            headers={headers.creditCards}
-            title={<Xl8 xid="pnr047">Credit Cards</Xl8>}
-            callback={setActiveKeyWrapper}
-          />
-          <CardWithTable
-            data={frequentFlyerDetails}
-            headers={headers.frequentFlyerDetails}
-            title={<Xl8 xid="pnr048">Frequent Flyer Numbers</Xl8>}
-            callback={setActiveKeyWrapper}
-          />
-          <CardWithTable
-            data={seatAssignments}
-            headers={headers.seatAssignments}
-            title={<Xl8 xid="pnr049">Seat Information</Xl8>}
-            callback={setActiveKeyWrapper}
-          />
+        </Col>
+        <Col className="p-0">
+          <Container fluid className="paxdetail-container">
+            <CardWithTable
+              data={itinerary}
+              headers={headers.itinerary}
+              title={<Xl8 xid="pnr041">Itinerary</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
+            <CardWithTable
+              data={passengers}
+              headers={headers.passengers}
+              title={<Xl8 xid="pnr042">PNR Names</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
+            <CardWithTable
+              data={documents}
+              headers={headers.documents}
+              title={<Xl8 xid="pnr043">Documents</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
+            <CardWithTable
+              data={addresses}
+              headers={headers.addresses}
+              title={<Xl8 xid="pnr044">Addresses</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
+            <CardWithTable
+              data={phoneNumbers}
+              headers={headers.phoneNumbers}
+              title={<Xl8 xid="pnr045">Phone Numbers</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
+            <CardWithTable
+              data={emails}
+              headers={headers.emails}
+              title={<Xl8 xid="pnr046">Email Addresses</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
+            <CardWithTable
+              data={creditCards}
+              headers={headers.creditCards}
+              title={<Xl8 xid="pnr047">Credit Cards</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
+            <CardWithTable
+              data={frequentFlyerDetails}
+              headers={headers.frequentFlyerDetails}
+              title={<Xl8 xid="pnr048">Frequent Flyer Numbers</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
+            <CardWithTable
+              data={seatAssignments}
+              headers={headers.seatAssignments}
+              title={<Xl8 xid="pnr049">Seat Information</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
 
-          <CardWithTable
-            data={agencies}
-            headers={headers.agencies}
-            title={<Xl8 xid="pnr050">Agencies</Xl8>}
-            callback={setActiveKeyWrapper}
-          />
-        </Container>
-      </Col>
-    </Row>
+            <CardWithTable
+              data={agencies}
+              headers={headers.agencies}
+              title={<Xl8 xid="pnr050">Agencies</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
+          </Container>
+        </Col>
+      </Row>
+    </div>
   );
 };
 

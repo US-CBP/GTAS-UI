@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
+import ChromeTabs from "../../components/chrometabs/ChromeTabs";
 import { Navbar, Nav, DropdownButton, Dropdown } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
@@ -248,10 +249,11 @@ const PaxDetail = props => {
         <FlightLegSegments />
       </SidenavContainer>
       <Main className="main">
+        <ChromeTabs tabs={tabs}></ChromeTabs>
         <Title
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
-          rightChild={actions}
           leftChild={tablist}
+          rightChild={actions}
         ></Title>
       </Main>
     </>

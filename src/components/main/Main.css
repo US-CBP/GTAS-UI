@@ -33,7 +33,7 @@
   min-width: 255px;
   position: absolute;
   top: auto;
-  overflow: auto;
+  overflow: hidden;
   padding: 0px 20px;
   width: 100vw;
   height: calc(100vh - 60px);
@@ -44,14 +44,14 @@
   min-width: 255px;
   position: absolute;
   top: auto;
-  overflow: auto;
+  overflow: hidden;
   width: 100vw;
   height: calc(100vh - 60px);
   background-color: #f3f3f3;
-  padding: 0px 20px;
+  padding: 0px 0px 0px 20px;
 }
 
-/* main-inner is just to set a relative parent to contain absolutely positioned children correctlu */
+/* main-inner is just to set a relative parent to contain absolutely positioned children correctly */
 .main-inner {
   position: relative;
   height: 100%;

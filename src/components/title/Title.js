@@ -13,12 +13,14 @@ const Title = props => {
 
   return (
     <div className={className}>
-      <span className="left-span" onClick={ev => cb(ev)}>
-        {props.leftChild}
-      </span>
+      {props.rightChild && (
+        <span className="action-span" onClick={ev => cb(ev)}>
+          {props.rightChild}
+        </span>
+      )}
       <span className="title-span">{props.title}</span>
-      <span className="right-span" onClick={ev => cb(ev)}>
-        {props.rightChild}
+      <span className="tab-span" onClick={ev => cb(ev)}>
+        {props.leftChild}
       </span>
     </div>
   );

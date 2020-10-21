@@ -15,7 +15,13 @@ $transparent: rgba(0, 0, 0, 0.65);
 
 .paxdetail-container {
   height: calc(100vh - 125px);
-  overflow: scroll;
+  overflow: auto;
+
+  // -- for single page repositioning
+  position: absolute;
+  left: 20px;
+  padding-right: 40px;
+  width: 100%;
 }
 
 @media (max-width: 1499px) {
@@ -44,6 +50,12 @@ $transparent: rgba(0, 0, 0, 0.65);
   height: calc(100vh - 135px);
   width: calc(100vw - 290px);
   overflow-y: auto;
+
+  // -- for single page repositioning
+  left: 20px;
+  position: absolute;
+  // -- end
+
   .card-columns {
     column-count: 1 !important;
   }
@@ -54,6 +66,12 @@ $transparent: rgba(0, 0, 0, 0.65);
   width: calc(100vw - 290px);
   position: absolute;
   top: 46px;
+  overflow-y: auto;
+
+  // -- for single page repositioning
+  left: 20px;
+  // -- end
+
   .table-main {
     height: calc(100vh - 180px);
   }

@@ -59,17 +59,19 @@ const Tools = props => {
             {tiles.map(data => {
               return (
                 <RoleAuthenticator alt={<></>} roles={data.roles}>
-                  <Card className="page-tiles card-shadow" key={data.path}>
+                  <Card className="page-tiles" key={data.path}>
                     <Link to={data.path} className="card-link">
                       <Card.Body>
-                        <Card.Title className="nowrap">
-                          <i className={`fa fa-3x ${data.icon}`}></i>
+                        <Card.Title className="nowrap text-center">
+                          <i className={`fa fa-4x ${data.icon}`}></i>
                         </Card.Title>
-                        <div className="card-overlay">{data.name}</div>
+                        <div className="text-center text-muted m-3">{data.name}</div>
+                      </Card.Body>
+                      <Card.Footer>
                         <div className="card-description">
                           <Card.Text>{data.desc}</Card.Text>
                         </div>
-                      </Card.Body>
+                      </Card.Footer>
                     </Link>
                   </Card>
                 </RoleAuthenticator>
