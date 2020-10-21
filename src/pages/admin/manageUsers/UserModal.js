@@ -117,7 +117,6 @@ const UserModal = props => {
     );
     const INVALID_PASSWORD_ERROR = (
       <Xl8 xid="um02">
-        {" "}
         The password you entered does not satisfy the password criteria.
       </Xl8>
     );
@@ -203,7 +202,7 @@ const UserModal = props => {
             ) : (
               <LabelledInput
                 datafield
-                labelText={<Xl8 xid="um006">User ID:</Xl8>}
+                labelText={<Xl8 xid="um005">User ID:</Xl8>}
                 inputType="text"
                 name="userId"
                 required={true}
@@ -330,7 +329,7 @@ const UserModal = props => {
           <Toast
             onClose={() => setShowAlert(false)}
             show={showAlert}
-            header={<Xl8 xid="um016">Add/Edit User</Xl8>}
+            header={<Xl8 xid="um016">Add / Edit User</Xl8>}
             body={alertContent}
             variant={"danger"}
           />
