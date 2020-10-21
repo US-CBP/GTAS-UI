@@ -246,6 +246,7 @@ const ManageUsers = props => {
           isEdit={isEditModal}
           title={modalTitle}
           editRowDetails={editRowDetails}
+          userIds={asArray(data).map(user => user.userId)}
         />
         <ChangePasswordModal
           show={showChangePasswordModal}
