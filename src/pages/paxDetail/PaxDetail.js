@@ -249,7 +249,7 @@ const PaxDetail = props => {
         <FlightLegSegments />
       </SidenavContainer>
       <Main className="main">
-        <ChromeTabs tabs={tabs}></ChromeTabs>
+        {/* <ChromeTabs tabs={tabs}></ChromeTabs> */}
         <Title
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
           leftChild={tablist}
