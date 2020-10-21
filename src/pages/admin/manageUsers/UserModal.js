@@ -112,7 +112,7 @@ const UserModal = props => {
     let res = { ...fields[0] };
     const INVALID_USER_ERROR = (
       <Xl8 xid="um01">
-        The username is already in the system. Please choose a different username.
+        The user ID is already in the system. Please choose a different user ID.
       </Xl8>
     );
     const INVALID_PASSWORD_ERROR = (
