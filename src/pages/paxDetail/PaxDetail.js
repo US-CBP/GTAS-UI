@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
-import { Navbar, Nav, DropdownButton, Dropdown } from "react-bootstrap";
+import { DropdownButton } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
@@ -200,7 +200,7 @@ const PaxDetail = props => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
       setPax(getPaxInfo(res));
       setFlightBadge(flightBadgeData(res));
-      setPnr(res.pnrVo);
+      setPnr({ ...res.pnrVo, flightId: props.flightId });
       setApisMessage(res.apisMessageVo);
       setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
       setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
@@ -214,7 +214,7 @@ const PaxDetail = props => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [props.paxId]);
 
   // TODO: refac tabs as child routes, load data per page.
   const actions = (
