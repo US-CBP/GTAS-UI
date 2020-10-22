@@ -79,7 +79,9 @@ const PNR = props => {
   const itinerary = asArray(data.flightLegs).map((leg, index) => {
     return {
       leg: index + 1,
-      flightNumber: leg.flightNumber,
+      flightNumber: (
+        <Link to={`/gtas/flightpax/${leg.flightId}`}>{leg.flightNumber}</Link>
+      ),
       origin: leg.originAirport,
       destination: leg.destinationAirport,
       departure: localeDate(leg.etd),
