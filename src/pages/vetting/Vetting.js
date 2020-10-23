@@ -313,7 +313,7 @@ const Vetting = props => {
   return (
     <>
       <SidenavContainer>
-        <Col>
+        <Col className="notopmargin">
           <FilterForm
             service={cases.get}
             callback={setDataWrapper}

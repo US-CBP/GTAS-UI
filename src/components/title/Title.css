@@ -12,12 +12,10 @@
 .title-span {
   font-weight: 600;
   font-size: x-large;
-  z-index: 100;
   align-self: center;
   padding: 0px 20px;
   white-space: nowrap;
-  left: 260px;
-  position: fixed;
+  border-left: 1px solid #d0d0d0;
 }
 
 .tab-span {
@@ -43,4 +41,11 @@
 
 .right-span > .space-between > select {
   width: 120px;
+}
+
+@media (min-width: 768px) {
+  .full .title-span,
+  .full-cards .title-span {
+    margin-left: 259px;
+  }
 }
