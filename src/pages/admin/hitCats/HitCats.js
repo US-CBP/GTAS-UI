@@ -10,7 +10,7 @@ import Confirm from "../../../components/confirmationModal/Confirm";
 
 const HitCats = ({ name }) => {
   const cb = function() {};
-  const addNewCat = <Xl8 xid="wlc001">Add Category</Xl8>;
+  const addNewCat = <Xl8 xid="wlm001">Add Category</Xl8>;
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
@@ -19,7 +19,7 @@ const HitCats = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle(<Xl8 xid="manc001">Edit Category</Xl8>);
+    setModalTitle(<Xl8 xid="wlm002">Edit Category</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };

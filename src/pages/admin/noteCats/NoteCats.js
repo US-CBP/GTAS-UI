@@ -19,7 +19,7 @@ const NoteCats = ({ name }) => {
 
     const openEditModal = rowDetails => {
         setIsEditModal(true);
-        setModalTitle(<Xl8 xid="ntm001">Edit Category</Xl8>);
+        setModalTitle(<Xl8 xid="ntm002">Edit Category</Xl8>);
         setEditRowDetails(rowDetails);
         setShowModal(true);
     };

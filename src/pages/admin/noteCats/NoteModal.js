@@ -56,7 +56,7 @@ const NoteModal = props => {
           >
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="ntm002">Category</Xl8>}
+              labelText={<Xl8 xid="ntm003">Category</Xl8>}
               inputType="text"
               inputVal={row.noteType}
               name="noteType"

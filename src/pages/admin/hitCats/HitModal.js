@@ -62,7 +62,7 @@ const HitModal = props => {
           >
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="wlm002">Name:</Xl8>}
+              labelText={<Xl8 xid="wlm003">Name:</Xl8>}
               inputType="text"
               inputVal={row.label}
               name="label"
@@ -72,7 +72,7 @@ const HitModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="wlm003">Description:</Xl8>}
+              labelText={<Xl8 xid="wlm004">Description:</Xl8>}
               inputType="textarea"
               inputVal={row.description}
               name="description"
@@ -82,7 +82,7 @@ const HitModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="wlm002">Severity Level:</Xl8>}
+              labelText={<Xl8 xid="wlm005">Severity Level:</Xl8>}
               inputType="select"
               name="severity"
               inputVal={row.severity}
