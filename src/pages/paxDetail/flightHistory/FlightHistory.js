@@ -24,7 +24,7 @@ const FlightHistory = props => {
     return {
       ...data,
       fullFlightNumber: (
-        <Link to={`/gtas/flightpax/${data.flightId || data.id}`}>
+        <Link to={`/gtas/flightpax/${data.flightId || data.id}`} state={{ data: data }}>
           {data.fullFlightNumber}
         </Link>
       ),
