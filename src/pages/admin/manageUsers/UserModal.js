@@ -1,22 +1,22 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { Modal, Button, Container, Alert } from "react-bootstrap";
+import { Modal, Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import { users, roles } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
 import { UserContext } from "../../../context/user/UserContext";
-import { asArray } from "../../../utils/utils";
+import { asArray, isValidPassword } from "../../../utils/utils";
 import { ACTION, ROLE } from "../../../utils/constants";
 import "./ManageUsers.scss";
+import Toast from "../../../components/toast/Toast";
 
 const UserModal = props => {
   const [selectedRoles, setSelectedRoles] = useState();
   const [allRoles, setAllRoles] = useState([]);
-  const { getUserState, userAction } = useContext(UserContext);
+  const { getUserState } = useContext(UserContext);
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
-  const [variant, setVariant] = useState("");
 
   const cb = function(result) {};
   const row = props.editRowDetails || {};
@@ -82,16 +82,15 @@ const UserModal = props => {
   const postSubmit = (status, res) => {
     if (status === ACTION.CANCEL) {
       props.onHide();
+      setShowAlert(false);
+    } else if (res.status !== "SUCCESS") {
+      const message = res.message || (
+        <Xl8 xid="um03">There was an issue with the server for that request.</Xl8>
+      );
+      setAlertContent(message);
+      setShowAlert(true);
     } else {
-      res.status === "SUCCESS" ? setVariant("success") : setVariant("danger");
-      let message;
-      if (res.message === undefined || res.message === "") {
-        message = "There was an issue with the server for that request.";
-      } else {
-        message = res.message;
-      }
-      /* setAlertContent(message);
-      setShowAlert(true);*/
+      setShowAlert(false);
       props.onHide();
       props.callback(status);
     }
@@ -108,13 +107,44 @@ const UserModal = props => {
     return [res];
   };
 
+  const validateInputs = fields => {
+    const existingUserIds = asArray(props.userIds);
+    let res = { ...fields[0] };
+    const INVALID_USER_ERROR = (
+      <Xl8 xid="um01">
+        The user ID is already in the system. Please choose a different user ID.
+      </Xl8>
+    );
+    const INVALID_PASSWORD_ERROR = (
+      <Xl8 xid="um02">
+        The password you entered does not satisfy the password criteria.
+      </Xl8>
+    );
+    let validPassword = true;
+    let validUserId = true;
+
+    if (!props.isEdit) {
+      validPassword = isValidPassword(res.password);
+      validUserId = !existingUserIds.includes(res.userId?.toUpperCase());
+    }
+    if (!validUserId) {
+      setAlertContent(INVALID_USER_ERROR);
+      setShowAlert(true);
+    } else if (!validPassword) {
+      setAlertContent(INVALID_PASSWORD_ERROR);
+      setShowAlert(true);
+    }
+
+    return validPassword && validUserId;
+  };
+
   const getPasswordInput = () => {
     return props.isEdit ? (
       <></>
     ) : (
       <LabelledInput
         datafield
-        labelText={<Xl8 xid="um01">Password</Xl8>}
+        labelText={<Xl8 xid="um04">Password</Xl8>}
         inputType="password"
         name="password"
         required={true}
@@ -131,28 +161,13 @@ const UserModal = props => {
     });
   }, []);
 
-  const buttons = props.isEdit
-    ? [
-        <Button
-          type="button"
-          className="m-2 outline-dark-outline"
-          variant="outline-dark"
-          key="delete"
-          onClick={() => {
-            users.del(props.editRowDetails.userId).then(res => {
-              postSubmit(ACTION.DELETE, res);
-            });
-          }}
-        >
-          {<Xl8 xid="um02">Delete</Xl8>}
-        </Button>
-      ]
-    : [];
-
   return (
     <Modal
       show={props.show}
-      onHide={props.onHide}
+      onHide={() => {
+        props.onHide();
+        setShowAlert(false);
+      }}
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -160,13 +175,6 @@ const UserModal = props => {
       <Modal.Header closeButton>
         <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
-      <Alert show={showAlert} variant={variant}>
-        {alertContent}
-        <hr />
-        <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          {<Xl8 xid="form003">Confirm</Xl8>}
-        </Button>
-      </Alert>
       <Modal.Body>
         <Container fluid>
           <Form
@@ -176,12 +184,12 @@ const UserModal = props => {
             action="add"
             paramCallback={preSubmit}
             cancellable
-            customButtons={buttons}
+            validateInputs={validateInputs}
           >
             {props.isEdit ? (
               <LabelledInput
                 datafield
-                labelText={<Xl8 xid="um003">User ID:</Xl8>}
+                labelText={<Xl8 xid="um005">User ID:</Xl8>}
                 inputType="text"
                 name="userId"
                 required={true}
@@ -194,7 +202,7 @@ const UserModal = props => {
             ) : (
               <LabelledInput
                 datafield
-                labelText={<Xl8 xid="um003">User ID:</Xl8>}
+                labelText={<Xl8 xid="um005">User ID:</Xl8>}
                 inputType="text"
                 name="userId"
                 required={true}
@@ -209,7 +217,7 @@ const UserModal = props => {
 
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="um004">First Name:</Xl8>}
+              labelText={<Xl8 xid="um007">First Name:</Xl8>}
               inputType="text"
               name="firstName"
               required={true}
@@ -220,7 +228,7 @@ const UserModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="um005">Last Name:</Xl8>}
+              labelText={<Xl8 xid="um008">Last Name:</Xl8>}
               inputType="text"
               name="lastName"
               required={true}
@@ -232,7 +240,7 @@ const UserModal = props => {
 
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="um006">Email:</Xl8>}
+              labelText={<Xl8 xid="um009">Email:</Xl8>}
               inputType="email"
               name="email"
               required={true}
@@ -243,7 +251,7 @@ const UserModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="um007">Phone Number:</Xl8>}
+              labelText={<Xl8 xid="um010">Phone Number:</Xl8>}
               inputType="tel"
               name="phoneNumber"
               inputVal={row.phoneNumber}
@@ -255,7 +263,7 @@ const UserModal = props => {
 
             <LabelledInput
               datafield="emailEnabled"
-              labelText={<Xl8 xid="um007">Enable User Email Notification:</Xl8>}
+              labelText={<Xl8 xid="um011">Enable User Email Notification:</Xl8>}
               inputType="checkbox"
               name="emailEnabled"
               required={true}
@@ -268,7 +276,7 @@ const UserModal = props => {
 
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="um007">Automated Email Notification:</Xl8>}
+              labelText={<Xl8 xid="um012">Automated Email Notification:</Xl8>}
               inputType="checkbox"
               name="highPriorityEmail"
               required={true}
@@ -281,7 +289,7 @@ const UserModal = props => {
             {props.isEdit ? (
               <LabelledInput
                 datafield
-                labelText={<Xl8 xid="um007">User Is Enabled:</Xl8>}
+                labelText={<Xl8 xid="um013">User Is Enabled:</Xl8>}
                 inputType="checkbox"
                 name="active"
                 required={true}
@@ -295,7 +303,7 @@ const UserModal = props => {
             ) : (
               <LabelledInput
                 datafield
-                labelText={<Xl8 xid="um007">User Is Enabled:</Xl8>}
+                labelText={<Xl8 xid="um014">User Is Enabled:</Xl8>}
                 inputType="checkbox"
                 name="active"
                 required={true}
@@ -312,11 +320,19 @@ const UserModal = props => {
                 datafield
                 callback={cbRoles}
                 inputVal={rcb.value}
-                labelText={<Xl8 xid="um007">Roles:</Xl8>}
+                labelText={<Xl8 xid="um015">Roles:</Xl8>}
                 name="roles"
               />
             </div>
           </Form>
+
+          <Toast
+            onClose={() => setShowAlert(false)}
+            show={showAlert}
+            header={<Xl8 xid="um016">Add / Edit User</Xl8>}
+            body={alertContent}
+            variant={"danger"}
+          />
         </Container>
       </Modal.Body>
     </Modal>

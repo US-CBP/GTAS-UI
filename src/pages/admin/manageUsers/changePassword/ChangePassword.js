@@ -6,7 +6,7 @@ import { Container, Alert } from "react-bootstrap";
 import Title from "../../../../components/title/Title";
 import Xl8 from "../../../../components/xl8/Xl8";
 import "./ChangePassword.scss";
-import { hasData } from "../../../../utils/utils";
+import { hasData, isValidPassword } from "../../../../utils/utils";
 
 const ChangePassword = props => {
   const [oldPassword, setOldPassword] = useState();
@@ -73,12 +73,6 @@ const ChangePassword = props => {
     if (input.name === "confirmPassword") {
       setConfirmedPassword(input.value);
     }
-  };
-  const isValidPassword = password => {
-    const passwordConstraint = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{10,20})"
-    );
-    return passwordConstraint.test(password);
   };
 
   const validateInputs = fields => {
