@@ -2,16 +2,20 @@
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
-$background-image-url: "../../images/WCO_background1000.png";
-$wco-blue: rgb(0, 119, 200);
+$background-image-url: "../../images/plane01.jpg";
+$wco-blue: #0082c3;
 $wco-blue-dark: darken($wco-blue, 20%);
 $wco-gray: rgb(141, 144, 147);
 $wco-gray-dark: darken($wco-gray, 20%);
 $gtas-white: rgba(255, 255, 255, 0.9);
-$transparent: rgba(223, 231, 247, 0);
+$transparent: #0082c3d9;
 
 .profile {
   font-size: 200px;
+}
+
+.paxdetails-side-nav .filter-fg .col {
+  background-color: #005aa750;
 }
 
 .profile-container {
@@ -115,18 +119,35 @@ $transparent: rgba(223, 231, 247, 0);
   overflow: auto;
 }
 
+.filter-fg::-webkit-scrollbar-thumb {
+  border: 5px solid $wco-blue !important;
+}
+
 .margintop20 {
   margin-top: 20px;
 }
 
 .filter-bg {
   z-index: 5;
-  background: linear-gradient($wco-blue, $transparent),
+  background: linear-gradient(#575756, #00000080),
     url($background-image-url) no-repeat no-repeat;
   background-position: center center;
   background-size: cover;
+  background-blend-mode: darken;
 }
 
 hr {
   border-top: 1px solid rgba(230, 230, 230, 1);
+}
+
+.filter-fg > .col {
+  margin-top: 50px;
+  background: #20202040;
+  backdrop-filter: blur(2px);
+  border-radius: 0.5rem;
+  padding-bottom: 5px;
+}
+
+.filter-screen {
+  // background: linear-gradient(#575756, transparent);
 }

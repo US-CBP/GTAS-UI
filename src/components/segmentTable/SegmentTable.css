@@ -2,6 +2,8 @@
   /* height is calculated by the parent paxdetail */
   overflow: auto;
   font-size: smaller;
+  background-color: white;
+  padding-left: 15px;
 }
 
 .segment-table > .table-responsive {

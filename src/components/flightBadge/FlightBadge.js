@@ -1,33 +1,32 @@
 import React from "react";
 import "./FlightBadge.scss";
 import LabelledInput from "../labelledInput/LabelledInput";
-import { fas, faPlaneArrival } from "@fortawesome/free-solid-svg-icons";
+// import { fas, faPlaneArrival } from "@fortawesome/free-solid-svg-icons";
 
 const FlightBadge = props => {
-  const arrival = props.arrival;
-  const departure = props.departure;
+  console.log(props);
+
+  const arrival = props.arrival || [];
+  const departure = props.departure || [];
   const flightNumber = props.flightNumber;
   return (
-    <>
-      <LabelledInput
-        alt="Flight"
-        inputStyle="big-name-sidebar fa fa-plane"
-        inputType="label"
-        inputVal={flightNumber}
-      />
-      <LabelledInput
-        alt="Flight"
-        inputStyle="big-name-sidebar fa fa-arrow-circle-up"
-        inputType="label"
-        inputVal={departure}
-      />
-      <LabelledInput
-        alt="Flight"
-        inputStyle="big-name-sidebar fas fa-arrow-circle-down"
-        inputType="label"
-        inputVal={arrival}
-      />
-    </>
+    <div className="flight-badge">
+      <div className="flight-number">{flightNumber}</div>
+      <div className="flight-text">
+        <table>
+          <tr>
+            <td>{departure[0]}</td>
+            <td>{departure[1]}</td>
+            <td>{departure[2]}</td>
+          </tr>
+          <tr>
+            <td>{arrival[0]}</td>
+            <td>{arrival[1]}</td>
+            <td>{arrival[2]}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   );
 };
 

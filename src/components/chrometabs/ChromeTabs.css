@@ -322,3 +322,8 @@
 .chrome-tabs .chrome-tab:nth-child(6) {
   transform: translate3d(500px, 0, 0);
 }
+
+.chrome-tabs-content > .tab-content > .tab-pane {
+  display: block;
+  opacity: 1;
+}

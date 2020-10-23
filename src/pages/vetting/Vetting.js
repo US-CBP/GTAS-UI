@@ -333,7 +333,6 @@ const Vetting = props => {
               alt="My Rules Only"
               spacebetween
             />
-            <hr />
             <LabelledInput
               name="displayStatusCheckBoxes"
               datafield="displayStatusCheckBoxes"

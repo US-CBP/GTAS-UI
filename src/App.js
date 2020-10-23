@@ -5,7 +5,7 @@ import loadable from "@loadable/component";
 
 import "./App.css";
 import "font-awesome/css/font-awesome.min.css";
-import "@fortawesome/free-solid-svg-icons";
+// import "@fortawesome/free-solid-svg-icons";
 
 import Xl8 from "./components/xl8/Xl8";
 
@@ -266,7 +266,7 @@ export default class App extends React.Component {
                               <APIS path="apis"></APIS>
                               <PNR path="pnr"></PNR>
                               <FlightHistory path="flighthistory"></FlightHistory>
-                              <LinkAnalysis path="linkanalysis"></LinkAnalysis>
+                              {/* <LinkAnalysis path="linkanalysis"></LinkAnalysis> */}
                               <UploadAttachment path="uploadattachment"></UploadAttachment>
                             </PaxDetail>
                           </RoleAuthenticator>

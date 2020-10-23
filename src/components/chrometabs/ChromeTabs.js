@@ -4,31 +4,64 @@ import { Tab } from "react-bootstrap";
 import "./ChromeTabs.css";
 
 const ChromeTabs = props => {
-  const [key, setKey] = useState();
+  const [key, setKey] = useState(0);
   const tabsRef = useRef(null);
   let instanceId = 1;
-  const tablist = props.tabs.map(tab => {
+
+  console.log(props.tabs);
+
+  const initTabList = props.tabs.map(tab => {
     return (
-      // <Tab eventKey={tab.titleText} key={tab.titleText} {...tab}>
-      //   {tab.link}
-      // </Tab>
-      <div
-        class="chrome-tab"
+      <Tab
         eventKey={tab.titleText}
         key={tab.titleText}
         data-chrome-tabs-instance-id={instanceId++}
+        {...tab}
       >
-        <div class="chrome-tab-dividers"></div>
-        <div class="chrome-tab-background"></div>
-        <div class="chrome-tab-content">
-          <div class="chrome-tab-favicon"></div>
-          <div class="chrome-tab-title">{tab.titleText}</div>
-          <div class="chrome-tab-drag-handle"></div>
-          <div class="chrome-tab-close"></div>
+        <div
+          class="chrome-tab"
+          eventKey={tab.titleText}
+          key={tab.titleText}
+          data-chrome-tabs-instance-id={instanceId++}
+        >
+          <div class="chrome-tab-dividers"></div>
+          <div class="chrome-tab-background"></div>
+          <div class="chrome-tab-content">
+            {/* <div class="chrome-tab-favicon"></div> */}
+            <div class="chrome-tab-title">{tab.titleText}</div>
+            <div class="chrome-tab-drag-handle"></div>
+            {/* <div class="chrome-tab-close"></div> */}
+          </div>
         </div>
-      </div>
+      </Tab>
+
+      // <div
+      //   class="chrome-tab"
+      //   eventKey={tab.titleText}
+      //   key={tab.titleText}
+      //   data-chrome-tabs-instance-id={instanceId++}
+      // >
+      //   <div class="chrome-tab-dividers"></div>
+      //   <div class="chrome-tab-background"></div>
+      //   <div class="chrome-tab-content">
+      //     <div class="chrome-tab-favicon"></div>
+      //     <div class="chrome-tab-title">{tab.titleText}</div>
+      //     <div class="chrome-tab-drag-handle"></div>
+      //     <div class="chrome-tab-close"></div>
+      //   </div>
+      // </div>
     );
   });
+
+  const [tabContentWidths, setTabContentWidths] = useState([
+    100,
+    100,
+    100,
+    100,
+    100,
+    100
+  ]);
+  const [tabList, setTabList] = useState(initTabList);
 
   const TAB_CONTENT_MARGIN = 9;
   const TAB_CONTENT_OVERLAP_DISTANCE = 1;
@@ -41,45 +74,6 @@ const ChromeTabs = props => {
   const TAB_SIZE_SMALL = 84;
   const TAB_SIZE_SMALLER = 60;
   const TAB_SIZE_MINI = 48;
-
-  const noop = _ => {};
-
-  const closest = (value, array) => {
-    let closest = Infinity;
-    let closestIndex = -1;
-
-    array.forEach((v, i) => {
-      if (Math.abs(value - v) < closest) {
-        closest = Math.abs(value - v);
-        closestIndex = i;
-      }
-    });
-
-    return closestIndex;
-  };
-
-  const tabTemplate = (
-    <div class="chrome-tab">
-      <div class="chrome-tab-dividers"></div>
-      <div class="chrome-tab-background"></div>
-      <div class="chrome-tab-content">
-        <div class="chrome-tab-favicon"></div>
-        <div class="chrome-tab-title"></div>
-        <div class="chrome-tab-drag-handle"></div>
-        <div class="chrome-tab-close"></div>
-      </div>
-    </div>
-  );
-
-  const defaultTapProperties = {
-    title: "New tab",
-    favicon: false
-  };
-
-  //init
-  // this.instanceId = instanceId;
-  // this.el.setAttribute("data-chrome-tabs-instance-id", this.instanceId);
-  // instanceId += 1;
 
   const getActiveTabEl = () => {
     // return this.el.querySelector(".chrome-tab[active]");
@@ -97,60 +91,28 @@ const ChromeTabs = props => {
     // this.emit("activeTabChange", { tabEl });
   };
 
-  const updateTab = (tabEl, tabProperties) => {
-    // tabEl.querySelector(".chrome-tab-title").textContent = tabProperties.title;
-    // const faviconEl = tabEl.querySelector(".chrome-tab-favicon");
-    // if (tabProperties.favicon) {
-    //   faviconEl.style.backgroundImage = `url('${tabProperties.favicon}')`;
-    //   faviconEl.removeAttribute("hidden", "");
-    // } else {
-    //   faviconEl.setAttribute("hidden", "");
-    //   faviconEl.removeAttribute("style");
-    // }
-    // if (tabProperties.id) {
-    //   tabEl.setAttribute("data-tab-id", tabProperties.id);
-    // }
-  };
+  // const setupCustomProperties = () => {
+  //   // this.el.style.setProperty("--tab-content-margin", `${TAB_CONTENT_MARGIN}px`);
+  // };
 
-  const emit = (eventName, data) => {
-    this.el.dispatchEvent(new CustomEvent(eventName, { detail: data }));
-  };
-
-  const setupCustomProperties = () => {
-    // this.el.style.setProperty("--tab-content-margin", `${TAB_CONTENT_MARGIN}px`);
-  };
-
-  const setupStyleEl = () => {
-    // this.styleEl = document.createElement("style");
-    // this.el.appendChild(this.styleEl);
-  };
+  // const setupStyleEl = () => {
+  //   // this.styleEl = document.createElement("style");
+  //   // this.el.appendChild(this.styleEl);
+  // };
 
   const removeEvents = () => {
-    window.removeEventListener("resize", layoutTabs);
+    window.removeEventListener("resize", debounce);
   };
 
   const setupEvents = () => {
-    window.addEventListener("resize", layoutTabs);
-    // this.el.addEventListener("dblclick", event => {
-    //   if ([this.el, this.tabContentEl].includes(event.target)) this.addTab();
-    // });
-    // this.tabEls.forEach(tabEl => this.setTabCloseEventListener(tabEl));
-  };
-
-  const getTabEls = () => {
-    return tablist;
-    // return Array.prototype.slice.call(this.el.querySelectorAll(".chrome-tab"));
-  };
-
-  const getTabContentEl = () => {
-    // return this.el.querySelector(".chrome-tabs-content");
-    // console.log(tabsRef.current);
-    return tabsRef.current;
+    window.addEventListener("resize", debounce);
   };
 
   const getTabContentWidths = () => {
-    const numberOfTabs = getTabEls().length;
-    const tabsContentWidth = getTabContentEl().clientWidth;
+    console.log(tabsRef.current);
+
+    const numberOfTabs = 6;
+    const tabsContentWidth = (tabsRef.current ?? {}).clientWidth;
     const tabsCumulativeOverlappedWidth =
       (numberOfTabs - 1) * TAB_CONTENT_OVERLAP_DISTANCE;
     const targetWidth =
@@ -177,14 +139,15 @@ const ChromeTabs = props => {
       widths.push(flooredClampedTargetWidth + extraWidth);
       if (extraWidthRemaining > 0) extraWidthRemaining -= 1;
     }
+    setTabContentWidths(widths);
     return widths;
   };
 
   const getTabContentPositions = () => {
     const positions = [];
-    const tabContentWidths = getTabContentWidths();
+    const tcwidths = getTabContentWidths();
     let position = TAB_CONTENT_MARGIN;
-    tabContentWidths.forEach((width, i) => {
+    tcwidths.forEach((width, i) => {
       const offset = i * TAB_CONTENT_OVERLAP_DISTANCE;
       positions.push(position - offset);
       position += width;
@@ -200,95 +163,217 @@ const ChromeTabs = props => {
     return positions;
   };
 
+  const debounce = () => {
+    var timer;
+    return function(event) {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(layoutTabs, 200, event);
+    };
+  };
+
   const layoutTabs = () => {
-    // console.log("layout!");
+    console.log("layout@");
+    let idx = 2;
+
     const tabContentWidths = getTabContentWidths();
-    getTabEls().forEach((tabEl, i) => {
-      // console.log(tabEl);
+    const positions = getTabPositions();
+
+    let updatedTabCollection = [];
+
+    const moreUpdated = [
+      <a
+        href="#"
+        role="tab"
+        data-rb-event-key="Summary"
+        aria-selected="true"
+        class="nav-item nav-link chrome-tab active"
+        data-chrome-tabs-instance-id={1}
+        style={{
+          width: `${tabContentWidths[1] + 2 * TAB_CONTENT_MARGIN}px`,
+          transform: `translate3d(${positions[1]}px, 0, 0)`
+        }}
+      >
+        <div class="chrome-tab-title">
+          <span xid="pd001">Summary</span>
+        </div>
+        <div class="chrome-tab-drag-handle"></div>
+      </a>,
+      <a
+        href="#"
+        role="tab"
+        data-rb-event-key="APIS"
+        tabindex="-1"
+        aria-selected="false"
+        class="nav-item nav-link chrome-tab"
+        data-chrome-tabs-instance-id={2}
+        style={{
+          width: `${tabContentWidths[2] + 2 * TAB_CONTENT_MARGIN}px`,
+          transform: `translate3d(${positions[2]}px, 0, 0)`
+        }}
+      >
+        <div class="chrome-tab-title">
+          <span xid="pd002">APIS</span>
+        </div>
+        <div class="chrome-tab-drag-handle"></div>
+      </a>,
+      <a
+        href="#"
+        role="tab"
+        data-rb-event-key="PNR"
+        tabindex="-1"
+        aria-selected="false"
+        class="nav-item nav-link chrome-tab"
+        data-chrome-tabs-instance-id={3}
+        style={{
+          width: `${tabContentWidths[3] + 2 * TAB_CONTENT_MARGIN}px`,
+          transform: `translate3d(${positions[3]}px, 0, 0)`
+        }}
+      >
+        <div class="chrome-tab-title">
+          <span xid="pd003">PNR</span>
+        </div>
+        <div class="chrome-tab-drag-handle"></div>
+      </a>,
+      <a
+        href="#"
+        role="tab"
+        data-rb-event-key="Flight History"
+        tabindex="-1"
+        aria-selected="false"
+        class="nav-item nav-link chrome-tab"
+        data-chrome-tabs-instance-id={4}
+        style={{
+          width: `${tabContentWidths[4] + 2 * TAB_CONTENT_MARGIN}px`,
+          transform: `translate3d(${positions[4]}px, 0, 0)`
+        }}
+      >
+        <div class="chrome-tab-title">
+          <span xid="pd004">Flight History</span>
+        </div>
+        <div class="chrome-tab-drag-handle"></div>
+      </a>,
+      <a
+        href="#"
+        role="tab"
+        data-rb-event-key="Link Analysis"
+        tabindex="-1"
+        aria-selected="false"
+        class="nav-item nav-link chrome-tab"
+        data-chrome-tabs-instance-id={5}
+        style={{
+          width: `${tabContentWidths[5] + 2 * TAB_CONTENT_MARGIN}px`,
+          transform: `translate3d(${positions[5]}px, 0, 0)`
+        }}
+      >
+        <div class="chrome-tab-title">
+          <span xid="pd005">Link Analysis</span>
+        </div>
+        <div class="chrome-tab-drag-handle"></div>
+      </a>,
+      <a
+        href="#"
+        role="tab"
+        data-rb-event-key="Attachments"
+        tabindex="-1"
+        aria-selected="false"
+        class="nav-item nav-link chrome-tab"
+        data-chrome-tabs-instance-id={6}
+        style={{
+          width: `${tabContentWidths[6] + 2 * TAB_CONTENT_MARGIN}px`,
+          transform: `translate3d(${positions[6]}px, 0, 0)`
+        }}
+      >
+        <div class="chrome-tab-title">
+          <span xid="pd006">Attachments</span>
+        </div>
+        <div class="chrome-tab-drag-handle"></div>
+      </a>
+    ];
+
+    props.tabs.forEach((tab, i) => {
       const contentWidth = tabContentWidths[i];
       const width = contentWidth + 2 * TAB_CONTENT_MARGIN;
 
-      const elStyle = { width: width + "px" };
+      const elStyle = {
+        width: width + "px",
+        transform: `translate3d(${positions[i]}px, 0, 0)`
+      };
 
-      // tabEl.style = elStyle;
-      // tabEl.removeAttribute("is-small");
-      // tabEl.removeAttribute("is-smaller");
-      // tabEl.removeAttribute("is-mini");
-      // if (contentWidth < TAB_SIZE_SMALL) tabEl.setAttribute("is-small", "");
-      // if (contentWidth < TAB_SIZE_SMALLER) tabEl.setAttribute("is-smaller", "");
-      // if (contentWidth < TAB_SIZE_MINI) tabEl.setAttribute("is-mini", "");
-    });
-    let styleHTML = "";
-    getTabPositions().forEach((position, i) => {
-      styleHTML += `
-      .chrome-tabs[data-chrome-tabs-instance-id="${i}"] .chrome-tab:nth-child(${i + 1}) {
-        transform: translate3d(${position}px, 0, 0)
-      }
-    `;
+      const updatedTab = (
+        // <div
+        //   class="chrome-tab-content"
+        //   eventKey={tabEl.titleText}
+        //   key={tabEl.titleText}
+        //   data-chrome-tabs-instance-id={idx++}
+        //   style={elStyle}
+        // >
+        //   <div class="chrome-tab-favicon"></div>
+        //   <div class="chrome-tab-title">{tabEl.titleText}</div>
+        //   <div class="chrome-tab-drag-handle"></div>
+        // </div>
+
+        <Tab
+          eventKey={tab.titleText}
+          key={tab.titleText}
+          data-chrome-tabs-instance-id={idx++}
+          {...tab}
+          style={elStyle}
+          className="chrome-tab"
+        >
+          <div class="chrome-tab-dividers"></div>
+          <div class="chrome-tab-background"></div>
+          <div class="chrome-tab-content">
+            {/* <div class="chrome-tab-favicon"></div> */}
+            <div class="chrome-tab-title">{tab.titleText}</div>
+            <div class="chrome-tab-drag-handle"></div>
+            {/* <div class="chrome-tab-close"></div> */}
+          </div>
+        </Tab>
+      );
+
+      updatedTabCollection.push(updatedTab);
     });
 
-    console.log(styleHTML);
+    setTabList(updatedTabCollection);
+    setKey(key + 1);
+    // let styleHTML = "";
+    // getTabPositions().forEach((position, i) => {
+    //   styleHTML += `
+    //   .chrome-tabs[data-chrome-tabs-instance-id="${i}"] .chrome-tab:nth-child(${i + 1}) {
+    //     transform: translate3d(${position}px, 0, 0)
+    //   }
+    // `;
+    // });
+
+    // console.log(styleHTML);
     // this.styleEl.innerHTML = styleHTML;
   };
 
-  // createNewTabEl() {
-  //   const div = document.createElement('div')
-  //   div.innerHTML = tabTemplate
-  //   return div.firstElementChild
-  // }
-
   useEffect(() => {
-    setupCustomProperties();
-    setupStyleEl();
+    // setupCustomProperties();
+    // setupStyleEl();
     setupEvents();
     layoutTabs();
     return removeEvents;
-  });
+  }, []);
 
   return (
-    // <div class="surface">
-    //   <div class="mock-browser">
-    //     <div class="chrome-tabs" style="--tab-content-margin: 9px">
-    //       <div class="chrome-tabs-content">
-    //         <div class="chrome-tab">
-    //           <div class="chrome-tab-dividers"></div>
-    //           <div class="chrome-tab-background"></div>
-    //           <div class="chrome-tab-content">
-    //             <div class="chrome-tab-favicon" style=""></div>
-    //             <div class="chrome-tab-title">Google</div>
-    //             <div class="chrome-tab-drag-handle"></div>
-    //             <div class="chrome-tab-close"></div>
-    //           </div>
-    //         </div>
-    //         <div class="chrome-tab" active>
-    //           <div class="chrome-tab-dividers"></div>
-    //           <div class="chrome-tab-background"></div>
-    //           <div class="chrome-tab-content">
-    //             <div class="chrome-tab-favicon"></div>
-    //             <div class="chrome-tab-title">Facebook</div>
-    //             <div class="chrome-tab-drag-handle"></div>
-    //             <div class="chrome-tab-close"></div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //       <div class="chrome-tabs-bottom-bar"></div>
-    //     </div>
-    //     <div class="chrome-tabs-optional-shadow-below-bottom-bar"></div>
-    //   </div>
-    // </div>
-
     // <RBTabs className="gtas-tabs" activeKey={key} onSelect={k => setKey(k)}>
 
-    <div class="surface">
-      <div class="mock-browser">
-        <div class="chrome-tabs" style={{ "--tab-content-margin": "9px" }}>
-          <div class="chrome-tabs-content" ref={tabsRef}>
-            {tablist}
-          </div>
-          <div class="chrome-tabs-bottom-bar"></div>
+    <div key={key}>
+      <div class="chrome-tabs" style={{ "--tab-content-margin": "9px", height: "140px" }}>
+        <div class="chrome-tabs-content" ref={tabsRef}>
+          <RBTabs className="" activeKey={key} onSelect={k => setKey(k)}>
+            {tabList}
+          </RBTabs>
+
+          {/* <nav class="nav nav-tabs" role="tablist">
+            {tabList}
+          </nav> */}
         </div>
-        <div class="chrome-tabs-optional-shadow-below-bottom-bar"></div>
+        <div class="chrome-tabs-bottom-bar"></div>
       </div>
+      <div class="chrome-tabs-optional-shadow-below-bottom-bar"></div>
     </div>
   );
 };

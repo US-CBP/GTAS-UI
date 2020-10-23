@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
 import ChromeTabs from "../../components/chrometabs/ChromeTabs";
-import { Navbar, Nav, DropdownButton, Dropdown } from "react-bootstrap";
+import { Navbar, Nav, DropdownButton, Col } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
@@ -82,8 +82,8 @@ const PaxDetail = props => {
 
   const flightBadgeData = res => {
     return {
-      arrival: `${res.flightDestination} ${localeDate(res.eta)}`,
-      departure: `${res.flightOrigin} ${localeDate(res.etd)}`,
+      arrival: [res.flightDestination, ...localeDate(res.eta).split(",")],
+      departure: [res.flightOrigin, ...localeDate(res.etd).split(",")],
       flightNumber: `${res.carrier}${res.flightNumber}`
     };
   };
@@ -170,15 +170,15 @@ const PaxDetail = props => {
       titleText: "Flight History",
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
-    ...(hasData(paxDetailsData)
-      ? [
-          {
-            title: <Xl8 xid="pd005">Link Analysis</Xl8>,
-            titleText: "Link Analysis",
-            link: <LinkAnalysis paxData={paxDetailsData} />
-          }
-        ]
-      : []),
+    // ...(hasData(paxDetailsData)
+    //   ? [
+    //       {
+    //         title: <Xl8 xid="pd005">Link Analysis</Xl8>,
+    //         titleText: "Link Analysis",
+    //         link: <LinkAnalysis paxData={paxDetailsData} />
+    //       }
+    //     ]
+    //   : []),
     {
       titleText: "Attachments",
       title: <Xl8 xid="pd006">Attachments</Xl8>,
@@ -206,7 +206,7 @@ const PaxDetail = props => {
       setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
       setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
       setHasPnrRecord(res.pnrVo?.pnrRecordExists || false);
-      setPaxDetailsData(res);
+      // setPaxDetailsData(res);
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
       setWatchlistData({ passenger: p, documents: res.documents });
       setPaxDocuments(res.documents);
@@ -219,7 +219,7 @@ const PaxDetail = props => {
 
   // TODO: refac tabs as child routes, load data per page.
   const actions = (
-    <DropdownButton variant="outline-info" title="Choose Action" className="m-1">
+    <DropdownButton variant="info" title="Choose Action" className="m-1">
       <EventNotesModal
         paxId={props.paxId}
         setEventNoteRefreshKey={setEventNoteRefreshKey}
@@ -242,11 +242,11 @@ const PaxDetail = props => {
   const tablist = <Tabs tabs={tabs} />;
   return (
     <>
-      <SidenavContainer className="paxdetails-side-nav">
-        <br />
-        <PaxInfo pax={pax} badgeprops={flightBadge}></PaxInfo>
-        <hr />
-        <FlightLegSegments />
+      <SidenavContainer>
+        <Col>
+          <PaxInfo pax={pax} badgeprops={flightBadge}></PaxInfo>
+          <FlightLegSegments />
+        </Col>
       </SidenavContainer>
       <Main className="main">
         {/* <ChromeTabs tabs={tabs}></ChromeTabs> */}

@@ -86,14 +86,6 @@ body {
   padding-top: 20px;
 }
 
-.filter-bg {
-  z-index: 5;
-  background: linear-gradient(rgb(0, 119, 200), rgba(223, 231, 247, 0)),
-    url("./images/WCO_flag.svg") no-repeat no-repeat;
-  background-position: center center;
-  background-size: cover;
-}
-
 input[type="checkbox"],
 input[type="radio"] {
   box-sizing: border-box;

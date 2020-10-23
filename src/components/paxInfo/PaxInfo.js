@@ -23,12 +23,12 @@ const PaxInfo = props => {
   }, []);
 
   return (
-    <div>
+    <>
       <FlightBadge {...badgeprops}></FlightBadge>
-      <Table size="sm" striped borderless>
+      <Table size="sm" borderless>
         <tbody>{tableRows}</tbody>
       </Table>
-    </div>
+    </>
   );
 };
 

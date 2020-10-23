@@ -173,11 +173,11 @@ const FilterForm = props => {
         </ErrorBoundary>
         <br></br>
         <ButtonToolbar className="container">
-          <Button type="reset" variant="outline-dark m-1 text-white outline-dark-outline">
+          <Button type="reset" variant="dark m-1 text-white">
             {props.clearText || <Xl8 xid="ff001">Reset</Xl8>}
           </Button>
           &nbsp;
-          <Button type="submit" variant="ternary m-1">
+          <Button type="submit" variant="primary m-1">
             {props.submitText || <Xl8 xid="ff002">Search</Xl8>}
           </Button>
         </ButtonToolbar>

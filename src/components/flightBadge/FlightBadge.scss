@@ -1,18 +1,27 @@
 .flight-badge {
-  background-color: rgba(255, 255, 255, 0.9);
-  color: black;
-  font-size: smaller;
-  border-radius: 1rem 0;
-  margin-bottom: 5px;
-  font-weight: 900;
+  font-size: x-large;
+  font-weight: 600;
+  text-align: center !important;
+  background: white;
+  border: 2px solid #009fe3;
+  border-radius: 0.25rem;
+  margin: 0px -10px;
+  padding: 10px 5px;
 
   .flight-number {
+    color: #0082c3;
     font-weight: 900;
-    margin-top: 5%;
     align-items: center;
   }
 
   .flight-text {
-    font-weight: 900;
+    color: #575756;
+    font-size: large;
+    font-weight: 600;
+
+    .table {
+      display: inline-table;
+      min-width: -webkit-fill-available;
+    }
   }
 }
