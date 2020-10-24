@@ -23,11 +23,6 @@ const FlightHistory = props => {
   const parseFlightData = data => {
     return {
       ...data,
-      fullFlightNumber: (
-        <Link to={`/gtas/flightpax/${data.flightId || data.id}`} state={{ data: data }}>
-          {data.fullFlightNumber}
-        </Link>
-      ),
       etd: localeDate(data.etd),
       eta: localeDate(data.eta)
     };
