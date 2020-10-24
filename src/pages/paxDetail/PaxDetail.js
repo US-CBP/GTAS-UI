@@ -87,33 +87,6 @@ const PaxDetail = props => {
     };
   };
 
-  const getTidyFlightLegData = fLegs => {
-    fLegs.sort((fl1, fl2) => {
-      if (fl1.legNumber < fl2.legNumber) return -1;
-      if (fl1.legNumber > fl2.legNumber) return 1;
-      else return 0;
-    });
-
-    const completeFlight = []; //holds all legs through out the complete flight
-    let completeLeg = []; //holds all contious legs (where current.orign == prev.destination)
-    fLegs.forEach((leg, index) => {
-      leg.legNumber = index + 1;
-
-      if (completeLeg.length === 0) {
-        completeLeg.push({ label: leg.originAirport, active: true });
-      } else if (fLegs[index].originAirport !== leg.originAirport) {
-        completeFlight.push(completeLeg); //leg ended
-        completeLeg = [{ label: leg.originAirport, active: true }]; //start a new leg
-      } else {
-        completeLeg[completeLeg.length - 1].active = true;
-      }
-      completeLeg.push({ label: leg.destinationAirport, active: false });
-    });
-    completeFlight.push(completeLeg);
-
-    return completeFlight;
-  };
-
   const [flightBadge, setFlightBadge] = useState({});
   const [pax, setPax] = useState([]);
   const [pnr, setPnr] = useState({});
@@ -122,7 +95,7 @@ const PaxDetail = props => {
   const [eventNoteRefreshKey, setEventNoteRefreshKey] = useState();
   const [hasOpenHit, setHasOpenHit] = useState(false);
   const [hasHit, setHasHit] = useState(false);
-  const [flightLegsSegmentData, setFlightLegsSegmentData] = useState([]);
+  const [flightLegsSegmentData, setFlightLegsSegmentData] = useState();
   const [hasApisRecord, setHasApisRecord] = useState(false);
   const [hasPnrRecord, setHasPnrRecord] = useState(false);
   const [watchlistData, setWatchlistData] = useState({});
@@ -192,9 +165,6 @@ const PaxDetail = props => {
       });
     }
   };
-  const FlightLegSegments = () => {
-    return flightLegsSegmentData.map((fl, index) => <Stepper key={index} steps={fl} />);
-  };
 
   const fetchData = () => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
@@ -202,7 +172,7 @@ const PaxDetail = props => {
       setFlightBadge(flightBadgeData(res));
       setPnr({ ...res.pnrVo, flightId: props.flightId });
       setApisMessage(res.apisMessageVo);
-      setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
+      setFlightLegsSegmentData(asArray(res.pnrVo?.flightLegs));
       setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
       setHasPnrRecord(res.pnrVo?.pnrRecordExists || false);
       setPaxDetailsData(res);
@@ -245,7 +215,7 @@ const PaxDetail = props => {
         <br />
         <PaxInfo pax={pax} badgeprops={flightBadge}></PaxInfo>
         <hr />
-        <FlightLegSegments />
+        {hasData(flightLegsSegmentData) && <Stepper steps={flightLegsSegmentData} />}
       </SidenavContainer>
       <Main className="main">
         <Title
