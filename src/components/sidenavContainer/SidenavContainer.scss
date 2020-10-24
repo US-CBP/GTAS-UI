@@ -6,7 +6,7 @@ $background-image-url: "../../images/plane01.jpg";
 $wco-blue: #0082c3;
 $wco-blue-dark: darken($wco-blue, 20%);
 $wco-gray: rgb(141, 144, 147);
-$wco-gray-dark: darken($wco-gray, 20%);
+$wco-gray-dark: #575756;
 $gtas-white: rgba(255, 255, 255, 0.9);
 $transparent: #0082c3d9;
 
@@ -92,7 +92,7 @@ $transparent: #0082c3d9;
 }
 
 .main-overlay {
-  display: none;
+  // display: none;
 }
 
 .main-overlay-open {
@@ -120,7 +120,9 @@ $transparent: #0082c3d9;
 }
 
 .filter-fg::-webkit-scrollbar-thumb {
-  border: 5px solid $wco-blue !important;
+  border: 5px solid #40403f !important;
+  background-color: white;
+  border-radius: 12px;
 }
 
 .margintop20 {
@@ -129,11 +131,10 @@ $transparent: #0082c3d9;
 
 .filter-bg {
   z-index: 5;
-  background: linear-gradient(#575756, #00000080),
+  background: linear-gradient(#00000050, #00000050),
     url($background-image-url) no-repeat no-repeat;
   background-position: center center;
-  background-size: cover;
-  background-blend-mode: darken;
+  background-size: inherit;
 }
 
 hr {
@@ -153,5 +154,23 @@ hr {
 }
 
 .filter-screen {
-  // background: linear-gradient(#575756, transparent);
+  // background: #00000050;
+  // z-index: 6;
+}
+
+.dropdown-content > .panel-content > .select-panel > ul > li > label > .item-renderer {
+  display: flex;
+}
+
+.dropdown-content > .panel-content > .select-panel > ul > li > label,
+.dropdown-content > .panel-content > .select-panel > label {
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: 0;
+  padding: 5px 10px;
+  margin-bottom: 0px;
+  line-break: anywhere;
+}
+
+.item-renderer > .input {
 }

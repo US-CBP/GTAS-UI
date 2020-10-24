@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import Table from "../../../components/table/Table";
 import { signuprequests } from "../../../services/serviceWrapper";
@@ -133,41 +133,42 @@ const SignUpRequests = () => {
   return (
     <>
       <SidenavContainer>
-        <br />
-        <FilterForm
-          service={signuprequests.get}
-          paramCallback={preFetchCallback}
-          callback={setDataWrapper}
-          key={fetchData}
-        >
-          <LabelledInput
-            labelText={<Xl8 xid="sur003">Username</Xl8>}
-            datafield
-            name="username"
-            inputType="text"
-            callback={cb}
-            alt="Username"
-          />
-          <LabelledInput
-            labelText={<Xl8 xid="sur004">Status</Xl8>}
-            datafield
-            name="status"
-            inputType="select"
-            inputVal="NEW"
-            inputStyle="form-select"
-            options={requestStatusOptions}
-            callback={cb}
-            alt="status"
-          />
-          <LabelledInput
-            labelText={<Xl8 xid="sur005">Location</Xl8>}
-            datafield
-            name="location"
-            inputType="text"
-            callback={cb}
-            alt="Location"
-          />
-        </FilterForm>
+        <Col>
+          <FilterForm
+            service={signuprequests.get}
+            paramCallback={preFetchCallback}
+            callback={setDataWrapper}
+            key={fetchData}
+          >
+            <LabelledInput
+              labelText={<Xl8 xid="sur003">Username</Xl8>}
+              datafield
+              name="username"
+              inputType="text"
+              callback={cb}
+              alt="Username"
+            />
+            <LabelledInput
+              labelText={<Xl8 xid="sur004">Status</Xl8>}
+              datafield
+              name="status"
+              inputType="select"
+              inputVal="NEW"
+              inputStyle="form-select"
+              options={requestStatusOptions}
+              callback={cb}
+              alt="status"
+            />
+            <LabelledInput
+              labelText={<Xl8 xid="sur005">Location</Xl8>}
+              datafield
+              name="location"
+              inputType="text"
+              callback={cb}
+              alt="Location"
+            />
+          </FilterForm>
+        </Col>
       </SidenavContainer>
       <Main>
         <Title title={<Xl8 xid="sur006">Sign Up Requests</Xl8>}></Title>
