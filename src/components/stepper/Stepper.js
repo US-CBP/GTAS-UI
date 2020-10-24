@@ -16,7 +16,6 @@ const Stepper = props => {
     });
 
     let completeLeg = [];
-    let idx = 0;
     raw.forEach(leg => {
       if (completeLeg.length === 0) {
         completeLeg.push({
@@ -24,7 +23,7 @@ const Stepper = props => {
           new: false,
           active: isActive(leg.etd)
         });
-      } else if (completeLeg[idx - 1].label !== leg.originAirport) {
+      } else if (completeLeg[completeLeg.length - 1].label !== leg.originAirport) {
         completeLeg.push({
           label: leg.originAirport,
           new: true,
@@ -37,8 +36,6 @@ const Stepper = props => {
           active: isActive(leg.etd)
         });
       }
-      idx++;
-      idx++;
       completeLeg.push({
         label: leg.destinationAirport,
         new: false,
