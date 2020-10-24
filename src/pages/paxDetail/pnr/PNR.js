@@ -80,7 +80,18 @@ const PNR = props => {
     return {
       leg: index + 1,
       flightNumber: (
-        <Link to={`/gtas/flightpax/${leg.flightId}`}>{leg.flightNumber}</Link>
+        <Link
+          to={`/gtas/flightpax/${leg.flightId}`}
+          state={{
+            data: {
+              ...leg,
+              destination: leg.destinationAirport,
+              origin: leg.originAirport
+            }
+          }}
+        >
+          {leg.flightNumber}
+        </Link>
       ),
       origin: leg.originAirport,
       destination: leg.destinationAirport,
