@@ -7,11 +7,11 @@ import { Button, Tabs, Tab, Row } from "react-bootstrap";
 import { wlpax, wldocs, hitcats } from "../../../services/serviceWrapper";
 import { hasData } from "../../../utils/utils";
 import WLModal from "./WLModal";
-import "./Watchlist.css";
 import "./constants.js";
 import CSVReader from "../../../components/CSVReader/CSVReader";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
+import "./Watchlist.css";
 
 const Watchlist = props => {
   const cb = function(result) {};
@@ -115,7 +115,7 @@ const Watchlist = props => {
     return (
       <div className="icon-col">
         <i
-          className="fa fa-pencil-square-o qbrb-icon"
+          className="fa fa-pencil-square-o qbrb-icon-edit"
           onClick={() => {
             launchModal(item.id);
             setEditRow(item);

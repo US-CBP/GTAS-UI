@@ -39,7 +39,7 @@ const Airports = ({ name }) => {
         return (
           <div className="icon-col">
             <i
-              className="fa fa-pencil-square-o qbrb-icon"
+              className="fa fa-pencil-square-o qbrb-icon-edit"
               onClick={() => openEditModal(row.original)}
             ></i>
           </div>

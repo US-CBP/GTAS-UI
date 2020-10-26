@@ -1,8 +1,15 @@
 .gtas-tabs {
   border: none;
   margin-bottom: 3px;
+  width: calc((100vw - 300px) / 3);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
 .gtas-tabs a {
-  color: #0199b8;
+  color: #0082c3;
+  padding: 0.2rem 0.5rem;
+  border-color: #d0d0d0 #d0d0d0 #d0d0d0 !important;
 }

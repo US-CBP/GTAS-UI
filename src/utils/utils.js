@@ -284,3 +284,10 @@ export function getShortText(text, shortTextLength = 50) {
 
   return `${text.toString().substr(0, shortTextLength - 4)} ...`;
 }
+
+export const isValidPassword = password => {
+  const passwordConstraint = new RegExp(
+    "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{10,20})"
+  );
+  return passwordConstraint.test(password);
+};

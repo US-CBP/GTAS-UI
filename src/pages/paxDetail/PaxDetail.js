@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
-import { Navbar, Nav } from "react-bootstrap";
+import { DropdownButton } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
+import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import Summary from "./summary/Summary";
 import PNR from "./pnr/PNR";
@@ -18,13 +19,27 @@ import CreateManualHit from "./createManualHit/CreateManualHit";
 import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
+import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import { paxdetails, cases } from "../../services/serviceWrapper";
-import { passengerTypeMapper, asArray, hasData } from "../../utils/utils";
+import {
+  passengerTypeMapper,
+  asArray,
+  hasData,
+  localeDate,
+  localeDateOnly
+} from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./PaxDetail.scss";
 
 const PaxDetail = props => {
   const getPaxInfo = res => {
+    const lastPnrRecieved = hasData(res.pnrVo?.transmissionDate)
+      ? Date.parse(res.pnrVo?.transmissionDate)
+      : undefined;
+    const lastApisRecieved = hasData(res.apisMessageVo?.transmissionDate)
+      ? Date.parse(res.apisMessageVo?.transmissionDate)
+      : undefined;
+    const dob = Date.parse(res.dob);
     return [
       {
         label: <Xl8 xid="pd007">Last Name</Xl8>,
@@ -33,7 +48,7 @@ const PaxDetail = props => {
       { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
       { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName },
       { label: <Xl8 xid="pd010">Age</Xl8>, value: res.age },
-      { label: <Xl8 xid="pd011">DOB</Xl8>, value: res.dob },
+      { label: <Xl8 xid="pd011">DOB</Xl8>, value: localeDateOnly(dob) },
       { label: <Xl8 xid="pd012">Gender</Xl8>, value: res.gender },
       { label: <Xl8 xid="pd013">Nationality</Xl8>, value: res.nationality },
       { label: <Xl8 xid="pd014">Residence</Xl8>, value: res.residenceCountry },
@@ -55,19 +70,19 @@ const PaxDetail = props => {
       },
       {
         label: <Xl8 xid="pd017">Last PNR Received</Xl8>,
-        value: res.pnrVo?.transmissionDate
+        value: localeDate(lastPnrRecieved)
       },
       {
         label: <Xl8 xid="pd018">Last APIS Received</Xl8>,
-        value: res.apisMessageVo?.transmissionDate
+        value: localeDate(lastApisRecieved)
       }
     ];
   };
 
   const flightBadgeData = res => {
     return {
-      arrival: `${res.flightDestination} ${res.etaLocalTZ}`,
-      departure: `${res.flightOrigin} ${res.etdLocalTZ}`,
+      arrival: `${res.flightDestination} ${localeDate(res.eta)}`,
+      departure: `${res.flightOrigin} ${localeDate(res.etd)}`,
       flightNumber: `${res.carrier}${res.flightNumber}`
     };
   };
@@ -112,7 +127,9 @@ const PaxDetail = props => {
   const [hasPnrRecord, setHasPnrRecord] = useState(false);
   const [watchlistData, setWatchlistData] = useState({});
   const [paxDetailsData, setPaxDetailsData] = useState();
+  const [paxDocuments, setPaxDocuments] = useState([]);
 
+  const cb = () => {};
   const tabs = [
     {
       title: <Xl8 xid="pd001">Summary</Xl8>,
@@ -125,6 +142,7 @@ const PaxDetail = props => {
           eventNoteRefreshKey={eventNoteRefreshKey}
           setHasOpenHit={setHasOpenHit}
           setHasHit={setHasHit}
+          documents={paxDocuments}
         />
       )
     },
@@ -182,7 +200,7 @@ const PaxDetail = props => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
       setPax(getPaxInfo(res));
       setFlightBadge(flightBadgeData(res));
-      setPnr(res.pnrVo);
+      setPnr({ ...res.pnrVo, flightId: props.flightId });
       setApisMessage(res.apisMessageVo);
       setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
       setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
@@ -190,13 +208,37 @@ const PaxDetail = props => {
       setPaxDetailsData(res);
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
       setWatchlistData({ passenger: p, documents: res.documents });
+      setPaxDocuments(res.documents);
     });
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [props.paxId]);
 
+  // TODO: refac tabs as child routes, load data per page.
+  const actions = (
+    <DropdownButton variant="outline-info" title="Choose Action" className="m-1">
+      <EventNotesModal
+        paxId={props.paxId}
+        setEventNoteRefreshKey={setEventNoteRefreshKey}
+      />
+      <DownloadReport paxId={props.paxId} flightId={props.flightId} />
+      <AddToWatchlist watchlistItems={watchlistData} />
+      <CreateManualHit
+        paxId={props.paxId}
+        flightId={props.flightId}
+        callback={setHitSummaryRefreshKey}
+      />
+      <Notification paxId={props.paxId} />
+      <AttachmentModal callback={cb} paxId={props.paxId}></AttachmentModal>
+      {hasHit && (
+        <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
+      )}
+    </DropdownButton>
+  );
+
+  const tablist = <Tabs tabs={tabs} />;
   return (
     <>
       <SidenavContainer className="paxdetails-side-nav">
@@ -205,31 +247,12 @@ const PaxDetail = props => {
         <hr />
         <FlightLegSegments />
       </SidenavContainer>
-      <Main className="main paxdetail-container">
-        <Navbar>
-          <Navbar.Brand>
-            <Xl8 xid="pd019">Passenger Detail</Xl8>
-          </Navbar.Brand>
-          <Nav className="paxdetails-action-buttons">
-            <EventNotesModal
-              paxId={props.paxId}
-              setEventNoteRefreshKey={setEventNoteRefreshKey}
-            />
-            <DownloadReport paxId={props.paxId} flightId={props.flightId} />
-            <AddToWatchlist watchlistItems={watchlistData} />
-            <CreateManualHit
-              paxId={props.paxId}
-              flightId={props.flightId}
-              callback={setHitSummaryRefreshKey}
-            />
-            <Notification paxId={props.paxId} />
-            {hasHit && (
-              <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
-            )}
-          </Nav>
-        </Navbar>
-
-        <Tabs tabs={tabs} />
+      <Main className="main">
+        <Title
+          title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
+          rightChild={actions}
+          leftChild={tablist}
+        ></Title>
       </Main>
     </>
   );

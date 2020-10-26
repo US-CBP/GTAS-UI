@@ -125,9 +125,15 @@ class Form extends React.Component {
       ? this.props.paramCallback(params)
       : params;
 
-    operation(...parsedParams).then(res => {
-      if (hasData(this.props.callback)) this.props.callback(ACTION.SAVE, alt(res));
-    });
+    const validParams = hasData(this.props.validateInputs)
+      ? this.props.validateInputs(parsedParams)
+      : true;
+
+    if (validParams) {
+      operation(...parsedParams).then(res => {
+        if (hasData(this.props.callback)) this.props.callback(ACTION.SAVE, alt(res));
+      });
+    }
   }
 
   onFormCancel() {
@@ -234,7 +240,8 @@ Form.propTypes = {
   data: PropTypes.object,
   callback: PropTypes.func.isRequired,
   paramCallback: PropTypes.func,
-  shouldConfirm: PropTypes.bool
+  shouldConfirm: PropTypes.bool,
+  validateInputs: PropTypes.func
 };
 
 export default Form;

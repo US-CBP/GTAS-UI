@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { localeDate, asArray, hasData } from "../../../utils/utils";
+import { localeDate, asArray, hasData, localeDateOnly } from "../../../utils/utils";
 import {
   paxdetails,
   paxWatchListLink,
   flightpaxHitSummary,
   paxEventNotesHistory
 } from "../../../services/serviceWrapper";
-import { Container, CardColumns } from "react-bootstrap";
-import "./Summary.scss";
+import { Card, CardColumns } from "react-bootstrap";
+import Main from "../../../components/main/Main";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Xl8 from "../../../components/xl8/Xl8";
-// import { composeInitialProps } from "react-i18next";
+import "./Summary.scss";
 
 const Summary = props => {
   const headers = {
@@ -46,31 +46,34 @@ const Summary = props => {
 
   const setHasOpenHit = props.setHasOpenHit;
   const setHasHit = props.setHasHit;
-  const [documents, setDocuments] = useState([]);
   const [watchListLinks, setWatchListLinks] = useState([]);
   const [paxHitSummary, setPaxHitSummary] = useState([]);
   const [eventNotes, setEventNotes] = useState([]);
   const [historicalEventNotes, setHistoricalEventNotes] = useState([]);
 
-  useEffect(() => {
-    paxdetails.get(props.flightId, props.paxId).then(res => {
-      setDocuments(res.documents);
+  const parseDocumentData = documents => {
+    const parsedDocs = asArray(documents).map(document => {
+      const expirationDate = Date.parse(document.expirationDate);
+      return {
+        ...document,
+        expirationDate: localeDateOnly(expirationDate)
+      };
     });
-  }, []);
+    return parsedDocs;
+  };
 
-  useEffect(() => {
+  const fetchData = () => {
     paxWatchListLink.get(null, props.paxId).then(res => {
       const data = asArray(res).map(pwl => {
+        const watchListDOB = Date.parse(pwl.watchListDOB);
         return {
           ...pwl,
+          watchListDOB: localeDateOnly(watchListDOB),
           percentMatch: `${pwl.percentMatch * 100}%`
         };
       });
       setWatchListLinks(data);
     });
-  }, []);
-
-  useEffect(() => {
     flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
       setPaxHitSummary(res);
       const openHit = hasData(res)
@@ -79,9 +82,6 @@ const Summary = props => {
       setHasHit(hasData(res));
       setHasOpenHit(openHit !== undefined);
     });
-  }, [props.hitSummaryRefreshKey]);
-
-  useEffect(() => {
     paxEventNotesHistory.get(props.paxId, false).then(res => {
       const notesData = res.paxNotes?.map(note => {
         const type = (note.noteType || []).map(t => {
@@ -110,10 +110,14 @@ const Summary = props => {
         .slice(0, 10);
       setHistoricalEventNotes(notesData);
     });
-  }, [props.eventNoteRefreshKey]);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [props.hitSummaryRefreshKey, props.paxId]);
 
   return (
-    <Container fluid className="summary-container">
+    <Main className="paxdetail-container">
       <CardColumns>
         <CardWithTable
           data={paxHitSummary}
@@ -122,7 +126,7 @@ const Summary = props => {
         />
 
         <CardWithTable
-          data={documents}
+          data={parseDocumentData(props.documents)}
           headers={headers.documents}
           title={<Xl8 xid="sum022">Documents</Xl8>}
         />
@@ -143,7 +147,7 @@ const Summary = props => {
           title={<Xl8 xid="sum025">Previous Note History</Xl8>}
         />
       </CardColumns>
-    </Container>
+    </Main>
   );
 };
 

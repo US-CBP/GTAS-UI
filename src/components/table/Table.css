@@ -27,6 +27,7 @@
 .table-header {
   white-space: nowrap !important;
   padding: 0.3rem !important;
+  vertical-align: middle !important;
 }
 
 .pagination {
@@ -120,7 +121,7 @@
 
 .p-1 > .icon-col {
   width: 50px;
-  text-align: -webkit-center;
+  text-align: center;
   cursor: pointer;
 }
 
@@ -147,4 +148,8 @@
 }
 .export-btn:hover {
   background-color: rgba(67, 74, 82, 0.24);
+}
+
+.th {
+  text-align: start;
 }

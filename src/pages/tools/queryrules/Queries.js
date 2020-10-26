@@ -4,7 +4,8 @@ import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import { Button } from "react-bootstrap";
-import { QR, ACTION } from "../../../utils/constants";
+import { QR, ACTION, ROLE } from "../../../utils/constants";
+import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 
 import { query } from "../../../services/serviceWrapper";
 import QRModal from "./QRModal";
@@ -47,7 +48,7 @@ const Queries = props => {
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
-            className="fa fa-pencil-square-o qbrb-icon"
+            className="fa fa-pencil-square-o qbrb-icon-edit"
             onClick={() => launchModal(row.original.id, row.original)}
           ></i>
         </div>
@@ -75,25 +76,27 @@ const Queries = props => {
   };
 
   return (
-    <Main className="full">
-      <Title title={<Xl8 xid="q002">Queries</Xl8>} rightChild={button}></Title>
-      <Table
-        service={query.get}
-        callback={cb}
-        header={header}
-        key={`table${tablekey}`}
-      ></Table>
-      <QRModal
-        show={showModal}
-        onHide={closeModal}
-        callback={cb}
-        key={key}
-        data={record}
-        title={modalTitle}
-        id={id}
-        service={query}
-      />
-    </Main>
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]}>
+      <Main className="full">
+        <Title title={<Xl8 xid="q002">Queries</Xl8>} rightChild={button}></Title>
+        <Table
+          service={query.get}
+          callback={cb}
+          header={header}
+          key={`table${tablekey}`}
+        ></Table>
+        <QRModal
+          show={showModal}
+          onHide={closeModal}
+          callback={cb}
+          key={key}
+          data={record}
+          title={modalTitle}
+          id={id}
+          service={query}
+        />
+      </Main>
+    </RoleAuthenticator>
   );
 };
 
