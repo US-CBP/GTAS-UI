@@ -46,7 +46,7 @@ const HitCats = ({ name }) => {
   );
 
   return (
-    <Main className="full">
+    <Main className="full bg-white">
       <Title title={name} rightChild={cats}></Title>
       <Table
         service={hitcats.get}

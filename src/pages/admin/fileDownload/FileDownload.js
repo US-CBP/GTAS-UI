@@ -99,7 +99,7 @@ const FileDownload = ({ name }) => {
   );
 
   return (
-    <Main className="full">
+    <Main className="full bg-white">
       <Title title={name} rightChild={fileTypeCtrl}></Title>
       <Table callback={cb} key={tblRefreshKey} data={data} header={headers}></Table>
     </Main>

@@ -161,6 +161,10 @@
   background-color: rgba(280, 280, 0, 0.2);
 }
 
+.table > thead {
+  font-size: 16px;
+}
+
 .table > tbody {
   font-size: 14px;
 }
