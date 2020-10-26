@@ -56,7 +56,7 @@ const Airports = ({ name }) => {
   ];
 
   return (
-    <Container fluid>
+    <div>
       <AirportModal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -99,7 +99,7 @@ const Airports = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
-    </Container>
+    </div>
   );
 };
 

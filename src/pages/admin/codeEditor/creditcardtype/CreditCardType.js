@@ -47,7 +47,7 @@ const CreditCardType = ({ name }) => {
   ];
 
   return (
-    <Container fluid>
+    <div>
       <div className="action-button-div">
         <Button
           variant="info"
@@ -88,7 +88,7 @@ const CreditCardType = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
-    </Container>
+    </div>
   );
 };
 

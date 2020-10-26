@@ -45,7 +45,7 @@ const Carriers = ({ name }) => {
   ];
 
   return (
-    <Container fluid>
+    <div>
       <div className="action-button-div">
         <Button
           variant="info"
@@ -87,7 +87,7 @@ const Carriers = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
-    </Container>
+    </div>
   );
 };
 

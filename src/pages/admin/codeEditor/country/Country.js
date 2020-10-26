@@ -49,7 +49,7 @@ const Countries = ({ name }) => {
   ];
 
   return (
-    <Container fluid>
+    <div>
       <div className="action-button-div">
         <Button
           variant="info"
@@ -90,7 +90,7 @@ const Countries = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
-    </Container>
+    </div>
   );
 };
 
