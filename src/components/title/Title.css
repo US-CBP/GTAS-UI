@@ -16,6 +16,7 @@
   padding: 0px 20px;
   white-space: nowrap;
   border-left: 1px solid #d0d0d0;
+  /* border-image: linear-gradient(90deg, #d0d0d0, transparent) 1; */
 }
 
 .tab-span {

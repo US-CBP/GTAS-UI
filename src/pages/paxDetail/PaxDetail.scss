@@ -64,21 +64,15 @@ $transparent: rgba(0, 0, 0, 0.65);
 }
 
 .one-column-grid-container {
-  height: calc(100vh - 126px);
-  width: calc(100vw - 290px);
-  overflow-y: auto;
-
-  // -- for single page repositioning
+  height: calc(100vh - 111px);
+  width: calc(100vw - 300px);
+  overflow: hidden;
   position: absolute;
   top: 50px;
   left: 20px;
-  // -- end
 
-  .table-main {
-    height: calc(100vh - 180px);
-  }
-  .tagrightpag {
-    bottom: 15px;
+  .pagination {
+    width: calc(100vw - 301px);
   }
 }
 

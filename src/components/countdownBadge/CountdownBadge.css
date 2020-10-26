@@ -5,20 +5,8 @@
   padding-left: 4px;
   float: right;
   display: block;
-  flex-wrap: nowrap;
+  flex-wrap: nowrap !important;
 }
-
-/* .cdb-days {
-  background: url("../../images/day.svg");
-}
-
-.cdb-hours {
-  background: url("../../images/hour.svg");
-}
-
-.cdb-minutes {
-  background: url("../../images/minute.svg");
-} */
 
 .bordered {
   border: 1px solid #b6b6b6;

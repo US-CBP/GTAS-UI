@@ -4,9 +4,8 @@ import "./FlightBadge.scss";
 
 const FlightBadge = props => {
   const res = props.data;
-  console.log(props);
 
-  if (!hasData(props.data)) return <></>;
+  if (!hasData(props.data?.flightNumber)) return <></>;
 
   const data = {
     arrival: [res.flightDestination, ...localeDate(res.eta).split(",")],
@@ -18,21 +17,20 @@ const FlightBadge = props => {
   const departure = data.departure || [];
   const flightNumber = data.flightNumber;
 
-  console.log(arrival, departure, flightNumber);
   return (
     <div className="flight-badge">
       <div className="flight-number">{flightNumber}</div>
       <div className="flight-text">
         <table>
           <tr>
-            <td>{alt(departure[0])}</td>
-            <td>{alt(departure[1])}</td>
-            <td>{alt(departure[2])}</td>
+            <td>{departure[0]}</td>
+            <td>{departure[1]}</td>
+            <td>{departure[2]}</td>
           </tr>
           <tr>
-            <td>{alt(arrival[0])}</td>
-            <td>{alt(arrival[1])}</td>
-            <td>{alt(arrival[2])}</td>
+            <td>{arrival[0]}</td>
+            <td>{arrival[1]}</td>
+            <td>{arrival[2]}</td>
           </tr>
         </table>
       </div>

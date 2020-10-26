@@ -160,3 +160,7 @@
   color: #212529;
   background-color: rgba(280, 280, 0, 0.2);
 }
+
+.table > tbody {
+  font-size: 14px;
+}

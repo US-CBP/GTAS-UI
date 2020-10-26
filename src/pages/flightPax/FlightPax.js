@@ -180,12 +180,23 @@ const FlightPax = props => {
     setTab(id);
   };
 
+  const getFlightData = () => {
+    return {
+      flightNumber: flightData.fullFlightNumber,
+      carrier: "",
+      flightDestination: flightData.destination,
+      flightOrigin: flightData.origin,
+      eta: flightData.eta,
+      etd: flightData.etd
+    };
+  };
+
   return (
     <>
       <SidenavContainer>
         <Col className="notopmargin">
           <br />
-          <FlightBadge data={{ fligntNumber: flightData.fullFlightNumber }}></FlightBadge>
+          <FlightBadge data={getFlightData()}></FlightBadge>
           <br />
           <div className="flightpax-countdown-container">
             <CountdownBadge
