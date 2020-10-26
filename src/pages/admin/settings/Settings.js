@@ -4,6 +4,7 @@ import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
+import Main from "../../../components/main/Main";
 import Xl8 from "../../../components/xl8/Xl8";
 
 const Settings = ({ name }) => {
@@ -11,7 +12,7 @@ const Settings = ({ name }) => {
   const cb = function() {};
 
   return (
-    <Container fluid>
+    <Main className="full">
       <Title title={<Xl8 xid="set001">Settings</Xl8>}></Title>
       <br></br>
       <Container>
@@ -73,7 +74,7 @@ const Settings = ({ name }) => {
           </Form>
         </Col>
       </Container>
-    </Container>
+    </Main>
   );
 };
 

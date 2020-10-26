@@ -68,7 +68,7 @@ const FileDownload = ({ name }) => {
         return (
           <div className="icon-col">
             <i
-              className="fa fa-pencil-square-o qbrb-icon-edit"
+              className="fa fa-download table-icon"
               onClick={() => downloadFile(row.original)}
             ></i>
           </div>

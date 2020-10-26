@@ -45,7 +45,7 @@ const Rules = props => {
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
-            className="fa fa-pencil-square-o qbrb-icon-edit"
+            className="fa fa-pencil-square-o table-icon"
             onClick={() => fetchDetail(row.original.id)}
           ></i>
         </div>
@@ -224,7 +224,7 @@ const Rules = props => {
   const button = (
     <Button
       variant="ternary"
-      className="btn btn-outline-info"
+      className="btn btn-info"
       name={props.name}
       placeholder={props.placeholder}
       onClick={() => triggerShowModal()}
@@ -238,7 +238,7 @@ const Rules = props => {
 
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.RULEMGR]}>
-      <Main className="full">
+      <Main className="full bg-white">
         <Title
           title={<Xl8 xid="rul006">Rules</Xl8>}
           key="title"

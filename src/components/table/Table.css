@@ -10,7 +10,7 @@
 .table-main {
   height: 100%;
   padding: 0px;
-  max-height: calc(100vh - 160px);
+  max-height: calc(100vh - 155px);
   overflow: auto;
   border: 1px solid #d0d0d0;
   background-color: white;
@@ -33,7 +33,6 @@
   position: absolute;
   bottom: 0;
   margin: unset;
-  margin-bottom: 10px;
   align-items: center !important;
   width: 100%;
   border: 1px solid #d0d0d0;
@@ -98,7 +97,7 @@
 
 .tagrightpag {
   position: fixed;
-  bottom: 10px;
+  bottom: 0px;
   z-index: 2000;
   right: 30px;
   font-size: 28px;

@@ -160,7 +160,7 @@ const FilterForm = props => {
   }, []);
 
   return (
-    <div>
+    <div className="filterform-container">
       {props.title && <Title style="subtitle text-center" title={props.title}></Title>}
       <RBForm
         className={props.className}
@@ -173,7 +173,7 @@ const FilterForm = props => {
         </ErrorBoundary>
         <br></br>
         <ButtonToolbar className="container">
-          <Button type="reset" variant="dark m-1 text-white">
+          <Button type="reset" variant="dark m-1 text-white outline-dark-outline">
             {props.clearText || <Xl8 xid="ff001">Reset</Xl8>}
           </Button>
           &nbsp;

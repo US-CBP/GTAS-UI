@@ -70,7 +70,7 @@ const CodeEditor = props => {
   });
 
   return (
-    <Main className="full">
+    <Main className="full bg-white">
       <Title title="Code Editor" leftChild={headerTabs} leftCb={tabHandler} />
       {props.children}
     </Main>

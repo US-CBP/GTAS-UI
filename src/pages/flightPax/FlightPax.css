@@ -1,0 +1,10 @@
+.flightpax-countdown-container {
+  text-align: -webkit-center;
+  text-align: -moz-center;
+}
+.flightpax-countdown-container > .cdb-row {
+  color: black;
+  float: unset;
+  width: fit-content;
+  width: -moz-fit-content;
+}

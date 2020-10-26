@@ -32,7 +32,7 @@ const Queries = props => {
   const button = (
     <Button
       variant="ternary"
-      className="btn btn-outline-info"
+      className="btn btn-info"
       onClick={() => launchModal()}
       alt={props.alt}
     >
@@ -48,7 +48,7 @@ const Queries = props => {
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
-            className="fa fa-pencil-square-o qbrb-icon-edit"
+            className="fa fa-pencil-square-o table-icon"
             onClick={() => launchModal(row.original.id, row.original)}
           ></i>
         </div>
@@ -77,7 +77,7 @@ const Queries = props => {
 
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]}>
-      <Main className="full">
+      <Main className="full bg-white">
         <Title title={<Xl8 xid="q002">Queries</Xl8>} rightChild={button}></Title>
         <Table
           service={query.get}

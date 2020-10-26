@@ -1,5 +1,9 @@
 .FormContainer {
-  min-height: var(--height-content);
+  /* min-height: var(--height-content); */
+}
+
+.filterform-container {
+  margin-top: 15px;
 }
 
 .input:optional {
@@ -51,8 +55,4 @@
   text-align: center;
   display: inline-block;
   white-space: nowrap;
-}
-
-.outline-dark-outline {
-  border-color: #6f6f6f;
 }

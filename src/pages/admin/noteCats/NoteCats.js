@@ -29,13 +29,13 @@ const NoteCats = ({ name }) => {
   };
 
   const addCat = (
-    <Button variant="outline-dark" onClick={() => setShowModal(true)}>
+    <Button variant="info" onClick={() => setShowModal(true)}>
       <Xl8 xid="ntc001">Add Category</Xl8>
     </Button>
   );
 
   return (
-    <Main className="full">
+    <Main className="full bg-white">
       <Title title={name} rightChild={addCat}></Title>
       <Row></Row>
       <Table

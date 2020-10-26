@@ -127,7 +127,7 @@ const Header = () => {
               className={`${getActiveClass(htab.LANG)} optional`}
               onClick={() => clickTab(htab.LANG)}
             >
-              <i className="fa fa-language mx-sm-1"></i>
+              <i className="fa fa-language mx-sm-1 language-icon"></i>
               {currentLang}
             </Nav.Link>
           </RoleAuthenticator>

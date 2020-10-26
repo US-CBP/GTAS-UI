@@ -90,11 +90,11 @@ input[type="checkbox"],
 input[type="radio"] {
   box-sizing: border-box;
   padding: 0;
-  -ms-transform: scale(1.2);
-  -moz-transform: scale(1.2);
-  -webkit-transform: scale(1.2);
-  -o-transform: scale(1.2);
-  transform: scale(1.2);
+  -ms-transform: scale(1.4);
+  -moz-transform: scale(1.4);
+  -webkit-transform: scale(1.4);
+  -o-transform: scale(1.4);
+  transform: scale(1.4);
 }
 
 .xid {
@@ -156,4 +156,23 @@ input[type="radio"] {
 .dropdown-menu {
   background-color: white !important;
   border: 1px solid black !important;
+}
+
+.outline-dark-outline {
+  border-color: #909090 !important;
+}
+
+.outline-dark-outline:hover {
+  border-color: #d0d0d0 !important;
+}
+
+.table-icon {
+  font-size: 1.4em !important;
+  color: #0082c3;
+}
+
+.flight-number {
+  color: #0082c3;
+  font-weight: 700;
+  align-items: center;
 }

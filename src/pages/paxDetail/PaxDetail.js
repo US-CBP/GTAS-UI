@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
 import ChromeTabs from "../../components/chrometabs/ChromeTabs";
+import FlightBadge from "../../components/flightBadge/FlightBadge";
 import { Navbar, Nav, DropdownButton, Col } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
@@ -23,71 +24,15 @@ import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import {
-  passengerTypeMapper,
   asArray,
   hasData,
   localeDate,
-  localeDateOnly
+  localeDateOnly,
+  getFlightBadgeData
 } from "../../utils/utils";
-import { Link } from "@reach/router";
 import "./PaxDetail.scss";
 
 const PaxDetail = props => {
-  const getPaxInfo = res => {
-    const lastPnrRecieved = hasData(res.pnrVo?.transmissionDate)
-      ? Date.parse(res.pnrVo?.transmissionDate)
-      : undefined;
-    const lastApisRecieved = hasData(res.apisMessageVo?.transmissionDate)
-      ? Date.parse(res.apisMessageVo?.transmissionDate)
-      : undefined;
-    const dob = Date.parse(res.dob);
-    return [
-      {
-        label: <Xl8 xid="pd007">Last Name</Xl8>,
-        value: res.lastName
-      },
-      { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
-      { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName },
-      { label: <Xl8 xid="pd010">Age</Xl8>, value: res.age },
-      { label: <Xl8 xid="pd011">DOB</Xl8>, value: localeDateOnly(dob) },
-      { label: <Xl8 xid="pd012">Gender</Xl8>, value: res.gender },
-      { label: <Xl8 xid="pd013">Nationality</Xl8>, value: res.nationality },
-      { label: <Xl8 xid="pd014">Residence</Xl8>, value: res.residenceCountry },
-      {
-        label: <Xl8 xid="pd015">Seat</Xl8>,
-        value: (
-          <Link
-            to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${res.seat}`}
-            style={{ color: "#8fdeef" }}
-            state={{ ...flightBadgeData(res), flightId: res.flightId }}
-          >
-            {res.seat}
-          </Link>
-        )
-      },
-      {
-        label: <Xl8 xid="pd016">Passenger Type</Xl8>,
-        value: passengerTypeMapper(res.passengerType)
-      },
-      {
-        label: <Xl8 xid="pd017">Last PNR Received</Xl8>,
-        value: localeDate(lastPnrRecieved)
-      },
-      {
-        label: <Xl8 xid="pd018">Last APIS Received</Xl8>,
-        value: localeDate(lastApisRecieved)
-      }
-    ];
-  };
-
-  const flightBadgeData = res => {
-    return {
-      arrival: [res.flightDestination, ...localeDate(res.eta).split(",")],
-      departure: [res.flightOrigin, ...localeDate(res.etd).split(",")],
-      flightNumber: `${res.carrier}${res.flightNumber}`
-    };
-  };
-
   const getTidyFlightLegData = fLegs => {
     fLegs.sort((fl1, fl2) => {
       if (fl1.legNumber < fl2.legNumber) return -1;
@@ -199,8 +144,8 @@ const PaxDetail = props => {
 
   const fetchData = () => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
-      setPax(getPaxInfo(res));
-      setFlightBadge(flightBadgeData(res));
+      setPax(res);
+      setFlightBadge(res);
       setPnr(res.pnrVo);
       setApisMessage(res.apisMessageVo);
       setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
@@ -244,7 +189,8 @@ const PaxDetail = props => {
     <>
       <SidenavContainer>
         <Col>
-          <PaxInfo pax={pax} badgeprops={flightBadge}></PaxInfo>
+          <FlightBadge data={flightBadge}></FlightBadge>
+          <PaxInfo pax={pax}></PaxInfo>
           <FlightLegSegments />
         </Col>
       </SidenavContainer>

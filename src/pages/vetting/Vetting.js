@@ -321,7 +321,6 @@ const Vetting = props => {
             key={refreshKey}
             initialParamState={initialParamState}
           >
-            <br />
             <LabelledInput
               datafield="myRulesOnly"
               name="myRulesOnly"

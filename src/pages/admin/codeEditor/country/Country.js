@@ -35,7 +35,7 @@ const Countries = ({ name }) => {
         return (
           <div className="icon-col">
             <i
-              className="fa fa-pencil-square-o qbrb-icon-edit"
+              className="fa fa-pencil-square-o table-icon"
               onClick={() => openEditModal(row.original)}
             ></i>
           </div>
@@ -52,7 +52,7 @@ const Countries = ({ name }) => {
     <Container fluid>
       <div className="action-button-div">
         <Button
-          variant="outline-dark"
+          variant="info"
           onClick={() => {
             setShowModal(true);
             setModalTitle(<Xl8 xid="cou004">Add Country:</Xl8>);
@@ -63,7 +63,7 @@ const Countries = ({ name }) => {
           {<Xl8 xid="cou002">Add Country</Xl8>}
         </Button>
         <Button
-          variant="outline-dark"
+          variant="info"
           onClick={() => {
             codeEditor.put.restoreCountriesAll().then(res => {
               refresh();

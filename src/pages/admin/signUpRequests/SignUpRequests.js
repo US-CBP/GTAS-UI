@@ -133,7 +133,7 @@ const SignUpRequests = () => {
   return (
     <>
       <SidenavContainer>
-        <Col>
+        <Col className="notopmargin">
           <FilterForm
             service={signuprequests.get}
             paramCallback={preFetchCallback}

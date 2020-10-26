@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
+import Main from "../../../components/main/Main";
 import { loaderStats } from "../../../services/serviceWrapper";
 import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
@@ -20,7 +21,7 @@ const LoaderStats = ({ name }) => {
   }, []);
 
   return (
-    <Container fluid>
+    <Main className="full">
       <Title title={<Xl8 xid="ls001">Loader Statistics</Xl8>}></Title>
       <br></br>
       <Container>
@@ -92,7 +93,7 @@ const LoaderStats = ({ name }) => {
           </Form>
         </Col>
       </Container>
-    </Container>
+    </Main>
   );
 };
 

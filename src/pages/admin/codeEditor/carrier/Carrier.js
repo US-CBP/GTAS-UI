@@ -33,7 +33,7 @@ const Carriers = ({ name }) => {
         return (
           <div className="icon-col">
             <i
-              className="fa fa-pencil-square-o qbrb-icon-edit"
+              className="fa fa-pencil-square-o table-icon"
               onClick={() => openEditModal(row.original)}
             ></i>
           </div>
@@ -48,7 +48,7 @@ const Carriers = ({ name }) => {
     <Container fluid>
       <div className="action-button-div">
         <Button
-          variant="outline-dark"
+          variant="info"
           onClick={() => {
             setShowModal(true);
             setModalTitle(<Xl8 xid="car002">Add Carrier</Xl8>);
@@ -59,7 +59,7 @@ const Carriers = ({ name }) => {
           {<Xl8 xid="car002">Add Carrier</Xl8>}
         </Button>
         <Button
-          variant="outline-dark"
+          variant="info"
           onClick={() => {
             codeEditor.put.restoreCarriersAll().then(res => {
               refresh();

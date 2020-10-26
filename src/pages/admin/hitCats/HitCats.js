@@ -40,7 +40,7 @@ const HitCats = ({ name }) => {
   };
 
   const cats = (
-    <Button variant="outline-dark" onClick={() => setShowModal(true)}>
+    <Button variant="info" onClick={() => setShowModal(true)}>
       {<Xl8 xid="wlc001">Add Category</Xl8>}
     </Button>
   );

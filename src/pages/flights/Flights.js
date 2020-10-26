@@ -200,14 +200,13 @@ const Flights = props => {
   return (
     <>
       <SidenavContainer>
-        <Col>
+        <Col className="notopmargin">
           <FilterForm
             service={flights.get}
             paramCallback={preFetchCallback}
             callback={setDataWrapper}
             interval={TIME.MINUTE}
           >
-            <br />
             <LabelledInput
               labelText={<Xl8 xid="fl003"> Origin Airports</Xl8>}
               datafield="originAirports"

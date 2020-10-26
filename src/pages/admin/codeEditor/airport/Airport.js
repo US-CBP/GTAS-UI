@@ -39,7 +39,7 @@ const Airports = ({ name }) => {
         return (
           <div className="icon-col">
             <i
-              className="fa fa-pencil-square-o qbrb-icon-edit"
+              className="fa fa-pencil-square-o table-icon"
               onClick={() => openEditModal(row.original)}
             ></i>
           </div>
@@ -69,7 +69,7 @@ const Airports = ({ name }) => {
 
       <div className="action-button-div">
         <Button
-          variant="outline-dark"
+          variant="info"
           onClick={() => {
             setShowModal(true);
             setModalTitle(addAirport);
@@ -81,7 +81,7 @@ const Airports = ({ name }) => {
         </Button>
 
         <Button
-          variant="outline-dark"
+          variant="info"
           onClick={() => {
             codeEditor.put.restoreAirportsAll().then(res => {
               refresh();

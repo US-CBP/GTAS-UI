@@ -35,7 +35,7 @@ const CreditCardType = ({ name }) => {
         return (
           <div className="icon-col">
             <i
-              className="fa fa-pencil-square-o qbrb-icon-edit"
+              className="fa fa-pencil-square-o table-icon"
               onClick={() => openEditModal(row.original)}
             ></i>
           </div>
@@ -50,7 +50,7 @@ const CreditCardType = ({ name }) => {
     <Container fluid>
       <div className="action-button-div">
         <Button
-          variant="outline-dark"
+          variant="info"
           onClick={() => {
             setShowModal(true);
             setModalTitle(<Xl8 xid="cct004">Add Type</Xl8>);
@@ -61,7 +61,7 @@ const CreditCardType = ({ name }) => {
           {<Xl8 xid="cct004">Add Type</Xl8>}
         </Button>
         <Button
-          variant="outline-dark"
+          variant="info"
           onClick={() => {
             codeEditor.put.restoreCctypeAll().then(res => {
               refresh();

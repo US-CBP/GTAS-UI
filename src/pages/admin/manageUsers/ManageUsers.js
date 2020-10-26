@@ -180,7 +180,7 @@ const ManageUsers = props => {
   const button = (
     <Button
       variant="ternary"
-      className="btn btn-outline-info"
+      className="btn btn-info"
       name={props.name}
       placeholder={props.placeholder}
       onClick={() => {
