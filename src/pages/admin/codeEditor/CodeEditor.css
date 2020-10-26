@@ -1,7 +1,7 @@
 .action-button-div {
   position: absolute;
-  top: 64px;
-  right: 30px;
+  top: 3px;
+  left: 3px;
 }
 
 .action-button-div > button {

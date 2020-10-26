@@ -303,7 +303,7 @@ const Watchlist = props => {
   );
 
   return (
-    <Main className="full">
+    <Main className="full bg-white">
       <Title
         title={<Xl8 xid="wl007">Watchlists</Xl8>}
         leftChild={tabs}
