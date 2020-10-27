@@ -85,7 +85,7 @@ const HitModal = props => {
               labelText={<Xl8 xid="wlm005">Severity Level:</Xl8>}
               inputType="select"
               name="severity"
-              inputVal={row.severity}
+              inputVal={props.isEdit ? row.severity : severityLevels[0].value}
               options={severityLevels}
               required={true}
               alt="nothing"
