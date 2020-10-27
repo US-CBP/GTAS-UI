@@ -45,8 +45,8 @@ const HitCats = ({ name }) => {
                     header={<Xl8 xid="manc004">Confirm Category Deletion</Xl8>}
                     message={
                       <span>
-                    <Xl8 xid="wlc007">Please confirm to delete a category with categoryId: </Xl8>{" "}
-                        {row.original.id}
+                    <Xl8 xid="wlc007">Please confirm to delete a category with label: </Xl8>{" "}
+                        {row.original.label}
                   </span>
                     }
                 >
@@ -67,11 +67,6 @@ const HitCats = ({ name }) => {
             </div>
         );
       }
-    },
-    {
-      Accessor: "id",
-      Xl8: true,
-      Header: ["wlc002", "Id"]
     },
     {
       Accessor: "label",

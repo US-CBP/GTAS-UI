@@ -45,8 +45,8 @@ const NoteCats = ({ name }) => {
                               header={<Xl8 xid="ntc006">Confirm Note Category Deletion</Xl8>}
                               message={
                                   <span>
-                    <Xl8 xid="manu005">Please confirm to delete a note category with categoryId: </Xl8>{" "}
-                                      {row.original.id}
+                    <Xl8 xid="ntc007">Please confirm to delete a note category with label: </Xl8>{" "}
+                                      {row.original.noteType}
                   </span>
                               }
                           >
@@ -58,7 +58,7 @@ const NoteCats = ({ name }) => {
                                               deleteCat(row.original);
                                           })}
                                       >
-                                          <Xl8 xid="ntc007">Delete Category</Xl8>
+                                          <Xl8 xid="ntc008">Delete Category</Xl8>
                                       </Dropdown.Item>
                                   )
                               }
@@ -68,11 +68,6 @@ const NoteCats = ({ name }) => {
               );
           }
           },
-    {
-      Accessor: "id",
-      Xl8: true,
-      Header: ["ntc002", "Id"]
-    },
     {
       Accessor: "noteType",
       Xl8: true,
