@@ -61,7 +61,8 @@ const Summary = props => {
     });
     return parsedDocs;
   };
-  useEffect(() => {
+
+  const fetchData = () => {
     paxWatchListLink.get(null, props.paxId).then(res => {
       const data = asArray(res).map(pwl => {
         const watchListDOB = Date.parse(pwl.watchListDOB);
@@ -73,9 +74,6 @@ const Summary = props => {
       });
       setWatchListLinks(data);
     });
-  }, []);
-
-  useEffect(() => {
     flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
       setPaxHitSummary(res);
       const openHit = hasData(res)
@@ -84,9 +82,6 @@ const Summary = props => {
       setHasHit(hasData(res));
       setHasOpenHit(openHit !== undefined);
     });
-  }, [props.hitSummaryRefreshKey]);
-
-  useEffect(() => {
     paxEventNotesHistory.get(props.paxId, false).then(res => {
       const notesData = res.paxNotes?.map(note => {
         const type = (note.noteType || []).map(t => {
@@ -115,7 +110,11 @@ const Summary = props => {
         .slice(0, 10);
       setHistoricalEventNotes(notesData);
     });
-  }, [props.eventNoteRefreshKey]);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [props.hitSummaryRefreshKey, props.paxId]);
 
   return (
     <div className="paxdetail-container">

@@ -4,6 +4,7 @@ import { CardColumns } from "react-bootstrap";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Main from "../../../components/main/Main";
 import { hasData, asArray } from "../../../utils/utils";
+import { Link } from "@reach/router";
 
 const APIS = props => {
   const data = hasData(props.data) ? props.data : {};
@@ -27,7 +28,16 @@ const APIS = props => {
 
   const bags = asArray(data.bags);
   const phoneNumbers = asArray(data.phoneNumbers);
-  const passengersOnReservation = asArray(data.passengersOnReservation);
+  const passengersOnReservation = asArray(data.flightpaxs).map(passenger => {
+    return {
+      ...passenger,
+      lastName: (
+        <Link to={`/gtas/paxDetail/${passenger.flightId}/${passenger.passengerId}`}>
+          {passenger.lastName}
+        </Link>
+      )
+    };
+  });
   return (
     <Main className="one-column-container">
       <CardColumns>

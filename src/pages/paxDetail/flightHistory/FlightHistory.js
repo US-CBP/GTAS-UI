@@ -5,6 +5,7 @@ import Main from "../../../components/main/Main";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { paxFlightHistory, paxFullTravelHistory } from "../../../services/serviceWrapper";
 import { asArray, localeDate } from "../../../utils/utils";
+import { Link } from "@reach/router";
 
 const FlightHistory = props => {
   const headers = {
@@ -19,25 +20,22 @@ const FlightHistory = props => {
   const [currentFlightHistory, setcurrentFlightHistory] = useState([]);
   const [fullTravelHistory, setFullTravelHistory] = useState([]);
 
+  const parseFlightData = data => {
+    return {
+      ...data,
+      etd: localeDate(data.etd),
+      eta: localeDate(data.eta)
+    };
+  };
+
   const fetchData = () => {
     paxFlightHistory.get(props.flightId, props.paxId).then(res => {
-      const historyData = asArray(res).map(data => {
-        return {
-          ...data,
-          etd: localeDate(data.etd),
-          eta: localeDate(data.eta)
-        };
-      });
+      const historyData = asArray(res).map(data => parseFlightData(data));
       setcurrentFlightHistory(historyData);
     });
+
     paxFullTravelHistory.get(props.flightId, props.paxId).then(res => {
-      const historyData = asArray(res).map(data => {
-        return {
-          ...data,
-          etd: localeDate(data.etd),
-          eta: localeDate(data.eta)
-        };
-      });
+      const historyData = asArray(res).map(data => parseFlightData(data));
       setFullTravelHistory(historyData);
     });
   };

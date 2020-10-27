@@ -4,6 +4,7 @@ import SegmentTable from "../../../components/segmentTable/SegmentTable";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { asArray, hasData, localeDate, localeDateOnly } from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
+import { Link } from "@reach/router";
 
 const PNR = props => {
   const data = hasData(props.data) ? props.data : {};
@@ -11,6 +12,7 @@ const PNR = props => {
     hasData(data.version) ? `(Version: ${data.version})` : ""
   }`;
 
+  const tripType = data.tripType || "Trip Type";
   const headers = {
     itinerary: {
       leg: <Xl8 xid="pnr001">Leg</Xl8>,
@@ -89,6 +91,11 @@ const PNR = props => {
   const passengers = asArray(data.passengers).map(passenger => {
     return {
       ...passenger,
+      lastName: (
+        <Link to={`/gtas/paxDetail/${data.flightId}/${passenger.paxId}`}>
+          {passenger.lastName}
+        </Link>
+      ),
       key: `SSR${passenger.firstName} `
     };
   });
@@ -169,7 +176,11 @@ const PNR = props => {
             <CardWithTable
               data={itinerary}
               headers={headers.itinerary}
-              title={<Xl8 xid="pnr041">Itinerary</Xl8>}
+              title={
+                <>
+                  <Xl8 xid="pnr041">Itinerary</Xl8> <span>{`(${tripType})`}</span>
+                </>
+              }
               callback={setActiveKeyWrapper}
             />
             <CardWithTable

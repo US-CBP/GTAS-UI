@@ -140,7 +140,7 @@ const PaxDetail = props => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
       setPax(res);
       setFlightBadge(res);
-      setPnr(res.pnrVo);
+      setPnr({ ...res.pnrVo, flightId: props.flightId });
       setApisMessage(res.apisMessageVo);
       setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
       setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
@@ -154,7 +154,7 @@ const PaxDetail = props => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [props.paxId]);
 
   // TODO: refac tabs as child routes, load data per page.
   const actions = (

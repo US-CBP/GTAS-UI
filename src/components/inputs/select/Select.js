@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import "../Inputs.scss";
 import MultiSelect from "react-multi-select-component";
+import { hasData } from "../../../utils/utils";
 
 const SelectInput = props => {
   const [selected, setSelected] = useState(props.selected);
@@ -41,7 +42,7 @@ const SelectInput = props => {
         value={selected}
         disabled={props.readOnly === "readOnly" ? "disabled" : ""}
       >
-        <option value="">{props.placeholder}</option>
+        {hasData(props.placeholder) && <option value="">{props.placeholder}</option>}
         {props.options.map(option => {
           return (
             <option key={option.value} value={option.value}>
