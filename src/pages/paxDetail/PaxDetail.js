@@ -23,13 +23,7 @@ import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import { paxdetails, cases } from "../../services/serviceWrapper";
-import {
-  asArray,
-  hasData,
-  localeDate,
-  localeDateOnly,
-  getFlightBadgeData
-} from "../../utils/utils";
+import { asArray, hasData } from "../../utils/utils";
 import "./PaxDetail.scss";
 
 const PaxDetail = props => {
@@ -115,15 +109,15 @@ const PaxDetail = props => {
       titleText: "Flight History",
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
-    // ...(hasData(paxDetailsData)
-    //   ? [
-    //       {
-    //         title: <Xl8 xid="pd005">Link Analysis</Xl8>,
-    //         titleText: "Link Analysis",
-    //         link: <LinkAnalysis paxData={paxDetailsData} />
-    //       }
-    //     ]
-    //   : []),
+    ...(hasData(paxDetailsData)
+      ? [
+          {
+            title: <Xl8 xid="pd005">Link Analysis</Xl8>,
+            titleText: "Link Analysis",
+            link: <LinkAnalysis paxData={paxDetailsData} />
+          }
+        ]
+      : []),
     {
       titleText: "Attachments",
       title: <Xl8 xid="pd006">Attachments</Xl8>,
@@ -151,7 +145,7 @@ const PaxDetail = props => {
       setFlightLegsSegmentData(getTidyFlightLegData(asArray(res.pnrVo?.flightLegs)));
       setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
       setHasPnrRecord(res.pnrVo?.pnrRecordExists || false);
-      // setPaxDetailsData(res);
+      setPaxDetailsData(res);
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
       setWatchlistData({ passenger: p, documents: res.documents });
       setPaxDocuments(res.documents);
