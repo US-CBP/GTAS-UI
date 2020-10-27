@@ -1,6 +1,6 @@
 .stepper-container {
   padding: unset;
-
+  overflow-x: auto;
   ul {
     padding-inline-start: 0px;
   }
@@ -43,10 +43,6 @@
   content: none;
 }
 
-.stepper li.active {
-  color: rgb(7, 7, 7);
-}
-
 .stepper li.active:before {
   border-color: rgb(198, 230, 16);
   background-color: rgb(198, 230, 16);
@@ -54,4 +50,9 @@
 
 .stepper .active:after {
   background-color: rgb(198, 230, 16);
+}
+
+.new-segment:after {
+  background-color: unset !important;
+  border: unset !important;
 }
