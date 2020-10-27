@@ -189,6 +189,7 @@ const Table = props => {
                         return (
                           <th className="table-header">
                             <span
+                              className="table-sort-span"
                               {...column.getHeaderProps(column.getSortByToggleProps())}
                             >
                               {hdr} {column.canSort ? sortIcon(column) : ""}

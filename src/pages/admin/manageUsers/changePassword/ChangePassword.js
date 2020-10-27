@@ -71,7 +71,7 @@ const ChangePassword = props => {
   };
 
   return (
-    <Container className="change-password-container">
+    <Container>
       <Title title={<Xl8 xid="pass001">Change Password</Xl8>} uri={props.uri} />
       {displayErrorMsg && (
         <Alert variant="danger" dismissible onClose={() => setDisplayErrorMsg(false)}>
@@ -103,7 +103,7 @@ const ChangePassword = props => {
               name="oldPassword"
               required={true}
               inputVal={oldPassword}
-              alt={<Xl8 xid="7">Old password</Xl8>}
+              alt="old password"
               callback={cb}
               onChange={changeInput}
               spacebetween

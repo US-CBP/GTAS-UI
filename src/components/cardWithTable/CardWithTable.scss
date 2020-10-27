@@ -19,11 +19,11 @@ $gtas-white: rgba(255, 255, 255, 0.9);
   overflow: auto;
   max-height: 250px;
 }
-@media (min-width: 1500px) {
-  .card-with-table {
-    min-height: 200px;
-  }
-}
+// @media (min-width: 1500px) {
+//   .card-with-table {
+//     min-height: 200px;
+//   }
+// }
 .row-count {
   float: right;
   font-style: italic;

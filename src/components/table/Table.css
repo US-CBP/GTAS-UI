@@ -168,3 +168,8 @@
 .table > tbody {
   font-size: 14px;
 }
+
+.table-sort-span {
+  align-items: baseline;
+  display: inline-table;
+}

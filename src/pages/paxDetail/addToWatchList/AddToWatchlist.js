@@ -88,6 +88,7 @@ const AddToWatchlist = props => {
         size="md"
         centered
         aria-labelledby="contained-modal-title-vcenter"
+        className="max-500-width-container"
       >
         <Modal.Header closeButton>
           <Modal.Title>

@@ -153,9 +153,10 @@ const UserModal = props => {
     <Modal
       show={props.show}
       onHide={props.onHide}
-      size="md"
+      // size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-600-width-container"
     >
       <Modal.Header closeButton>
         <Modal.Title>{props.title}</Modal.Title>

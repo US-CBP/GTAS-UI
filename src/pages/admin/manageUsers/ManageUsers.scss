@@ -34,3 +34,7 @@
 .um-checkbox > div > .row > div > .form-inline {
   flex-flow: unset !important;
 }
+
+.max-600-width-container .modal-dialog {
+  max-width: 600px;
+}

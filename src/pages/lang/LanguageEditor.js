@@ -66,7 +66,7 @@ const LanguageEditor = () => {
   ];
 
   return (
-    <Main className="full" key={isEdit}>
+    <Main className="full bg-white" key={isEdit}>
       <Title
         title={<Xl8 xid="led001">Language Editor</Xl8>}
         rightChild={

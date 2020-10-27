@@ -30,6 +30,7 @@ const HitModal = props => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-500-width-container"
     >
       <Modal.Header closeButton>
         <Modal.Title>

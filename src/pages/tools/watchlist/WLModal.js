@@ -5,8 +5,9 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
 
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
-import { hasData, asArray, titleCase } from "../../../utils/utils";
+import { hasData, asArray } from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
+import "./Watchlist.css";
 
 const WLModal = props => {
   const TAB = { PAX: "passenger", DOX: "document" };
@@ -175,34 +176,33 @@ const WLModal = props => {
   };
 
   return (
-    <>
-      <Modal
-        show={props.show}
-        onHide={props.onHide}
-        size="md"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="qbrb-modal-body">
-          <Container fluid>
-            <Form
-              submitService={service}
-              title=""
-              callback={onFormExit}
-              action={mode.toLowerCase()}
-              paramCallback={preSubmit}
-              data={props.data}
-              cancellable
-            >
-              {fields.props.children}
-            </Form>
-          </Container>
-        </Modal.Body>
-      </Modal>
-    </>
+    <Modal
+      show={props.show}
+      onHide={props.onHide}
+      size="md"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      className="max-500-width-container"
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>{title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Container fluid>
+          <Form
+            submitService={service}
+            title=""
+            callback={onFormExit}
+            action={mode.toLowerCase()}
+            paramCallback={preSubmit}
+            data={props.data}
+            cancellable
+          >
+            {fields.props.children}
+          </Form>
+        </Container>
+      </Modal.Body>
+    </Modal>
   );
 };
 

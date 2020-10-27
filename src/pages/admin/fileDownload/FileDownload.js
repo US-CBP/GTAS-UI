@@ -84,18 +84,20 @@ const FileDownload = ({ name }) => {
   ];
 
   const fileTypeCtrl = (
-    <LabelledInput
-      inputType="select"
-      labelText={<Xl8 xid="fdl006">Log Type</Xl8>}
-      inputStyle="file-type"
-      name="severity"
-      options={logTypes}
-      required={true}
-      alt="nothing"
-      spacebetween
-      callback={onLogTypeSelect}
-      key={selRefreshKey}
-    />
+    <div className="filedownload-action-buttons">
+      <LabelledInput
+        inputType="select"
+        labelText={<Xl8 xid="fdl006">Log Type</Xl8>}
+        inputStyle="file-type"
+        name="severity"
+        options={logTypes}
+        required={true}
+        alt="nothing"
+        spacebetween
+        callback={onLogTypeSelect}
+        key={selRefreshKey}
+      />
+    </div>
   );
 
   return (

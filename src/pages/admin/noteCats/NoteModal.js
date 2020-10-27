@@ -25,6 +25,7 @@ const NoteModal = props => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-500-width-container"
     >
       <Modal.Header closeButton>
         <Modal.Title>{<Xl8 xid="ntm001">Add Note Category</Xl8>}</Modal.Title>
