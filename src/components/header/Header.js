@@ -153,12 +153,7 @@ const Header = () => {
           <Nav className="ml-auto">
             <Form inline>
               <InputGroup>
-                <FormControl
-                  type="text"
-                  placeholder="Search"
-                  ref={searchInputRef}
-                  className="search-150"
-                />
+                <FormControl type="text" ref={searchInputRef} className="search-150" />
                 <InputGroup.Append>
                   <Button variant="light" onClick={handleSearchSubmit}>
                     <i className="fa fa-search"></i>

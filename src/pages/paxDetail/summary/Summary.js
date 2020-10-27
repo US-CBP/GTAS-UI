@@ -122,7 +122,7 @@ const Summary = props => {
         <CardWithTable
           data={paxHitSummary}
           headers={headers.paxHitSummary}
-          title={<Xl8 xid="sum021">Passenger Current Hits summary</Xl8>}
+          title={<Xl8 xid="sum021">Current Hits Summary</Xl8>}
         />
 
         <CardWithTable

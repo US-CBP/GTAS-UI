@@ -27,6 +27,7 @@
   white-space: nowrap !important;
   padding: 0.3rem !important;
   vertical-align: middle !important;
+  /* display: flex; */
 }
 
 .pagination {
@@ -171,5 +172,6 @@
 
 .table-sort-span {
   align-items: baseline;
-  display: inline-table;
+  justify-content: space-between;
+  display: flex;
 }

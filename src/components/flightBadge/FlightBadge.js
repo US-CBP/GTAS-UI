@@ -1,5 +1,5 @@
 import React from "react";
-import { localeDate, alt, hasData } from "../../utils/utils";
+import { localeDate, localeMonthDayTime, hasData } from "../../utils/utils";
 import "./FlightBadge.scss";
 
 const FlightBadge = props => {
@@ -8,8 +8,8 @@ const FlightBadge = props => {
   if (!hasData(props.data?.flightNumber)) return <></>;
 
   const data = {
-    arrival: [res.flightDestination, ...localeDate(res.eta).split(",")],
-    departure: [res.flightOrigin, ...localeDate(res.etd).split(",")],
+    arrival: [res.flightDestination, ...localeMonthDayTime(res.eta).split(",")],
+    departure: [res.flightOrigin, ...localeMonthDayTime(res.etd).split(",")],
     flightNumber: `${res.carrier}${res.flightNumber}`
   };
 
