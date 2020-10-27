@@ -1,6 +1,6 @@
 .stepper-container {
   padding: unset;
-
+  overflow-x: auto;
   ul {
     padding-inline-start: 0px;
   }
@@ -50,4 +50,9 @@
 
 .stepper .active:after {
   background-color: #009fe3;
+}
+
+.new-segment:after {
+  background-color: unset !important;
+  border: unset !important;
 }
