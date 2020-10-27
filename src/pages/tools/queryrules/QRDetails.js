@@ -70,7 +70,7 @@ const QRDetails = props => {
   //TOOD - need a back button or some way to get back to the query/rule page that brought us here.
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]}>
-      <Main className="full">
+      <Main className="full bg-white">
         <Title title={<Xl8 xid="">Query Details</Xl8>}></Title>
         <Table data={data} header={headers} callback={cb} key={key}></Table>
       </Main>
