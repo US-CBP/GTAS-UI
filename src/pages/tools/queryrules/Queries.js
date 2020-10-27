@@ -69,7 +69,8 @@ const Queries = props => {
     setId(recordId);
     setRecord(record);
     setModalTitle(title);
-    setShowModal(true);
+    setModalKey(Date.now());
+    // setShowModal(true);
   };
 
   const closeModal = () => {
