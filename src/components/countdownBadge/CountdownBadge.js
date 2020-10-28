@@ -68,7 +68,7 @@ const CountdownBadge = props => {
   );
 
   const getStyle = () => {
-    if (dayraw > 1) return "";
+    if (dayraw > 1) return "bordered cdb-white";
 
     if (!isPos) return "bordered cdb-gray";
     if (dayraw === 1) return "bordered cdb-green";

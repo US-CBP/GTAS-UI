@@ -32,7 +32,12 @@
 
 .cdb-gray {
   background-color: #4c4c4c;
-  color: white;
+  color: white !important;
+}
+
+.cdb-white {
+  background-color: white;
+  color: black;
 }
 
 .cdb-blue {
