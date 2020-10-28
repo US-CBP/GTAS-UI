@@ -260,6 +260,7 @@ const ManageUsers = props => {
           header={PASSWORD_CHANGE_CONFIRMATION_HEADER}
           body={PASSWORD_CHANGE_CONFIRMATION}
           variant={"success"}
+          containerClass={"toast-container"}
         />
       </Main>
     </>

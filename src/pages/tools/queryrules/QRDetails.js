@@ -84,16 +84,15 @@ const QRDetails = props => {
       <Container fluid>
         <Title title={<Xl8 xid="">Query Details</Xl8>}></Title>
         <Table data={data} header={headers} callback={cb} key={key}></Table>
+        <Toast
+            onClose={() => setShowToast(false)}
+            show={showToast}
+            header={OVER_QUERY_LIMIT_HEADER}
+            body={OVER_QUERY_LIMIT}
+            variant={"danger"}
+            containerClass={"toast-container-qrd"}
+        />
       </Container>
-      <Main>
-      <Toast
-          onClose={() => setShowToast(false)}
-          show={showToast}
-          header={OVER_QUERY_LIMIT_HEADER}
-          body={OVER_QUERY_LIMIT}
-          variant={"danger"}
-      />
-      </Main>
     </RoleAuthenticator>
   );
 };

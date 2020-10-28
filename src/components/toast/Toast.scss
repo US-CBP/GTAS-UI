@@ -7,7 +7,13 @@ $danger_color: rgba(255, 0, 0, 0.65);
   right: 0;
 }
 
-.toast-container .success {
+.toast-container-qrd{
+  position: absolute;
+  bottom: 40px;
+  right: 35px;
+}
+
+.toast-container .toast-container-qrd .success {
   border: 1px solid $success_color;
   box-shadow: 1px 1px 5px $success_color;
 
@@ -17,7 +23,27 @@ $danger_color: rgba(255, 0, 0, 0.65);
   }
 }
 
-.toast-container .danger {
+.toast-container .toast-container-qrd.danger {
+  border: 1px solid $danger_color;
+  box-shadow: 1px 1px 5px $danger_color;
+
+  .toast-header {
+    color: black;
+    background-color: $danger_color;
+  }
+}
+
+.toast-container-qrd .success {
+  border: 1px solid $success_color;
+  box-shadow: 1px 1px 5px $success_color;
+
+  .toast-header {
+    color: black;
+    background-color: $success_color;
+  }
+}
+
+.toast-container-qrd .danger {
   border: 1px solid $danger_color;
   box-shadow: 1px 1px 5px $danger_color;
 
