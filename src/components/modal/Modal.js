@@ -12,6 +12,7 @@ const Modal = props => {
         size={size}
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        animation={false}
       >
         {props.children}
       </RBModal>
