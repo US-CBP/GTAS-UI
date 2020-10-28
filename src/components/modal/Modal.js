@@ -18,5 +18,18 @@ const Modal = props => {
     </div>
   );
 };
+export const ModalTitle = props => {
+  return <RBModal.Title>{props.children}</RBModal.Title>;
+};
 
+export const ModalHeader = props => {
+  return <RBModal.Header>{props.children}</RBModal.Header>;
+};
+
+export const ModalBody = props => {
+  return <RBModal.Body>{props.children}</RBModal.Body>;
+};
+export const ModalFooter = props => {
+  return <RBModal.Footer>{props.children}</RBModal.Footer>;
+};
 export default Modal;
