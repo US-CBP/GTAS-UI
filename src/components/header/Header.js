@@ -52,6 +52,7 @@ const Header = () => {
 
   const htab = {
     DASH: "/gtas/dashboard",
+    POE: "/gtas/poe",
     FLIGHT: "/gtas/flights",
     VETTING: "/gtas/vetting",
     TOOLS: "/gtas/tools",
@@ -122,6 +123,15 @@ const Header = () => {
                 <Xl8 xid="head002">Vetting</Xl8>
               </Nav.Link>
             </RoleAuthenticator>
+            <Nav.Link
+              as={Link}
+              to="poe"
+              className={`${getActiveClass(htab.POE)}`}
+              onClick={() => clickTab(htab.POE)}
+            >
+              <Xl8 xid="head007">POE</Xl8>
+            </Nav.Link>
+
             <Nav.Link
               as={Link}
               to="tools"
