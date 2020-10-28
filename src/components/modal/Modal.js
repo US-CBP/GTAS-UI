@@ -1,10 +1,10 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Modal as RBModal } from "react-bootstrap";
 import "./Modal.css";
 
 const Modal = props => {
   const size = props.size || "md";
-  // const modalRef = useRef(null);
+
   return (
     <div>
       <RBModal
