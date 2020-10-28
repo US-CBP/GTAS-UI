@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import Kanban from "../../components/kanban/Kanban";
 import Title from "../../components/title/Title";
-import { Container } from "react-bootstrap";
+import Main from "../../components/main/Main";
 
 const POE = props => {
   return (
-    <Container fluid>
+    <Main className="full-cards">
       <Title title="POE"></Title>
       <Kanban />
-    </Container>
+    </Main>
   );
 };
 

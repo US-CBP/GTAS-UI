@@ -4,7 +4,7 @@ import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import { Button } from "react-bootstrap";
-import { QR, ACTION, ROLE } from "../../../utils/constants";
+import { ACTION, ROLE } from "../../../utils/constants";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { LookupContext } from "../../../context/data/LookupContext";
 

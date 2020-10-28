@@ -357,7 +357,7 @@ const Kanban = props => {
   };
 
   return (
-    <Main className="full-cards">
+    <div className="scrollable">
       <CardDeck className="page-deck justify-content-center">
         <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
           {Object.entries(columns).map(([columnId, column], index) => {
@@ -366,7 +366,8 @@ const Kanban = props => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  alignItems: "center"
+                  alignItems: "center",
+                  marginBlock: "15px"
                 }}
                 key={columnId}
               >
@@ -387,7 +388,8 @@ const Kanban = props => {
                             minHeight: 200,
                             maxHeight: "calc((100vh - 250px)/2)",
                             overflowY: "auto",
-                            border: "1px solid darkgray",
+                            border: "1px solid #d0d0d0",
+                            backgroundColor: "white",
                             borderRadius: "3px"
                           }}
                         >
@@ -434,7 +436,7 @@ const Kanban = props => {
           })}
         </DragDropContext>
       </CardDeck>
-    </Main>
+    </div>
   );
 };
 
