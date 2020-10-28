@@ -2,7 +2,7 @@
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
-$background-image-url: "../../images/sofy-m-halftoneco-N7uekwIyQ7E-unsplash.jpg";
+$background-image-url: "../../images/plane01.jpg";
 $wco-blue: #0082c3;
 $wco-blue-dark: darken($wco-blue, 20%);
 $wco-gray: rgb(141, 144, 147);
@@ -133,7 +133,7 @@ $transparent: #0082c3d9;
   z-index: 5;
   background: linear-gradient(#40403f, #40403fe8, #40403f99),
     url($background-image-url) no-repeat no-repeat;
-  background-position: center center;
+  background-position: -600px 0px;
   background-size: cover;
 }
 
@@ -143,7 +143,6 @@ hr {
 
 .filter-fg > .col {
   margin-top: 50px;
-  // background: #20202040;
   backdrop-filter: blur(2px);
   border-radius: 0.5rem;
   padding-bottom: 5px;
@@ -151,11 +150,6 @@ hr {
 
 .notopmargin {
   margin-top: 0px !important;
-}
-
-.filter-screen {
-  // background: #00000050;
-  // z-index: 6;
 }
 
 .dropdown-content > .panel-content > .select-panel > ul > li > label > .item-renderer {

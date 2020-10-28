@@ -171,11 +171,11 @@ input[type="radio"] {
   color: #0082c3;
 }
 
-.flight-number {
+/* .flight-number {
   color: #0082c3;
   font-weight: 700;
   align-items: center;
-}
+} */
 
 .action-button-div {
   position: absolute;

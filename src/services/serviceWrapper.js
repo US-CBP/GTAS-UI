@@ -216,7 +216,6 @@ export const ruleCats = { get: (id, params) => get(RULE_CATS, BASEHEADER) };
 export const settingsinfo = {
   get: (id, params) => get(SETTINGSINFO, BASEHEADER),
   put: body => {
-    console.log(body);
     putNoId(SETTINGSINFO, BASEHEADER, stringify(body));
   }
 };

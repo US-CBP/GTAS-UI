@@ -44,7 +44,7 @@ const CountdownBadge = props => {
   const m = <Xl8 xid="cdb003">m</Xl8>;
   const formatedDays = days ? (
     <span>
-      <span className="font-weight-bold">{days}</span>
+      <span className="">{days}</span>
       {d}
     </span>
   ) : (
@@ -52,7 +52,7 @@ const CountdownBadge = props => {
   );
   const formatedHours = hours ? (
     <span>
-      <span className="font-weight-bold">{hours}</span>
+      <span className="">{hours}</span>
       {h}
     </span>
   ) : (
@@ -60,7 +60,7 @@ const CountdownBadge = props => {
   );
   const formatedMinutes = minutes ? (
     <span>
-      <span className="font-weight-bold">{minutes}</span>
+      <span className="">{minutes}</span>
       {m}
     </span>
   ) : (

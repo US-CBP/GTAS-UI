@@ -37,9 +37,10 @@ $wco-gray: rgb(141, 144, 147);
 }
 
 .header-navbar .nav-tabs .active-tab {
-  color: $gtas-white;
-  border: 1px solid $gtas-white;
+  border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: 0.25rem;
+  color: #575756 !important;
+  background-color: white !important;
 }
 
 .header-navbar .navbar-nav a.nav-link {

@@ -41,7 +41,7 @@ const Notification = props => {
 
   return (
     <>
-      <Button variant="outline-info" size="sm" onClick={handleShow}>
+      <Button className="dropdown-item" onClick={handleShow}>
         <i className="fa fa-bullhorn"></i> <Xl8 xid="not001">Notify</Xl8>
       </Button>
 

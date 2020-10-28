@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Seat from "./seat/Seat";
 import { Container, Row, CardDeck, Card } from "react-bootstrap";
-import "./SeatChart.scss";
 import { seats } from "../../services/serviceWrapper";
-import { asArray } from "../../utils/utils";
+import { asArray, localeDate } from "../../utils/utils";
 import { useParams } from "@reach/router";
-import SeatInfo from "./seatInfo/SeatInfo";
+// import SeatInfo from "./seatInfo/SeatInfo";
 import Legend from "./legend/Legend";
-import FlightInfo from "./flightInfo/FlighInfo";
+// import FlightInfo from "./flightInfo/FlighInfo";
+import SeatChartCard from "./seatChartCard/SeatChartCard";
 import Loading from "../loading/Loading";
-import { set } from "js-cookie";
-import Title from "../title/Title";
+import Xl8 from "../xl8/Xl8";
+import "./SeatChart.scss";
 
 const SeatChart = ({ location }) => {
   const { flightId, currentPaxSeat } = useParams();
-  const [reserevedSeatsInfo, setReservedSeatsInfo] = useState({});
+  const [reservedSeatsInfo, setReservedSeatsInfo] = useState({});
   const [columnWithReservedSeat, setColumnWithReservedSeat] = useState([]);
   const [rowsWithReservedSeat, setRowsWithReservedSeat] = useState([]);
   const [selectedSeatInfo, setSelectedSeatInfo] = useState({});
@@ -27,7 +27,7 @@ const SeatChart = ({ location }) => {
       row.push(
         <Seat
           seatNumber={seatNumber}
-          seatInfo={reserevedSeatsInfo[seatNumber]}
+          seatInfo={reservedSeatsInfo[seatNumber]}
           selected={currentPaxSeat === seatNumber}
           key={seatNumber}
           className={
@@ -74,8 +74,36 @@ const SeatChart = ({ location }) => {
   }, []);
 
   useEffect(() => {
-    setSelectedSeatInfo(reserevedSeatsInfo[currentPaxSeat] || {});
-  }, [reserevedSeatsInfo]);
+    setSelectedSeatInfo(reservedSeatsInfo[currentPaxSeat] || {});
+  }, [reservedSeatsInfo]);
+
+  const flightInfoData = [
+    { label: <Xl8 xid="seat004">Flight Number</Xl8>, value: location.state.flightNumber },
+    {
+      label: <Xl8 xid="seat005">Arrival</Xl8>,
+      value: localeDate(location.state.arrival)
+    },
+    {
+      label: <Xl8 xid="seat006">Departure</Xl8>,
+      value: localeDate(location.state.departure)
+    }
+  ];
+
+  const seatInfoData = [
+    { label: <Xl8 xid="seat007">Last Name</Xl8>, value: selectedSeatInfo.lastName },
+    {
+      label: <Xl8 xid="seat008">First Name</Xl8>,
+      value: selectedSeatInfo.firstName
+    },
+    {
+      label: <Xl8 xid="seat009">Middle Name</Xl8>,
+      value: selectedSeatInfo.middleInitial
+    },
+    {
+      label: <Xl8 xid="seat010">Seat Number</Xl8>,
+      value: selectedSeatInfo.number
+    }
+  ];
 
   return (
     <Container fluid>
@@ -88,26 +116,21 @@ const SeatChart = ({ location }) => {
       <CardDeck className="seat-info-display">
         <Card>
           <Card.Header>
-            <Title title="Legends"></Title>
+            <Xl8 xid="seat001">Legend</Xl8>
           </Card.Header>
           <Legend cotravellersCount={selectedSeatInfo.coTravellers?.length || 0} />
         </Card>
         <Card>
           <Card.Header>
-            <Title title="Flight Information" />
+            <Xl8 xid="seat002">Flight Information</Xl8>
           </Card.Header>
-          <FlightInfo
-            arrival={location.state.arrival}
-            departure={location.state.departure}
-            flightNumber={location.state.flightNumber}
-            flightId={location.state.flightId}
-          />
+          <SeatChartCard data={flightInfoData} />
         </Card>
         <Card>
           <Card.Header>
-            <Title title="Selected Seat's Information" />
+            <Xl8 xid="seat003">Passenger Information</Xl8>
           </Card.Header>
-          <SeatInfo info={selectedSeatInfo} />
+          <SeatChartCard data={seatInfoData} />
         </Card>
       </CardDeck>
     </Container>

@@ -36,7 +36,7 @@ const EventNotesModal = props => {
 
   return (
     <>
-      <Button variant="outline-info" size="sm" onClick={handleShow}>
+      <Button className="dropdown-item" onClick={handleShow}>
         <i className="fa fa-pencil"></i> <Xl8 xid="evn001">Notes</Xl8>
       </Button>
 

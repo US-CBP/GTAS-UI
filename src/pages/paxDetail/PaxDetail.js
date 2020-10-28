@@ -23,7 +23,7 @@ import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import { paxdetails, cases } from "../../services/serviceWrapper";
-import { asArray, hasData } from "../../utils/utils";
+import { asArray, hasData, localeDate, localeDateOnly } from "../../utils/utils";
 import "./PaxDetail.scss";
 
 const PaxDetail = props => {
@@ -106,9 +106,31 @@ const PaxDetail = props => {
     }
   };
 
+  const paxinfoData = res => {
+    return {
+      lastPnrReceived: res.pnrVo?.transmissionDate,
+      lastApisReceived: res.apisMessageVo?.transmissionDate,
+      lastName: res.lastName,
+      middleName: res.middleName,
+      firstName: res.firstName,
+      age: res.age,
+      dob: res.dob,
+      gender: res.gender,
+      nationality: res.nationality,
+      residenceCountry: res.residenceCountry,
+      seat: res.seat,
+      eta: res.eta,
+      etd: res.etd,
+      flightId: props.flightId,
+      flightNumber: `${res.carrier}${res.flightNumber}`,
+      paxId: props.paxId,
+      passengerType: res.passengerType
+    };
+  };
+
   const fetchData = () => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
-      setPax(res);
+      setPax(paxinfoData(res));
       setFlightBadge(res);
       setPnr({ ...res.pnrVo, flightId: props.flightId });
       setApisMessage(res.apisMessageVo);
@@ -128,7 +150,11 @@ const PaxDetail = props => {
 
   // TODO: refac tabs as child routes, load data per page.
   const actions = (
-    <DropdownButton variant="info" title="Choose Action" className="m-1">
+    <DropdownButton
+      variant="info"
+      title={<Xl8 xid="manu002">Choose Action</Xl8>}
+      className="m-1"
+    >
       <EventNotesModal
         paxId={props.paxId}
         setEventNoteRefreshKey={setEventNoteRefreshKey}

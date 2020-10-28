@@ -158,8 +158,8 @@
 }
 
 .table-hover tbody tr:hover {
-  color: #212529;
-  background-color: rgba(280, 280, 0, 0.2);
+  color: black;
+  background-color: #0082c323;
 }
 
 .table > thead {

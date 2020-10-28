@@ -36,7 +36,7 @@ const NoteCats = ({ name }) => {
           <div className="text-center">
             <DropdownButton
               variant="outline-info"
-              title={<Xl8 xid="ntc004">Choose Action</Xl8>}
+              title={<Xl8 xid="manu002">Choose Action</Xl8>}
             >
               <Dropdown.Item as="button" onClick={() => openEditModal(row.original)}>
                 <Xl8 xid="ntc005">Edit Note Category</Xl8>
