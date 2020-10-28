@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { Modal, Container, Alert, Button } from "react-bootstrap";
+import { Container, Alert, Button } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import { notetypes } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../utils/constants";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const NoteModal = props => {
   const [showAlert, setShowAlert] = useState(false);
@@ -21,9 +26,9 @@ const NoteModal = props => {
 
   const preSubmit = fields => {
     let res = { ...fields[0] };
-    res.id =  props.isEdit ? row.id : "";
+    res.id = props.isEdit ? row.id : "";
     return [res];
-  }
+  };
 
   return (
     <Modal
@@ -33,9 +38,9 @@ const NoteModal = props => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{props.title}</Modal.Title>
-      </Modal.Header>
+      <ModalHeader closeButton>
+        <ModalTitle>{props.title}</ModalTitle>
+      </ModalHeader>
       <Alert show={showAlert} variant={variant}>
         {alertContent}
         <hr />
@@ -43,10 +48,10 @@ const NoteModal = props => {
           <Xl8 xid="form002">Confirm</Xl8>
         </Button>
       </Alert>
-      <Modal.Body>
+      <ModalBody>
         <Container fluid>
           <Form
-            submitService={props.isEdit? notetypes.put : notetypes.post}
+            submitService={props.isEdit ? notetypes.put : notetypes.post}
             title=""
             callback={postSubmit}
             paramCallback={preSubmit}
@@ -66,7 +71,7 @@ const NoteModal = props => {
             />
           </Form>
         </Container>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

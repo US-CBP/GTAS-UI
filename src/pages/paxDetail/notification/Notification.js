@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { Button, Modal, Container } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { notification, usersemails } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
 import "./Notification.scss";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const Notification = props => {
   const cb = result => {};
@@ -52,12 +57,12 @@ const Notification = props => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header closeButton>
-          <Modal.Title>
+        <ModalHeader closeButton>
+          <ModalTitle>
             <Xl8 xid="not002">Notify Users</Xl8>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+          </ModalTitle>
+        </ModalHeader>
+        <ModalBody>
           <Container fluid>
             <Form
               title=""
@@ -104,7 +109,7 @@ const Notification = props => {
               />
             </Form>
           </Container>
-        </Modal.Body>
+        </ModalBody>
       </Modal>
     </>
   );
