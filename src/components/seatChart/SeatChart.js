@@ -3,7 +3,7 @@ import Seat from "./seat/Seat";
 import { Container, Row, CardDeck, Card } from "react-bootstrap";
 import { seats } from "../../services/serviceWrapper";
 import { asArray, localeDate } from "../../utils/utils";
-import { useParams } from "@reach/router";
+import { Link, useParams } from "@reach/router";
 // import SeatInfo from "./seatInfo/SeatInfo";
 import Legend from "./legend/Legend";
 // import FlightInfo from "./flightInfo/FlighInfo";
@@ -104,6 +104,15 @@ const SeatChart = ({ location }) => {
       value: selectedSeatInfo.number
     }
   ];
+  const linkToFlightPax = (
+    <Link to={`/gtas/flightpax/${location.state.flightId}`}>Flightpax</Link>
+  );
+
+  const linkToPaxdetails = (
+    <Link to={`/gtas/paxDetail/${selectedSeatInfo.flightId}/${selectedSeatInfo.paxId}`}>
+      Show passenger details
+    </Link>
+  );
 
   return (
     <Container fluid>
@@ -124,13 +133,13 @@ const SeatChart = ({ location }) => {
           <Card.Header>
             <Xl8 xid="seat002">Flight Information</Xl8>
           </Card.Header>
-          <SeatChartCard data={flightInfoData} />
+          <SeatChartCard data={flightInfoData} link={linkToFlightPax} />
         </Card>
         <Card>
           <Card.Header>
             <Xl8 xid="seat003">Passenger Information</Xl8>
           </Card.Header>
-          <SeatChartCard data={seatInfoData} />
+          <SeatChartCard data={seatInfoData} link={linkToPaxdetails} />
         </Card>
       </CardDeck>
     </Container>

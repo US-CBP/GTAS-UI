@@ -24,8 +24,6 @@ const SeatChartCard = props => {
         ))}
 
       <Row>{props.link}</Row>
-
-      <Link to={`/gtas/flightpax/${props.flightId}`}>Flightpax</Link>
     </Container>
   );
 };
