@@ -261,7 +261,7 @@ export default class App extends React.Component {
                               <APIS path="apis"></APIS>
                               <PNR path="pnr"></PNR>
                               <FlightHistory path="flighthistory"></FlightHistory>
-                              {/* <LinkAnalysis path="linkanalysis"></LinkAnalysis> */}
+                              <LinkAnalysis path="linkanalysis"></LinkAnalysis>
                               <UploadAttachment path="uploadattachment"></UploadAttachment>
                             </PaxDetail>
                           </RoleAuthenticator>
