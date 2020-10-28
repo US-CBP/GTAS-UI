@@ -146,7 +146,7 @@ const Kanban = props => {
           <div className="font-weight-bolder">Olu, Idris</div>
           <div>Doc #: 21099D-MA78</div>
           <div className="poe-countdown-outer">
-            <span>Reason:</span>
+            <span>Reason: World Health</span>
             <div className="poe-countdown-inner">
               <CountdownBadge future={randdate(5)} baseline={randdate()}></CountdownBadge>
             </div>
@@ -176,10 +176,10 @@ const Kanban = props => {
       id: "1030",
       content: (
         <div>
-          <div className="font-weight-bolder">Sandiego, Carmen</div>
-          <div>Doc #: 2RKK9D-023E</div>
+          <div className="font-weight-bolder">Popoto, Vaquita</div>
+          <div>Doc #: 199485bb2</div>
           <div className="poe-countdown-outer">
-            <span>Reason: </span>
+            <span>Reason: Local Police</span>
             <div className="poe-countdown-inner">
               <CountdownBadge future={randdate()} baseline={randdate(6)}></CountdownBadge>
             </div>
@@ -194,10 +194,10 @@ const Kanban = props => {
       id: "1040",
       content: (
         <div>
-          <div className="font-weight-bolder">Sandiego, Carmen</div>
-          <div>Doc #: 2RKK9D-023E</div>
+          <div className="font-weight-bolder">Hsieh, Yu Min</div>
+          <div>Doc #: FF0294-KRCAN</div>
           <div className="poe-countdown-outer">
-            <span>Reason: </span>
+            <span>Reason: Interpol</span>
             <div className="poe-countdown-inner">
               <CountdownBadge future={randdate()} baseline={randdate(6)}></CountdownBadge>
             </div>
@@ -210,7 +210,7 @@ const Kanban = props => {
       content: (
         <div>
           <div className="font-weight-bolder">Sandiego, Carmen</div>
-          <div>Doc #: 2RKK9D-023E</div>
+          <div>Doc #: 3948HHERUS</div>
           <div className="poe-countdown-outer">
             <span>Reason: </span>
             <div className="poe-countdown-inner">
@@ -224,38 +224,8 @@ const Kanban = props => {
       id: "1042",
       content: (
         <div>
-          <div className="font-weight-bolder">Sandiego, Carmen</div>
-          <div>Doc #: 2RKK9D-023E</div>
-          <div className="poe-countdown-outer">
-            <span>Reason: </span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate()} baseline={randdate(6)}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "1043",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Sandiego, Carmen</div>
-          <div>Doc #: 2RKK9D-023E</div>
-          <div className="poe-countdown-outer">
-            <span>Reason: </span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate()} baseline={randdate(6)}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "1044",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Sandiego, Carmen</div>
-          <div>Doc #: 2RKK9D-023E</div>
+          <div className="font-weight-bolder">Pietr, Samuel</div>
+          <div>Doc #: BB2K9DRRE</div>
           <div className="poe-countdown-outer">
             <span>Reason: </span>
             <div className="poe-countdown-inner">
@@ -415,7 +385,8 @@ const Kanban = props => {
                                         color: "white",
                                         ...provided.draggableProps.style,
                                         border: "1px solid black",
-                                        borderRadius: "5px"
+                                        borderRadius: "5px",
+                                        textAlign: "left"
                                       }}
                                     >
                                       {item.content}
