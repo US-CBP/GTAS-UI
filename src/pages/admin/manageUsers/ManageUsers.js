@@ -25,7 +25,7 @@ const ManageUsers = props => {
   const [editRowDetails, setEditRowDetails] = useState({});
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState();
-  const [showTost, setShowToast] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const PASSWORD_CHANGE_CONFIRMATION = (
     <>
@@ -256,7 +256,7 @@ const ManageUsers = props => {
         />
         <Toast
           onClose={() => setShowToast(false)}
-          show={showTost}
+          show={showToast}
           header={PASSWORD_CHANGE_CONFIRMATION_HEADER}
           body={PASSWORD_CHANGE_CONFIRMATION}
           variant={"success"}

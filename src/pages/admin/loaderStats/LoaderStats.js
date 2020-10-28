@@ -5,6 +5,7 @@ import Xl8 from "../../../components/xl8/Xl8";
 import { loaderStats } from "../../../services/serviceWrapper";
 import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
+import { hasData, localeDate } from "../../../utils/utils";
 
 const LoaderStats = ({ name }) => {
   const cb = function(result) {};
@@ -14,7 +15,13 @@ const LoaderStats = ({ name }) => {
 
   useEffect(() => {
     loaderStats.get().then(res => {
-      setData(res);
+      const parsedData = {
+        ...res,
+        lastMessageAnalyzedByDrools: localeDate(res?.lastMessageAnalyzedByDrools),
+        lastMessageInSystem: localeDate(res?.lastMessageInSystem),
+        mostRecentRuleHit: localeDate(res?.mostRecentRuleHit)
+      };
+      setData(parsedData);
       setKey(key + 1);
     });
   }, []);
