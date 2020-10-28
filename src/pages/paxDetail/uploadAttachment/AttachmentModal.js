@@ -105,7 +105,8 @@ const AttachmentModal = props => {
   return (
     <>
       <Button className="dropdown-item" onClick={handleShow}>
-        <i className="fa fa-pencil"></i>Add Attachments
+        {/* <i className="fa fa-pencil"></i>Add Attachments */}
+        <Xl8 xid="attm007">Add Attachments</Xl8>
       </Button>
       {/*
       <Modal

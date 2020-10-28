@@ -155,19 +155,19 @@ const PaxDetail = props => {
       title={<Xl8 xid="manu002">Choose Action</Xl8>}
       className="m-1"
     >
+      <AttachmentModal callback={cb} paxId={props.paxId}></AttachmentModal>
       <EventNotesModal
         paxId={props.paxId}
         setEventNoteRefreshKey={setEventNoteRefreshKey}
       />
-      <DownloadReport paxId={props.paxId} flightId={props.flightId} />
       <AddToWatchlist watchlistItems={watchlistData} />
       <CreateManualHit
         paxId={props.paxId}
         flightId={props.flightId}
         callback={setHitSummaryRefreshKey}
       />
+      <DownloadReport paxId={props.paxId} flightId={props.flightId} />
       <Notification paxId={props.paxId} />
-      <AttachmentModal callback={cb} paxId={props.paxId}></AttachmentModal>
       {hasHit && (
         <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
       )}

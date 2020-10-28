@@ -37,7 +37,8 @@ const EventNotesModal = props => {
   return (
     <>
       <Button className="dropdown-item" onClick={handleShow}>
-        <i className="fa fa-pencil"></i> <Xl8 xid="evn001">Notes</Xl8>
+        {/* <i className="fa fa-pencil"></i> <Xl8 xid="evn001">Add Event Notes</Xl8> */}
+        <Xl8 xid="evn001">Add Event Notes</Xl8>
       </Button>
 
       <Modal
@@ -50,7 +51,7 @@ const EventNotesModal = props => {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            <Xl8 xid="evn002">Add Event Notes</Xl8>
+            <Xl8 xid="evn001">Add Event Notes</Xl8>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

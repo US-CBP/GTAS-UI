@@ -42,7 +42,8 @@ const Notification = props => {
   return (
     <>
       <Button className="dropdown-item" onClick={handleShow}>
-        <i className="fa fa-bullhorn"></i> <Xl8 xid="not001">Notify</Xl8>
+        {/* <i className="fa fa-bullhorn"></i> <Xl8 xid="not001">Notify</Xl8> */}
+        <Xl8 xid="not001">Notify</Xl8>
       </Button>
 
       <Modal
