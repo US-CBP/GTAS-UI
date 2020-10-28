@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { Modal, Button, Container, Alert } from "react-bootstrap";
+import { Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import { hitcatspost } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../utils/constants";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const HitModal = props => {
   const [showAlert, setShowAlert] = useState(false);
@@ -39,9 +44,9 @@ const HitModal = props => {
       centered
       className="max-500-width-container"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{props.title}</Modal.Title>
-      </Modal.Header>
+      <ModalHeader closeButton>
+        <ModalTitle>{props.title}</ModalTitle>
+      </ModalHeader>
       <Alert show={showAlert} variant={variant}>
         {alertContent}
         <hr />
@@ -49,7 +54,7 @@ const HitModal = props => {
           <Xl8 xid="form003">Confirm</Xl8>
         </Button>
       </Alert>
-      <Modal.Body>
+      <ModalBody>
         <Container fluid>
           <Form
             submitService={props.isEdit ? hitcatspost.put : hitcatspost.post}
@@ -92,7 +97,7 @@ const HitModal = props => {
             />
           </Form>
         </Container>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { SplitButton, Dropdown, Modal, Button } from "react-bootstrap";
+import { SplitButton, Dropdown, Button } from "react-bootstrap";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import Xl8 from "../../../components/xl8/Xl8";
 import { ROLE } from "../../../utils/constants";
+import Modal, {
+  ModalBody,
+  ModalFooter,
+  ModalHeader
+} from "../../../components/modal/Modal";
 
 const ChangeHitStatus = props => {
   const [show, setShow] = useState(false);
@@ -52,20 +57,20 @@ const ChangeHitStatus = props => {
       </SplitButton>
 
       <Modal show={show} onHide={handleCancel} centered>
-        <Modal.Header>
+        <ModalHeader closeButton>
           <Xl8 xid="chs004">Update Hit Status</Xl8>
-        </Modal.Header>
-        <Modal.Body>
+        </ModalHeader>
+        <ModalBody>
           <Xl8 xid="chs005">Please confirm to change the status to:</Xl8> {status}
-        </Modal.Body>
-        <Modal.Footer>
+        </ModalBody>
+        <ModalFooter>
           <Button variant="outline-success" onClick={handleConfirm}>
             Confirm
           </Button>
           <Button variant="outline-danger" onClick={handleCancel}>
             Cancel
           </Button>
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
     </RoleAuthenticator>
   );

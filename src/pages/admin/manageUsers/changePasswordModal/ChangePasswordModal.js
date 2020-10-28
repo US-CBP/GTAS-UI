@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
 import ChangePassword from "../changePassword/ChangePassword";
+import Modal, { ModalBody } from "../../../../components/modal/Modal";
 
 function ChangePasswordModal(props) {
   return (
@@ -12,9 +12,9 @@ function ChangePasswordModal(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Body>
+      <ModalBody>
         <ChangePassword userId={props.userId} callback={props.callback} />
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 }

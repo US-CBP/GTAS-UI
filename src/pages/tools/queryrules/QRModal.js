@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useContext } from "react";
 import RAQB from "../../../components/raqb/RAQB";
-import { Button, Modal, Container, Row } from "react-bootstrap";
+import { Button, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
 import { navigate } from "@reach/router";
@@ -18,6 +18,12 @@ import {
 
 import { numProps, txtProps, dateProps } from "../../../components/raqb/constants";
 import "./QueryRules.css";
+import Modal, {
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const QRModal = props => {
   const id = props.id;
@@ -680,13 +686,13 @@ const QRModal = props => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header closeButton>
-          <Modal.Title>
+        <ModalHeader closeButton>
+          <ModalTitle>
             <span>{props.title} </span>
             <label className="big-name-sidebar">{summaryData?.title}</label>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="qbrb-modal-body">
+          </ModalTitle>
+        </ModalHeader>
+        <ModalBody className="qbrb-modal-body">
           <Container fluid>
             <Row className="card-columns qrm">
               <LabelledInput
@@ -777,8 +783,8 @@ const QRModal = props => {
               ></RAQB>
             )}
           </Container>
-        </Modal.Body>
-        <Modal.Footer>
+        </ModalBody>
+        <ModalFooter>
           <Button
             type="button"
             key="close"
@@ -829,7 +835,7 @@ const QRModal = props => {
               <Xl8 xid="qrm011">Delete</Xl8>
             </Button>
           )}
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
     </>
   );

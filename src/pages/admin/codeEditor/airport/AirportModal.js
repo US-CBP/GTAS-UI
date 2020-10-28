@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { Modal, Button, Container, Alert } from "react-bootstrap";
+import { Button, Container, Alert } from "react-bootstrap";
 
 import { codeEditor } from "../../../../services/serviceWrapper";
 import Form from "../../../../components/form/Form";
 import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../../utils/constants";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../../components/modal/Modal";
 
 const AirportModal = props => {
   const [showAlert, setShowAlert] = useState(false);
@@ -70,9 +75,9 @@ const AirportModal = props => {
       centered
       className="max-500-width-container"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{props.title}</Modal.Title>
-      </Modal.Header>
+      <ModalHeader closeButton>
+        <ModalTitle>{props.title}</ModalTitle>
+      </ModalHeader>
       <Alert show={showAlert} variant={variant}>
         {alertContent}
         <hr />
@@ -80,7 +85,7 @@ const AirportModal = props => {
           <Xl8 xid="form003">Confirm</Xl8>
         </Button>
       </Alert>
-      <Modal.Body>
+      <ModalBody>
         <Container fluid>
           <Form
             submitService={
@@ -173,7 +178,7 @@ const AirportModal = props => {
             />
           </Form>
         </Container>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

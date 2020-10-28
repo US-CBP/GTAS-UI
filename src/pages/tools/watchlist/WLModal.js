@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
@@ -7,6 +7,11 @@ import Xl8 from "../../../components/xl8/Xl8";
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
 import { hasData, asArray } from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 import "./Watchlist.css";
 
 const WLModal = props => {
@@ -184,10 +189,10 @@ const WLModal = props => {
       centered
       className="max-500-width-container"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+      <ModalHeader closeButton>
+        <ModalTitle>{title}</ModalTitle>
+      </ModalHeader>
+      <ModalBody>
         <Container fluid>
           <Form
             submitService={service}
@@ -201,7 +206,7 @@ const WLModal = props => {
             {fields.props.children}
           </Form>
         </Container>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };
