@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { Modal, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import { users, roles } from "../../../services/serviceWrapper";
@@ -10,6 +10,11 @@ import { asArray, isValidPassword } from "../../../utils/utils";
 import { ACTION, ROLE } from "../../../utils/constants";
 import "./ManageUsers.scss";
 import Toast from "../../../components/toast/Toast";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const UserModal = props => {
   const [selectedRoles, setSelectedRoles] = useState();
@@ -172,10 +177,10 @@ const UserModal = props => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{props.title}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+      <ModalHeader closeButton>
+        <ModalTitle>{props.title}</ModalTitle>
+      </ModalHeader>
+      <ModalBody>
         <Container fluid>
           <Form
             submitService={props.isEdit ? users.put : users.post}
@@ -334,7 +339,7 @@ const UserModal = props => {
             variant={"danger"}
           />
         </Container>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

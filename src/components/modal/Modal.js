@@ -19,17 +19,21 @@ const Modal = props => {
   );
 };
 export const ModalTitle = props => {
-  return <RBModal.Title>{props.children}</RBModal.Title>;
+  return <RBModal.Title className={props.className}>{props.children}</RBModal.Title>;
 };
 
 export const ModalHeader = props => {
-  return <RBModal.Header>{props.children}</RBModal.Header>;
+  return (
+    <RBModal.Header closeButton={props.closeButton} className={props.className}>
+      {props.children}
+    </RBModal.Header>
+  );
 };
 
 export const ModalBody = props => {
-  return <RBModal.Body>{props.children}</RBModal.Body>;
+  return <RBModal.Body className={props.className}>{props.children}</RBModal.Body>;
 };
 export const ModalFooter = props => {
-  return <RBModal.Footer>{props.children}</RBModal.Footer>;
+  return <RBModal.Footer className={props.className}>{props.children}</RBModal.Footer>;
 };
 export default Modal;
