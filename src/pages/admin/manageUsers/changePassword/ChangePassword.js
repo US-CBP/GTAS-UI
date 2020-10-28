@@ -32,7 +32,7 @@ const ChangePassword = props => {
         <Xl8 xid="pass006">10 to 20 characters</Xl8>
       </li>
       <li>
-        <Xl8 xid="pass007">{`At least one special character (!@#$%^&?*)`}</Xl8>
+        <Xl8 xid="pass007">At least one special character</Xl8> (!@#$%^&?*)
       </li>
       <li>
         <Xl8 xid="pass008">At least one number</Xl8>
@@ -120,7 +120,15 @@ const ChangePassword = props => {
 
   return (
     <Container>
-      <Title title={<Xl8 xid="pass001">Change Password</Xl8>} uri={props.uri} />
+      <div className="cp-modal-header dismissible">
+        <div className="modal-title h4">
+          <Xl8 xid="pass001">Change Password</Xl8>
+        </div>
+        {/* <button type="button" class="close">
+          <span aria-hidden="true">×</span>
+          <span class="sr-only">Close</span>
+        </button> */}
+      </div>
       <div className="password-rules">{passwordRule}</div>
       {displayErrorMsg && (
         <Alert variant="danger" dismissible onClose={() => setDisplayErrorMsg(false)}>
