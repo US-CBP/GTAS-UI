@@ -11,6 +11,7 @@ function ChangePasswordModal(props) {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-500-width-container"
     >
       <ModalBody>
         <ChangePassword userId={props.userId} callback={props.callback} />
