@@ -6,7 +6,7 @@ import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
 import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
-import { Col, Button } from "react-bootstrap";
+import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
@@ -151,17 +151,17 @@ const Vetting = props => {
       Xl8: true,
       Header: ["wl023", "Actions"],
       Cell: ({ row }) => (
-        <div className="text-center">
-          <Button
-            variant="outline-info"
-            size="sm"
-            onClick={() => reviewPVL(row.original.paxId)}
-          >
-            <i className="fa fa-pencil"></i> <Xl8 xid="rev018">Review</Xl8>
+        <DropdownButton
+          variant="info"
+          title={<Xl8 xid="vet020">Choose Action</Xl8>}
+          className="m-1"
+        >
+          <Button className="dropdown-item" onClick={() => reviewPVL(row.original.paxId)}>
+            <Xl8 xid="rev018">Review</Xl8>
           </Button>
           <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
-        </div>
+        </DropdownButton>
       )
     }
   ];
@@ -308,6 +308,7 @@ const Vetting = props => {
 
   useEffect(() => {
     fetchData();
+    setRefreshKey(refreshKey + 1);
   }, []);
 
   return (
