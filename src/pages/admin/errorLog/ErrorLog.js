@@ -68,14 +68,13 @@ const ErrorLog = ({ name }) => {
   return (
     <>
       <SidenavContainer>
-        <Col>
+        <Col className="notopmargin">
           <FilterForm
             service={errorlog.get}
             paramCallback={preFetchCallback}
             callback={setDataWrapper}
             initialParamState={initialParamState}
           >
-            <br />
             <LabelledInput
               labelText={<Xl8 xid="el001">Error Code</Xl8>}
               datafield="errorCode"

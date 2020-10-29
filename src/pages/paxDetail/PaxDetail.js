@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
-import { DropdownButton } from "react-bootstrap";
+import ChromeTabs from "../../components/chrometabs/ChromeTabs";
+import FlightBadge from "../../components/flightBadge/FlightBadge";
+import { Navbar, Nav, DropdownButton, Col } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
@@ -21,72 +23,10 @@ import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import { paxdetails, cases } from "../../services/serviceWrapper";
-import {
-  passengerTypeMapper,
-  asArray,
-  hasData,
-  localeDate,
-  localeDateOnly
-} from "../../utils/utils";
-import { Link } from "@reach/router";
+import { asArray, hasData, localeDate, localeDateOnly } from "../../utils/utils";
 import "./PaxDetail.scss";
 
 const PaxDetail = props => {
-  const getPaxInfo = res => {
-    const lastPnrRecieved = hasData(res.pnrVo?.transmissionDate)
-      ? Date.parse(res.pnrVo?.transmissionDate)
-      : undefined;
-    const lastApisRecieved = hasData(res.apisMessageVo?.transmissionDate)
-      ? Date.parse(res.apisMessageVo?.transmissionDate)
-      : undefined;
-    const dob = Date.parse(res.dob);
-    return [
-      {
-        label: <Xl8 xid="pd007">Last Name</Xl8>,
-        value: res.lastName
-      },
-      { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
-      { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName },
-      { label: <Xl8 xid="pd010">Age</Xl8>, value: res.age },
-      { label: <Xl8 xid="pd011">DOB</Xl8>, value: localeDateOnly(dob) },
-      { label: <Xl8 xid="pd012">Gender</Xl8>, value: res.gender },
-      { label: <Xl8 xid="pd013">Nationality</Xl8>, value: res.nationality },
-      { label: <Xl8 xid="pd014">Residence</Xl8>, value: res.residenceCountry },
-      {
-        label: <Xl8 xid="pd015">Seat</Xl8>,
-        value: (
-          <Link
-            to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${res.seat}`}
-            style={{ color: "#8fdeef" }}
-            state={{ ...flightBadgeData(res), flightId: res.flightId }}
-          >
-            {res.seat}
-          </Link>
-        )
-      },
-      {
-        label: <Xl8 xid="pd016">Passenger Type</Xl8>,
-        value: passengerTypeMapper(res.passengerType)
-      },
-      {
-        label: <Xl8 xid="pd017">Last PNR Received</Xl8>,
-        value: localeDate(lastPnrRecieved)
-      },
-      {
-        label: <Xl8 xid="pd018">Last APIS Received</Xl8>,
-        value: localeDate(lastApisRecieved)
-      }
-    ];
-  };
-
-  const flightBadgeData = res => {
-    return {
-      arrival: `${res.flightDestination} ${localeDate(res.eta)}`,
-      departure: `${res.flightOrigin} ${localeDate(res.etd)}`,
-      flightNumber: `${res.carrier}${res.flightNumber}`
-    };
-  };
-
   const [flightBadge, setFlightBadge] = useState({});
   const [pax, setPax] = useState([]);
   const [pnr, setPnr] = useState({});
@@ -166,10 +106,32 @@ const PaxDetail = props => {
     }
   };
 
+  const paxinfoData = res => {
+    return {
+      lastPnrReceived: res.pnrVo?.transmissionDate,
+      lastApisReceived: res.apisMessageVo?.transmissionDate,
+      lastName: res.lastName,
+      middleName: res.middleName,
+      firstName: res.firstName,
+      age: res.age,
+      dob: res.dob,
+      gender: res.gender,
+      nationality: res.nationality,
+      residenceCountry: res.residenceCountry,
+      seat: res.seat,
+      eta: res.eta,
+      etd: res.etd,
+      flightId: props.flightId,
+      flightNumber: `${res.carrier}${res.flightNumber}`,
+      paxId: props.paxId,
+      passengerType: res.passengerType
+    };
+  };
+
   const fetchData = () => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
-      setPax(getPaxInfo(res));
-      setFlightBadge(flightBadgeData(res));
+      setPax(paxinfoData(res));
+      setFlightBadge(res);
       setPnr({ ...res.pnrVo, flightId: props.flightId });
       setApisMessage(res.apisMessageVo);
       setFlightLegsSegmentData(asArray(res.pnrVo?.flightLegs));
@@ -188,20 +150,24 @@ const PaxDetail = props => {
 
   // TODO: refac tabs as child routes, load data per page.
   const actions = (
-    <DropdownButton variant="outline-info" title="Choose Action" className="m-1">
+    <DropdownButton
+      variant="info"
+      title={<Xl8 xid="manu002">Choose Action</Xl8>}
+      className="m-1"
+    >
+      <AttachmentModal callback={cb} paxId={props.paxId}></AttachmentModal>
       <EventNotesModal
         paxId={props.paxId}
         setEventNoteRefreshKey={setEventNoteRefreshKey}
       />
-      <DownloadReport paxId={props.paxId} flightId={props.flightId} />
       <AddToWatchlist watchlistItems={watchlistData} />
       <CreateManualHit
         paxId={props.paxId}
         flightId={props.flightId}
         callback={setHitSummaryRefreshKey}
       />
+      <DownloadReport paxId={props.paxId} flightId={props.flightId} />
       <Notification paxId={props.paxId} />
-      <AttachmentModal callback={cb} paxId={props.paxId}></AttachmentModal>
       {hasHit && (
         <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
       )}
@@ -211,17 +177,19 @@ const PaxDetail = props => {
   const tablist = <Tabs tabs={tabs} />;
   return (
     <>
-      <SidenavContainer className="paxdetails-side-nav">
-        <br />
-        <PaxInfo pax={pax} badgeprops={flightBadge}></PaxInfo>
-        <hr />
-        {hasData(flightLegsSegmentData) && <Stepper steps={flightLegsSegmentData} />}
+      <SidenavContainer>
+        <Col>
+          <FlightBadge data={flightBadge}></FlightBadge>
+          <PaxInfo pax={pax}></PaxInfo>
+          {hasData(flightLegsSegmentData) && <Stepper steps={flightLegsSegmentData} />}
+        </Col>
       </SidenavContainer>
       <Main className="main">
+        {/* <ChromeTabs tabs={tabs}></ChromeTabs> */}
         <Title
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
-          rightChild={actions}
           leftChild={tablist}
+          rightChild={actions}
         ></Title>
       </Main>
     </>

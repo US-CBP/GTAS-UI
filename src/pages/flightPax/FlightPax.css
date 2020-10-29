@@ -1,0 +1,28 @@
+.flightpax-countdown-container {
+  text-align: -webkit-center;
+  text-align: -moz-center;
+}
+.flightpax-countdown-container > .cdb-row {
+  color: black;
+  float: unset;
+  width: fit-content;
+  width: -moz-fit-content;
+  display: flow-root;
+  width: 100%;
+}
+
+.flightpax-row {
+  color: white;
+  font-size: medium;
+}
+
+.flightpax-row .left {
+  float: left;
+  font-weight: 700;
+}
+
+.flightpax-row .right {
+  float: right;
+  color: white;
+  font-size: medium;
+}

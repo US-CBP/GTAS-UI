@@ -126,10 +126,9 @@ export function asOrderedHash(value) {
 // for fields that might.
 export function localeDate(val) {
   if (!hasData(val)) return "";
-  // const locale = i18n.language;
   const locale = window.navigator.language;
   const options = {
-    localeMatcher: "lookup",
+    // localeMatcher: "lookup",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -155,10 +154,24 @@ export function localeDateOnly(val) {
 
   const locale = window.navigator.language;
   const options = {
-    localeMatcher: "lookup",
+    // localeMatcher: "lookup",
     year: "numeric",
     month: "2-digit",
     day: "2-digit"
+  };
+  return new Date(val).toLocaleString(locale, options);
+}
+
+// Locale Date-only formatter
+export function localeMonthDayTime(val) {
+  if (!hasData(val)) return "";
+
+  const locale = window.navigator.language;
+  const options = {
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
   };
   return new Date(val).toLocaleString(locale, options);
 }
@@ -273,7 +286,7 @@ export function passengerTypeMapper(type) {
   return passengerTypesMap[type];
 }
 
-//if engthToCompare is not passed, set default to 50
+//if lengthToCompare is not passed, set default to 50
 export function isShortText(text, lengthToCompare = 50) {
   return !hasData(text) || text.toString().length <= lengthToCompare ? true : false;
 }

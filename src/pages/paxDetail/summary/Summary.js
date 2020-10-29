@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { localeDate, asArray, hasData, localeDateOnly } from "../../../utils/utils";
 import {
-  paxdetails,
   paxWatchListLink,
   flightpaxHitSummary,
   paxEventNotesHistory
 } from "../../../services/serviceWrapper";
-import { Card, CardColumns } from "react-bootstrap";
-import Main from "../../../components/main/Main";
+import { CardColumns } from "react-bootstrap";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Xl8 from "../../../components/xl8/Xl8";
 import "./Summary.scss";
@@ -62,7 +60,7 @@ const Summary = props => {
     return parsedDocs;
   };
 
-  const fetchData = () => {
+  useEffect(() => {
     paxWatchListLink.get(null, props.paxId).then(res => {
       const data = asArray(res).map(pwl => {
         const watchListDOB = Date.parse(pwl.watchListDOB);
@@ -74,6 +72,9 @@ const Summary = props => {
       });
       setWatchListLinks(data);
     });
+  }, [props.paxId]);
+
+  useEffect(() => {
     flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
       setPaxHitSummary(res);
       const openHit = hasData(res)
@@ -82,6 +83,9 @@ const Summary = props => {
       setHasHit(hasData(res));
       setHasOpenHit(openHit !== undefined);
     });
+  }, [props.hitSummaryRefreshKey, props.paxId]);
+
+  useEffect(() => {
     paxEventNotesHistory.get(props.paxId, false).then(res => {
       const notesData = res.paxNotes?.map(note => {
         const type = (note.noteType || []).map(t => {
@@ -95,6 +99,7 @@ const Summary = props => {
       });
       setEventNotes(notesData);
     });
+
     paxEventNotesHistory.get(props.paxId, true).then(res => {
       const notesData = res.paxNotes
         ?.map(note => {
@@ -110,19 +115,15 @@ const Summary = props => {
         .slice(0, 10);
       setHistoricalEventNotes(notesData);
     });
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [props.hitSummaryRefreshKey, props.paxId]);
+  }, [props.eventNoteRefreshKey, props.paxId]);
 
   return (
-    <Main className="paxdetail-container">
+    <div className="paxdetail-container">
       <CardColumns>
         <CardWithTable
           data={paxHitSummary}
           headers={headers.paxHitSummary}
-          title={<Xl8 xid="sum021">Passenger Current Hits summary</Xl8>}
+          title={<Xl8 xid="sum021">Current Hits Summary</Xl8>}
         />
 
         <CardWithTable
@@ -147,7 +148,7 @@ const Summary = props => {
           title={<Xl8 xid="sum025">Previous Note History</Xl8>}
         />
       </CardColumns>
-    </Main>
+    </div>
   );
 };
 

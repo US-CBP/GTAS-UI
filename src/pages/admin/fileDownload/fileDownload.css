@@ -1,3 +1,10 @@
 .right-span > .form-group {
   padding-top: 6px;
 }
+
+.filedownload-action-buttons {
+  margin-top: 5px;
+}
+.filedownload-action-buttons .txtlabel {
+  margin-top: 5px;
+}

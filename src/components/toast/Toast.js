@@ -5,7 +5,7 @@ import "./Toast.scss";
 function Toast(props) {
   const minute = 60000;
   const TOAST_DELAY_IN_MILLI = props.delay || minute;
-  const containerClass =  props.containerClass;
+  const containerClass = props.containerClass;
 
   return (
     <div className={containerClass}>

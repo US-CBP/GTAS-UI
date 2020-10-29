@@ -27,8 +27,7 @@ const ChangeHitStatus = props => {
       <SplitButton
         key="paxHitStatus"
         title={<Xl8 xid="chs001">Change Status</Xl8>}
-        variant="outline-info"
-        size="sm"
+        className="dropdown-item"
       >
         {props.hasOpenHit && (
           <Dropdown.Item

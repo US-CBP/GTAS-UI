@@ -44,7 +44,7 @@ const CountdownBadge = props => {
   const m = <Xl8 xid="cdb003">m</Xl8>;
   const formatedDays = days ? (
     <span>
-      {days}
+      <span className="">{days}</span>
       {d}
     </span>
   ) : (
@@ -52,7 +52,7 @@ const CountdownBadge = props => {
   );
   const formatedHours = hours ? (
     <span>
-      {hours}
+      <span className="">{hours}</span>
       {h}
     </span>
   ) : (
@@ -60,7 +60,7 @@ const CountdownBadge = props => {
   );
   const formatedMinutes = minutes ? (
     <span>
-      {minutes}
+      <span className="">{minutes}</span>
       {m}
     </span>
   ) : (
@@ -68,7 +68,7 @@ const CountdownBadge = props => {
   );
 
   const getStyle = () => {
-    if (dayraw > 1) return "";
+    if (dayraw > 1) return "bordered cdb-white";
 
     if (!isPos) return "bordered cdb-gray";
     if (dayraw === 1) return "bordered cdb-green";

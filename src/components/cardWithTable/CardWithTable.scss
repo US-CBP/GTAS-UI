@@ -1,26 +1,34 @@
-$wco-blue: rgb(0, 119, 200);
+$wco-blue: #0082c3;
 $gtas-white: rgba(255, 255, 255, 0.9);
+
 .customized-card-header {
   background-color: $wco-blue !important;
-  font-weight: 700;
-  color: $gtas-white;
+  // font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
   font-size: large;
-  padding: 0.5rem 1.25rem;
+  padding: 0.1rem 1.25rem;
 }
 
 .card-with-table {
   max-height: 300px;
+  border: 1px solid #0082c3;
+  font-size: smaller;
 }
+
 .card-with-table .table-responsive {
-  overflow: scroll;
+  overflow: auto;
   max-height: 250px;
 }
-@media (min-width: 1500px) {
-  .card-with-table {
-    min-height: 200px;
-  }
-}
+// @media (min-width: 1500px) {
+//   .card-with-table {
+//     min-height: 200px;
+//   }
+// }
 .row-count {
   float: right;
   font-style: italic;
+}
+
+th {
+  text-align: left !important;
 }

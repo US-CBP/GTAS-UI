@@ -44,12 +44,12 @@
 }
 
 .stepper li.active:before {
-  border-color: rgb(198, 230, 16);
-  background-color: rgb(198, 230, 16);
+  border-color: #009fe3;
+  background-color: #009fe3;
 }
 
 .stepper .active:after {
-  background-color: rgb(198, 230, 16);
+  background-color: #009fe3;
 }
 
 .new-segment:after {

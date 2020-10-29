@@ -1,32 +1,40 @@
 import React from "react";
+import { localeDate, localeMonthDayTime, hasData } from "../../utils/utils";
 import "./FlightBadge.scss";
-import LabelledInput from "../labelledInput/LabelledInput";
 
 const FlightBadge = props => {
-  const arrival = props.arrival;
-  const departure = props.departure;
-  const flightNumebr = props.flightNumber;
+  const res = props.data;
+
+  if (!hasData(props.data?.flightNumber)) return <></>;
+
+  const data = {
+    arrival: [res.flightDestination, ...localeMonthDayTime(res.eta).split(",")],
+    departure: [res.flightOrigin, ...localeMonthDayTime(res.etd).split(",")],
+    flightNumber: `${res.carrier}${res.flightNumber}`
+  };
+
+  const arrival = data.arrival || [];
+  const departure = data.departure || [];
+  const flightNumber = data.flightNumber;
+
   return (
-    <>
-      <LabelledInput
-        alt="Flight"
-        inputStyle="big-name-sidebar fa fa-plane"
-        inputType="label"
-        inputVal={flightNumebr}
-      />
-      <LabelledInput
-        alt="Flight"
-        inputStyle="big-name-sidebar fa fa-arrow-circle-up"
-        inputType="label"
-        inputVal={departure}
-      />
-      <LabelledInput
-        alt="Flight"
-        inputStyle="big-name-sidebar fa fa-arrow-circle-down"
-        inputType="label"
-        inputVal={arrival}
-      />
-    </>
+    <div className="flight-badge">
+      <div className="flight-number">{flightNumber}</div>
+      <div className="flight-text">
+        <table>
+          <tr>
+            <td>{departure[0]}</td>
+            <td>{departure[1]}</td>
+            <td>{departure[2]}</td>
+          </tr>
+          <tr>
+            <td>{arrival[0]}</td>
+            <td>{arrival[1]}</td>
+            <td>{arrival[2]}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   );
 };
 

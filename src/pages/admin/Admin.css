@@ -1,15 +1,18 @@
 .page-tiles {
-  min-width: 300px;
-  max-width: 300px;
-  width: 300px;
+  min-width: 200px;
+  max-width: 220px;
   margin: 10px;
-  min-height: 125px;
-  border: 1.5px solid #0077c8;
+  min-height: 220px;
+  max-height: 240px;
+  border: 1.5px solid #0082c3;
 }
 
 .page-deck {
-  margin: 20px;
+  margin: 10px;
   justify-content: center;
+  overflow-y: auto;
+  height: calc(100vh - 130px);
+  text-align: -webkit-center;
 }
 
 .page-card-link {
@@ -46,12 +49,23 @@
 
 .card-link > .card-body > .card-title,
 .card-link > .card-body > .card-title > .fa {
-  color: #0077c8;
+  color: #0082c3;
+}
+
+.card-body {
+  padding-bottom: 0.25rem;
+  height: unset !important;
+}
+
+.page-tiles > a > .card-footer {
+  padding: 0.75rem 1.25rem;
+  background-color: transparent;
+  border-top: 1px solid transparent !important;
 }
 
 .card-description {
   color: black;
-  font-size: initial;
+  font-size: 14px;
   height: 48px;
 }
 
@@ -66,4 +80,10 @@
 .card-link:hover {
   text-decoration: none;
   background-color: #e5f3ff;
+}
+
+@media (min-width: 1150px) {
+  .page-deck {
+    padding: 0px 80px;
+  }
 }

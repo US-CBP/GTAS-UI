@@ -313,7 +313,7 @@ const Vetting = props => {
   return (
     <>
       <SidenavContainer>
-        <Col>
+        <Col className="notopmargin">
           <FilterForm
             service={cases.get}
             callback={setDataWrapper}
@@ -321,7 +321,6 @@ const Vetting = props => {
             key={refreshKey}
             initialParamState={initialParamState}
           >
-            <br />
             <LabelledInput
               datafield="myRulesOnly"
               name="myRulesOnly"
@@ -333,7 +332,6 @@ const Vetting = props => {
               alt="My Rules Only"
               spacebetween
             />
-            <hr />
             <LabelledInput
               name="displayStatusCheckBoxes"
               datafield="displayStatusCheckBoxes"

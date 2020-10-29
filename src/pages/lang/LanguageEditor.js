@@ -8,6 +8,7 @@ import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { translations } from "../../services/serviceWrapper";
 import { useTranslation } from "react-i18next";
+import "./LanguageEditor.css";
 
 const LanguageEditor = () => {
   const { getLiveEditState, action } = useContext(LiveEditContext);
@@ -65,17 +66,19 @@ const LanguageEditor = () => {
   ];
 
   return (
-    <Main className="full" key={isEdit}>
+    <Main className="full bg-white" key={isEdit}>
       <Title
         title={<Xl8 xid="led001">Language Editor</Xl8>}
         rightChild={
-          <LabelledInput
-            inputType="checkbox"
-            labelText={<Xl8 xid="led002">Enable Live Edit mode?</Xl8>}
-            selected={isEdit}
-            spacebetween
-            callback={handleClick}
-          ></LabelledInput>
+          <div className="liveedit">
+            <LabelledInput
+              inputType="checkbox"
+              labelText={<Xl8 xid="led002">Live Edit</Xl8>}
+              selected={isEdit}
+              spacebetween
+              callback={handleClick}
+            ></LabelledInput>
+          </div>
         }
       ></Title>
       <Table data={data} id="Queries" callback={cb} key={data} header={header}></Table>

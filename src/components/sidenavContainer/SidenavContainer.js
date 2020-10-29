@@ -11,7 +11,7 @@ const SideNav = props => {
   };
 
   return (
-    <div className={`"filter-container" ${props.className}`}>
+    <div className={`filter-container ${props.className || ""}`}>
       <div
         className={`${open ? "main-overlay-open" : "main-overlay"}`}
         onClick={() => toggleOpen(false)}
@@ -24,7 +24,7 @@ const SideNav = props => {
       <div className={`${open ? "filter-open" : "filter"} filter-bg`}></div>
       <div className={`${open ? "filter-open" : "filter"} filter-screen`}></div>
       <div className={`${open ? "filter-open filter-fg-open" : "filter filter-fg"}`}>
-        <Col>{props.children}</Col>
+        {props.children}
         <br></br>
       </div>
     </div>

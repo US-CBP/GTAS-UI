@@ -41,8 +41,9 @@ const EventNotesModal = props => {
 
   return (
     <>
-      <Button variant="outline-info" size="sm" onClick={handleShow}>
-        <i className="fa fa-pencil"></i> <Xl8 xid="evn001">Notes</Xl8>
+      <Button className="dropdown-item" onClick={handleShow}>
+        {/* <i className="fa fa-pencil"></i> <Xl8 xid="evn001">Add Event Notes</Xl8> */}
+        <Xl8 xid="evn001">Add Event Notes</Xl8>
       </Button>
 
       <Modal
@@ -51,6 +52,7 @@ const EventNotesModal = props => {
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        className="max-500-width-container"
       >
         <ModalHeader closeButton>
           <ModalTitle>

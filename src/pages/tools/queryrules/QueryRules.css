@@ -2,11 +2,6 @@
   width: unset !important;
 }
 
-.qbrb-icon-edit {
-  font-size: 1.4em;
-  color: #0082c3;
-}
-
 .qbrb-icon-check {
   font-size: 1.4em;
   color: #28a745;
@@ -24,6 +19,7 @@
   overflow: hidden;
   overflow-y: auto;
 }
+
 .queryBuilder {
   min-width: 740px;
   margin: 0.5rem;
@@ -32,7 +28,7 @@
 .qrm > .space-between {
   width: 45%;
   justify-content: flex-start;
-  margin-bottom: 0px !important;
+  margin-bottom: 3px !important;
 }
 
 .qrm > .space-between > .undefined {
@@ -213,7 +209,7 @@ pre {
   margin-bottom: 0px;
   border-radius: 3px;
   padding-bottom: 3px;
-  background-color: #005aa7;
+  background-color: #0082c3;
   margin-top: 0px;
 }
 

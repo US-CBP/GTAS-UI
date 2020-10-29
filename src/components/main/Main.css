@@ -1,14 +1,15 @@
 .main {
-  margin-left: 20px;
+  padding: 0px 20px;
   overflow: hidden;
   height: calc(100vh - 60px);
   max-height: calc(100vh - 60px);
   position: absolute;
   top: auto;
   left: 260px;
-  width: calc(100vw - 300px);
+  width: calc(100vw - 260px);
   min-width: 246px;
   min-height: 638px;
+  background-color: white;
 }
 
 .margin-right0 {
@@ -17,7 +18,7 @@
 }
 
 .main-noborder {
-  margin-left: 20px;
+  padding: 0px 20px;
   overflow: hidden;
   height: calc(100vh - 60px);
   max-height: calc(100vh - 60px);
@@ -30,26 +31,31 @@
 
 .full {
   min-width: 255px;
-  margin-left: 20px;
-  margin-right: 20px;
   position: absolute;
   top: auto;
-  overflow: auto;
-  padding: 10px;
-  width: calc(100vw - 40px);
+  overflow: hidden;
+  padding: 0px 20px;
+  width: 100vw;
   height: calc(100vh - 60px);
+  background-color: #f3f3f3;
 }
 
 .full-cards {
   min-width: 255px;
-  margin-left: 20px;
-  margin-right: 20px;
   position: absolute;
   top: auto;
-  overflow: auto;
-  padding: 10px;
-  width: calc(100vw - 40px);
-  height: calc(100vh - 106px);
+  overflow: hidden;
+  width: 100vw;
+  height: calc(100vh - 60px);
+  background-color: #f3f3f3;
+  padding: 0px 0px 0px 20px;
+}
+
+/* main-inner is just to set a relative parent to contain absolutely positioned children correctly */
+.main-inner {
+  position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 @media (max-width: 768px) {

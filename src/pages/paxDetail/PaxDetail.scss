@@ -6,16 +6,23 @@ $background-image-url: "../../images/WCO_flag.svg";
 $wco-blue: rgb(0, 119, 200);
 $transparent: rgba(0, 0, 0, 0.65);
 
-.paxdetails-side-nav .filter-bg {
-  background: linear-gradient($wco-blue, rgba(0, 119, 200, 0.75)),
-    url($background-image-url) no-repeat, no-repeat;
-  background-position: center center;
-  background-size: cover;
-}
-
 .paxdetail-container {
   height: calc(100vh - 125px);
-  overflow: scroll;
+  overflow: auto;
+
+  // -- for single page repositioning
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  padding-right: 40px;
+  width: 100%;
+}
+
+.paxdetail-container-col {
+  width: 100%;
+  margin-left: 15px;
+  height: calc(100vh - 128px);
+  overflow: auto;
 }
 
 @media (max-width: 1499px) {
@@ -41,11 +48,31 @@ $transparent: rgba(0, 0, 0, 0.65);
 }
 
 .one-column-container {
-  height: calc(100vh - 125px);
-  width: calc(100vw - 300px);
+  height: calc(100vh - 135px);
+  width: calc(100vw - 290px);
   overflow-y: auto;
+
+  // -- for single page repositioning
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  // -- end
+
   .card-columns {
     column-count: 1 !important;
+  }
+}
+
+.one-column-grid-container {
+  height: calc(100vh - 111px);
+  width: calc(100vw - 300px);
+  overflow: hidden;
+  position: absolute;
+  top: 50px;
+  left: 20px;
+
+  .pagination {
+    width: calc(100vw - 301px);
   }
 }
 
@@ -58,5 +85,13 @@ $transparent: rgba(0, 0, 0, 0.65);
 }
 
 .segment-table {
-  height: calc(100vh - 128px);
+}
+
+.filter-fg > .col > .table {
+  font-size: larger;
+  width: 225px;
+  margin-bottom: 1rem;
+  color: #212529;
+  overflow-x: hidden;
+  overflow-wrap: anywhere;
 }

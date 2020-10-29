@@ -4,7 +4,7 @@ import Xl8 from "../../../components/xl8/Xl8";
 import { Button } from "react-bootstrap";
 
 const DownloadReport = props => {
-  const dowload = () => {
+  const download = () => {
     paxdetailsReport.get(props.paxId, props.flightId).then(res => {
       if (res) {
         let data = new Uint8Array(res);
@@ -23,8 +23,10 @@ const DownloadReport = props => {
   };
 
   return (
-    <Button variant="outline-info" size="sm" onClick={dowload}>
-      <i className="fa fa-download"></i> <Xl8 xid="rep001">Report</Xl8>
+    <Button className="dropdown-item" onClick={download}>
+      {/* <i className="fa fa-download"></i> <Xl8 xid="rep001">Report</Xl8> */}
+
+      <Xl8 xid="rep001">Download Report</Xl8>
     </Button>
   );
 };

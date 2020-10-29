@@ -42,7 +42,7 @@ const CreateManualHit = props => {
 
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
-      <Button variant="outline-danger" size="sm" onClick={handleShow}>
+      <Button className="dropdown-item" onClick={handleShow}>
         <Xl8 xid="cmh001">Create Manual Hit</Xl8>
       </Button>
 

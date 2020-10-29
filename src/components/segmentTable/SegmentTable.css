@@ -1,7 +1,11 @@
 .segment-table {
-  /* height is calculated by the parent paxdetail */
   overflow: auto;
   font-size: smaller;
+  background-color: white;
+  padding-left: 15px;
+  border: 1px solid #0082c3;
+  border-radius: 0.25rem;
+  height: calc(100vh - 128px);
 }
 
 .segment-table > .table-responsive {

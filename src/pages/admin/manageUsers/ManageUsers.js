@@ -184,7 +184,7 @@ const ManageUsers = props => {
   const button = (
     <Button
       variant="ternary"
-      className="btn btn-outline-info"
+      className="btn btn-info"
       name={props.name}
       placeholder={props.placeholder}
       onClick={() => {
@@ -229,7 +229,7 @@ const ManageUsers = props => {
 
   return (
     <>
-      <Main className="full">
+      <Main className="full bg-white">
         <Title title={<Xl8 xid="manu008">Manage Users</Xl8>} rightChild={button}></Title>
         <Table
           id="users"

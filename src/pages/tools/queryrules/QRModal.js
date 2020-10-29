@@ -17,6 +17,7 @@ import {
 } from "../../../services/serviceWrapper";
 
 import { numProps, txtProps, dateProps } from "../../../components/raqb/constants";
+import "./QueryRules.css";
 import Modal, {
   ModalBody,
   ModalFooter,

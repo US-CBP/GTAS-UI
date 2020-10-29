@@ -176,6 +176,7 @@ const UserModal = props => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-600-width-container"
     >
       <ModalHeader closeButton>
         <ModalTitle>{props.title}</ModalTitle>

@@ -3,13 +3,13 @@
 @import "~bootstrap/scss/mixins";
 
 .pax-info-row {
-  font-size: smaller;
+  font-size: 15px;
   .left-label {
-    color: black;
+    color: white;
     font-weight: 700;
   }
   .right-label {
     color: rgb(255, 255, 255);
-    text-align: start;
+    text-align: right;
   }
 }

@@ -83,7 +83,7 @@ const AddToWatchlist = props => {
 
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.WLMGR]} alt={<></>}>
-      <Button variant="outline-danger" size="sm" onClick={handleShow}>
+      <Button className="dropdown-item" onClick={handleShow}>
         <Xl8 xid="atw001">Add to Watchlist</Xl8>
       </Button>
 
@@ -93,6 +93,7 @@ const AddToWatchlist = props => {
         size="md"
         centered
         aria-labelledby="contained-modal-title-vcenter"
+        className="max-500-width-container"
       >
         <ModalHeader closeButton>
           <ModalTitle>

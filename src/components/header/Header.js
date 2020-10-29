@@ -52,6 +52,7 @@ const Header = () => {
 
   const htab = {
     DASH: "/gtas/dashboard",
+    POE: "/gtas/poe",
     FLIGHT: "/gtas/flights",
     VETTING: "/gtas/vetting",
     TOOLS: "/gtas/tools",
@@ -124,6 +125,15 @@ const Header = () => {
             </RoleAuthenticator>
             <Nav.Link
               as={Link}
+              to="poe"
+              className={`future ${getActiveClass(htab.POE)} optional`}
+              onClick={() => clickTab(htab.POE)}
+            >
+              <Xl8 xid="head007">POE</Xl8>
+            </Nav.Link>
+
+            <Nav.Link
+              as={Link}
               to="tools"
               className={`${getActiveClass(htab.TOOLS)}`}
               onClick={() => clickTab(htab.TOOLS)}
@@ -145,7 +155,7 @@ const Header = () => {
                 className={`${getActiveClass(htab.LANG)} optional`}
                 onClick={() => clickTab(htab.LANG)}
               >
-                <i className="fa fa-language mx-sm-1"></i>
+                <i className="fa fa-language mx-sm-1 language-icon"></i>
                 {currentLang}
               </Nav.Link>
             </RoleAuthenticator>
@@ -153,12 +163,7 @@ const Header = () => {
           <Nav className="ml-auto">
             <Form inline>
               <InputGroup>
-                <FormControl
-                  type="text"
-                  placeholder="Search"
-                  ref={searchInputRef}
-                  className="search-150"
-                />
+                <FormControl type="text" ref={searchInputRef} className="search-150" />
                 <InputGroup.Append>
                   <Button variant="light" onClick={handleSearchSubmit}>
                     <i className="fa fa-search"></i>

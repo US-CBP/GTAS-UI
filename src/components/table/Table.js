@@ -189,23 +189,24 @@ const Table = props => {
                         return (
                           <th className="table-header">
                             <span
+                              className="table-sort-span"
                               {...column.getHeaderProps(column.getSortByToggleProps())}
                             >
                               {hdr} {column.canSort ? sortIcon(column) : ""}
+                              {props.hasOwnProperty("disableGroupBy") &&
+                              !props.disableGroupBy &&
+                              column.canGroupBy ? (
+                                <span {...column.getGroupByToggleProps()}>
+                                  {props.disableGroupBy
+                                    ? ""
+                                    : column.isGrouped
+                                    ? "🛑"
+                                    : "👊 "}
+                                </span>
+                              ) : (
+                                ""
+                              )}
                             </span>
-                            {props.hasOwnProperty("disableGroupBy") &&
-                            !props.disableGroupBy &&
-                            column.canGroupBy ? (
-                              <span {...column.getGroupByToggleProps()}>
-                                {props.disableGroupBy
-                                  ? ""
-                                  : column.isGrouped
-                                  ? "🛑"
-                                  : "👊 "}
-                              </span>
-                            ) : (
-                              ""
-                            )}
                           </th>
                         );
                       })}

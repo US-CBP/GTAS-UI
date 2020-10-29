@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
-import {hitcats, users} from "../../../services/serviceWrapper";
+import { hitcats, users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import {Button, Dropdown, DropdownButton} from "react-bootstrap";
+import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 import HitModal from "./HitModal";
 import Confirm from "../../../components/confirmationModal/Confirm";
 
@@ -14,7 +14,7 @@ const HitCats = ({ name }) => {
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
-  const [editRowDetails,setEditRowDetails] = useState();
+  const [editRowDetails, setEditRowDetails] = useState();
   const [modalTitle, setModalTitle] = useState(addNewCat);
 
   const openEditModal = rowDetails => {
@@ -26,45 +26,45 @@ const HitCats = ({ name }) => {
 
   const headers = [
     {
-    Accessor: "Edit",
-          Xl8: true,
-          Header: ["edit001", "Edit"],
-          disableFilters: true,
-          disableSortBy: true,
-          Cell: ({ row }) => {
+      Accessor: "Edit",
+      Xl8: true,
+      Header: ["edit001", "Edit"],
+      disableFilters: true,
+      disableSortBy: true,
+      Cell: ({ row }) => {
         return (
-            <div className="text-center edit-user">
-              <DropdownButton
-                  variant="outline-info"
-                  title={<Xl8 xid="manc002">Choose Action</Xl8>}
-              >
-                <Dropdown.Item as="button" onClick={() => openEditModal(row.original)}>
-                  <Xl8 xid="wlc006">Edit Category</Xl8>
-                </Dropdown.Item>
-                <Confirm
-                    header={<Xl8 xid="manc004">Confirm Category Deletion</Xl8>}
-                    message={
-                      <span>
-                    <Xl8 xid="wlc007">Please confirm to delete a category with label: </Xl8>{" "}
-                        {row.original.label}
+          <div className="text-center edit-user">
+            <DropdownButton
+              variant="outline-info"
+              title={<Xl8 xid="manc002">Choose Action</Xl8>}
+            >
+              <Dropdown.Item as="button" onClick={() => openEditModal(row.original)}>
+                <Xl8 xid="wlc006">Edit Category</Xl8>
+              </Dropdown.Item>
+              <Confirm
+                header={<Xl8 xid="manc004">Confirm Category Deletion</Xl8>}
+                message={
+                  <span>
+                    <Xl8 xid="wlc007">
+                      Please confirm to delete a category with label:{" "}
+                    </Xl8>{" "}
+                    {row.original.label}
                   </span>
-                    }
-                >
-                  {confirm =>
-                      (
-                          <Dropdown.Item
-                              as="button"
-                              onClick={confirm(() => {
-                                deleteCat(row.original);
-                              })}
-                          >
-                            <Xl8 xid="wlc008">Delete Hit Category</Xl8>
-                          </Dropdown.Item>
-                      )
-                  }
-                </Confirm>
-              </DropdownButton>
-            </div>
+                }
+              >
+                {confirm => (
+                  <Dropdown.Item
+                    as="button"
+                    onClick={confirm(() => {
+                      deleteCat(row.original);
+                    })}
+                  >
+                    <Xl8 xid="wlc008">Delete Hit Category</Xl8>
+                  </Dropdown.Item>
+                )}
+              </Confirm>
+            </DropdownButton>
+          </div>
         );
       }
     },
@@ -89,24 +89,27 @@ const HitCats = ({ name }) => {
   };
 
   const cats = (
-    <Button variant="outline-dark" onClick={() =>{
+    <Button
+      variant="info"
+      onClick={() => {
         setModalTitle(addNewCat);
         setEditRowDetails({});
         setIsEditModal(false);
         setShowModal(true);
-    }}>
+      }}
+    >
       {addNewCat}
     </Button>
   );
 
   const deleteCat = rowDetails => {
     hitcats.del(rowDetails.id).then(res => {
-      setRefreshKey(refreshKey+1);
+      setRefreshKey(refreshKey + 1);
     });
   };
 
   return (
-    <Main className="full">
+    <Main className="full bg-white">
       <Title title={name} rightChild={cats}></Title>
       <Table
         service={hitcats.get}

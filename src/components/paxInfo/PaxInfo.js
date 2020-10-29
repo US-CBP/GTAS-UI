@@ -1,34 +1,105 @@
-import React from "react";
-import FlightBadge from "../flightBadge/FlightBadge";
+import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { hasData } from "../../utils/utils";
+import Xl8 from "../../components/xl8/Xl8";
+
+import {
+  hasData,
+  localeDateOnly,
+  localeDate,
+  localeMonthDayTime,
+  passengerTypeMapper
+} from "../../utils/utils";
+import { Link } from "@reach/router";
 import "./PaxInfo.scss";
 
 const PaxInfo = props => {
-  const pax = props.pax || [];
-  const badgeprops = props.badgeprops || {};
+  const getPaxInfo = res => {
+    // const lastPnrRecieved = hasData(res.pnrVo?.transmissionDate)
+    //   ? Date.parse(res.pnrVo?.transmissionDate)
+    //   : undefined;
+    // const lastApisRecieved = hasData(res.apisMessageVo?.transmissionDate)
+    //   ? Date.parse(res.apisMessageVo?.transmissionDate)
+    //   : undefined;
+    // const dob = Date.parse(res.dob);
 
-  const tableRows = pax.reduce((acc, { label, value }) => {
-    //don't display label with a null value (a good example is last apis/pnr recieved)
-    if (hasData(value)) {
+    const apisrec = hasData(res.lastApisReceived)
+      ? {
+          label: <Xl8 xid="pd018">Last APIS Received</Xl8>,
+          value: localeMonthDayTime(res.lastApisReceived)
+        }
+      : {};
+
+    const pnrrec = hasData(res.lastPnrReceived)
+      ? {
+          label: <Xl8 xid="pd017">Last PNR Received</Xl8>,
+          value: localeMonthDayTime(res.lastPnrReceived)
+        }
+      : {};
+    return [
+      {
+        label: <Xl8 xid="pd007">Last Name</Xl8>,
+        value: res.lastName
+      },
+      { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
+      { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName },
+      { label: <Xl8 xid="pd010">Age</Xl8>, value: res.age },
+      { label: <Xl8 xid="pd011">DOB</Xl8>, value: localeDateOnly(Date.parse(res.dob)) },
+      { label: <Xl8 xid="pd012">Gender</Xl8>, value: res.gender },
+      { label: <Xl8 xid="pd013">Nationality</Xl8>, value: res.nationality },
+      { label: <Xl8 xid="pd014">Residence</Xl8>, value: res.residenceCountry },
+      {
+        label: <Xl8 xid="pd015">Seat</Xl8>,
+        value: (
+          <Link
+            to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${res.seat}`}
+            style={{ color: "#8fdeef" }}
+            state={{
+              arrival: res.eta,
+              departure: res.etd,
+              flightId: res.flightId,
+              flightNumber: res.flightNumber
+            }}
+          >
+            {res.seat}
+          </Link>
+        )
+      },
+      {
+        label: <Xl8 xid="pd016">Passenger Type</Xl8>,
+        value: passengerTypeMapper(res.passengerType)
+      },
+      pnrrec,
+      apisrec
+    ];
+  };
+
+  const [tableRows, setTableRows] = useState();
+
+  useEffect(() => {
+    if (!hasData(props.pax)) {
+      setTableRows([]);
+      return;
+    }
+
+    const pax = getPaxInfo(props.pax);
+    const paxdata = pax.map(({ label, value }) => {
       const row = (
-        <tr key={label.props?.xid} className="pax-info-row">
+        <tr key={label?.props?.xid} className="pax-info-row">
           <td className="left-label">{label}</td>
           <td className="right-label">{value}</td>
         </tr>
       );
-      acc.push(row);
-    }
-    return acc;
-  }, []);
+      return row;
+    }, []);
+    setTableRows(paxdata);
+  }, [props.pax]);
 
   return (
-    <div>
-      <FlightBadge {...badgeprops}></FlightBadge>
-      <Table size="sm" striped borderless>
-        <tbody>{tableRows}</tbody>
+    <>
+      <Table size="sm" borderless>
+        <tbody key={tableRows}>{tableRows}</tbody>
       </Table>
-    </div>
+    </>
   );
 };
 

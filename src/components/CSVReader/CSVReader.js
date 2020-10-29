@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Xl8 from "../xl8/Xl8";
 import { CSVReader as RCSVReader } from "react-papaparse";
 import { Button } from "react-bootstrap";
@@ -18,6 +18,10 @@ const CSVReader = props => {
     console.log(err);
   };
 
+  useState(() => {
+    handleOpenDialog(props.file);
+  }, []);
+
   return (
     <RCSVReader
       ref={buttonRef}
@@ -28,9 +32,9 @@ const CSVReader = props => {
       config={{ header: true }}
     >
       {({ file }) => (
-        <Button variant="outline-info" onClick={handleOpenDialog}>
+        <div onClick={handleOpenDialog}>
           <Xl8 xid="csv001">Import CSV</Xl8>
-        </Button>
+        </div>
       )}
     </RCSVReader>
   );

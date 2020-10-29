@@ -5,6 +5,7 @@ import loadable from "@loadable/component";
 
 import "./App.css";
 import "font-awesome/css/font-awesome.min.css";
+// import "@fortawesome/free-solid-svg-icons";
 
 import Xl8 from "./components/xl8/Xl8";
 
@@ -63,6 +64,7 @@ const Queries = loadable(() =>
 const QRDetails = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/QRDetails")
 );
+const POE = loadable(() => import(/* webpackChunkName: "authed" */ "./pages/poe/POE"));
 const Tools = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/tools/Tools")
 );
@@ -264,6 +266,7 @@ export default class App extends React.Component {
                               <UploadAttachment path="uploadattachment"></UploadAttachment>
                             </PaxDetail>
                           </RoleAuthenticator>
+                          <POE path="poe"></POE>
                           <RoleAuthenticator
                             path="vetting"
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}

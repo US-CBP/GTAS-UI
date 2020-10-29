@@ -39,12 +39,14 @@ const CardWithTable = props => {
       <Card.Header className="customized-card-header">
         {props.title || ""} <span className="row-count">{data.length}</span>
       </Card.Header>
-      <Table size="sm" striped borderless hover responsive>
-        <thead>
-          <tr>{tableHeaders}</tr>
-        </thead>
-        <tbody>{tableRows}</tbody>
-      </Table>
+      {data.length > 0 && (
+        <Table size="sm" striped borderless hover responsive>
+          <thead>
+            <tr>{tableHeaders}</tr>
+          </thead>
+          <tbody>{tableRows}</tbody>
+        </Table>
+      )}
     </Card>
   );
 };

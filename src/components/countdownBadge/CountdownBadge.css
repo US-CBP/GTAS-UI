@@ -5,19 +5,8 @@
   padding-left: 4px;
   float: right;
   display: block;
+  flex-wrap: nowrap !important;
 }
-
-/* .cdb-days {
-  background: url("../../images/day.svg");
-}
-
-.cdb-hours {
-  background: url("../../images/hour.svg");
-}
-
-.cdb-minutes {
-  background: url("../../images/minute.svg");
-} */
 
 .bordered {
   border: 1px solid #b6b6b6;
@@ -43,7 +32,12 @@
 
 .cdb-gray {
   background-color: #4c4c4c;
-  color: white;
+  color: white !important;
+}
+
+.cdb-white {
+  background-color: white;
+  color: black;
 }
 
 .cdb-blue {

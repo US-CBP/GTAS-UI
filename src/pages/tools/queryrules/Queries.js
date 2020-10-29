@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import { Button } from "react-bootstrap";
-import { QR, ACTION, ROLE } from "../../../utils/constants";
+import { ACTION, ROLE } from "../../../utils/constants";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
+import { LookupContext } from "../../../context/data/LookupContext";
 
 import { query } from "../../../services/serviceWrapper";
+import { hasData } from "../../../utils/utils";
 import QRModal from "./QRModal";
 import "./QueryRules.css";
 
@@ -26,13 +28,15 @@ const Queries = props => {
   const [record, setRecord] = useState({});
   const [key, setKey] = useState(0);
   const [tablekey, setTablekey] = useState(0);
+  const ctx = useContext(LookupContext);
+  const [modalKey, setModalKey] = useState(-1);
 
   const [modalTitle, setModalTitle] = useState(addQuery);
 
   const button = (
     <Button
       variant="ternary"
-      className="btn btn-outline-info"
+      className="btn btn-info"
       onClick={() => launchModal()}
       alt={props.alt}
     >
@@ -48,7 +52,7 @@ const Queries = props => {
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
-            className="fa fa-pencil-square-o qbrb-icon-edit"
+            className="fa fa-pencil-square-o table-icon"
             onClick={() => launchModal(row.original.id, row.original)}
           ></i>
         </div>
@@ -65,7 +69,8 @@ const Queries = props => {
     setId(recordId);
     setRecord(record);
     setModalTitle(title);
-    setShowModal(true);
+    setModalKey(Date.now());
+    // setShowModal(true);
   };
 
   const closeModal = () => {
@@ -75,9 +80,29 @@ const Queries = props => {
     setShowModal(false);
   };
 
+  useEffect(() => {
+    if (modalKey > -1) setShowModal(true);
+  }, [modalKey]);
+
+  useEffect(() => {
+    const lastRule = ctx.getLookupState("lastRule");
+
+    if (hasData(lastRule)) {
+      const flatRule = {
+        ...lastRule,
+        tag: lastRule.query
+      };
+
+      setId(flatRule.id);
+      setRecord(flatRule);
+      launchModal(flatRule.id, flatRule);
+      ctx.lookupAction({ type: "removeRule" });
+    }
+  }, []);
+
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]}>
-      <Main className="full">
+      <Main className="full bg-white">
         <Title title={<Xl8 xid="q002">Queries</Xl8>} rightChild={button}></Title>
         <Table
           service={query.get}

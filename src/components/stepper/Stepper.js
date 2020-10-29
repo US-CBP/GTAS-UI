@@ -29,13 +29,8 @@ const Stepper = props => {
           new: true,
           active: isActive(leg.etd)
         });
-      } else {
-        completeLeg.push({
-          label: leg.originAirport,
-          new: false,
-          active: isActive(leg.etd)
-        });
       }
+
       completeLeg.push({
         label: leg.destinationAirport,
         new: false,

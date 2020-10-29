@@ -12,10 +12,12 @@ const Tabs = props => {
       </Tab>
     );
   });
+
   return (
     <RBTabs className="gtas-tabs" activeKey={key} onSelect={k => setKey(k)}>
       {tablist}
     </RBTabs>
   );
 };
+
 export default Tabs;
