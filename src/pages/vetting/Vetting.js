@@ -308,6 +308,7 @@ const Vetting = props => {
 
   useEffect(() => {
     fetchData();
+    setRefreshKey(refreshKey + 1);
   }, []);
 
   return (
