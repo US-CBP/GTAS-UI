@@ -18,7 +18,7 @@ const UploadAttachment = props => {
   const [showModal, setShowModal] = useState(false);
   const paxId = props.paxId;
 
-  const cb = (status, resp) => {
+  const cb = (status, resp) => { //SLATE FOR REMOVAL -- DOES NOTHING AS PAX DETAIL CONTROLS CALLBACK FOR ATTACHMENT MODAL NOW
     if (status !== ACTION.CLOSE && status !== ACTION.CANCEL)
       setRefreshDataKey(refreshDataKey + 1);
   };
@@ -48,7 +48,7 @@ const UploadAttachment = props => {
       setData(resp);
       setTableKey(tableKey + 1);
     });
-  }, [refreshDataKey]);
+  }, [props.attachmentRefreshKey]);
 
   const headers = [
     {
