@@ -25,6 +25,7 @@ import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import { asArray, hasData, localeDate, localeDateOnly } from "../../utils/utils";
 import "./PaxDetail.scss";
+import {ACTION} from "../../utils/constants";
 
 const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState({});
@@ -32,6 +33,7 @@ const PaxDetail = props => {
   const [pnr, setPnr] = useState({});
   const [apisMessage, setApisMessage] = useState({});
   const [hitSummaryRefreshKey, setHitSummaryRefreshKey] = useState();
+  const [attachmentRefreshKey, setAttachmentRefreshKey] = useState(0);
   const [eventNoteRefreshKey, setEventNoteRefreshKey] = useState();
   const [hasOpenHit, setHasOpenHit] = useState(false);
   const [hasHit, setHasHit] = useState(false);
@@ -94,7 +96,7 @@ const PaxDetail = props => {
     {
       titleText: "Attachments",
       title: <Xl8 xid="pd006">Attachments</Xl8>,
-      link: <UploadAttachment paxId={props.paxId} />
+      link: <UploadAttachment paxId={props.paxId} attachmentRefreshKey={attachmentRefreshKey} />
     }
   ];
 
@@ -105,6 +107,11 @@ const PaxDetail = props => {
       });
     }
   };
+
+  const updateAttachmentList = (status, resp) => {
+    if (status !== ACTION.CLOSE && status !== ACTION.CANCEL)
+      setAttachmentRefreshKey(attachmentRefreshKey + 1);
+  }
 
   const paxinfoData = res => {
     return {
@@ -155,7 +162,7 @@ const PaxDetail = props => {
       title={<Xl8 xid="manu002">Choose Action</Xl8>}
       className="m-1"
     >
-      <AttachmentModal callback={cb} paxId={props.paxId}></AttachmentModal>
+      <AttachmentModal callback={updateAttachmentList} paxId={props.paxId} ></AttachmentModal>
       <EventNotesModal
         paxId={props.paxId}
         setEventNoteRefreshKey={setEventNoteRefreshKey}
