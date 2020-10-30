@@ -23,21 +23,6 @@ const Search = props => {
   };
   const Headers = [
     {
-      Accessor: "passengerId",
-      Header: "Id",
-      Cell: ({ row }) => {
-        return (
-          <span className={getHighlight(row.original.passengerId)}>
-            {linkToPaxdetails(
-              row.original.passengerId,
-              row.original.flightId,
-              row.original.passengerId
-            )}
-          </span>
-        );
-      }
-    },
-    {
       Accessor: "lastName",
       Header: "Last Name",
       Cell: ({ row }) => {
