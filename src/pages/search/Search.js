@@ -80,6 +80,17 @@ const Search = props => {
       }
     },
     {
+      Accessor: "destination",
+      Header: "Destination",
+      Cell: ({ row }) => {
+        return (
+          <span className={getHighlight(row.original.destination)}>
+            {row.original.destination}
+          </span>
+        );
+      }
+    },
+    {
       Accessor: "etd",
       Header: "ETD",
       Cell: ({ row }) => {
