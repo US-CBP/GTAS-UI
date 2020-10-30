@@ -5,7 +5,7 @@ import Xl8 from "../../components/xl8/Xl8";
 import { search } from "../../services/serviceWrapper";
 import { hasData, localeDate } from "../../utils/utils";
 import { Container } from "react-bootstrap";
-import { useParams } from "@reach/router";
+import { Link, useParams } from "@reach/router";
 import "./Search.scss";
 
 const Search = props => {
@@ -17,6 +17,10 @@ const Search = props => {
   const getHighlight = text => {
     return searchedTextUpper.includes(("" + text).toUpperCase()) ? "highlight" : "";
   };
+
+  const linkToPaxdetails = (passengerId, flightId, displayText) => {
+    return <Link to={`/gtas/paxDetail/${flightId}/${passengerId}`}>{displayText} </Link>;
+  };
   const Headers = [
     {
       Accessor: "passengerId",
@@ -24,7 +28,11 @@ const Search = props => {
       Cell: ({ row }) => {
         return (
           <span className={getHighlight(row.original.passengerId)}>
-            {row.original.passengerId}
+            {linkToPaxdetails(
+              row.original.passengerId,
+              row.original.flightId,
+              row.original.passengerId
+            )}
           </span>
         );
       }
@@ -35,7 +43,11 @@ const Search = props => {
       Cell: ({ row }) => {
         return (
           <span className={getHighlight(row.original.lastName)}>
-            {row.original.lastName}
+            {linkToPaxdetails(
+              row.original.passengerId,
+              row.original.flightId,
+              row.original.lastName
+            )}
           </span>
         );
       }
