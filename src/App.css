@@ -209,3 +209,20 @@ input[type="radio"] {
   overflow: auto;
   height: 100%;
 }
+
+.as-info {
+  cursor: pointer;
+  font-weight: 500;
+  color: #008177;
+}
+/* .as-info:after {
+  content: "\f05a";
+  font: normal normal normal 14px/1 FontAwesome;
+  color: #009e92;
+} */
+
+.overlay-content {
+  background-color: white !important;
+  border: 1px solid #009e92 !important;
+  border-radius: 0.25rem;
+}

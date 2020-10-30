@@ -14,6 +14,10 @@
     align-items: center;
   }
 
+  .flight-badge-row {
+    justify-content: space-evenly;
+  }
+
   .flight-text {
     color: white;
     font-size: large;
@@ -24,4 +28,8 @@
       min-width: -webkit-fill-available;
     }
   }
+}
+
+.width40 {
+  width: 40px;
 }
