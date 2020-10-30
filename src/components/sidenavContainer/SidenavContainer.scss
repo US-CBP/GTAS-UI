@@ -131,7 +131,7 @@ $transparent: #0082c3d9;
 .filter-bg {
   z-index: 5;
   background: linear-gradient(#40403f, #40403fe8, #40403f99),
-    url($background-image-url) no-repeat no-repeat;
+    url($background-image-url) no-repeat no-repeat fixed;
   background-position: -600px 0px;
   background-size: cover;
 }
