@@ -116,11 +116,10 @@ $transparent: #0082c3d9;
 .filter-fg-open {
   color: #f8f9fa;
   z-index: 10;
-  overflow: auto;
 }
 
 .filter-fg::-webkit-scrollbar-thumb {
-  border: 5px solid #40403f !important;
+  border: 3px solid #40403f !important;
   background-color: white;
   border-radius: 12px;
 }
@@ -146,6 +145,7 @@ hr {
   backdrop-filter: blur(2px);
   border-radius: 0.5rem;
   padding-bottom: 5px;
+  padding-right: 0px;
 }
 
 .notopmargin {

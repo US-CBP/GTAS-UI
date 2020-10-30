@@ -4,6 +4,10 @@
 
 .filterform-container {
   margin-top: 15px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: calc(100vh - 80px);
+  padding-right: 15px;
 }
 
 .input:optional {
