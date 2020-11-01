@@ -23,11 +23,13 @@ const FlightBadge = props => {
       <div className="flight-number">{flightNumber}</div>
       <div className="flight-text">
         <Row flex="true" no-wrap="true" className="flight-badge-row">
+          <span className="img-departure"></span>
           <span className="width40">{departure[0]}</span>
           <span>{departure[1]}</span>
           <span>{departure[2]}</span>
         </Row>
         <Row flex="true" no-wrap="true" className="flight-badge-row">
+          <span className="img-arrival"></span>
           <span className="width40">{arrival[0]}</span>
           <span>{arrival[1]}</span>
           <span>{arrival[2]}</span>

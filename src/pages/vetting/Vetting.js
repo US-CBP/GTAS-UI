@@ -63,7 +63,7 @@ const Vetting = props => {
 
   const getBiographicData = pax => {
     return (
-      <ul style={{ listStyle: "none", paddingLeft: 0, fontSize: "small" }}>
+      <ul className="bio-data">
         <li>
           <Xl8 xid="vet001">Name:</Xl8> {pax.paxName}
         </li>
