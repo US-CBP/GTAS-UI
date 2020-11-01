@@ -209,3 +209,8 @@ input[type="radio"] {
   overflow: auto;
   height: 100%;
 }
+
+.modal-dialog-centered {
+  width: fit-content !important;
+  margin: auto !important;
+}
