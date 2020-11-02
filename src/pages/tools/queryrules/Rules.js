@@ -186,7 +186,7 @@ const Rules = props => {
     }
 
     fetchTableData();
-  }, [tab, endpoint]);
+  }, [endpoint]);
 
   useEffect(() => {
     const lastRule = ctx.getLookupState("lastRule");
