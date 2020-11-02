@@ -107,7 +107,6 @@ const Notification = props => {
                 datafield="note"
                 inputVal=""
                 callback={cb}
-                spacebetween
               />
             </Form>
           </Container>
