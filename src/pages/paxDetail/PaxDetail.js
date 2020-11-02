@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
 import ChromeTabs from "../../components/chrometabs/ChromeTabs";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
-import { Navbar, Nav, DropdownButton, Col } from "react-bootstrap";
+import { DropdownButton, Col } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
@@ -23,9 +23,9 @@ import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import { paxdetails, cases } from "../../services/serviceWrapper";
-import { asArray, hasData, localeDate, localeDateOnly } from "../../utils/utils";
+import { asArray, hasData } from "../../utils/utils";
 import "./PaxDetail.scss";
-import {ACTION} from "../../utils/constants";
+import { ACTION } from "../../utils/constants";
 
 const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState({});
@@ -96,7 +96,12 @@ const PaxDetail = props => {
     {
       titleText: "Attachments",
       title: <Xl8 xid="pd006">Attachments</Xl8>,
-      link: <UploadAttachment paxId={props.paxId} attachmentRefreshKey={attachmentRefreshKey} />
+      link: (
+        <UploadAttachment
+          paxId={props.paxId}
+          attachmentRefreshKey={attachmentRefreshKey}
+        />
+      )
     }
   ];
 
@@ -111,7 +116,7 @@ const PaxDetail = props => {
   const updateAttachmentList = (status, resp) => {
     if (status !== ACTION.CLOSE && status !== ACTION.CANCEL)
       setAttachmentRefreshKey(attachmentRefreshKey + 1);
-  }
+  };
 
   const paxinfoData = res => {
     return {
@@ -162,7 +167,10 @@ const PaxDetail = props => {
       title={<Xl8 xid="manu002">Choose Action</Xl8>}
       className="m-1"
     >
-      <AttachmentModal callback={updateAttachmentList} paxId={props.paxId} ></AttachmentModal>
+      <AttachmentModal
+        callback={updateAttachmentList}
+        paxId={props.paxId}
+      ></AttachmentModal>
       <EventNotesModal
         paxId={props.paxId}
         setEventNoteRefreshKey={setEventNoteRefreshKey}
@@ -192,7 +200,6 @@ const PaxDetail = props => {
         </Col>
       </SidenavContainer>
       <Main className="main">
-        {/* <ChromeTabs tabs={tabs}></ChromeTabs> */}
         <Title
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
           leftChild={tablist}
