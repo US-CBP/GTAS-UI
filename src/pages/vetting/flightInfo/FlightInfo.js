@@ -7,20 +7,25 @@ import Overlay from "../../../components/overlay/Overlay";
 const FlightInfo = props => {
   const originInfo = `${props.origin} ${localeDate(props.etd)}`;
   const destinationInfo = `${props.destination} ${localeDate(props.eta)}`;
-  const flightDirection =
-    props.direction === "I" ? "fa fa-plane fa-rotate-90 fa-fw" : "fa fa-plane fa-fw";
+  const flightDirection = props.direction === "I" ? "img-arrival-sm" : "img-departure-sm";
 
   const getPopover = (
     <>
-      <i className="fa fa-arrow-circle-up">{originInfo}</i>
-      <i className="fa fa-arrow-circle-down">{destinationInfo}</i>
+      <div>
+        <span className="img-departure-sm" />
+        {originInfo}
+      </div>
+      <div>
+        <span className="img-arrival-sm" />
+        {destinationInfo}
+      </div>
     </>
   );
 
   return (
     <Overlay trigger={["click", "hover"]} content={getPopover}>
-      <div className="as-link text-center">
-        <i className={flightDirection}></i>
+      <div className="text-center">
+        <span className={flightDirection}></span>
         {props.flightNumber}
       </div>
     </Overlay>

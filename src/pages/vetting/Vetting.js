@@ -63,7 +63,7 @@ const Vetting = props => {
 
   const getBiographicData = pax => {
     return (
-      <ul style={{ listStyle: "none", paddingLeft: 0, fontSize: "small" }}>
+      <ul className="bio-data">
         <li>
           <Xl8 xid="vet001">Name:</Xl8> {pax.paxName}
         </li>
@@ -120,7 +120,7 @@ const Vetting = props => {
               key={index}
               content={hit}
             >
-              <li className={triggerOverlay ? "as-link" : ""}>{getShortText(hit, 20)}</li>
+              <li className={triggerOverlay ? "as-info" : ""}>{getShortText(hit, 20)}</li>
             </Overlay>
           );
         });
@@ -132,10 +132,7 @@ const Vetting = props => {
       Xl8: true,
       Header: ["wl021", "Biographic Information"],
       Cell: ({ row }) => (
-        <Link
-          to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}
-          className="as-link"
-        >
+        <Link to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}>
           {getBiographicData(row.original)}
         </Link>
       )

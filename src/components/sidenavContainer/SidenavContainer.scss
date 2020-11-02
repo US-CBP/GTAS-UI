@@ -116,11 +116,10 @@ $transparent: #0082c3d9;
 .filter-fg-open {
   color: #f8f9fa;
   z-index: 10;
-  overflow: auto;
 }
 
 .filter-fg::-webkit-scrollbar-thumb {
-  border: 5px solid #40403f !important;
+  border: 3px solid #40403f !important;
   background-color: white;
   border-radius: 12px;
 }
@@ -132,7 +131,7 @@ $transparent: #0082c3d9;
 .filter-bg {
   z-index: 5;
   background: linear-gradient(#40403f, #40403fe8, #40403f99),
-    url($background-image-url) no-repeat no-repeat;
+    url($background-image-url) no-repeat no-repeat fixed;
   background-position: -600px 0px;
   background-size: cover;
 }
@@ -146,6 +145,7 @@ hr {
   backdrop-filter: blur(2px);
   border-radius: 0.5rem;
   padding-bottom: 5px;
+  padding-right: 0px;
 }
 
 .notopmargin {

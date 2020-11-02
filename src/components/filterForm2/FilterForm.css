@@ -1,9 +1,19 @@
-.FormContainer {
-  /* min-height: var(--height-content); */
-}
-
 .filterform-container {
   margin-top: 15px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: calc(100vh - 80px);
+  padding-right: 15px;
+}
+
+.filterform-container .react-calendar {
+  position: fixed;
+  top: auto;
+  line-height: 0.5rem;
+  width: 350px !important;
+  border-radius: 5px;
+  display: block;
+  max-width: unset;
 }
 
 .input:optional {

@@ -1,5 +1,6 @@
 import React from "react";
-import { localeDate, localeMonthDayTime, hasData } from "../../utils/utils";
+import { localeMonthDayTime, hasData } from "../../utils/utils";
+import { Row } from "react-bootstrap";
 import "./FlightBadge.scss";
 
 const FlightBadge = props => {
@@ -21,18 +22,18 @@ const FlightBadge = props => {
     <div className="flight-badge">
       <div className="flight-number">{flightNumber}</div>
       <div className="flight-text">
-        <table>
-          <tr>
-            <td>{departure[0]}</td>
-            <td>{departure[1]}</td>
-            <td>{departure[2]}</td>
-          </tr>
-          <tr>
-            <td>{arrival[0]}</td>
-            <td>{arrival[1]}</td>
-            <td>{arrival[2]}</td>
-          </tr>
-        </table>
+        <Row flex="true" no-wrap="true" className="flight-badge-row">
+          <span className="img-departure"></span>
+          <span className="width40">{departure[0]}</span>
+          <span>{departure[1]}</span>
+          <span>{departure[2]}</span>
+        </Row>
+        <Row flex="true" no-wrap="true" className="flight-badge-row">
+          <span className="img-arrival"></span>
+          <span className="width40">{arrival[0]}</span>
+          <span>{arrival[1]}</span>
+          <span>{arrival[2]}</span>
+        </Row>
       </div>
     </div>
   );

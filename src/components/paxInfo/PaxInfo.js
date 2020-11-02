@@ -52,7 +52,7 @@ const PaxInfo = props => {
         value: (
           <Link
             to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${res.seat}`}
-            style={{ color: "#8fdeef" }}
+            className="pax-info-link"
             state={{
               arrival: res.eta,
               departure: res.etd,
