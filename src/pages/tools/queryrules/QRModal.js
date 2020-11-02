@@ -127,7 +127,7 @@ const QRModal = props => {
           "bagMeasurements.bagCount": { label: "Bag Count", ...numProps },
           bagId: { label: "Bag ID", ...txtProps },
           "bagMeasurements.weight": { label: "Bag Weight (kg)", ...numProps },
-          dataSource: { label: "Data Source", ...txtProps },
+          data_source: { label: "Data Source", ...txtProps },
           destinationAirport: { label: "Destination Airport", ...airportProps },
           country: { label: "Destination Country", ...countryProps },
           primeFlight: {
