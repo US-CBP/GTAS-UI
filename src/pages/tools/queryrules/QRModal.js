@@ -806,8 +806,8 @@ const QRModal = props => {
           <Button
             key="save"
             type="button"
-            className="m-2 outline-dark-outline"
-            variant="outline-dark"
+            className="m-2 btn"
+            variant="primary"
             onClick={onSave}
           >
             <Xl8 xid="qrm009">Save</Xl8>

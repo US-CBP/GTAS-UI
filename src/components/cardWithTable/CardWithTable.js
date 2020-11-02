@@ -20,7 +20,7 @@ const CardWithTable = props => {
       const triggerOverlay = !isShortText(td, textDisplayLimit);
       return (
         <Overlay trigger={triggerOverlay ? "click" : ""} key={key} content={td}>
-          <td className={triggerOverlay ? "as-link" : ""}>
+          <td className={triggerOverlay ? "as-info" : ""}>
             {getShortText(td, textDisplayLimit)}
           </td>
         </Overlay>

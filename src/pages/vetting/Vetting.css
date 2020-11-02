@@ -1,3 +1,10 @@
 .dtp-vetting-lower > span > div > .react-calendar {
   /* bottom: calc(0vh + 10px); */
 }
+
+.bio-data {
+  list-style: none;
+  padding-left: 0px;
+  font-size: small;
+  margin-bottom: 0px;
+}

@@ -50,10 +50,14 @@ class Confirm extends React.Component {
           <Modal.Header variant="primary">{header}</Modal.Header>
           <Modal.Body>{body}</Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.hideConfirmationModal} variant="light">
+            <Button
+              onClick={this.hideConfirmationModal}
+              className="m-2 outline-dark-outline"
+              variant="outline-dark"
+            >
               <Xl8 xid="form001">Cancel</Xl8>
             </Button>
-            <Button onClick={this.confirm}>
+            <Button onClick={this.confirm} className="m-2 button block info fullwidth">
               <Xl8 xid="form003">Confirm</Xl8>
             </Button>
           </Modal.Footer>

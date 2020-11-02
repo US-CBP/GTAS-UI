@@ -18,6 +18,7 @@
   max-height: 60vh;
   overflow: hidden;
   overflow-y: auto;
+  min-width: 800px;
 }
 
 .queryBuilder {
