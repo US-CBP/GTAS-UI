@@ -42,7 +42,13 @@ const Header = () => {
 
   const logout = () => {
     userAction({ type: "logoff" });
+    action({ type: "read" });
 
+    navigate("/login");
+  };
+
+  // allow a 'false' logout for admins translating pages outside the authed/loggedin bundle
+  const pseudoLogout = () => {
     navigate("/login");
   };
 
