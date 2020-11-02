@@ -14,12 +14,14 @@ import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthentica
 import QRModal from "./QRModal";
 import "./QueryRules.css";
 
+//TODO - the two fetches, rulesall and rules, are separate but they don't need to be. Until we have requirements preventing some
+//users or roles from fetching all rules, we should consider pulling all data from rulesall and filtering the results for "my rules".
 const Rules = props => {
   const addRule = <Xl8 xid="rul001">Add Rule</Xl8>;
   const editRule = <Xl8 xid="rul002">Edit Rule</Xl8>;
   const endpoint = getEndpoint(props.location.pathname);
   const [tab, setTab] = useState(endpoint === "rules" ? RULETAB.MY : RULETAB.ALL);
-  const service = tab === RULETAB.ALL ? rulesall : rule;
+  const service = endpoint === "all" ? rulesall : rule;
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
   const [data, setData] = useState({});
@@ -97,7 +99,7 @@ const Rules = props => {
   ];
 
   const fetchDetail = selectedId => {
-    rule.get(selectedId).then(res => {
+    service.get(selectedId).then(res => {
       if (hasData(res)) {
         res.title = res.summary.title;
         res.description = res.summary.description;
@@ -124,7 +126,6 @@ const Rules = props => {
 
     setModalTitle(title);
     // timestamp as key ensures the modal gets refreshed and displayed on each launch.
-    // APB ????
     setModalKey(Date.now());
   };
 
