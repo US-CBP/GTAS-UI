@@ -197,11 +197,13 @@ const Table = props => {
                               !props.disableGroupBy &&
                               column.canGroupBy ? (
                                 <span {...column.getGroupByToggleProps()}>
-                                  {props.disableGroupBy
-                                    ? ""
-                                    : column.isGrouped
-                                    ? <i className="fa fa-object-ungroup"></i>
-                                    : <i class="fa fa-object-group"></i>}
+                                  {props.disableGroupBy ? (
+                                    ""
+                                  ) : column.isGrouped ? (
+                                    <i className="fa fa-object-ungroup"></i>
+                                  ) : (
+                                    <i class="fa fa-object-group"></i>
+                                  )}
                                 </span>
                               ) : (
                                 ""

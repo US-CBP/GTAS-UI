@@ -6,26 +6,22 @@ import Main from "../../../components/main/Main";
 import { loaderStats } from "../../../services/serviceWrapper";
 import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
-import { hasData, localeDate } from "../../../utils/utils";
+import { localeDate } from "../../../utils/utils";
 
 const LoaderStats = ({ name }) => {
-  const cb = function(result) {};
   const onChange = function(result) {};
-  const [data, setData] = useState();
   const [key, setKey] = useState(0);
 
-  useEffect(() => {
-    loaderStats.get().then(res => {
-      const parsedData = {
-        ...res,
-        lastMessageAnalyzedByDrools: localeDate(res?.lastMessageAnalyzedByDrools),
-        lastMessageInSystem: localeDate(res?.lastMessageInSystem),
-        mostRecentRuleHit: localeDate(res?.mostRecentRuleHit)
-      };
-      setData(parsedData);
-      setKey(key + 1);
-    });
-  }, []);
+  const cb = function(res) {
+    const parsedData = {
+      ...res,
+      lastMessageAnalyzedByDrools: localeDate(res?.lastMessageAnalyzedByDrools),
+      lastMessageInSystem: localeDate(res?.lastMessageInSystem),
+      mostRecentRuleHit: localeDate(res?.mostRecentRuleHit)
+    };
+
+    return parsedData;
+  };
 
   return (
     <Main className="full">
@@ -34,10 +30,11 @@ const LoaderStats = ({ name }) => {
       <Container>
         <Col lg={{ span: 4, offset: 4 }}>
           <Form
-            data={data}
             key={key}
+            getService={loaderStats.get}
             title=""
             callback={cb}
+            action="refresh"
             submitText={<Xl8 xid="ls008">Refresh</Xl8>}
           >
             <LabelledInput
