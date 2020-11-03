@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { hasData } from "../../utils/utils";
 import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import Title from "../../components/title/Title";
 import Table from "../../components/table/Table";
@@ -21,6 +20,7 @@ const LanguageEditor = () => {
   const currentLanguage = window.navigator.language.split("-")[0];
 
   const cb = () => {};
+
   const handleClick = ev => {
     const actionText = ev.value ? "edit" : "read";
 
