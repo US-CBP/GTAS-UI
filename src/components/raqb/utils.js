@@ -114,7 +114,8 @@ const exportRule = raw => {
   const operator = operatorMap[terms?.operator];
   const entProps = getEntityProps(entity, field, operator, terms, false) || {};
   const value = getValue(entProps.type, terms?.value, operator, false);
-  const value0 = Array.isArray(value) ? value[0] : value;
+
+  const value0 = Array.isArray(value[0]) ? value[0] : value;
 
   if (!field || !operator) invalid = true;
   if (operator !== "IS_NULL" && operator !== "NULL" && !hasData(value0)) invalid = true;
@@ -151,10 +152,7 @@ const getValue = (type, val, op, isImporting = true) => {
   if (type === "number") return val.map(item => +item);
 
   if (isMultivalueOperator(op)) {
-    return [convertedVal];
-  }
-
-  if (!isMultivalueOperator(op)) {
+    if (isImporting) return [convertedVal];
     return convertedVal;
   }
 
