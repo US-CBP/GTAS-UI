@@ -86,6 +86,9 @@
   display: none;
 }
 
+.widget--sep {
+  margin-top: 7px;
+}
 /* select:-internal-list-box option:checked {
   background-color: rgb(137 193 252 / 0.5) !important;
   color: rgb(16, 16, 16) !important;
