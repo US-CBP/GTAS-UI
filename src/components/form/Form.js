@@ -4,6 +4,7 @@ import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import { hasData, asArray, isObject, alt } from "../../utils/utils";
 import Title from "../title/Title";
 import Xl8 from "../xl8/Xl8";
+import Loading from "../loading/Loading";
 import { Button, Form as RBForm, ButtonToolbar } from "react-bootstrap";
 import { navigate } from "@reach/router";
 
@@ -22,6 +23,7 @@ class Form extends React.Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
     this.onFormCancel = this.onFormCancel.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onConfirm = this.onConfirm.bind(this);
 
     let fields = [];
     let fieldMap = [];
@@ -60,7 +62,8 @@ class Form extends React.Component {
 
   fetchData() {
     let fields = [];
-    if (this.isEdit() && hasData(this.props.getService)) {
+    this.setState({ showPending: true });
+    if ((this.isEdit() || this.isRefresh()) && hasData(this.props.getService)) {
       this.props.getService(this.props.recordId).then(res => {
         if (hasData(res)) {
           // If res is an object, let it pass
@@ -94,6 +97,11 @@ class Form extends React.Component {
     return this.props.action === "edit";
   }
 
+  // view-only data we want to fetch on load and refetch on submit
+  isRefresh() {
+    return this.props.action === "refresh";
+  }
+
   onChange(ev) {
     const componentname = ev.name;
     const value = ev.value;
@@ -108,7 +116,10 @@ class Form extends React.Component {
     });
   }
 
+  onConfirm(ev) {}
+
   onFormSubmit(e) {
+    this.setState({ showPending: true });
     if (!this.props.shouldConfirm) e.preventDefault();
 
     let operation = this.props.submitService;
@@ -132,6 +143,11 @@ class Form extends React.Component {
     if (validParams) {
       operation(...parsedParams).then(res => {
         if (hasData(this.props.callback)) this.props.callback(ACTION.SAVE, alt(res));
+        if (this.props.refreshOnSubmit) {
+          this.fetchData();
+        } else {
+          this.setState({ showPending: false });
+        }
       });
     }
   }
@@ -173,55 +189,65 @@ class Form extends React.Component {
       kids: boundChildren,
       fields: populatedFields,
       formkey: newkey,
-      getSuccess: hasData(populatedFields)
+      getSuccess: hasData(populatedFields),
+      showPending: false
     });
   }
 
   render() {
+    const defaultMessage = <Xl8 xid="form005">Please confirm submission</Xl8>;
+    const defaultHeader = <Xl8 xid="form006">Form Confirmation</Xl8>;
     const showSubmit = this.props.action !== "readonly";
     const disabled = this.canSubmit() ? "" : "disabled";
-    const header = "Form Confirmation";
-    const message = "Please confirm to submit the form.";
+    const header = this.props.confirmationHeader || defaultHeader;
+    const message = this.props.confirmationMessage || defaultMessage;
 
     return (
       <div>
-        {this.props.title && <Title title={this.props.title}></Title>}
-        <Confirm header={header} message={message}>
-          {confirm => (
-            <RBForm
-              onSubmit={
-                this.props.shouldConfirm ? confirm(this.onFormSubmit) : this.onFormSubmit
-              }
-              key={this.state.formkey}
-            >
-              <ErrorBoundary message="Form children could not be rendered">
-                {this.state.kids}
-              </ErrorBoundary>
-              <ButtonToolbar className="container">
-                {this.props.cancellable && (
-                  <Button
-                    type="button"
-                    className="m-2 outline-dark-outline"
-                    variant="outline-dark"
-                    onClick={this.onFormCancel}
-                  >
-                    {this.props.cancelText || <Xl8 xid="form001">Cancel</Xl8>}
-                  </Button>
-                )}
-                {showSubmit && (
-                  <Button
-                    className={`m-2 button block info fullwidth ${disabled}`}
-                    type="submit"
-                  >
-                    {this.props.submitText || <Xl8 xid="form002">Submit</Xl8>}
-                  </Button>
-                )}
+        {this.state.showPending && <Loading></Loading>}
 
-                {this.props.customButtons}
-              </ButtonToolbar>
-            </RBForm>
-          )}
-        </Confirm>
+        {!this.state.showPending && (
+          <Confirm header={header} message={message}>
+            {confirm => (
+              <RBForm
+                onSubmit={
+                  this.props.shouldConfirm
+                    ? confirm(this.onFormSubmit)
+                    : this.onFormSubmit
+                }
+                key={this.state.formkey}
+              >
+                {this.props.title && <Title title={this.props.title}></Title>}
+
+                <ErrorBoundary message="Form children could not be rendered">
+                  {this.state.kids}
+                </ErrorBoundary>
+                <ButtonToolbar className="container">
+                  {this.props.cancellable && (
+                    <Button
+                      type="button"
+                      className="m-2 button btn fullwidth"
+                      variant="outline-dark"
+                      onClick={this.onFormCancel}
+                    >
+                      {this.props.cancelText || <Xl8 xid="form001">Cancel</Xl8>}
+                    </Button>
+                  )}
+                  {showSubmit && (
+                    <Button
+                      className={`m-2 button block fullwidth ${disabled}`}
+                      type="submit"
+                    >
+                      {this.props.submitText || <Xl8 xid="form002">Submit</Xl8>}
+                    </Button>
+                  )}
+
+                  {this.props.customButtons}
+                </ButtonToolbar>
+              </RBForm>
+            )}
+          </Confirm>
+        )}
       </div>
     );
   }

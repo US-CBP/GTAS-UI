@@ -24,6 +24,10 @@ const Settings = ({ name }) => {
             title=""
             action="edit"
             shouldConfirm={true}
+            refreshOnSubmit
+            confirmationMessage={
+              <Xl8 xid="set007">Please confirm these updates to settings</Xl8>
+            }
           >
             <LabelledInput
               datafield
@@ -35,7 +39,7 @@ const Settings = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="set001">Maximum Passenger Query Results: </Xl8>}
+              labelText={<Xl8 xid="set003">Maximum Passenger Query Results: </Xl8>}
               inputType="number"
               name="maxPassengerQueryResult"
               callback={cb}
@@ -43,7 +47,7 @@ const Settings = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="set001">Maximum Flight Query Results: </Xl8>}
+              labelText={<Xl8 xid="set004">Maximum Flight Query Results: </Xl8>}
               inputType="number"
               name="maxFlightQueryResult"
               callback={cb}
@@ -52,7 +56,7 @@ const Settings = ({ name }) => {
             <LabelledInput
               datafield
               labelText={
-                <Xl8 xid="set001">Maximum Rule Hits Allowed Per Run on Rule: </Xl8>
+                <Xl8 xid="set005">Maximum Rule Hits Allowed Per Run on Rule: </Xl8>
               }
               inputType="number"
               name="maxRuleHit"
@@ -61,7 +65,7 @@ const Settings = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="set001">APIS Only Flag:</Xl8>}
+              labelText={<Xl8 xid="set006">APIS Only Flag:</Xl8>}
               inputType="select"
               options={[
                 { value: "TRUE", label: "TRUE" },
