@@ -10,9 +10,10 @@ import { localeDate } from "../../../utils/utils";
 
 const LoaderStats = ({ name }) => {
   const onChange = function(result) {};
+  const cb = () => {};
   const [key, setKey] = useState(0);
 
-  const cb = function(res) {
+  const parseData = function(res) {
     const parsedData = {
       ...res,
       lastMessageAnalyzedByDrools: localeDate(res?.lastMessageAnalyzedByDrools),
@@ -36,6 +37,7 @@ const LoaderStats = ({ name }) => {
             callback={cb}
             action="refresh"
             submitText={<Xl8 xid="ls008">Refresh</Xl8>}
+            parseData={parseData}
           >
             <LabelledInput
               datafield

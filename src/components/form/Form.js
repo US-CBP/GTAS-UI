@@ -79,7 +79,10 @@ class Form extends React.Component {
           for (let field in this.state.fields) {
             populatedFields[field] = singleRecord[field];
           }
-          fields = populatedFields;
+
+          const parseData = this.props.parseData;
+
+          fields = hasData(parseData) ? parseData(populatedFields) : populatedFields;
         }
         this.bindChildren(fields);
       });
@@ -267,7 +270,8 @@ Form.propTypes = {
   callback: PropTypes.func.isRequired,
   paramCallback: PropTypes.func,
   shouldConfirm: PropTypes.bool,
-  validateInputs: PropTypes.func
+  validateInputs: PropTypes.func,
+  parseData: PropTypes.func
 };
 
 export default Form;
