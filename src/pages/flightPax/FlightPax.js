@@ -202,6 +202,7 @@ const FlightPax = props => {
             <CountdownBadge
               future={flightData.direction === "O" ? flightData.etd : flightData.eta}
               baseline={Date.now()}
+              direction={flightData.direction}
             ></CountdownBadge>
           </div>
           <br />

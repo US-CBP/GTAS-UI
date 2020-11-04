@@ -101,7 +101,11 @@ const Flights = props => {
       Xl8: true,
       Header: ["fl009", "Timer"],
       Cell: ({ row }) => (
-        <CountdownBadge future={row.original.timer} baseline={now}></CountdownBadge>
+        <CountdownBadge
+          future={row.original.timer}
+          baseline={now}
+          direction={row.original.direction}
+        ></CountdownBadge>
       )
     },
     {

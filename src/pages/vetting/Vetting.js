@@ -89,7 +89,13 @@ const Vetting = props => {
           row.original.flightDirection === "O"
             ? row.original.flightETDDate
             : row.original.flightETADate;
-        return <CountdownBadge future={future} baseline={now} />;
+        return (
+          <CountdownBadge
+            future={future}
+            baseline={now}
+            direction={row.original.flightDirection}
+          />
+        );
       }
     },
     {
