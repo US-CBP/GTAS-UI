@@ -163,7 +163,7 @@ const PNR = props => {
   return (
     <div className="paxdetail-container">
       <Row>
-        <Col className="p-0" md="6">
+        <Col className="p-0" md="5">
           <SegmentTable
             title={segmentTitle}
             data={rawPnrSegments}
