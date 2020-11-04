@@ -12,6 +12,43 @@ const PNR = props => {
     hasData(data.version) ? `(Version: ${data.version})` : ""
   }`;
 
+  const getPassengerName = paxId => {
+    const passengers = data.passengers;
+    const passenger = passengers.find(passenger => passenger.paxId === paxId);
+    return passenger;
+  };
+  const getBagData = data => {
+    const bags = asArray(data.bagSummaryVo?.bagsByFlightLeg).filter(
+      bag => bag.data_source === "PNR"
+    );
+
+    const paxIdBagsMap = bags.reduce((acc, bag) => {
+      const paxId = bag["passengerId"];
+      acc[paxId] = asArray(acc[paxId]);
+      acc[paxId].push(bag);
+
+      return acc;
+    }, {});
+
+    const parsedBagdata = Object.keys(paxIdBagsMap).map(key => {
+      const passenger = getPassengerName(key) || {};
+      const bagInfo = {
+        firstName: passenger.firstName,
+        lastName: passenger.lastName,
+        bagCount: paxIdBagsMap[key].length,
+        totalWeight: paxIdBagsMap[key].reduce(
+          (total, bag) => total + bag["bag_weight"],
+          0
+        ),
+        destination: paxIdBagsMap[key][0]["destination"],
+        bagIds: paxIdBagsMap[key].map(bag => bag["bagId"]).join()
+      };
+
+      return bagInfo;
+    });
+    return parsedBagdata;
+  };
+
   const tripType = data.tripType || "Trip Type";
   const headers = {
     itinerary: {
@@ -73,6 +110,14 @@ const PNR = props => {
       lastName: <Xl8 xid="pnr038">Last Name</Xl8>,
       flightNumber: <Xl8 xid="pnr039">Flight Number</Xl8>,
       number: <Xl8 xid="pnr040">Seat Number</Xl8>
+    },
+    totalBaggage: {
+      bagIds: <Xl8 xid="pnr052">Bag Ids</Xl8>,
+      firstName: <Xl8 xid="pnr053">First Name</Xl8>,
+      lastName: <Xl8 xid="pnr054">Last Name</Xl8>,
+      bagCount: <Xl8 xid="pnr055">Bag Count</Xl8>,
+      totalWeight: <Xl8 xid="pnr056">Total Bag Weight</Xl8>,
+      destination: <Xl8 xid="pnr057">Bag Destination</Xl8>
     }
   };
   const rawPnrSegments = asArray(data.segmentList);
@@ -151,6 +196,8 @@ const PNR = props => {
       key: `SEAT${seatAssignment.number}`
     };
   });
+
+  const totalBaggage = getBagData(data);
 
   const segmentRef = React.createRef();
 
@@ -236,6 +283,12 @@ const PNR = props => {
               data={agencies}
               headers={headers.agencies}
               title={<Xl8 xid="pnr050">Agencies</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
+            <CardWithTable
+              data={totalBaggage}
+              headers={headers.totalBaggage}
+              title={<Xl8 xid="pnr051">Total PNR Baggage </Xl8>}
               callback={setActiveKeyWrapper}
             />
           </Container>
