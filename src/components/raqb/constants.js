@@ -71,7 +71,13 @@ export const operatorMap = {
   MULTI_NOT_IN: "multiselect_not_equals",
 
   to_select_any_in: "select_any_in", // force "select_equals" on incoming raw obj
+  to_select_equals: "select_equals",
+  to_multiselect_equals: "multiselect_equals",
+  to_select_not_any_in: "select_not_any_in",
+  select_not_equals: "NOT_EQUAL",
+  to_select_not_equals: "select_not_equals",
 
+  select_not_any_in: "not_in",
   in: "IN",
   not_in: "NOT_IN",
   equal: "EQUAL",
