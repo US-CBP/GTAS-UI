@@ -5,6 +5,7 @@ import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { asArray, hasData, localeDate, localeDateOnly } from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
 import { Link } from "@reach/router";
+import Overlay from "../../../components/overlay/Overlay";
 
 const PNR = props => {
   const data = hasData(props.data) ? props.data : {};
@@ -14,34 +15,36 @@ const PNR = props => {
 
   const getPassengerName = paxId => {
     const passengers = data.passengers;
-    const passenger = passengers.find(passenger => passenger.paxId === paxId);
+    const passenger = passengers.find(passenger => passenger.paxId === paxId.toString());
     return passenger;
   };
   const getBagData = data => {
-    const bags = asArray(data.bagSummaryVo?.bagsByFlightLeg).filter(
-      bag => bag.data_source === "PNR"
-    );
+    const bags = asArray(data.bagSummaryVo?.bagsByFlightLeg)
+      .filter(bag => bag.data_source === "PNR")
+      .sort((bag1, bag2) => bag1.passengerId - bag2.passengerId);
 
-    const paxIdBagsMap = bags.reduce((acc, bag) => {
-      const paxId = bag["passengerId"];
-      acc[paxId] = asArray(acc[paxId]);
-      acc[paxId].push(bag);
-
-      return acc;
-    }, {});
-
-    const parsedBagdata = Object.keys(paxIdBagsMap).map(key => {
-      const passenger = getPassengerName(key) || {};
+    const parsedBagdata = bags.map(bag => {
+      const passenger = getPassengerName(bag.passengerId) || {};
       const bagInfo = {
-        firstName: passenger.firstName,
-        lastName: passenger.lastName,
-        bagCount: paxIdBagsMap[key].length,
-        totalWeight: paxIdBagsMap[key].reduce(
-          (total, bag) => total + bag["bag_weight"],
-          0
+        lastName: (
+          <>
+            <span>{passenger.lastName}</span>
+            <Overlay
+              trigger={["click", "hover"]}
+              content={
+                <Xl8 xid="pnr058">
+                  The total number of bags associated with this passenger
+                </Xl8>
+              }
+            >
+              <span className="as-info">{`(${bag.bag_count})`}</span>
+            </Overlay>
+          </>
         ),
-        destination: paxIdBagsMap[key][0]["destination"],
-        bagIds: paxIdBagsMap[key].map(bag => bag["bagId"]).join()
+        firstName: passenger.firstName,
+        bagWeight: bag.bag_weight,
+        destination: bag.destination,
+        bagId: bag.bagId
       };
 
       return bagInfo;
@@ -112,11 +115,10 @@ const PNR = props => {
       number: <Xl8 xid="pnr040">Seat Number</Xl8>
     },
     totalBaggage: {
-      bagIds: <Xl8 xid="pnr052">Bag Ids</Xl8>,
+      bagId: <Xl8 xid="pnr052">Bag Id</Xl8>,
       firstName: <Xl8 xid="pnr053">First Name</Xl8>,
       lastName: <Xl8 xid="pnr054">Last Name</Xl8>,
-      bagCount: <Xl8 xid="pnr055">Bag Count</Xl8>,
-      totalWeight: <Xl8 xid="pnr056">Total Bag Weight</Xl8>,
+      bagWeight: <Xl8 xid="pnr056">Bag Weight(Kg)</Xl8>,
       destination: <Xl8 xid="pnr057">Bag Destination</Xl8>
     }
   };
