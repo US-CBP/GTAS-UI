@@ -15,7 +15,7 @@ import Overlay from "../../components/overlay/Overlay";
 import ReviewPVL from "./review/Review";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 
-import { cases, notetypes, usersemails, ruleCats } from "../../services/serviceWrapper";
+import { cases, notetypes, usersemails, hitcats } from "../../services/serviceWrapper";
 import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
 import { ROLE } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
@@ -92,7 +92,13 @@ const Vetting = props => {
           row.original.flightDirection === "O"
             ? row.original.flightETDDate
             : row.original.flightETADate;
-        return <CountdownBadge future={future} baseline={now} />;
+        return (
+          <CountdownBadge
+            future={future}
+            baseline={now}
+            direction={row.original.flightDirection}
+          />
+        );
       }
     },
     {
@@ -286,7 +292,7 @@ const Vetting = props => {
       setUsersEmails(emails);
     });
 
-    ruleCats.get().then(res => {
+    hitcats.get().then(res => {
       const options = asArray(res).map(hitCat => {
         return {
           label: hitCat.name,

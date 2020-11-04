@@ -35,11 +35,14 @@ const importGroup = raw => {
  * Import the rule part of a raw QueryObject
  */
 const importRule = raw => {
-  const types = getEntityProps(raw.entity, raw.field, undefined, true);
+  const types = getEntityProps(raw.entity, raw.field, raw.operator, undefined, true);
   const op = operatorMap[types?.operator || raw.operator];
   const isMulti = isMultivalueOperator(op);
 
-  const type = valueTypeMap[types?.type] || "NOT_FOUND";
+  let type = valueTypeMap[types?.type] || "NOT_FOUND";
+
+  if (type === "multiselect" && !isMulti) type = "select";
+
   const value = getValue(type, raw.value, op);
 
   let rule = {};
@@ -59,8 +62,6 @@ const importRule = raw => {
   };
 
   rule.children1 = children1;
-
-  // console.log("RULE", raw, children1);
   return rule;
 };
 
@@ -98,7 +99,6 @@ const exportGroup = (raw, isFirstLevel) => {
 };
 
 const exportRule = raw => {
-  // console.log("EXPORTING RULE", raw);
   let terms = {};
   let invalid = false;
 
@@ -111,10 +111,11 @@ const exportRule = raw => {
 
   const entity = raw.properties?.field;
   const field = getFieldPart(terms?.field);
-  const entProps = getEntityProps(entity, field, terms, false) || {};
   const operator = operatorMap[terms?.operator];
+  const entProps = getEntityProps(entity, field, operator, terms, false) || {};
   const value = getValue(entProps.type, terms?.value, operator, false);
-  const value0 = Array.isArray(value) ? value[0] : value;
+
+  const value0 = Array.isArray(value[0]) ? value[0] : value;
 
   if (!field || !operator) invalid = true;
   if (operator !== "IS_NULL" && operator !== "NULL" && !hasData(value0)) invalid = true;
@@ -144,15 +145,15 @@ const getValue = (type, val, op, isImporting = true) => {
 
   let convertedVal = val;
 
-  // console.log(val, type);
   if (type === "boolean") {
     return isImporting ? [!!val[0]] : [(+val[0]).toString()]; // convert to t/f if importing, "0"/"1" if exporting
   }
 
   if (type === "number") return val.map(item => +item);
 
-  if (type === "multiselect") {
-    return [convertedVal];
+  if (isMultivalueOperator(op)) {
+    if (isImporting) return [convertedVal];
+    return convertedVal;
   }
 
   if (!isImporting && Array.isArray(convertedVal) && Array.isArray(convertedVal[0])) {
@@ -192,19 +193,15 @@ const isMultivalueOperator = op => {
   const multivalueOperators = [
     "not_between",
     "between",
-    // "select_any_in",
-    // "select_any_not_in",
-    // "multiselect_equals",
-    // "multiselect_not_equals",
+    "select_not_any_in",
+    "select_any_in",
     "any_in",
     "any_not_in"
-    // "in",
-    // "not_in"
   ];
   return multivalueOperators.includes(op);
 };
 
-const getEntityProps = (entpart, fieldpart, terms, isImporting = false) => {
+const getEntityProps = (entpart, fieldpart, op, terms, isImporting = false) => {
   let externalField = {
     ...ENTITIESEXT[`${entpart}`].find(item => {
       return item.id === fieldpart;
@@ -212,7 +209,11 @@ const getEntityProps = (entpart, fieldpart, terms, isImporting = false) => {
   };
 
   if (isImporting && externalField?.select) externalField.type = ["multiselect"];
-  if (isImporting && externalField?.multival) externalField.operator = "to_select_any_in";
-
+  if (isImporting && externalField?.multival) {
+    if (op === "IN") externalField.operator = "to_select_any_in";
+    if (op === "not_in") externalField.operator = "to_select_not_any_in";
+    if (op === "EQUAL") externalField.operator = "to_select_equals";
+    if (op === "NOT_EQUAL") externalField.operator = "to_select_not_equals";
+  }
   return externalField;
 };

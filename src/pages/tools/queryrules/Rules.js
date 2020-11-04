@@ -99,7 +99,7 @@ const Rules = props => {
   ];
 
   const fetchDetail = selectedId => {
-    service.get(selectedId).then(res => {
+    rule.get(selectedId).then(res => {
       if (hasData(res)) {
         res.title = res.summary.title;
         res.description = res.summary.description;
