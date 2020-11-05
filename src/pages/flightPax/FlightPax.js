@@ -47,17 +47,49 @@ const FlightPax = props => {
 
   const headers = [
     {
-      Accessor: "rulehit",
+      Accessor: "ruleHitCount",
       Xl8: true,
-      Header: ["fp011", "Rule Hit"],
+      Header: ["fp011", "Rule Hits"],
       disableGroupBy: true,
       aggregate: "sum",
       Aggregated: ({ value }) => `${value} Hits`
     },
     {
-      Accessor: "watchhit",
+      Accessor: "watchlistHitCount",
       Xl8: true,
-      Header: ["fp012", "Watch Hit"],
+      Header: ["fp012", "Watchlist Hits"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => `${value} Hits`
+    },
+    {
+      Accessor: "graphHitCount",
+      Xl8: true,
+      Header: ["fp022","Graph Hits"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => `${value} Hits`
+    },
+    {
+      Accessor: "fuzzyHitCount",
+      Xl8: true,
+      Header: ["fp023","Partial Hits"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => `${value} Hits`
+    },
+    {
+      Accessor: "manualHitCount",
+      Xl8: true,
+      Header: ["fp024","Manual Hits"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => `${value} Hits`
+    },
+    {
+      Accessor: "externalHitCount",
+      Xl8: true,
+      Header: ["fp025","External Hits"],
       disableGroupBy: true,
       aggregate: "sum",
       Aggregated: ({ value }) => `${value} Hits`

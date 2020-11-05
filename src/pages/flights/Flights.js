@@ -49,6 +49,13 @@ const Flights = props => {
       const severity = alt(item.ruleHitCount, 0) + alt(item.listHitCount, 0);
       item.severity = severity > 0 ? severity : "";
 
+      //Display null on hitcounts that are 0
+      if(item.listHitCount === 0) {item.listHitCount=""};
+      if(item.ruleHitCount === 0) {item.ruleHitCount=""};
+      if(item.graphHitCount === 0) {item.graphHitCount=""};
+      if(item.fuzzyHitCount === 0) {item.fuzzyHitCount=""};
+      if(item.externalHitCount === 0) {item.externalHitCount=""};
+
       return item;
     });
 
