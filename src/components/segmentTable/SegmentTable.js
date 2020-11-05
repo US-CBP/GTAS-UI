@@ -67,7 +67,7 @@ class SegmentTable extends React.Component {
                   ref={this.state.refs[rec.key]}
                 >
                   <td className={rec.key}>{idx++}</td>
-                  <td className={rec.key}>{rec.value}</td>
+                  <td className={`${rec.key} wrap`}>{rec.value}</td>
                 </tr>
               );
             })}
