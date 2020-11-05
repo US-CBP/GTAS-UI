@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Title from "../../components/title/Title";
 import Table from "../../components/table/Table";
+import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
 import { search } from "../../services/serviceWrapper";
 import { hasData, localeDate } from "../../utils/utils";
-import { Container } from "react-bootstrap";
 import { Link, useParams } from "@reach/router";
 import "./Search.scss";
 
@@ -127,8 +127,15 @@ const Search = props => {
   }, [searchParam]);
 
   return (
-    <Container fluid>
-      <Title title={`Search Result for ${searchedTextUpper}`} uri={props.uri} />
+    <Main className="full bg-white">
+      <Title
+        title={
+          <>
+            <Xl8 xid="srch001">Search Result for: </Xl8> {searchedTextUpper}
+          </>
+        }
+        uri={props.uri}
+      />
       <Table
         data={data}
         id="searchTable"
@@ -137,7 +144,7 @@ const Search = props => {
         key={refreshKey}
         enableColumnFilter={true}
       />
-    </Container>
+    </Main>
   );
 };
 
