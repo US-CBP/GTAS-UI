@@ -12,6 +12,7 @@ import SidenavContainer from "../../components/sidenavContainer/SidenavContainer
 import Main from "../../components/main/Main";
 import { Link } from "@reach/router";
 import FlightInfo from "./flightInfo/FlightInfo";
+import FlightBadge from "../../components/flightBadge/FlightBadge";
 import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
@@ -68,7 +69,7 @@ const Vetting = props => {
           <Xl8 xid="vet001">Name:</Xl8> {pax.paxName}
         </li>
         <li>
-          <Xl8 xid="vet002">DOB:</Xl8> {`${pax.dob} (${getAge(pax.dob)})`}{" "}
+          <Xl8 xid="vet002">DOB:</Xl8> {`${pax.dob} (${getAge(pax.dob)})`}
         </li>
         <li>
           <Xl8 xid="vet003">Nationality:</Xl8> {pax.nationality}
@@ -89,7 +90,13 @@ const Vetting = props => {
           row.original.flightDirection === "O"
             ? row.original.flightETDDate
             : row.original.flightETADate;
-        return <CountdownBadge future={future} baseline={now} />;
+        return (
+          <CountdownBadge
+            future={future}
+            baseline={now}
+            direction={row.original.flightDirection}
+          />
+        );
       }
     },
     {
@@ -97,14 +104,18 @@ const Vetting = props => {
       Xl8: true,
       Header: ["wl019", "Flight ID"],
       Cell: ({ row }) => (
-        <FlightInfo
-          flightNumber={row.original.flightNumber}
-          eta={row.original.flightETADate}
-          etd={row.original.flightETDDate}
-          origin={row.original.flightOrigin}
-          destination={row.original.flightDestination}
-          direction={row.original.flightDirection}
-        />
+        <>
+          <FlightBadge
+            data={{
+              flightNumber: row.original.flightNumber,
+              flightOrigin: row.original.flightOrigin,
+              flightDestination: row.original.flightDestination,
+              eta: row.original.flightETADate,
+              etd: row.original.flightETDDate
+            }}
+            style="sm"
+          ></FlightBadge>
+        </>
       )
     },
     {
@@ -140,8 +151,7 @@ const Vetting = props => {
     {
       Accessor: "status",
       Xl8: true,
-      Header: ["wl022", "Status"],
-      Cell: ({ row }) => <div className="text-center">{row.original.status}</div>
+      Header: ["wl022", "Status"]
     },
     {
       Accessor: "paxId",
