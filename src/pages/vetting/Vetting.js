@@ -287,8 +287,8 @@ const Vetting = props => {
     hitcats.get().then(res => {
       const options = asArray(res).map(hitCat => {
         return {
-          label: hitCat.name,
-          value: hitCat.name
+          label: hitCat.label,
+          value: hitCat.label
         };
       });
       setHitCategoryOptions(options);
