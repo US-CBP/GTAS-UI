@@ -82,6 +82,26 @@ const Vetting = props => {
   };
   const Headers = [
     {
+      Accessor: "paxId",
+      Xl8: true,
+      Header: ["wl023", "Actions"],
+      disableFilters: true,
+      disableSortBy: true,
+      Cell: ({ row }) => (
+        <DropdownButton
+          variant="info"
+          title={<Xl8 xid="vet020">Choose Action</Xl8>}
+          className="m-1"
+        >
+          <Button className="dropdown-item" onClick={() => reviewPVL(row.original.paxId)}>
+            <Xl8 xid="rev018">Review</Xl8>
+          </Button>
+          <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
+          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
+        </DropdownButton>
+      )
+    },
+    {
       Accessor: "countdownTime",
       Xl8: true,
       Header: ["wl018", "Timer"],
@@ -152,24 +172,6 @@ const Vetting = props => {
       Accessor: "status",
       Xl8: true,
       Header: ["wl022", "Status"]
-    },
-    {
-      Accessor: "paxId",
-      Xl8: true,
-      Header: ["wl023", "Actions"],
-      Cell: ({ row }) => (
-        <DropdownButton
-          variant="info"
-          title={<Xl8 xid="vet020">Choose Action</Xl8>}
-          className="m-1"
-        >
-          <Button className="dropdown-item" onClick={() => reviewPVL(row.original.paxId)}>
-            <Xl8 xid="rev018">Review</Xl8>
-          </Button>
-          <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
-          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
-        </DropdownButton>
-      )
     }
   ];
 
