@@ -45,16 +45,18 @@ const FlightHistory = props => {
   }, []);
 
   return (
-    <div className="one-column-container">
+    <div className="paxdetail-container">
       <CardColumns>
         <CardWithTable
           data={currentFlightHistory}
           headers={headers}
+          className="pd-gridstack-2 flex-grow-0"
           title={<Xl8 xid="fh009">Current Itinerary</Xl8>}
         />
         <CardWithTable
           data={fullTravelHistory}
           headers={headers}
+          className="pd-gridstack-2 flex-grow-1"
           title={<Xl8 xid="fh010">Total Flight History</Xl8>}
         />
       </CardColumns>
