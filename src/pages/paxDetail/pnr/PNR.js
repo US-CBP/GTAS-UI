@@ -87,10 +87,7 @@ const PNR = props => {
         const bagInfo = {
           passenger: `${passenger.lastName}, ${passenger.firstName}`,
           bagCount: currentBags[0].bag_count,
-          totalWeight: bagsGroupedByPaxId[paxId].reduce(
-            (total, bag) => total + bag["bag_weight"],
-            0
-          ),
+          totalWeight: currentBags.reduce((total, bag) => total + bag["bag_weight"], 0),
           destination: currentBags[0]["destination"],
           bagIds: currentBags.map(bag => bag["bagId"]).join()
         };
