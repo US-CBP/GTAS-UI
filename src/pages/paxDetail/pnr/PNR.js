@@ -5,7 +5,6 @@ import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { asArray, hasData, localeDate, localeDateOnly } from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
 import { Link } from "@reach/router";
-import Overlay from "../../../components/overlay/Overlay";
 
 const PNR = props => {
   const data = hasData(props.data) ? props.data : {};
@@ -15,41 +14,92 @@ const PNR = props => {
 
   const getPassengerName = paxId => {
     const passengers = data.passengers;
-    const passenger = passengers.find(passenger => passenger.paxId === paxId.toString());
+    const passenger = passengers.find(passenger => passenger.paxId === paxId?.toString());
     return passenger;
   };
-  const getBagData = data => {
-    const bags = asArray(data.bagSummaryVo?.bagsByFlightLeg)
-      .filter(bag => bag.data_source === "PNR")
-      .sort((bag1, bag2) => bag1.passengerId - bag2.passengerId);
 
-    const parsedBagdata = bags.map(bag => {
-      const passenger = getPassengerName(bag.passengerId) || {};
-      const bagInfo = {
-        lastName: (
-          <>
-            <span>{passenger.lastName}</span>
-            <Overlay
-              trigger={["click", "hover"]}
-              content={
-                <Xl8 xid="pnr058">
-                  The total number of bags associated with this passenger
-                </Xl8>
-              }
-            >
-              <span className="as-info">{`(${bag.bag_count})`}</span>
-            </Overlay>
-          </>
-        ),
-        firstName: passenger.firstName,
-        bagWeight: bag.bag_weight,
-        destination: bag.destination,
-        bagId: bag.bagId
+  const getFlightNumber = bookingDetailId => {
+    const flightLegs = asArray(data.flightLegs);
+    const flightLeg = flightLegs.find(leg => {
+      const id = leg.bookingDetailId || leg.flightId;
+      return id?.toString() === bookingDetailId?.toString();
+    });
+    return hasData(flightLeg) ? flightLeg.flightNumber : "";
+  };
+
+  const groupBagDataByFlightNumber = data => {
+    const groupedData = data.reduce((accumulator, bag) => {
+      const id = bag.bookingDetailId || bag.flightId;
+      const flightNumber = getFlightNumber(id);
+      accumulator[flightNumber] = asArray(accumulator[flightNumber]);
+      accumulator[flightNumber].push(bag);
+      return accumulator;
+    }, {});
+
+    return groupedData;
+  };
+
+  const groupBagDataByPaxId = bags => {
+    const groupedDataByPaxId = bags.reduce((acc, bag) => {
+      const paxId = bag["passengerId"];
+      acc[paxId] = asArray(acc[paxId]);
+      acc[paxId].push(bag);
+
+      return acc;
+    }, {});
+
+    return groupedDataByPaxId;
+  };
+
+  const getBagData = data => {
+    const bags = asArray(data.bagSummaryVo?.bagsByFlightLeg).filter(
+      bag => bag.data_source === "PNR"
+    );
+
+    const bagsGroupedByFlightNumber = groupBagDataByFlightNumber(bags);
+    const allParsedBagdata = [];
+
+    Object.keys(bagsGroupedByFlightNumber).forEach(flightNumber => {
+      const bags = bagsGroupedByFlightNumber[flightNumber];
+
+      let totalBagWeight = 0;
+      let totalBagCount = 0;
+
+      bags.forEach(bag => {
+        totalBagCount += bag.bag_count;
+        totalBagWeight += bag.bag_weight;
+      });
+
+      const aggregate = {
+        flightNumber: flightNumber,
+        bagCount: totalBagCount,
+        totalWeight: totalBagWeight,
+        highlightRow: true
       };
 
-      return bagInfo;
+      allParsedBagdata.push(aggregate);
+
+      const bagsGroupedByPaxId = groupBagDataByPaxId(bags);
+      Object.keys(bagsGroupedByPaxId).forEach(paxId => {
+        const passenger = getPassengerName(paxId) || {};
+        const currentBags = bagsGroupedByPaxId[paxId];
+
+        const bagInfo = {
+          passenger: `${passenger.lastName}, ${passenger.firstName}`,
+          bagCount: currentBags[0].bag_count,
+          totalWeight: bagsGroupedByPaxId[paxId].reduce(
+            (total, bag) => total + bag["bag_weight"],
+            0
+          ),
+          destination: currentBags[0]["destination"],
+          bagIds: currentBags.map(bag => bag["bagId"]).join()
+        };
+
+        allParsedBagdata.push(bagInfo);
+      });
     });
-    return parsedBagdata;
+
+    return allParsedBagdata;
   };
 
   const tripType = data.tripType || "Trip Type";
@@ -115,11 +165,12 @@ const PNR = props => {
       number: <Xl8 xid="pnr040">Seat Number</Xl8>
     },
     totalBaggage: {
-      bagId: <Xl8 xid="pnr052">Bag Id</Xl8>,
-      firstName: <Xl8 xid="pnr053">First Name</Xl8>,
-      lastName: <Xl8 xid="pnr054">Last Name</Xl8>,
-      bagWeight: <Xl8 xid="pnr056">Bag Weight(Kg)</Xl8>,
-      destination: <Xl8 xid="pnr057">Bag Destination</Xl8>
+      flightNumber: <Xl8 xid="pnr057">Flight #</Xl8>,
+      passenger: <Xl8 xid="pnr053">Passenger</Xl8>,
+      bagCount: <Xl8 xid="pnr055">Bag Count</Xl8>,
+      totalWeight: <Xl8 xid="pnr056">Total Bag Weight</Xl8>,
+      destination: <Xl8 xid="pnr058">Destination</Xl8>,
+      bagIds: <Xl8 xid="pnr052">Bag Ids</Xl8>
     }
   };
   const rawPnrSegments = asArray(data.segmentList);
