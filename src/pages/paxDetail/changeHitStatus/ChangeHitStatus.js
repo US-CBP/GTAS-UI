@@ -23,7 +23,7 @@ const ChangeHitStatus = props => {
     setShow(false);
   };
   return (
-    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.CASEMGR]} alt={<></>}>
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
       <SplitButton
         key="paxHitStatus"
         title={<Xl8 xid="chs001">Change Status</Xl8>}
@@ -37,7 +37,6 @@ const ChangeHitStatus = props => {
               setStatus("REVIEWED");
             }}
           >
-            {/* <Xl8 xid="chs002">Reviewed</Xl8> */}
             Reviewed
           </Dropdown.Item>
         )}
@@ -50,7 +49,6 @@ const ChangeHitStatus = props => {
               setStatus("Re_Opened");
             }}
           >
-            {/* <Xl8 xid="chs003">Re-opened</Xl8> */}
             Re-opened
           </Dropdown.Item>
         )}
