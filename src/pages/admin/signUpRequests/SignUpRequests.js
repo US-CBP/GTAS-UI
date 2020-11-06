@@ -112,10 +112,10 @@ const SignUpRequests = () => {
               </Dropdown.Item>
 
               <Confirm
-                header={<Xl8 xid="">Reject Sign up Request</Xl8>}
+                header={<Xl8 xid="sur014">Reject Sign up Request</Xl8>}
                 message={
                   <span>
-                    <Xl8 xid="">
+                    <Xl8 xid="sur015">
                       Please click confirm to reject the sign up request by:
                     </Xl8>
                     <br />
