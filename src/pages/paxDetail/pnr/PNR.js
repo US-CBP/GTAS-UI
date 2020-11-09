@@ -51,6 +51,9 @@ const PNR = props => {
     return groupedDataByPaxId;
   };
 
+  const getTotalOf = (items = [], field, initVal = 0) => {
+    return items.reduce((total, item) => total + item[field], initVal);
+  };
   const getBagData = data => {
     const bags = asArray(data.bagSummaryVo?.bagsByFlightLeg).filter(
       bag => bag.data_source === "PNR"
@@ -62,21 +65,12 @@ const PNR = props => {
     Object.keys(bagsGroupedByFlightNumber).forEach(flightNumber => {
       const bags = bagsGroupedByFlightNumber[flightNumber];
 
-      let totalBagWeight = 0;
-      let totalBagCount = 0;
-
-      bags.forEach(bag => {
-        totalBagCount += bag.bag_count;
-        totalBagWeight += bag.bag_weight;
-      });
-
       const aggregate = {
         flightNumber: flightNumber,
-        bagCount: totalBagCount,
-        totalWeight: totalBagWeight,
+        bagCount: getTotalOf(bags, "bag_count", 0),
+        totalWeight: getTotalOf(bags, "bag_weight", 0),
         highlightRow: true
       };
-
       allParsedBagdata.push(aggregate);
 
       const bagsGroupedByPaxId = groupBagDataByPaxId(bags);
@@ -86,8 +80,8 @@ const PNR = props => {
 
         const bagInfo = {
           passenger: `${passenger.lastName}, ${passenger.firstName}`,
-          bagCount: currentBags[0].bag_count,
-          totalWeight: currentBags.reduce((total, bag) => total + bag["bag_weight"], 0),
+          bagCount: getTotalOf(currentBags, "bag_count", 0),
+          totalWeight: getTotalOf(currentBags, "bag_weight", 0),
           destination: currentBags[0]["destination"],
           bagIds: currentBags.map(bag => bag["bagId"]).join()
         };
