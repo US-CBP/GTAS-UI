@@ -46,8 +46,8 @@ const HitCats = ({ name }) => {
                 message={
                   <span>
                     <Xl8 xid="wlc007">
-                      Please confirm to delete a category with label:{" "}
-                    </Xl8>{" "}
+                      Please click confirm to delete a category with label:
+                    </Xl8>
                     {row.original.label}
                   </span>
                 }

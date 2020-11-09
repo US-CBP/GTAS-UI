@@ -239,29 +239,26 @@ input[type="radio"] {
   width: 25px;
 }
 
-.img-arrival-sm {
-  /* background: url("./images/plane-arrival-solid.svg") no-repeat no-repeat; */
+.sm .img-arrival {
   height: 15px;
   width: 15px;
   display: inline-flex;
   margin-right: 5px;
   vertical-align: middle;
-  stroke: white;
-  content: url("./images/plane-arrival-solid.svg");
+  align-items: center;
 }
 
-.img-departure-sm {
-  /* background: url("./images/plane-departure-solid.svg") no-repeat no-repeat; */
+.sm .img-departure {
   height: 15px;
   width: 15px;
   display: inline-flex;
   margin-right: 5px;
   vertical-align: middle;
-  content: url("./images/plane-departure-solid.svg");
+  align-items: center;
 }
 
-.cdb-gray > .img-arrival-sm,
-.cdb-gray > .img-departure-sm {
+.sm.cdb-gray > .img-arrival,
+.sm.cdb-gray > .img-departure {
   filter: invert(1);
 }
 

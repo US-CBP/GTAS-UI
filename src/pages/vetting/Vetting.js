@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Table from "../../components/table/Table";
+import { cases, notetypes, usersemails, hitcats } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
@@ -7,14 +8,13 @@ import FilterForm from "../../components/filterForm2/FilterForm";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
 import { Link } from "@reach/router";
-import FlightInfo from "./flightInfo/FlightInfo";
+import FlightBadge from "../../components/flightBadge/FlightBadge";
 import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import Overlay from "../../components/overlay/Overlay";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 
-import { cases, notetypes, usersemails, hitcats } from "../../services/serviceWrapper";
 import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
 import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
@@ -67,7 +67,7 @@ const Vetting = props => {
           <Xl8 xid="vet001">Name:</Xl8> {pax.paxName}
         </li>
         <li>
-          <Xl8 xid="vet002">DOB:</Xl8> {`${pax.dob} (${getAge(pax.dob)})`}{" "}
+          <Xl8 xid="vet002">DOB:</Xl8> {`${pax.dob} (${getAge(pax.dob)})`}
         </li>
         <li>
           <Xl8 xid="vet003">Nationality:</Xl8> {pax.nationality}
@@ -79,75 +79,6 @@ const Vetting = props => {
     );
   };
   const Headers = [
-    {
-      Accessor: "countdownTime",
-      Xl8: true,
-      Header: ["wl018", "Timer"],
-      Cell: ({ row }) => {
-        const future =
-          row.original.flightDirection === "O"
-            ? row.original.flightETDDate
-            : row.original.flightETADate;
-        return (
-          <CountdownBadge
-            future={future}
-            baseline={now}
-            direction={row.original.flightDirection}
-          />
-        );
-      }
-    },
-    {
-      Accessor: "flightNumber",
-      Xl8: true,
-      Header: ["wl019", "Flight ID"],
-      Cell: ({ row }) => (
-        <FlightInfo
-          flightNumber={row.original.flightNumber}
-          eta={row.original.flightETADate}
-          etd={row.original.flightETDDate}
-          origin={row.original.flightOrigin}
-          destination={row.original.flightDestination}
-          direction={row.original.flightDirection}
-        />
-      )
-    },
-    {
-      Accessor: "hitNames",
-      Xl8: true,
-      Header: ["wl020", "Hits"],
-      Cell: ({ row }) => {
-        const listdata = asArray(row.original.hitNames).map((hit, index) => {
-          const triggerOverlay = !isShortText(hit, 20);
-          return (
-            <Overlay
-              trigger={triggerOverlay ? ["click", "hover"] : ""}
-              key={index}
-              content={hit}
-            >
-              <li className={triggerOverlay ? "as-info" : ""}>{getShortText(hit, 20)}</li>
-            </Overlay>
-          );
-        });
-        return <ul>{listdata}</ul>;
-      }
-    },
-    {
-      Accessor: "paxName",
-      Xl8: true,
-      Header: ["wl021", "Biographic Information"],
-      Cell: ({ row }) => (
-        <Link to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}>
-          {getBiographicData(row.original)}
-        </Link>
-      )
-    },
-    {
-      Accessor: "status",
-      Xl8: true,
-      Header: ["vet022", "Status"],
-      Cell: ({ row }) => <div className="text-center">{row.original.status}</div>
-    },
     {
       Accessor: "paxId",
       Xl8: true,
@@ -192,6 +123,79 @@ const Vetting = props => {
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
         </DropdownButton>
       )
+    },
+    {
+      Accessor: "countdownTime",
+      Xl8: true,
+      Header: ["wl018", "Timer"],
+      Cell: ({ row }) => {
+        const future =
+          row.original.flightDirection === "O"
+            ? row.original.flightETDDate
+            : row.original.flightETADate;
+        return (
+          <CountdownBadge
+            future={future}
+            baseline={now}
+            direction={row.original.flightDirection}
+          />
+        );
+      }
+    },
+    {
+      Accessor: "flightNumber",
+      Xl8: true,
+      Header: ["wl019", "Flight ID"],
+      Cell: ({ row }) => (
+        <>
+          <FlightBadge
+            data={{
+              flightNumber: row.original.flightNumber,
+              flightOrigin: row.original.flightOrigin,
+              flightDestination: row.original.flightDestination,
+              eta: row.original.flightETADate,
+              etd: row.original.flightETDDate
+            }}
+            style="sm"
+          ></FlightBadge>
+        </>
+      )
+    },
+    {
+      Accessor: "hitNames",
+      Xl8: true,
+      Header: ["wl020", "Hits"],
+      Cell: ({ row }) => {
+        const listdata = asArray(row.original.hitNames).map((hit, index) => {
+          const triggerOverlay = !isShortText(hit, 20);
+          return (
+            <Overlay
+              trigger={triggerOverlay ? ["click", "hover"] : ""}
+              key={index}
+              content={hit}
+            >
+              <li className={triggerOverlay ? "as-info" : ""}>{getShortText(hit, 20)}</li>
+            </Overlay>
+          );
+        });
+        return <ul>{listdata}</ul>;
+      }
+    },
+    {
+      Accessor: "paxName",
+      Xl8: true,
+      Header: ["wl021", "Biographic Information"],
+      Cell: ({ row }) => (
+        <Link to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}>
+          {getBiographicData(row.original)}
+        </Link>
+      )
+    },
+    {
+      Accessor: "status",
+      Xl8: true,
+      Header: ["vet022", "Status"],
+      Cell: ({ row }) => <div className="text-center">{row.original.status}</div>
     }
   ];
 

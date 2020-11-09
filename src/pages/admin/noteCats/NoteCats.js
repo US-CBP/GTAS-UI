@@ -46,8 +46,10 @@ const NoteCats = ({ name }) => {
                 message={
                   <span>
                     <Xl8 xid="ntc007">
-                      Please confirm to delete a note category with label:{" "}
-                    </Xl8>{" "}
+                      Please click confirm to delete this note category:
+                    </Xl8>
+                    <br />
+                    <br />
                     {row.original.noteType}
                   </span>
                 }
