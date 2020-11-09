@@ -6,7 +6,9 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY . .
 
+VOLUME /usr/src/app/node_modules
 RUN npm install
+
 RUN npm run build
 
 EXPOSE 3000
