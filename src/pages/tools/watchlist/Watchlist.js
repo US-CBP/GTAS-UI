@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import Modal from "../../../components/modal/Modal";
-import { Button, Tabs, Tab, Row } from "react-bootstrap";
-import { navigate } from "@reach/router";
-
+import { Button, Tabs, Tab, Row, DropdownButton, Dropdown } from "react-bootstrap";
 import { wlpax, wldocs, hitcats } from "../../../services/serviceWrapper";
 import { hasData } from "../../../utils/utils";
 import WLModal from "./WLModal";
-import "./Watchlist.css";
 import "./constants.js";
 import CSVReader from "../../../components/CSVReader/CSVReader";
+import Toast from "../../../components/toast/Toast";
+import Confirm from "../../../components/confirmationModal/Confirm";
+import "./Watchlist.css";
 
 const Watchlist = props => {
   const cb = function(result) {};
   const TAB = { PAX: "passenger", DOX: "document" };
   const mode = (props.mode || "").toLowerCase();
   const isDox = mode === TAB.DOX;
+  const importRef = useRef(null);
+  const [file, setFile] = useState();
 
   const [showModal, setShowModal] = useState(false);
-  const [showMiniModal, setShowMiniModal] = useState(false);
+  const [showImport, setShowImport] = useState(false);
   const [id, setId] = useState(0);
   const [key, setKey] = useState(0);
   const [data, setData] = useState();
@@ -29,6 +30,16 @@ const Watchlist = props => {
   const [editRow, setEditRow] = useState({});
   const [tab, setTab] = useState(isDox ? TAB.DOX : TAB.PAX); // default to pax when no param is in the uri
   const [buttonTypeText, setButtonTypeText] = useState(); // default to pax when no param is in the uri
+  const [showToast, setShowToast] = useState(false);
+  const [toastHeader, setToastHeader] = useState();
+  const [toastContent, setToastContent] = useState();
+  const [toastVariant, setToastVariant] = useState();
+
+  const deleteText = {
+    message: <Xl8 xid="wl005">Are you sure you want to delete the record?</Xl8>,
+    title: <Xl8 xid="wl006">Delete Confirmation</Xl8>,
+    style: "danger"
+  };
 
   const handleImportData = results => {
     const keys = {
@@ -40,7 +51,7 @@ const Watchlist = props => {
       "Document Type": "documentType"
     };
 
-    const service = isDox ? wldocs : wlpax;
+    const service = tab === TAB.DOX ? wldocs : wlpax;
     const importedWl = { action: "Create", id: null, wlItems: [] };
     results.forEach(result => {
       const item = {};
@@ -57,7 +68,13 @@ const Watchlist = props => {
     });
 
     service.post(importedWl).then(res => {
-      if (res.status === "SUCCESS") fetchData(); //get latest dataa
+      if (res.status === "SUCCESS") {
+        fetchData(); //get latest dataa
+        setToastHeader("Watchlist");
+        setToastVariant("success");
+        setToastContent(`${importedWl.wlItems.length} ${tab} watchlist items imported`);
+        setShowToast(true);
+      }
     });
   };
 
@@ -74,25 +91,52 @@ const Watchlist = props => {
     if (ev === "SUCCESS") fetchData();
   };
 
-  const launchMiniModal = recordId => {
-    setId(recordId);
-    setShowMiniModal(true);
+  const launchImport = file => {
+    if (importRef.current) {
+      setFile(file);
+      importRef.current.open(file);
+    }
   };
 
-  const closeMiniModal = status => {
-    setShowMiniModal(false);
+  const deleteWatchlistItem = wlId => {
+    const service = wlpax;
+    service.del(wlId).then(res => {
+      if (!hasData(wlcatData)) getCats();
+      else fetchData();
+    });
+  };
 
-    if (status === "Delete") {
-      wlpax.del(id).then(res => {
-        if (!hasData(wlcatData)) getCats();
-        else fetchData();
-      });
-    }
-    setId(0);
+  const getDeleteColumData = id => {
+    return (
+      <Confirm header={deleteText.title} message={deleteText.message}>
+        {confirm => (
+          <div className="icon-col">
+            <i
+              className="fa fa-remove qbrb-icon-black"
+              onClick={confirm(() => deleteWatchlistItem(id))}
+            ></i>
+          </div>
+        )}
+      </Confirm>
+    );
+  };
+
+  const getEditRowData = item => {
+    return (
+      <div className="icon-col">
+        <i
+          className="fa fa-pencil-square-o table-icon"
+          onClick={() => {
+            launchModal(item.id);
+            setEditRow(item);
+          }}
+        ></i>
+      </div>
+    );
   };
 
   const tabs = (
-    <Tabs defaultActiveKey={TAB} id="wlTabs">
+    <Tabs defaultActiveKey={tab} id="wlTabs">
       <Tab
         eventKey={TAB.PAX}
         title={
@@ -138,7 +182,7 @@ const Watchlist = props => {
     tab === TAB.PAX
       ? setButtonTypeText(<Xl8 xid="wl004">Add Passenger</Xl8>)
       : setButtonTypeText(<Xl8 xid="wl003">Add Document</Xl8>);
-  }, [tab, TAB.DOX]);
+  }, [tab]);
 
   // fetch the wl cats on page load.
   useEffect(() => {
@@ -159,7 +203,7 @@ const Watchlist = props => {
   };
 
   const fetchData = () => {
-    const service = tab[0] === TAB.DOX[0] ? wldocs : wlpax;
+    const service = tab === TAB.DOX ? wldocs : wlpax;
 
     service.get().then(res => {
       let parsed = [];
@@ -178,7 +222,7 @@ const Watchlist = props => {
           const category = (wlcatData.find(item => item.id == categoryId) || {}).label; // allow coersion. item.id is an int, categoryId is a string.
 
           //TODO: consolidate pax/doc fetches??
-          if (tab[0] === TAB.PAX[0])
+          if (tab === TAB.PAX)
             return {
               id: item.id,
               firstName: firstName,
@@ -209,17 +253,8 @@ const Watchlist = props => {
       Xl8: true,
       Header: ["edit001", "Edit"],
       disableExport: true,
-      Cell: ({ row }) => (
-        <div className="icon-col">
-          <i
-            className="fa fa-pencil-square-o qbrb-icon"
-            onClick={() => {
-              launchModal(row.original.id);
-              setEditRow(row.original);
-            }}
-          ></i>
-        </div>
-      )
+      disableSortBy: true,
+      Cell: ({ row }) => getEditRowData(row.original)
     },
     { Accessor: "documentType", Xl8: true, Header: ["wl011", "Document Type"] },
     { Accessor: "documentNumber", Xl8: true, Header: ["wl012", "Document Number"] },
@@ -229,16 +264,7 @@ const Watchlist = props => {
       Xl8: true,
       Header: ["wl014", "Delete"],
       disableExport: true,
-      Cell: ({ row }) => (
-        <div className="icon-col">
-          <i
-            className="fa fa-remove qbrb-icon-black"
-            onClick={() => {
-              launchMiniModal(row.original.id);
-            }}
-          ></i>
-        </div>
-      )
+      Cell: ({ row }) => getDeleteColumData(row.original.id)
     }
   ];
 
@@ -247,18 +273,9 @@ const Watchlist = props => {
       Accessor: "id",
       Xl8: true,
       disableExport: true,
+      disableSortBy: true,
       Header: ["edit001", "Edit"],
-      Cell: ({ row }) => (
-        <div className="icon-col">
-          <i
-            className="fa fa-pencil-square-o qbrb-icon"
-            onClick={() => {
-              launchModal(row.original.id);
-              setEditRow(row.original);
-            }}
-          ></i>
-        </div>
-      )
+      Cell: ({ row }) => getEditRowData(row.original)
     },
     { Accessor: "firstName", Xl8: true, Header: ["wl015", "First Name"] },
     { Accessor: "lastName", Xl8: true, Header: ["wl016", "Last Name"] },
@@ -269,52 +286,31 @@ const Watchlist = props => {
       Xl8: true,
       disableExport: true,
       Header: ["wl014", "Delete"],
-      Cell: ({ row }) => (
-        <div className="icon-col">
-          <i
-            className="fa fa-remove qbrb-icon-black"
-            onClick={() => {
-              launchMiniModal(row.original.id);
-            }}
-          ></i>
-        </div>
-      )
+      Cell: ({ row }) => getDeleteColumData(row.original.id)
     }
   ];
 
   const header = tab === TAB.DOX ? doxHeader : paxHeader;
   const wlType = tab;
-  const deleteText = {
-    message: <Xl8 xid="wl005">Are you sure you want to delete the record?</Xl8>,
-    title: <Xl8 xid="wl006">Delete Confirmation</Xl8>,
-    style: "danger"
-  };
 
-  const button = (
-    <Row>
-      <Button
-        variant="ternary"
-        className="btn btn-outline-info"
-        name={props.name}
-        placeholder={props.placeholder}
-        onClick={() => launchModal(0)}
-        required={props.required}
-        value={props.inputVal}
-        alt={props.alt}
-      >
+  const dropdown = (
+    <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
+      <Dropdown.Item as="button" onClick={() => launchModal(0)}>
         {buttonTypeText}
-      </Button>
-      <CSVReader callback={handleImportData} />
-    </Row>
+      </Dropdown.Item>
+      <Dropdown.Item as="button" onClick={e => launchImport(e)}>
+        <CSVReader ref={importRef} callback={handleImportData} file={file} />
+      </Dropdown.Item>
+    </DropdownButton>
   );
 
   return (
-    <Main className="full">
+    <Main className="full bg-white">
       <Title
         title={<Xl8 xid="wl007">Watchlists</Xl8>}
         leftChild={tabs}
         leftCb={titleTabCallback}
-        rightChild={button}
+        rightChild={dropdown}
         key={tab}
       ></Title>
       <Table
@@ -324,13 +320,6 @@ const Watchlist = props => {
         callback={cb}
         exportFileName={`watchlists-${wlType}`}
       ></Table>
-      <Modal
-        show={showMiniModal}
-        onHide={closeMiniModal}
-        data={deleteText}
-        submittext={<Xl8 xid="wl008">Delete</Xl8>}
-        closetext={<Xl8 xid="wl009">Cancel</Xl8>}
-      ></Modal>
       <WLModal
         type={tab}
         show={showModal}
@@ -339,6 +328,13 @@ const Watchlist = props => {
         data={editRow}
         categories={wlcatData}
         id={id}
+      />
+      <Toast
+        onClose={() => setShowToast(false)}
+        show={showToast}
+        header={toastHeader}
+        body={toastContent}
+        variant={toastVariant}
       />
     </Main>
   );

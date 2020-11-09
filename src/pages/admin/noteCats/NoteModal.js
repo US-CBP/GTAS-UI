@@ -1,21 +1,33 @@
 import React, { useState } from "react";
-import { Modal, Container, Alert, Button } from "react-bootstrap";
+import { Container, Alert, Button } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import { notetypes } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../utils/constants";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const NoteModal = props => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
   const [variant, setVariant] = useState("");
+  const row = props.editRowDetails || {};
   const cb = function(result) {};
 
   const postSubmit = (status, res) => {
     props.onHide();
 
     if (status !== ACTION.CANCEL) props.refresh();
+  };
+
+  const preSubmit = fields => {
+    let res = { ...fields[0] };
+    res.id = props.isEdit ? row.id : "";
+    return [res];
   };
 
   return (
@@ -25,10 +37,11 @@ const NoteModal = props => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-500-width-container"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{<Xl8 xid="ntm001">Add Note Category</Xl8>}</Modal.Title>
-      </Modal.Header>
+      <ModalHeader closeButton>
+        <ModalTitle>{props.title}</ModalTitle>
+      </ModalHeader>
       <Alert show={showAlert} variant={variant}>
         {alertContent}
         <hr />
@@ -36,20 +49,22 @@ const NoteModal = props => {
           <Xl8 xid="form002">Confirm</Xl8>
         </Button>
       </Alert>
-      <Modal.Body>
+      <ModalBody>
         <Container fluid>
           <Form
-            submitService={notetypes.post}
+            submitService={props.isEdit ? notetypes.put : notetypes.post}
             title=""
             callback={postSubmit}
+            paramCallback={preSubmit}
             action="add"
             cancellable
             afterProcessed={props.onHide}
           >
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="ntm002">Category</Xl8>}
+              labelText={<Xl8 xid="ntm003">Category</Xl8>}
               inputType="text"
+              inputVal={row.noteType}
               name="noteType"
               required={true}
               alt="nothing"
@@ -57,7 +72,7 @@ const NoteModal = props => {
             />
           </Form>
         </Container>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

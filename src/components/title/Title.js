@@ -3,6 +3,7 @@ import "./Title.css";
 import { hasData } from "../../utils/utils";
 
 const Title = props => {
+  const className = props.style || "title";
   const leftCb = props.leftCb;
   const cb = ev => {
     const id = ev.target.id;
@@ -11,13 +12,15 @@ const Title = props => {
   };
 
   return (
-    <div className="title">
-      <span className="left-span" onClick={ev => cb(ev)}>
-        {props.leftChild}
-      </span>
+    <div className={className}>
+      {props.rightChild && (
+        <span className="action-span" onClick={ev => cb(ev)}>
+          {props.rightChild}
+        </span>
+      )}
       <span className="title-span">{props.title}</span>
-      <span className="right-span" onClick={ev => cb(ev)}>
-        {props.rightChild}
+      <span className="tab-span" onClick={ev => cb(ev)}>
+        {props.leftChild}
       </span>
     </div>
   );

@@ -1,3 +1,9 @@
+body {
+  font-family: "Lato script=latin rev=1", sans-serif !important;
+  /* -webkit-font-smoothing: antialiased; */
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .on-top {
   z-index: 999;
 }
@@ -27,7 +33,7 @@
   font-weight: 700;
 }
 .card {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18);
+  /* box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18); */
   margin-bottom: 2rem;
 }
 .card-header-title {
@@ -58,8 +64,6 @@
   font-weight: 700;
   color: #8f99a3;
 }
-.card-footer-item:hover {
-}
 .card-table .table {
   margin-bottom: 0;
 }
@@ -78,31 +82,19 @@
   padding: 1.25rem;
 }
 
-.title {
-  text-align: center;
-}
-
 .pad-top-20 {
   padding-top: 20px;
-}
-
-.filter-bg {
-  z-index: 5;
-  background: linear-gradient(rgb(0, 119, 200), rgba(223, 231, 247, 0)),
-    url("./images/WCO_flag.svg") no-repeat no-repeat;
-  background-position: center center;
-  background-size: cover;
 }
 
 input[type="checkbox"],
 input[type="radio"] {
   box-sizing: border-box;
   padding: 0;
-  -ms-transform: scale(1.2);
-  -moz-transform: scale(1.2);
-  -webkit-transform: scale(1.2);
-  -o-transform: scale(1.2);
-  transform: scale(1.2);
+  -ms-transform: scale(1.4);
+  -moz-transform: scale(1.4);
+  -webkit-transform: scale(1.4);
+  -o-transform: scale(1.4);
+  transform: scale(1.4);
 }
 
 .xid {
@@ -132,4 +124,155 @@ input[type="radio"] {
 
 .height-auto {
   height: auto !important;
+}
+
+.nav-link.active {
+  color: white !important;
+  background-color: #0082c3 !important;
+}
+
+.table-responsive > .table {
+  margin-bottom: 0px !important;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #575756 transparent;
+}
+
+/* Works on Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #575756;
+  border-radius: 10px;
+  border: 2px solid white;
+}
+
+.dropdown-menu {
+  background-color: white !important;
+  border: 1px solid black !important;
+}
+
+.outline-dark-outline {
+  border-color: #909090 !important;
+}
+
+.outline-dark-outline:hover {
+  border-color: #d0d0d0 !important;
+}
+
+.table-icon {
+  font-size: 1.4em !important;
+  color: #0082c3;
+}
+
+/* .flight-number {
+  color: #0082c3;
+  font-weight: 700;
+  align-items: center;
+} */
+
+.action-button-div {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 230px;
+  text-align: center;
+}
+
+.max-700-width {
+  max-width: 700px !important;
+}
+
+.max-500-width-container .modal-content {
+  max-width: 500px !important;
+  min-width: 330px !important;
+}
+
+.max-600-width-container .modal-content {
+  max-width: 600px !important;
+  min-width: 530px !important;
+}
+
+.max-700-width-container .modal-content {
+  max-width: 700px !important;
+  min-width: 660px !important;
+}
+
+.scrollable {
+  overflow: auto;
+  height: 100%;
+}
+
+.modal-dialog-centered {
+  width: fit-content !important;
+  margin: auto !important;
+}
+
+.as-info {
+  cursor: pointer;
+  font-weight: 500;
+  color: #008177;
+}
+
+.overlay-content {
+  background-color: white !important;
+  border: 1px solid #009e92 !important;
+  border-radius: 0.25rem;
+}
+
+.img-arrival {
+  background: url("./images/plane-arrival-solid.svg") no-repeat no-repeat;
+  height: 25px;
+  width: 25px;
+}
+
+.img-departure {
+  background: url("./images/plane-departure-solid.svg") no-repeat no-repeat;
+  height: 25px;
+  width: 25px;
+}
+
+.sm .img-arrival {
+  height: 15px;
+  width: 15px;
+  display: inline-flex;
+  margin-right: 5px;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.sm .img-departure {
+  height: 15px;
+  width: 15px;
+  display: inline-flex;
+  margin-right: 5px;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.sm.cdb-gray > .img-arrival,
+.sm.cdb-gray > .img-departure {
+  filter: invert(1);
+}
+
+.page-deck {
+  margin: 10px;
+  justify-content: center;
+  overflow-y: auto;
+  max-height: calc(100vh - 130px);
+  text-align: -webkit-center;
+  /* padding-right: 20px; */
+}
+
+@media (min-width: 1150px) {
+  .page-deck {
+    padding: 0px 80px;
+  }
 }

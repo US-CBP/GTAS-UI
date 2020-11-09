@@ -1,9 +1,21 @@
 .segment-table {
-  max-height: 70vh;
-  overflow: scroll;
+  overflow: auto;
   font-size: smaller;
+  background-color: white;
+  padding: 10px 0px 10px 10px;
+  border: 1px solid #0082c3;
+  border-radius: 0.25rem;
+  height: calc(100vh - 110px);
+}
+
+.segment-table > .table-responsive {
+  overflow-x: unset;
 }
 
 .highlight {
   background-color: yellow !important;
+}
+
+.wrap {
+  overflow-wrap: anywhere;
 }

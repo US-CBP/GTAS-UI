@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { Button, Container } from "react-bootstrap";
+import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CreditCardTypeModal from "./CreditCardTypeModal";
 
@@ -35,7 +35,7 @@ const CreditCardType = ({ name }) => {
         return (
           <div className="icon-col">
             <i
-              className="fa fa-pencil-square-o qbrb-icon"
+              className="fa fa-pencil-square-o table-icon"
               onClick={() => openEditModal(row.original)}
             ></i>
           </div>
@@ -47,30 +47,33 @@ const CreditCardType = ({ name }) => {
   ];
 
   return (
-    <Container fluid>
+    <div>
       <div className="action-button-div">
-        <Button
-          variant="outline-dark"
-          onClick={() => {
-            setShowModal(true);
-            setModalTitle(<Xl8 xid="cct004">Add Type</Xl8>);
-            setIsEditModal(false);
-            setEditRowDetails({});
-          }}
-        >
-          {<Xl8 xid="cct004">Add Type</Xl8>}
-        </Button>
-        <Button
-          variant="outline-dark"
-          onClick={() => {
-            codeEditor.put.restoreCctypeAll().then(res => {
-              refresh();
-            });
-          }}
-        >
-          {<Xl8 xid="cou005">Restore All Types</Xl8>}
-        </Button>
+        <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
+          <Dropdown.Item
+            as="button"
+            onClick={() => {
+              setShowModal(true);
+              setModalTitle(<Xl8 xid="cct004">Add Type</Xl8>);
+              setIsEditModal(false);
+              setEditRowDetails({});
+            }}
+          >
+            {<Xl8 xid="cct004">Add Type</Xl8>}
+          </Dropdown.Item>
+          <Dropdown.Item
+            as="button"
+            onClick={() => {
+              codeEditor.put.restoreCctypeAll().then(res => {
+                refresh();
+              });
+            }}
+          >
+            {<Xl8 xid="cou005">Restore All Types</Xl8>}
+          </Dropdown.Item>
+        </DropdownButton>
       </div>
+
       <CreditCardTypeModal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -88,7 +91,7 @@ const CreditCardType = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
-    </Container>
+    </div>
   );
 };
 

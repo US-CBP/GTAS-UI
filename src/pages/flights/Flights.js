@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
-import { Link } from "@reach/router";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
 import Main from "../../components/main/Main";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
-// import Tabs from "../../components/tabs/Tabs";
 
-import { Col, Tabs, Tab } from "react-bootstrap";
-import { hasData, alt, localeDate, asArray } from "../../utils/utils";
-import { TIME } from "../../utils/constants";
-
-import { flights } from "../../services/serviceWrapper";
-import "./Flights.css";
 import Xl8 from "../../components/xl8/Xl8";
+import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
+import { UserContext } from "../../context/user/UserContext";
+
+import { Link } from "@reach/router";
+import { flights } from "../../services/serviceWrapper";
+import { hasData, alt, localeDate, asArray } from "../../utils/utils";
+import { TIME, ROLE } from "../../utils/constants";
+import { Col, Tabs, Tab } from "react-bootstrap";
+import "./Flights.css";
 
 const Flights = props => {
   const cb = () => {};
@@ -25,6 +26,7 @@ const Flights = props => {
     sortBy: [{ id: "timer", desc: false }]
   };
 
+  const { getUserState } = useContext(UserContext);
   const [data, setData] = useState();
   const [hitData, setHitData] = useState();
   const [allData, setAllData] = useState();
@@ -35,10 +37,14 @@ const Flights = props => {
   const setDataWrapper = (data, retainState) => {
     if (!retainState) setTableState(initTableState);
 
+    const roles = getUserState().userRoles;
+
     const parsedAll = asArray(data).map(item => {
       const future = item.direction === "O" ? item.etd : item.eta;
       item.timer = future;
-      item.sendRowToLink = `/gtas/flightpax/${item.id}`;
+
+      if (roles.includes(ROLE.ADMIN) || roles.includes(ROLE.PAXVWR))
+        item.sendRowToLink = `/gtas/flightpax/${item.id}`;
 
       const severity = alt(item.ruleHitCount, 0) + alt(item.listHitCount, 0);
       item.severity = severity > 0 ? severity : "";
@@ -95,7 +101,11 @@ const Flights = props => {
       Xl8: true,
       Header: ["fl009", "Timer"],
       Cell: ({ row }) => (
-        <CountdownBadge future={row.original.timer} baseline={now}></CountdownBadge>
+        <CountdownBadge
+          future={row.original.timer}
+          baseline={now}
+          direction={row.original.direction}
+        ></CountdownBadge>
       )
     },
     {
@@ -110,23 +120,30 @@ const Flights = props => {
       Header: ["fl011", "Departure"],
       Cell: ({ row }) => localeDate(row.original.etd)
     },
+    { Accessor: "listHitCount", Xl8: true, Header: ["fl013", "Watchlist Hits"] },
+    { Accessor: "ruleHitCount", Xl8: true, Header: ["fl014", "Rule Hits"] },
+    { Accessor: "graphHitCount", Xl8: true, Header: ["fl015", "Graph Hits"] },
+    { Accessor: "fuzzyHitCount", Xl8: true, Header: ["fl016", "Partial Hits"] },
+    { Accessor: "externalHitCount", Xl8: true, Header: ["fl017", "External Hits"] },
     {
       Accessor: "passengerCount",
       Xl8: true,
-      Header: ["fl012", "Passengers"],
+      Header: ["fl018", "Passengers"],
       Cell: ({ row }) => (
-        <Link to={"../flightpax/" + row.original.id}>{row.original.passengerCount}</Link>
+        <RoleAuthenticator
+          alt={row.original.passengerCount}
+          roles={[ROLE.ADMIN, ROLE.PAXVWR]}
+        >
+          <Link to={"../flightpax/" + row.original.id}>
+            {row.original.passengerCount}
+          </Link>
+        </RoleAuthenticator>
       )
     },
-    { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl013", "Flight"] },
-    { Accessor: "origin", Xl8: true, Header: ["fl014", "Origin"] },
-    { Accessor: "destination", Xl8: true, Header: ["fl015", "Destination"] },
-    { Accessor: "direction", Xl8: true, Header: ["fl016", "Direction"] },
-    { Accessor: "severity", Xl8: true, Header: ["fl017", "Severity"] }
-    // TODO: how to summarize hits??
-    // { Accessor: "ruleHitCount" },
-    // { Accessor: "listHitCount" },
-    // { Accessor: "graphHitCount" }
+    { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl019", "Flight"] },
+    { Accessor: "origin", Xl8: true, Header: ["fl020", "Origin"] },
+    { Accessor: "destination", Xl8: true, Header: ["fl021", "Destination"] },
+    { Accessor: "direction", Xl8: true, Header: ["fl022", "Direction"] }
   ];
 
   useEffect(() => {
@@ -187,14 +204,13 @@ const Flights = props => {
   return (
     <>
       <SidenavContainer>
-        <Col>
+        <Col className="notopmargin">
           <FilterForm
             service={flights.get}
             paramCallback={preFetchCallback}
             callback={setDataWrapper}
             interval={TIME.MINUTE}
           >
-            <br />
             <LabelledInput
               labelText={<Xl8 xid="fl003"> Origin Airports</Xl8>}
               datafield="originAirports"

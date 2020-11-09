@@ -8,6 +8,7 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Main from "../../../components/main/Main";
+import { localeDate } from "../../../utils/utils";
 
 const AuditLog = ({ name }) => {
   const cb = function(result) {};
@@ -18,7 +19,10 @@ const AuditLog = ({ name }) => {
   endDate.setDate(endDate.getDate() + 1);
   startDate.setDate(startDate.getDate() - 1);
 
-  const initialParamState = { startDate: startDate, endDate: endDate };
+  const initialParamState = {
+    startDate: startDate,
+    endDate: endDate
+  };
   const auditActions = [
     { value: "ALL_ACTIONS", label: "ALL_ACTIONS" },
     { value: "CREATE_UDR", label: "CREATE_UDR" },
@@ -50,8 +54,8 @@ const AuditLog = ({ name }) => {
       if (params.endDate) {
         parsedParams += "&endDate=" + params.endDate.toISOString();
       }
-      if (params.action) {
-        parsedParams += "&action=" + params.action;
+      if (params.actionType) {
+        parsedParams += "&actionType=" + params.actionType;
       }
       if (params.user) {
         parsedParams += "&user=" + params.user;
@@ -84,7 +88,8 @@ const AuditLog = ({ name }) => {
     {
       Accessor: "timestamp",
       Xl8: true,
-      Header: ["al009", "Timestamp"]
+      Header: ["al009", "Timestamp"],
+      Cell: ({ row }) => localeDate(row.original.timestampInMilli)
     }
   ];
 
@@ -96,14 +101,13 @@ const AuditLog = ({ name }) => {
   return (
     <>
       <SidenavContainer>
-        <Col>
+        <Col className="notopmargin">
           <FilterForm
             service={auditlog.get}
             paramCallback={preFetchCallback}
             callback={setDataWrapper}
             initialParamState={initialParamState}
           >
-            <br />
             <LabelledInput
               labelText={<Xl8 xid="al001">User</Xl8>}
               datafield="user"
@@ -114,9 +118,9 @@ const AuditLog = ({ name }) => {
             />
             <LabelledInput
               labelText={<Xl8 xid="al002">Actions</Xl8>}
-              datafield="action"
+              datafield="actionType"
               inputType="select"
-              name="action"
+              name="actionType"
               options={auditActions}
               required={true}
               alt="nothing"

@@ -6,20 +6,105 @@ $background-image-url: "../../images/WCO_flag.svg";
 $wco-blue: rgb(0, 119, 200);
 $transparent: rgba(0, 0, 0, 0.65);
 
-.paxdetails-side-nav .filter-bg {
-  background: linear-gradient($wco-blue, rgba(0, 119, 200, 0.75)),
-    url($background-image-url) no-repeat, no-repeat;
-  background-position: center center;
-  background-size: cover;
+.paxdetail-container {
+  height: calc(100vh - 110px);
+  overflow: auto;
+
+  // -- for single page repositioning
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  padding-right: 40px;
+  width: 100%;
 }
 
-.paxdetail-container {
-  max-height: 70vh;
-  overflow: scroll;
+.paxdetail-container-col {
+  width: 100%;
+  margin-left: 15px;
+  height: calc(100vh - 110px);
+  overflow: auto;
+}
+
+@media (max-width: 1499px) {
+  .paxdetail-container {
+    .card-columns {
+      column-count: 1 !important;
+
+      .pd-gridstack-2 {
+        max-height: unset !important;
+
+        .table-responsive {
+          max-height: calc((100vh - 190px) / 2) !important;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1500px) {
+  .paxdetail-container {
+    .card-columns {
+      column-count: 2 !important;
+
+      .pd-gridstack-2 {
+        max-height: unset !important;
+
+        .table-responsive {
+          max-height: calc(100vh - 145px) !important;
+        }
+      }
+    }
+  }
 }
 
 .paxdetails-action-buttons {
   button {
     margin: 1px;
   }
+}
+
+.one-column-container {
+  height: calc(100vh - 135px);
+  width: calc(100vw - 290px);
+  overflow-y: auto;
+
+  // -- for single page repositioning
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  // -- end
+
+  .card-columns {
+    column-count: 1 !important;
+  }
+}
+
+.one-column-grid-container {
+  height: calc(100vh - 111px);
+  width: calc(100vw - 300px);
+  overflow: hidden;
+  position: absolute;
+  top: 50px;
+  left: 20px;
+
+  .pagination {
+    width: calc(100vw - 301px);
+  }
+}
+
+.right-span > .dropdown > .dropdown-menu {
+  display: inline-grid;
+}
+
+.paxdetail-container > .title > .left-span > .gtas-tabs > a {
+  padding: 0.5rem 0.5rem;
+}
+
+.filter-fg > .col > .table {
+  font-size: larger;
+  width: 225px;
+  margin-bottom: 1rem;
+  color: #212529;
+  overflow-x: hidden;
+  overflow-wrap: anywhere;
 }

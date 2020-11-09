@@ -1,0 +1,24 @@
+@import "./fonts/Lato/Lato-Bold.ttf";
+@import "./fonts/Lato/Lato-Regular.ttf";
+
+// WCO theme overrides for bootstrap colors
+$blue: #0082c3;
+$primary: #0082c3;
+$info: #009e92;
+$danger: #e83944;
+$dark: #575756;
+$purple: #aa2585;
+$indigo: #aa2585;
+$gray: #d0d0d0;
+
+$wco-blue: #0082c3;
+$wco-dark-gray: #575756;
+$wco-light-gray: #d0d0d0;
+$wco-dark-blue: #005aa7;
+$wco-bright-blue: #009fe3;
+$wco-blue-gray: #a4c7e3;
+$wco-turquoise: #009e92;
+
+$gtas-white: rgba(255, 255, 255, 0.9);
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";

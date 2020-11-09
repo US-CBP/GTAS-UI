@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { localeDate, asArray, hasData } from "../../../utils/utils";
+import { localeDate, asArray, hasData, localeDateOnly } from "../../../utils/utils";
 import {
-  paxdetails,
   paxWatchListLink,
   flightpaxHitSummary,
   paxEventNotesHistory
 } from "../../../services/serviceWrapper";
-import { Container, CardColumns } from "react-bootstrap";
-import "./Summary.scss";
+import { CardColumns } from "react-bootstrap";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Xl8 from "../../../components/xl8/Xl8";
-// import { composeInitialProps } from "react-i18next";
+import "./Summary.scss";
 
 const Summary = props => {
   const headers = {
@@ -46,29 +44,35 @@ const Summary = props => {
 
   const setHasOpenHit = props.setHasOpenHit;
   const setHasHit = props.setHasHit;
-  const [documents, setDocuments] = useState([]);
   const [watchListLinks, setWatchListLinks] = useState([]);
   const [paxHitSummary, setPaxHitSummary] = useState([]);
   const [eventNotes, setEventNotes] = useState([]);
   const [historicalEventNotes, setHistoricalEventNotes] = useState([]);
 
-  useEffect(() => {
-    paxdetails.get(props.flightId, props.paxId).then(res => {
-      setDocuments(res.documents);
+  const parseDocumentData = documents => {
+    const parsedDocs = asArray(documents).map(document => {
+      const expirationDate = Date.parse(document.expirationDate);
+      return {
+        ...document,
+        expirationDate: localeDateOnly(expirationDate)
+      };
     });
-  }, []);
+    return parsedDocs;
+  };
 
   useEffect(() => {
     paxWatchListLink.get(null, props.paxId).then(res => {
       const data = asArray(res).map(pwl => {
+        const watchListDOB = Date.parse(pwl.watchListDOB);
         return {
           ...pwl,
+          watchListDOB: localeDateOnly(watchListDOB),
           percentMatch: `${pwl.percentMatch * 100}%`
         };
       });
       setWatchListLinks(data);
     });
-  }, []);
+  }, [props.paxId]);
 
   useEffect(() => {
     flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
@@ -79,7 +83,7 @@ const Summary = props => {
       setHasHit(hasData(res));
       setHasOpenHit(openHit !== undefined);
     });
-  }, [props.hitSummaryRefreshKey]);
+  }, [props.hitSummaryRefreshKey, props.paxId]);
 
   useEffect(() => {
     paxEventNotesHistory.get(props.paxId, false).then(res => {
@@ -95,6 +99,7 @@ const Summary = props => {
       });
       setEventNotes(notesData);
     });
+
     paxEventNotesHistory.get(props.paxId, true).then(res => {
       const notesData = res.paxNotes
         ?.map(note => {
@@ -110,19 +115,19 @@ const Summary = props => {
         .slice(0, 10);
       setHistoricalEventNotes(notesData);
     });
-  }, [props.eventNoteRefreshKey]);
+  }, [props.eventNoteRefreshKey, props.paxId]);
 
   return (
-    <Container fluid className="summary-container">
+    <div className="paxdetail-container">
       <CardColumns>
         <CardWithTable
           data={paxHitSummary}
           headers={headers.paxHitSummary}
-          title={<Xl8 xid="sum021">Passenger Current Hits summary</Xl8>}
+          title={<Xl8 xid="sum021">Current Hits Summary</Xl8>}
         />
 
         <CardWithTable
-          data={documents}
+          data={parseDocumentData(props.documents)}
           headers={headers.documents}
           title={<Xl8 xid="sum022">Documents</Xl8>}
         />
@@ -143,7 +148,7 @@ const Summary = props => {
           title={<Xl8 xid="sum025">Previous Note History</Xl8>}
         />
       </CardColumns>
-    </Container>
+    </div>
   );
 };
 

@@ -4,21 +4,11 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import HttpApi from "i18next-http-backend";
 import Cookies from "js-cookie";
 
-// see translation files at '../public/locales/[lang]/translation.json'
-
-const options = {
-  method: "GET",
-  headers: {
-    "Content-Type": "application/json;charset=UTF-8",
-    Accept: "application/json, text/plain, */*",
-    Cookie: `JSESSIONID: ${Cookies.get("JSESSIONID")}`
-  },
-  credentials: "include"
-};
-
 // let testlang = window.navigator.language; //.split("-")[0];
 let testlang = window.navigator.language.split("-")[0];
-// console.log(testlang);
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+const loadpath = `${BASE_URL}gtas/api/translation/${testlang}`;
 
 const backendOptions = {
   requestOptions: {
@@ -30,15 +20,13 @@ const backendOptions = {
     },
     credentials: "include"
   },
-  loadPath: `http://localhost:8080/gtas/api/translation/${testlang}`,
+  loadPath: loadpath,
   parse: dataset => {
     let keyvals = {};
 
     JSON.parse(dataset).forEach(item => {
       keyvals[item["code"]] = item["translation"];
     });
-
-    // console.log(keyvals);
 
     return keyvals;
   }

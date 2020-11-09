@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import { roles, signuprequests } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
@@ -8,6 +7,7 @@ import { asArray } from "../../../utils/utils";
 import { ROLE } from "../../../utils/constants";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
+import Modal, { ModalBody, ModalHeader } from "../../../components/modal/Modal";
 
 function SignUpRequestModal(props) {
   const [allRoles, setAllRoles] = useState([]);
@@ -56,10 +56,10 @@ function SignUpRequestModal(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header>
+      <ModalHeader closeButton>
         <Title title={<Xl8 xid="surm001">Select Roles</Xl8>}></Title>
-      </Modal.Header>
-      <Modal.Body>
+      </ModalHeader>
+      <ModalBody>
         <Form
           submitService={signuprequests.approve}
           title=""
@@ -80,7 +80,7 @@ function SignUpRequestModal(props) {
             callback={cb}
           />
         </Form>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 }

@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Button, Modal } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { paxEventNotesHistory, notetypes } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { asArray } from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const EventNotesModal = props => {
   const [show, setShow] = useState(false);
@@ -36,8 +41,9 @@ const EventNotesModal = props => {
 
   return (
     <>
-      <Button variant="outline-info" size="sm" onClick={handleShow}>
-        <i className="fa fa-pencil"></i> <Xl8 xid="evn001">Notes</Xl8>
+      <Button className="dropdown-item" onClick={handleShow}>
+        {/* <i className="fa fa-pencil"></i> <Xl8 xid="evn001">Add Event Notes</Xl8> */}
+        <Xl8 xid="evn001">Add Event Notes</Xl8>
       </Button>
 
       <Modal
@@ -46,13 +52,14 @@ const EventNotesModal = props => {
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        className="max-500-width-container"
       >
-        <Modal.Header closeButton>
-          <Modal.Title>
+        <ModalHeader closeButton>
+          <ModalTitle>
             <Xl8 xid="evn002">Add Event Notes</Xl8>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+          </ModalTitle>
+        </ModalHeader>
+        <ModalBody>
           <Form
             title=""
             submitText={<Xl8 xid="evn003">Save</Xl8>}
@@ -83,7 +90,7 @@ const EventNotesModal = props => {
               inputVal=""
             />
           </Form>
-        </Modal.Body>
+        </ModalBody>
       </Modal>
     </>
   );

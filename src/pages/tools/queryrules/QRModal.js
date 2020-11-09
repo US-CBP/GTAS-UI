@@ -1,21 +1,29 @@
 import React, { useState, useEffect, useMemo, useContext } from "react";
 import RAQB from "../../../components/raqb/RAQB";
-import { Button, Modal, Container, Row } from "react-bootstrap";
+import { Button, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
 import { navigate } from "@reach/router";
 import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
-import { QR, ACTION, CTX } from "../../../utils/constants";
+import { QR, ACTION, CTX, ROLE } from "../../../utils/constants";
 import { LookupContext } from "../../../context/data/LookupContext";
-
+import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import {
   hitcats,
   airportLookup,
   countryLookup,
-  carrierLookup
+  carrierLookup,
+  codeEditor
 } from "../../../services/serviceWrapper";
 
 import { numProps, txtProps, dateProps } from "../../../components/raqb/constants";
+import "./QueryRules.css";
+import Modal, {
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const QRModal = props => {
   const id = props.id;
@@ -30,6 +38,7 @@ const QRModal = props => {
   const [airports, setAirports] = useState([]);
   const [countries, setCountries] = useState([]);
   const [carriers, setCarriers] = useState([]);
+  const [ccTypes, setCcTypes] = useState([]);
   const [dataConfig, setDataConfig] = useState([]);
 
   const [title, setTitle] = useState(props.title);
@@ -46,11 +55,12 @@ const QRModal = props => {
       hasData(countries) &&
       hasData(carriers) &&
       hasData(airports) &&
+      hasData(ccTypes) &&
       hasData(categories)
     )
       setLoaded(true);
     else setLoaded(false);
-  }, [countries, carriers, airports, categories]);
+  }, [countries, carriers, airports, ccTypes, categories]);
 
   const countryProps = useMemo(() => {
     return {
@@ -83,6 +93,16 @@ const QRModal = props => {
       valueSources: ["value"]
     };
   }, [airports]);
+  const ccTypeProps = useMemo(() => {
+    return {
+      type: "select",
+      fieldSettings: {
+        allowCustomValues: false,
+        listValues: ccTypes
+      },
+      valueSources: ["value"]
+    };
+  }, [ccTypes]);
 
   const fieldConfigWithData = {
     fields: {
@@ -107,7 +127,7 @@ const QRModal = props => {
           "bagMeasurements.bagCount": { label: "Bag Count", ...numProps },
           bagId: { label: "Bag ID", ...txtProps },
           "bagMeasurements.weight": { label: "Bag Weight (kg)", ...numProps },
-          dataSource: { label: "Data Source", ...txtProps },
+          data_source: { label: "Data Source", ...txtProps },
           destinationAirport: { label: "Destination Airport", ...airportProps },
           country: { label: "Destination Country", ...countryProps },
           primeFlight: {
@@ -129,7 +149,7 @@ const QRModal = props => {
           accountHolder: { label: "Account Holder", ...txtProps },
           expiration: { label: "Expiration Date", ...dateProps },
           number: { label: "Number", ...txtProps },
-          cardType: { label: "Type", ...txtProps }
+          cardType: { label: "Type", ...ccTypeProps }
         }
       },
       Document: {
@@ -576,8 +596,11 @@ const QRModal = props => {
     const storedCarriers = getLookupState(CTX.CARRIERS);
     const storedAirports = getLookupState(CTX.AIRPORTCODES);
     const storedCategories = getLookupState(CTX.RULECATS);
+    const storedCcTypes = getLookupState(CTX.CCTYPES);
 
-    if (hasData(storedCategories)) {
+    // move to context.
+    if (/*hasData(storedCategories)*/ false) {
+      //Categories are perhaps small enough in amount that caching them is unnecessary?
       setCategories(storedCategories);
     } else {
       hitcats.get().then(res => {
@@ -636,6 +659,23 @@ const QRModal = props => {
         setAirports(result);
       });
     }
+
+    if (hasData(storedCcTypes)) {
+      setCcTypes(storedCcTypes);
+    } else {
+      codeEditor.get.cctypeCodes().then(res => {
+        let ccitem = asArray(res).map(ccitem => {
+          return { title: `${ccitem.description} (${ccitem.code})`, value: ccitem.code };
+        });
+
+        const result = ccitem.sort(function(a, b) {
+          return a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1;
+        });
+
+        if (hasData(result)) lookupAction({ data: result, type: CTX.CCTYPES });
+        setCcTypes(result);
+      });
+    }
   }, []);
 
   return (
@@ -647,13 +687,13 @@ const QRModal = props => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header closeButton>
-          <Modal.Title>
+        <ModalHeader closeButton>
+          <ModalTitle>
             <span>{props.title} </span>
             <label className="big-name-sidebar">{summaryData?.title}</label>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="qbrb-modal-body">
+          </ModalTitle>
+        </ModalHeader>
+        <ModalBody className="qbrb-modal-body">
           <Container fluid>
             <Row className="card-columns qrm">
               <LabelledInput
@@ -744,8 +784,8 @@ const QRModal = props => {
               ></RAQB>
             )}
           </Container>
-        </Modal.Body>
-        <Modal.Footer>
+        </ModalBody>
+        <ModalFooter>
           <Button
             type="button"
             key="close"
@@ -753,7 +793,7 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onClose}
           >
-            <Xl8 xid="">Close</Xl8>
+            <Xl8 xid="qrm007">Close</Xl8>
           </Button>
           <Button
             type="button"
@@ -762,26 +802,29 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onClear}
           >
-            <Xl8 xid="">Clear</Xl8>
+            <Xl8 xid="QRM008">Clear</Xl8>
           </Button>
           <Button
             key="save"
             type="button"
-            className="m-2 outline-dark-outline"
-            variant="outline-dark"
+            className="m-2 btn"
+            variant="primary"
             onClick={onSave}
           >
-            <Xl8 xid="">Save</Xl8>
+            <Xl8 xid="qrm009">Save</Xl8>
           </Button>
-          <Button
-            key="run"
-            type="button"
-            className="m-2 outline-dark-outline"
-            variant="outline-dark"
-            onClick={onRun}
-          >
-            <Xl8 xid="">Run</Xl8>
-          </Button>
+
+          <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]} alt={<></>}>
+            <Button
+              key="run"
+              type="button"
+              className="m-2 outline-dark-outline"
+              variant="outline-dark"
+              onClick={onRun}
+            >
+              <Xl8 xid="qrm010">Run</Xl8>
+            </Button>
+          </RoleAuthenticator>
           {isEdit && (
             <Button
               key="delete"
@@ -790,10 +833,10 @@ const QRModal = props => {
               variant="outline-dark"
               onClick={onDelete}
             >
-              <Xl8 xid="">Delete</Xl8>
+              <Xl8 xid="qrm011">Delete</Xl8>
             </Button>
           )}
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
     </>
   );

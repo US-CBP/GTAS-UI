@@ -4,6 +4,7 @@ import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
+import Main from "../../../components/main/Main";
 import Xl8 from "../../../components/xl8/Xl8";
 
 const Settings = ({ name }) => {
@@ -11,7 +12,7 @@ const Settings = ({ name }) => {
   const cb = function() {};
 
   return (
-    <Container fluid>
+    <Main className="full">
       <Title title={<Xl8 xid="set001">Settings</Xl8>}></Title>
       <br></br>
       <Container>
@@ -23,6 +24,10 @@ const Settings = ({ name }) => {
             title=""
             action="edit"
             shouldConfirm={true}
+            refreshOnSubmit
+            confirmationMessage={
+              <Xl8 xid="set007">Please confirm these updates to settings</Xl8>
+            }
           >
             <LabelledInput
               datafield
@@ -34,7 +39,7 @@ const Settings = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="set001">Maximum Passenger Query Results: </Xl8>}
+              labelText={<Xl8 xid="set003">Maximum Passenger Query Results: </Xl8>}
               inputType="number"
               name="maxPassengerQueryResult"
               callback={cb}
@@ -42,7 +47,7 @@ const Settings = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="set001">Maximum Flight Query Results: </Xl8>}
+              labelText={<Xl8 xid="set004">Maximum Flight Query Results: </Xl8>}
               inputType="number"
               name="maxFlightQueryResult"
               callback={cb}
@@ -51,7 +56,7 @@ const Settings = ({ name }) => {
             <LabelledInput
               datafield
               labelText={
-                <Xl8 xid="set001">Maximum Rule Hits Allowed Per Run on Rule: </Xl8>
+                <Xl8 xid="set005">Maximum Rule Hits Allowed Per Run on Rule: </Xl8>
               }
               inputType="number"
               name="maxRuleHit"
@@ -60,7 +65,7 @@ const Settings = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="set001">APIS Only Flag:</Xl8>}
+              labelText={<Xl8 xid="set006">APIS Only Flag:</Xl8>}
               inputType="select"
               options={[
                 { value: "TRUE", label: "TRUE" },
@@ -73,7 +78,7 @@ const Settings = ({ name }) => {
           </Form>
         </Col>
       </Container>
-    </Container>
+    </Main>
   );
 };
 

@@ -21,7 +21,11 @@
 }
 
 .form-group {
-  margin-bottom: 0.3rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.form-group > label {
+  margin-bottom: 0px;
 }
 
 .space-between-cols {

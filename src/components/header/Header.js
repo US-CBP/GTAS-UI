@@ -13,11 +13,13 @@ import { navigate, useLocation } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
 import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
-import { ROLE } from "../../utils/constants";
+import { ACTION, ROLE } from "../../utils/constants";
 import { hasData } from "../../utils/utils";
 import "./Header.scss";
-import wcoLogo from "../../images/WCO_GTAS_header_brand.svg";
+import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
 import Xl8 from "../../components/xl8/Xl8";
+import Toast from "../toast/Toast";
+import ChangePasswordModal from "../../pages/admin/manageUsers/changePasswordModal/ChangePasswordModal";
 
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
@@ -25,6 +27,13 @@ const Header = () => {
   const [currentLang] = useState(window.navigator.language);
 
   const [isEdit, setIsEdit] = useState(getLiveEditState().isEdit);
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState();
+  const [showTost, setShowToast] = useState(false);
+
+  const PASSWORD_CHANGE_CONFIRMATION = (
+    <Xl8 xid="head007">Your password has been changed!</Xl8>
+  );
+  const PASSWORD_CHANGE_CONFIRMATION_HEADER = <Xl8 xid="head008">Change Password</Xl8>;
 
   const searchInputRef = useRef();
 
@@ -33,7 +42,13 @@ const Header = () => {
 
   const logout = () => {
     userAction({ type: "logoff" });
+    action({ type: "read" });
 
+    navigate("/login");
+  };
+
+  // allow a 'false' logout for admins translating pages outside the authed/loggedin bundle
+  const pseudoLogout = () => {
     navigate("/login");
   };
 
@@ -43,6 +58,7 @@ const Header = () => {
 
   const htab = {
     DASH: "/gtas/dashboard",
+    POE: "/gtas/poe",
     FLIGHT: "/gtas/flights",
     VETTING: "/gtas/vetting",
     TOOLS: "/gtas/tools",
@@ -69,92 +85,123 @@ const Header = () => {
     }
   };
 
+  const changePasswordCallback = status => {
+    setShowChangePasswordModal(false);
+
+    if (status !== ACTION.CANCEL) {
+      setShowToast(true);
+    }
+  };
+
   useEffect(() => {
     const editstate = getLiveEditState();
     setIsEdit(editstate.isEdit);
   }, []);
 
   return (
-    <Navbar sticky="top" expand="md" className="header-navbar" variant="light">
-      <Navbar.Brand className="header-navbar-brand">
-        <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
-          <img src={wcoLogo} />
-        </Link>
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" ref={toggleRef} />
-      <Navbar.Collapse>
-        <Nav variant="tabs" className="left-nav">
-          <Nav.Link
-            as={Link}
-            to="flights"
-            className={`${getActiveClass(htab.FLIGHT)}`}
-            onClick={() => clickTab(htab.FLIGHT)}
-          >
-            <Xl8 xid="head001">Flights</Xl8>
-          </Nav.Link>
-          <Nav.Link
-            as={Link}
-            to="vetting"
-            className={`${getActiveClass(htab.VETTING)}`}
-            onClick={() => clickTab(htab.VETTING)}
-          >
-            <Xl8 xid="head002">Vetting</Xl8>
-          </Nav.Link>
-          <Nav.Link
-            as={Link}
-            to="tools"
-            className={`${getActiveClass(htab.TOOLS)}`}
-            onClick={() => clickTab(htab.TOOLS)}
-          >
-            <Xl8 xid="head004">Tools</Xl8>
-          </Nav.Link>
-          <RoleAuthenticator alt={<></>} roles={[ROLE.ADMIN]}>
-            <Nav.Link
-              as={Link}
-              to="admin"
-              className={`${getActiveClass(htab.ADMIN)}`}
-              onClick={() => clickTab(htab.ADMIN)}
-            >
-              <Xl8 xid="head003">Admin</Xl8>
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="langEditor"
-              className={`${getActiveClass(htab.LANG)}`}
-              onClick={() => clickTab(htab.LANG)}
-            >
-              <i className="fa fa-language mx-xl-1"></i>
-              {currentLang}
-            </Nav.Link>
+    <>
+      <Navbar sticky="top" expand="md" className="header-navbar" variant="dark">
+        <Navbar.Brand className="header-navbar-brand">
+          <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]} alt={<></>}>
+            <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
+              <img src={wcoLogo} />
+            </Link>
           </RoleAuthenticator>
-        </Nav>
-        <Nav className="ml-auto">
-          <Form inline>
-            <InputGroup>
-              <FormControl type="text" placeholder="Search" ref={searchInputRef} />
-              <InputGroup.Append>
-                <Button variant="light" onClick={handleSearchSubmit}>
-                  <i className="fa fa-search"></i>
-                </Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Form>
-          <NavDropdown title={userFullName} id="basic-nav-dropdown" className="right">
-            <NavDropdown.Item
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" ref={toggleRef} />
+        <Navbar.Collapse>
+          <Nav variant="tabs" className="left-nav">
+            <Nav.Link
               as={Link}
-              to={"user/change-password"}
-              onClick={() => clickTab("")}
+              to="flights"
+              className={`${getActiveClass(htab.FLIGHT)}`}
+              onClick={() => clickTab(htab.FLIGHT)}
             >
-              {<Xl8 xid="head005">Change password</Xl8>}
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="#" onClick={logout}>
-              {<Xl8 xid="head006">Logout</Xl8>}
-            </NavDropdown.Item>
-          </NavDropdown>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
+              <Xl8 xid="head001">Flights</Xl8>
+            </Nav.Link>
+            <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.PAXVWR]} alt={<></>}>
+              <Nav.Link
+                as={Link}
+                to="vetting"
+                className={`${getActiveClass(htab.VETTING)}`}
+                onClick={() => clickTab(htab.VETTING)}
+              >
+                <Xl8 xid="head002">Vetting</Xl8>
+              </Nav.Link>
+            </RoleAuthenticator>
+            <Nav.Link
+              as={Link}
+              to="poe"
+              className={`future ${getActiveClass(htab.POE)} optional`}
+              onClick={() => clickTab(htab.POE)}
+            >
+              <Xl8 xid="head007">POE</Xl8>
+            </Nav.Link>
+
+            <Nav.Link
+              as={Link}
+              to="tools"
+              className={`${getActiveClass(htab.TOOLS)}`}
+              onClick={() => clickTab(htab.TOOLS)}
+            >
+              <Xl8 xid="head004">Tools</Xl8>
+            </Nav.Link>
+            <RoleAuthenticator roles={[ROLE.ADMIN]} alt={<></>}>
+              <Nav.Link
+                as={Link}
+                to="admin"
+                className={`${getActiveClass(htab.ADMIN)}`}
+                onClick={() => clickTab(htab.ADMIN)}
+              >
+                <Xl8 xid="head003">Admin</Xl8>
+              </Nav.Link>
+              <Nav.Link
+                as={Link}
+                to="langEditor"
+                className={`${getActiveClass(htab.LANG)} optional`}
+                onClick={() => clickTab(htab.LANG)}
+              >
+                <i className="fa fa-language mx-sm-1 language-icon"></i>
+                {currentLang}
+              </Nav.Link>
+            </RoleAuthenticator>
+          </Nav>
+          <Nav className="ml-auto">
+            <Form inline>
+              <InputGroup>
+                <FormControl type="text" ref={searchInputRef} className="search-150" />
+                <InputGroup.Append>
+                  <Button variant="light" onClick={handleSearchSubmit}>
+                    <i className="fa fa-search"></i>
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </Form>
+            <NavDropdown title={userFullName} id="basic-nav-dropdown" className="right">
+              <NavDropdown.Item onClick={() => setShowChangePasswordModal(true)}>
+                {<Xl8 xid="head005">Change password</Xl8>}
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item as={Link} to="#" onClick={logout}>
+                {<Xl8 xid="head006">Logout</Xl8>}
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+      <ChangePasswordModal
+        show={showChangePasswordModal}
+        onHide={() => setShowChangePasswordModal(false)}
+        callback={changePasswordCallback}
+      />
+      <Toast
+        onClose={() => setShowToast(false)}
+        show={showTost}
+        header={PASSWORD_CHANGE_CONFIRMATION_HEADER}
+        body={PASSWORD_CHANGE_CONFIRMATION}
+        variant={"success"}
+      />
+    </>
   );
 };
 

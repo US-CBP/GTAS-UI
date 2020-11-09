@@ -53,9 +53,7 @@ class SegmentTable extends React.Component {
     let idx = 0;
     return (
       <div className="segment-table">
-        {this.props.title && (
-          <h4 className={`title ${this.props.style}`}>{this.props.title}</h4>
-        )}
+        {this.props.title && <h4>{this.props.title}</h4>}
 
         <RBTable striped bordered hover size="sm" responsive>
           <tbody>
@@ -69,7 +67,7 @@ class SegmentTable extends React.Component {
                   ref={this.state.refs[rec.key]}
                 >
                   <td className={rec.key}>{idx++}</td>
-                  <td className={rec.key}>{rec.value}</td>
+                  <td className={`${rec.key} wrap`}>{rec.value}</td>
                 </tr>
               );
             })}

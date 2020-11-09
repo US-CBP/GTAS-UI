@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Modal, Button } from "react-bootstrap";
-import { manualHit, hitcats } from "../../../services/serviceWrapper";
+import { Button } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
+import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { asArray } from "../../../utils/utils";
+import { ROLE } from "../../../utils/constants";
+import { manualHit, hitcats } from "../../../services/serviceWrapper";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const CreateManualHit = props => {
   const cb = () => {};
@@ -34,8 +41,8 @@ const CreateManualHit = props => {
   }, []);
 
   return (
-    <>
-      <Button variant="outline-danger" size="sm" onClick={handleShow}>
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
+      <Button className="dropdown-item" onClick={handleShow}>
         <Xl8 xid="cmh001">Create Manual Hit</Xl8>
       </Button>
 
@@ -44,14 +51,15 @@ const CreateManualHit = props => {
         onHide={handleClose}
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
+        className="max-500-width-container"
         centered
       >
-        <Modal.Header closeButton>
-          <Modal.Title>
+        <ModalHeader closeButton>
+          <ModalTitle>
             <Xl8 xid="cmh001">Create Manual Hit</Xl8>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+          </ModalTitle>
+        </ModalHeader>
+        <ModalBody>
           <Form
             title=""
             submitService={manualHit.post}
@@ -105,9 +113,9 @@ const CreateManualHit = props => {
               spacebetween
             />
           </Form>
-        </Modal.Body>
+        </ModalBody>
       </Modal>
-    </>
+    </RoleAuthenticator>
   );
 };
 CreateManualHit.propTypes = {

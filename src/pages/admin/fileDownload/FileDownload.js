@@ -5,7 +5,7 @@ import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { asArray, hasData } from "../../../utils/utils";
+import { asArray, hasData, localeDate } from "../../../utils/utils";
 import "./fileDownload.css";
 
 const FileDownload = ({ name }) => {
@@ -64,42 +64,55 @@ const FileDownload = ({ name }) => {
   const headers = [
     {
       Accessor: "Download",
+      Xl8: true,
+      Header: ["fdl002", "Download"],
+      disableSortBy: true,
       Cell: ({ row }) => {
         return (
           <div className="icon-col">
             <i
-              className="fa fa-pencil-square-o qbrb-icon"
+              className="fa fa-download table-icon"
               onClick={() => downloadFile(row.original)}
             ></i>
           </div>
         );
-      },
-      Xl8: true,
-      Header: ["fdl002", "Download"]
+      }
     },
     { Accessor: "fileName", Xl8: true, Header: ["fdl003", "File Name"] },
     { Accessor: "size", Xl8: true, Header: ["fdl004", "Size"] },
-    { Accessor: "createDate", Xl8: true, Header: ["fdl005", "Create Date"] },
-    { Accessor: "lastModified", Xl8: true, Header: ["fdl006", "Last Modified"] }
+    {
+      Accessor: "createDate",
+      Xl8: true,
+      Header: ["fdl005", "Create Date"],
+      Cell: ({ row }) => localeDate(row.original.createDate)
+    },
+    {
+      Accessor: "lastModified",
+      Xl8: true,
+      Header: ["fdl006", "Last Modified"],
+      Cell: ({ row }) => localeDate(row.original.lastModified)
+    }
   ];
 
   const fileTypeCtrl = (
-    <LabelledInput
-      inputType="select"
-      labelText={<Xl8 xid="fdl006">Log Type</Xl8>}
-      inputStyle="file-type"
-      name="severity"
-      options={logTypes}
-      required={true}
-      alt="nothing"
-      spacebetween
-      callback={onLogTypeSelect}
-      key={selRefreshKey}
-    />
+    <div className="filedownload-action-buttons">
+      <LabelledInput
+        inputType="select"
+        labelText={<Xl8 xid="fdl007">Log Type</Xl8>}
+        inputStyle="file-type"
+        name="severity"
+        options={logTypes}
+        required={true}
+        alt="nothing"
+        spacebetween
+        callback={onLogTypeSelect}
+        key={selRefreshKey}
+      />
+    </div>
   );
 
   return (
-    <Main className="full">
+    <Main className="full bg-white">
       <Title title={name} rightChild={fileTypeCtrl}></Title>
       <Table callback={cb} key={tblRefreshKey} data={data} header={headers}></Table>
     </Main>

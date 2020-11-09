@@ -1,22 +1,25 @@
 import React, { useEffect, useState, useRef } from "react";
 import Table from "../../components/table/Table";
-import { cases, notetypes, usersemails, ruleCats } from "../../services/serviceWrapper";
+import { cases, notetypes, usersemails, hitcats } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
-import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
-import { Col, Button } from "react-bootstrap";
-import "./Vetting.css";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
 import { Link } from "@reach/router";
-import FlightInfo from "./flightInfo/FlightInfo";
+import FlightBadge from "../../components/flightBadge/FlightBadge";
 import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import Overlay from "../../components/overlay/Overlay";
 import ReviewPVL from "./review/Review";
+import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
+
+import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
+import { ROLE } from "../../utils/constants";
+import { Col, Button, DropdownButton } from "react-bootstrap";
+import "./Vetting.css";
 
 const Vetting = props => {
   const hitTypeOptions = [
@@ -63,12 +66,12 @@ const Vetting = props => {
 
   const getBiographicData = pax => {
     return (
-      <ul style={{ listStyle: "none", paddingLeft: 0, fontSize: "small" }}>
+      <ul className="bio-data">
         <li>
           <Xl8 xid="vet001">Name:</Xl8> {pax.paxName}
         </li>
         <li>
-          <Xl8 xid="vet002">DOB:</Xl8> {`${pax.dob} (${getAge(pax.dob)})`}{" "}
+          <Xl8 xid="vet002">DOB:</Xl8> {`${pax.dob} (${getAge(pax.dob)})`}
         </li>
         <li>
           <Xl8 xid="vet003">Nationality:</Xl8> {pax.nationality}
@@ -81,6 +84,31 @@ const Vetting = props => {
   };
   const Headers = [
     {
+      Accessor: "paxId",
+      Xl8: true,
+      Header: ["wl023", "Actions"],
+      disableFilters: true,
+      disableSortBy: true,
+      Cell: ({ row }) => (
+        <DropdownButton
+          variant="info"
+          title={<Xl8 xid="vet020">Choose Action</Xl8>}
+          className="m-1 text-center"
+        >
+          <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
+            <Button
+              className="dropdown-item"
+              onClick={() => reviewPVL(row.original.paxId)}
+            >
+              <Xl8 xid="rev018">Review</Xl8>
+            </Button>
+          </RoleAuthenticator>
+          <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
+          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
+        </DropdownButton>
+      )
+    },
+    {
       Accessor: "countdownTime",
       Xl8: true,
       Header: ["wl018", "Timer"],
@@ -89,7 +117,13 @@ const Vetting = props => {
           row.original.flightDirection === "O"
             ? row.original.flightETDDate
             : row.original.flightETADate;
-        return <CountdownBadge future={future} baseline={now} />;
+        return (
+          <CountdownBadge
+            future={future}
+            baseline={now}
+            direction={row.original.flightDirection}
+          />
+        );
       }
     },
     {
@@ -97,14 +131,18 @@ const Vetting = props => {
       Xl8: true,
       Header: ["wl019", "Flight ID"],
       Cell: ({ row }) => (
-        <FlightInfo
-          flightNumber={row.original.flightNumber}
-          eta={row.original.flightETADate}
-          etd={row.original.flightETDDate}
-          origin={row.original.flightOrigin}
-          destination={row.original.flightDestination}
-          direction={row.original.flightDirection}
-        />
+        <>
+          <FlightBadge
+            data={{
+              flightNumber: row.original.flightNumber,
+              flightOrigin: row.original.flightOrigin,
+              flightDestination: row.original.flightDestination,
+              eta: row.original.flightETADate,
+              etd: row.original.flightETDDate
+            }}
+            style="sm"
+          ></FlightBadge>
+        </>
       )
     },
     {
@@ -120,7 +158,7 @@ const Vetting = props => {
               key={index}
               content={hit}
             >
-              <li className={triggerOverlay ? "as-link" : ""}>{getShortText(hit, 20)}</li>
+              <li className={triggerOverlay ? "as-info" : ""}>{getShortText(hit, 20)}</li>
             </Overlay>
           );
         });
@@ -132,10 +170,7 @@ const Vetting = props => {
       Xl8: true,
       Header: ["wl021", "Biographic Information"],
       Cell: ({ row }) => (
-        <Link
-          to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}
-          className="as-link"
-        >
+        <Link to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}>
           {getBiographicData(row.original)}
         </Link>
       )
@@ -143,26 +178,7 @@ const Vetting = props => {
     {
       Accessor: "status",
       Xl8: true,
-      Header: ["wl022", "Status"],
-      Cell: ({ row }) => <div className="text-center">{row.original.status}</div>
-    },
-    {
-      Accessor: "paxId",
-      Xl8: true,
-      Header: ["wl023", "Actions"],
-      Cell: ({ row }) => (
-        <div className="text-center">
-          <Button
-            variant="outline-info"
-            size="sm"
-            onClick={() => reviewPVL(row.original.paxId)}
-          >
-            <i className="fa fa-pencil"></i> <Xl8 xid="rev018">Review</Xl8>
-          </Button>
-          <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
-          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
-        </div>
-      )
+      Header: ["wl022", "Status"]
     }
   ];
 
@@ -188,7 +204,8 @@ const Vetting = props => {
     etaEnd: endDate,
     displayStatusCheckBoxes: hitStatusdefaultValues,
     ruleTypes: hitTypeOptions,
-    ruleCatFilter: hitCategoryOptions
+    ruleCatFilter: hitCategoryOptions,
+    notetypes: []
   };
 
   const reviewPVL = paxId => {
@@ -250,6 +267,13 @@ const Vetting = props => {
             return { name: name, value: value };
           });
           paramObject[name] = [...morphedArray];
+        } else if (name === "noteTypes") {
+          const selectedNoteTypes = asArray(fields[name]).map(noteType => {
+            return {
+              type: noteType.label
+            };
+          });
+          paramObject[name] = selectedNoteTypes;
         } else {
           paramObject[name] = fields[name];
         }
@@ -259,7 +283,7 @@ const Vetting = props => {
     return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 
-  useEffect(() => {
+  const fetchData = () => {
     usersemails.get().then(res => {
       const emails = asArray(res).map(userEmail => {
         return {
@@ -273,33 +297,40 @@ const Vetting = props => {
       setUsersEmails(emails);
     });
 
-    ruleCats.get().then(res => {
+    hitcats.get().then(res => {
       const options = asArray(res).map(hitCat => {
         return {
-          label: hitCat.name,
-          value: hitCat.name
+          label: hitCat.label,
+          value: hitCat.label
         };
       });
       setHitCategoryOptions(options);
     });
-  }, []);
+
+    notetypes.get().then(types => {
+      const nTypes = asArray(types).reduce((acc, type) => {
+        if (type.noteType !== "DELETED") {
+          acc.push({
+            value: type.id,
+            label: type.noteType
+          });
+        }
+        return acc;
+      }, []);
+      setNoteTypes(nTypes);
+      setRefreshKey(nTypes);
+    });
+  };
 
   useEffect(() => {
-    notetypes.get().then(types => {
-      const nTypes = asArray(types).map(type => {
-        return {
-          value: `{"id":"${type.id}", "noteType":"${type.noteType}"}`,
-          label: type.noteType
-        };
-      });
-      setNoteTypes(nTypes);
-    });
+    fetchData();
+    setRefreshKey(refreshKey + 1);
   }, []);
 
   return (
     <>
       <SidenavContainer>
-        <Col>
+        <Col className="notopmargin">
           <FilterForm
             service={cases.get}
             callback={setDataWrapper}
@@ -307,7 +338,6 @@ const Vetting = props => {
             key={refreshKey}
             initialParamState={initialParamState}
           >
-            <br />
             <LabelledInput
               datafield="myRulesOnly"
               name="myRulesOnly"
@@ -319,7 +349,6 @@ const Vetting = props => {
               alt="My Rules Only"
               spacebetween
             />
-            <hr />
             <LabelledInput
               name="displayStatusCheckBoxes"
               datafield="displayStatusCheckBoxes"
@@ -339,6 +368,16 @@ const Vetting = props => {
               options={hitTypeOptions}
               callback={cb}
               alt={<Xl8 xid="3">Hit Types</Xl8>}
+            />
+            <LabelledInput
+              datafield
+              name="noteTypes"
+              labelText={<Xl8 xid="vet019">Note Type</Xl8>}
+              inputType="multiSelect"
+              inputVal={[]}
+              options={noteTypes}
+              callback={cb}
+              alt={<Xl8 xid="vet019">Note Type</Xl8>}
             />
             {hasData(hitCategoryOptions) && (
               <LabelledInput
@@ -389,6 +428,7 @@ const Vetting = props => {
                 labelText={<Xl8 xid="vet014">Start Date</Xl8>}
                 name="etaStart"
                 callback={cb}
+                className="dtp-vetting-upper"
                 required={true}
                 alt="Start Date"
               />
@@ -402,6 +442,7 @@ const Vetting = props => {
                 name="etaEnd"
                 callback={cb}
                 required={true}
+                className="dtp-vetting-lower"
                 alt="End Date"
               />
             )}
@@ -447,7 +488,7 @@ const Vetting = props => {
         </Col>
       </SidenavContainer>
       <Main>
-        <Title title={<Xl8 xid="vet014">Priority Vetting</Xl8>} uri={props.uri} />
+        <Title title={<Xl8 xid="vet018">Priority Vetting</Xl8>} uri={props.uri} />
         <Table data={data} callback={onTableChange} header={Headers} key={data} />
 
         <ReviewPVL

@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { Modal, Button, Container, Alert } from "react-bootstrap";
+import { Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
 import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import { ACTION } from "../../../../utils/constants";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../../components/modal/Modal";
 
 const CreditCardTypeModal = props => {
   const [showAlert, setShowAlert] = useState(false);
@@ -12,7 +17,6 @@ const CreditCardTypeModal = props => {
   const cb = function(result) {};
   const data = props.editRowDetails || {};
 
-  // console.log(data);
   const postSubmit = (status = ACTION.CANCEL, results) => {
     props.onHide();
 
@@ -24,7 +28,6 @@ const CreditCardTypeModal = props => {
     res.id = data.id || 0;
     res.originId = data.originId || 0;
 
-    console.log(res);
     return [res];
   };
 
@@ -34,8 +37,11 @@ const CreditCardTypeModal = props => {
     });
   };
 
-  const customButtons = props.isEdit
-    ? [
+  let customButtons = [];
+
+  if (props.isEdit) {
+    if (data.originId) {
+      customButtons.push(
         <Button
           type="button"
           className="m-2 outline-dark-outline"
@@ -44,22 +50,25 @@ const CreditCardTypeModal = props => {
           onClick={restoreSpecificCode}
         >
           <Xl8 xid="cctm001">Restore</Xl8>
-        </Button>,
-        <Button
-          type="button"
-          className="m-2 outline-dark-outline"
-          variant="outline-dark"
-          key="delete"
-          onClick={() => {
-            codeEditor.delete.deleteCctype(data.id).then(res => {
-              postSubmit(ACTION.DELETE);
-            });
-          }}
-        >
-          <Xl8 xid="cctm002">Delete</Xl8>
         </Button>
-      ]
-    : [];
+      );
+    }
+    customButtons.push(
+      <Button
+        type="button"
+        className="m-2 outline-dark-outline"
+        variant="outline-dark"
+        key="delete"
+        onClick={() => {
+          codeEditor.delete.deleteCctype(data.id).then(res => {
+            postSubmit(ACTION.DELETE);
+          });
+        }}
+      >
+        <Xl8 xid="cctm002">Delete</Xl8>
+      </Button>
+    );
+  }
 
   return (
     <Modal
@@ -68,10 +77,11 @@ const CreditCardTypeModal = props => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-500-width-container"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{props.title}</Modal.Title>
-      </Modal.Header>
+      <ModalHeader closeButton>
+        <ModalTitle>{props.title}</ModalTitle>
+      </ModalHeader>
       <Alert show={showAlert}>
         {alertContent}
         <hr />
@@ -79,7 +89,7 @@ const CreditCardTypeModal = props => {
           <Xl8 xid="form003">Confirm</Xl8>
         </Button>
       </Alert>
-      <Modal.Body>
+      <ModalBody>
         <Container fluid>
           <Form
             submitService={
@@ -99,8 +109,9 @@ const CreditCardTypeModal = props => {
               max-length="2"
               name="code"
               required={true}
+              maxlength="2"
               alt="nothing"
-              inputVal={data.code}
+              inputVal={data.code?.toUpperCase()}
               callback={cb}
               spacebetween
             />
@@ -117,7 +128,7 @@ const CreditCardTypeModal = props => {
             />
           </Form>
         </Container>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

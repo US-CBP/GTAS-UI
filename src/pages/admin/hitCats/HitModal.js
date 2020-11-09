@@ -1,15 +1,21 @@
 import React, { useState } from "react";
-import { Modal, Button, Container, Alert } from "react-bootstrap";
+import { Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import { hitcatspost } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../../utils/constants";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const HitModal = props => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
   const [variant, setVariant] = useState("");
+  const row = props.editRowDetails || {};
   const cb = function(result) {};
   const severityLevels = [
     { value: "Top", label: "Top" },
@@ -23,6 +29,12 @@ const HitModal = props => {
     if (status !== ACTION.CANCEL) props.refresh();
   };
 
+  const preSubmit = fields => {
+    let res = { ...fields[0] };
+    res.id = props.isEdit ? row.id : "";
+    return [res];
+  };
+
   return (
     <Modal
       show={props.show}
@@ -30,12 +42,11 @@ const HitModal = props => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-500-width-container"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>
-          <Xl8 xid="wlm001">Add Hit Category</Xl8>
-        </Modal.Title>
-      </Modal.Header>
+      <ModalHeader closeButton>
+        <ModalTitle>{props.title}</ModalTitle>
+      </ModalHeader>
       <Alert show={showAlert} variant={variant}>
         {alertContent}
         <hr />
@@ -43,19 +54,21 @@ const HitModal = props => {
           <Xl8 xid="form003">Confirm</Xl8>
         </Button>
       </Alert>
-      <Modal.Body>
+      <ModalBody>
         <Container fluid>
           <Form
-            submitService={hitcatspost.post}
+            submitService={props.isEdit ? hitcatspost.put : hitcatspost.post}
             callback={postSubmit}
+            paramCallback={preSubmit}
             action="add"
             cancellable
             afterProcessed={props.onHide}
           >
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="wlm002">Name:</Xl8>}
+              labelText={<Xl8 xid="wlm003">Name:</Xl8>}
               inputType="text"
+              inputVal={row.label}
               name="label"
               required={true}
               alt="nothing"
@@ -63,8 +76,9 @@ const HitModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="wlm003">Description:</Xl8>}
+              labelText={<Xl8 xid="wlm004">Description:</Xl8>}
               inputType="textarea"
+              inputVal={row.description}
               name="description"
               required={true}
               alt="nothing"
@@ -72,9 +86,10 @@ const HitModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="wlm002">Severity Level:</Xl8>}
+              labelText={<Xl8 xid="wlm005">Severity Level:</Xl8>}
               inputType="select"
               name="severity"
+              inputVal={props.isEdit ? row.severity : severityLevels[0].value}
               options={severityLevels}
               required={true}
               alt="nothing"
@@ -82,7 +97,7 @@ const HitModal = props => {
             />
           </Form>
         </Container>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

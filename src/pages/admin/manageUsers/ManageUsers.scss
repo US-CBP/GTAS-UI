@@ -1,7 +1,6 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
-// $background-image-url: "../../../images/noorulabdeen-ahmad-lpcaOpVIzx8-unsplash.jpg";
 
 .manage-users-side-nav .filter-bg {
   z-index: 5;
@@ -36,6 +35,6 @@
   flex-flow: unset !important;
 }
 
-.edit-user .dropdown-menu {
-  background-color: #c3bfbf;
+.max-600-width-container .modal-dialog {
+  max-width: 600px;
 }

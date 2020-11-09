@@ -1,0 +1,30 @@
+.smooth-dnd-container.horizontal {
+  white-space: unset !important;
+  text-align: -webkit-center;
+  max-width: 1170px;
+  position: relative;
+}
+
+.hEvedf {
+  background-color: white !important;
+  justify-content: center;
+  position: relative;
+  height: unset !important;
+}
+
+.krrJph {
+  background-color: #a8d0ea !important;
+}
+
+.poe-countdown-inner {
+  position: absolute;
+  right: 0px;
+  bottom: -3px;
+  color: black;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.poe-countdown-outer {
+  position: relative;
+}

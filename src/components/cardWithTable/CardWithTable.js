@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Table } from "react-bootstrap";
 import "./CardWithTable.scss";
-import { asArray, isShortText, getShortText } from "../../utils/utils";
+import { asArray, isShortText, getShortText, alt } from "../../utils/utils";
 import Overlay from "../overlay/Overlay";
 
 const CardWithTable = props => {
@@ -9,6 +9,7 @@ const CardWithTable = props => {
   const headers = props.headers || {}; //{key:value}
   const cb = props.callback ? props.callback : () => {}; //callback may not be passed as a prop
   const textDisplayLimit = 30;
+  const className = `${alt(props.className)} card-with-table`;
 
   const tableHeaders = Object.keys(headers).map(key => {
     return <th key={key}>{headers[key]}</th>;
@@ -20,7 +21,7 @@ const CardWithTable = props => {
       const triggerOverlay = !isShortText(td, textDisplayLimit);
       return (
         <Overlay trigger={triggerOverlay ? "click" : ""} key={key} content={td}>
-          <td className={triggerOverlay ? "as-link" : ""}>
+          <td className={triggerOverlay ? "as-info" : ""}>
             {getShortText(td, textDisplayLimit)}
           </td>
         </Overlay>
@@ -35,16 +36,18 @@ const CardWithTable = props => {
   });
 
   return (
-    <Card className="card-with-table">
+    <Card className={className}>
       <Card.Header className="customized-card-header">
         {props.title || ""} <span className="row-count">{data.length}</span>
       </Card.Header>
-      <Table size="sm" striped borderless hover responsive>
-        <thead>
-          <tr>{tableHeaders}</tr>
-        </thead>
-        <tbody>{tableRows}</tbody>
-      </Table>
+      {data.length > 0 && (
+        <Table size="sm" striped borderless hover responsive>
+          <thead>
+            <tr>{tableHeaders}</tr>
+          </thead>
+          <tbody>{tableRows}</tbody>
+        </Table>
+      )}
     </Card>
   );
 };
