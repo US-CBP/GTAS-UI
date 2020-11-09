@@ -13,7 +13,7 @@ import PNR from "./pnr/PNR";
 import APIS from "./apis/APIS";
 import FlightHistory from "./flightHistory/FlightHistory";
 import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
-import EventNotesModal from "./evenNotesModal/EventNotesModal";
+import EventNotesModal from "../evenNotesModal/EventNotesModal";
 import DownloadReport from "./downloadReports/DownloadReports";
 import Notification from "./notification/Notification";
 import ChangeHitStatus from "./changeHitStatus/ChangeHitStatus";

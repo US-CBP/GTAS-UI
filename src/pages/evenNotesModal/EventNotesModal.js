@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
-import { paxEventNotesHistory, notetypes } from "../../../services/serviceWrapper";
-import Form from "../../../components/form/Form";
-import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { asArray, hasData } from "../../../utils/utils";
-import Xl8 from "../../../components/xl8/Xl8";
-import Modal, {
-  ModalBody,
-  ModalHeader,
-  ModalTitle
-} from "../../../components/modal/Modal";
+import { paxEventNotesHistory, notetypes } from "../../services/serviceWrapper";
+import Form from "../../components/form/Form";
+import LabelledInput from "../../components/labelledInput/LabelledInput";
+import { asArray, hasData } from "../../utils/utils";
+import Xl8 from "../../components/xl8/Xl8";
+import Modal, { ModalBody, ModalHeader, ModalTitle } from "../../components/modal/Modal";
 
 const EventNotesModal = props => {
   const [show, setShow] = useState(false);
