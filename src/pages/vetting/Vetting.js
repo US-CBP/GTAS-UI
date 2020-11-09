@@ -12,7 +12,6 @@ import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import Overlay from "../../components/overlay/Overlay";
-import ReviewPVL from "./review/Review";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 
 import { cases, notetypes, usersemails, hitcats } from "../../services/serviceWrapper";
@@ -201,10 +200,11 @@ const Vetting = props => {
   startDate.setHours(startDate.getHours() - 7);
   const [data, setData] = useState();
   const [hitCategoryOptions, setHitCategoryOptions] = useState();
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [filterFormKey, setFilterFormKey] = useState(0);
   const showDateTimePicker = useRef(false);
   const [noteTypes, setNoteTypes] = useState([]);
   const [usersEmails, setUsersEmails] = useState({});
+  const [tableKey, setTableKey] = useState(0);
 
   const now = new Date();
   const initialParamState = {
@@ -220,17 +220,18 @@ const Vetting = props => {
     const newStatus =
       status === HIT_STATUS.REVIEWED ? HIT_STATUS.REOPENED : HIT_STATUS.REVIEWED;
     cases.updateStatus(paxId, newStatus.toUpperCase()).then(res => {
-      setRefreshKey(refreshKey + 1);
+      setFilterFormKey(filterFormKey + 1);
     });
   };
 
   const toggleDateTimePicker = ev => {
     showDateTimePicker.current = !showDateTimePicker.current;
-    setRefreshKey(refreshKey + 1);
+    setFilterFormKey(filterFormKey + 1);
   };
 
   const setDataWrapper = data => {
     setData(data?.cases || []);
+    setTableKey(tableKey + 1);
   };
 
   const parameterAdapter = fields => {
@@ -329,13 +330,12 @@ const Vetting = props => {
         return acc;
       }, []);
       setNoteTypes(nTypes);
-      setRefreshKey(nTypes);
+      setFilterFormKey(new Date());
     });
   };
 
   useEffect(() => {
     fetchData();
-    setRefreshKey(refreshKey + 1);
   }, []);
 
   return (
@@ -346,7 +346,7 @@ const Vetting = props => {
             service={cases.get}
             callback={setDataWrapper}
             paramCallback={parameterAdapter}
-            key={refreshKey}
+            key={filterFormKey}
             initialParamState={initialParamState}
           >
             <LabelledInput
@@ -380,16 +380,19 @@ const Vetting = props => {
               callback={cb}
               alt={<Xl8 xid="3">Hit Types</Xl8>}
             />
-            <LabelledInput
-              datafield
-              name="noteTypes"
-              labelText={<Xl8 xid="vet019">Note Type</Xl8>}
-              inputType="multiSelect"
-              inputVal={[]}
-              options={noteTypes}
-              callback={cb}
-              alt={<Xl8 xid="vet019">Note Type</Xl8>}
-            />
+            {hasData(noteTypes) && (
+              <LabelledInput
+                datafield
+                name="noteTypes"
+                labelText={<Xl8 xid="vet019">Note Type</Xl8>}
+                inputType="multiSelect"
+                inputVal={[]}
+                options={noteTypes}
+                callback={cb}
+                alt={<Xl8 xid="vet019">Note Type</Xl8>}
+              />
+            )}
+
             {hasData(hitCategoryOptions) && (
               <LabelledInput
                 name="ruleCatFilter"
@@ -500,7 +503,7 @@ const Vetting = props => {
       </SidenavContainer>
       <Main>
         <Title title={<Xl8 xid="vet018">Priority Vetting</Xl8>} uri={props.uri} />
-        <Table data={data} callback={onTableChange} header={Headers} key={data} />
+        <Table data={data} callback={onTableChange} header={Headers} key={tableKey} />
       </Main>
     </>
   );
