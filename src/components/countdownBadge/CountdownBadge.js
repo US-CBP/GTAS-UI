@@ -14,6 +14,13 @@ const CountdownBadge = props => {
   const isPos = deltaRaw >= 0;
   const delta = Math.abs(deltaRaw);
 
+  const getIconClass = () => {
+    const dir = props.direction;
+    if (!dir) return "";
+
+    return dir === "I" ? "img-arrival" : dir === "O" ? "img-departure" : "";
+  };
+
   const pad = val => {
     if (isNaN(val)) return 0;
 
@@ -79,7 +86,8 @@ const CountdownBadge = props => {
   };
 
   return (
-    <Row flex="true" no-wrap="true" className={`cdb-row ${getStyle()}`}>
+    <Row flex="true" no-wrap="true" className={`cdb-row sm ${getStyle()}`}>
+      <span className={getIconClass()}></span>
       <span>{sign}</span>
       <span className="cdb-days-div">{formatedDays}</span>
       <span className="cdb-days-div">{formatedHours}</span>

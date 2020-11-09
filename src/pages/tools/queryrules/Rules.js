@@ -43,6 +43,7 @@ const Rules = props => {
     {
       Accessor: "id",
       Xl8: true,
+      disableSortBy: true,
       Header: ["edit001", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">

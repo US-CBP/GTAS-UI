@@ -7,16 +7,16 @@ import Overlay from "../../../components/overlay/Overlay";
 const FlightInfo = props => {
   const originInfo = `${props.origin} ${localeDate(props.etd)}`;
   const destinationInfo = `${props.destination} ${localeDate(props.eta)}`;
-  const flightDirection = props.direction === "I" ? "img-arrival-sm" : "img-departure-sm";
+  const flightDirection = props.direction === "I" ? "img-arrival sm" : "img-departure sm";
 
   const getPopover = (
     <>
       <div>
-        <span className="img-departure-sm" />
+        <span className="img-departure sm" />
         {originInfo}
       </div>
       <div>
-        <span className="img-arrival-sm" />
+        <span className="img-arrival sm" />
         {destinationInfo}
       </div>
     </>

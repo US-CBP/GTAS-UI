@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Col } from "react-bootstrap";
+import { Dropdown, DropdownButton, Button, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import Table from "../../../components/table/Table";
 import { signuprequests } from "../../../services/serviceWrapper";
@@ -91,43 +91,60 @@ const SignUpRequests = () => {
   ];
 
   const headers = [
-    { Accessor: "username", Xl8: true, Header: ["sur008", "Username"] },
-    { Accessor: "firstName", Xl8: true, Header: ["sur009", "First Name"] },
-    { Accessor: "lastName", Xl8: true, Header: ["sur010", "Last Name"] },
-    { Accessor: "signupLocation", Xl8: true, Header: ["sur011", "Signup Location"] },
-    { Accessor: "status", Xl8: true, Header: ["sur012", "Status"] },
     {
       Accessor: "id",
       Xl8: true,
       Header: ["sur013", "Action"],
-      Cell: ({ row }) => (
-        <>
-          <Button
-            variant="outline-info"
-            className="fa fa-thumbs-up"
-            onClick={() => approve(row.original.id)}
-            disabled={row.original.status !== "NEW"}
-          >
-            <Xl8 xid="sur001">Approve</Xl8>
-          </Button>
-          <Confirm
-            header="Reject Sign up Request"
-            message={`Please confirm to reject the sign up request by ${row.original.firstName} ${row.original.lastName}`}
-          >
-            {confirm => (
-              <Button
-                variant="outline-danger"
-                className="fa fa-thumbs-down"
-                onClick={confirm(() => reject(row.original.id))}
+      disableSortBy: true,
+      Cell: ({ row }) => {
+        return (
+          <div className="text-center edit-user">
+            <DropdownButton
+              variant="outline-info"
+              title={<Xl8 xid="manu002">Choose Action</Xl8>}
+            >
+              <Dropdown.Item
+                as="button"
+                onClick={() => approve(row.original.id)}
                 disabled={row.original.status !== "NEW"}
               >
-                <Xl8 xid="sur002">Reject</Xl8>
-              </Button>
-            )}
-          </Confirm>
-        </>
-      )
-    }
+                <Xl8 xid="sur001">Approve</Xl8>
+              </Dropdown.Item>
+
+              <Confirm
+                header={<Xl8 xid="sur014">Reject Sign up Request</Xl8>}
+                message={
+                  <span>
+                    <Xl8 xid="sur015">
+                      Please click confirm to reject the sign up request by:
+                    </Xl8>
+                    <br />
+                    <br />
+                    {row.original.firstName} {row.original.lastName}
+                  </span>
+                }
+              >
+                {confirm => (
+                  <Dropdown.Item
+                    as="button"
+                    onClick={confirm(() => reject(row.original.id))}
+                    disabled={row.original.status !== "NEW"}
+                  >
+                    <Xl8 xid="sur002">Reject</Xl8>
+                  </Dropdown.Item>
+                )}
+              </Confirm>
+            </DropdownButton>
+          </div>
+        );
+      }
+    },
+
+    { Accessor: "username", Xl8: true, Header: ["sur008", "Username"] },
+    { Accessor: "firstName", Xl8: true, Header: ["sur009", "First Name"] },
+    { Accessor: "lastName", Xl8: true, Header: ["sur010", "Last Name"] },
+    { Accessor: "signupLocation", Xl8: true, Header: ["sur011", "Signup Location"] },
+    { Accessor: "status", Xl8: true, Header: ["sur012", "Status"] }
   ];
 
   return (

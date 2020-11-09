@@ -7,7 +7,7 @@ $wco-blue: rgb(0, 119, 200);
 $transparent: rgba(0, 0, 0, 0.65);
 
 .paxdetail-container {
-  height: calc(100vh - 125px);
+  height: calc(100vh - 110px);
   overflow: auto;
 
   // -- for single page repositioning
@@ -21,7 +21,7 @@ $transparent: rgba(0, 0, 0, 0.65);
 .paxdetail-container-col {
   width: 100%;
   margin-left: 15px;
-  height: calc(100vh - 128px);
+  height: calc(100vh - 110px);
   overflow: auto;
 }
 
@@ -29,6 +29,14 @@ $transparent: rgba(0, 0, 0, 0.65);
   .paxdetail-container {
     .card-columns {
       column-count: 1 !important;
+
+      .pd-gridstack-2 {
+        max-height: unset !important;
+
+        .table-responsive {
+          max-height: calc((100vh - 190px) / 2) !important;
+        }
+      }
     }
   }
 }
@@ -37,6 +45,14 @@ $transparent: rgba(0, 0, 0, 0.65);
   .paxdetail-container {
     .card-columns {
       column-count: 2 !important;
+
+      .pd-gridstack-2 {
+        max-height: unset !important;
+
+        .table-responsive {
+          max-height: calc(100vh - 145px) !important;
+        }
+      }
     }
   }
 }
@@ -82,9 +98,6 @@ $transparent: rgba(0, 0, 0, 0.65);
 
 .paxdetail-container > .title > .left-span > .gtas-tabs > a {
   padding: 0.5rem 0.5rem;
-}
-
-.segment-table {
 }
 
 .filter-fg > .col > .table {

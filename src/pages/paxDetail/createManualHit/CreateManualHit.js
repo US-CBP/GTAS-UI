@@ -51,6 +51,7 @@ const CreateManualHit = props => {
         onHide={handleClose}
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
+        className="max-500-width-container"
         centered
       >
         <ModalHeader closeButton>

@@ -41,7 +41,6 @@ const Tools = props => {
         ROLE.ADMIN,
         ROLE.PAXVWR,
         ROLE.RULEMGR,
-        ROLE.CASEMGR,
         ROLE.WLMGR,
         ROLE.HITMGR,
         ROLE.QRYMGR,

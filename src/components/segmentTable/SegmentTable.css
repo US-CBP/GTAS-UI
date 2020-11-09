@@ -2,10 +2,10 @@
   overflow: auto;
   font-size: smaller;
   background-color: white;
-  padding-left: 15px;
+  padding: 10px 0px 10px 10px;
   border: 1px solid #0082c3;
   border-radius: 0.25rem;
-  height: calc(100vh - 128px);
+  height: calc(100vh - 110px);
 }
 
 .segment-table > .table-responsive {
@@ -14,4 +14,8 @@
 
 .highlight {
   background-color: yellow !important;
+}
+
+.wrap {
+  overflow-wrap: anywhere;
 }
