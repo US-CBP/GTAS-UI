@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 import { paxEventNotesHistory, notetypes } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { asArray } from "../../../utils/utils";
+import { asArray, hasData } from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
 import Modal, {
   ModalBody,
@@ -18,7 +18,7 @@ const EventNotesModal = props => {
 
   const handleClose = (status, res) => {
     setShow(false);
-    props.setEventNoteRefreshKey(Date.now());
+    if (hasData(props.callback)) props.callback(status, res);
   };
   const handleShow = () => setShow(true);
   const paxId = props.paxId;
@@ -96,7 +96,7 @@ const EventNotesModal = props => {
   );
 };
 EventNotesModal.propTypes = {
-  setEventNoteRefreshKey: PropTypes.func,
+  callback: PropTypes.func,
   paxId: PropTypes.string
 };
 export default EventNotesModal;

@@ -20,6 +20,7 @@ import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 import Confirm from "../../components/confirmationModal/Confirm";
+import EventNotesModal from "../paxDetail/evenNotesModal/EventNotesModal";
 
 const Vetting = props => {
   const hitTypeOptions = [
@@ -121,6 +122,7 @@ const Vetting = props => {
           </RoleAuthenticator>
           <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
+          <EventNotesModal paxId={row.original.paxId} callback={cb} />
         </DropdownButton>
       )
     },

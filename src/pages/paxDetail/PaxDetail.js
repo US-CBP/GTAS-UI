@@ -45,6 +45,9 @@ const PaxDetail = props => {
   const [paxDocuments, setPaxDocuments] = useState([]);
 
   const cb = () => {};
+  const refreshEventNotesCard = () => {
+    setEventNoteRefreshKey(new Date());
+  };
   const tabs = [
     {
       title: <Xl8 xid="pd001">Summary</Xl8>,
@@ -171,10 +174,7 @@ const PaxDetail = props => {
         callback={updateAttachmentList}
         paxId={props.paxId}
       ></AttachmentModal>
-      <EventNotesModal
-        paxId={props.paxId}
-        setEventNoteRefreshKey={setEventNoteRefreshKey}
-      />
+      <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} />
       <AddToWatchlist watchlistItems={watchlistData} />
       <CreateManualHit
         paxId={props.paxId}
