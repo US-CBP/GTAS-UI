@@ -17,9 +17,10 @@ import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator
 
 import { cases, notetypes, usersemails, hitcats } from "../../services/serviceWrapper";
 import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
-import { ROLE } from "../../utils/constants";
+import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
+import Confirm from "../../components/confirmationModal/Confirm";
 
 const Vetting = props => {
   const hitTypeOptions = [
@@ -45,7 +46,7 @@ const Vetting = props => {
     }
   ];
 
-  const hitStatusdefaultValues = [
+  const hitStatusOptions = [
     {
       value: "NEW",
       label: "New"
@@ -53,14 +54,10 @@ const Vetting = props => {
     {
       value: "REVIEWED",
       label: "Reviewed"
-    }
-  ];
-
-  const hitStatusOptions = [
-    ...hitStatusdefaultValues,
+    },
     {
       value: "RE_OPENED",
-      label: "Re Opened"
+      label: "Reopen"
     }
   ];
 
@@ -163,12 +160,29 @@ const Vetting = props => {
           className="m-1"
         >
           <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
-            <Button
-              className="dropdown-item"
-              onClick={() => reviewPVL(row.original.paxId)}
+            <Confirm
+              header={<Xl8 xid="vet021">Update Hit Status</Xl8>}
+              message={
+                <span>
+                  <Xl8 xid="chs005">Please confirm to change the hit status</Xl8>
+                </span>
+              }
             >
-              <Xl8 xid="rev018">Review</Xl8>
-            </Button>
+              {confirm => (
+                <Button
+                  className="dropdown-item"
+                  onClick={confirm(() =>
+                    changeStatus(row.original.paxId, row.original.status)
+                  )}
+                >
+                  {row.original.status === HIT_STATUS.REVIEWED ? (
+                    <Xl8 xid="rev018">Reopen</Xl8>
+                  ) : (
+                    <Xl8 xid="rev018">Review</Xl8>
+                  )}
+                </Button>
+              )}
+            </Confirm>
           </RoleAuthenticator>
           <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
@@ -189,23 +203,25 @@ const Vetting = props => {
   const [hitCategoryOptions, setHitCategoryOptions] = useState();
   const [refreshKey, setRefreshKey] = useState(0);
   const showDateTimePicker = useRef(false);
-  const [showReviewModal, setShowReviewModal] = useState(false);
-  const [currentPaxId, setCurrentPaxId] = useState();
   const [noteTypes, setNoteTypes] = useState([]);
   const [usersEmails, setUsersEmails] = useState({});
+
   const now = new Date();
   const initialParamState = {
     etaStart: startDate,
     etaEnd: endDate,
-    displayStatusCheckBoxes: hitStatusdefaultValues,
+    displayStatusCheckBoxes: hitStatusOptions,
     ruleTypes: hitTypeOptions,
     ruleCatFilter: hitCategoryOptions,
     notetypes: []
   };
 
-  const reviewPVL = paxId => {
-    setCurrentPaxId(paxId);
-    setShowReviewModal(true);
+  const changeStatus = (paxId, status) => {
+    const newStatus =
+      status === HIT_STATUS.REVIEWED ? HIT_STATUS.REOPENED : HIT_STATUS.REVIEWED;
+    cases.updateStatus(paxId, newStatus.toUpperCase()).then(res => {
+      setRefreshKey(refreshKey + 1);
+    });
   };
 
   const toggleDateTimePicker = ev => {
@@ -349,7 +365,7 @@ const Vetting = props => {
               datafield="displayStatusCheckBoxes"
               labelText={<Xl8 xid="vet008">Passenger Hit Status</Xl8>}
               inputType="multiSelect"
-              inputVal={hitStatusdefaultValues}
+              inputVal={hitStatusOptions}
               options={hitStatusOptions}
               callback={cb}
               alt={<Xl8 xid="3">Passenger Hit Status</Xl8>}
@@ -485,14 +501,6 @@ const Vetting = props => {
       <Main>
         <Title title={<Xl8 xid="vet018">Priority Vetting</Xl8>} uri={props.uri} />
         <Table data={data} callback={onTableChange} header={Headers} key={data} />
-
-        <ReviewPVL
-          paxId={currentPaxId}
-          callback={setRefreshKey}
-          show={showReviewModal}
-          onHide={() => setShowReviewModal(false)}
-          noteTypes={noteTypes}
-        />
       </Main>
     </>
   );
