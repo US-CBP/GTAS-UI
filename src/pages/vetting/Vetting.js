@@ -145,13 +145,13 @@ const Vetting = props => {
     {
       Accessor: "status",
       Xl8: true,
-      Header: ["wl022", "Status"],
+      Header: ["vet022", "Status"],
       Cell: ({ row }) => <div className="text-center">{row.original.status}</div>
     },
     {
       Accessor: "paxId",
       Xl8: true,
-      Header: ["wl023", "Actions"],
+      Header: ["vet023", "Actions"],
       Cell: ({ row }) => (
         <DropdownButton
           variant="info"
@@ -163,7 +163,12 @@ const Vetting = props => {
               header={<Xl8 xid="vet021">Update Hit Status</Xl8>}
               message={
                 <span>
-                  <Xl8 xid="chs005">Please confirm to change the hit status</Xl8>
+                  <Xl8 xid="vet024">Please confirm to change the hit status to </Xl8>
+                  {row.original.status === HIT_STATUS.REVIEWED ? (
+                    <Xl8 xid="vet025">Reopened</Xl8>
+                  ) : (
+                    <Xl8 xid="vet026">Reviewed</Xl8>
+                  )}
                 </span>
               }
             >
@@ -175,9 +180,9 @@ const Vetting = props => {
                   )}
                 >
                   {row.original.status === HIT_STATUS.REVIEWED ? (
-                    <Xl8 xid="rev018">Reopen</Xl8>
+                    <Xl8 xid="vet027">Reopen</Xl8>
                   ) : (
-                    <Xl8 xid="rev018">Review</Xl8>
+                    <Xl8 xid="vet028">Review</Xl8>
                   )}
                 </Button>
               )}
