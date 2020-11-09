@@ -261,3 +261,18 @@ input[type="radio"] {
 .sm.cdb-gray > .img-departure {
   filter: invert(1);
 }
+
+.page-deck {
+  margin: 10px;
+  justify-content: center;
+  overflow-y: auto;
+  max-height: calc(100vh - 130px);
+  text-align: -webkit-center;
+  /* padding-right: 20px; */
+}
+
+@media (min-width: 1150px) {
+  .page-deck {
+    padding: 0px 80px;
+  }
+}

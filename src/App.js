@@ -230,7 +230,6 @@ export default class App extends React.Component {
                           ROLE.ADMIN,
                           ROLE.PAXVWR,
                           ROLE.RULEMGR,
-                          ROLE.CASEMGR,
                           ROLE.WLMGR,
                           ROLE.HITMGR,
                           ROLE.QRYMGR,

@@ -7,14 +7,6 @@
   border: 1.5px solid #0082c3;
 }
 
-.page-deck {
-  margin: 10px;
-  justify-content: center;
-  overflow-y: auto;
-  height: calc(100vh - 130px);
-  text-align: -webkit-center;
-}
-
 .page-card-link {
   color: black;
 }

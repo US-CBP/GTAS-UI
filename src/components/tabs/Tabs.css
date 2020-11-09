@@ -1,7 +1,7 @@
 .gtas-tabs {
   border: none;
   margin-bottom: 3px;
-  width: calc(100vw - 730px);
+  /* width: calc(100vw - 730px); */
   flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;

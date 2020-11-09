@@ -5,19 +5,21 @@ import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
-import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
-import { Col, Button, DropdownButton } from "react-bootstrap";
-import "./Vetting.css";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
 import { Link } from "@reach/router";
-import FlightInfo from "./flightInfo/FlightInfo";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
 import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import Overlay from "../../components/overlay/Overlay";
 import ReviewPVL from "./review/Review";
+import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
+
+import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
+import { ROLE } from "../../utils/constants";
+import { Col, Button, DropdownButton } from "react-bootstrap";
+import "./Vetting.css";
 
 const Vetting = props => {
   const hitTypeOptions = [
@@ -93,9 +95,14 @@ const Vetting = props => {
           title={<Xl8 xid="vet020">Choose Action</Xl8>}
           className="m-1 text-center"
         >
-          <Button className="dropdown-item" onClick={() => reviewPVL(row.original.paxId)}>
-            <Xl8 xid="rev018">Review</Xl8>
-          </Button>
+          <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
+            <Button
+              className="dropdown-item"
+              onClick={() => reviewPVL(row.original.paxId)}
+            >
+              <Xl8 xid="rev018">Review</Xl8>
+            </Button>
+          </RoleAuthenticator>
           <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
           <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
         </DropdownButton>
@@ -293,8 +300,8 @@ const Vetting = props => {
     hitcats.get().then(res => {
       const options = asArray(res).map(hitCat => {
         return {
-          label: hitCat.name,
-          value: hitCat.name
+          label: hitCat.label,
+          value: hitCat.label
         };
       });
       setHitCategoryOptions(options);
