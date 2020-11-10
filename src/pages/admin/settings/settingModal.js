@@ -34,6 +34,7 @@ const SettingModal = props => {
           action="edit"
           refreshOnSubmit
           data={props.data}
+          cancellable
         >
           <LabelledInput
             datafield
