@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  gtas-ui:
+    image: wcogtas/gtas-ui:dev
+    container_name: gtas-ui
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - 3000:3000
+    restart: always
+    networks:
+      - gtas-webapp-network
+networks:
+  gtas-webapp-network:
+    attachable: true

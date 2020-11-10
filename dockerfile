@@ -11,5 +11,5 @@ RUN npm i -S -g serve
 RUN npm run build
 
 EXPOSE 3000
-# CMD [ "npm", "run", "start" ]
-CMD serve -s build -l 3000
+
+CMD ["serve", "-s", "build", "-l", "3000"]
