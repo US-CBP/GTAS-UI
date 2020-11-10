@@ -71,7 +71,7 @@ const Carriers = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
-      <Fab icon={<i className="fa fa-plus" />} variant="info" event="click">
+      <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action
           text={<Xl8 xid="car002">Add Carrier</Xl8>}
           onClick={() => {

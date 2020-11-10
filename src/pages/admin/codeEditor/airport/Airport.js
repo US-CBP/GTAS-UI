@@ -81,7 +81,7 @@ const Airports = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
-      <Fab icon={<i className="fa fa-plus" />} variant="info" event="click">
+      <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action
           text={addAirport}
           onClick={() => {

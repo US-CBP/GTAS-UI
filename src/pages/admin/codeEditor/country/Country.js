@@ -74,7 +74,7 @@ const Countries = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
-      <Fab icon={<i className="fa fa-plus" />} variant="info" event="click">
+      <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action
           text={<Xl8 xid="cou004">Add Country</Xl8>}
           onClick={() => {
