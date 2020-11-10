@@ -7,7 +7,11 @@ import { asArray } from "../../../utils/utils";
 import { ROLE } from "../../../utils/constants";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
-import Modal, { ModalBody, ModalHeader } from "../../../components/modal/Modal";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 function SignUpRequestModal(props) {
   const [allRoles, setAllRoles] = useState([]);
@@ -55,9 +59,10 @@ function SignUpRequestModal(props) {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-500-width-container"
     >
       <ModalHeader closeButton>
-        <Title title={<Xl8 xid="surm001">Select Roles</Xl8>}></Title>
+        <ModalTitle>{<Xl8 xid="surm001">Select Roles</Xl8>}</ModalTitle>
       </ModalHeader>
       <ModalBody>
         <Form
@@ -70,15 +75,17 @@ function SignUpRequestModal(props) {
           cancellable
           recordId={props.requestId}
         >
-          <LabelledInput
-            datafield
-            inputType="checkboxGroup"
-            inputVal={allRoles}
-            labelText={<Xl8 xid="surm003">Roles:</Xl8>}
-            name="roles"
-            alt="Roles"
-            callback={cb}
-          />
+          <div className="signup-checkbox">
+            <LabelledInput
+              datafield
+              inputType="checkboxGroup"
+              inputVal={allRoles}
+              labelText={<Xl8 xid="surm003">Roles:</Xl8>}
+              name="roles"
+              alt="Roles"
+              callback={cb}
+            />
+          </div>
         </Form>
       </ModalBody>
     </Modal>
