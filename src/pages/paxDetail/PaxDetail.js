@@ -206,12 +206,7 @@ const PaxDetail = props => {
           leftChild={tablist}
           rightChild={actions}
         ></Title>
-        <Fab
-          icon={<i className="fa fa-plus" />}
-          variant="info"
-          event="click"
-          alwaysShowTitle={true}
-        >
+        <Fab icon={<i className="fa fa-plus" />} variant="info">
           <Action text="">
             <AttachmentModal
               callback={updateAttachmentList}

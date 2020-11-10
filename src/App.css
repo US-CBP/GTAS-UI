@@ -190,6 +190,10 @@ input[type="radio"] {
   max-width: 700px !important;
 }
 
+.modal {
+  z-index: 10000 !important;
+}
+
 .max-500-width-container .modal-content {
   max-width: 500px !important;
   min-width: 330px !important;
