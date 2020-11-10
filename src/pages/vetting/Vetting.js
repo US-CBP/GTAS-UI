@@ -88,7 +88,7 @@ const Vetting = props => {
         <DropdownButton
           variant="info"
           title={<Xl8 xid="vet020">Choose Action</Xl8>}
-          className="m-1"
+          className="m-1 text-center"
         >
           <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
             <Confirm
