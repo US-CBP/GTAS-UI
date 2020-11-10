@@ -4,7 +4,7 @@ import { notetypes } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import { Button, Dropdown, DropdownButton, Row } from "react-bootstrap";
+import { Dropdown, DropdownButton, Row } from "react-bootstrap";
 import NoteTypeModal from "./NoteModal.js";
 import Confirm from "../../../components/confirmationModal/Confirm";
 import { Fab } from "react-tiny-fab";
