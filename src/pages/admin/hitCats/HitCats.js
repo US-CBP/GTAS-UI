@@ -113,7 +113,7 @@ const HitCats = ({ name }) => {
         header={headers}
       ></Table>
       <Fab
-        icon={<i className="fa fa-plus" />}
+        icon={<i className="fa fa-plus nospin" />}
         variant="info"
         onClick={setupEditModal}
       ></Fab>
