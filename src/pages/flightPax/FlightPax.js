@@ -41,11 +41,16 @@ const FlightPax = props => {
       item.dobAge = `${alt(localeDateOnly(item.dobStr))} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
+      item.aggregateHitsCount = {
+        low: item.lowPrioHitCount,
+        med: item.medPrioHitCount,
+        high: item.highPrioHitCount
+      };
       return item;
     });
   };
 
-  const headers = [
+  const hitHeaders = [
     {
       Accessor: "ruleHitCount",
       Xl8: true,
@@ -93,7 +98,30 @@ const FlightPax = props => {
       disableGroupBy: true,
       aggregate: "sum",
       Aggregated: ({ value }) => `${value} Hits`
-    },
+    }
+  ];
+
+  const aggregateHitHeader = {
+    Accessor:"aggregateHitsCount",
+        Xl8: true,
+      Header: ["fp026", "Hit Aggregates"],
+      disableGroupBy: true,
+      Cell: ({ row })=> {
+      return(
+        <span style={{"justify-content":"space-between","display":"flex","align-items":"baseline","marginLeft":"5px", "marginRight":"5px"}}>
+          {(row.original.aggregateHitsCount.low > 0) && (
+              <span><i className="fa fa-flag" style={{color:"#FCF300"}} title="normal severity"></i> {row.original.aggregateHitsCount.low}</span>)}
+          {(row.original.aggregateHitsCount.med > 0) && (
+              <span><i className="fa fa-flag" style={{color:"orange"}} title="high severity"></i> {row.original.aggregateHitsCount.med}</span>)}
+          {(row.original.aggregateHitsCount.high > 0) && (
+              <span><i className="fa fa-flag" style={{color:"red"}} title="top severity"></i> {row.original.aggregateHitsCount.high}</span>)}
+            </span>
+      );
+    }
+  }
+  const arrayHeaderFixer = (tab !== "hits")  ? [aggregateHitHeader] : hitHeaders
+  const headers = [
+          ...arrayHeaderFixer,
     {
       Accessor: "passengerType",
       Xl8: true,
