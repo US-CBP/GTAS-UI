@@ -13,7 +13,7 @@ import PNR from "./pnr/PNR";
 import APIS from "./apis/APIS";
 import FlightHistory from "./flightHistory/FlightHistory";
 import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
-import EventNotesModal from "./evenNotesModal/EventNotesModal";
+import EventNotesModal from "../evenNotesModal/EventNotesModal";
 import DownloadReport from "./downloadReports/DownloadReports";
 import Notification from "./notification/Notification";
 import ChangeHitStatus from "./changeHitStatus/ChangeHitStatus";
@@ -45,6 +45,9 @@ const PaxDetail = props => {
   const [paxDocuments, setPaxDocuments] = useState([]);
 
   const cb = () => {};
+  const refreshEventNotesCard = () => {
+    setEventNoteRefreshKey(new Date());
+  };
   const tabs = [
     {
       title: <Xl8 xid="pd001">Summary</Xl8>,
@@ -171,10 +174,7 @@ const PaxDetail = props => {
         callback={updateAttachmentList}
         paxId={props.paxId}
       ></AttachmentModal>
-      <EventNotesModal
-        paxId={props.paxId}
-        setEventNoteRefreshKey={setEventNoteRefreshKey}
-      />
+      <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} />
       <AddToWatchlist watchlistItems={watchlistData} />
       <CreateManualHit
         paxId={props.paxId}

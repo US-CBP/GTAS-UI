@@ -31,6 +31,12 @@ export const STATUS = {
   FAILURE: "FAILURE"
 };
 
+export const HIT_STATUS = {
+  REVIEWED: "Reviewed",
+  NEW: "New",
+  REOPENED: "Re_opened"
+};
+
 export const ROLE = {
   ADMIN: "Admin",
   QRYMGR: "Manage Queries",
