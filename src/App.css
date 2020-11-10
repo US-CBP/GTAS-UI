@@ -290,3 +290,7 @@ ul[variant="info"].rtf button:focus,
 ul[variant="info"].rtf button:hover {
   opacity: 1;
 }
+
+li .rtf--ab__c button[variant="rtf-red"] {
+  background-color: #e83944;
+}

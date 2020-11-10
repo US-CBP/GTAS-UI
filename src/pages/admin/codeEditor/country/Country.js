@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CountryModal from "./CountryModal";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const Countries = ({ name }) => {
   const cb = function(result) {};
@@ -19,7 +20,7 @@ const Countries = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle(<Xl8 xid="cou001">Edit Country:</Xl8>);
+    setModalTitle(<Xl8 xid="cou001">Edit Country</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -48,33 +49,14 @@ const Countries = ({ name }) => {
     { Accessor: "name", Xl8: true, Header: ["cou005", "Name"] }
   ];
 
+  const restoreAll = () => {
+    codeEditor.put.restoreCountriesAll().then(res => {
+      refresh();
+    });
+  };
+
   return (
     <div>
-      <div className="action-button-div">
-        <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              setShowModal(true);
-              setModalTitle(<Xl8 xid="cou004">Add Country:</Xl8>);
-              setIsEditModal(false);
-              setEditRowDetails({});
-            }}
-          >
-            <Xl8 xid="cou004">Add Country:</Xl8>
-          </Dropdown.Item>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              codeEditor.put.restoreCountriesAll().then(res => {
-                refresh();
-              });
-            }}
-          >
-            {<Xl8 xid="cou003">Restore All Countries</Xl8>}
-          </Dropdown.Item>
-        </DropdownButton>
-      </div>
       <CountryModal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -92,6 +74,26 @@ const Countries = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
+      <Fab icon={<i className="fa fa-plus" />} variant="info" event="click">
+        <Action
+          text={<Xl8 xid="cou004">Add Country</Xl8>}
+          onClick={() => {
+            setShowModal(true);
+            setModalTitle(<Xl8 xid="cou004">Add Country</Xl8>);
+            setIsEditModal(false);
+            setEditRowDetails({});
+          }}
+        >
+          <i className="fa fa-plus" />
+        </Action>
+        <Action
+          text={<Xl8 xid="cou003">Restore All Countries</Xl8>}
+          variant="rtf-red"
+          onClick={restoreAll}
+        >
+          <i className="fa fa-recycle" />
+        </Action>
+      </Fab>
     </div>
   );
 };
