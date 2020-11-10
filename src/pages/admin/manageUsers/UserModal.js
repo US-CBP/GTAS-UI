@@ -40,15 +40,24 @@ const UserModal = props => {
     );
   };
 
+  const compareRoles = (role1, role2) => {
+    const roleDescription1 = role1.roleDescription?.toUpperCase();
+    const roleDescription2 = role2.roleDescription?.toUpperCase();
+    if (roleDescription1 < roleDescription2) return -1;
+    if (roleDescription1 > roleDescription2) return 1;
+
+    return 0;
+  };
+
   const roleOptions = asArray(allRoles)
+    .sort(compareRoles)
     .map(role => {
       return {
         label: role.roleDescription,
         value: role.roleId,
         disabled: isRoleDisabled(role)
       };
-    })
-    .filter(Boolean);
+    });
 
   const defaultRole = [{ label: ROLE.FLIGHTVWR, value: 9, disabled: true }];
   const existingRoles = asArray(props.editRowDetails.roles).map(role => {
@@ -82,7 +91,7 @@ const UserModal = props => {
     let res = { ...fields[0] };
     //TODO selectedRoles is empty if no change occurs, which makes hard to apply default values
     res.roles = asArray(res.roles).map(role => {
-      return { id: role.value, roleDescription: role.label };
+      return { roleId: role.value, roleDescription: role.label };
     });
     res.password = props.isEdit ? null : res.password;
     res.isCurrentlyLoggedInUser = isLoggedinUser(row.userId);
