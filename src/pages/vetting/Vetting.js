@@ -197,7 +197,7 @@ const Vetting = props => {
       Accessor: "status",
       Xl8: true,
       Header: ["vet022", "Status"],
-      Cell: ({ row }) => <div className="text-center">{row.original.status}</div>
+      Cell: ({ row }) => <div>{row.original.status}</div>
     }
   ];
 
