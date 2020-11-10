@@ -23,11 +23,9 @@ const DownloadReport = props => {
   };
 
   return (
-    <Button className="dropdown-item" onClick={download}>
-      {/* <i className="fa fa-download"></i> <Xl8 xid="rep001">Report</Xl8> */}
-
-      <Xl8 xid="rep001">Download Report</Xl8>
-    </Button>
+    <div onClick={download}>
+      <i className="fa fa-download" />
+    </div>
   );
 };
 

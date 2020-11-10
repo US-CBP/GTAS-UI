@@ -276,3 +276,17 @@ input[type="radio"] {
     padding: 0px 80px;
   }
 }
+
+.rtf button:focus {
+  outline: unset;
+}
+
+ul[variant="info"].rtf button {
+  background-color: #009e92;
+  opacity: 0.7;
+}
+
+ul[variant="info"].rtf button:focus,
+ul[variant="info"].rtf button:hover {
+  opacity: 1;
+}

@@ -7,6 +7,8 @@ import Main from "../../../components/main/Main";
 import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 import HitModal from "./HitModal";
 import Confirm from "../../../components/confirmationModal/Confirm";
+import { Fab } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const HitCats = ({ name }) => {
   const cb = function() {};
@@ -88,19 +90,12 @@ const HitCats = ({ name }) => {
     setRefreshKey(refreshKey + 1);
   };
 
-  const cats = (
-    <Button
-      variant="info"
-      onClick={() => {
-        setModalTitle(addNewCat);
-        setEditRowDetails({});
-        setIsEditModal(false);
-        setShowModal(true);
-      }}
-    >
-      {addNewCat}
-    </Button>
-  );
+  const setupEditModal = () => {
+    setModalTitle(addNewCat);
+    setEditRowDetails({});
+    setIsEditModal(false);
+    setShowModal(!showModal);
+  };
 
   const deleteCat = rowDetails => {
     hitcats.del(rowDetails.id).then(res => {
@@ -110,13 +105,19 @@ const HitCats = ({ name }) => {
 
   return (
     <Main className="full bg-white">
-      <Title title={name} rightChild={cats}></Title>
+      <Title title={name}></Title>
       <Table
         service={hitcats.get}
         key={refreshKey}
         callback={cb}
         header={headers}
       ></Table>
+      <Fab
+        icon={<i className="fa fa-plus" />}
+        variant="info"
+        onClick={setupEditModal}
+      ></Fab>
+
       <HitModal
         show={showModal}
         onHide={() => setShowModal(false)}

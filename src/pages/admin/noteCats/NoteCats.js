@@ -7,6 +7,8 @@ import Main from "../../../components/main/Main";
 import { Button, Dropdown, DropdownButton, Row } from "react-bootstrap";
 import NoteTypeModal from "./NoteModal.js";
 import Confirm from "../../../components/confirmationModal/Confirm";
+import { Fab } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const NoteCats = ({ name }) => {
   const cb = function(result) {};
@@ -81,29 +83,24 @@ const NoteCats = ({ name }) => {
     setRefreshKey(refreshKey + 1);
   };
 
-  const addCat = (
-    <Button
-      variant="info"
-      onClick={() => {
-        setModalTitle(addNewCat);
-        setEditRowDetails({});
-        setIsEditModal(false);
-        setShowModal(true);
-      }}
-    >
-      <Xl8 xid="ntc001">Add Category</Xl8>
-    </Button>
-  );
+  const setupModal = () => {
+    if (showModal) return setShowModal(false);
+
+    setModalTitle(addNewCat);
+    setEditRowDetails({});
+    setIsEditModal(false);
+    setShowModal(true);
+  };
 
   const deleteCat = rowDetails => {
     notetypes.del(rowDetails.id).then(res => {
-      setRefreshKey(refreshKey + 1);
+      refresh();
     });
   };
 
   return (
     <Main className="full bg-white">
-      <Title title={name} rightChild={addCat}></Title>
+      <Title title={name}></Title>
       <Row></Row>
       <Table
         service={notetypes.get}
@@ -111,6 +108,12 @@ const NoteCats = ({ name }) => {
         callback={cb}
         header={headers}
       ></Table>
+      <Fab
+        icon={<i className="fa fa-plus" />}
+        variant="info"
+        onClick={() => setupModal()}
+      ></Fab>
+
       <NoteTypeModal
         show={showModal}
         onHide={() => setShowModal(false)}

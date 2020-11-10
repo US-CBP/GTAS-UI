@@ -12,6 +12,8 @@ import CSVReader from "../../../components/CSVReader/CSVReader";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
 import "./Watchlist.css";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const Watchlist = props => {
   const cb = function(result) {};
@@ -320,6 +322,14 @@ const Watchlist = props => {
         callback={cb}
         exportFileName={`watchlists-${wlType}`}
       ></Table>
+      <Fab icon={<i className="fa fa-plus" />} variant="info">
+        <Action text={buttonTypeText} onClick={() => launchModal(0)}>
+          <i className="fa fa-user" />
+        </Action>
+        <Action text={<Xl8 xid="csv001">Import CSV</Xl8>} onClick={e => launchImport(e)}>
+          <CSVReader ref={importRef} callback={handleImportData} file={file} />
+        </Action>
+      </Fab>
       <WLModal
         type={tab}
         show={showModal}

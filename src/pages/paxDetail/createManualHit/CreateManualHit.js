@@ -42,9 +42,9 @@ const CreateManualHit = props => {
 
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
-      <Button className="dropdown-item" onClick={handleShow}>
-        <Xl8 xid="cmh001">Create Manual Hit</Xl8>
-      </Button>
+      <div onClick={handleShow}>
+        <i className="fa fa-flag"></i>
+      </div>
 
       <Modal
         show={show}

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
-import ChromeTabs from "../../components/chrometabs/ChromeTabs";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
 import { DropdownButton, Col } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
@@ -24,8 +23,10 @@ import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import { asArray, hasData } from "../../utils/utils";
-import "./PaxDetail.scss";
 import { ACTION } from "../../utils/constants";
+import "./PaxDetail.scss";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState({});
@@ -205,6 +206,44 @@ const PaxDetail = props => {
           leftChild={tablist}
           rightChild={actions}
         ></Title>
+        <Fab
+          icon={<i className="fa fa-plus" />}
+          variant="info"
+          event="click"
+          alwaysShowTitle={true}
+        >
+          <Action text="">
+            <AttachmentModal
+              callback={updateAttachmentList}
+              paxId={props.paxId}
+            ></AttachmentModal>
+          </Action>
+          <Action text="">
+            <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} />
+          </Action>
+          <Action text={""}>
+            <AddToWatchlist watchlistItems={watchlistData} />
+          </Action>
+          <Action text={<Xl8 xid="cmh001">Create Manual Hit</Xl8>}>
+            <CreateManualHit
+              paxId={props.paxId}
+              flightId={props.flightId}
+              callback={setHitSummaryRefreshKey}
+            />
+          </Action>
+          <Action text={<Xl8 xid="rep001">Download Report</Xl8>}>
+            <DownloadReport paxId={props.paxId} flightId={props.flightId} />
+          </Action>
+          <Action
+            text={
+              <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
+            }
+          >
+            {hasHit && (
+              <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
+            )}
+          </Action>
+        </Fab>
       </Main>
     </>
   );

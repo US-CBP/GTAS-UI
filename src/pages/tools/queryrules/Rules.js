@@ -12,6 +12,8 @@ import { hasData, getEndpoint } from "../../../utils/utils";
 import { QR, ACTION, RULETAB, ROLE } from "../../../utils/constants";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import QRModal from "./QRModal";
+import { Fab } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 import "./QueryRules.css";
 
 //TODO - the two fetches, rulesall and rules, are separate but they don't need to be. Until we have requirements preventing some
@@ -122,6 +124,7 @@ const Rules = props => {
   // Causes show modal to update in a useEffect. This gives the setRecord and setId (see fetchDetail) time to refresh
   // so the modal doesn't launch with stale or missing data.
   const triggerShowModal = recId => {
+    if (showModal && !recId) return closeModal();
     const recordId = recId;
     const title = recordId ? editRule : addRule;
 
@@ -223,21 +226,6 @@ const Rules = props => {
     </Tabs>
   );
 
-  const button = (
-    <Button
-      variant="ternary"
-      className="btn btn-info"
-      name={props.name}
-      placeholder={props.placeholder}
-      onClick={() => triggerShowModal()}
-      required={props.required}
-      value={props.inputVal}
-      alt={props.alt}
-    >
-      {addRule}
-    </Button>
-  );
-
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.RULEMGR]}>
       <Main className="full bg-white">
@@ -246,7 +234,6 @@ const Rules = props => {
           key="title"
           leftChild={tabs}
           leftCb={titleTabCallback}
-          rightChild={button}
         ></Title>
         <Table
           data={data}
@@ -254,6 +241,12 @@ const Rules = props => {
           header={header}
           key={`table-${tablekey}`}
         ></Table>
+        <Fab
+          icon={<i className="fa fa-plus" />}
+          variant="info"
+          onClick={() => triggerShowModal()}
+        ></Fab>
+
         {showModal && (
           <QRModal
             show="true"
