@@ -240,6 +240,7 @@ const FlightPax = props => {
           id="Flight Passengers"
           callback={cb}
           disableGroupBy={false}
+          enableColumnFilter={true}
         ></Table>
       </Main>
     </>
