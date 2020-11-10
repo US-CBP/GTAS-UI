@@ -294,3 +294,7 @@ ul[variant="info"].rtf button:hover {
 li .rtf--ab__c button[variant="rtf-red"] {
   background-color: #e83944;
 }
+
+.rtf.open .rtf--mb > i.nospin {
+  transform: unset !important;
+}

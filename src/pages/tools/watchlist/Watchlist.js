@@ -295,24 +295,12 @@ const Watchlist = props => {
   const header = tab === TAB.DOX ? doxHeader : paxHeader;
   const wlType = tab;
 
-  const dropdown = (
-    <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
-      <Dropdown.Item as="button" onClick={() => launchModal(0)}>
-        {buttonTypeText}
-      </Dropdown.Item>
-      <Dropdown.Item as="button" onClick={e => launchImport(e)}>
-        <CSVReader ref={importRef} callback={handleImportData} file={file} />
-      </Dropdown.Item>
-    </DropdownButton>
-  );
-
   return (
     <Main className="full bg-white">
       <Title
         title={<Xl8 xid="wl007">Watchlists</Xl8>}
         leftChild={tabs}
         leftCb={titleTabCallback}
-        rightChild={dropdown}
         key={tab}
       ></Title>
       <Table
@@ -324,7 +312,7 @@ const Watchlist = props => {
       ></Table>
       <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action text={buttonTypeText} onClick={() => launchModal(0)}>
-          <i className="fa fa-user" />
+          <i className="fa fa-plus" />
         </Action>
         <Action text={<Xl8 xid="csv001">Import CSV</Xl8>} onClick={e => launchImport(e)}>
           <CSVReader ref={importRef} callback={handleImportData} file={file} />

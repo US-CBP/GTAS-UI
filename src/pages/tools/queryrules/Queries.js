@@ -102,7 +102,7 @@ const Queries = props => {
           key={`table${tablekey}`}
         ></Table>
         <Fab
-          icon={<i className="fa fa-plus" />}
+          icon={<i className="fa fa-plus nospin" />}
           variant="info"
           onClick={() => launchModal()}
         ></Fab>
