@@ -302,3 +302,8 @@ li .rtf--ab__c button[variant="rtf-red"] {
 .rtf.open .rtf--mb > i.nospin {
   transform: unset !important;
 }
+
+.rtf.open .rtf--ab__c:hover > span,
+.rtf.open .rtf--ab__c > span.always-show {
+  opacity: 1 !important;
+}
