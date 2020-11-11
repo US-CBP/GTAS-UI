@@ -272,12 +272,17 @@ input[type="radio"] {
   overflow-y: auto;
   max-height: calc(100vh - 130px);
   text-align: -webkit-center;
-  /* padding-right: 20px; */
 }
 
 @media (min-width: 1150px) {
   .page-deck {
     padding: 0px 80px;
+  }
+}
+
+@media (min-width: 576px) {
+  .card-deck {
+    margin-right: 5px !important;
   }
 }
 
