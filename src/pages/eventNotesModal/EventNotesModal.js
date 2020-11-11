@@ -37,10 +37,11 @@ const EventNotesModal = props => {
 
   return (
     <>
-      <Button className="dropdown-item" onClick={handleShow}>
-        {/* <i className="fa fa-pencil"></i> <Xl8 xid="evn001">Add Event Notes</Xl8> */}
+      {/* <Button className="dropdown-item" onClick={handleShow}>
         <Xl8 xid="evn001">Add Event Notes</Xl8>
-      </Button>
+      </Button> */}
+
+      <div onClick={handleShow}>{props.children}</div>
 
       <Modal
         show={show}

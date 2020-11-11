@@ -12,7 +12,7 @@ import PNR from "./pnr/PNR";
 import APIS from "./apis/APIS";
 import FlightHistory from "./flightHistory/FlightHistory";
 import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
-import EventNotesModal from "../evenNotesModal/EventNotesModal";
+import EventNotesModal from "../eventNotesModal/EventNotesModal";
 import DownloadReport from "./downloadReports/DownloadReports";
 import Notification from "./notification/Notification";
 import ChangeHitStatus from "./changeHitStatus/ChangeHitStatus";
@@ -165,32 +165,37 @@ const PaxDetail = props => {
   }, [props.paxId]);
 
   // TODO: refac tabs as child routes, load data per page.
-  const actions = (
-    <DropdownButton
-      variant="info"
-      title={<Xl8 xid="manu002">Choose Action</Xl8>}
-      className="m-1"
-    >
-      <AttachmentModal
-        callback={updateAttachmentList}
-        paxId={props.paxId}
-      ></AttachmentModal>
-      <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} />
-      <AddToWatchlist watchlistItems={watchlistData} />
-      <CreateManualHit
-        paxId={props.paxId}
-        flightId={props.flightId}
-        callback={setHitSummaryRefreshKey}
-      />
-      <DownloadReport paxId={props.paxId} flightId={props.flightId} />
-      <Notification paxId={props.paxId} />
-      {hasHit && (
-        <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
-      )}
-    </DropdownButton>
-  );
+  // const actions = (
+  //   <DropdownButton
+  //     variant="info"
+  //     title={<Xl8 xid="manu002">Choose Action</Xl8>}
+  //     className="m-1"
+  //   >
+  //     <AttachmentModal
+  //       callback={updateAttachmentList}
+  //       paxId={props.paxId}
+  //     ></AttachmentModal>
+  //     <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} />
+  //     <AddToWatchlist watchlistItems={watchlistData} />
+  //     <CreateManualHit
+  //       paxId={props.paxId}
+  //       flightId={props.flightId}
+  //       callback={setHitSummaryRefreshKey}
+  //     />
+  //     <DownloadReport paxId={props.paxId} flightId={props.flightId} />
+  //     <Notification paxId={props.paxId} />
+  //     {hasHit && (
+  //       <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
+  //     )}
+  //   </DropdownButton>
+  // );
 
   const tablist = <Tabs tabs={tabs} />;
+  const changeHitStatusText = hasOpenHit ? (
+    <Xl8 xid="chs006">Set to REVIEWED</Xl8>
+  ) : (
+    <Xl8 xid="chs007">Set to RE-OPENED</Xl8>
+  );
   return (
     <>
       <SidenavContainer>
@@ -204,40 +209,43 @@ const PaxDetail = props => {
         <Title
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
           leftChild={tablist}
-          rightChild={actions}
         ></Title>
         <Fab icon={<i className="fa fa-plus" />} variant="info">
-          <Action text="">
-            <AttachmentModal
-              callback={updateAttachmentList}
-              paxId={props.paxId}
-            ></AttachmentModal>
-          </Action>
-          <Action text="">
-            <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} />
-          </Action>
-          <Action text={""}>
-            <AddToWatchlist watchlistItems={watchlistData} />
+          <Action text={<Xl8 xid="rep001">Download Report</Xl8>}>
+            <DownloadReport paxId={props.paxId} flightId={props.flightId} />
           </Action>
           <Action text={<Xl8 xid="cmh001">Create Manual Hit</Xl8>}>
             <CreateManualHit
               paxId={props.paxId}
               flightId={props.flightId}
               callback={setHitSummaryRefreshKey}
-            />
+            >
+              <i className="fa fa-flag"></i>
+            </CreateManualHit>
           </Action>
-          <Action text={<Xl8 xid="rep001">Download Report</Xl8>}>
-            <DownloadReport paxId={props.paxId} flightId={props.flightId} />
+          <Action text={<Xl8 xid="atw001">Add to Watchlist</Xl8>}>
+            <AddToWatchlist watchlistItems={watchlistData}>
+              <i className="fa fa-eye"></i>
+            </AddToWatchlist>
           </Action>
-          <Action
-            text={
-              <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
-            }
-          >
-            {hasHit && (
-              <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
-            )}
+          <Action text={<Xl8 xid="evn001">Add Event Notes</Xl8>}>
+            <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard}>
+              <i className="fa fa-pencil" />
+            </EventNotesModal>
           </Action>
+          <Action text={<Xl8 xid="attm007">Add Attachments</Xl8>}>
+            <AttachmentModal callback={updateAttachmentList} paxId={props.paxId}>
+              <i className="fa fa-paperclip" />
+            </AttachmentModal>
+          </Action>
+
+          {/* {hasHit && ( */}
+          <Action text={changeHitStatusText}>
+            <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit}>
+              <i className="fa fa-check-square-o" />
+            </ChangeHitStatus>
+          </Action>
+          {/* )} */}
         </Fab>
       </Main>
     </>

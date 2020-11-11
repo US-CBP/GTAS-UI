@@ -22,9 +22,20 @@ const ChangeHitStatus = props => {
     props.updateStatus(status, true);
     setShow(false);
   };
+
+  const nextStatus = props.hasOpenHit ? "REVIEWED" : "Re_Opened";
+
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
-      <SplitButton
+      <div
+        onClick={() => {
+          setShow(true);
+          setStatus(nextStatus);
+        }}
+      >
+        {props.children}
+      </div>
+      {/* <SplitButton
         key="paxHitStatus"
         title={<Xl8 xid="chs001">Change Status</Xl8>}
         className="dropdown-item"
@@ -52,7 +63,7 @@ const ChangeHitStatus = props => {
             Re-opened
           </Dropdown.Item>
         )}
-      </SplitButton>
+      </SplitButton> */}
 
       <Modal show={show} onHide={handleCancel} centered>
         <ModalHeader closeButton>

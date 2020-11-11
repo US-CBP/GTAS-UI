@@ -20,7 +20,7 @@ import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 import Confirm from "../../components/confirmationModal/Confirm";
-import EventNotesModal from "../evenNotesModal/EventNotesModal";
+import EventNotesModal from "../eventNotesModal/EventNotesModal";
 
 const Vetting = props => {
   const hitTypeOptions = [

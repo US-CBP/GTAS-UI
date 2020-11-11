@@ -42,9 +42,7 @@ const CreateManualHit = props => {
 
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
-      <div onClick={handleShow}>
-        <i className="fa fa-flag"></i>
-      </div>
+      <div onClick={handleShow}>{props.children}</div>
 
       <Modal
         show={show}
