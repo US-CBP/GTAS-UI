@@ -16,11 +16,16 @@ const CardWithTable = props => {
   });
 
   const tableRows = data.map((row, index) => {
+    let highlightRow = row.highlightRow;
     const tableData = Object.keys(headers).map(key => {
       const td = row[key];
       const triggerOverlay = !isShortText(td, textDisplayLimit);
       return (
-        <Overlay trigger={triggerOverlay ? "click" : ""} key={key} content={td}>
+        <Overlay
+          trigger={triggerOverlay ? ["click", "hover"] : ""}
+          key={key}
+          content={td}
+        >
           <td className={triggerOverlay ? "as-info" : ""}>
             {getShortText(td, textDisplayLimit)}
           </td>
@@ -29,7 +34,11 @@ const CardWithTable = props => {
     });
 
     return (
-      <tr key={index} onClick={() => cb(row.key)}>
+      <tr
+        key={index}
+        onClick={() => cb(row.key)}
+        className={highlightRow ? "highlight-table-row" : ""}
+      >
         {tableData}
       </tr>
     );
