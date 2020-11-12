@@ -51,9 +51,6 @@ const PNR = props => {
     return groupedDataByPaxId;
   };
 
-  const getTotalOf = (items = [], field, initVal = 0) => {
-    return items.reduce((total, item) => total + item[field], initVal);
-  };
   const getBagData = data => {
     const bags = asArray(data.bagSummaryVo?.bagsByFlightLeg).filter(
       bag => bag.data_source === "PNR"
@@ -64,30 +61,44 @@ const PNR = props => {
 
     Object.keys(bagsGroupedByFlightNumber).forEach(flightNumber => {
       const bags = bagsGroupedByFlightNumber[flightNumber];
+      const bagsGroupedByPaxId = groupBagDataByPaxId(bags);
+      const headerIndex = allParsedBagdata.length; //where the header with flight totals is inserted
 
       const aggregate = {
         flightNumber: flightNumber,
-        bagCount: getTotalOf(bags, "bag_count", 0),
-        totalWeight: getTotalOf(bags, "bag_weight", 0),
+        bagCount: 0,
+        totalWeight: 0,
         highlightRow: true
       };
-      allParsedBagdata.push(aggregate);
 
-      const bagsGroupedByPaxId = groupBagDataByPaxId(bags);
       Object.keys(bagsGroupedByPaxId).forEach(paxId => {
         const passenger = getPassengerName(paxId) || {};
         const currentBags = bagsGroupedByPaxId[paxId];
 
+        const bagCount = currentBags.reduce(
+          (count, currentBag) => Math.max(count, currentBag["bag_count"]),
+          0
+        );
+        const bagWeight = currentBags.reduce(
+          (weight, currentBag) => Math.max(weight, currentBag["bag_weight"]),
+          0
+        );
+        aggregate.bagCount += bagCount;
+        aggregate.totalWeight += bagWeight;
+
         const bagInfo = {
           passenger: `${passenger.lastName}, ${passenger.firstName}`,
-          bagCount: getTotalOf(currentBags, "bag_count", 0),
-          totalWeight: getTotalOf(currentBags, "bag_weight", 0),
+          bagCount: bagCount,
+          totalWeight: bagWeight,
           destination: currentBags[0]["destination"],
           bagIds: currentBags.map(bag => bag["bagId"]).join()
         };
 
         allParsedBagdata.push(bagInfo);
       });
+
+      //add the header with flight details
+      allParsedBagdata.splice(headerIndex, 0, aggregate);
     });
 
     return allParsedBagdata;
