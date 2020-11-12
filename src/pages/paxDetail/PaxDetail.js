@@ -214,20 +214,6 @@ const PaxDetail = props => {
           <Action text={<Xl8 xid="rep001">Download Report</Xl8>}>
             <DownloadReport paxId={props.paxId} flightId={props.flightId} />
           </Action>
-          <Action text={<Xl8 xid="cmh001">Create Manual Hit</Xl8>}>
-            <CreateManualHit
-              paxId={props.paxId}
-              flightId={props.flightId}
-              callback={setHitSummaryRefreshKey}
-            >
-              <i className="fa fa-flag"></i>
-            </CreateManualHit>
-          </Action>
-          <Action text={<Xl8 xid="atw001">Add to Watchlist</Xl8>}>
-            <AddToWatchlist watchlistItems={watchlistData}>
-              <i className="fa fa-eye"></i>
-            </AddToWatchlist>
-          </Action>
           <Action text={<Xl8 xid="evn001">Add Event Notes</Xl8>}>
             <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard}>
               <i className="fa fa-pencil" />
@@ -239,13 +225,27 @@ const PaxDetail = props => {
             </AttachmentModal>
           </Action>
 
-          {/* {hasHit && ( */}
-          <Action text={changeHitStatusText}>
-            <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit}>
-              <i className="fa fa-check-square-o" />
-            </ChangeHitStatus>
+          {hasHit && (
+            <Action text={changeHitStatusText} variant="rtf-red">
+              <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit}>
+                <i className="fa fa-check-square-o" />
+              </ChangeHitStatus>
+            </Action>
+          )}
+          <Action text={<Xl8 xid="cmh001">Create Manual Hit</Xl8>} variant="rtf-red">
+            <CreateManualHit
+              paxId={props.paxId}
+              flightId={props.flightId}
+              callback={setHitSummaryRefreshKey}
+            >
+              <i className="fa fa-flag"></i>
+            </CreateManualHit>
           </Action>
-          {/* )} */}
+          <Action text={<Xl8 xid="atw001">Add to Watchlist</Xl8>} variant="rtf-red">
+            <AddToWatchlist watchlistItems={watchlistData}>
+              <i className="fa fa-eye"></i>
+            </AddToWatchlist>
+          </Action>
         </Fab>
       </Main>
     </>
