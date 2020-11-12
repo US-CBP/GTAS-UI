@@ -73,3 +73,13 @@
   text-decoration: none;
   background-color: #e5f3ff;
 }
+
+.signup-checkbox > .form-group > div > .row > div {
+  column-count: 2;
+  -moz-column-gap: 1.25rem;
+  column-gap: 1.25rem;
+  orphans: 1;
+  widows: 1;
+  margin-bottom: 10px;
+  width: -webkit-fill-available;
+}
