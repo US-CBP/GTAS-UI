@@ -235,32 +235,36 @@ input[type="radio"] {
   background: url("./images/plane-arrival-solid.svg") no-repeat no-repeat;
   height: 25px;
   width: 25px;
+  background-position: bottom;
 }
 
 .img-departure {
   background: url("./images/plane-departure-solid.svg") no-repeat no-repeat;
   height: 25px;
   width: 25px;
+  background-position: bottom;
 }
 
 .sm .img-arrival {
-  height: 15px;
-  width: 15px;
+  height: 18px;
+  width: 18px;
   display: inline-flex;
   margin-right: 5px;
-  vertical-align: middle;
+  /* vertical-align: middle; */
   align-items: center;
 }
 
 .sm .img-departure {
-  height: 15px;
-  width: 15px;
+  height: 18px;
+  width: 18px;
   display: inline-flex;
   margin-right: 5px;
-  vertical-align: middle;
+  /* vertical-align: middle; */
   align-items: center;
 }
 
+.sm.cdb-red > .img-arrival,
+.sm.cdb-red > .img-departure,
 .sm.cdb-gray > .img-arrival,
 .sm.cdb-gray > .img-departure {
   filter: invert(1);
