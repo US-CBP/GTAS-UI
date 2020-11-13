@@ -40,9 +40,19 @@ const CreateManualHit = props => {
     });
   }, []);
 
+  const launcher = props.icon ? (
+    <div onClick={handleShow}>
+      <i className="fa fa-flag"></i>
+    </div>
+  ) : (
+    <div className="dropdown-item" onClick={handleShow}>
+      <Xl8 xid="cmh001">Create Manual Hit</Xl8>
+    </div>
+  );
+
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
-      <div onClick={handleShow}>{props.children}</div>
+      {launcher}
 
       <Modal
         show={show}

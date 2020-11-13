@@ -22,11 +22,17 @@ const DownloadReport = props => {
     });
   };
 
-  return (
+  const launcher = props.icon ? (
     <div onClick={download}>
-      <i className="fa fa-download" />
+      <i className="fa fa-download"></i>
+    </div>
+  ) : (
+    <div className="dropdown-item" onClick={download}>
+      <Xl8 xid="rep001">Download Report</Xl8>
     </div>
   );
+
+  return launcher;
 };
 
 export default DownloadReport;

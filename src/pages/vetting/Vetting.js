@@ -86,7 +86,7 @@ const Vetting = props => {
       Header: ["vet023", "Actions"],
       Cell: ({ row }) => (
         <DropdownButton
-          variant="info"
+          variant="outline-info"
           title={<Xl8 xid="vet020">Choose Action</Xl8>}
           className="m-1 text-center"
         >
@@ -95,7 +95,9 @@ const Vetting = props => {
               header={<Xl8 xid="vet021">Update Hit Status</Xl8>}
               message={
                 <span>
-                  <Xl8 xid="vet024">Please confirm to change the hit status to </Xl8>
+                  <Xl8 xid="vet024">Please click confirm to change the status to:</Xl8>
+                  <br />
+                  <br />
                   {row.original.status === HIT_STATUS.REVIEWED ? (
                     <Xl8 xid="vet025">Reopened</Xl8>
                   ) : (
@@ -114,15 +116,22 @@ const Vetting = props => {
                   {row.original.status === HIT_STATUS.REVIEWED ? (
                     <Xl8 xid="vet027">Reopen</Xl8>
                   ) : (
-                    <Xl8 xid="vet028">Review</Xl8>
+                    <Xl8 xid="vet028">Reviewed</Xl8>
                   )}
                 </Button>
               )}
             </Confirm>
           </RoleAuthenticator>
-          <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
-          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
-          <EventNotesModal paxId={row.original.paxId} callback={cb} />
+          <Notification
+            paxId={`${row.original.paxId}`}
+            usersEmails={usersEmails}
+          ></Notification>
+          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId}>
+            <div className="dropdown-item">
+              <Xl8 xid="rep001">Download Report</Xl8>
+            </div>
+          </DownloadReport>
+          <EventNotesModal paxId={row.original.paxId} callback={cb}></EventNotesModal>
         </DropdownButton>
       )
     },

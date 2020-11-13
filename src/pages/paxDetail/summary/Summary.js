@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { localeDate, asArray, hasData, localeDateOnly } from "../../../utils/utils";
+import CardWithTable from "../../../components/cardWithTable/CardWithTable";
+import Xl8 from "../../../components/xl8/Xl8";
 import {
   paxWatchListLink,
   flightpaxHitSummary,
   paxEventNotesHistory
 } from "../../../services/serviceWrapper";
+import {
+  localeDate,
+  asArray,
+  hasData,
+  localeDateOnly,
+  formatRuleConditions
+} from "../../../utils/utils";
 import { CardColumns } from "react-bootstrap";
-import CardWithTable from "../../../components/cardWithTable/CardWithTable";
-import Xl8 from "../../../components/xl8/Xl8";
 import "./Summary.scss";
 
 const Summary = props => {
@@ -76,7 +82,10 @@ const Summary = props => {
 
   useEffect(() => {
     flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
-      setPaxHitSummary(res);
+      const formattedResults = asArray(res).map(rec => {
+        return { ...rec, ruleConditions: formatRuleConditions(rec.ruleConditions) };
+      });
+      setPaxHitSummary(formattedResults);
       const openHit = hasData(res)
         ? res.find(hit => hit.status === "New" || hit.status === "Re_Opened")
         : undefined;

@@ -211,8 +211,11 @@ const PaxDetail = props => {
           leftChild={tablist}
         ></Title>
         <Fab icon={<i className="fa fa-plus" />} variant="info">
+          <Action text={<Xl8 xid="not001">Notify</Xl8>}>
+            <Notification paxId={props.paxId} icon />
+          </Action>
           <Action text={<Xl8 xid="rep001">Download Report</Xl8>}>
-            <DownloadReport paxId={props.paxId} flightId={props.flightId} />
+            <DownloadReport paxId={props.paxId} flightId={props.flightId} icon />
           </Action>
           <Action text={<Xl8 xid="evn001">Add Event Notes</Xl8>}>
             <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard}>
@@ -227,9 +230,11 @@ const PaxDetail = props => {
 
           {hasHit && (
             <Action text={changeHitStatusText} variant="rtf-red">
-              <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit}>
-                <i className="fa fa-check-square-o" />
-              </ChangeHitStatus>
+              <ChangeHitStatus
+                updateStatus={updateHitStatus}
+                hasOpenHit={hasOpenHit}
+                icon
+              />
             </Action>
           )}
           <Action text={<Xl8 xid="cmh001">Create Manual Hit</Xl8>} variant="rtf-red">
@@ -237,14 +242,11 @@ const PaxDetail = props => {
               paxId={props.paxId}
               flightId={props.flightId}
               callback={setHitSummaryRefreshKey}
-            >
-              <i className="fa fa-flag"></i>
-            </CreateManualHit>
+              icon
+            />
           </Action>
           <Action text={<Xl8 xid="atw001">Add to Watchlist</Xl8>} variant="rtf-red">
-            <AddToWatchlist watchlistItems={watchlistData}>
-              <i className="fa fa-eye"></i>
-            </AddToWatchlist>
+            <AddToWatchlist watchlistItems={watchlistData} icon />
           </Action>
         </Fab>
       </Main>
