@@ -312,3 +312,7 @@ li .rtf--ab__c button[variant="rtf-red"] {
 .rtf.open .rtf--ab__c > span.always-show {
   opacity: 1 !important;
 }
+
+.table td {
+  vertical-align: middle !important;
+}

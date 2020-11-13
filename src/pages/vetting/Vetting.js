@@ -189,7 +189,7 @@ const Vetting = props => {
             </Overlay>
           );
         });
-        return <ul>{listdata}</ul>;
+        return <ul className="bio-data">{listdata}</ul>;
       }
     },
     {
@@ -451,7 +451,7 @@ const Vetting = props => {
               callback={cb}
               toggleDateTimePicker={toggleDateTimePicker}
               selected={showDateTimePicker.current}
-              alt=""
+              alt="Show Date Time Picker"
               spacebetween
             />
             {showDateTimePicker.current && (

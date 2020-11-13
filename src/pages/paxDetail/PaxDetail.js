@@ -211,19 +211,19 @@ const PaxDetail = props => {
           leftChild={tablist}
         ></Title>
         <Fab icon={<i className="fa fa-plus" />} variant="info">
-          <Action text={<Xl8 xid="not001">Notify</Xl8>}>
+          {/* <Action text={<Xl8 xid="not001">Notify</Xl8>}>
             <Notification paxId={props.paxId} icon />
-          </Action>
+          </Action> */}
           <Action text={<Xl8 xid="rep001">Download Report</Xl8>}>
             <DownloadReport paxId={props.paxId} flightId={props.flightId} icon />
           </Action>
           <Action text={<Xl8 xid="evn001">Add Event Notes</Xl8>}>
-            <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard}>
+            <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} icon>
               <i className="fa fa-pencil" />
             </EventNotesModal>
           </Action>
           <Action text={<Xl8 xid="attm007">Add Attachments</Xl8>}>
-            <AttachmentModal callback={updateAttachmentList} paxId={props.paxId}>
+            <AttachmentModal callback={updateAttachmentList} paxId={props.paxId} icon>
               <i className="fa fa-paperclip" />
             </AttachmentModal>
           </Action>
