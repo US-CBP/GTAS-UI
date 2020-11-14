@@ -384,12 +384,12 @@ const Vetting = props => {
             <LabelledInput
               name="ruleTypes"
               datafield="ruleTypes"
-              labelText={<Xl8 xid="vet009">Hit Types</Xl8>}
+              labelText={<Xl8 xid="vet009">Hit Source</Xl8>}
               inputType="multiSelect"
               inputVal={hitTypeOptions}
               options={hitTypeOptions}
               callback={cb}
-              alt={<Xl8 xid="3">Hit Types</Xl8>}
+              alt="Hit Source"
             />
             {hasData(noteTypes) && (
               <LabelledInput
