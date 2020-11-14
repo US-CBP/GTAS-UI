@@ -20,6 +20,10 @@ const FlightHistory = props => {
   const [currentFlightHistory, setcurrentFlightHistory] = useState([]);
   const [fullTravelHistory, setFullTravelHistory] = useState([]);
 
+  const sortFlightByEta = (flight1, flight2) => {
+    return flight2.eta - flight1.eta;
+  };
+
   const addLinkToFlight = flight => {
     //Only prime flights need a link
     const flightId = flight.flightId || flight.id;
@@ -53,12 +57,18 @@ const FlightHistory = props => {
 
   const fetchData = () => {
     paxFlightHistory.get(props.flightId, props.paxId).then(res => {
-      const historyData = asArray(res).map(data => parseFlightData(data));
+      const historyData = asArray(res)
+        .sort(sortFlightByEta)
+        .map(data => parseFlightData(data));
+
       setcurrentFlightHistory(historyData);
     });
 
     paxFullTravelHistory.get(props.flightId, props.paxId).then(res => {
-      const historyData = asArray(res).map(data => parseFlightData(data));
+      const historyData = asArray(res)
+        .sort(sortFlightByEta)
+        .map(data => parseFlightData(data));
+
       setFullTravelHistory(historyData);
     });
   };
