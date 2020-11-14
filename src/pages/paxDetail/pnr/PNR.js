@@ -8,7 +8,7 @@ import { Link } from "@reach/router";
 
 const PNR = props => {
   const data = hasData(props.data) ? props.data : {};
-  const segmentTitle = `${data.recordLocator} ${
+  const segmentTitle = `Reservation Number: ${data.recordLocator} ${
     hasData(data.version) ? `(Version: ${data.version})` : ""
   }`;
 
