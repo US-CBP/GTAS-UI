@@ -12,6 +12,27 @@ const PNR = props => {
     hasData(data.version) ? `(Version: ${data.version})` : ""
   }`;
 
+  const addLinkToFlight = flight => {
+    //Only prime flights need a link
+    const isPrimeFlight = !hasData(flight.bookingDetailId);
+    const stateData = {
+      direction: flight.direction,
+      eta: flight.eta,
+      etd: flight.etd,
+      fullFlightNumber: flight.flightNumber,
+      flightDestination: flight.destinationAirport,
+      flightOrigin: flight.originAirport,
+      passengerCount: flight.passengerCount
+    };
+
+    return isPrimeFlight ? (
+      <Link to={"/gtas/flightpax/" + flight.flightId} state={{ data: stateData }}>
+        {flight.flightNumber}
+      </Link>
+    ) : (
+      flight.flightNumber
+    );
+  };
   const getPassengerName = paxId => {
     const passengers = data.passengers;
     const passenger = passengers.find(passenger => passenger.paxId === paxId?.toString());
@@ -179,7 +200,7 @@ const PNR = props => {
   const itinerary = asArray(data.flightLegs).map((leg, index) => {
     return {
       leg: index + 1,
-      flightNumber: leg.flightNumber,
+      flightNumber: addLinkToFlight(leg),
       origin: leg.originAirport,
       destination: leg.destinationAirport,
       departure: localeDate(leg.etd),
