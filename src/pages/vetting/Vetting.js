@@ -65,7 +65,8 @@ const Vetting = props => {
     return (
       <ul className="bio-data">
         <li>
-          <Xl8 xid="vet001">Name:</Xl8> {pax.paxName}
+          <Xl8 xid="vet001">Name:</Xl8>{" "}
+          {`${pax.lastName}, ${(pax.firstName || "").toLowerCase()}`}
         </li>
         <li>
           <Xl8 xid="vet002">DOB:</Xl8> {`${pax.dob} (${getAge(pax.dob)})`}
