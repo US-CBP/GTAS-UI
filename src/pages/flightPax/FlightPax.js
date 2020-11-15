@@ -102,7 +102,7 @@ const FlightPax = props => {
     },
     { Accessor: "gender", Xl8: true, Header: ["fp017", "Gender"], disableGroupBy: true },
     {
-      Accessor: "dobStr",
+      Accessor: "dobAge",
       Xl8: true,
       Header: ["fp018", "DOB"],
       Cell: ({ row }) => <div>{row.original.dobAge}</div>,
