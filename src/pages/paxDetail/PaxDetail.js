@@ -26,6 +26,7 @@ import { paxdetails, cases } from "../../services/serviceWrapper";
 import { asArray, hasData } from "../../utils/utils";
 import "./PaxDetail.scss";
 import { ACTION } from "../../utils/constants";
+import Loading from "../../components/loading/Loading";
 
 const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState({});
@@ -43,6 +44,7 @@ const PaxDetail = props => {
   const [watchlistData, setWatchlistData] = useState({});
   const [paxDetailsData, setPaxDetailsData] = useState();
   const [paxDocuments, setPaxDocuments] = useState([]);
+  const [showLoading, setShowLoading] = useState(false);
 
   const cb = () => {};
   const refreshEventNotesCard = () => {
@@ -144,6 +146,7 @@ const PaxDetail = props => {
   };
 
   const fetchData = () => {
+    setShowLoading(true);
     paxdetails.get(props.flightId, props.paxId).then(res => {
       setPax(paxinfoData(res));
       setFlightBadge(res);
@@ -156,6 +159,7 @@ const PaxDetail = props => {
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
       setWatchlistData({ passenger: p, documents: res.documents });
       setPaxDocuments(res.documents);
+      setShowLoading(false);
     });
   };
 
@@ -190,7 +194,9 @@ const PaxDetail = props => {
   );
 
   const tablist = <Tabs tabs={tabs} />;
-  return (
+  return showLoading ? (
+    <Loading></Loading>
+  ) : (
     <>
       <SidenavContainer>
         <Col>
