@@ -176,6 +176,18 @@ export function localeMonthDayTime(val) {
   return new Date(val).toLocaleString(locale, options);
 }
 
+// Locale Month Year format (creditcard expiration dates)
+export const localeMonthYear = val => {
+  if (!hasData(val)) return "";
+
+  const locale = window.navigator.language;
+  const options = {
+    month: "2-digit",
+    year: "2-digit"
+  };
+  return new Date(val).toLocaleString(locale, options);
+};
+
 // Returns the day of the week for a given date string
 // WARNING: dates in the format yyyy-mm-dd with no timezone indicated are interpreted
 // as UTC dates, which will NOT equal the locale date for the hours where the UTC timezone

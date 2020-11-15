@@ -822,7 +822,7 @@ const QRModal = props => {
               variant="outline-dark"
               onClick={onRun}
             >
-              <Xl8 xid="qrm010">Run</Xl8>
+              <Xl8 xid="qrm010">Query</Xl8>
             </Button>
           </RoleAuthenticator>
           {isEdit && (

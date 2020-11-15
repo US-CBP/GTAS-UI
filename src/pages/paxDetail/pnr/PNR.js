@@ -2,7 +2,13 @@ import React from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import SegmentTable from "../../../components/segmentTable/SegmentTable";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
-import { asArray, hasData, localeDate, localeDateOnly } from "../../../utils/utils";
+import {
+  asArray,
+  hasData,
+  localeDate,
+  localeDateOnly,
+  localeMonthYear
+} from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
 import { Link } from "@reach/router";
 
@@ -255,7 +261,7 @@ const PNR = props => {
   const creditCards = asArray(data.creditCards).map(ccData => {
     return {
       ...ccData,
-      expiration: localeDateOnly(ccData.expiration),
+      expiration: localeMonthYear(ccData.expiration),
       key: `FOP${ccData.number} `
     };
   });

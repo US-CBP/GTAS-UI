@@ -337,7 +337,7 @@ export default class App extends React.Component {
                                 icon="fa-toggle-on"
                               ></Settings>
                               <FileDownload
-                                name={<Xl8 xid="app018">File Download</Xl8>}
+                                name={<Xl8 xid="app018">Download Logs</Xl8>}
                                 desc={<Xl8 xid="app019">Download system log files</Xl8>}
                                 icon="fa-download"
                                 path="filedownload"
