@@ -397,7 +397,7 @@ export default class App extends React.Component {
                               <Auxiliary
                                 name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
                                 desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}
-                                icon="fa-line-chart"
+                                icon="kibana"
                                 path="https://localhost:5601/login?next=%2F"
                                 hasExternalLink={true}
                               ></Auxiliary>
@@ -405,7 +405,7 @@ export default class App extends React.Component {
                                 name={<Xl8 xid="app033">Neo4j</Xl8>}
                                 desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
                                 path="http://localhost:7474/browser/"
-                                icon="fa-database"
+                                icon="neo4j"
                                 hasExternalLink={true}
                               ></Auxiliary>
                             </Admin>
