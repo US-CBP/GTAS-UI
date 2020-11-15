@@ -4,9 +4,8 @@ import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import { users, roles } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import CheckboxGroup from "../../../components/inputs/checkboxGroup/CheckboxGroup";
 import { UserContext } from "../../../context/user/UserContext";
-import { asArray, isValidPassword } from "../../../utils/utils";
+import { asArray, hasData, isValidPassword } from "../../../utils/utils";
 import { ACTION, ROLE } from "../../../utils/constants";
 import "./ManageUsers.scss";
 import Toast from "../../../components/toast/Toast";
@@ -17,7 +16,6 @@ import Modal, {
 } from "../../../components/modal/Modal";
 
 const UserModal = props => {
-  const [selectedRoles, setSelectedRoles] = useState();
   const [allRoles, setAllRoles] = useState([]);
   const { getUserState } = useContext(UserContext);
   const [showAlert, setShowAlert] = useState(false);
@@ -35,54 +33,42 @@ const UserModal = props => {
     return roles.includes(ROLE.ADMIN);
   };
 
-  const cbRoles = function(result) {
-    const coll = result.value
-      .map(item => {
-        if (item.checked) {
-          return { roleId: item.roleId, roleDescription: item.roleDescription };
-        }
-      })
-      .filter(Boolean);
-
-    setSelectedRoles(coll);
+  const isRoleDisabled = role => {
+    return (
+      role.roleDescription === ROLE.FLIGHTVWR ||
+      (props.isEdit && isLoggedinUser(row.userId) && loggedinUserHasAdminRole())
+    );
   };
 
-  const isCheckedRole = (roleToBeChecked, activeRoles) => {
-    let boolVal = false;
-    activeRoles.map(activeRole => {
-      if (activeRole.roleId === roleToBeChecked.roleId) {
-        boolVal = true;
-      }
+  const compareRoles = (role1, role2) => {
+    const roleDescription1 = role1.roleDescription?.toUpperCase();
+    const roleDescription2 = role2.roleDescription?.toUpperCase();
+    if (roleDescription1 < roleDescription2) return -1;
+    if (roleDescription1 > roleDescription2) return 1;
+
+    return 0;
+  };
+
+  const roleOptions = asArray(allRoles)
+    .sort(compareRoles)
+    .map(role => {
+      return {
+        label: role.roleDescription,
+        value: role.roleId,
+        disabled: isRoleDisabled(role)
+      };
     });
-    return boolVal;
-  };
 
-  const transformRoles = asArray(allRoles).map(role => {
-    let isChecked = false;
-    let isDisabled = false;
-    if (props.isEdit && isLoggedinUser(row.userId) && loggedinUserHasAdminRole()) {
-      isDisabled = true;
-    }
-    if (props.isEdit && role.roleDescription !== ROLE.FLIGHTVWR) {
-      isChecked = isCheckedRole(role, props.editRowDetails.roles);
-    } else if (role.roleDescription === ROLE.FLIGHTVWR) {
-      isChecked = true;
-      isDisabled = true;
-    }
+  const defaultRole = [{ label: ROLE.FLIGHTVWR, value: 9, disabled: true }];
+  const existingRoles = asArray(props.editRowDetails.roles).map(role => {
     return {
-      ...role,
       label: role.roleDescription,
-      key: role.roleId,
-      type: "checkbox",
-      checked: isChecked,
-      disabled: isDisabled
+      value: role.roleId,
+      disabled: isRoleDisabled(role)
     };
   });
 
-  const rcb = {
-    name: "rolesCheckboxes",
-    value: transformRoles
-  };
+  const selectedRoles = hasData(existingRoles) ? existingRoles : defaultRole;
 
   const postSubmit = (status, res) => {
     if (status === ACTION.CANCEL) {
@@ -104,7 +90,9 @@ const UserModal = props => {
   const preSubmit = fields => {
     let res = { ...fields[0] };
     //TODO selectedRoles is empty if no change occurs, which makes hard to apply default values
-    res.roles = selectedRoles;
+    res.roles = asArray(res.roles).map(role => {
+      return { roleId: role.value, roleDescription: role.label };
+    });
     res.password = props.isEdit ? null : res.password;
     res.isCurrentlyLoggedInUser = isLoggedinUser(row.userId);
     res.active = res.active ? 1 : 0;
@@ -266,6 +254,17 @@ const UserModal = props => {
               callback={cb}
               spacebetween
             />
+            <LabelledInput
+              name="roles"
+              datafield="roles"
+              labelText={<Xl8 xid="um015">Roles</Xl8>}
+              inputType="multiSelect"
+              inputVal={selectedRoles}
+              options={roleOptions}
+              callback={cb}
+              alt={<Xl8 xid="um015">Roles</Xl8>}
+              spacebetween
+            />
 
             <LabelledInput
               datafield="emailEnabled"
@@ -320,16 +319,6 @@ const UserModal = props => {
                 spacebetween
               />
             )}
-
-            <div className="um-checkbox">
-              <CheckboxGroup
-                datafield
-                callback={cbRoles}
-                inputVal={rcb.value}
-                labelText={<Xl8 xid="um015">Roles:</Xl8>}
-                name="roles"
-              />
-            </div>
           </Form>
 
           <Toast

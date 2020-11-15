@@ -1,15 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { settingsinfo } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { Container, Col } from "react-bootstrap";
+import { Container, Col, Button } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import Main from "../../../components/main/Main";
 import Xl8 from "../../../components/xl8/Xl8";
+import SettingModal from "./settingModal";
 
-const Settings = ({ name }) => {
-  const onChange = (status, result) => {};
+const Settings = props => {
+  const [data, setData] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [refreshKey, setRefreshKey] = useState();
+  const [formKey, setFormKey] = useState();
+
   const cb = function() {};
+  const onChange = () => {
+    setRefreshKey(new Date());
+    setShowModal(false);
+  };
+
+  const editButton = <Button onClick={() => setShowModal(true)}>Edit Settings</Button>;
+  useEffect(() => {
+    settingsinfo.get().then(res => {
+      setData(res);
+      setFormKey(new Date());
+    });
+  }, [refreshKey]);
 
   return (
     <Main className="full">
@@ -18,16 +35,12 @@ const Settings = ({ name }) => {
       <Container>
         <Col lg={{ span: 4, offset: 4 }}>
           <Form
-            getService={settingsinfo.get}
-            submitService={settingsinfo.put}
-            callback={onChange}
+            callback={cb}
             title=""
-            action="edit"
-            shouldConfirm={true}
-            refreshOnSubmit
-            confirmationMessage={
-              <Xl8 xid="set007">Please confirm these updates to settings</Xl8>
-            }
+            action="readonly"
+            data={data}
+            key={formKey}
+            customButtons={editButton}
           >
             <LabelledInput
               datafield
@@ -36,6 +49,7 @@ const Settings = ({ name }) => {
               name="matchingThreshold"
               callback={cb}
               alt={<Xl8 xid="7">Matching Threshold</Xl8>}
+              readOnly
             />
             <LabelledInput
               datafield
@@ -44,6 +58,7 @@ const Settings = ({ name }) => {
               name="maxPassengerQueryResult"
               callback={cb}
               alt="nothing"
+              readOnly
             />
             <LabelledInput
               datafield
@@ -52,6 +67,7 @@ const Settings = ({ name }) => {
               name="maxFlightQueryResult"
               callback={cb}
               alt="nothing"
+              readOnly
             />
             <LabelledInput
               datafield
@@ -62,22 +78,26 @@ const Settings = ({ name }) => {
               name="maxRuleHit"
               callback={cb}
               alt="nothing"
+              readOnly
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="set006">APIS Only Flag:</Xl8>}
-              inputType="select"
-              options={[
-                { value: "TRUE", label: "TRUE" },
-                { value: "FALSE", label: "FALSE" }
-              ]}
+              inputType="text"
               name="apisOnlyFlag"
               callback={cb}
               alt="nothing"
+              readOnly
             />
           </Form>
         </Col>
       </Container>
+      <SettingModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        data={data}
+        callback={onChange}
+      />
     </Main>
   );
 };

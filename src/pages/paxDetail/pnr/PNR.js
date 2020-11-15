@@ -2,7 +2,13 @@ import React from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import SegmentTable from "../../../components/segmentTable/SegmentTable";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
-import { asArray, hasData, localeDate, localeDateOnly } from "../../../utils/utils";
+import {
+  asArray,
+  hasData,
+  localeDate,
+  localeDateOnly,
+  localeMonthYear
+} from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
 import { Link } from "@reach/router";
 
@@ -11,6 +17,98 @@ const PNR = props => {
   const segmentTitle = `${data.recordLocator} ${
     hasData(data.version) ? `(Version: ${data.version})` : ""
   }`;
+
+  const getPassengerName = paxId => {
+    const passengers = data.passengers;
+    const passenger = passengers.find(passenger => passenger.paxId === paxId?.toString());
+    return passenger;
+  };
+
+  const getFlightNumber = bookingDetailId => {
+    const flightLegs = asArray(data.flightLegs);
+    const flightLeg = flightLegs.find(leg => {
+      const id = leg.bookingDetailId || leg.flightId;
+      return id?.toString() === bookingDetailId?.toString();
+    });
+    return hasData(flightLeg) ? flightLeg.flightNumber : "";
+  };
+
+  const groupBagDataByFlightNumber = data => {
+    const groupedData = data.reduce((accumulator, bag) => {
+      const id = bag.bookingDetailId || bag.flightId;
+      const flightNumber = getFlightNumber(id);
+      accumulator[flightNumber] = asArray(accumulator[flightNumber]);
+      accumulator[flightNumber].push(bag);
+      return accumulator;
+    }, {});
+
+    return groupedData;
+  };
+
+  const groupBagDataByPaxId = bags => {
+    const groupedDataByPaxId = bags.reduce((acc, bag) => {
+      const paxId = bag["passengerId"];
+      acc[paxId] = asArray(acc[paxId]);
+      acc[paxId].push(bag);
+
+      return acc;
+    }, {});
+
+    return groupedDataByPaxId;
+  };
+
+  const getBagData = data => {
+    const bags = asArray(data.bagSummaryVo?.bagsByFlightLeg).filter(
+      bag => bag.data_source === "PNR"
+    );
+
+    const bagsGroupedByFlightNumber = groupBagDataByFlightNumber(bags);
+    const allParsedBagdata = [];
+
+    Object.keys(bagsGroupedByFlightNumber).forEach(flightNumber => {
+      const bags = bagsGroupedByFlightNumber[flightNumber];
+      const bagsGroupedByPaxId = groupBagDataByPaxId(bags);
+      const headerIndex = allParsedBagdata.length; //where the header with flight totals is inserted
+
+      const aggregate = {
+        flightNumber: flightNumber,
+        bagCount: 0,
+        totalWeight: 0,
+        highlightRow: true
+      };
+
+      Object.keys(bagsGroupedByPaxId).forEach(paxId => {
+        const passenger = getPassengerName(paxId) || {};
+        const currentBags = bagsGroupedByPaxId[paxId];
+
+        const bagCount = currentBags.reduce(
+          (count, currentBag) => Math.max(count, currentBag["bag_count"]),
+          0
+        );
+        const bagWeight = currentBags.reduce(
+          (weight, currentBag) => Math.max(weight, currentBag["bag_weight"]),
+          0
+        );
+        aggregate.bagCount += bagCount;
+        aggregate.totalWeight += bagWeight;
+
+        const bagInfo = {
+          passenger: `${passenger.lastName}, ${passenger.firstName}`,
+          bagCount: bagCount,
+          totalWeight: bagWeight,
+          destination: currentBags[0]["destination"],
+          bagIds: currentBags.map(bag => bag["bagId"]).join()
+        };
+
+        allParsedBagdata.push(bagInfo);
+      });
+
+      //add the header with flight details
+      allParsedBagdata.splice(headerIndex, 0, aggregate);
+    });
+
+    return allParsedBagdata;
+  };
 
   const tripType = data.tripType || "Trip Type";
   const headers = {
@@ -73,6 +171,14 @@ const PNR = props => {
       lastName: <Xl8 xid="pnr038">Last Name</Xl8>,
       flightNumber: <Xl8 xid="pnr039">Flight Number</Xl8>,
       number: <Xl8 xid="pnr040">Seat Number</Xl8>
+    },
+    totalBaggage: {
+      flightNumber: <Xl8 xid="pnr057">Flight #</Xl8>,
+      passenger: <Xl8 xid="pnr053">Passenger</Xl8>,
+      bagCount: <Xl8 xid="pnr055">Bag Count</Xl8>,
+      totalWeight: <Xl8 xid="pnr056">Total Bag Weight</Xl8>,
+      destination: <Xl8 xid="pnr058">Destination</Xl8>,
+      bagIds: <Xl8 xid="pnr052">Bag Ids</Xl8>
     }
   };
   const rawPnrSegments = asArray(data.segmentList);
@@ -129,7 +235,7 @@ const PNR = props => {
   const creditCards = asArray(data.creditCards).map(ccData => {
     return {
       ...ccData,
-      expiration: localeDateOnly(ccData.expiration),
+      expiration: localeMonthYear(ccData.expiration),
       key: `FOP${ccData.number} `
     };
   });
@@ -151,6 +257,8 @@ const PNR = props => {
       key: `SEAT${seatAssignment.number}`
     };
   });
+
+  const totalBaggage = getBagData(data);
 
   const segmentRef = React.createRef();
 
@@ -236,6 +344,12 @@ const PNR = props => {
               data={agencies}
               headers={headers.agencies}
               title={<Xl8 xid="pnr050">Agencies</Xl8>}
+              callback={setActiveKeyWrapper}
+            />
+            <CardWithTable
+              data={totalBaggage}
+              headers={headers.totalBaggage}
+              title={<Xl8 xid="pnr051">Total PNR Baggage </Xl8>}
               callback={setActiveKeyWrapper}
             />
           </Container>
