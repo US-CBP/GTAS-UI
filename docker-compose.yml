@@ -12,9 +12,9 @@ services:
     restart: always
     secrets:
       - source: ui-cert
-        target: /certs/gtas.crt
+        target: /ui-cert/gtas.crt
       - source: ui-key
-        target: /certs/gtas.key
+        target: /ui-key/gtas.key
     networks:
       - gtas-webapp-network
 networks:

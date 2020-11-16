@@ -6,7 +6,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY . .
 
-RUN mkdir /certs && npm install
+RUN mkdir /ui-cert /ui-key && npm install
 RUN npm i -S -g serve
 RUN npm run build
 
