@@ -20,7 +20,7 @@ import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 import Confirm from "../../components/confirmationModal/Confirm";
-import EventNotesModal from "../eventNotesModal/EventNotesModal";
+import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
 
 const Vetting = props => {
   const hitTypeOptions = [
@@ -91,6 +91,17 @@ const Vetting = props => {
           title={<Xl8 xid="vet020">Choose Action</Xl8>}
           className="m-1 text-center"
         >
+          <EventNotesModal paxId={row.original.paxId} callback={cb}></EventNotesModal>
+          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId}>
+            <div className="dropdown-item">
+              <Xl8 xid="rep001">Download Report</Xl8>
+            </div>
+          </DownloadReport>
+          <Notification
+            paxId={`${row.original.paxId}`}
+            usersEmails={usersEmails}
+          ></Notification>
+
           <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
             <Confirm
               header={<Xl8 xid="vet021">Update Hit Status</Xl8>}
@@ -123,16 +134,6 @@ const Vetting = props => {
               )}
             </Confirm>
           </RoleAuthenticator>
-          <Notification
-            paxId={`${row.original.paxId}`}
-            usersEmails={usersEmails}
-          ></Notification>
-          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId}>
-            <div className="dropdown-item">
-              <Xl8 xid="rep001">Download Report</Xl8>
-            </div>
-          </DownloadReport>
-          <EventNotesModal paxId={row.original.paxId} callback={cb}></EventNotesModal>
         </DropdownButton>
       )
     },
