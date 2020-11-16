@@ -1,32 +1,44 @@
 import React from "react";
+import { localeMonthDayTime, hasData, alt } from "../../utils/utils";
+import { Row } from "react-bootstrap";
 import "./FlightBadge.scss";
-import LabelledInput from "../labelledInput/LabelledInput";
 
 const FlightBadge = props => {
-  const arrival = props.arrival;
-  const departure = props.departure;
-  const flightNumebr = props.flightNumber;
+  const res = props.data;
+  const style = `flight-badge ${alt(props.style, "reg")}`;
+
+  if (!hasData(props.data?.flightNumber)) return <></>;
+
+  const data = {
+    arrival: [res.flightDestination, ...localeMonthDayTime(res.eta).split(",")],
+    departure: [res.flightOrigin, ...localeMonthDayTime(res.etd).split(",")],
+    flightNumber: res.flightNumberHasLink
+      ? res.flightNumber
+      : `${alt(res.carrier)}${res.flightNumber}`
+  };
+
+  const arrival = data.arrival || [];
+  const departure = data.departure || [];
+  const flightNumber = data.flightNumber;
+
   return (
-    <>
-      <LabelledInput
-        alt="Flight"
-        inputStyle="big-name-sidebar fa fa-plane"
-        inputType="label"
-        inputVal={flightNumebr}
-      />
-      <LabelledInput
-        alt="Flight"
-        inputStyle="big-name-sidebar fa fa-arrow-circle-up"
-        inputType="label"
-        inputVal={departure}
-      />
-      <LabelledInput
-        alt="Flight"
-        inputStyle="big-name-sidebar fa fa-arrow-circle-down"
-        inputType="label"
-        inputVal={arrival}
-      />
-    </>
+    <div className={style}>
+      <div className="flight-number">{flightNumber}</div>
+      <div className="flight-text">
+        <Row flex="true" no-wrap="true" className="flight-badge-row">
+          <span className="img-departure"></span>
+          <span className="width40">{departure[0]}</span>
+          <span>{departure[1]}</span>
+          <span>{departure[2]}</span>
+        </Row>
+        <Row flex="true" no-wrap="true" className="flight-badge-row">
+          <span className="img-arrival"></span>
+          <span className="width40">{arrival[0]}</span>
+          <span>{arrival[1]}</span>
+          <span>{arrival[2]}</span>
+        </Row>
+      </div>
+    </div>
   );
 };
 

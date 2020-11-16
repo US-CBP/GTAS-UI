@@ -3,27 +3,33 @@
   text-align: center;
   padding: 5px;
   position: relative;
-  justify-content: center;
+  background-color: white;
+  /* border-bottom: 1px solid #d0d0d0; */
+  margin: 0px -20px;
+  height: 48px;
 }
 
 .title-span {
   font-weight: 600;
   font-size: x-large;
-  z-index: 100;
+  align-self: center;
+  padding: 0px 20px;
+  white-space: nowrap;
+  /* border-left: 1px solid #d0d0d0; */
+  /* border-image: linear-gradient(90deg, #d0d0d0, transparent) 1; */
 }
 
-.left-span {
-  position: absolute;
-  left: 0px;
-  top: 5px;
-  font-size: initial;
-  width: -webkit-fill-available;
+.tab-span {
+  padding: 0px 15px;
 }
 
-.right-span {
-  position: absolute;
-  right: 0px;
-  top: 0px;
+.action-span {
+  padding: 0px 15px;
+  width: 240px;
+  position: fixed;
+  left: 10px;
+  z-index: 200;
+  top: 56px;
 }
 
 .right-span > .space-between {
@@ -36,4 +42,11 @@
 
 .right-span > .space-between > select {
   width: 120px;
+}
+
+@media (min-width: 768px) {
+  .full .title-span,
+  .full-cards .title-span {
+    margin-left: 259px;
+  }
 }

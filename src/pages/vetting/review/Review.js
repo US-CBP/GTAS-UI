@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Modal } from "react-bootstrap";
-import { paxEventNotesHistory, notetypes, cases } from "../../../services/serviceWrapper";
+import { Button } from "react-bootstrap";
+import { paxEventNotesHistory, cases } from "../../../services/serviceWrapper";
 import { asArray, localeDate } from "../../../utils/utils";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
+import Modal, { ModalBody, ModalHeader } from "../../../components/modal/Modal";
+import { ROLE } from "../../../utils/constants";
+import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 
 const ReviewPVL = props => {
   const eventNotesHeader = {
@@ -76,20 +79,21 @@ const ReviewPVL = props => {
   }, [paxId]);
 
   return (
-    <>
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
       <Modal
         show={props.show}
         onHide={props.onHide}
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        className="max-500-width-container"
       >
-        <Modal.Header closeButton>
+        <ModalHeader closeButton>
           <Button variant="outline-danger" size="sm" onClick={updateHitStatus}>
             <Xl8 xid="rev001">Change Status to Review</Xl8>
           </Button>
-        </Modal.Header>
-        <Modal.Body>
+        </ModalHeader>
+        <ModalBody>
           <Form
             title=""
             submitService={paxEventNotesHistory.post}
@@ -130,9 +134,9 @@ const ReviewPVL = props => {
             headers={eventNotesHeader}
             title={<Xl8 xid="rev003">Previous Notes History (Up to 10)</Xl8>}
           />
-        </Modal.Body>
+        </ModalBody>
       </Modal>
-    </>
+    </RoleAuthenticator>
   );
 };
 

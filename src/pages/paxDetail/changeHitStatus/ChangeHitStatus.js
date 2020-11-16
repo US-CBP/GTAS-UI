@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { SplitButton, Dropdown, Modal, Button } from "react-bootstrap";
+import { SplitButton, Dropdown, Button } from "react-bootstrap";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import Xl8 from "../../../components/xl8/Xl8";
 import { ROLE } from "../../../utils/constants";
+import Modal, {
+  ModalBody,
+  ModalFooter,
+  ModalHeader
+} from "../../../components/modal/Modal";
 
 const ChangeHitStatus = props => {
   const [show, setShow] = useState(false);
@@ -18,12 +23,11 @@ const ChangeHitStatus = props => {
     setShow(false);
   };
   return (
-    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.CASEMGR]} alt={<></>}>
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
       <SplitButton
         key="paxHitStatus"
         title={<Xl8 xid="chs001">Change Status</Xl8>}
-        variant="outline-info"
-        size="sm"
+        className="dropdown-item"
       >
         {props.hasOpenHit && (
           <Dropdown.Item
@@ -33,7 +37,6 @@ const ChangeHitStatus = props => {
               setStatus("REVIEWED");
             }}
           >
-            {/* <Xl8 xid="chs002">Reviewed</Xl8> */}
             Reviewed
           </Dropdown.Item>
         )}
@@ -46,27 +49,26 @@ const ChangeHitStatus = props => {
               setStatus("Re_Opened");
             }}
           >
-            {/* <Xl8 xid="chs003">Re-opened</Xl8> */}
             Re-opened
           </Dropdown.Item>
         )}
       </SplitButton>
 
       <Modal show={show} onHide={handleCancel} centered>
-        <Modal.Header>
+        <ModalHeader closeButton>
           <Xl8 xid="chs004">Update Hit Status</Xl8>
-        </Modal.Header>
-        <Modal.Body>
+        </ModalHeader>
+        <ModalBody>
           <Xl8 xid="chs005">Please confirm to change the status to:</Xl8> {status}
-        </Modal.Body>
-        <Modal.Footer>
+        </ModalBody>
+        <ModalFooter>
           <Button variant="outline-success" onClick={handleConfirm}>
             Confirm
           </Button>
           <Button variant="outline-danger" onClick={handleCancel}>
             Cancel
           </Button>
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
     </RoleAuthenticator>
   );

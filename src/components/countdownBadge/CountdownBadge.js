@@ -14,6 +14,13 @@ const CountdownBadge = props => {
   const isPos = deltaRaw >= 0;
   const delta = Math.abs(deltaRaw);
 
+  const getIconClass = () => {
+    const dir = props.direction;
+    if (!dir) return "";
+
+    return dir === "I" ? "img-arrival" : dir === "O" ? "img-departure" : "";
+  };
+
   const pad = val => {
     if (isNaN(val)) return 0;
 
@@ -44,7 +51,7 @@ const CountdownBadge = props => {
   const m = <Xl8 xid="cdb003">m</Xl8>;
   const formatedDays = days ? (
     <span>
-      {days}
+      <span className="">{days}</span>
       {d}
     </span>
   ) : (
@@ -52,7 +59,7 @@ const CountdownBadge = props => {
   );
   const formatedHours = hours ? (
     <span>
-      {hours}
+      <span className="">{hours}</span>
       {h}
     </span>
   ) : (
@@ -60,7 +67,7 @@ const CountdownBadge = props => {
   );
   const formatedMinutes = minutes ? (
     <span>
-      {minutes}
+      <span className="">{minutes}</span>
       {m}
     </span>
   ) : (
@@ -68,7 +75,7 @@ const CountdownBadge = props => {
   );
 
   const getStyle = () => {
-    if (dayraw > 1) return "";
+    if (dayraw > 1) return "bordered cdb-white";
 
     if (!isPos) return "bordered cdb-gray";
     if (dayraw === 1) return "bordered cdb-green";
@@ -79,7 +86,8 @@ const CountdownBadge = props => {
   };
 
   return (
-    <Row flex="true" no-wrap="true" className={`cdb-row ${getStyle()}`}>
+    <Row flex="true" no-wrap="true" className={`cdb-row sm ${getStyle()}`}>
+      <span className={getIconClass()}></span>
       <span>{sign}</span>
       <span className="cdb-days-div">{formatedDays}</span>
       <span className="cdb-days-div">{formatedHours}</span>

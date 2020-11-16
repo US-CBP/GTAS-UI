@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
+import Main from "../../../components/main/Main";
 import { querypax } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
@@ -8,11 +9,22 @@ import { Link } from "@reach/router";
 import { Container } from "react-bootstrap";
 import { asArray, getAge, alt, localeDateOnly } from "../../../utils/utils";
 import { ROLE } from "../../../utils/constants";
+import Toast from "../../../components/toast/Toast";
 
 const QRDetails = props => {
   const cb = function(result) {};
   const [data, setData] = useState();
   const [key, setKey] = useState(0);
+  const [showToast, setShowToast] = useState(false);
+
+  const OVER_QUERY_LIMIT_HEADER = (
+    <>
+      <Xl8 xid="qrd001"> WARNING: Query Over Limit </Xl8>
+    </>
+  );
+  const OVER_QUERY_LIMIT = (
+    <Xl8 xid="qrd002">Query has exceeded results limit, return truncated</Xl8>
+  );
 
   const parseData = data => {
     return asArray(data).map(item => {
@@ -61,18 +73,28 @@ const QRDetails = props => {
     querypax.post(props.location?.state?.data).then(res => {
       const resData = parseData(res.result?.passengers);
       setData(resData);
-
       setKey(key + 1);
+      if (res.result?.queryLimitReached) {
+        setShowToast(true);
+      }
     });
   }, []);
 
   //TOOD - need a back button or some way to get back to the query/rule page that brought us here.
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]}>
-      <Container fluid>
+      <Main className="full bg-white">
         <Title title={<Xl8 xid="">Query Details</Xl8>}></Title>
         <Table data={data} header={headers} callback={cb} key={key}></Table>
-      </Container>
+        <Toast
+          onClose={() => setShowToast(false)}
+          show={showToast}
+          header={OVER_QUERY_LIMIT_HEADER}
+          body={OVER_QUERY_LIMIT}
+          variant={"danger"}
+          containerClass={"toast-container-qrd"}
+        />
+      </Main>
     </RoleAuthenticator>
   );
 };

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Modal } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 import { attachment } from "../../../services/serviceWrapper";
 import "./UploadAttachment.scss";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import { ACTION } from "../../../utils/constants";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const AttachmentModal = props => {
   const cb = function(result) {};
@@ -104,8 +109,9 @@ const AttachmentModal = props => {
 
   return (
     <>
-      <Button variant="outline-info" size="sm" onClick={handleShow}>
-        <i className="fa fa-pencil"></i>Add Attachments
+      <Button className="dropdown-item" onClick={handleShow}>
+        {/* <i className="fa fa-pencil"></i>Add Attachments */}
+        <Xl8 xid="attm007">Add Attachments</Xl8>
       </Button>
       {/*
       <Modal
@@ -143,11 +149,11 @@ const AttachmentModal = props => {
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header closeButton>
-          <Modal.Title>
+        <ModalHeader closeButton>
+          <ModalTitle>
             <Xl8 xid="attm001">Attachments</Xl8>
-          </Modal.Title>
-        </Modal.Header>
+          </ModalTitle>
+        </ModalHeader>
         <Alert show={showAlert} variant={variant}>
           {alertContent}
           <hr />
@@ -155,7 +161,7 @@ const AttachmentModal = props => {
             <Xl8 xid="form003">Confirm</Xl8>
           </Button>
         </Alert>
-        <Modal.Body>
+        <ModalBody>
           <div className="container">
             <div className="files">
               <input type="file" multiple onChange={onChangeCb} />
@@ -206,7 +212,7 @@ const AttachmentModal = props => {
               callback={cb}
             />
           </Form>
-        </Modal.Body>
+        </ModalBody>
       </Modal>
     </>
   );

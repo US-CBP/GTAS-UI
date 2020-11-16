@@ -4,7 +4,8 @@ import { CardColumns } from "react-bootstrap";
 import Main from "../../../components/main/Main";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { paxFlightHistory, paxFullTravelHistory } from "../../../services/serviceWrapper";
-import { asArray, localeDate } from "../../../utils/utils";
+import { asArray, hasData, localeDate } from "../../../utils/utils";
+import { Link } from "@reach/router";
 
 const FlightHistory = props => {
   const headers = {
@@ -19,25 +20,55 @@ const FlightHistory = props => {
   const [currentFlightHistory, setcurrentFlightHistory] = useState([]);
   const [fullTravelHistory, setFullTravelHistory] = useState([]);
 
+  const sortFlightByEta = (flight1, flight2) => {
+    return flight2.eta - flight1.eta;
+  };
+
+  const addLinkToFlight = flight => {
+    //Only prime flights need a link
+    const flightId = flight.flightId || flight.id;
+    const isPrimeFlight = !flight.bookingDetail && hasData(flight.direction);
+    const stateData = {
+      direction: flight.direction,
+      eta: flight.eta,
+      etd: flight.etd,
+      fullFlightNumber: flight.fullFlightNumber,
+      flightDestination: flight.destination,
+      flightOrigin: flight.origin,
+      passengerCount: flight.passengerCount
+    };
+
+    return isPrimeFlight ? (
+      <Link to={"/gtas/flightpax/" + flightId} state={{ data: stateData }}>
+        {flight.fullFlightNumber}
+      </Link>
+    ) : (
+      flight.fullFlightNumber
+    );
+  };
+  const parseFlightData = data => {
+    return {
+      ...data,
+      etd: localeDate(data.etd),
+      eta: localeDate(data.eta),
+      fullFlightNumber: addLinkToFlight(data)
+    };
+  };
+
   const fetchData = () => {
     paxFlightHistory.get(props.flightId, props.paxId).then(res => {
-      const historyData = asArray(res).map(data => {
-        return {
-          ...data,
-          etd: localeDate(data.etd),
-          eta: localeDate(data.eta)
-        };
-      });
+      const historyData = asArray(res)
+        .sort(sortFlightByEta)
+        .map(data => parseFlightData(data));
+
       setcurrentFlightHistory(historyData);
     });
+
     paxFullTravelHistory.get(props.flightId, props.paxId).then(res => {
-      const historyData = asArray(res).map(data => {
-        return {
-          ...data,
-          etd: localeDate(data.etd),
-          eta: localeDate(data.eta)
-        };
-      });
+      const historyData = asArray(res)
+        .sort(sortFlightByEta)
+        .map(data => parseFlightData(data));
+
       setFullTravelHistory(historyData);
     });
   };
@@ -47,20 +78,22 @@ const FlightHistory = props => {
   }, []);
 
   return (
-    <Main className="one-column-container">
+    <div className="paxdetail-container">
       <CardColumns>
         <CardWithTable
           data={currentFlightHistory}
           headers={headers}
+          className="pd-gridstack-2 flex-grow-0"
           title={<Xl8 xid="fh009">Current Itinerary</Xl8>}
         />
         <CardWithTable
           data={fullTravelHistory}
           headers={headers}
+          className="pd-gridstack-2 flex-grow-1"
           title={<Xl8 xid="fh010">Total Flight History</Xl8>}
         />
       </CardColumns>
-    </Main>
+    </div>
   );
 };
 

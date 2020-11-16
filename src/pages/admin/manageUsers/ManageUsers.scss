@@ -35,7 +35,6 @@
   flex-flow: unset !important;
 }
 
-.edit-user .dropdown-menu {
-  background-color: white;
-  border: 1px solid black;
+.max-600-width-container .modal-dialog {
+  max-width: 600px;
 }

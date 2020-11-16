@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import { Button, Tabs, Tab, Row } from "react-bootstrap";
+import { Button, Tabs, Tab, Row, DropdownButton, Dropdown } from "react-bootstrap";
 import { wlpax, wldocs, hitcats } from "../../../services/serviceWrapper";
 import { hasData } from "../../../utils/utils";
 import WLModal from "./WLModal";
@@ -18,8 +18,11 @@ const Watchlist = props => {
   const TAB = { PAX: "passenger", DOX: "document" };
   const mode = (props.mode || "").toLowerCase();
   const isDox = mode === TAB.DOX;
+  const importRef = useRef(null);
+  const [file, setFile] = useState();
 
   const [showModal, setShowModal] = useState(false);
+  const [showImport, setShowImport] = useState(false);
   const [id, setId] = useState(0);
   const [key, setKey] = useState(0);
   const [data, setData] = useState();
@@ -88,6 +91,13 @@ const Watchlist = props => {
     if (ev === "SUCCESS") fetchData();
   };
 
+  const launchImport = file => {
+    if (importRef.current) {
+      setFile(file);
+      importRef.current.open(file);
+    }
+  };
+
   const deleteWatchlistItem = wlId => {
     const service = wlpax;
     service.del(wlId).then(res => {
@@ -115,7 +125,7 @@ const Watchlist = props => {
     return (
       <div className="icon-col">
         <i
-          className="fa fa-pencil-square-o qbrb-icon-edit"
+          className="fa fa-pencil-square-o table-icon"
           onClick={() => {
             launchModal(item.id);
             setEditRow(item);
@@ -124,6 +134,7 @@ const Watchlist = props => {
       </div>
     );
   };
+
   const tabs = (
     <Tabs defaultActiveKey={tab} id="wlTabs">
       <Tab
@@ -242,6 +253,7 @@ const Watchlist = props => {
       Xl8: true,
       Header: ["edit001", "Edit"],
       disableExport: true,
+      disableSortBy: true,
       Cell: ({ row }) => getEditRowData(row.original)
     },
     { Accessor: "documentType", Xl8: true, Header: ["wl011", "Document Type"] },
@@ -261,6 +273,7 @@ const Watchlist = props => {
       Accessor: "id",
       Xl8: true,
       disableExport: true,
+      disableSortBy: true,
       Header: ["edit001", "Edit"],
       Cell: ({ row }) => getEditRowData(row.original)
     },
@@ -280,31 +293,24 @@ const Watchlist = props => {
   const header = tab === TAB.DOX ? doxHeader : paxHeader;
   const wlType = tab;
 
-  const button = (
-    <Row>
-      <Button
-        variant="ternary"
-        className="btn btn-outline-info"
-        name={props.name}
-        placeholder={props.placeholder}
-        onClick={() => launchModal(0)}
-        required={props.required}
-        value={props.inputVal}
-        alt={props.alt}
-      >
+  const dropdown = (
+    <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
+      <Dropdown.Item as="button" onClick={() => launchModal(0)}>
         {buttonTypeText}
-      </Button>
-      <CSVReader callback={handleImportData} />
-    </Row>
+      </Dropdown.Item>
+      <Dropdown.Item as="button" onClick={e => launchImport(e)}>
+        <CSVReader ref={importRef} callback={handleImportData} file={file} />
+      </Dropdown.Item>
+    </DropdownButton>
   );
 
   return (
-    <Main className="full">
+    <Main className="full bg-white">
       <Title
         title={<Xl8 xid="wl007">Watchlists</Xl8>}
         leftChild={tabs}
         leftCb={titleTabCallback}
-        rightChild={button}
+        rightChild={dropdown}
         key={tab}
       ></Title>
       <Table

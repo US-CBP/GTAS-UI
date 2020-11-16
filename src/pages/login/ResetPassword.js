@@ -42,7 +42,7 @@ const ResetPassword = props => {
 
   return (
     <Container className="password-reset-container" fluid>
-      <Title title={<Xl8 xid="pass007">Reset Password</Xl8>} uri={props.uri} />
+      <Title title={<Xl8 xid="passres001">Reset Password</Xl8>} uri={props.uri} />
       {validToken ? (
         <>
           {displayErrorMessage && (
@@ -50,17 +50,17 @@ const ResetPassword = props => {
               {errorMessage}
               <br />
               <Link to="/forgot-password">
-                <Xl8 xid="pass006">Send another password reset link?</Xl8>
+                <Xl8 xid="passres002">Send another password reset link?</Xl8>
               </Link>
             </Alert>
           )}
           {displaySuccessMessage ? (
             <Alert variant="success">
-              <Xl8 xid="pass009">Your password has been reset! Click </Xl8>
+              <Xl8 xid="passres003">Your password has been reset! Click </Xl8>
               <Link to="/login">
-                <Xl8 xid="pass009">here</Xl8>
-              </Link>{" "}
-              <Xl8 xid="pass009">to login to GTAS</Xl8>
+                <Xl8 xid="passres004">here</Xl8>
+              </Link>
+              <Xl8 xid="passres005">to login to GTAS</Xl8>
             </Alert>
           ) : (
             <Form
@@ -99,7 +99,7 @@ const ResetPassword = props => {
         </>
       ) : (
         <Alert variant="danger">
-          <Xl8 xid="pass008">Invalid token provided. Please try again!</Xl8>
+          <Xl8 xid="passres006">Invalid token provided. Please try again!</Xl8>
         </Alert>
       )}
     </Container>

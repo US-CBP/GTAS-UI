@@ -1,4 +1,8 @@
-.qbrb-icon-edit {
-  font-size: 1.4em;
-  color: #0082c3;
+/* .wl-modal-body {
+  max-width: 500px;
+  min-width: 330px !important;
+} */
+
+.wl-modal-content {
+  min-width: 330px !important;
 }

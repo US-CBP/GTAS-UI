@@ -18,7 +18,7 @@ const UploadAttachment = props => {
   const [showModal, setShowModal] = useState(false);
   const paxId = props.paxId;
 
-  const cb = (status, resp) => {
+  const cb = (status, resp) => { //SLATE FOR REMOVAL -- DOES NOTHING AS PAX DETAIL CONTROLS CALLBACK FOR ATTACHMENT MODAL NOW
     if (status !== ACTION.CLOSE && status !== ACTION.CANCEL)
       setRefreshDataKey(refreshDataKey + 1);
   };
@@ -48,7 +48,7 @@ const UploadAttachment = props => {
       setData(resp);
       setTableKey(tableKey + 1);
     });
-  }, [refreshDataKey]);
+  }, [props.attachmentRefreshKey]);
 
   const headers = [
     {
@@ -60,7 +60,7 @@ const UploadAttachment = props => {
           <div className="text-center edit-user">
             <DropdownButton
               variant="outline-info"
-              title={<Xl8 xid="att011">Choose Action</Xl8>}
+              title={<Xl8 xid="manu002">Choose Action</Xl8>}
             >
               <Confirm
                 header={<Xl8 xid="att01">Confirm Attachment Deletion</Xl8>}
@@ -119,10 +119,10 @@ const UploadAttachment = props => {
   );
 
   return (
-    <main className="one-column-container">
+    <div className="one-column-grid-container">
       {/* <Title title={<Xl8 xid="att009">Uploaded Attachments</Xl8>} rightChild={button} /> */}
       <Table data={data} id="attachments" header={headers} key={tableKey} callback={cb} />
-    </main>
+    </div>
   );
 };
 

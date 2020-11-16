@@ -126,10 +126,9 @@ export function asOrderedHash(value) {
 // for fields that might.
 export function localeDate(val) {
   if (!hasData(val)) return "";
-  // const locale = i18n.language;
   const locale = window.navigator.language;
   const options = {
-    localeMatcher: "lookup",
+    // localeMatcher: "lookup",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
@@ -155,13 +154,56 @@ export function localeDateOnly(val) {
 
   const locale = window.navigator.language;
   const options = {
-    localeMatcher: "lookup",
+    // localeMatcher: "lookup",
     year: "numeric",
     month: "2-digit",
     day: "2-digit"
   };
   return new Date(val).toLocaleString(locale, options);
 }
+
+export function localeMonthDayTime(val) {
+  if (!hasData(val)) return "";
+
+  const locale = window.navigator.language;
+  const options = {
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
+  };
+  return new Date(val).toLocaleString(locale, options);
+}
+
+// Locale Month Year format (creditcard expiration dates)
+export const localeMonthYear = val => {
+  if (!hasData(val)) return "";
+
+  const locale = window.navigator.language;
+  const options = {
+    month: "2-digit",
+    year: "2-digit"
+  };
+  return new Date(val).toLocaleString(locale, options);
+};
+
+// sortable date string - not for display as it is not locale specific
+export const sortableDate = val => {
+  if (isNaN(Date.parse(val))) return "";
+
+  const padDigit = num => {
+    return num.toString().padStart(2, "0");
+  };
+
+  return (
+    val.getFullYear() +
+    padDigit(val.getMonth() + 1) +
+    padDigit(val.getDate()) +
+    padDigit(val.getHours()) +
+    padDigit(val.getMinutes()) +
+    padDigit(val.getSeconds())
+  );
+};
 
 // Returns the day of the week for a given date string
 // WARNING: dates in the format yyyy-mm-dd with no timezone indicated are interpreted
@@ -273,7 +315,7 @@ export function passengerTypeMapper(type) {
   return passengerTypesMap[type];
 }
 
-//if engthToCompare is not passed, set default to 50
+//if lengthToCompare is not passed, set default to 50
 export function isShortText(text, lengthToCompare = 50) {
   return !hasData(text) || text.toString().length <= lengthToCompare ? true : false;
 }
@@ -284,3 +326,10 @@ export function getShortText(text, shortTextLength = 50) {
 
   return `${text.toString().substr(0, shortTextLength - 4)} ...`;
 }
+
+export const isValidPassword = password => {
+  const passwordConstraint = new RegExp(
+    "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{10,20})"
+  );
+  return passwordConstraint.test(password);
+};

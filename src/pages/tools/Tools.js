@@ -41,7 +41,6 @@ const Tools = props => {
         ROLE.ADMIN,
         ROLE.PAXVWR,
         ROLE.RULEMGR,
-        ROLE.CASEMGR,
         ROLE.WLMGR,
         ROLE.HITMGR,
         ROLE.QRYMGR,
@@ -53,24 +52,25 @@ const Tools = props => {
   if (getEndpoint(props.location?.pathname) === "tools")
     return (
       <>
-        <Title title={<Xl8 xid="too001">Tools</Xl8>} />
-
         <Main className="full-cards">
+          <Title title={<Xl8 xid="too001">Tools</Xl8>} />
           <CardDeck className="page-deck">
             {tiles.map(data => {
               return (
                 <RoleAuthenticator alt={<></>} roles={data.roles}>
-                  <Card className="page-tiles card-shadow" key={data.path}>
+                  <Card className="page-tiles" key={data.path}>
                     <Link to={data.path} className="card-link">
                       <Card.Body>
-                        <Card.Title className="nowrap">
-                          <i className={`fa fa-3x ${data.icon}`}></i>
+                        <Card.Title className="nowrap text-center">
+                          <i className={`fa fa-4x ${data.icon}`}></i>
                         </Card.Title>
-                        <div className="card-overlay">{data.name}</div>
+                        <div className="text-center text-muted m-3">{data.name}</div>
+                      </Card.Body>
+                      <Card.Footer>
                         <div className="card-description">
                           <Card.Text>{data.desc}</Card.Text>
                         </div>
-                      </Card.Body>
+                      </Card.Footer>
                     </Link>
                   </Card>
                 </RoleAuthenticator>

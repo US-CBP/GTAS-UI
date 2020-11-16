@@ -5,8 +5,10 @@ import "./Toast.scss";
 function Toast(props) {
   const minute = 60000;
   const TOAST_DELAY_IN_MILLI = props.delay || minute;
+  const containerClass = props.containerClass;
+
   return (
-    <div className="toast-container">
+    <div className={containerClass}>
       <RBToast
         onClose={props.onClose}
         show={props.show}

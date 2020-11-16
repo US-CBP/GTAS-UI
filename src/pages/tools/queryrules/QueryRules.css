@@ -2,11 +2,6 @@
   width: unset !important;
 }
 
-.qbrb-icon-edit {
-  font-size: 1.4em;
-  color: #0082c3;
-}
-
 .qbrb-icon-check {
   font-size: 1.4em;
   color: #28a745;
@@ -23,7 +18,9 @@
   max-height: 60vh;
   overflow: hidden;
   overflow-y: auto;
+  min-width: 800px;
 }
+
 .queryBuilder {
   min-width: 740px;
   margin: 0.5rem;
@@ -32,7 +29,7 @@
 .qrm > .space-between {
   width: 45%;
   justify-content: flex-start;
-  margin-bottom: 0px !important;
+  margin-bottom: 3px !important;
 }
 
 .qrm > .space-between > .undefined {
@@ -61,17 +58,18 @@
 }
 
 .widget--widget > select[multiple] {
-  min-width: 220px;
-  width: 350px;
-  height: 24px;
-  display: inline-flex;
+  /* min-width: 220px; */
+  height: 27px;
+  /* display: inline-flex; */
   top: -12px;
+  max-width: 250px;
+  margin-top: -4px;
 }
 
 .widget--widget > select[multiple]:hover {
   height: calc(100vh / 8);
   z-index: 200;
-  position: sticky;
+  position: fixed;
   top: auto;
 }
 
@@ -89,6 +87,9 @@
   display: none;
 }
 
+.widget--sep {
+  margin-top: 7px;
+}
 /* select:-internal-list-box option:checked {
   background-color: rgb(137 193 252 / 0.5) !important;
   color: rgb(16, 16, 16) !important;
@@ -159,6 +160,8 @@ pre {
   margin-right: 14px;
   margin-left: 4px;
   margin-bottom: 2px;
+  height: 1rem;
+  /* vertical-align: middle; */
 }
 
 .group > .group--actions > button {
@@ -189,6 +192,7 @@ pre {
 .rule_group--children {
   margin-bottom: 0px !important;
   margin-top: 0px !important;
+  padding-left: 0px !important;
 }
 
 .group--children > .group-or-rule-container > .group-or-rule::before,
@@ -213,7 +217,7 @@ pre {
   margin-bottom: 0px;
   border-radius: 3px;
   padding-bottom: 3px;
-  background-color: #005aa7;
+  background-color: #0082c3;
   margin-top: 0px;
 }
 
@@ -254,11 +258,8 @@ pre {
 .widget--widget > input,
 .group--field > select,
 .rule--field > select {
-  display: block;
-  width: 100%;
-  height: calc(1.2em + 0.75rem);
-  padding: 0.175rem 0.75rem;
-  font-size: 1rem;
+  width: auto;
+  padding: 0.175rem 0.5rem;
   font-weight: 400;
   line-height: 1.5;
   color: #495057;
@@ -267,4 +268,5 @@ pre {
   border: 1px solid darkgray;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  max-width: 160px;
 }

@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { Modal, Button, Container, Alert } from "react-bootstrap";
+import { Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
 import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import { ACTION } from "../../../../utils/constants";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../../components/modal/Modal";
 
 const CreditCardTypeModal = props => {
   const [showAlert, setShowAlert] = useState(false);
@@ -72,10 +77,11 @@ const CreditCardTypeModal = props => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-500-width-container"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{props.title}</Modal.Title>
-      </Modal.Header>
+      <ModalHeader closeButton>
+        <ModalTitle>{props.title}</ModalTitle>
+      </ModalHeader>
       <Alert show={showAlert}>
         {alertContent}
         <hr />
@@ -83,7 +89,7 @@ const CreditCardTypeModal = props => {
           <Xl8 xid="form003">Confirm</Xl8>
         </Button>
       </Alert>
-      <Modal.Body>
+      <ModalBody>
         <Container fluid>
           <Form
             submitService={
@@ -122,7 +128,7 @@ const CreditCardTypeModal = props => {
             />
           </Form>
         </Container>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 };

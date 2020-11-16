@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { Button, Container } from "react-bootstrap";
+import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CountryModal from "./CountryModal";
 
@@ -35,7 +35,7 @@ const Countries = ({ name }) => {
         return (
           <div className="icon-col">
             <i
-              className="fa fa-pencil-square-o qbrb-icon-edit"
+              className="fa fa-pencil-square-o table-icon"
               onClick={() => openEditModal(row.original)}
             ></i>
           </div>
@@ -49,29 +49,31 @@ const Countries = ({ name }) => {
   ];
 
   return (
-    <Container fluid>
+    <div>
       <div className="action-button-div">
-        <Button
-          variant="outline-dark"
-          onClick={() => {
-            setShowModal(true);
-            setModalTitle(<Xl8 xid="cou004">Add Country:</Xl8>);
-            setIsEditModal(false);
-            setEditRowDetails({});
-          }}
-        >
-          {<Xl8 xid="cou002">Add Country</Xl8>}
-        </Button>
-        <Button
-          variant="outline-dark"
-          onClick={() => {
-            codeEditor.put.restoreCountriesAll().then(res => {
-              refresh();
-            });
-          }}
-        >
-          {<Xl8 xid="cou003">Restore All Countries</Xl8>}
-        </Button>
+        <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
+          <Dropdown.Item
+            as="button"
+            onClick={() => {
+              setShowModal(true);
+              setModalTitle(<Xl8 xid="cou004">Add Country:</Xl8>);
+              setIsEditModal(false);
+              setEditRowDetails({});
+            }}
+          >
+            <Xl8 xid="cou004">Add Country:</Xl8>
+          </Dropdown.Item>
+          <Dropdown.Item
+            as="button"
+            onClick={() => {
+              codeEditor.put.restoreCountriesAll().then(res => {
+                refresh();
+              });
+            }}
+          >
+            {<Xl8 xid="cou003">Restore All Countries</Xl8>}
+          </Dropdown.Item>
+        </DropdownButton>
       </div>
       <CountryModal
         show={showModal}
@@ -90,7 +92,7 @@ const Countries = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
-    </Container>
+    </div>
   );
 };
 

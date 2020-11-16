@@ -150,18 +150,18 @@
 .ppt-taxo-nav {
   border: 1px solid #00416a !important;
   background: white !important;
-  height: calc(100vh - 126px);
+  height: calc(100vh - 136px);
   width: 212px;
   padding: 10px;
 }
 
 .ppt-div-graph {
-  height: calc(100vh - 126px) !important;
+  height: calc(100vh - 136px) !important;
   width: calc(100% - 212px);
 }
 
 .ppt-container-graph {
-  height: calc(100vh - 126px) !important;
+  height: calc(100vh - 136px) !important;
   width: 100%;
   min-width: 600px;
   flex-wrap: nowrap !important;

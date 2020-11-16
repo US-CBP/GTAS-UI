@@ -7,7 +7,6 @@ import Main from "../../components/main/Main";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 
-import { Col, Tabs, Tab } from "react-bootstrap";
 import Xl8 from "../../components/xl8/Xl8";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { UserContext } from "../../context/user/UserContext";
@@ -16,6 +15,7 @@ import { Link } from "@reach/router";
 import { flights } from "../../services/serviceWrapper";
 import { hasData, alt, localeDate, asArray } from "../../utils/utils";
 import { TIME, ROLE } from "../../utils/constants";
+import { Col, Tabs, Tab } from "react-bootstrap";
 import "./Flights.css";
 
 const Flights = props => {
@@ -82,7 +82,7 @@ const Flights = props => {
         if (name === "destinationAirports" || name === "originAirports") {
           // retrieve raw comma- or whitespace-separated text, convert to array, remove empties.
           const airports = fieldscopy[name]
-            .replace(",", " ")
+            .replace(/[,]/g, " ")
             .split(" ")
             .filter(Boolean);
           paramObject[name] = [...new Set(airports)]; // scrub duplicate vals
@@ -101,7 +101,11 @@ const Flights = props => {
       Xl8: true,
       Header: ["fl009", "Timer"],
       Cell: ({ row }) => (
-        <CountdownBadge future={row.original.timer} baseline={now}></CountdownBadge>
+        <CountdownBadge
+          future={row.original.timer}
+          baseline={now}
+          direction={row.original.direction}
+        ></CountdownBadge>
       )
     },
     {
@@ -200,14 +204,13 @@ const Flights = props => {
   return (
     <>
       <SidenavContainer>
-        <Col>
+        <Col className="notopmargin">
           <FilterForm
             service={flights.get}
             paramCallback={preFetchCallback}
             callback={setDataWrapper}
             interval={TIME.MINUTE}
           >
-            <br />
             <LabelledInput
               labelText={<Xl8 xid="fl003"> Origin Airports</Xl8>}
               datafield="originAirports"

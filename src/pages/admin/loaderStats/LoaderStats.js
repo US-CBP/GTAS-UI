@@ -2,35 +2,42 @@ import React, { useEffect, useState } from "react";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
+import Main from "../../../components/main/Main";
 import { loaderStats } from "../../../services/serviceWrapper";
 import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
+import { localeDate } from "../../../utils/utils";
 
 const LoaderStats = ({ name }) => {
-  const cb = function(result) {};
   const onChange = function(result) {};
-  const [data, setData] = useState();
+  const cb = () => {};
   const [key, setKey] = useState(0);
 
-  useEffect(() => {
-    loaderStats.get().then(res => {
-      setData(res);
-      setKey(key + 1);
-    });
-  }, []);
+  const parseData = function(res) {
+    const parsedData = {
+      ...res,
+      lastMessageAnalyzedByDrools: localeDate(res?.lastMessageAnalyzedByDrools),
+      lastMessageInSystem: localeDate(res?.lastMessageInSystem),
+      mostRecentRuleHit: localeDate(res?.mostRecentRuleHit)
+    };
+
+    return parsedData;
+  };
 
   return (
-    <Container fluid>
+    <Main className="full">
       <Title title={<Xl8 xid="ls001">Loader Statistics</Xl8>}></Title>
       <br></br>
       <Container>
         <Col lg={{ span: 4, offset: 4 }}>
           <Form
-            data={data}
             key={key}
+            getService={loaderStats.get}
             title=""
             callback={cb}
+            action="refresh"
             submitText={<Xl8 xid="ls008">Refresh</Xl8>}
+            parseData={parseData}
           >
             <LabelledInput
               datafield
@@ -92,7 +99,7 @@ const LoaderStats = ({ name }) => {
           </Form>
         </Col>
       </Container>
-    </Container>
+    </Main>
   );
 };
 

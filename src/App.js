@@ -5,6 +5,7 @@ import loadable from "@loadable/component";
 
 import "./App.css";
 import "font-awesome/css/font-awesome.min.css";
+// import "@fortawesome/free-solid-svg-icons";
 
 import Xl8 from "./components/xl8/Xl8";
 
@@ -63,6 +64,7 @@ const Queries = loadable(() =>
 const QRDetails = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/tools/queryrules/QRDetails")
 );
+const POE = loadable(() => import(/* webpackChunkName: "authed" */ "./pages/poe/POE"));
 const Tools = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/tools/Tools")
 );
@@ -228,7 +230,6 @@ export default class App extends React.Component {
                           ROLE.ADMIN,
                           ROLE.PAXVWR,
                           ROLE.RULEMGR,
-                          ROLE.CASEMGR,
                           ROLE.WLMGR,
                           ROLE.HITMGR,
                           ROLE.QRYMGR,
@@ -264,6 +265,7 @@ export default class App extends React.Component {
                               <UploadAttachment path="uploadattachment"></UploadAttachment>
                             </PaxDetail>
                           </RoleAuthenticator>
+                          <POE path="poe"></POE>
                           <RoleAuthenticator
                             path="vetting"
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}
@@ -335,7 +337,7 @@ export default class App extends React.Component {
                                 icon="fa-toggle-on"
                               ></Settings>
                               <FileDownload
-                                name={<Xl8 xid="app018">File Download</Xl8>}
+                                name={<Xl8 xid="app018">Download Logs</Xl8>}
                                 desc={<Xl8 xid="app019">Download system log files</Xl8>}
                                 icon="fa-download"
                                 path="filedownload"
@@ -395,7 +397,7 @@ export default class App extends React.Component {
                               <Auxiliary
                                 name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
                                 desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}
-                                icon="fa-line-chart"
+                                icon="kibana"
                                 path="https://localhost:5601/login?next=%2F"
                                 hasExternalLink={true}
                               ></Auxiliary>
@@ -403,7 +405,7 @@ export default class App extends React.Component {
                                 name={<Xl8 xid="app033">Neo4j</Xl8>}
                                 desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
                                 path="http://localhost:7474/browser/"
-                                icon="fa-database"
+                                icon="neo4j"
                                 hasExternalLink={true}
                               ></Auxiliary>
                             </Admin>

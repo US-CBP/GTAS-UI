@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { localeDate, asArray, hasData, localeDateOnly } from "../../../utils/utils";
 import {
-  paxdetails,
   paxWatchListLink,
   flightpaxHitSummary,
-  paxEventNotesHistory
+  paxEventNotesHistory,
+  historicalHits
 } from "../../../services/serviceWrapper";
-import { Card, CardColumns } from "react-bootstrap";
-import Main from "../../../components/main/Main";
+import { CardColumns } from "react-bootstrap";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Xl8 from "../../../components/xl8/Xl8";
 import "./Summary.scss";
+import { HIT_STATUS } from "../../../utils/constants";
+import { Link } from "@reach/router";
 
 const Summary = props => {
   const headers = {
@@ -41,6 +42,13 @@ const Summary = props => {
       noteType: <Xl8 xid="sum018">Note Type</Xl8>,
       createdBy: <Xl8 xid="sum019">Created By</Xl8>,
       createdAt: <Xl8 xid="sum020">Created At</Xl8>
+    },
+    historicaHits: {
+      category: <Xl8 xid="sum026">Category</Xl8>,
+      passengerDocNumber: <Xl8 xid="sum027">Document Number</Xl8>,
+      ruleConditions: <Xl8 xid="sum028">Conditions</Xl8>,
+      flightDate: <Xl8 xid="sum029">Flight ID</Xl8>,
+      flightPaxLink: <Xl8 xid="sum030">Details</Xl8>
     }
   };
 
@@ -50,6 +58,7 @@ const Summary = props => {
   const [paxHitSummary, setPaxHitSummary] = useState([]);
   const [eventNotes, setEventNotes] = useState([]);
   const [historicalEventNotes, setHistoricalEventNotes] = useState([]);
+  const [paxHistoricalHits, setPaxHistoricalHits] = useState([]);
 
   const parseDocumentData = documents => {
     const parsedDocs = asArray(documents).map(document => {
@@ -61,6 +70,11 @@ const Summary = props => {
     });
     return parsedDocs;
   };
+
+  const getLinkToPaxDetails = linkData => {
+    return <Link to={`/gtas/paxDetail/${linkData.flightId}/${linkData.paxId}`}></Link>;
+  };
+
   useEffect(() => {
     paxWatchListLink.get(null, props.paxId).then(res => {
       const data = asArray(res).map(pwl => {
@@ -73,18 +87,30 @@ const Summary = props => {
       });
       setWatchListLinks(data);
     });
-  }, []);
+  }, [props.paxId]);
 
   useEffect(() => {
     flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
       setPaxHitSummary(res);
       const openHit = hasData(res)
-        ? res.find(hit => hit.status === "New" || hit.status === "Re_Opened")
+        ? res.find(
+            hit => hit.status === HIT_STATUS.NEW || hit.status === HIT_STATUS.REOPENED
+          )
         : undefined;
       setHasHit(hasData(res));
       setHasOpenHit(openHit !== undefined);
     });
-  }, [props.hitSummaryRefreshKey]);
+
+    historicalHits.get(props.paxId).then(res => {
+      asArray(res).map(hit => {
+        return {
+          ...hit,
+          flightPaxLink: getLinkToPaxDetails(hit)
+        };
+      });
+      setPaxHistoricalHits(res);
+    });
+  }, [props.hitSummaryRefreshKey, props.paxId]);
 
   useEffect(() => {
     paxEventNotesHistory.get(props.paxId, false).then(res => {
@@ -100,6 +126,7 @@ const Summary = props => {
       });
       setEventNotes(notesData);
     });
+
     paxEventNotesHistory.get(props.paxId, true).then(res => {
       const notesData = res.paxNotes
         ?.map(note => {
@@ -115,15 +142,15 @@ const Summary = props => {
         .slice(0, 10);
       setHistoricalEventNotes(notesData);
     });
-  }, [props.eventNoteRefreshKey]);
+  }, [props.eventNoteRefreshKey, props.paxId]);
 
   return (
-    <Main className="paxdetail-container">
+    <div className="paxdetail-container">
       <CardColumns>
         <CardWithTable
           data={paxHitSummary}
           headers={headers.paxHitSummary}
-          title={<Xl8 xid="sum021">Passenger Current Hits summary</Xl8>}
+          title={<Xl8 xid="sum021">Current Hits Summary</Xl8>}
         />
 
         <CardWithTable
@@ -140,15 +167,20 @@ const Summary = props => {
         <CardWithTable
           data={eventNotes}
           headers={headers.eventNotes}
-          title={<Xl8 xid="sum024">Event Note History</Xl8>}
+          title={<Xl8 xid="sum024">Event Notes</Xl8>}
         />
         <CardWithTable
           data={historicalEventNotes}
           headers={headers.eventNotes}
-          title={<Xl8 xid="sum025">Previous Note History</Xl8>}
+          title={<Xl8 xid="sum025">Prior Event Notes</Xl8>}
+        />
+        <CardWithTable
+          data={paxHistoricalHits}
+          headers={headers.paxHistoricalHits}
+          title={<Xl8 xid="sum031">Historical Hits</Xl8>}
         />
       </CardColumns>
-    </Main>
+    </div>
   );
 };
 

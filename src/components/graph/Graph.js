@@ -9,6 +9,7 @@ import "vaquita/dist/vaquita.min.css";
 import * as d3 from "d3";
 
 const vaqu = require("vaquita");
+
 const Graph = props => {
   const pax1 = {
     dob: props.paxData?.dob,
@@ -122,7 +123,7 @@ const Graph = props => {
           .select(".ppt-label")
           .text()
       );
-      id = id;
+      // id = id;
     }
 
     let vaq = vaquita;

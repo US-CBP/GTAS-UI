@@ -2,16 +2,20 @@
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
-$background-image-url: "../../images/WCO_background1000.png";
-$wco-blue: rgb(0, 119, 200);
+$background-image-url: "../../images/plane01.jpg";
+$wco-blue: #0082c3;
 $wco-blue-dark: darken($wco-blue, 20%);
 $wco-gray: rgb(141, 144, 147);
-$wco-gray-dark: darken($wco-gray, 20%);
+$wco-gray-dark: #575756;
 $gtas-white: rgba(255, 255, 255, 0.9);
-$transparent: rgba(223, 231, 247, 0);
+$transparent: #0082c3d9;
 
 .profile {
   font-size: 200px;
+}
+
+.paxdetails-side-nav .filter-fg .col {
+  background-color: #005aa750;
 }
 
 .profile-container {
@@ -88,7 +92,7 @@ $transparent: rgba(223, 231, 247, 0);
 }
 
 .main-overlay {
-  display: none;
+  // display: none;
 }
 
 .main-overlay-open {
@@ -110,9 +114,15 @@ $transparent: rgba(223, 231, 247, 0);
 
 .filter-fg,
 .filter-fg-open {
+  padding-right: 15px;
   color: #f8f9fa;
   z-index: 10;
-  overflow: auto;
+}
+
+.filter-fg::-webkit-scrollbar-thumb {
+  border: 3px solid #40403f !important;
+  background-color: white;
+  border-radius: 12px;
 }
 
 .margintop20 {
@@ -121,12 +131,41 @@ $transparent: rgba(223, 231, 247, 0);
 
 .filter-bg {
   z-index: 5;
-  background: linear-gradient($wco-blue, $transparent),
-    url($background-image-url) no-repeat no-repeat;
-  background-position: center center;
+  background: linear-gradient(#40403f, #40403fe8, #40403f99),
+    url($background-image-url) no-repeat no-repeat fixed;
+  background-position: -600px 0px;
   background-size: cover;
 }
 
 hr {
   border-top: 1px solid rgba(230, 230, 230, 1);
+}
+
+.filter-fg > .col {
+  margin-top: 50px;
+  backdrop-filter: blur(2px);
+  border-radius: 0.5rem;
+  padding-bottom: 5px;
+  padding-right: 0px;
+}
+
+.notopmargin {
+  margin-top: 0px !important;
+}
+
+.dropdown-content > .panel-content > .select-panel > ul > li > label > .item-renderer {
+  display: flex;
+}
+
+.dropdown-content > .panel-content > .select-panel > ul > li > label,
+.dropdown-content > .panel-content > .select-panel > label {
+  box-sizing: border-box;
+  cursor: pointer;
+  outline: 0;
+  padding: 5px 10px;
+  margin-bottom: 0px;
+  line-break: anywhere;
+}
+
+.item-renderer > .input {
 }

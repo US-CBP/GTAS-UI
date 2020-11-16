@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import { roles, signuprequests } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
@@ -8,6 +7,11 @@ import { asArray } from "../../../utils/utils";
 import { ROLE } from "../../../utils/constants";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 function SignUpRequestModal(props) {
   const [allRoles, setAllRoles] = useState([]);
@@ -55,11 +59,12 @@ function SignUpRequestModal(props) {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-500-width-container"
     >
-      <Modal.Header>
-        <Title title={<Xl8 xid="surm001">Select Roles</Xl8>}></Title>
-      </Modal.Header>
-      <Modal.Body>
+      <ModalHeader closeButton>
+        <ModalTitle>{<Xl8 xid="surm001">Select Roles</Xl8>}</ModalTitle>
+      </ModalHeader>
+      <ModalBody>
         <Form
           submitService={signuprequests.approve}
           title=""
@@ -70,17 +75,19 @@ function SignUpRequestModal(props) {
           cancellable
           recordId={props.requestId}
         >
-          <LabelledInput
-            datafield
-            inputType="checkboxGroup"
-            inputVal={allRoles}
-            labelText={<Xl8 xid="surm003">Roles:</Xl8>}
-            name="roles"
-            alt="Roles"
-            callback={cb}
-          />
+          <div className="signup-checkbox">
+            <LabelledInput
+              datafield
+              inputType="checkboxGroup"
+              inputVal={allRoles}
+              labelText={<Xl8 xid="surm003">Roles:</Xl8>}
+              name="roles"
+              alt="Roles"
+              callback={cb}
+            />
+          </div>
         </Form>
-      </Modal.Body>
+      </ModalBody>
     </Modal>
   );
 }

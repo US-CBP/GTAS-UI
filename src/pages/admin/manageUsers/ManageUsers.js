@@ -25,7 +25,7 @@ const ManageUsers = props => {
   const [editRowDetails, setEditRowDetails] = useState({});
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState();
-  const [showTost, setShowToast] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   const PASSWORD_CHANGE_CONFIRMATION = (
     <>
@@ -184,7 +184,7 @@ const ManageUsers = props => {
   const button = (
     <Button
       variant="ternary"
-      className="btn btn-outline-info"
+      className="btn btn-info"
       name={props.name}
       placeholder={props.placeholder}
       onClick={() => {
@@ -229,7 +229,7 @@ const ManageUsers = props => {
 
   return (
     <>
-      <Main className="full">
+      <Main className="full bg-white">
         <Title title={<Xl8 xid="manu008">Manage Users</Xl8>} rightChild={button}></Title>
         <Table
           id="users"
@@ -246,6 +246,7 @@ const ManageUsers = props => {
           isEdit={isEditModal}
           title={modalTitle}
           editRowDetails={editRowDetails}
+          userIds={asArray(data).map(user => user.userId)}
         />
         <ChangePasswordModal
           show={showChangePasswordModal}
@@ -255,10 +256,11 @@ const ManageUsers = props => {
         />
         <Toast
           onClose={() => setShowToast(false)}
-          show={showTost}
+          show={showToast}
           header={PASSWORD_CHANGE_CONFIRMATION_HEADER}
           body={PASSWORD_CHANGE_CONFIRMATION}
           variant={"success"}
+          containerClass={"toast-container"}
         />
       </Main>
     </>

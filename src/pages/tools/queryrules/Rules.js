@@ -14,12 +14,14 @@ import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthentica
 import QRModal from "./QRModal";
 import "./QueryRules.css";
 
+//TODO - the two fetches, rulesall and rules, are separate but they don't need to be. Until we have requirements preventing some
+//users or roles from fetching all rules, we should consider pulling all data from rulesall and filtering the results for "my rules".
 const Rules = props => {
   const addRule = <Xl8 xid="rul001">Add Rule</Xl8>;
   const editRule = <Xl8 xid="rul002">Edit Rule</Xl8>;
   const endpoint = getEndpoint(props.location.pathname);
   const [tab, setTab] = useState(endpoint === "rules" ? RULETAB.MY : RULETAB.ALL);
-  const service = tab === RULETAB.ALL ? rulesall : rule;
+  const service = endpoint === "all" ? rulesall : rule;
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
   const [data, setData] = useState({});
@@ -41,11 +43,12 @@ const Rules = props => {
     {
       Accessor: "id",
       Xl8: true,
+      disableSortBy: true,
       Header: ["edit001", "Edit"],
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
-            className="fa fa-pencil-square-o qbrb-icon-edit"
+            className="fa fa-pencil-square-o table-icon"
             onClick={() => fetchDetail(row.original.id)}
           ></i>
         </div>
@@ -124,7 +127,6 @@ const Rules = props => {
 
     setModalTitle(title);
     // timestamp as key ensures the modal gets refreshed and displayed on each launch.
-    // APB ????
     setModalKey(Date.now());
   };
 
@@ -185,7 +187,7 @@ const Rules = props => {
     }
 
     fetchTableData();
-  }, [tab, endpoint]);
+  }, [endpoint]);
 
   useEffect(() => {
     const lastRule = ctx.getLookupState("lastRule");
@@ -224,7 +226,7 @@ const Rules = props => {
   const button = (
     <Button
       variant="ternary"
-      className="btn btn-outline-info"
+      className="btn btn-info"
       name={props.name}
       placeholder={props.placeholder}
       onClick={() => triggerShowModal()}
@@ -238,7 +240,7 @@ const Rules = props => {
 
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.RULEMGR]}>
-      <Main className="full">
+      <Main className="full bg-white">
         <Title
           title={<Xl8 xid="rul006">Rules</Xl8>}
           key="title"

@@ -1,7 +1,7 @@
 .gtas-tabs {
   border: none;
   margin-bottom: 3px;
-  width: calc((100vw - 300px) / 3);
+  /* width: calc(100vw - 730px); */
   flex-wrap: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
@@ -13,3 +13,5 @@
   padding: 0.2rem 0.5rem;
   border-color: #d0d0d0 #d0d0d0 #d0d0d0 !important;
 }
+
+/* chrome tabs */

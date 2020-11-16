@@ -12,7 +12,6 @@ const LangModal = props => {
   const data = props.elem || {};
 
   const postSubmit = (status, res) => {
-    console.log(status);
     props.onHide();
     if (status === ACTION.SAVE) window.location.reload();
   };
@@ -24,6 +23,7 @@ const LangModal = props => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="max-500-width-container"
     >
       <Modal.Header closeButton>
         <Modal.Title>Edit Translation</Modal.Title>

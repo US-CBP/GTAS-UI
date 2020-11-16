@@ -2,7 +2,6 @@ import { Link } from "@reach/router";
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../labelledInput/LabelledInput";
-import Title from "../../title/Title";
 
 const FlightInfo = props => {
   return (

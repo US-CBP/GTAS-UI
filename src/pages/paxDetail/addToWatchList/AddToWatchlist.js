@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Container, Alert } from "react-bootstrap";
+import { Button, Container, Alert } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
@@ -8,6 +8,11 @@ import { ROLE } from "../../../utils/constants";
 import { addWLItems, hitcats } from "../../../services/serviceWrapper";
 
 import { asArray } from "../../../utils/utils";
+import Modal, {
+  ModalBody,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 
 const AddToWatchlist = props => {
   const cb = () => {};
@@ -78,7 +83,7 @@ const AddToWatchlist = props => {
 
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.WLMGR]} alt={<></>}>
-      <Button variant="outline-danger" size="sm" onClick={handleShow}>
+      <Button className="dropdown-item" onClick={handleShow}>
         <Xl8 xid="atw001">Add to Watchlist</Xl8>
       </Button>
 
@@ -88,14 +93,15 @@ const AddToWatchlist = props => {
         size="md"
         centered
         aria-labelledby="contained-modal-title-vcenter"
+        className="max-500-width-container"
       >
-        <Modal.Header closeButton>
-          <Modal.Title>
+        <ModalHeader closeButton>
+          <ModalTitle>
             <Xl8 xid="atw002">Add Passenger/Document to Watchlist</Xl8>
-          </Modal.Title>
-        </Modal.Header>
+          </ModalTitle>
+        </ModalHeader>
 
-        <Modal.Body>
+        <ModalBody>
           <Container fluid>
             <Form
               submitService={addWLItems.post}
@@ -125,7 +131,7 @@ const AddToWatchlist = props => {
               </Alert>
             </Form>
           </Container>
-        </Modal.Body>
+        </ModalBody>
       </Modal>
     </RoleAuthenticator>
   );

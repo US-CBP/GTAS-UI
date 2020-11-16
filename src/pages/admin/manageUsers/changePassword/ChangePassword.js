@@ -6,7 +6,7 @@ import { Container, Alert } from "react-bootstrap";
 import Title from "../../../../components/title/Title";
 import Xl8 from "../../../../components/xl8/Xl8";
 import "./ChangePassword.scss";
-import { hasData } from "../../../../utils/utils";
+import { hasData, isValidPassword } from "../../../../utils/utils";
 
 const ChangePassword = props => {
   const [oldPassword, setOldPassword] = useState();
@@ -32,7 +32,7 @@ const ChangePassword = props => {
         <Xl8 xid="pass006">10 to 20 characters</Xl8>
       </li>
       <li>
-        <Xl8 xid="pass007">{`At least one special character (!@#$%^&?*)`}</Xl8>
+        <Xl8 xid="pass007">At least one special character</Xl8> (!@#$%^&?*)
       </li>
       <li>
         <Xl8 xid="pass008">At least one number</Xl8>
@@ -73,12 +73,6 @@ const ChangePassword = props => {
     if (input.name === "confirmPassword") {
       setConfirmedPassword(input.value);
     }
-  };
-  const isValidPassword = password => {
-    const passwordConstraint = new RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{10,20})"
-    );
-    return passwordConstraint.test(password);
   };
 
   const validateInputs = fields => {
@@ -125,8 +119,16 @@ const ChangePassword = props => {
   };
 
   return (
-    <Container className="change-password-container">
-      <Title title={<Xl8 xid="pass001">Change Password</Xl8>} uri={props.uri} />
+    <Container>
+      <div className="cp-modal-header dismissible">
+        <div className="modal-title h4">
+          <Xl8 xid="pass001">Change Password</Xl8>
+        </div>
+        {/* <button type="button" class="close">
+          <span aria-hidden="true">×</span>
+          <span class="sr-only">Close</span>
+        </button> */}
+      </div>
       <div className="password-rules">{passwordRule}</div>
       {displayErrorMsg && (
         <Alert variant="danger" dismissible onClose={() => setDisplayErrorMsg(false)}>
