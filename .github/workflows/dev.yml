@@ -46,7 +46,7 @@ jobs:
           curl -L https://github.com/kubernetes/kompose/releases/download/v1.21.0/kompose-linux-amd64 -o kompose
           chmod +x kompose
           sudo mv ./kompose /usr/local/bin/kompose
-          kompose -f docker-compose.yml convert --out deploy.yaml
+          kompose -f k8s-pipeline-properties.yml -f docker-compose.yml convert --out deploy.yaml
       - name: Deploy to cluster
         uses: Consensys/kubernetes-action@master
         env:

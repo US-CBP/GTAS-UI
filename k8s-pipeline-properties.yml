@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  gtas-ui:
+    labels:
+      kompose.image-pull-policy: "Always"
+      kompose.service.type: "LoadBalancer"
+    deploy:
+      placement:
+        constraints:
+          - node.labels.role == backend
