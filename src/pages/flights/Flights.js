@@ -55,6 +55,7 @@ const Flights = props => {
       if(item.graphHitCount === 0) {item.graphHitCount=""};
       if(item.fuzzyHitCount === 0) {item.fuzzyHitCount=""};
       if(item.externalHitCount === 0) {item.externalHitCount=""};
+      if(item.manualHitCount === 0) {item.manualHitCount=""};
 
       return item;
     });
@@ -132,6 +133,7 @@ const Flights = props => {
     { Accessor: "graphHitCount", Xl8: true, Header: ["fl015", "Graph Hits"] },
     { Accessor: "fuzzyHitCount", Xl8: true, Header: ["fl016", "Partial Hits"] },
     { Accessor: "externalHitCount", Xl8: true, Header: ["fl017", "External Hits"] },
+    { Accessor: "manualHitCount", Xl8: true, Header: ["fl023", "Manual Hits"] },
     {
       Accessor: "passengerCount",
       Xl8: true,
