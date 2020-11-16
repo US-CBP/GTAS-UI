@@ -41,10 +41,12 @@ const FlightPax = props => {
       item.dobAge = `${alt(localeDateOnly(item.dobStr))} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
+      item.hitCounts = `${item.lowPrioHitCount || 0}${item.medPrioHitCount ||
+        0}${item.highPrioHitCount || 0}`;
       item.aggregateHitsCount = {
-        low: item.lowPrioHitCount,
+        low: item.highPrioHitCount,
         med: item.medPrioHitCount,
-        high: item.highPrioHitCount
+        high: item.lowPrioHitCount
       };
       return item;
     });
@@ -70,7 +72,7 @@ const FlightPax = props => {
     {
       Accessor: "graphHitCount",
       Xl8: true,
-      Header: ["fp022","Graph Hits"],
+      Header: ["fp022", "Graph Hits"],
       disableGroupBy: true,
       aggregate: "sum",
       Aggregated: ({ value }) => `${value} Hits`
@@ -78,7 +80,7 @@ const FlightPax = props => {
     {
       Accessor: "fuzzyHitCount",
       Xl8: true,
-      Header: ["fp023","Partial Hits"],
+      Header: ["fp023", "Partial Hits"],
       disableGroupBy: true,
       aggregate: "sum",
       Aggregated: ({ value }) => `${value} Hits`
@@ -86,7 +88,7 @@ const FlightPax = props => {
     {
       Accessor: "manualHitCount",
       Xl8: true,
-      Header: ["fp024","Manual Hits"],
+      Header: ["fp024", "Manual Hits"],
       disableGroupBy: true,
       aggregate: "sum",
       Aggregated: ({ value }) => `${value} Hits`
@@ -94,7 +96,7 @@ const FlightPax = props => {
     {
       Accessor: "externalHitCount",
       Xl8: true,
-      Header: ["fp025","External Hits"],
+      Header: ["fp025", "External Hits"],
       disableGroupBy: true,
       aggregate: "sum",
       Aggregated: ({ value }) => `${value} Hits`
@@ -102,26 +104,54 @@ const FlightPax = props => {
   ];
 
   const aggregateHitHeader = {
-    Accessor:"aggregateHitsCount",
-        Xl8: true,
-      Header: ["fp026", "Hit Aggregates"],
-      disableGroupBy: true,
-      Cell: ({ row })=> {
-      return(
-        <span style={{"justify-content":"space-between","display":"flex","align-items":"baseline","marginLeft":"5px", "marginRight":"5px"}}>
-          {(row.original.aggregateHitsCount.low > 0) && (
-              <span><i className="fa fa-flag" style={{color:"#FCF300"}} title="normal severity"></i> {row.original.aggregateHitsCount.low}</span>)}
-          {(row.original.aggregateHitsCount.med > 0) && (
-              <span><i className="fa fa-flag" style={{color:"orange"}} title="high severity"></i> {row.original.aggregateHitsCount.med}</span>)}
-          {(row.original.aggregateHitsCount.high > 0) && (
-              <span><i className="fa fa-flag" style={{color:"red"}} title="top severity"></i> {row.original.aggregateHitsCount.high}</span>)}
+    Accessor: "hitCounts",
+    Xl8: true,
+    Header: ["fp026", "Hit Aggregates"],
+    disableGroupBy: true,
+    Cell: ({ row }) => {
+      return (
+        <span
+          style={{
+            "justify-content": "space-between",
+            display: "flex",
+            "align-items": "baseline",
+            marginLeft: "5px",
+            marginRight: "5px"
+          }}
+        >
+          {row.original.aggregateHitsCount.low > 0 && (
+            <span>
+              <i
+                className="fa fa-flag"
+                style={{ color: "#FCF300" }}
+                title="normal severity"
+              ></i>
+              {row.original.aggregateHitsCount.low}
             </span>
+          )}
+          {row.original.aggregateHitsCount.med > 0 && (
+            <span>
+              <i
+                className="fa fa-flag"
+                style={{ color: "orange" }}
+                title="high severity"
+              ></i>
+              {row.original.aggregateHitsCount.med}
+            </span>
+          )}
+          {row.original.aggregateHitsCount.high > 0 && (
+            <span>
+              <i className="fa fa-flag" style={{ color: "red" }} title="top severity"></i>{" "}
+              {row.original.aggregateHitsCount.high}
+            </span>
+          )}
+        </span>
       );
     }
-  }
-  const arrayHeaderFixer = (tab !== "hits")  ? [aggregateHitHeader] : hitHeaders
+  };
+  const arrayHeaderFixer = tab !== "hits" ? [aggregateHitHeader] : hitHeaders;
   const headers = [
-          ...arrayHeaderFixer,
+    ...arrayHeaderFixer,
     {
       Accessor: "passengerType",
       Xl8: true,
