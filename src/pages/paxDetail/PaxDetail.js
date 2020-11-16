@@ -211,9 +211,9 @@ const PaxDetail = props => {
           leftChild={tablist}
         ></Title>
         <Fab icon={<i className="fa fa-plus" />} variant="info">
-          {/* <Action text={<Xl8 xid="not001">Notify</Xl8>}>
+          <Action text={<Xl8 xid="not001">Notify</Xl8>}>
             <Notification paxId={props.paxId} icon />
-          </Action> */}
+          </Action>
           <Action text={<Xl8 xid="rep001">Download Report</Xl8>}>
             <DownloadReport paxId={props.paxId} flightId={props.flightId} icon />
           </Action>
@@ -237,14 +237,16 @@ const PaxDetail = props => {
               />
             </Action>
           )}
-          <Action text={<Xl8 xid="cmh001">Create Manual Hit</Xl8>} variant="rtf-red">
-            <CreateManualHit
-              paxId={props.paxId}
-              flightId={props.flightId}
-              callback={setHitSummaryRefreshKey}
-              icon
-            />
-          </Action>
+          {!hasHit && (
+            <Action text={<Xl8 xid="cmh001">Create Manual Hit</Xl8>} variant="rtf-red">
+              <CreateManualHit
+                paxId={props.paxId}
+                flightId={props.flightId}
+                callback={setHitSummaryRefreshKey}
+                icon
+              />
+            </Action>
+          )}
           <Action text={<Xl8 xid="atw001">Add to Watchlist</Xl8>} variant="rtf-red">
             <AddToWatchlist watchlistItems={watchlistData} icon />
           </Action>

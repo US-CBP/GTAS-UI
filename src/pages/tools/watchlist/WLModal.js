@@ -182,40 +182,6 @@ const WLModal = props => {
     return [result];
   };
 
-  const handleDelete = () => {
-    return service.del(id).then(res => {
-      props.callback(ACTION.DELETE);
-    });
-  };
-
-  const getDeleteColumnData = id => {
-    const deleteText = {
-      message: <Xl8 xid="wl005">Are you sure you want to delete the record?</Xl8>,
-      title: <Xl8 xid="wl006">Delete Confirmation</Xl8>,
-      style: "danger"
-    };
-
-    return (
-      <Confirm header={deleteText.title} message={deleteText.message}>
-        {confirm => () => handleDelete(id)}
-      </Confirm>
-    );
-  };
-
-  const deleteButton = isEdit
-    ? [
-        <Button
-          type="button"
-          className="m-2 outline-dark-outline"
-          variant="outline-dark"
-          key="delete"
-          onClick={() => getDeleteColumnData()}
-        >
-          <Xl8 xid="cem002">Delete</Xl8>
-        </Button>
-      ]
-    : [];
-
   return (
     <Modal
       show={props.show}
@@ -238,7 +204,6 @@ const WLModal = props => {
             paramCallback={preSubmit}
             data={props.data}
             cancellable
-            customButtons={deleteButton}
           >
             {fields.props.children}
           </Form>

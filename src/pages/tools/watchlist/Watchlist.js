@@ -36,6 +36,12 @@ const Watchlist = props => {
   const [toastContent, setToastContent] = useState();
   const [toastVariant, setToastVariant] = useState();
 
+  const deleteText = {
+    message: <Xl8 xid="wl005">Are you sure you want to delete the record?</Xl8>,
+    title: <Xl8 xid="wl006">Delete Confirmation</Xl8>,
+    style: "danger"
+  };
+
   const handleImportData = results => {
     const keys = {
       "First Name": "firstName",
@@ -101,6 +107,21 @@ const Watchlist = props => {
       if (!hasData(wlcatData)) getCats();
       else fetchData();
     });
+  };
+
+  const getDeleteColumnData = id => {
+    return (
+      <Confirm header={deleteText.title} message={deleteText.message}>
+        {confirm => (
+          <div className="icon-col">
+            <i
+              className="fa fa-remove qbrb-icon-black"
+              onClick={confirm(() => deleteWatchlistItem(id))}
+            ></i>
+          </div>
+        )}
+      </Confirm>
+    );
   };
 
   const getEditRowData = item => {
@@ -240,14 +261,14 @@ const Watchlist = props => {
     },
     { Accessor: "documentType", Xl8: true, Header: ["wl011", "Document Type"] },
     { Accessor: "documentNumber", Xl8: true, Header: ["wl012", "Document Number"] },
-    { Accessor: "category", Xl8: true, Header: ["wl013", "Category"] }
-    // {
-    //   Accessor: "delete",
-    //   Xl8: true,
-    //   Header: ["wl014", "Delete"],
-    //   disableExport: true,
-    //   Cell: ({ row }) => getDeleteColumnData(row.original.id)
-    // }
+    { Accessor: "category", Xl8: true, Header: ["wl013", "Category"] },
+    {
+      Accessor: "delete",
+      Xl8: true,
+      Header: ["wl014", "Delete"],
+      disableExport: true,
+      Cell: ({ row }) => getDeleteColumnData(row.original.id)
+    }
   ];
 
   const paxHeader = [
@@ -262,14 +283,14 @@ const Watchlist = props => {
     { Accessor: "firstName", Xl8: true, Header: ["wl015", "First Name"] },
     { Accessor: "lastName", Xl8: true, Header: ["wl016", "Last Name"] },
     { Accessor: "dob", Xl8: true, Header: ["wl016", "DOB"] },
-    { Accessor: "category", Xl8: true, Header: ["wl017", "Category"] }
-    // {
-    //   Accessor: "delete",
-    //   Xl8: true,
-    //   disableExport: true,
-    //   Header: ["wl014", "Delete"],
-    //   Cell: ({ row }) => getDeleteColumnData(row.original.id)
-    // }
+    { Accessor: "category", Xl8: true, Header: ["wl017", "Category"] },
+    {
+      Accessor: "delete",
+      Xl8: true,
+      disableExport: true,
+      Header: ["wl014", "Delete"],
+      Cell: ({ row }) => getDeleteColumnData(row.original.id)
+    }
   ];
 
   const header = tab === TAB.DOX ? doxHeader : paxHeader;
