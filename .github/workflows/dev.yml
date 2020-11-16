@@ -37,7 +37,7 @@ jobs:
           platforms: linux/amd64
           push: true
           file: ./dockerfile
-          tags: wcogtas/gtas-gui:dev
+          tags: wcogtas/gtas-ui:dev
       - name: Generate Kubernetes deployment configuration file
         shell: bash
         run: |
