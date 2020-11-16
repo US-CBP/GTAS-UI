@@ -320,3 +320,17 @@ li .rtf--ab__c button[variant="rtf-red"] {
 .table td {
   vertical-align: middle !important;
 }
+
+.kibana {
+  background: url("./images/kibana.svg") no-repeat no-repeat;
+  height: 60px;
+  width: 70px;
+  background-size: cover;
+}
+
+.neo4j {
+  background: url("./images/neo4j.png") no-repeat no-repeat;
+  height: 60px;
+  width: 60px;
+  background-size: cover;
+}

@@ -149,12 +149,12 @@ const Summary = props => {
         <CardWithTable
           data={eventNotes}
           headers={headers.eventNotes}
-          title={<Xl8 xid="sum024">Event Note History</Xl8>}
+          title={<Xl8 xid="sum024">Event Notes</Xl8>}
         />
         <CardWithTable
           data={historicalEventNotes}
           headers={headers.eventNotes}
-          title={<Xl8 xid="sum025">Previous Note History</Xl8>}
+          title={<Xl8 xid="sum025">Prior Event Notes</Xl8>}
         />
       </CardColumns>
     </div>
