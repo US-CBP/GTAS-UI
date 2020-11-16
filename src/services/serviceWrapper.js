@@ -100,6 +100,7 @@ const SETTINGSINFO = `${BASE_URL}gtas/settingsinfo`;
 const GETRULECATS = `${BASE_URL}getRuleCats`;
 const PAX = `${BASE_URL}gtas/passengers/passenger`;
 const FLIGHTPAXHITSUMMARY = `${BASE_URL}gtas/hit/flightpassenger`;
+const HISTORICALHITS = `${PAX}/hitdetailhistory`;
 const FLIGHTPAX = `${BASE_URL}gtas/api/flights/flightpax`;
 const QUERIES = `${BASE_URL}gtas/query`;
 const QUERYPAX = `${BASE_URL}gtas/query/queryPassengers`;
@@ -249,6 +250,10 @@ export const flightpaxHitSummary = {
     const path = `${FLIGHTPAXHITSUMMARY}?passengerId=${paxId}&flightId=${flightId}`;
     return get(path, BASEHEADER);
   }
+};
+
+export const historicalHits = {
+  get: paxId => get(`${HISTORICALHITS}?paxId=${paxId}`, BASEHEADER)
 };
 export const paxEventNotesHistory = {
   get: (paxId, historicalNotes) => {

@@ -4,7 +4,8 @@ import Xl8 from "../../../components/xl8/Xl8";
 import {
   paxWatchListLink,
   flightpaxHitSummary,
-  paxEventNotesHistory
+  paxEventNotesHistory,
+  historicalHits
 } from "../../../services/serviceWrapper";
 import {
   localeDate,
@@ -15,6 +16,8 @@ import {
 } from "../../../utils/utils";
 import { CardColumns } from "react-bootstrap";
 import "./Summary.scss";
+import { HIT_STATUS } from "../../../utils/constants";
+import { Link } from "@reach/router";
 
 const Summary = props => {
   const headers = {
@@ -45,6 +48,13 @@ const Summary = props => {
       noteType: <Xl8 xid="sum018">Note Type</Xl8>,
       createdBy: <Xl8 xid="sum019">Created By</Xl8>,
       createdAt: <Xl8 xid="sum020">Created At</Xl8>
+    },
+    historicaHits: {
+      category: <Xl8 xid="sum026">Category</Xl8>,
+      passengerDocNumber: <Xl8 xid="sum027">Document Number</Xl8>,
+      ruleConditions: <Xl8 xid="sum028">Conditions</Xl8>,
+      flightDate: <Xl8 xid="sum029">Flight ID</Xl8>,
+      flightPaxLink: <Xl8 xid="sum030">Details</Xl8>
     }
   };
 
@@ -54,6 +64,7 @@ const Summary = props => {
   const [paxHitSummary, setPaxHitSummary] = useState([]);
   const [eventNotes, setEventNotes] = useState([]);
   const [historicalEventNotes, setHistoricalEventNotes] = useState([]);
+  const [paxHistoricalHits, setPaxHistoricalHits] = useState([]);
 
   const parseDocumentData = documents => {
     const parsedDocs = asArray(documents).map(document => {
@@ -64,6 +75,10 @@ const Summary = props => {
       };
     });
     return parsedDocs;
+  };
+
+  const getLinkToPaxDetails = linkData => {
+    return <Link to={`/gtas/paxDetail/${linkData.flightId}/${linkData.paxId}`}></Link>;
   };
 
   useEffect(() => {
@@ -87,10 +102,22 @@ const Summary = props => {
       });
       setPaxHitSummary(formattedResults);
       const openHit = hasData(res)
-        ? res.find(hit => hit.status === "New" || hit.status === "Re_Opened")
+        ? res.find(
+            hit => hit.status === HIT_STATUS.NEW || hit.status === HIT_STATUS.REOPENED
+          )
         : undefined;
       setHasHit(hasData(res));
       setHasOpenHit(openHit !== undefined);
+    });
+
+    historicalHits.get(props.paxId).then(res => {
+      asArray(res).map(hit => {
+        return {
+          ...hit,
+          flightPaxLink: getLinkToPaxDetails(hit)
+        };
+      });
+      setPaxHistoricalHits(res);
     });
   }, [props.hitSummaryRefreshKey, props.paxId]);
 
@@ -155,6 +182,11 @@ const Summary = props => {
           data={historicalEventNotes}
           headers={headers.eventNotes}
           title={<Xl8 xid="sum025">Prior Event Notes</Xl8>}
+        />
+        <CardWithTable
+          data={paxHistoricalHits}
+          headers={headers.paxHistoricalHits}
+          title={<Xl8 xid="sum031">Historical Hits</Xl8>}
         />
       </CardColumns>
     </div>

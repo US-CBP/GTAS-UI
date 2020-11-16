@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
-import { DropdownButton, Col } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
@@ -24,9 +24,10 @@ import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import { asArray, hasData } from "../../utils/utils";
 import { ACTION } from "../../utils/constants";
-import "./PaxDetail.scss";
+import { Link } from "@reach/router";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
+import "./PaxDetail.scss";
 
 const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState({});
@@ -144,10 +145,43 @@ const PaxDetail = props => {
     };
   };
 
+  const addLinkToFlight = data => {
+    const fullFlightNumber = data.carrier + data.flightNumber;
+    const stateData = {
+      direction: data.direction,
+      eta: data.eta,
+      etd: data.etd,
+      fullFlightNumber: fullFlightNumber,
+      flightDestination: data.destination,
+      flightOrigin: data.origin,
+      passengerCount: data.passengerCount
+    };
+    return (
+      <Link
+        to={"/gtas/flightpax/" + data.flightId}
+        state={{ data: stateData }}
+        className="pax-info-link"
+      >
+        {fullFlightNumber}
+      </Link>
+    );
+  };
+  const getFlightBadgeData = res => {
+    return {
+      flightNumber: addLinkToFlight(res),
+      carrier: "",
+      flightDestination: res.destination,
+      flightOrigin: res.origin,
+      eta: res.eta,
+      etd: res.etd,
+      flightNumberHasLink: true
+    };
+  };
+
   const fetchData = () => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
       setPax(paxinfoData(res));
-      setFlightBadge(res);
+      setFlightBadge(getFlightBadgeData(res));
       setPnr({ ...res.pnrVo, flightId: props.flightId });
       setApisMessage(res.apisMessageVo);
       setFlightLegsSegmentData(asArray(res.pnrVo?.flightLegs));
