@@ -82,7 +82,7 @@ const Flights = props => {
         if (name === "destinationAirports" || name === "originAirports") {
           // retrieve raw comma- or whitespace-separated text, convert to array, remove empties.
           const airports = fieldscopy[name]
-            .replace(",", " ")
+            .replace(/[,]/g, " ")
             .split(" ")
             .filter(Boolean);
           paramObject[name] = [...new Set(airports)]; // scrub duplicate vals
