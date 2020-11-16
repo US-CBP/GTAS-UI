@@ -1,4 +1,5 @@
+.gitignore
+certs
 docker-compose.yml
 dockerfile
-.gitignore
 README.md

@@ -7,10 +7,21 @@ services:
       context: .
       dockerfile: dockerfile
     ports:
-      - 80:80
+#      - 80:80
+      - 443:443
     restart: always
+    secrets:
+      - source: cert
+        target: /certs/gtas.crt
+      - source: key
+        target: /certs/gtas.key
     networks:
       - gtas-webapp-network
 networks:
   gtas-webapp-network:
     attachable: true
+secrets:
+  cert:
+    file: ./certs/gtas.crt
+  key:
+    file: ./certs/gtas.key
