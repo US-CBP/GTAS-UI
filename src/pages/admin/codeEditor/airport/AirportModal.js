@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Container, Alert } from "react-bootstrap";
+import React from "react";
+import { Button, Container } from "react-bootstrap";
 
 import { codeEditor } from "../../../../services/serviceWrapper";
 import Form from "../../../../components/form/Form";
@@ -13,9 +13,6 @@ import Modal, {
 } from "../../../../components/modal/Modal";
 
 const AirportModal = props => {
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertContent, setAlertContent] = useState("");
-  const [variant, setVariant] = useState("");
   const cb = function(result) {};
   const data = props.editRowDetails || {};
 
@@ -68,13 +65,6 @@ const AirportModal = props => {
       <ModalHeader closeButton>
         <ModalTitle>{props.title}</ModalTitle>
       </ModalHeader>
-      <Alert show={showAlert} variant={variant}>
-        {alertContent}
-        <hr />
-        <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          <Xl8 xid="form003">Confirm</Xl8>
-        </Button>
-      </Alert>
       <ModalBody>
         <Container fluid>
           <Form
