@@ -6,6 +6,13 @@ jobs:
     name: gui
     runs-on: ubuntu-latest
     steps:
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -23,12 +30,12 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-#      - name: Clean resources
-#        uses: Consensys/kubernetes-action@master
-#        env:
-#          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-#        with:
-#          args: delete deployments gtas-ui
+      - name: Clean resources
+        uses: Consensys/kubernetes-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: delete deployments gtas-ui
       - uses: docker/build-push-action@v2
         name: Build and push GTAS UI
         with:
