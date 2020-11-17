@@ -81,12 +81,19 @@ const AddToWatchlist = props => {
     });
   }, []);
 
+  const launcher = props.icon ? (
+    <div onClick={handleShow}>
+      <i className="fa fa-eye"></i>
+    </div>
+  ) : (
+    <div className="dropdown-item" onClick={handleShow}>
+      <Xl8 xid="atw001">Add to Watchlist</Xl8>
+    </div>
+  );
+
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.WLMGR]} alt={<></>}>
-      <Button className="dropdown-item" onClick={handleShow}>
-        <Xl8 xid="atw001">Add to Watchlist</Xl8>
-      </Button>
-
+      {launcher}
       <Modal
         show={show}
         onHide={handleClose}

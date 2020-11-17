@@ -197,8 +197,7 @@ const FlightPax = props => {
   return (
     <>
       <SidenavContainer>
-        <Col className="notopmargin">
-          <br />
+        <Col>
           <FlightBadge data={getFlightData()}></FlightBadge>
           <br />
           <div className="flightpax-countdown-container">

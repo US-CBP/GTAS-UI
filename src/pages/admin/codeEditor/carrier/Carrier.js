@@ -4,6 +4,8 @@ import Xl8 from "../../../../components/xl8/Xl8";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CarrierModal from "./CarrierModal";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const Carriers = ({ name }) => {
   const cb = function(result) {};
@@ -44,34 +46,14 @@ const Carriers = ({ name }) => {
     { Accessor: "name", Xl8: true, Header: ["car005", "Name"] }
   ];
 
+  const restoreAll = () => {
+    codeEditor.put.restoreCarriersAll().then(res => {
+      refresh();
+    });
+  };
+
   return (
     <div>
-      <div className="action-button-div">
-        <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              setShowModal(true);
-              setModalTitle(<Xl8 xid="car002">Add Carrier</Xl8>);
-              setIsEditModal(false);
-              setEditRowDetails({});
-            }}
-          >
-            <Xl8 xid="car002">Add Carrier</Xl8>
-          </Dropdown.Item>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              codeEditor.put.restoreCarriersAll().then(res => {
-                refresh();
-              });
-            }}
-          >
-            {<Xl8 xid="car003">Restore All Carriers</Xl8>}
-          </Dropdown.Item>
-        </DropdownButton>
-      </div>
-
       <CarrierModal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -89,6 +71,26 @@ const Carriers = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
+      <Fab icon={<i className="fa fa-plus" />} variant="info">
+        <Action
+          text={<Xl8 xid="car002">Add Carrier</Xl8>}
+          onClick={() => {
+            setShowModal(true);
+            setModalTitle(<Xl8 xid="car002">Add Carrier</Xl8>);
+            setIsEditModal(false);
+            setEditRowDetails({});
+          }}
+        >
+          <i className="fa fa-plus" />
+        </Action>
+        <Action
+          text={<Xl8 xid="car003">Restore All Carriers</Xl8>}
+          variant="rtf-red"
+          onClick={restoreAll}
+        >
+          <i className="fa fa-recycle" />
+        </Action>
+      </Fab>
     </div>
   );
 };
