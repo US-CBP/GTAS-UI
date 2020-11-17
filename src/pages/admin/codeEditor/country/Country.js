@@ -32,14 +32,14 @@ const Countries = ({ name }) => {
 
   const confirm = action => {
     if (action === ACTION.UPDATE) {
-      setConfirmModalHeader(<Xl8 xid="airpConf001">Restore Airport Code</Xl8>);
+      setConfirmModalHeader(<Xl8 xid="airpConf001">Restore Country Code</Xl8>);
       setConfirmModalMessage(
-        <Xl8 xid="airpConf002">Please confirm to restore the airport code</Xl8>
+        <Xl8 xid="airpConf002">Please confirm to restore the country code</Xl8>
       );
     } else if (action === ACTION.DELETE) {
-      setConfirmModalHeader(<Xl8 xid="airpConf003">Delete Airport Code</Xl8>);
+      setConfirmModalHeader(<Xl8 xid="airpConf003">Delete Country Code</Xl8>);
       setConfirmModalMessage(
-        <Xl8 xid="airpConf004">Please confirm to delete the airport code</Xl8>
+        <Xl8 xid="airpConf004">Please confirm to delete the country code</Xl8>
       );
     }
     setAction(action);
