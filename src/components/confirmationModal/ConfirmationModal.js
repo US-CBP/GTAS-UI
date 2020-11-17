@@ -8,21 +8,21 @@ const ConfirmationModal = props => {
     <Modal
       className="confirmation-modal"
       show={props.show}
-      onHide={() => props.confirm(false)}
+      onHide={() => props.callback(false)}
       centered
     >
       <ModalHeader variant="primary">{props.header}</ModalHeader>
       <ModalBody>{props.message}</ModalBody>
       <ModalFooter>
         <Button
-          onClick={() => props.confirm(false)}
+          onClick={() => props.callback(false)}
           className="m-2 outline-dark-outline"
           variant="outline-dark"
         >
           <Xl8 xid="form001">Cancel</Xl8>
         </Button>
         <Button
-          onClick={() => props.confirm(true)}
+          onClick={() => props.callback(true)}
           className="m-2 button block info fullwidth"
         >
           <Xl8 xid="form003">Confirm</Xl8>

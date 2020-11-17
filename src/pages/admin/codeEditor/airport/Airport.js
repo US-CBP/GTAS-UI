@@ -6,6 +6,7 @@ import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import AirportModal from "./AirportModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
+import { ACTION } from "../../../../utils/constants";
 
 const Airports = ({ name }) => {
   const cb = function(result) {};
@@ -15,6 +16,9 @@ const Airports = ({ name }) => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [modalTitle, setModalTitle] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
+  const [action, setAction] = useState();
+  const [confirmModalHeader, setConfirmModalHeader] = useState();
+  const [confirmModalMessage, setConfirmModalMessage] = useState();
 
   const addAirport = <Xl8 xid="airp002">Add Airport</Xl8>;
   const editAirport = <Xl8 xid="airp003">Edit Airport</Xl8>;
@@ -30,7 +34,19 @@ const Airports = ({ name }) => {
     setShowModal(true);
   };
 
-  const confirm = () => {
+  const confirm = action => {
+    if (action === ACTION.UPDATE) {
+      setConfirmModalHeader(<Xl8 xid="airpConf001">Restore Airport Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf002">Please confirm to restore the airport code</Xl8>
+      );
+    } else if (action === ACTION.DELETE) {
+      setConfirmModalHeader(<Xl8 xid="airpConf003">Delete Airport Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf004">Please confirm to delete the airport code</Xl8>
+      );
+    }
+    setAction(action);
     setShowConfirm(true);
     setShowModal(false);
   };
@@ -41,9 +57,16 @@ const Airports = ({ name }) => {
     });
   };
 
+  const deleteCode = () => {
+    codeEditor.delete.deleteAirport(editRowDetails?.id).then(res => {
+      refresh();
+    });
+  };
+
   const handleConfirm = confirmed => {
-    if (confirmed) restoreCode();
-    else setShowModal(true);
+    if (confirmed) {
+      action === ACTION.DELETE ? deleteCode() : restoreCode();
+    } else setShowModal(true);
 
     setShowConfirm(false);
   };
@@ -84,13 +107,13 @@ const Airports = ({ name }) => {
         editRowDetails={editRowDetails}
         refresh={refresh}
         callback={cb}
-        restoreSpecificCode={confirm}
+        actionCallback={confirm}
       />
       <ConfirmationModal
         show={showConfirm}
-        confirm={handleConfirm}
-        header={<Xl8 xid="airpConf001">Restore Airport Code</Xl8>}
-        message={<Xl8 xid="airpConf002">Please confirm to resetore the airport code</Xl8>}
+        callback={handleConfirm}
+        header={confirmModalHeader}
+        message={confirmModalMessage}
       />
 
       <div className="action-button-div">
