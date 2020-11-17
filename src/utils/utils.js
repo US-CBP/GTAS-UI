@@ -162,7 +162,6 @@ export function localeDateOnly(val) {
   return new Date(val).toLocaleString(locale, options);
 }
 
-// Locale Date-only formatter
 export function localeMonthDayTime(val) {
   if (!hasData(val)) return "";
 
@@ -186,6 +185,24 @@ export const localeMonthYear = val => {
     year: "2-digit"
   };
   return new Date(val).toLocaleString(locale, options);
+};
+
+// sortable date string - not for display as it is not locale specific
+export const sortableDate = val => {
+  if (isNaN(Date.parse(val))) return "";
+
+  const padDigit = num => {
+    return num.toString().padStart(2, "0");
+  };
+
+  return (
+    val.getFullYear() +
+    padDigit(val.getMonth() + 1) +
+    padDigit(val.getDate()) +
+    padDigit(val.getHours()) +
+    padDigit(val.getMinutes()) +
+    padDigit(val.getSeconds())
+  );
 };
 
 // Returns the day of the week for a given date string

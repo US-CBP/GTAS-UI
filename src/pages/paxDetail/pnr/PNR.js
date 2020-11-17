@@ -14,10 +14,34 @@ import { Link } from "@reach/router";
 
 const PNR = props => {
   const data = hasData(props.data) ? props.data : {};
-  const segmentTitle = `${data.recordLocator} ${
+  const segmentTitle = `Reservation Number: ${data.recordLocator} ${
     hasData(data.version) ? `(Version: ${data.version})` : ""
   }`;
 
+  const sortFlightByEta = (flight1, flight2) => {
+    return flight2.eta - flight1.eta;
+  };
+  const addLinkToFlight = flight => {
+    //Only prime flights need a link
+    const isPrimeFlight = !hasData(flight.bookingDetailId);
+    const stateData = {
+      direction: flight.direction,
+      eta: flight.eta,
+      etd: flight.etd,
+      fullFlightNumber: flight.flightNumber,
+      flightDestination: flight.destinationAirport,
+      flightOrigin: flight.originAirport,
+      passengerCount: flight.passengerCount
+    };
+
+    return isPrimeFlight ? (
+      <Link to={"/gtas/flightpax/" + flight.flightId} state={{ data: stateData }}>
+        {flight.flightNumber}
+      </Link>
+    ) : (
+      flight.flightNumber
+    );
+  };
   const getPassengerName = paxId => {
     const passengers = data.passengers;
     const passenger = passengers.find(passenger => passenger.paxId === paxId?.toString());
@@ -182,17 +206,19 @@ const PNR = props => {
     }
   };
   const rawPnrSegments = asArray(data.segmentList);
-  const itinerary = asArray(data.flightLegs).map((leg, index) => {
-    return {
-      leg: index + 1,
-      flightNumber: leg.flightNumber,
-      origin: leg.originAirport,
-      destination: leg.destinationAirport,
-      departure: localeDate(leg.etd),
-      arrivval: localeDate(leg.eta),
-      key: `TVL${leg.originAirport} `
-    };
-  });
+  const itinerary = asArray(data.flightLegs)
+    .sort(sortFlightByEta)
+    .map((leg, index) => {
+      return {
+        leg: index + 1,
+        flightNumber: addLinkToFlight(leg),
+        origin: leg.originAirport,
+        destination: leg.destinationAirport,
+        departure: localeDate(leg.etd),
+        arrivval: localeDate(leg.eta),
+        key: `TVL${leg.originAirport} `
+      };
+    });
 
   const passengers = asArray(data.passengers).map(passenger => {
     return {
