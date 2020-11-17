@@ -4,6 +4,8 @@ import Xl8 from "../../../../components/xl8/Xl8";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CreditCardTypeModal from "./CreditCardTypeModal";
+import { ACTION } from "../../../../utils/constants";
+import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 
 const CreditCardType = ({ name }) => {
   const cb = function(result) {};
@@ -12,6 +14,10 @@ const CreditCardType = ({ name }) => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [modalTitle, setModalTitle] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
+  const [action, setAction] = useState();
+  const [confirmModalHeader, setConfirmModalHeader] = useState();
+  const [confirmModalMessage, setConfirmModalMessage] = useState();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
@@ -22,6 +28,42 @@ const CreditCardType = ({ name }) => {
     setModalTitle(<Xl8 xid="cct001">Edit Type</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
+  };
+  const confirm = action => {
+    if (action === ACTION.UPDATE) {
+      setConfirmModalHeader(<Xl8 xid="airpConf001">Restore Credit Card Type Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf002">Please confirm to restore the credit card type code</Xl8>
+      );
+    } else if (action === ACTION.DELETE) {
+      setConfirmModalHeader(<Xl8 xid="airpConf003">Delete Credit Card Type Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf004">Please confirm to delete the credit card type code</Xl8>
+      );
+    }
+    setAction(action);
+    setShowConfirm(true);
+    setShowModal(false);
+  };
+
+  const restoreCode = () => {
+    codeEditor.put.restoreCctype(editRowDetails).then(res => {
+      refresh();
+    });
+  };
+
+  const deleteCode = () => {
+    codeEditor.delete.deleteCctype(editRowDetails?.id).then(res => {
+      refresh();
+    });
+  };
+
+  const handleConfirm = confirmed => {
+    if (confirmed) {
+      action === ACTION.DELETE ? deleteCode() : restoreCode();
+    } else setShowModal(true);
+
+    setShowConfirm(false);
   };
 
   const headers = [
@@ -82,6 +124,13 @@ const CreditCardType = ({ name }) => {
         editRowDetails={editRowDetails}
         refresh={refresh}
         callback={cb}
+        actionCallback={confirm}
+      />
+      <ConfirmationModal
+        show={showConfirm}
+        callback={handleConfirm}
+        header={confirmModalHeader}
+        message={confirmModalMessage}
       />
 
       <Table

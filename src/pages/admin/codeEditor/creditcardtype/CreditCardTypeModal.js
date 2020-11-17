@@ -31,12 +31,6 @@ const CreditCardTypeModal = props => {
     return [res];
   };
 
-  const restoreSpecificCode = () => {
-    codeEditor.put.restoreCctype(data).then(res => {
-      postSubmit(ACTION.UPDATE);
-    });
-  };
-
   let customButtons = [];
 
   if (props.isEdit) {
@@ -47,7 +41,7 @@ const CreditCardTypeModal = props => {
           className="m-2 outline-dark-outline"
           variant="outline-dark"
           key="restore"
-          onClick={restoreSpecificCode}
+          onClick={() => props.actionCallback(ACTION.UPDATE)}
         >
           <Xl8 xid="cctm001">Restore</Xl8>
         </Button>
@@ -59,11 +53,7 @@ const CreditCardTypeModal = props => {
         className="m-2 outline-dark-outline"
         variant="outline-dark"
         key="delete"
-        onClick={() => {
-          codeEditor.delete.deleteCctype(data.id).then(res => {
-            postSubmit(ACTION.DELETE);
-          });
-        }}
+        onClick={() => props.actionCallback(ACTION.DELETE)}
       >
         <Xl8 xid="cctm002">Delete</Xl8>
       </Button>

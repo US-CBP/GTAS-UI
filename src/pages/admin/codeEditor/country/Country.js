@@ -4,6 +4,8 @@ import Xl8 from "../../../../components/xl8/Xl8";
 import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CountryModal from "./CountryModal";
+import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
+import { ACTION } from "../../../../utils/constants";
 
 const Countries = ({ name }) => {
   const cb = function(result) {};
@@ -11,7 +13,11 @@ const Countries = ({ name }) => {
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
   const [modalTitle, setModalTitle] = useState();
+  const [action, setAction] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
+  const [confirmModalHeader, setConfirmModalHeader] = useState();
+  const [confirmModalMessage, setConfirmModalMessage] = useState();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
@@ -22,6 +28,43 @@ const Countries = ({ name }) => {
     setModalTitle(<Xl8 xid="cou001">Edit Country:</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
+  };
+
+  const confirm = action => {
+    if (action === ACTION.UPDATE) {
+      setConfirmModalHeader(<Xl8 xid="airpConf001">Restore Airport Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf002">Please confirm to restore the airport code</Xl8>
+      );
+    } else if (action === ACTION.DELETE) {
+      setConfirmModalHeader(<Xl8 xid="airpConf003">Delete Airport Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf004">Please confirm to delete the airport code</Xl8>
+      );
+    }
+    setAction(action);
+    setShowConfirm(true);
+    setShowModal(false);
+  };
+
+  const restoreCode = () => {
+    codeEditor.put.restoreCountry(editRowDetails).then(res => {
+      refresh();
+    });
+  };
+
+  const deleteCode = () => {
+    codeEditor.delete.deleteCountry(editRowDetails?.id).then(res => {
+      refresh();
+    });
+  };
+
+  const handleConfirm = confirmed => {
+    if (confirmed) {
+      action === ACTION.DELETE ? deleteCode() : restoreCode();
+    } else setShowModal(true);
+
+    setShowConfirm(false);
   };
 
   const headers = [
@@ -83,6 +126,13 @@ const Countries = ({ name }) => {
         editRowDetails={editRowDetails}
         refresh={refresh}
         callback={cb}
+        actionCallback={confirm}
+      />
+      <ConfirmationModal
+        show={showConfirm}
+        callback={handleConfirm}
+        header={confirmModalHeader}
+        message={confirmModalMessage}
       />
 
       <Table

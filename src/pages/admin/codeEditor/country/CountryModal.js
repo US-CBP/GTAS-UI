@@ -32,12 +32,6 @@ const CountryModal = props => {
     return [res];
   };
 
-  const restoreSpecificCode = () => {
-    codeEditor.put.restoreCountry(data).then(res => {
-      postSubmit(ACTION.UPDATE);
-    });
-  };
-
   const customButtons = props.isEdit
     ? [
         <Button
@@ -45,7 +39,7 @@ const CountryModal = props => {
           className="m-2 outline-dark-outline"
           variant="outline-dark"
           key="restore"
-          onClick={restoreSpecificCode}
+          onClick={() => props.actionCallback(ACTION.UPDATE)}
         >
           <Xl8 xid="cem001">Restore</Xl8>
         </Button>,
@@ -54,11 +48,7 @@ const CountryModal = props => {
           className="m-2 outline-dark-outline"
           variant="outline-dark"
           key="delete"
-          onClick={() => {
-            codeEditor.delete.deleteCountry(data.id).then(res => {
-              postSubmit(ACTION.DELETE);
-            });
-          }}
+          onClick={() => props.actionCallback(ACTION.DELETE)}
         >
           <Xl8 xid="cem002">Delete</Xl8>
         </Button>
