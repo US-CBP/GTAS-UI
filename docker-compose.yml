@@ -3,9 +3,14 @@ services:
   gtas-ui:
     image: wcogtas/gtas-ui:dev
     container_name: gtas-ui
+    labels:
+      kompose.image-pull-policy: "Always"
+      kompose.service.type: "LoadBalancer"
     build:
       context: .
       dockerfile: dockerfile
+    environment:
+      REACT_APP_BASE_URL: https://localhost:443/
     ports:
 #      - 80:80
       - 443:443
