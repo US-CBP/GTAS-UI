@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import Form from "../../components/form/Form";
+import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { login } from "../../services/serviceWrapper";
 import { Alert, Card, Button } from "react-bootstrap";
 import { navigate, Link } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
+
 import "./Login.scss";
 
 const Login = () => {
@@ -37,6 +39,12 @@ const Login = () => {
     setAlertVis(true);
   };
 
+  const customButton = (
+    <Button variant="outline-info" onClick={() => navigate("/signup")}>
+      Sign Up
+    </Button>
+  );
+
   return (
     <div className="container-fluid">
       <div className="row no-gutter">
@@ -45,13 +53,15 @@ const Login = () => {
           <div className="login d-flex align-items-center py-5">
             <div className="container">
               <div className="row">
-                <div className="col-md-9 col-lg-8 mx-auto">
-                  <h3 className="login-heading mb-4">Welcome to GTAS!</h3>
+                <div className="col-md-7 col-lg-7 col-sm-7 mx-auto text-center">
+                  <h3 className="login-heading mb-4">GTAS</h3>
+                  <br />
                   <Form
                     title=""
                     submitText="Login"
                     submitService={login.post}
                     callback={loginHandler}
+                    customButtons={customButton}
                     id="loginform"
                   >
                     <LabelledInput
@@ -82,7 +92,7 @@ const Login = () => {
                     Forgot password?
                   </Link>
                   <div>
-                    {alertVis ? (
+                    {alertVis && (
                       <Alert
                         variant="danger"
                         dismissible
@@ -90,10 +100,6 @@ const Login = () => {
                       >
                         Login failed.
                       </Alert>
-                    ) : (
-                      <Button variant="outline-info" onClick={() => navigate("/signup")}>
-                        Sign Up
-                      </Button>
                     )}
                   </div>
                 </div>

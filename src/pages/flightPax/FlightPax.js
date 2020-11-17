@@ -198,36 +198,38 @@ const FlightPax = props => {
     <>
       <SidenavContainer>
         <Col className="notopmargin">
-          <br />
-          <FlightBadge data={getFlightData()}></FlightBadge>
-          <br />
-          <div className="flightpax-countdown-container">
-            <CountdownBadge
-              future={flightData.direction === "O" ? flightData.etd : flightData.eta}
-              baseline={Date.now()}
-              direction={flightData.direction}
-            ></CountdownBadge>
-          </div>
-          <br />
-          {/* { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
+          <div className="filterform-container">
+            <br />
+            <FlightBadge data={getFlightData()}></FlightBadge>
+            <br />
+            <div className="flightpax-countdown-container">
+              <CountdownBadge
+                future={flightData.direction === "O" ? flightData.etd : flightData.eta}
+                baseline={Date.now()}
+                direction={flightData.direction}
+              ></CountdownBadge>
+            </div>
+            <br />
+            {/* { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
       { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName }, */}
 
-          <table class="table table-sm table-borderless">
-            <tbody>
-              <tr class="flightpax-row">
-                <td class="left">
-                  <Xl8 xid="fp006">Direction:</Xl8>
-                </td>
-                <td class="right">{flightData.direction}</td>
-              </tr>
-              <tr class="flightpax-row">
-                <td class="left">
-                  <Xl8 xid="fp009">Passengers:</Xl8>
-                </td>
-                <td class="right">{flightData.passengerCount}</td>
-              </tr>
-            </tbody>
-          </table>
+            <table class="table table-sm table-borderless">
+              <tbody>
+                <tr class="flightpax-row">
+                  <td class="left">
+                    <Xl8 xid="fp006">Direction:</Xl8>
+                  </td>
+                  <td class="right">{flightData.direction}</td>
+                </tr>
+                <tr class="flightpax-row">
+                  <td class="left">
+                    <Xl8 xid="fp009">Passengers:</Xl8>
+                  </td>
+                  <td class="right">{flightData.passengerCount}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </Col>
       </SidenavContainer>
       <Main>

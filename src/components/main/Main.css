@@ -30,7 +30,7 @@
 }
 
 .full {
-  min-width: 255px;
+  min-width: 375px;
   position: absolute;
   top: auto;
   overflow: hidden;
@@ -41,7 +41,7 @@
 }
 
 .full-cards {
-  min-width: 255px;
+  min-width: 375px;
   position: absolute;
   top: auto;
   overflow: hidden;
@@ -49,6 +49,15 @@
   height: calc(100vh - 60px);
   background-color: #f3f3f3;
   padding: 0px 0px 0px 20px;
+}
+
+.unauthed {
+  min-width: 375px;
+  position: absolute;
+  top: auto;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
 }
 
 /* main-inner is just to set a relative parent to contain absolutely positioned children correctly */

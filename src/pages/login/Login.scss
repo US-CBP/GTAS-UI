@@ -14,13 +14,16 @@ $wco-gray-dark: darken($wco-gray, 20%);
 $gtas-white: rgba(255, 255, 255, 0.9);
 $transparent: rgba(223, 231, 247, 0.14);
 
+// $bg-image: "../../images/sofy-m-halftoneco-N7uekwIyQ7E-unsplash.jpg";
+$bg-image: "../../images/chairs.jpg";
+
 .login-page-container {
   // background: linear-gradient($wco-blue, $transparent, $wco-blue),
   //   url("../../images/WCO_flag.svg") no-repeat center center fixed;
 
   // A softer version of the background image. We may end up reverting back to the original (above)
   background: linear-gradient($transparent, #e5edf485),
-    url("../../images/WCO_background1000.png") no-repeat center center fixed;
+    url($bg-image) no-repeat center center fixed;
   background-size: cover;
   min-height: 100vh;
   margin-bottom: 0em;
@@ -86,17 +89,9 @@ $transparent: rgba(223, 231, 247, 0.14);
 }
 
 .password-reset-container {
-  background: linear-gradient($transparent, #e5edf485),
-    url("../../images/WCO_background1000.png") no-repeat center center fixed;
-  background-size: cover;
-  min-height: 100vh;
-  margin-bottom: 0em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  flex-direction: column;
-  background-blend-mode: overlay;
+  overflow: auto;
+  height: 100%;
+  position: relative;
 }
 
 :root {
@@ -110,10 +105,10 @@ $transparent: rgba(223, 231, 247, 0.14);
 }
 
 .bg-image {
-  background-image: url("../../images/plane_red.jpg");
+  background: linear-gradient(#0082c3bb, #0082c3bb), url($bg-image);
   background-size: cover;
   background-position: center;
-  border-bottom-right-radius: 10rem;
+  background-blend-mode: color;
 }
 
 .login-heading {
@@ -186,6 +181,26 @@ $transparent: rgba(223, 231, 247, 0.14);
   padding-bottom: calc(var(--input-padding-y) / 3);
   font-size: 12px;
   color: #777;
+}
+
+.sign-up-container {
+  background: linear-gradient($transparent, #e5edf485),
+    url($bg-image) no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  margin-bottom: 0em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-direction: column;
+  background-blend-mode: overlay;
+}
+
+.unauthed-form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 0.25rem;
 }
 
 /* Fallback for Edge
