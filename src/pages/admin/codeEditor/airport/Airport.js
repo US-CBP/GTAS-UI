@@ -45,6 +45,11 @@ const Airports = ({ name }) => {
       setConfirmModalMessage(
         <Xl8 xid="airpConf004">Please confirm to delete the airport code</Xl8>
       );
+    } else if (action === ACTION.UPDATEALL) {
+      setConfirmModalHeader(<Xl8 xid="airpConf004">Restore All Airport Codes</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf005">Please confirm to restore all airport codes</Xl8>
+      );
     }
     setAction(action);
     setShowConfirm(true);
@@ -65,11 +70,20 @@ const Airports = ({ name }) => {
 
   const handleConfirm = confirmed => {
     if (confirmed) {
-      action === ACTION.DELETE ? deleteCode() : restoreCode();
-    } else setShowModal(true);
+      if (action === ACTION.DELETE) deleteCode();
+      else if (action === ACTION.UPDATE) restoreCode();
+      else if (action === ACTION.UPDATEALL) restoreAllAirport();
+    } else if (action !== ACTION.UPDATEALL) setShowModal(true);
 
     setShowConfirm(false);
   };
+
+  const restoreAllAirport = () => {
+    codeEditor.put.restoreAirportsAll().then(res => {
+      refresh();
+    });
+  };
+
   const headers = [
     {
       Accessor: "Edit",
@@ -129,14 +143,7 @@ const Airports = ({ name }) => {
           >
             {addAirport}
           </Dropdown.Item>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              codeEditor.put.restoreAirportsAll().then(res => {
-                refresh();
-              });
-            }}
-          >
+          <Dropdown.Item as="button" onClick={() => confirm(ACTION.UPDATEALL)}>
             {<Xl8 xid="airp002">Restore All Airports</Xl8>}
           </Dropdown.Item>
         </DropdownButton>

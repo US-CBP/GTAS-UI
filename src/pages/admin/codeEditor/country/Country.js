@@ -32,14 +32,19 @@ const Countries = ({ name }) => {
 
   const confirm = action => {
     if (action === ACTION.UPDATE) {
-      setConfirmModalHeader(<Xl8 xid="airpConf001">Restore Country Code</Xl8>);
+      setConfirmModalHeader(<Xl8 xid="couConf001">Restore Country Code</Xl8>);
       setConfirmModalMessage(
-        <Xl8 xid="airpConf002">Please confirm to restore the country code</Xl8>
+        <Xl8 xid="couConf002">Please confirm to restore the country code</Xl8>
       );
     } else if (action === ACTION.DELETE) {
-      setConfirmModalHeader(<Xl8 xid="airpConf003">Delete Country Code</Xl8>);
+      setConfirmModalHeader(<Xl8 xid="couConf003">Delete Country Code</Xl8>);
       setConfirmModalMessage(
-        <Xl8 xid="airpConf004">Please confirm to delete the country code</Xl8>
+        <Xl8 xid="couConf004">Please confirm to delete the country code</Xl8>
+      );
+    } else if (action === ACTION.UPDATEALL) {
+      setConfirmModalHeader(<Xl8 xid="couConf004">Restore All Country Codes</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="couConf005">Please confirm to restore all country codes</Xl8>
       );
     }
     setAction(action);
@@ -61,10 +66,18 @@ const Countries = ({ name }) => {
 
   const handleConfirm = confirmed => {
     if (confirmed) {
-      action === ACTION.DELETE ? deleteCode() : restoreCode();
-    } else setShowModal(true);
+      if (action === ACTION.DELETE) deleteCode();
+      else if (action === ACTION.UPDATE) restoreCode();
+      else if (action === ACTION.UPDATEALL) restoreAllCountries();
+    } else if (action !== ACTION.UPDATEALL) setShowModal(true);
 
     setShowConfirm(false);
+  };
+
+  const restoreAllCountries = () => {
+    codeEditor.put.restoreCountriesAll().then(res => {
+      refresh();
+    });
   };
 
   const headers = [
@@ -106,14 +119,7 @@ const Countries = ({ name }) => {
           >
             <Xl8 xid="cou004">Add Country:</Xl8>
           </Dropdown.Item>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              codeEditor.put.restoreCountriesAll().then(res => {
-                refresh();
-              });
-            }}
-          >
+          <Dropdown.Item as="button" onClick={() => confirm(ACTION.UPDATEALL)}>
             {<Xl8 xid="cou003">Restore All Countries</Xl8>}
           </Dropdown.Item>
         </DropdownButton>

@@ -31,14 +31,21 @@ const CreditCardType = ({ name }) => {
   };
   const confirm = action => {
     if (action === ACTION.UPDATE) {
-      setConfirmModalHeader(<Xl8 xid="airpConf001">Restore Credit Card Type Code</Xl8>);
+      setConfirmModalHeader(<Xl8 xid="cctConf001">Restore Credit Card Type Code</Xl8>);
       setConfirmModalMessage(
-        <Xl8 xid="airpConf002">Please confirm to restore the credit card type code</Xl8>
+        <Xl8 xid="cctConf002">Please confirm to restore the credit card type code</Xl8>
       );
     } else if (action === ACTION.DELETE) {
-      setConfirmModalHeader(<Xl8 xid="airpConf003">Delete Credit Card Type Code</Xl8>);
+      setConfirmModalHeader(<Xl8 xid="cctConf003">Delete Credit Card Type Code</Xl8>);
       setConfirmModalMessage(
-        <Xl8 xid="airpConf004">Please confirm to delete the credit card type code</Xl8>
+        <Xl8 xid="cctConf004">Please confirm to delete the credit card type code</Xl8>
+      );
+    } else if (action === ACTION.UPDATEALL) {
+      setConfirmModalHeader(
+        <Xl8 xid="cctConf004">Restore All Credit Card Type Codes</Xl8>
+      );
+      setConfirmModalMessage(
+        <Xl8 xid="cctConf005">Please confirm to restore all credit card type codes</Xl8>
       );
     }
     setAction(action);
@@ -60,10 +67,18 @@ const CreditCardType = ({ name }) => {
 
   const handleConfirm = confirmed => {
     if (confirmed) {
-      action === ACTION.DELETE ? deleteCode() : restoreCode();
-    } else setShowModal(true);
+      if (action === ACTION.DELETE) deleteCode();
+      else if (action === ACTION.UPDATE) restoreCode();
+      else if (action === ACTION.UPDATEALL) restoreAllCcTypes();
+    } else if (action !== ACTION.UPDATEALL) setShowModal(true);
 
     setShowConfirm(false);
+  };
+
+  const restoreAllCcTypes = () => {
+    codeEditor.put.restoreCctypeAll().then(res => {
+      refresh();
+    });
   };
 
   const headers = [
@@ -103,14 +118,7 @@ const CreditCardType = ({ name }) => {
           >
             {<Xl8 xid="cct004">Add Type</Xl8>}
           </Dropdown.Item>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              codeEditor.put.restoreCctypeAll().then(res => {
-                refresh();
-              });
-            }}
-          >
+          <Dropdown.Item as="button" onClick={() => confirm(ACTION.UPDATEALL)}>
             {<Xl8 xid="cou005">Restore All Types</Xl8>}
           </Dropdown.Item>
         </DropdownButton>
