@@ -4,6 +4,8 @@ import Xl8 from "../../../../components/xl8/Xl8";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CarrierModal from "./CarrierModal";
+import { ACTION } from "../../../../utils/constants";
+import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 
 const Carriers = ({ name }) => {
   const cb = function(result) {};
@@ -12,6 +14,10 @@ const Carriers = ({ name }) => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [modalTitle, setModalTitle] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
+  const [action, setAction] = useState();
+  const [confirmModalHeader, setConfirmModalHeader] = useState();
+  const [confirmModalMessage, setConfirmModalMessage] = useState();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
@@ -22,6 +28,43 @@ const Carriers = ({ name }) => {
     setModalTitle(<Xl8 xid="car001">Edit Carrier</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
+  };
+
+  const confirm = action => {
+    if (action === ACTION.UPDATE) {
+      setConfirmModalHeader(<Xl8 xid="airpConf001">Restore Carrier Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf002">Please confirm to restore the carrier code</Xl8>
+      );
+    } else if (action === ACTION.DELETE) {
+      setConfirmModalHeader(<Xl8 xid="airpConf003">Delete Carrier Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf004">Please confirm to delete the carrier code</Xl8>
+      );
+    }
+    setAction(action);
+    setShowConfirm(true);
+    setShowModal(false);
+  };
+
+  const restoreCode = () => {
+    codeEditor.put.restoreCarrier(editRowDetails).then(res => {
+      refresh();
+    });
+  };
+
+  const deleteCode = () => {
+    codeEditor.delete.deleteCarrier(editRowDetails?.id).then(res => {
+      refresh();
+    });
+  };
+
+  const handleConfirm = confirmed => {
+    if (confirmed) {
+      action === ACTION.DELETE ? deleteCode() : restoreCode();
+    } else setShowModal(true);
+
+    setShowConfirm(false);
   };
 
   const headers = [
@@ -80,6 +123,13 @@ const Carriers = ({ name }) => {
         editRowDetails={editRowDetails}
         refresh={refresh}
         callback={cb}
+        actionCallback={confirm}
+      />
+      <ConfirmationModal
+        show={showConfirm}
+        callback={handleConfirm}
+        header={confirmModalHeader}
+        message={confirmModalMessage}
       />
 
       <Table

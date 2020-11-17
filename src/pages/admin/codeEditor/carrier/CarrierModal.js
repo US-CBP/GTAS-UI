@@ -32,12 +32,6 @@ const CarrierModal = props => {
     return [res];
   };
 
-  const restoreSpecificCode = () => {
-    codeEditor.put.restoreCarrier(data).then(res => {
-      postSubmit(ACTION.UPDATE);
-    });
-  };
-
   const customButtons = props.isEdit
     ? [
         <Button
@@ -45,7 +39,7 @@ const CarrierModal = props => {
           className="m-2 outline-dark-outline"
           variant="outline-dark"
           key="restore"
-          onClick={restoreSpecificCode}
+          onClick={() => props.actionCallback(ACTION.UPDATE)}
         >
           <Xl8 xid="cem01">Restore</Xl8>
         </Button>,
@@ -54,11 +48,7 @@ const CarrierModal = props => {
           className="m-2 outline-dark-outline"
           variant="outline-dark"
           key="delete"
-          onClick={() => {
-            codeEditor.delete.deleteCarrier(data.id).then(res => {
-              postSubmit(ACTION.DELETE);
-            });
-          }}
+          onClick={() => props.actionCallback(ACTION.DELETE)}
         >
           <Xl8 xid="cem02 ">Delete</Xl8>
         </Button>
