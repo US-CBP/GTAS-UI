@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
-// import Title from "../../../../components/title/Title";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import AirportModal from "./AirportModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 import { ACTION } from "../../../../utils/constants";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const Airports = ({ name }) => {
   const cb = function(result) {};
@@ -72,13 +72,13 @@ const Airports = ({ name }) => {
     if (confirmed) {
       if (action === ACTION.DELETE) deleteCode();
       else if (action === ACTION.UPDATE) restoreCode();
-      else if (action === ACTION.UPDATEALL) restoreAllAirport();
+      else if (action === ACTION.UPDATEALL) restoreAll();
     } else if (action !== ACTION.UPDATEALL) setShowModal(true);
 
     setShowConfirm(false);
   };
 
-  const restoreAllAirport = () => {
+  const restoreAll = () => {
     codeEditor.put.restoreAirportsAll().then(res => {
       refresh();
     });
@@ -130,25 +130,6 @@ const Airports = ({ name }) => {
         message={confirmModalMessage}
       />
 
-      <div className="action-button-div">
-        <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              setShowModal(true);
-              setModalTitle(addAirport);
-              setIsEditModal(false);
-              setEditRowDetails({});
-            }}
-          >
-            {addAirport}
-          </Dropdown.Item>
-          <Dropdown.Item as="button" onClick={() => confirm(ACTION.UPDATEALL)}>
-            {<Xl8 xid="airp002">Restore All Airports</Xl8>}
-          </Dropdown.Item>
-        </DropdownButton>
-      </div>
-
       <Table
         service={codeEditor.get.airportCodes}
         callback={cb}
@@ -156,6 +137,26 @@ const Airports = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
+      <Fab icon={<i className="fa fa-plus" />} variant="info">
+        <Action
+          text={addAirport}
+          onClick={() => {
+            setShowModal(true);
+            setModalTitle(addAirport);
+            setIsEditModal(false);
+            setEditRowDetails({});
+          }}
+        >
+          <i className="fa fa-plus" />
+        </Action>
+        <Action
+          text={<Xl8 xid="airp002">Restore All Airports</Xl8>}
+          variant="rtf-red"
+          onClick={() => confirm(ACTION.UPDATEALL)}
+        >
+          <i className="fa fa-recycle" />
+        </Action>
+      </Fab>
     </div>
   );
 };

@@ -44,12 +44,19 @@ const Notification = props => {
     return () => (isMounted = false); //clean up
   }, []);
 
+  const launcher = props.icon ? (
+    <div onClick={handleShow}>
+      <i className="fa fa-bullhorn"></i>
+    </div>
+  ) : (
+    <div className="dropdown-item" onClick={handleShow}>
+      <Xl8 xid="not001">Notify</Xl8>
+    </div>
+  );
+
   return (
     <>
-      <Button className="dropdown-item" onClick={handleShow}>
-        {/* <i className="fa fa-bullhorn"></i> <Xl8 xid="not001">Notify</Xl8> */}
-        <Xl8 xid="not001">Notify</Xl8>
-      </Button>
+      {launcher}
 
       <Modal
         show={show}

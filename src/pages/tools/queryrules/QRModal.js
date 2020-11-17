@@ -761,7 +761,7 @@ const QRModal = props => {
                   <LabelledInput
                     datafield
                     key={`rc${key}`}
-                    labelText={<Xl8 xid="qrm006">Rule Category</Xl8>}
+                    labelText={<Xl8 xid="qrm006">Category</Xl8>}
                     inputType="select"
                     options={categories}
                     inputVal={summaryData?.ruleCat}

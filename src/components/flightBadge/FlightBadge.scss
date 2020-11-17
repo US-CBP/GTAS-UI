@@ -38,14 +38,20 @@
 .flight-badge.sm {
   text-align: center !important;
   border-radius: 0.25rem;
+  background-color: white;
+  border: 1px solid #0082c3;
 
   .flight-number {
     color: black;
+    font-size: larger;
   }
 
   .flight-badge-row {
     justify-content: space-evenly;
     align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+
     .width40 {
       width: 40px;
     }

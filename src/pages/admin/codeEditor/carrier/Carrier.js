@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CarrierModal from "./CarrierModal";
 import { ACTION } from "../../../../utils/constants";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const Carriers = ({ name }) => {
   const cb = function(result) {};
@@ -68,18 +69,17 @@ const Carriers = ({ name }) => {
     if (confirmed) {
       if (action === ACTION.DELETE) deleteCode();
       if (action === ACTION.UPDATE) restoreCode();
-      if (action === ACTION.UPDATEALL) restoreAllCarrierCodes();
+      if (action === ACTION.UPDATEALL) restoreAll();
     } else if (action !== ACTION.UPDATEALL) setShowModal(true);
 
     setShowConfirm(false);
   };
 
-  const restoreAllCarrierCodes = () => {
+  const restoreAll = () => {
     codeEditor.put.restoreCarriersAll().then(res => {
       refresh();
     });
   };
-
   const headers = [
     {
       Accessor: "Edit",
@@ -102,25 +102,6 @@ const Carriers = ({ name }) => {
 
   return (
     <div>
-      <div className="action-button-div">
-        <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              setShowModal(true);
-              setModalTitle(<Xl8 xid="car002">Add Carrier</Xl8>);
-              setIsEditModal(false);
-              setEditRowDetails({});
-            }}
-          >
-            <Xl8 xid="car002">Add Carrier</Xl8>
-          </Dropdown.Item>
-          <Dropdown.Item as="button" onClick={() => confirm(ACTION.UPDATEALL)}>
-            {<Xl8 xid="car003">Restore All Carriers</Xl8>}
-          </Dropdown.Item>
-        </DropdownButton>
-      </div>
-
       <CarrierModal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -145,6 +126,26 @@ const Carriers = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
+      <Fab icon={<i className="fa fa-plus" />} variant="info">
+        <Action
+          text={<Xl8 xid="car002">Add Carrier</Xl8>}
+          onClick={() => {
+            setShowModal(true);
+            setModalTitle(<Xl8 xid="car002">Add Carrier</Xl8>);
+            setIsEditModal(false);
+            setEditRowDetails({});
+          }}
+        >
+          <i className="fa fa-plus" />
+        </Action>
+        <Action
+          text={<Xl8 xid="car003">Restore All Carriers</Xl8>}
+          variant="rtf-red"
+          onClick={() => confirm(ACTION.UPDATEALL)}
+        >
+          <i className="fa fa-recycle" />
+        </Action>
+      </Fab>
     </div>
   );
 };

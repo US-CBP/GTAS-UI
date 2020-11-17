@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CountryModal from "./CountryModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 import { ACTION } from "../../../../utils/constants";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const Countries = ({ name }) => {
   const cb = function(result) {};
@@ -25,7 +26,7 @@ const Countries = ({ name }) => {
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle(<Xl8 xid="cou001">Edit Country:</Xl8>);
+    setModalTitle(<Xl8 xid="cou001">Edit Country</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -68,13 +69,13 @@ const Countries = ({ name }) => {
     if (confirmed) {
       if (action === ACTION.DELETE) deleteCode();
       else if (action === ACTION.UPDATE) restoreCode();
-      else if (action === ACTION.UPDATEALL) restoreAllCountries();
+      else if (action === ACTION.UPDATEALL) restoreAll();
     } else if (action !== ACTION.UPDATEALL) setShowModal(true);
 
     setShowConfirm(false);
   };
 
-  const restoreAllCountries = () => {
+  const restoreAll = () => {
     codeEditor.put.restoreCountriesAll().then(res => {
       refresh();
     });
@@ -106,24 +107,6 @@ const Countries = ({ name }) => {
 
   return (
     <div>
-      <div className="action-button-div">
-        <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              setShowModal(true);
-              setModalTitle(<Xl8 xid="cou004">Add Country:</Xl8>);
-              setIsEditModal(false);
-              setEditRowDetails({});
-            }}
-          >
-            <Xl8 xid="cou004">Add Country:</Xl8>
-          </Dropdown.Item>
-          <Dropdown.Item as="button" onClick={() => confirm(ACTION.UPDATEALL)}>
-            {<Xl8 xid="cou003">Restore All Countries</Xl8>}
-          </Dropdown.Item>
-        </DropdownButton>
-      </div>
       <CountryModal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -148,6 +131,26 @@ const Countries = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
+      <Fab icon={<i className="fa fa-plus" />} variant="info">
+        <Action
+          text={<Xl8 xid="cou004">Add Country</Xl8>}
+          onClick={() => {
+            setShowModal(true);
+            setModalTitle(<Xl8 xid="cou004">Add Country</Xl8>);
+            setIsEditModal(false);
+            setEditRowDetails({});
+          }}
+        >
+          <i className="fa fa-plus" />
+        </Action>
+        <Action
+          text={<Xl8 xid="cou003">Restore All Countries</Xl8>}
+          variant="rtf-red"
+          onClick={() => confirm(ACTION.UPDATEALL)}
+        >
+          <i className="fa fa-recycle" />
+        </Action>
+      </Fab>
     </div>
   );
 };

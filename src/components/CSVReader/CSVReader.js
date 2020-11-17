@@ -33,7 +33,7 @@ const CSVReader = props => {
     >
       {({ file }) => (
         <div onClick={handleOpenDialog}>
-          <Xl8 xid="csv001">Import CSV</Xl8>
+          <i className="fa fa-upload" />
         </div>
       )}
     </RCSVReader>

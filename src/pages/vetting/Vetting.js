@@ -20,7 +20,7 @@ import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 import Confirm from "../../components/confirmationModal/Confirm";
-import EventNotesModal from "../evenNotesModal/EventNotesModal";
+import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
 
 const Vetting = props => {
   const hitTypeOptions = [
@@ -87,16 +87,29 @@ const Vetting = props => {
       Header: ["vet023", "Actions"],
       Cell: ({ row }) => (
         <DropdownButton
-          variant="info"
+          variant="outline-info"
           title={<Xl8 xid="vet020">Choose Action</Xl8>}
           className="m-1 text-center"
         >
+          <EventNotesModal paxId={row.original.paxId} callback={cb}></EventNotesModal>
+          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId}>
+            <div className="dropdown-item">
+              <Xl8 xid="rep001">Download Report</Xl8>
+            </div>
+          </DownloadReport>
+          <Notification
+            paxId={`${row.original.paxId}`}
+            usersEmails={usersEmails}
+          ></Notification>
+
           <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
             <Confirm
               header={<Xl8 xid="vet021">Update Hit Status</Xl8>}
               message={
                 <span>
-                  <Xl8 xid="vet024">Please confirm to change the hit status to </Xl8>
+                  <Xl8 xid="vet024">Please click confirm to change the status to:</Xl8>
+                  <br />
+                  <br />
                   {row.original.status === HIT_STATUS.REVIEWED ? (
                     <Xl8 xid="vet025">Reopened</Xl8>
                   ) : (
@@ -115,15 +128,12 @@ const Vetting = props => {
                   {row.original.status === HIT_STATUS.REVIEWED ? (
                     <Xl8 xid="vet027">Reopen</Xl8>
                   ) : (
-                    <Xl8 xid="vet028">Review</Xl8>
+                    <Xl8 xid="vet028">Reviewed</Xl8>
                   )}
                 </Button>
               )}
             </Confirm>
           </RoleAuthenticator>
-          <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
-          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
-          <EventNotesModal paxId={row.original.paxId} callback={cb} />
         </DropdownButton>
       )
     },
@@ -181,7 +191,7 @@ const Vetting = props => {
             </Overlay>
           );
         });
-        return <ul>{listdata}</ul>;
+        return <ul className="bio-data">{listdata}</ul>;
       }
     },
     {
@@ -443,7 +453,7 @@ const Vetting = props => {
               callback={cb}
               toggleDateTimePicker={toggleDateTimePicker}
               selected={showDateTimePicker.current}
-              alt=""
+              alt="Show Date Time Picker"
               spacebetween
             />
             {showDateTimePicker.current && (
