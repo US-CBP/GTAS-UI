@@ -5,10 +5,12 @@ import Xl8 from "../../../../components/xl8/Xl8";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import AirportModal from "./AirportModal";
+import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 
 const Airports = ({ name }) => {
   const cb = function(result) {};
   const [showModal, setShowModal] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
   const [modalTitle, setModalTitle] = useState();
@@ -28,6 +30,23 @@ const Airports = ({ name }) => {
     setShowModal(true);
   };
 
+  const confirm = () => {
+    setShowConfirm(true);
+    setShowModal(false);
+  };
+
+  const restoreCode = () => {
+    codeEditor.put.restoreAirport(editRowDetails).then(res => {
+      refresh();
+    });
+  };
+
+  const handleConfirm = confirmed => {
+    if (confirmed) restoreCode();
+    else setShowModal(true);
+
+    setShowConfirm(false);
+  };
   const headers = [
     {
       Accessor: "Edit",
@@ -65,6 +84,13 @@ const Airports = ({ name }) => {
         editRowDetails={editRowDetails}
         refresh={refresh}
         callback={cb}
+        restoreSpecificCode={confirm}
+      />
+      <ConfirmationModal
+        show={showConfirm}
+        confirm={handleConfirm}
+        header={<Xl8 xid="airpConf001">Restore Airport Code</Xl8>}
+        message={<Xl8 xid="airpConf002">Please confirm to resetore the airport code</Xl8>}
       />
 
       <div className="action-button-div">

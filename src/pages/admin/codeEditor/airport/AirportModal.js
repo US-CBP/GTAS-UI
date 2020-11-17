@@ -46,7 +46,7 @@ const AirportModal = props => {
           className="m-2 outline-dark-outline"
           variant="outline-dark"
           key="restore"
-          onClick={() => restoreSpecificCode()}
+          onClick={props.restoreSpecificCode}
         >
           <Xl8 xid="cem01">Restore</Xl8>
         </Button>,
