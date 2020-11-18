@@ -6,9 +6,6 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY . .
 
-ARG REACT_APP_BASE_URL
-ENV REACT_APP_BASE_URL $REACT_APP_BASE_URL
-
 RUN mkdir /ui-cert /ui-key && npm install
 RUN npm i -S -g serve
 RUN npm run build
@@ -16,8 +13,6 @@ RUN npm run build
 FROM nginx:1.16.0-alpine
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-COPY main.conf /etc/nginx/nginx.conf
 
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
 EXPOSE 80
