@@ -116,7 +116,8 @@ const Summary = props => {
       const parsedData = asArray(res).map(hit => {
         return {
           ...hit,
-          flightPaxLink: getLinkToPaxDetails(hit)
+          flightPaxLink: getLinkToPaxDetails(hit),
+          ruleConditions: formatRuleConditions(hit.ruleConditions)
         };
       });
       setPaxHistoricalHits(parsedData);
