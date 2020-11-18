@@ -69,3 +69,13 @@
     }
   }
 }
+
+.flight-badge .link {
+  background-color: white;
+  padding: 3px;
+  border-radius: 0.25rem;
+}
+
+.flight-badge .link:hover {
+  text-decoration: none;
+}

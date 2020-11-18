@@ -160,18 +160,19 @@ const PaxDetail = props => {
       <Link
         to={"/gtas/flightpax/" + data.flightId}
         state={{ data: stateData }}
-        className="pax-info-link"
+        className="link"
       >
         {fullFlightNumber}
       </Link>
     );
   };
   const getFlightBadgeData = res => {
+    console.log(res);
     return {
       flightNumber: addLinkToFlight(res),
       carrier: "",
-      flightDestination: res.destination,
-      flightOrigin: res.origin,
+      flightDestination: res.flightDestination,
+      flightOrigin: res.flightOrigin,
       eta: res.eta,
       etd: res.etd,
       flightNumberHasLink: true
