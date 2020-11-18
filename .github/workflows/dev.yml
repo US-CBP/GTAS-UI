@@ -41,6 +41,7 @@ jobs:
         env:
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
         run: |
+          echo >> .env
           echo REACT_APP_BASE_URL=$REACT_APP_BASE_URL >> .env
       - uses: docker/build-push-action@v2
         name: Build and push GTAS UI
