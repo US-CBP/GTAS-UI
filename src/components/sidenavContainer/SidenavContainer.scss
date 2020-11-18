@@ -115,9 +115,10 @@ $transparent: #0082c3d9;
 
 .filter-fg,
 .filter-fg-open {
-  // padding-right: 15px;
   color: #f8f9fa;
   z-index: 10;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .filter-fg::-webkit-scrollbar-thumb {
