@@ -297,7 +297,7 @@ const PNR = props => {
   return (
     <div className="paxdetail-container">
       <Row>
-        <Col className="p-0" md="5">
+        <Col className="p-0 segment-table-container" md="5">
           <SegmentTable
             title={segmentTitle}
             data={rawPnrSegments}
@@ -306,7 +306,7 @@ const PNR = props => {
           />
         </Col>
         <Col className="p-0">
-          <Container fluid className="paxdetail-container-col">
+          <Container className="paxdetail-container-col">
             <CardWithTable
               data={itinerary}
               headers={headers.itinerary}

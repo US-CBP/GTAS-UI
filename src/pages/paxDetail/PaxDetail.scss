@@ -7,22 +7,26 @@ $wco-blue: rgb(0, 119, 200);
 $transparent: rgba(0, 0, 0, 0.65);
 
 .paxdetail-container {
+  width: calc(100vw - 290px);
   height: calc(100vh - 110px);
   overflow: auto;
-
-  // -- for single page repositioning
   position: absolute;
   top: 50px;
   left: 20px;
-  padding-right: 40px;
-  width: 100%;
+  padding-right: 20px;
+
+  .row {
+    margin-right: unset;
+    margin-left: unset;
+  }
 }
 
 .paxdetail-container-col {
-  width: 100%;
-  margin-left: 15px;
+  /* width: 100%; */
   height: calc(100vh - 110px);
-  overflow: auto;
+  padding-right: 10px;
+  margin-right: -10px;
+  overflow-y: auto;
 }
 
 @media (max-width: 1499px) {
@@ -64,15 +68,20 @@ $transparent: rgba(0, 0, 0, 0.65);
 }
 
 .one-column-container {
-  height: calc(100vh - 135px);
-  width: calc(100vw - 290px);
-  overflow-y: auto;
+  // height: calc(100vh - 135px);
+  // width: calc(100vw - 290px);
+  // overflow-y: auto;
+  // position: absolute;
+  // top: 50px;
+  // left: 20px;
 
-  // -- for single page repositioning
+  width: calc(100vw - 290px);
+  height: calc(100vh - 110px);
+  overflow: auto;
   position: absolute;
   top: 50px;
   left: 20px;
-  // -- end
+  padding-right: 20px;
 
   .card-columns {
     column-count: 1 !important;

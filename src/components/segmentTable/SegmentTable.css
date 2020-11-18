@@ -19,3 +19,9 @@
 .wrap {
   overflow-wrap: anywhere;
 }
+
+@media (max-width: 1024px) {
+  .segment-table-container {
+    display: none;
+  }
+}

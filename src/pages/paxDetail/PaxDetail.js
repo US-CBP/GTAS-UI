@@ -233,10 +233,14 @@ const PaxDetail = props => {
   return (
     <>
       <SidenavContainer>
-        <Col>
-          <FlightBadge data={flightBadge}></FlightBadge>
-          <PaxInfo pax={pax}></PaxInfo>
-          {hasData(flightLegsSegmentData) && <Stepper steps={flightLegsSegmentData} />}
+        <br />
+        <FlightBadge data={flightBadge}></FlightBadge>
+        <br />
+        <Col className="notopmargin">
+          <div className="filterform-container form">
+            <PaxInfo pax={pax}></PaxInfo>
+            {hasData(flightLegsSegmentData) && <Stepper steps={flightLegsSegmentData} />}
+          </div>
         </Col>
       </SidenavContainer>
       <Main className="main">
