@@ -3,7 +3,6 @@ import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import { Button } from "react-bootstrap";
 import { ACTION, ROLE } from "../../../utils/constants";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { LookupContext } from "../../../context/data/LookupContext";
@@ -12,13 +11,15 @@ import { query } from "../../../services/serviceWrapper";
 import { hasData } from "../../../utils/utils";
 import QRModal from "./QRModal";
 import "./QueryRules.css";
+import { Fab } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const Queries = props => {
   const cb = function(status, res) {
-    if (status === ACTION.SAVE || status === ACTION.DELETE || status === ACTION.CLOSE) {
-      closeModal();
+    if (status === ACTION.SAVE || status === ACTION.DELETE) {
       setTablekey(tablekey + 1);
     }
+    closeModal();
   };
 
   const addQuery = <Xl8 xid="">Add Query</Xl8>;
@@ -32,17 +33,6 @@ const Queries = props => {
   const [modalKey, setModalKey] = useState(-1);
 
   const [modalTitle, setModalTitle] = useState(addQuery);
-
-  const button = (
-    <Button
-      variant="ternary"
-      className="btn btn-info"
-      onClick={() => launchModal()}
-      alt={props.alt}
-    >
-      {addQuery}
-    </Button>
-  );
 
   const header = [
     {
@@ -64,6 +54,8 @@ const Queries = props => {
   ];
 
   const launchModal = (recordId, record) => {
+    if (showModal && !recordId) return closeModal();
+
     const title = recordId ? editQuery : addQuery;
 
     setKey(key + 1);
@@ -71,13 +63,11 @@ const Queries = props => {
     setRecord(record);
     setModalTitle(title);
     setModalKey(Date.now());
-    // setShowModal(true);
   };
 
   const closeModal = () => {
     setId();
     setRecord({});
-    setTablekey(tablekey + 1);
     setShowModal(false);
   };
 
@@ -104,13 +94,19 @@ const Queries = props => {
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]}>
       <Main className="full bg-white">
-        <Title title={<Xl8 xid="q002">Queries</Xl8>} rightChild={button}></Title>
+        <Title title={<Xl8 xid="q002">Queries</Xl8>}></Title>
         <Table
           service={query.get}
           callback={cb}
           header={header}
           key={`table${tablekey}`}
         ></Table>
+        <Fab
+          icon={<i className="fa fa-plus nospin" />}
+          variant="info"
+          onClick={() => launchModal()}
+        ></Fab>
+
         <QRModal
           show={showModal}
           onHide={closeModal}

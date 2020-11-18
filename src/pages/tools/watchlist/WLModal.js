@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
@@ -12,13 +12,15 @@ import Modal, {
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
+import Confirm from "../../../components/confirmationModal/Confirm";
 import "./Watchlist.css";
 
 const WLModal = props => {
   const TAB = { PAX: "passenger", DOX: "document" };
   const type = (props.type || {}) === TAB.PAX ? TAB.PAX : TAB.DOX;
   const id = props.id || 0;
-  const mode = id === 0 ? "Add" : "Edit";
+  const isEdit = id !== 0;
+  const mode = isEdit ? "Edit" : "Add";
   const title =
     (type || {}) === TAB.DOX ? (
       id === 0 ? (
@@ -134,7 +136,7 @@ const WLModal = props => {
 
   const fields = type === TAB.DOX ? docFields : paxFields;
   const serviceType = type === TAB.DOX ? wldocs : wlpax;
-  const service = mode === "Add" ? serviceType.post : serviceType.put;
+  const service = isEdit ? serviceType.put : serviceType.post;
 
   const preSubmit = values => {
     if (!hasData(values[0])) return [];
@@ -146,7 +148,7 @@ const WLModal = props => {
     const lastName = vals["lastName"];
     const dob = vals["dob"]?.replaceAll("/", "-");
     const categoryId = vals["categoryId"];
-    const action = mode === "Add" ? "Create" : "Update";
+    const action = isEdit ? "Update" : "Create";
     const recordId = mode === "Add" ? "null" : id;
 
     const result =

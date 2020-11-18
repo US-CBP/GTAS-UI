@@ -190,6 +190,10 @@ input[type="radio"] {
   max-width: 700px !important;
 }
 
+.modal {
+  z-index: 10000 !important;
+}
+
 .max-500-width-container .modal-content {
   max-width: 500px !important;
   min-width: 330px !important;
@@ -231,32 +235,36 @@ input[type="radio"] {
   background: url("./images/plane-arrival-solid.svg") no-repeat no-repeat;
   height: 25px;
   width: 25px;
+  background-position: bottom;
 }
 
 .img-departure {
   background: url("./images/plane-departure-solid.svg") no-repeat no-repeat;
   height: 25px;
   width: 25px;
+  background-position: bottom;
 }
 
 .sm .img-arrival {
-  height: 15px;
-  width: 15px;
+  height: 18px;
+  width: 18px;
   display: inline-flex;
   margin-right: 5px;
-  vertical-align: middle;
+  /* vertical-align: middle; */
   align-items: center;
 }
 
 .sm .img-departure {
-  height: 15px;
-  width: 15px;
+  height: 18px;
+  width: 18px;
   display: inline-flex;
   margin-right: 5px;
-  vertical-align: middle;
+  /* vertical-align: middle; */
   align-items: center;
 }
 
+.sm.cdb-red > .img-arrival,
+.sm.cdb-red > .img-departure,
 .sm.cdb-gray > .img-arrival,
 .sm.cdb-gray > .img-departure {
   filter: invert(1);
@@ -268,11 +276,61 @@ input[type="radio"] {
   overflow-y: auto;
   max-height: calc(100vh - 130px);
   text-align: -webkit-center;
-  /* padding-right: 20px; */
 }
 
 @media (min-width: 1150px) {
   .page-deck {
     padding: 0px 80px;
   }
+}
+
+@media (min-width: 576px) {
+  .card-deck {
+    margin-right: 5px !important;
+  }
+}
+
+.rtf button:focus {
+  outline: unset;
+}
+
+ul[variant="info"].rtf button {
+  background-color: #009e92;
+  opacity: 0.7;
+}
+
+ul[variant="info"].rtf button:focus,
+ul[variant="info"].rtf button:hover {
+  opacity: 1;
+}
+
+li .rtf--ab__c button[variant="rtf-red"] {
+  background-color: #e83944;
+}
+
+.rtf.open .rtf--mb > i.nospin {
+  transform: unset !important;
+}
+
+.rtf.open .rtf--ab__c:hover > span,
+.rtf.open .rtf--ab__c > span.always-show {
+  opacity: 1 !important;
+}
+
+.table td {
+  vertical-align: middle !important;
+}
+
+.kibana {
+  background: url("./images/kibana.svg") no-repeat no-repeat;
+  height: 60px;
+  width: 70px;
+  background-size: cover;
+}
+
+.neo4j {
+  background: url("./images/neo4j.png") no-repeat no-repeat;
+  height: 60px;
+  width: 60px;
+  background-size: cover;
 }

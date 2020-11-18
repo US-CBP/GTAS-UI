@@ -146,7 +146,7 @@ const getValue = (type, val, op, isImporting = true) => {
   let convertedVal = val;
 
   if (type === "boolean") {
-    return isImporting ? [!!val[0]] : [(+val[0]).toString()]; // convert to t/f if importing, "0"/"1" if exporting
+    return isImporting ? [!!+val[0]] : [(+val[0]).toString()]; // convert to t/f if importing, "0"/"1" if exporting
   }
 
   if (type === "number") return val.map(item => +item);

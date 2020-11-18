@@ -12,7 +12,9 @@ const FlightBadge = props => {
   const data = {
     arrival: [res.flightDestination, ...localeMonthDayTime(res.eta).split(",")],
     departure: [res.flightOrigin, ...localeMonthDayTime(res.etd).split(",")],
-    flightNumber: `${alt(res.carrier)}${res.flightNumber}`
+    flightNumber: res.flightNumberHasLink
+      ? res.flightNumber
+      : `${alt(res.carrier)}${res.flightNumber}`
   };
 
   const arrival = data.arrival || [];

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "../../components/tabs/Tabs";
-import ChromeTabs from "../../components/chrometabs/ChromeTabs";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
-import { DropdownButton, Col } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
@@ -13,7 +12,7 @@ import PNR from "./pnr/PNR";
 import APIS from "./apis/APIS";
 import FlightHistory from "./flightHistory/FlightHistory";
 import LinkAnalysis from "./linkAnalysis/LinkAnalysis";
-import EventNotesModal from "./evenNotesModal/EventNotesModal";
+import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
 import DownloadReport from "./downloadReports/DownloadReports";
 import Notification from "./notification/Notification";
 import ChangeHitStatus from "./changeHitStatus/ChangeHitStatus";
@@ -24,8 +23,11 @@ import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import AttachmentModal from "./uploadAttachment/AttachmentModal";
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import { asArray, hasData } from "../../utils/utils";
-import "./PaxDetail.scss";
 import { ACTION } from "../../utils/constants";
+import { Link } from "@reach/router";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
+import "./PaxDetail.scss";
 
 const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState({});
@@ -45,6 +47,9 @@ const PaxDetail = props => {
   const [paxDocuments, setPaxDocuments] = useState([]);
 
   const cb = () => {};
+  const refreshEventNotesCard = () => {
+    setEventNoteRefreshKey(new Date());
+  };
   const tabs = [
     {
       title: <Xl8 xid="pd001">Summary</Xl8>,
@@ -140,10 +145,43 @@ const PaxDetail = props => {
     };
   };
 
+  const addLinkToFlight = data => {
+    const fullFlightNumber = data.carrier + data.flightNumber;
+    const stateData = {
+      direction: data.direction,
+      eta: data.eta,
+      etd: data.etd,
+      fullFlightNumber: fullFlightNumber,
+      flightDestination: data.destination,
+      flightOrigin: data.origin,
+      passengerCount: data.passengerCount
+    };
+    return (
+      <Link
+        to={"/gtas/flightpax/" + data.flightId}
+        state={{ data: stateData }}
+        className="pax-info-link"
+      >
+        {fullFlightNumber}
+      </Link>
+    );
+  };
+  const getFlightBadgeData = res => {
+    return {
+      flightNumber: addLinkToFlight(res),
+      carrier: "",
+      flightDestination: res.destination,
+      flightOrigin: res.origin,
+      eta: res.eta,
+      etd: res.etd,
+      flightNumberHasLink: true
+    };
+  };
+
   const fetchData = () => {
     paxdetails.get(props.flightId, props.paxId).then(res => {
       setPax(paxinfoData(res));
-      setFlightBadge(res);
+      setFlightBadge(getFlightBadgeData(res));
       setPnr({ ...res.pnrVo, flightId: props.flightId });
       setApisMessage(res.apisMessageVo);
       setFlightLegsSegmentData(asArray(res.pnrVo?.flightLegs));
@@ -161,35 +199,37 @@ const PaxDetail = props => {
   }, [props.paxId]);
 
   // TODO: refac tabs as child routes, load data per page.
-  const actions = (
-    <DropdownButton
-      variant="info"
-      title={<Xl8 xid="manu002">Choose Action</Xl8>}
-      className="m-1"
-    >
-      <AttachmentModal
-        callback={updateAttachmentList}
-        paxId={props.paxId}
-      ></AttachmentModal>
-      <EventNotesModal
-        paxId={props.paxId}
-        setEventNoteRefreshKey={setEventNoteRefreshKey}
-      />
-      <AddToWatchlist watchlistItems={watchlistData} />
-      <CreateManualHit
-        paxId={props.paxId}
-        flightId={props.flightId}
-        callback={setHitSummaryRefreshKey}
-      />
-      <DownloadReport paxId={props.paxId} flightId={props.flightId} />
-      <Notification paxId={props.paxId} />
-      {hasHit && (
-        <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
-      )}
-    </DropdownButton>
-  );
+  // const actions = (
+  //   <DropdownButton
+  //     variant="info"
+  //     title={<Xl8 xid="manu002">Choose Action</Xl8>}
+  //     className="m-1"
+  //   >
+  //     <AttachmentModal
+  //       callback={updateAttachmentList}
+  //       paxId={props.paxId}
+  //     ></AttachmentModal>
+  //     <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} />
+  //     <AddToWatchlist watchlistItems={watchlistData} />
+  //     <CreateManualHit
+  //       paxId={props.paxId}
+  //       flightId={props.flightId}
+  //       callback={setHitSummaryRefreshKey}
+  //     />
+  //     <DownloadReport paxId={props.paxId} flightId={props.flightId} />
+  //     <Notification paxId={props.paxId} />
+  //     {hasHit && (
+  //       <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
+  //     )}
+  //   </DropdownButton>
+  // );
 
   const tablist = <Tabs tabs={tabs} />;
+  const changeHitStatusText = hasOpenHit ? (
+    <Xl8 xid="chs006">Set to REVIEWED</Xl8>
+  ) : (
+    <Xl8 xid="chs007">Set to RE-OPENED</Xl8>
+  );
   return (
     <>
       <SidenavContainer>
@@ -203,8 +243,48 @@ const PaxDetail = props => {
         <Title
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
           leftChild={tablist}
-          rightChild={actions}
         ></Title>
+        <Fab icon={<i className="fa fa-plus" />} variant="info">
+          <Action text={<Xl8 xid="not001">Notify</Xl8>}>
+            <Notification paxId={props.paxId} icon />
+          </Action>
+          <Action text={<Xl8 xid="rep001">Download Report</Xl8>}>
+            <DownloadReport paxId={props.paxId} flightId={props.flightId} icon />
+          </Action>
+          <Action text={<Xl8 xid="evn001">Add Event Notes</Xl8>}>
+            <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} icon>
+              <i className="fa fa-pencil" />
+            </EventNotesModal>
+          </Action>
+          <Action text={<Xl8 xid="attm007">Add Attachments</Xl8>}>
+            <AttachmentModal callback={updateAttachmentList} paxId={props.paxId} icon>
+              <i className="fa fa-paperclip" />
+            </AttachmentModal>
+          </Action>
+
+          {hasHit && (
+            <Action text={changeHitStatusText} variant="rtf-red">
+              <ChangeHitStatus
+                updateStatus={updateHitStatus}
+                hasOpenHit={hasOpenHit}
+                icon
+              />
+            </Action>
+          )}
+          {!hasHit && (
+            <Action text={<Xl8 xid="cmh001">Create Manual Hit</Xl8>} variant="rtf-red">
+              <CreateManualHit
+                paxId={props.paxId}
+                flightId={props.flightId}
+                callback={setHitSummaryRefreshKey}
+                icon
+              />
+            </Action>
+          )}
+          <Action text={<Xl8 xid="atw001">Add to Watchlist</Xl8>} variant="rtf-red">
+            <AddToWatchlist watchlistItems={watchlistData} icon />
+          </Action>
+        </Fab>
       </Main>
     </>
   );

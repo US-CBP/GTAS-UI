@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+// import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CreditCardTypeModal from "./CreditCardTypeModal";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const CreditCardType = ({ name }) => {
   const cb = function(result) {};
@@ -15,6 +17,12 @@ const CreditCardType = ({ name }) => {
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
+  };
+
+  const restoreAll = () => {
+    codeEditor.put.restoreCctypeAll().then(res => {
+      refresh();
+    });
   };
 
   const openEditModal = rowDetails => {
@@ -48,32 +56,6 @@ const CreditCardType = ({ name }) => {
 
   return (
     <div>
-      <div className="action-button-div">
-        <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              setShowModal(true);
-              setModalTitle(<Xl8 xid="cct004">Add Type</Xl8>);
-              setIsEditModal(false);
-              setEditRowDetails({});
-            }}
-          >
-            {<Xl8 xid="cct004">Add Type</Xl8>}
-          </Dropdown.Item>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              codeEditor.put.restoreCctypeAll().then(res => {
-                refresh();
-              });
-            }}
-          >
-            {<Xl8 xid="cou005">Restore All Types</Xl8>}
-          </Dropdown.Item>
-        </DropdownButton>
-      </div>
-
       <CreditCardTypeModal
         show={showModal}
         onHide={() => setShowModal(false)}
@@ -83,7 +65,6 @@ const CreditCardType = ({ name }) => {
         refresh={refresh}
         callback={cb}
       />
-
       <Table
         service={codeEditor.get.cctypeCodes}
         callback={cb}
@@ -91,6 +72,26 @@ const CreditCardType = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
+      <Fab icon={<i className="fa fa-plus" />} variant="info">
+        <Action
+          text={<Xl8 xid="cct004">Add Type</Xl8>}
+          onClick={() => {
+            setShowModal(true);
+            setModalTitle(<Xl8 xid="cct004">Add Type</Xl8>);
+            setIsEditModal(false);
+            setEditRowDetails({});
+          }}
+        >
+          <i className="fa fa-plus" />
+        </Action>
+        <Action
+          text={<Xl8 xid="cou005">Restore All Types</Xl8>}
+          variant="rtf-red"
+          onClick={restoreAll}
+        >
+          <i className="fa fa-recycle" />
+        </Action>
+      </Fab>
     </div>
   );
 };

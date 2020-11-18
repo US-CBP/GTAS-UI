@@ -3,7 +3,7 @@ import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
-import LabelledInput from "../../components/labelledInput/LabelledInput";
+// import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import { Col, Tabs, Tab } from "react-bootstrap";
@@ -17,7 +17,8 @@ import {
   getAge,
   alt,
   localeDateOnly,
-  localeDate
+  localeDate,
+  sortableDate
 } from "../../utils/utils";
 import { ROLE } from "../../utils/constants";
 import "./FlightPax.css";
@@ -34,11 +35,13 @@ const FlightPax = props => {
 
   const parseData = data => {
     return asArray(data).map(item => {
-      // item.name = `${item.lastName}, ${item.firstName} ${item.middleName}`;
+      const displayDobDate = localeDateOnly(
+        new Date(item.dob).toISOString().slice(0, -14)
+      );
       item.docNumber = item.documents?.length > 0 ? item.documents[0] : ""; // TODO Documents: shd show all or none here.
       item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
-      item.dobStr = new Date(item.dob).toISOString().slice(0, -14);
-      item.dobAge = `${alt(localeDateOnly(item.dobStr))} ${item.age}`;
+      item.dobStr = `${sortableDate(new Date(item.dob))} ${displayDobDate} ${item.age}`;
+      item.dobAge = `${alt(displayDobDate)} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
       return item;
@@ -194,8 +197,7 @@ const FlightPax = props => {
   return (
     <>
       <SidenavContainer>
-        <Col className="notopmargin">
-          <br />
+        <Col>
           <FlightBadge data={getFlightData()}></FlightBadge>
           <br />
           <div className="flightpax-countdown-container">
@@ -240,6 +242,7 @@ const FlightPax = props => {
           id="Flight Passengers"
           callback={cb}
           disableGroupBy={false}
+          enableColumnFilter={true}
         ></Table>
       </Main>
     </>
