@@ -30,7 +30,7 @@ import "react-tiny-fab/dist/styles.css";
 import "./PaxDetail.scss";
 
 const PaxDetail = props => {
-  const [flightBadge, setFlightBadge] = useState({});
+  const [flightBadge, setFlightBadge] = useState();
   const [pax, setPax] = useState([]);
   const [pnr, setPnr] = useState({});
   const [apisMessage, setApisMessage] = useState({});
@@ -152,8 +152,8 @@ const PaxDetail = props => {
       eta: data.eta,
       etd: data.etd,
       fullFlightNumber: fullFlightNumber,
-      flightDestination: data.destination,
-      flightOrigin: data.origin,
+      flightDestination: data.destination || data.flightDestination,
+      flightOrigin: data.origin || data.flightOrigin,
       passengerCount: data.passengerCount
     };
     return (
@@ -235,7 +235,7 @@ const PaxDetail = props => {
     <>
       <SidenavContainer>
         <br />
-        <FlightBadge data={flightBadge}></FlightBadge>
+        {hasData(flightBadge) && <FlightBadge data={flightBadge}></FlightBadge>}
         <br />
         <Col className="notopmargin">
           <div className="filterform-container form">

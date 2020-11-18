@@ -187,8 +187,8 @@ const FlightPax = props => {
     return {
       flightNumber: flightData.fullFlightNumber,
       carrier: "",
-      flightDestination: flightData.destination,
-      flightOrigin: flightData.origin,
+      flightDestination: flightData.destination || flightData.flightDestination,
+      flightOrigin: flightData.origin || flightData.flightOrigin,
       eta: flightData.eta,
       etd: flightData.etd
     };
