@@ -14,6 +14,8 @@ import Confirm from "../../../components/confirmationModal/Confirm";
 import ChangePasswordModal from "./changePasswordModal/ChangePasswordModal";
 import Toast from "../../../components/toast/Toast";
 import { UserContext } from "../../../context/user/UserContext";
+import { Fab } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const ManageUsers = props => {
   const addNewUser = <Xl8 xid="manu007">Add New User</Xl8>;
@@ -71,6 +73,15 @@ const ManageUsers = props => {
     });
   };
 
+  const setupAddModal = () => {
+    if (showModal) return setShowModal(false);
+
+    setShowModal(true);
+    setModalTitle(addNewUser);
+    setIsEditModal(false);
+    setEditRowDetails({});
+  };
+
   const headers = [
     {
       Accessor: "Edit",
@@ -100,7 +111,7 @@ const ManageUsers = props => {
                 header={<Xl8 xid="manu004">Confirm User Deletion</Xl8>}
                 message={
                   <span>
-                    <Xl8 xid="manu005">Please confirm to delete a user with userId: </Xl8>{" "}
+                    <Xl8 xid="manu005">Please click confirm to delete this user: </Xl8>{" "}
                     {row.original.userId}
                   </span>
                 }
@@ -186,16 +197,7 @@ const ManageUsers = props => {
       variant="ternary"
       className="btn btn-info"
       name={props.name}
-      placeholder={props.placeholder}
-      onClick={() => {
-        setShowModal(true);
-        setModalTitle(addNewUser);
-        setIsEditModal(false);
-        setEditRowDetails({});
-      }}
-      required={props.required}
-      value={props.inputVal}
-      alt={props.alt}
+      onClick={() => {}}
     >
       {addNewUser}
     </Button>
@@ -230,7 +232,7 @@ const ManageUsers = props => {
   return (
     <>
       <Main className="full bg-white">
-        <Title title={<Xl8 xid="manu008">Manage Users</Xl8>} rightChild={button}></Title>
+        <Title title={<Xl8 xid="manu008">Manage Users</Xl8>}></Title>
         <Table
           id="users"
           data={data}
@@ -239,6 +241,12 @@ const ManageUsers = props => {
           header={headers}
           enableColumnFilter={true}
         ></Table>
+        <Fab
+          icon={<i className="fa fa-plus nospin" />}
+          variant="info"
+          onClick={setupAddModal}
+        ></Fab>
+
         <UserModal
           show={showModal}
           callback={cb}

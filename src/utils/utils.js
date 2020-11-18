@@ -333,3 +333,9 @@ export const isValidPassword = password => {
   );
   return passwordConstraint.test(password);
 };
+
+export function formatRuleConditions(conditions) {
+  if (!hasData(conditions)) return "";
+
+  return conditions.split("$$$").join("\n");
+}

@@ -197,11 +197,11 @@ const FlightPax = props => {
   return (
     <>
       <SidenavContainer>
+        <br />
+        <FlightBadge data={getFlightData()}></FlightBadge>
+        <br />
         <Col className="notopmargin">
-          <div className="filterform-container">
-            <br />
-            <FlightBadge data={getFlightData()}></FlightBadge>
-            <br />
+          <div className="filterform-container form">
             <div className="flightpax-countdown-container">
               <CountdownBadge
                 future={flightData.direction === "O" ? flightData.etd : flightData.eta}

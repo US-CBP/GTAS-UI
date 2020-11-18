@@ -35,12 +35,19 @@ const EventNotesModal = props => {
     });
   }, []);
 
+  const launcher = props.icon ? (
+    <div onClick={handleShow}>
+      <i className="fa fa-edit"></i>
+    </div>
+  ) : (
+    <div className="dropdown-item" onClick={handleShow}>
+      <Xl8 xid="evn001">Add Event Notes</Xl8>
+    </div>
+  );
+
   return (
     <>
-      <Button className="dropdown-item" onClick={handleShow}>
-        {/* <i className="fa fa-pencil"></i> <Xl8 xid="evn001">Add Event Notes</Xl8> */}
-        <Xl8 xid="evn001">Add Event Notes</Xl8>
-      </Button>
+      {launcher}
 
       <Modal
         show={show}
