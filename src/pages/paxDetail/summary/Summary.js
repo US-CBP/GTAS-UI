@@ -49,12 +49,12 @@ const Summary = props => {
       createdBy: <Xl8 xid="sum019">Created By</Xl8>,
       createdAt: <Xl8 xid="sum020">Created At</Xl8>
     },
-    historicaHits: {
+    historicalHits: {
       category: <Xl8 xid="sum026">Category</Xl8>,
       passengerDocNumber: <Xl8 xid="sum027">Document Number</Xl8>,
       ruleConditions: <Xl8 xid="sum028">Conditions</Xl8>,
       flightDate: <Xl8 xid="sum029">Flight ID</Xl8>,
-      flightPaxLink: <Xl8 xid="sum030">Details</Xl8>
+      flightPaxLink: <Xl8 xid="sum030">Info</Xl8>
     }
   };
 
@@ -78,7 +78,9 @@ const Summary = props => {
   };
 
   const getLinkToPaxDetails = linkData => {
-    return <Link to={`/gtas/paxDetail/${linkData.flightId}/${linkData.paxId}`}></Link>;
+    return (
+      <Link to={`/gtas/paxDetail/${linkData.flightId}/${linkData.paxId}`}>Details</Link>
+    );
   };
 
   useEffect(() => {
@@ -111,13 +113,13 @@ const Summary = props => {
     });
 
     historicalHits.get(props.paxId).then(res => {
-      asArray(res).map(hit => {
+      const parsedData = asArray(res).map(hit => {
         return {
           ...hit,
           flightPaxLink: getLinkToPaxDetails(hit)
         };
       });
-      setPaxHistoricalHits(res);
+      setPaxHistoricalHits(parsedData);
     });
   }, [props.hitSummaryRefreshKey, props.paxId]);
 
@@ -185,7 +187,7 @@ const Summary = props => {
         />
         <CardWithTable
           data={paxHistoricalHits}
-          headers={headers.paxHistoricalHits}
+          headers={headers.historicalHits}
           title={<Xl8 xid="sum031">Historical Hits</Xl8>}
         />
       </CardColumns>
