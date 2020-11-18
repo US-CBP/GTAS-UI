@@ -167,7 +167,6 @@ const PaxDetail = props => {
     );
   };
   const getFlightBadgeData = res => {
-    console.log(res);
     return {
       flightNumber: addLinkToFlight(res),
       carrier: "",

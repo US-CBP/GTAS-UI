@@ -67,20 +67,19 @@
   width: 100%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .main {
     left: 34px !important;
-    height: calc(100vh - 80px);
-    max-height: calc(100vh - 80px);
-    width: calc(100vw - 74px);
-    overflow: auto;
+    height: calc(100vh - 60px);
+    width: calc(100vw - 34px);
+    /* overflow: auto; */
   }
   .full,
   .dash {
     height: calc(100vh - 60px);
     max-height: calc(100vh - 60px);
     overflow: auto;
-    padding: 0px !important;
+    /* padding: 0px !important; */
   }
   .margin-right0 {
     margin-right: 0px;

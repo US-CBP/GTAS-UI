@@ -29,6 +29,37 @@ $transparent: rgba(0, 0, 0, 0.65);
   overflow-y: auto;
 }
 
+@media (max-width: 767px) {
+  .paxdetail-container {
+    width: calc(100vw - 70px);
+    padding-right: 10px;
+  }
+  .paxdetail-container-col {
+    width: unset;
+    max-width: unset !important;
+    height: calc(100vh - 110px);
+    padding-right: 0px;
+    margin-right: -10px;
+    overflow-y: auto;
+    margin-left: 0px;
+    padding-left: 0px;
+  }
+
+  .one-column-container {
+    width: unset !important;
+    height: calc(100vh - 110px);
+    max-width: unset !important;
+    overflow: auto;
+    position: absolute;
+    top: 50px;
+    left: 20px;
+    padding-right: 20px;
+  }
+  .one-column-grid-container {
+    width: calc(100vw - 75px) !important;
+  }
+}
+
 @media (max-width: 1499px) {
   .paxdetail-container {
     .card-columns {
