@@ -44,9 +44,15 @@
   width: 120px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .full .title-span,
   .full-cards .title-span {
     margin-left: 259px;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    display: inline-flex !important;
   }
 }

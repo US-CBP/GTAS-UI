@@ -9,7 +9,7 @@ $wco-blue-dark: darken($wco-blue, 20%);
 $wco-gray: rgb(141, 144, 147);
 $wco-gray-dark: #575756;
 $gtas-white: rgba(255, 255, 255, 0.9);
-$transparent: #0082c3d9;
+$wco-info: #009e9288;
 
 .profile {
   font-size: 200px;
@@ -36,7 +36,7 @@ $transparent: #0082c3d9;
   z-index: 1020;
 }
 
-@include media-breakpoint-down(sm) {
+@media (max-width: 768px) {
   .filter-container,
   .filter {
     width: 34px !important;
@@ -56,8 +56,17 @@ $transparent: #0082c3d9;
     cursor: pointer;
   }
   .filter-toggle:hover {
-    background-color: $transparent;
+    background-color: $wco-info;
   }
+}
+
+.filter-bg {
+  z-index: 5;
+  /* background: linear-gradient(#40403f, #40403fe8, #40403f99),
+     url($background-image-url) no-repeat no-repeat fixed; */
+  background: linear-gradient(#40403f, #40403fdd, #40403f55),
+    url($background-image-url) no-repeat no-repeat;
+  background-size: cover;
 }
 
 .toggle-arrow {
@@ -92,10 +101,6 @@ $transparent: #0082c3d9;
   content: "\f060";
 }
 
-.main-overlay {
-  // display: none;
-}
-
 .main-overlay-open {
   height: calc(100vh - 80px);
   width: calc(100vw - 20px);
@@ -104,54 +109,8 @@ $transparent: #0082c3d9;
   z-index: 9;
 }
 
-.filter {
-  top: auto;
-  left: 0;
-  display: block;
-  position: fixed;
-  height: calc(100vh - 60px);
-  width: 260px;
-}
-
-.filter-fg,
-.filter-fg-open {
-  color: #f8f9fa;
-  z-index: 10;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.filter-fg::-webkit-scrollbar-thumb {
-  border: 3px solid #40403f !important;
-  background-color: white;
-  border-radius: 12px;
-}
-
-.margintop20 {
-  margin-top: 20px;
-}
-
-.filter-bg {
-  z-index: 5;
-  // background: linear-gradient(#40403f, #40403fe8, #40403f99),
-  //   url($background-image-url) no-repeat no-repeat fixed;
-  background: linear-gradient(#40403f, #40403fdd, #40403f55),
-    url($background-image-url) no-repeat no-repeat;
-  background-size: cover;
-}
-
 hr {
   border-top: 1px solid rgba(230, 230, 230, 1);
-}
-
-.filter-fg > .col {
-  margin-top: 20px;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-  border-radius: 0.5rem;
-  padding-bottom: 5px;
-  padding: 0px;
-  background-color: #40404066;
 }
 
 .notopmargin {

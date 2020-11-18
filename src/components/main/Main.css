@@ -8,7 +8,6 @@
   left: 260px;
   width: calc(100vw - 260px);
   min-width: 246px;
-  min-height: 638px;
   background-color: white;
 }
 
@@ -67,7 +66,7 @@
   width: 100%;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .main {
     left: 34px !important;
     height: calc(100vh - 60px);

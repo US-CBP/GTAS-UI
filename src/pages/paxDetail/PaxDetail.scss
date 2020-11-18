@@ -29,7 +29,7 @@ $transparent: rgba(0, 0, 0, 0.65);
   overflow-y: auto;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .paxdetail-container {
     width: calc(100vw - 70px);
     padding-right: 10px;
@@ -46,14 +46,8 @@ $transparent: rgba(0, 0, 0, 0.65);
   }
 
   .one-column-container {
-    width: unset !important;
-    height: calc(100vh - 110px);
-    max-width: unset !important;
-    overflow: auto;
-    position: absolute;
-    top: 50px;
-    left: 20px;
-    padding-right: 20px;
+    width: calc(100vw - 80px) !important;
+    padding-right: 0px !important;
   }
   .one-column-grid-container {
     width: calc(100vw - 75px) !important;

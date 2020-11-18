@@ -197,16 +197,27 @@ input[type="radio"] {
 .max-500-width-container .modal-content {
   max-width: 500px !important;
   min-width: 330px !important;
+  margin: 15px;
 }
 
 .max-600-width-container .modal-content {
   max-width: 600px !important;
   min-width: 530px !important;
+  margin: 15px;
+}
+
+@media (max-width: 768px) {
+  .max-600-width-container .modal-content {
+    width: calc(100vw - 30px);
+    min-width: 200px !important;
+    margin: 15px;
+  }
 }
 
 .max-700-width-container .modal-content {
   max-width: 700px !important;
   min-width: 660px !important;
+  margin: 15px;
 }
 
 .scrollable {
@@ -333,4 +344,39 @@ li .rtf--ab__c button[variant="rtf-red"] {
   height: 60px;
   width: 60px;
   background-size: cover;
+}
+
+.filter {
+  top: auto;
+  left: 0;
+  display: block;
+  position: fixed;
+  height: calc(100vh - 60px);
+  width: 260px;
+}
+
+.filter-fg,
+.filter-fg-open {
+  color: #f8f9fa;
+  z-index: 10;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.filter-fg::-webkit-scrollbar-thumb,
+.filter-fg-open::-webkit-scrollbar-thumb {
+  border: 3px solid #40403f !important;
+  background-color: white;
+  border-radius: 12px;
+}
+
+.filter-fg > .col,
+.filter-fg-open > .col {
+  margin-top: 20px;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  border-radius: 0.5rem;
+  padding-bottom: 5px;
+  padding: 0px;
+  background-color: #40404066;
 }

@@ -306,7 +306,7 @@ const PNR = props => {
           />
         </Col>
         <Col className="p-0">
-          <Container className="paxdetail-container-col">
+          <div className="paxdetail-container-col">
             <CardWithTable
               data={itinerary}
               headers={headers.itinerary}
@@ -378,7 +378,7 @@ const PNR = props => {
               title={<Xl8 xid="pnr051">Total PNR Baggage </Xl8>}
               callback={setActiveKeyWrapper}
             />
-          </Container>
+          </div>
         </Col>
       </Row>
     </div>

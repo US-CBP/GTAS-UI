@@ -20,6 +20,10 @@
   overflow-wrap: anywhere;
 }
 
+.segment-table-container {
+  margin-right: 20px;
+}
+
 @media (max-width: 1024px) {
   .segment-table-container {
     display: none;
