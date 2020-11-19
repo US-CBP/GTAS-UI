@@ -422,12 +422,6 @@ li .rtf--ab__c button[variant="rtf-red"] {
   max-width: 500px !important;
 }
 
-@media (max-width: 768px) {
-  .unauthed-form {
-    max-width: 300px !important;
-  }
-}
-
 @media (min-width: 768px) {
   .navbar-expand-md .navbar-collapse {
     display: none !important;
@@ -447,8 +441,8 @@ li .rtf--ab__c button[variant="rtf-red"] {
 
 .gtas-logo {
   background: url("./images/WCO_logo.svg") no-repeat no-repeat;
-  height: 63px;
-  width: 70px;
+  height: 75px;
+  width: 82px;
   background-size: cover;
   display: inline-block;
 }

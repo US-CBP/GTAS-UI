@@ -3,7 +3,7 @@ import Form from "../../components/form/Form";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { forgotPassword } from "../../services/serviceWrapper";
 import { Container, Alert, Col } from "react-bootstrap";
-import Title from "../../components/title/Title";
+// import Title from "../../components/title/Title";
 import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
 import { hasData } from "../../utils/utils";
@@ -33,12 +33,12 @@ const ForgotPassword = props => {
         className="login d-flex align-items-center py-5 justify-content-around"
         fluid
       >
-        <Col className="unauthed-form">
+        <Col className="unauthed-form forgot-pwd">
           {resetLinkSent ? (
             <>
               <Alert variant="success">
-                A password reset link is sent to your mail. Please follow the instructions
-                on the email to reset your password.
+                A password reset link was sent to your email with instructions for
+                resetting your password.
               </Alert>
               <Link to="/login">Login to GTAS</Link>
             </>

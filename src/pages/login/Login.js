@@ -55,6 +55,8 @@ const Login = () => {
               <div className="row">
                 <div className="col-md-10 mx-auto text-center">
                   <div className="gtas-logo"></div>
+                  <br />
+                  <br />
                   <h3 className="login-heading mb-4">GTAS</h3>
                   <br />
                   <Form

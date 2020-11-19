@@ -200,9 +200,15 @@ $bg-image: "../../images/chairs.jpg";
 
 .unauthed-form {
   background-color: #ffffff;
-  padding: 20px;
+  padding: 30px !important;
   border-radius: 0.25rem;
   max-width: 500px !important;
+}
+
+@media (max-width: 768px) {
+  .unauthed-form {
+    max-width: 350px !important;
+  }
 }
 
 /* Fallback for Edge
@@ -227,4 +233,8 @@ $bg-image: "../../images/chairs.jpg";
   .form-label-group input:-ms-input-placeholder {
     color: #777;
   }
+}
+
+.forgot-pwd .space-between {
+  padding-right: 50px;
 }
