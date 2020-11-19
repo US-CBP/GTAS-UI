@@ -694,8 +694,8 @@ const QRModal = props => {
           </ModalTitle>
         </ModalHeader>
         <ModalBody className="qbrb-modal-body">
-          <Container fluid>
-            <Row className="card-columns qrm">
+          <div>
+            <Row className="qrm">
               <LabelledInput
                 datafield
                 key={`title${key}`}
@@ -721,7 +721,7 @@ const QRModal = props => {
             </Row>
             {mode === QR.RULE && (
               <>
-                <Row className="card-columns qrm">
+                <Row className="qrm">
                   <LabelledInput
                     datafield
                     labelText={<Xl8 xid="qrm003">Start Date</Xl8>}
@@ -746,7 +746,7 @@ const QRModal = props => {
                     spacebetween
                   />
                 </Row>
-                <Row className="card-columns qrm">
+                <Row className="qrm">
                   <LabelledInput
                     key={`en${key}`}
                     datafield
@@ -783,7 +783,7 @@ const QRModal = props => {
                 dataCallback={dataCallback}
               ></RAQB>
             )}
-          </Container>
+          </div>
         </ModalBody>
         <ModalFooter>
           <Button

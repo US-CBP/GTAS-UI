@@ -113,8 +113,10 @@ const FileDownload = ({ name }) => {
 
   return (
     <Main className="full bg-white">
-      <Title title={name} rightChild={fileTypeCtrl}></Title>
-      <Table callback={cb} key={tblRefreshKey} data={data} header={headers}></Table>
+      <Title title={name} leftChild={fileTypeCtrl} style="stacker title"></Title>
+      <div className="grid-container">
+        <Table callback={cb} key={tblRefreshKey} data={data} header={headers}></Table>
+      </div>
     </Main>
   );
 };

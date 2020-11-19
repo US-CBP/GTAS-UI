@@ -5,7 +5,7 @@
   background: #009fe3;
   border: 1px solid white;
   border-radius: 0.25rem;
-  margin: 0px -10px;
+  margin: 0px 5px;
   padding: 10px 5px;
 
   .flight-number {
@@ -40,6 +40,7 @@
   border-radius: 0.25rem;
   background-color: white;
   border: 1px solid #0082c3;
+  padding: 5px;
 
   .flight-number {
     color: black;
@@ -51,6 +52,8 @@
     align-items: center;
     flex-wrap: nowrap;
     white-space: nowrap;
+    margin-right: unset;
+    margin-left: unset;
 
     .width40 {
       width: 40px;
@@ -65,4 +68,14 @@
       min-width: -webkit-fill-available;
     }
   }
+}
+
+.flight-badge .link {
+  background-color: white;
+  padding: 3px;
+  border-radius: 0.25rem;
+}
+
+.flight-badge .link:hover {
+  text-decoration: none;
 }

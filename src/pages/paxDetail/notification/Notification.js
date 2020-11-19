@@ -64,7 +64,7 @@ const Notification = props => {
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        className="max-700-width-container"
+        className="max-500-width-container"
       >
         <ModalHeader closeButton>
           <ModalTitle>

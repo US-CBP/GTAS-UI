@@ -1,0 +1,36 @@
+.about-container {
+  /* margin: 10px; */
+  justify-content: center;
+  overflow-y: auto;
+  max-height: calc(100vh - 130px);
+}
+
+.about-container h2 {
+  margin-left: 15px;
+  margin-top: 40px;
+  color: #0082c3;
+  font-size: 1.75rem;
+}
+
+.about-container h3,
+.about-container h4 {
+  margin-left: 30px;
+}
+
+.about-container ul {
+  margin-left: 45px;
+}
+
+.about-sidenav {
+  top: auto;
+  left: 0;
+  display: block;
+  position: fixed;
+  height: calc(100vh - 60px);
+  width: 260px;
+  margin-top: 55px;
+}
+
+.about-sidenav .list-group {
+  text-align: center;
+}

@@ -142,7 +142,7 @@ const PNR = props => {
       origin: <Xl8 xid="pnr003">Origin</Xl8>,
       destination: <Xl8 xid="pnr004">Destination</Xl8>,
       departure: <Xl8 xid="pnr005">Departure</Xl8>,
-      arrivval: <Xl8 xid="pnr006">Arrival</Xl8>
+      arrival: <Xl8 xid="pnr006">Arrival</Xl8>
     },
     passengers: {
       lastName: <Xl8 xid="pnr007">Last Name</Xl8>,
@@ -215,7 +215,7 @@ const PNR = props => {
         origin: leg.originAirport,
         destination: leg.destinationAirport,
         departure: localeDate(leg.etd),
-        arrivval: localeDate(leg.eta),
+        arrival: localeDate(leg.eta),
         key: `TVL${leg.originAirport} `
       };
     });
@@ -297,7 +297,7 @@ const PNR = props => {
   return (
     <div className="paxdetail-container">
       <Row>
-        <Col className="p-0" md="5">
+        <Col className="p-0 segment-table-container" md="5">
           <SegmentTable
             title={segmentTitle}
             data={rawPnrSegments}
@@ -306,7 +306,7 @@ const PNR = props => {
           />
         </Col>
         <Col className="p-0">
-          <Container fluid className="paxdetail-container-col">
+          <div className="paxdetail-container-col">
             <CardWithTable
               data={itinerary}
               headers={headers.itinerary}
@@ -378,7 +378,7 @@ const PNR = props => {
               title={<Xl8 xid="pnr051">Total PNR Baggage </Xl8>}
               callback={setActiveKeyWrapper}
             />
-          </Container>
+          </div>
         </Col>
       </Row>
     </div>

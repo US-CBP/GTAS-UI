@@ -20,6 +20,12 @@
   margin-right: 10px;
 }
 
+@media (max-width: 768px) {
+  .space-between > label {
+    white-space: unset !important;
+  }
+}
+
 .form-group {
   margin-bottom: 0.5rem !important;
 }
