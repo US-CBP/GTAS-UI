@@ -28,6 +28,7 @@ import { Link } from "@reach/router";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./PaxDetail.scss";
+import Loading from "../../components/loading/Loading";
 
 const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState({});
@@ -45,6 +46,7 @@ const PaxDetail = props => {
   const [watchlistData, setWatchlistData] = useState({});
   const [paxDetailsData, setPaxDetailsData] = useState();
   const [paxDocuments, setPaxDocuments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const cb = () => {};
   const refreshEventNotesCard = () => {
@@ -191,38 +193,14 @@ const PaxDetail = props => {
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
       setWatchlistData({ passenger: p, documents: res.documents });
       setPaxDocuments(res.documents);
+      setIsLoading(false);
     });
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchData();
   }, [props.paxId]);
-
-  // TODO: refac tabs as child routes, load data per page.
-  // const actions = (
-  //   <DropdownButton
-  //     variant="info"
-  //     title={<Xl8 xid="manu002">Choose Action</Xl8>}
-  //     className="m-1"
-  //   >
-  //     <AttachmentModal
-  //       callback={updateAttachmentList}
-  //       paxId={props.paxId}
-  //     ></AttachmentModal>
-  //     <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} />
-  //     <AddToWatchlist watchlistItems={watchlistData} />
-  //     <CreateManualHit
-  //       paxId={props.paxId}
-  //       flightId={props.flightId}
-  //       callback={setHitSummaryRefreshKey}
-  //     />
-  //     <DownloadReport paxId={props.paxId} flightId={props.flightId} />
-  //     <Notification paxId={props.paxId} />
-  //     {hasHit && (
-  //       <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
-  //     )}
-  //   </DropdownButton>
-  // );
 
   const tablist = <Tabs tabs={tabs} />;
   const changeHitStatusText = hasOpenHit ? (
@@ -235,7 +213,8 @@ const PaxDetail = props => {
       <SidenavContainer>
         <Col>
           <FlightBadge data={flightBadge}></FlightBadge>
-          <PaxInfo pax={pax}></PaxInfo>
+          {isLoading && <Loading></Loading>}
+          {!isLoading && <PaxInfo pax={pax}></PaxInfo>}
           {hasData(flightLegsSegmentData) && <Stepper steps={flightLegsSegmentData} />}
         </Col>
       </SidenavContainer>
