@@ -94,6 +94,7 @@ const HITCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
 const HITCATSNONARCHIVED = `${BASE_URL}gtas/wl/watchlistCategories/nonarchived`;
 const FLIGHTS = `${BASE_URL}gtas/api/flights`;
 const AUDITLOG = `${BASE_URL}gtas/api/auditlog`;
+const AUDITLOGACTIONS = `${BASE_URL}gtas/api/auditlog/actions`;
 const ERRORLOG = `${BASE_URL}gtas/api/errorlog`;
 const CASES = `${BASE_URL}gtas/hits`;
 const SETTINGSINFO = `${BASE_URL}gtas/settingsinfo`;
@@ -202,7 +203,12 @@ export const userService = {
 };
 
 export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
-export const auditlog = { get: params => get(AUDITLOG, BASEHEADER, undefined, params) };
+export const auditlog = {
+  get: {
+    logs: params => get(AUDITLOG, BASEHEADER, undefined, params),
+    actions: params => get(AUDITLOGACTIONS, BASEHEADER, undefined, params)
+      }
+};
 export const errorlog = { get: params => get(ERRORLOG, BASEHEADER, undefined, params) };
 export const cases = {
   get: params => {
