@@ -28,6 +28,7 @@ import { Link } from "@reach/router";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./PaxDetail.scss";
+import Loading from "../../components/loading/Loading";
 
 const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState();
@@ -45,6 +46,7 @@ const PaxDetail = props => {
   const [watchlistData, setWatchlistData] = useState({});
   const [paxDetailsData, setPaxDetailsData] = useState();
   const [paxDocuments, setPaxDocuments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const cb = () => {};
   const refreshEventNotesCard = () => {
@@ -192,10 +194,12 @@ const PaxDetail = props => {
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
       setWatchlistData({ passenger: p, documents: res.documents });
       setPaxDocuments(res.documents);
+      setIsLoading(false);
     });
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchData();
   }, [props.paxId]);
 
@@ -213,7 +217,8 @@ const PaxDetail = props => {
         <br />
         <Col className="notopmargin">
           <div className="filterform-container form">
-            <PaxInfo pax={pax}></PaxInfo>
+            {isLoading && <Loading></Loading>}
+            {!isLoading && <PaxInfo pax={pax}></PaxInfo>}
             {hasData(flightLegsSegmentData) && <Stepper steps={flightLegsSegmentData} />}
           </div>
         </Col>
