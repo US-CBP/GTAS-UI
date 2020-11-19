@@ -220,7 +220,7 @@ const PaxDetail = props => {
       </SidenavContainer>
       <Main className="main">
         <Title
-          style="paxdetail title"
+          style="stacker title"
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
           leftChild={tablist}
         ></Title>

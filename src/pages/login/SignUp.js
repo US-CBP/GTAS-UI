@@ -41,8 +41,11 @@ const SignUp = props => {
 
   return (
     <Main className="unauthed bg-image">
-      <Container className="login d-flex align-items-center py-5" fluid>
-        <Col lg={{ span: 4, offset: 4 }} className="unauthed-form">
+      <Container
+        className="login d-flex align-items-center py-5 justify-content-around"
+        fluid
+      >
+        <Col className="unauthed-form">
           {displayErrorMsg && (
             <Alert variant="danger" dismissible onClose={() => setDisplayErrorMsg(false)}>
               {errorMsg}

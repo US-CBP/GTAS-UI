@@ -29,8 +29,11 @@ const ForgotPassword = props => {
 
   return (
     <Main className="unauthed bg-image">
-      <Container className="login d-flex align-items-center py-5" fluid>
-        <Col className="unauthed-form offset-3 col-4">
+      <Container
+        className="login d-flex align-items-center py-5 justify-content-around"
+        fluid
+      >
+        <Col className="unauthed-form">
           {resetLinkSent ? (
             <>
               <Alert variant="success">

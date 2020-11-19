@@ -28,7 +28,7 @@ const CodeEditor = props => {
   }, [tab]);
 
   const headerTabs = (
-    <Tabs defaultActiveKey="country" id="codeTabs">
+    <Tabs defaultActiveKey="country" id="codeTabs" className="gtas-tabs">
       <Tab
         eventKey="country"
         title={
@@ -75,8 +75,9 @@ const CodeEditor = props => {
         title={<Xl8 xid="app020">Code Editor</Xl8>}
         leftChild={headerTabs}
         leftCb={tabHandler}
+        style="stacker title"
       />
-      {props.children}
+      <div className="grid-container">{props.children}</div>
     </Main>
   );
 };

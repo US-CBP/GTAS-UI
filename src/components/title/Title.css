@@ -52,10 +52,22 @@
 }
 
 @media (max-width: 768px) {
-  .title.paxdetail {
-    display: block !important;
+  .title.stacker {
+    /* display: block !important;
+    position: fixed;
+    text-align: left;
+    height: auto !important; */
+
+    /* display: block !important;
     position: fixed;
     text-align: left;
     height: auto !important;
+    width: 100%; */
+
+    display: -webkit-box;
+    position: fixed;
+    text-align: left;
+    height: auto !important;
+    width: 100%;
   }
 }
