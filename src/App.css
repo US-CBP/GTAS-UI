@@ -444,3 +444,11 @@ li .rtf--ab__c button[variant="rtf-red"] {
     display: none !important;
   }
 }
+
+.gtas-logo {
+  background: url("./images/WCO_logo.svg") no-repeat no-repeat;
+  height: 63px;
+  width: 70px;
+  background-size: cover;
+  display: inline-block;
+}

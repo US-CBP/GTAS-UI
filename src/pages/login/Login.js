@@ -48,12 +48,13 @@ const Login = () => {
   return (
     <div className="container-fluid">
       <div className="row no-gutter">
-        <div className="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
-        <div className="col-md-8 col-lg-6">
+        <div className="d-none d-md-flex col-md-7 col-lg-7 bg-image"></div>
+        <div className="col-md-5 col-lg-5">
           <div className="login d-flex align-items-center py-5">
             <div className="container">
               <div className="row">
-                <div className="col-md-7 col-lg-7 col-sm-7 mx-auto text-center">
+                <div className="col-md-10 mx-auto text-center">
+                  <div className="gtas-logo"></div>
                   <h3 className="login-heading mb-4">GTAS</h3>
                   <br />
                   <Form
