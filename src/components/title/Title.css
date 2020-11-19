@@ -52,7 +52,7 @@
 }
 
 @media (max-width: 768px) {
-  .paxdetail.title {
+  .title.paxdetail {
     display: block !important;
     position: fixed;
     text-align: left;
