@@ -381,7 +381,7 @@ const Kanban = props => {
                                         padding: 6,
                                         margin: "0 0 8px 0",
                                         minHeight: "50px",
-                                        backgroundColor: "rgb(126 143 191 / 0.25)",
+                                        backgroundColor: "rgb(0 158 146 / 19%)",
                                         color: "black",
                                         ...provided.draggableProps.style,
                                         border: "1px solid black",
