@@ -128,7 +128,7 @@ input[type="radio"] {
 
 .nav-link.active {
   color: white !important;
-  background-color: #0082c3 !important;
+  background-color: #575756 !important;
 }
 
 .table-responsive > .table {
@@ -211,6 +211,14 @@ input[type="radio"] {
     width: calc(100vw - 30px);
     min-width: 200px !important;
     margin: 15px;
+  }
+
+  .max-700-width-container .modal-content {
+    min-width: 200px !important;
+  }
+
+  .nosmallmedia {
+    display: none;
   }
 }
 
@@ -379,4 +387,10 @@ li .rtf--ab__c button[variant="rtf-red"] {
   padding-bottom: 5px;
   padding: 0px;
   background-color: #40404066;
+}
+
+@media (max-width: 1024px) {
+  .large-media-only {
+    display: none;
+  }
 }

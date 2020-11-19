@@ -94,6 +94,7 @@ const PaxDetail = props => {
           {
             title: <Xl8 xid="pd005">Link Analysis</Xl8>,
             titleText: "Link Analysis",
+            tabClassName: "large-media-only",
             link: <LinkAnalysis paxData={paxDetailsData} />
           }
         ]
@@ -198,32 +199,6 @@ const PaxDetail = props => {
     fetchData();
   }, [props.paxId]);
 
-  // TODO: refac tabs as child routes, load data per page.
-  // const actions = (
-  //   <DropdownButton
-  //     variant="info"
-  //     title={<Xl8 xid="manu002">Choose Action</Xl8>}
-  //     className="m-1"
-  //   >
-  //     <AttachmentModal
-  //       callback={updateAttachmentList}
-  //       paxId={props.paxId}
-  //     ></AttachmentModal>
-  //     <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} />
-  //     <AddToWatchlist watchlistItems={watchlistData} />
-  //     <CreateManualHit
-  //       paxId={props.paxId}
-  //       flightId={props.flightId}
-  //       callback={setHitSummaryRefreshKey}
-  //     />
-  //     <DownloadReport paxId={props.paxId} flightId={props.flightId} />
-  //     <Notification paxId={props.paxId} />
-  //     {hasHit && (
-  //       <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
-  //     )}
-  //   </DropdownButton>
-  // );
-
   const tablist = <Tabs tabs={tabs} />;
   const changeHitStatusText = hasOpenHit ? (
     <Xl8 xid="chs006">Set to REVIEWED</Xl8>
@@ -245,6 +220,7 @@ const PaxDetail = props => {
       </SidenavContainer>
       <Main className="main">
         <Title
+          style="paxdetail"
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
           leftChild={tablist}
         ></Title>

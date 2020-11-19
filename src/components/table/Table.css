@@ -97,6 +97,11 @@
     display: none !important;
   }
 }
+@media (max-width: 768px) {
+  .one-column-grid-container > .table-main {
+    max-height: calc(100vh - 195px);
+  }
+}
 
 .tagrightpag {
   position: fixed;

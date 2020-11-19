@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Tabs as RBTabs } from "react-bootstrap";
-import { Tab } from "react-bootstrap";
+import { Tab, Tabs as RBTabs } from "react-bootstrap";
 import "./Tabs.css";
 
 const Tabs = props => {
   const [key, setKey] = useState();
   const tablist = props.tabs.map(tab => {
+    console.log(tab);
     return (
-      <Tab eventKey={tab.titleText} key={tab.titleText} {...tab}>
+      <Tab {...tab} eventKey={tab.titleText} key={tab.titleText}>
         {tab.link}
       </Tab>
     );

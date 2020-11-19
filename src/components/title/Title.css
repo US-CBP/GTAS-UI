@@ -52,7 +52,10 @@
 }
 
 @media (max-width: 768px) {
-  .title {
-    display: inline-flex !important;
+  .paxdetail.title {
+    display: block !important;
+    position: fixed;
+    text-align: left;
+    height: auto !important;
   }
 }

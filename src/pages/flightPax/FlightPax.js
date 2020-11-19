@@ -234,7 +234,7 @@ const FlightPax = props => {
       </SidenavContainer>
       <Main>
         <Title
-          title={<Xl8 xid="fp010">Flight Passengers</Xl8>}
+          title={<Xl8 xid="fp010">Passengers</Xl8>}
           leftChild={tabs}
           leftCb={titleTabCallback}
         ></Title>
@@ -242,7 +242,7 @@ const FlightPax = props => {
           key={key}
           header={headers}
           data={data}
-          id="Flight Passengers"
+          id="Passengers"
           callback={cb}
           disableGroupBy={false}
           enableColumnFilter={true}

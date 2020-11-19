@@ -73,7 +73,7 @@ $wco-info: #009e9288;
   margin-top: 10px;
 }
 
-@include media-breakpoint-up(md) {
+@media (min-width: 769px) {
   .filter-toggle {
     display: none;
   }
