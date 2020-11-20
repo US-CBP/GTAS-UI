@@ -450,7 +450,6 @@ const QRModal = props => {
   };
 
   const highlightRequiredFormFields = () => {
-    console.log(title, hasData(title));
     if (!hasData(title)) {
       document.querySelector('[name="title"]').classList.add("qrm-invalid");
     }
