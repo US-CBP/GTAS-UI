@@ -278,22 +278,7 @@ export const paxdetailsReport = {
   }
 };
 export const notification = {
-  post: (paxId, body) => {
-    const selectedEmail = asArray(body.to)
-      .filter(email => email.checked === true)
-      .map(email => email.key);
-
-    if (body.externalUsersEmail) {
-      selectedEmail.push(body.externalUsersEmail);
-    }
-
-    const bodyWithPaxId = {
-      note: body.note ? body.note : "",
-      paxId: paxId,
-      to: selectedEmail
-    };
-    return post(NOTIFICATION, BASEHEADER, stringify(bodyWithPaxId));
-  }
+  post: body => post(NOTIFICATION, BASEHEADER, stringify(body))
 };
 export const flightPassengers = { get: id => get(FLIGHTPAX, BASEHEADER, id) };
 export const loaderStats = { get: (id, params) => get(LOADERSTATISTICS, BASEHEADER) };
