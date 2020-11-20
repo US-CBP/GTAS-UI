@@ -18,7 +18,9 @@ const ErrorLog = ({ name }) => {
   let endDate = new Date();
   endDate.setDate(endDate.getDate() + 1);
   startDate.setDate(startDate.getDate() - 1);
-  const initialParamState = { startDate: startDate, endDate: endDate };
+  const initialParamState = () => {
+    return { startDate: startDate, endDate: endDate };
+  };
 
   const headers = [
     {
@@ -73,7 +75,7 @@ const ErrorLog = ({ name }) => {
             service={errorlog.get}
             paramCallback={preFetchCallback}
             callback={setDataWrapper}
-            initialParamState={initialParamState}
+            getInitialState={initialParamState}
           >
             <LabelledInput
               labelText={<Xl8 xid="el001">Error Code</Xl8>}
