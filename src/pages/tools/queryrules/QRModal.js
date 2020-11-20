@@ -41,7 +41,7 @@ const QRModal = props => {
   const [ccTypes, setCcTypes] = useState([]);
   const [dataConfig, setDataConfig] = useState([]);
 
-  const [title, setTitle] = useState(props.title);
+  const [title, setTitle] = useState(props.data?.title);
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState(props.data?.query);
   const [showInvalid, setShowInvalid] = useState(false);
@@ -450,7 +450,8 @@ const QRModal = props => {
   };
 
   const highlightRequiredFormFields = () => {
-    if (!title) {
+    console.log(title, hasData(title));
+    if (!hasData(title)) {
       document.querySelector('[name="title"]').classList.add("qrm-invalid");
     }
     if (!summaryData.ruleCat && mode === QR.RULE) {
