@@ -69,7 +69,9 @@ const FilterForm = props => {
 
   const onReset = e => {
     let fields = [];
-    const initialParamState = props.initialParamState || {};
+    const initialParamState = hasData(props.getInitialState)
+      ? props.getInitialState()
+      : {};
 
     datafieldNames.forEach(function(name) {
       fields[name] = initialParamState[name] || "";
