@@ -20,9 +20,8 @@ import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Page404 from "./pages/page404/Page404";
 
-import "./App.css";
+import "./App.scss";
 import "font-awesome/css/font-awesome.min.css";
-import "../node_modules/bootstrap/scss/bootstrap.scss";
 
 const Flights = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")

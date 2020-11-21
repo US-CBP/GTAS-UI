@@ -1,12 +1,13 @@
+@import "../../index.scss";
 // @import "~bootstrap/scss/functions";
 // @import "~bootstrap/scss/variables";
 // @import "~bootstrap/scss/mixins";
 
 // Primary colors
 $hover-color: rgb(177, 172, 172);
-$gtas-white: rgba(255, 255, 255, 0.9);
-$wco-blue: #0082c3;
-$wco-gray: rgb(141, 144, 147);
+// $gtas-white: rgba(255, 255, 255, 0.9);
+// $wco-blue: #0082c3;
+// $wco-gray: rgb(141, 144, 147);
 
 .header-navbar {
   padding: 0.25rem 1rem !important;
@@ -165,6 +166,6 @@ $wco-gray: rgb(141, 144, 147);
 .collapsing {
   position: absolute !important;
   height: 0;
-  transition: height 0.25s ease-in !important;
+  transition: height 0.2s ease !important;
   width: 180px !important;
 }

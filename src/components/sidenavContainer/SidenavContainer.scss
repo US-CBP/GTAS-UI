@@ -1,7 +1,8 @@
+@import "../../index.scss";
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
-@import "../../index.scss";
 
 $wco-blue: #0082c3;
 $wco-blue-dark: darken($wco-blue, 20%);

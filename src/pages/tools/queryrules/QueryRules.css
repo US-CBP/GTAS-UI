@@ -294,7 +294,7 @@ pre {
 .query-builder {
   margin-top: -10px;
   overflow: inherit;
-  font-family: Lato;
+  font-family: "Lato script=latin rev=1", sans-serif !important;
 }
 
 .group--conjunctions > input[type="checkbox"],

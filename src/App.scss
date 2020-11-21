@@ -1,4 +1,5 @@
-body {
+body,
+html {
   font-family: "Lato script=latin rev=1", sans-serif !important;
   /* -webkit-font-smoothing: antialiased; */
   -moz-osx-font-smoothing: grayscale;
@@ -169,14 +170,8 @@ input[type="radio"] {
 
 .table-icon {
   font-size: 1.4em !important;
-  color: #0082c3;
+  color: #009e92;
 }
-
-/* .flight-number {
-  color: #0082c3;
-  font-weight: 700;
-  align-items: center;
-} */
 
 .action-button-div {
   position: absolute;
