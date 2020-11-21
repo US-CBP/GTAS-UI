@@ -58,6 +58,9 @@ jobs:
           tags: wcogtas/gtas-ui:dev
       - name: Generate Kubernetes deployment configuration file
         shell: bash
+        env:
+          REACT_APP_NEO4J_BROWSER: ${{ secrets.REACT_APP_NEO4J_BROWSER }}
+          REACT_APP_KIBANA_LOGIN: ${{ secrets.REACT_APP_KIBANA_LOGIN }}
         run: |
           sudo apt-get -y update
           sudo apt-get install -y curl
