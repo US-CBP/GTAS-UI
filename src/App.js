@@ -24,6 +24,9 @@ import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Page404 from "./pages/page404/Page404";
 
+const kibanaUrl = process.env.REACT_APP_KIBANA_LOGIN;
+const neo4jUrl = process.env.REACT_APP_NEO4J_BROWSER;
+
 const Flights = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")
 );
@@ -402,13 +405,13 @@ export default class App extends React.Component {
                                 name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
                                 desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}
                                 icon="kibana"
-                                path={process.env.REACT_APP_KIBANA_LOGIN}
+                                path={kibanaUrl}
                                 hasExternalLink={true}
                               ></Auxiliary>
                               <Auxiliary
                                 name={<Xl8 xid="app033">Neo4j</Xl8>}
                                 desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
-                                path={process.env.REACT_APP_NEO4J_BROWSER}
+                                path={neo4jUrl}
                                 icon="neo4j"
                                 hasExternalLink={true}
                               ></Auxiliary>
