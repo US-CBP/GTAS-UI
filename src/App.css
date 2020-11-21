@@ -386,7 +386,7 @@ li .rtf--ab__c button[variant="rtf-red"] {
   border-radius: 0.5rem;
   padding-bottom: 5px;
   padding: 0px;
-  background-color: #40404066;
+  background-color: #40404022;
 }
 
 @media (max-width: 1024px) {
@@ -445,4 +445,32 @@ li .rtf--ab__c button[variant="rtf-red"] {
   width: 82px;
   background-size: cover;
   display: inline-block;
+}
+
+.modal-center {
+  align-items: center !important;
+  justify-content: space-around !important;
+  min-height: 100vh;
+  display: flex !important;
+}
+
+.page-tiles {
+  min-width: 200px !important;
+  max-width: 220px;
+  margin: 10px;
+  min-height: 220px;
+  max-height: 240px;
+  border: 1.5px solid #0082c3 !important;
+}
+
+.card-link > .card-body,
+.page-tiles > .card-link {
+  height: 100%;
+  position: relative;
+}
+
+.page-tiles > a > .card-footer {
+  padding: 0.75rem 1.25rem;
+  background-color: transparent;
+  border-top: 1px solid transparent !important;
 }

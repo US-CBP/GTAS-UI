@@ -1,6 +1,6 @@
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
+// @import "~bootstrap/scss/functions";
+// @import "~bootstrap/scss/variables";
+// @import "~bootstrap/scss/mixins";
 
 // Primary colors
 $hover-color: rgb(177, 172, 172);
@@ -108,13 +108,13 @@ $wco-gray: rgb(141, 144, 147);
 
 @media (max-width: 1050px) {
   .optional {
-    display: none;
+    display: none !important;
   }
 }
 
 @media (max-width: 950px) {
   .form-inline {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -160,4 +160,11 @@ $wco-gray: rgb(141, 144, 147);
 
 .ml-auto > form {
   margin-right: 10px;
+}
+
+.collapsing {
+  position: absolute !important;
+  height: 0;
+  transition: height 0.25s ease-in !important;
+  width: 180px !important;
 }

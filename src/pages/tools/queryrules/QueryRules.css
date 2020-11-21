@@ -114,6 +114,7 @@
   border-width: 1px;
   color: rgb(73, 80, 87);
   padding: 2px 4px;
+  max-width: 200px !important;
 }
 
 .widget--widget > select[multiple] {
@@ -202,7 +203,6 @@ pre {
   padding: 5px 5px 1px 10px;
   line-height: 1.5rem;
   border: 2px solid #6a8eb3;
-  padding-top: 7px;
 }
 
 .group--conjunctions > .group--drag-handler {

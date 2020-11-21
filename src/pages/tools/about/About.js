@@ -16,22 +16,12 @@ const About = () => {
     <>
       <Col>
         <div className="about-sidenav">
-          <div id="list-example" class="list-group">
-            <a class="list-group-item list-group-item-action" href="#md0">
-              1.14.0
-            </a>
-            <a class="list-group-item list-group-item-action" href="#md1">
-              1.13.3
-            </a>
-            <a class="list-group-item list-group-item-action" href="#md2">
-              1.13.2
-            </a>
-            <a class="list-group-item list-group-item-action" href="#md3">
-              1.131
-            </a>
-            <a class="list-group-item list-group-item-action" href="#md4">
-              1.13.0
-            </a>
+          <div id="list-example" class="about list-group">
+            <a href="#md0">1.14.0</a>
+            <a href="#md0">1.13.3</a>
+            <a href="#md0">1.13.2</a>
+            <a href="#md0">1.13.1</a>
+            <a href="#md0">1.13.0</a>
           </div>
         </div>
       </Col>

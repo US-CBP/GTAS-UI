@@ -3,10 +3,6 @@ import { Router, Redirect, navigate } from "@reach/router";
 import IdleTimer from "react-idle-timer";
 import loadable from "@loadable/component";
 
-import "./App.css";
-import "font-awesome/css/font-awesome.min.css";
-// import "@fortawesome/free-solid-svg-icons";
-
 import Xl8 from "./components/xl8/Xl8";
 
 import Authenticator from "./context/authenticator/Authenticator";
@@ -23,6 +19,10 @@ import SignUp from "./pages/login/SignUp";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Page404 from "./pages/page404/Page404";
+
+import "./App.css";
+import "font-awesome/css/font-awesome.min.css";
+import "../node_modules/bootstrap/scss/bootstrap.scss";
 
 const Flights = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")

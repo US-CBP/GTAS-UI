@@ -683,9 +683,9 @@ const QRModal = props => {
       <Modal
         show={props.show}
         onHide={props.onHide}
-        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        className="modal-center"
       >
         <ModalHeader closeButton>
           <ModalTitle>

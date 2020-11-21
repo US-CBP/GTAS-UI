@@ -1,9 +1,8 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
+@import "../../index.scss";
 
-// $background-image-url: "../../images/sofy-m-halftoneco-N7uekwIyQ7E-unsplash.jpg";
-$background-image-url: "../../images/chairs.jpg";
 $wco-blue: #0082c3;
 $wco-blue-dark: darken($wco-blue, 20%);
 $wco-gray: rgb(141, 144, 147);
@@ -14,10 +13,6 @@ $wco-info: #009e9288;
 .profile {
   font-size: 200px;
 }
-
-// .paxdetails-side-nav .filter-fg .col {
-//   background-color: #005aa750;
-// }
 
 .profile-container {
   border: 2px solid #e0e0e0;
@@ -62,10 +57,11 @@ $wco-info: #009e9288;
 
 .filter-bg {
   z-index: 5;
-  /* background: linear-gradient(#40403f, #40403fe8, #40403f99),
-     url($background-image-url) no-repeat no-repeat fixed; */
-  background: linear-gradient(#40403f, #40403fdd, #40403f55),
-    url($background-image-url) no-repeat no-repeat;
+  // background: linear-gradient(#40403f, #40403fdd, #40403f55),
+  //   url($background-image-url) no-repeat no-repeat;
+
+  background: linear-gradient(#40403f, #40403fdd, #40403f22),
+    url($background-image-url) no-repeat no-repeat center;
   background-size: cover;
 }
 
