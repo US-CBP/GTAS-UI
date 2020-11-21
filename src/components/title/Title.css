@@ -44,9 +44,30 @@
   width: 120px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .full .title-span,
   .full-cards .title-span {
     margin-left: 259px;
+  }
+}
+
+@media (max-width: 768px) {
+  .title.stacker {
+    /* display: block !important;
+    position: fixed;
+    text-align: left;
+    height: auto !important; */
+
+    /* display: block !important;
+    position: fixed;
+    text-align: left;
+    height: auto !important;
+    width: 100%; */
+
+    display: -webkit-box;
+    position: fixed;
+    text-align: left;
+    height: auto !important;
+    width: 100%;
   }
 }

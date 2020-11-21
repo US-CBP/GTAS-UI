@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Main from "../../components/main/Main";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
-import { Card, CardDeck } from "react-bootstrap";
+import { CardDeck } from "react-bootstrap";
 import { randomIntOfLength } from "../../utils/utils";
 import Xl8 from "../../components/xl8/Xl8";
 
@@ -17,7 +17,7 @@ const Kanban = props => {
       id: "1001",
       content: (
         <div>
-          <div className="font-weight-bolder">Floyd, Pink</div>
+          <div className="font-weight-bolder">Barthez, Veronique</div>
           <div>Doc #: 21099D-MA78</div>
           <div className="poe-countdown-outer">
             <span>Reason:</span>
@@ -77,7 +77,7 @@ const Kanban = props => {
       id: "1005",
       content: (
         <div>
-          <div className="font-weight-bolder">Tribeca, Angie</div>
+          <div className="font-weight-bolder">Varg, Hjordis</div>
           <div>Doc #: 21099D-MA78</div>
           <div className="poe-countdown-outer">
             <span>Reason:</span>
@@ -381,8 +381,8 @@ const Kanban = props => {
                                         padding: 6,
                                         margin: "0 0 8px 0",
                                         minHeight: "50px",
-                                        backgroundColor: "#0082c3",
-                                        color: "white",
+                                        backgroundColor: "#009e9233",
+                                        color: "black",
                                         ...provided.draggableProps.style,
                                         border: "1px solid black",
                                         borderRadius: "5px",

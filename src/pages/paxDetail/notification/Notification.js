@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
-import { Button, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { notification, usersemails } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { asArray } from "../../../utils/utils";
+import { alt, asArray } from "../../../utils/utils";
 import "./Notification.scss";
 import Modal, {
   ModalBody,
@@ -22,27 +22,43 @@ const Notification = props => {
   const handleShow = () => setShow(true);
   const paxId = props.paxId;
 
+  const paramCallback = params => {
+    const fields = params[0];
+    const externalUserEmails = alt(fields["externalUsersEmail"])
+      .replace(/[, ;]/g, " ")
+      .split(" ")
+      .filter(Boolean);
+
+    const selectedUserEmails = asArray(fields["to"]).map(email => email.value);
+    const allEmails = selectedUserEmails.concat(externalUserEmails);
+
+    const emailData = {
+      note: fields["note"] ? fields["note"] : "",
+      paxId: paxId,
+      to: allEmails
+    };
+    return [emailData];
+  };
+
   useEffect(() => {
     let isMounted = true;
 
     if (!props.usersEmails) {
       usersemails.get().then(res => {
         if (isMounted) {
-          const emails = asArray(res).map(userEmail => {
-            return {
-              label: userEmail.username,
-              key: userEmail.email,
-              name: userEmail.email,
-              type: "checkbox",
-              checked: false
-            };
-          });
-          setUsersEmails(emails);
+          setUsersEmails(res);
         }
       });
     }
     return () => (isMounted = false); //clean up
   }, []);
+
+  const emialOptions = asArray(usersEmails).map(email => {
+    return {
+      label: email.username,
+      value: email.email
+    };
+  });
 
   const launcher = props.icon ? (
     <div onClick={handleShow}>
@@ -64,7 +80,7 @@ const Notification = props => {
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        className="max-700-width-container"
+        className="max-500-width-container"
       >
         <ModalHeader closeButton>
           <ModalTitle>
@@ -81,23 +97,22 @@ const Notification = props => {
               action="add"
               id="notificationmodal"
               afterProcessed={handleClose}
-              recordId={paxId}
+              paramCallback={paramCallback}
               cancellable
             >
-              <div className="notify-checkbox">
-                <LabelledInput
-                  datafield
-                  inputType="checkboxGroup"
-                  inputVal={usersEmails}
-                  labelText={<Xl8 xid="not004">Users in current group:</Xl8>}
-                  name="to"
-                  alt="nothing"
-                  callback={cb}
-                />
-              </div>
+              <LabelledInput
+                name="to"
+                datafield="to"
+                labelText={<Xl8 xid="not004">Users in current group:</Xl8>}
+                inputType="multiSelect"
+                inputVal={[]}
+                options={emialOptions}
+                callback={cb}
+                alt={<Xl8 xid="not004">Users in current group:</Xl8>}
+              />
 
               <LabelledInput
-                inputType="email"
+                inputType="text"
                 alt="nothing"
                 name="externalUsersEmail"
                 labelText={<Xl8 xid="not005">External user emails:</Xl8>}

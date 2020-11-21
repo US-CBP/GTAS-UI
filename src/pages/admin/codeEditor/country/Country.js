@@ -3,6 +3,8 @@ import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CountryModal from "./CountryModal";
+import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
+import { ACTION } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
@@ -12,7 +14,11 @@ const Countries = ({ name }) => {
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
   const [modalTitle, setModalTitle] = useState();
+  const [action, setAction] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
+  const [confirmModalHeader, setConfirmModalHeader] = useState();
+  const [confirmModalMessage, setConfirmModalMessage] = useState();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
@@ -23,6 +29,56 @@ const Countries = ({ name }) => {
     setModalTitle(<Xl8 xid="cou001">Edit Country</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
+  };
+
+  const confirm = action => {
+    if (action === ACTION.UPDATE) {
+      setConfirmModalHeader(<Xl8 xid="couConf001">Restore Country Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="couConf002">Please confirm to restore the country code</Xl8>
+      );
+    } else if (action === ACTION.DELETE) {
+      setConfirmModalHeader(<Xl8 xid="couConf003">Delete Country Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="couConf004">Please confirm to delete the country code</Xl8>
+      );
+    } else if (action === ACTION.UPDATEALL) {
+      setConfirmModalHeader(<Xl8 xid="couConf004">Restore All Country Codes</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="couConf005">Please confirm to restore all country codes</Xl8>
+      );
+    }
+    setAction(action);
+    setShowConfirm(true);
+    setShowModal(false);
+  };
+
+  const restoreCode = () => {
+    codeEditor.put.restoreCountry(editRowDetails).then(res => {
+      refresh();
+    });
+  };
+
+  const deleteCode = () => {
+    codeEditor.delete.deleteCountry(editRowDetails?.id).then(res => {
+      refresh();
+    });
+  };
+
+  const handleConfirm = confirmed => {
+    if (confirmed) {
+      if (action === ACTION.DELETE) deleteCode();
+      else if (action === ACTION.UPDATE) restoreCode();
+      else if (action === ACTION.UPDATEALL) restoreAll();
+    } else if (action !== ACTION.UPDATEALL) setShowModal(true);
+
+    setShowConfirm(false);
+  };
+
+  const restoreAll = () => {
+    codeEditor.put.restoreCountriesAll().then(res => {
+      refresh();
+    });
   };
 
   const headers = [
@@ -49,12 +105,6 @@ const Countries = ({ name }) => {
     { Accessor: "name", Xl8: true, Header: ["cou005", "Name"] }
   ];
 
-  const restoreAll = () => {
-    codeEditor.put.restoreCountriesAll().then(res => {
-      refresh();
-    });
-  };
-
   return (
     <div>
       <CountryModal
@@ -65,6 +115,13 @@ const Countries = ({ name }) => {
         editRowDetails={editRowDetails}
         refresh={refresh}
         callback={cb}
+        actionCallback={confirm}
+      />
+      <ConfirmationModal
+        show={showConfirm}
+        callback={handleConfirm}
+        header={confirmModalHeader}
+        message={confirmModalMessage}
       />
 
       <Table
@@ -89,7 +146,7 @@ const Countries = ({ name }) => {
         <Action
           text={<Xl8 xid="cou003">Restore All Countries</Xl8>}
           variant="rtf-red"
-          onClick={restoreAll}
+          onClick={() => confirm(ACTION.UPDATEALL)}
         >
           <i className="fa fa-recycle" />
         </Action>

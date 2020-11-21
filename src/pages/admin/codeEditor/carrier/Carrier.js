@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import CarrierModal from "./CarrierModal";
+import { ACTION } from "../../../../utils/constants";
+import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
@@ -14,6 +15,10 @@ const Carriers = ({ name }) => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [modalTitle, setModalTitle] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
+  const [action, setAction] = useState();
+  const [confirmModalHeader, setConfirmModalHeader] = useState();
+  const [confirmModalMessage, setConfirmModalMessage] = useState();
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
@@ -26,6 +31,55 @@ const Carriers = ({ name }) => {
     setShowModal(true);
   };
 
+  const confirm = action => {
+    if (action === ACTION.UPDATE) {
+      setConfirmModalHeader(<Xl8 xid="carConf001">Restore Carrier Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="carConf002">Please confirm to restore the carrier code</Xl8>
+      );
+    } else if (action === ACTION.DELETE) {
+      setConfirmModalHeader(<Xl8 xid="carConf003">Delete Carrier Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="carConf004">Please confirm to delete the carrier code</Xl8>
+      );
+    } else if (action === ACTION.UPDATEALL) {
+      setConfirmModalHeader(<Xl8 xid="carConf004">Restore All Carrier Codes</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="carConf005">Please confirm to restore all carrier codes</Xl8>
+      );
+    }
+    setAction(action);
+    setShowConfirm(true);
+    setShowModal(false);
+  };
+
+  const restoreCode = () => {
+    codeEditor.put.restoreCarrier(editRowDetails).then(res => {
+      refresh();
+    });
+  };
+
+  const deleteCode = () => {
+    codeEditor.delete.deleteCarrier(editRowDetails?.id).then(res => {
+      refresh();
+    });
+  };
+
+  const handleConfirm = confirmed => {
+    if (confirmed) {
+      if (action === ACTION.DELETE) deleteCode();
+      if (action === ACTION.UPDATE) restoreCode();
+      if (action === ACTION.UPDATEALL) restoreAll();
+    } else if (action !== ACTION.UPDATEALL) setShowModal(true);
+
+    setShowConfirm(false);
+  };
+
+  const restoreAll = () => {
+    codeEditor.put.restoreCarriersAll().then(res => {
+      refresh();
+    });
+  };
   const headers = [
     {
       Accessor: "Edit",
@@ -46,12 +100,6 @@ const Carriers = ({ name }) => {
     { Accessor: "name", Xl8: true, Header: ["car005", "Name"] }
   ];
 
-  const restoreAll = () => {
-    codeEditor.put.restoreCarriersAll().then(res => {
-      refresh();
-    });
-  };
-
   return (
     <div>
       <CarrierModal
@@ -62,6 +110,13 @@ const Carriers = ({ name }) => {
         editRowDetails={editRowDetails}
         refresh={refresh}
         callback={cb}
+        actionCallback={confirm}
+      />
+      <ConfirmationModal
+        show={showConfirm}
+        callback={handleConfirm}
+        header={confirmModalHeader}
+        message={confirmModalMessage}
       />
 
       <Table
@@ -86,7 +141,7 @@ const Carriers = ({ name }) => {
         <Action
           text={<Xl8 xid="car003">Restore All Carriers</Xl8>}
           variant="rtf-red"
-          onClick={restoreAll}
+          onClick={() => confirm(ACTION.UPDATEALL)}
         >
           <i className="fa fa-recycle" />
         </Action>

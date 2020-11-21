@@ -6,8 +6,8 @@ import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { Link } from "@reach/router";
-import { Container } from "react-bootstrap";
-import { asArray, getAge, alt, localeDateOnly } from "../../../utils/utils";
+// import { Container } from "react-bootstrap";
+import { asArray, getAge, alt, localeDateOnly, localeDate } from "../../../utils/utils";
 import { ROLE } from "../../../utils/constants";
 import Toast from "../../../components/toast/Toast";
 
@@ -34,6 +34,9 @@ const QRDetails = props => {
       item.dobAge = `${alt(localeDateOnly(item.dobStr))} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
+      item.flight = item.carrier + item.flightNumber;
+      item.eta = localeDate(item.eta);
+      item.etd = localeDate(item.etd);
 
       return item;
     });
@@ -41,14 +44,35 @@ const QRDetails = props => {
 
   const headers = [
     {
-      Accessor: "rulehit"
+      Accessor: "rulehit",
+      Xl8: true,
+      Header: ["fl014", "Rule Hits"]
     },
     {
-      Accessor: "watchhit"
+      Accessor: "watchhit",
+      Xl8: true,
+      Header: ["fl013", "Watchlist Hits"]
     },
-    { Accessor: "passengerType", Header: "Type" },
+    {
+      Accessor: "flight",
+      Xl8: true,
+      Header: ["fl019", "Flight"]
+    },
+    {
+      Accessor: "eta",
+      Xl8: true,
+      Header: ["qrd003", "ETA"]
+    },
+    {
+      Accessor: "etd",
+      Xl8: true,
+      Header: ["qrd004", "ETD"]
+    },
+    { Accessor: "passengerType", Xl8: true, Header: ["qrd005", "Passenger Type"] },
     {
       Accessor: "lastName",
+      Xl8: true,
+      Header: ["qrd006", "Last Name"],
       Cell: ({ row }) => {
         return (
           <Link to={`/gtas/paxDetail/${row.original.flightId}/${row.original.id}`}>
@@ -57,16 +81,17 @@ const QRDetails = props => {
         );
       }
     },
-    { Accessor: "firstName" },
-    { Accessor: "middleName" },
-    { Accessor: "gender" },
+    { Accessor: "firstName", Xl8: true, Header: ["qrd007", "First Name"] },
+    { Accessor: "middleName", Xl8: true, Header: ["qrd008", "Middle Name"] },
+    { Accessor: "gender", Xl8: true, Header: ["qrd009", "Gender"] },
     {
       Accessor: "dobStr",
-      Header: "DOB",
+      Xl8: true,
+      Header: ["qrd010", "DOB"],
       Cell: ({ row }) => <div>{row.original.dobAge}</div>
     },
-    { Accessor: "docNumber" },
-    { Accessor: "nationality" }
+    { Accessor: "docNumber", Xl8: true, Header: ["qrd011", "Document Number"] },
+    { Accessor: "nationality", Xl8: true, Header: ["qrd012", "Nationality"] }
   ];
 
   useEffect(() => {

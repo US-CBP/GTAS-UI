@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Col } from "react-bootstrap";
 
 import "./SidenavContainer.scss";
 
@@ -22,7 +21,7 @@ const SideNav = props => {
         </div>
       </div>
       <div className={`${open ? "filter-open" : "filter"} filter-bg`}></div>
-      <div className={`${open ? "filter-open" : "filter"} filter-screen`}></div>
+      {/* <div className={`${open ? "filter-open" : "filter"} filter-screen`}></div> */}
       <div className={`${open ? "filter-open filter-fg-open" : "filter filter-fg"}`}>
         {props.children}
         <br></br>

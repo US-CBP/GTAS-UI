@@ -49,13 +49,14 @@ $wco-gray: rgb(141, 144, 147);
 
 .header-navbar .navbar-nav a.nav-link {
   color: $gtas-white;
+  border: 1px solid transparent;
 }
 
 .header-navbar .navbar-nav a.nav-link:hover {
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: 0.25rem;
-  box-shadow: 0px 0px 1px 1px white;
+  // box-shadow: 0px 0px 1px 1px white;
 }
 
 .header-navbar .navbar-toggler {
@@ -71,7 +72,8 @@ $wco-gray: rgb(141, 144, 147);
   color: $gtas-white !important;
 }
 
-@include media-breakpoint-up(md) {
+// @include media-breakpoint-up(md) {
+@media (min-width: 769px) {
   .navbar-expand-md .navbar-collapse {
     display: flex !important;
     flex-basis: auto;
@@ -84,7 +86,8 @@ $wco-gray: rgb(141, 144, 147);
 }
 
 //media query for small devices and down(bootstrap's way)
-@include media-breakpoint-down(sm) {
+// @include media-breakpoint-down(sm) {
+@media (max-width: 768px) {
   .navbar-expand-md .navbar-nav .dropdown-menu {
     position: absolute;
   }
@@ -100,9 +103,6 @@ $wco-gray: rgb(141, 144, 147);
   }
   .nav-link {
     padding-bottom: 5px;
-  }
-  .nav-tabs {
-    margin-right: 15px;
   }
 }
 
@@ -156,4 +156,8 @@ $wco-gray: rgb(141, 144, 147);
 
 .nav-link.future {
   color: lightgray !important;
+}
+
+.ml-auto > form {
+  margin-right: 10px;
 }

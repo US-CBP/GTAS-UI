@@ -28,9 +28,10 @@ import { Link } from "@reach/router";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./PaxDetail.scss";
+import Loading from "../../components/loading/Loading";
 
 const PaxDetail = props => {
-  const [flightBadge, setFlightBadge] = useState({});
+  const [flightBadge, setFlightBadge] = useState();
   const [pax, setPax] = useState([]);
   const [pnr, setPnr] = useState({});
   const [apisMessage, setApisMessage] = useState({});
@@ -45,6 +46,7 @@ const PaxDetail = props => {
   const [watchlistData, setWatchlistData] = useState({});
   const [paxDetailsData, setPaxDetailsData] = useState();
   const [paxDocuments, setPaxDocuments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const cb = () => {};
   const refreshEventNotesCard = () => {
@@ -94,6 +96,7 @@ const PaxDetail = props => {
           {
             title: <Xl8 xid="pd005">Link Analysis</Xl8>,
             titleText: "Link Analysis",
+            tabClassName: "large-media-only",
             link: <LinkAnalysis paxData={paxDetailsData} />
           }
         ]
@@ -152,15 +155,15 @@ const PaxDetail = props => {
       eta: data.eta,
       etd: data.etd,
       fullFlightNumber: fullFlightNumber,
-      flightDestination: data.destination,
-      flightOrigin: data.origin,
+      flightDestination: data.destination || data.flightDestination,
+      flightOrigin: data.origin || data.flightOrigin,
       passengerCount: data.passengerCount
     };
     return (
       <Link
         to={"/gtas/flightpax/" + data.flightId}
         state={{ data: stateData }}
-        className="pax-info-link"
+        className="link"
       >
         {fullFlightNumber}
       </Link>
@@ -170,8 +173,8 @@ const PaxDetail = props => {
     return {
       flightNumber: addLinkToFlight(res),
       carrier: "",
-      flightDestination: res.destination,
-      flightOrigin: res.origin,
+      flightDestination: res.flightDestination,
+      flightOrigin: res.flightOrigin,
       eta: res.eta,
       etd: res.etd,
       flightNumberHasLink: true
@@ -191,38 +194,14 @@ const PaxDetail = props => {
       const p = { firstName: res.firstName, lastName: res.lastName, dob: res.dob };
       setWatchlistData({ passenger: p, documents: res.documents });
       setPaxDocuments(res.documents);
+      setIsLoading(false);
     });
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchData();
   }, [props.paxId]);
-
-  // TODO: refac tabs as child routes, load data per page.
-  // const actions = (
-  //   <DropdownButton
-  //     variant="info"
-  //     title={<Xl8 xid="manu002">Choose Action</Xl8>}
-  //     className="m-1"
-  //   >
-  //     <AttachmentModal
-  //       callback={updateAttachmentList}
-  //       paxId={props.paxId}
-  //     ></AttachmentModal>
-  //     <EventNotesModal paxId={props.paxId} callback={refreshEventNotesCard} />
-  //     <AddToWatchlist watchlistItems={watchlistData} />
-  //     <CreateManualHit
-  //       paxId={props.paxId}
-  //       flightId={props.flightId}
-  //       callback={setHitSummaryRefreshKey}
-  //     />
-  //     <DownloadReport paxId={props.paxId} flightId={props.flightId} />
-  //     <Notification paxId={props.paxId} />
-  //     {hasHit && (
-  //       <ChangeHitStatus updateStatus={updateHitStatus} hasOpenHit={hasOpenHit} />
-  //     )}
-  //   </DropdownButton>
-  // );
 
   const tablist = <Tabs tabs={tabs} />;
   const changeHitStatusText = hasOpenHit ? (
@@ -233,14 +212,20 @@ const PaxDetail = props => {
   return (
     <>
       <SidenavContainer>
-        <Col>
-          <FlightBadge data={flightBadge}></FlightBadge>
-          <PaxInfo pax={pax}></PaxInfo>
-          {hasData(flightLegsSegmentData) && <Stepper steps={flightLegsSegmentData} />}
+        <br />
+        {hasData(flightBadge) && <FlightBadge data={flightBadge}></FlightBadge>}
+        <br />
+        <Col className="notopmargin">
+          <div className="filterform-container form">
+            {isLoading && <Loading></Loading>}
+            {!isLoading && <PaxInfo pax={pax}></PaxInfo>}
+            {hasData(flightLegsSegmentData) && <Stepper steps={flightLegsSegmentData} />}
+          </div>
         </Col>
       </SidenavContainer>
       <Main className="main">
         <Title
+          style="stacker title"
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
           leftChild={tablist}
         ></Title>

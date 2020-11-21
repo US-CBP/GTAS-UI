@@ -5,6 +5,26 @@
 .filedownload-action-buttons {
   margin-top: 5px;
 }
+
 .filedownload-action-buttons .txtlabel {
   margin-top: 5px;
+  margin-right: 15px;
+}
+
+@media (max-width: 768px) {
+  .filedownload-container {
+    height: calc(100vh - 150px) !important;
+    width: calc(100vw - 40px) !important;
+    top: 140px !important;
+    position: fixed !important;
+    left: 20px !important;
+  }
+
+  .filedownload-action-buttons {
+    margin-left: 20px;
+  }
+
+  .filedownload-container > .table-main {
+    max-height: calc(100vh - 195px);
+  }
 }

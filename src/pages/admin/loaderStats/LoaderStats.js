@@ -59,9 +59,7 @@ const LoaderStats = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText={
-                <Xl8 xid="ls003">Most recent rule hit (Partial excluded) timestamp:</Xl8>
-              }
+              labelText={<Xl8 xid="ls003">Most recent rule hit (Partial excluded):</Xl8>}
               inputType="text"
               name="mostRecentRuleHit"
               callback={onChange}
@@ -70,7 +68,7 @@ const LoaderStats = ({ name }) => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="ls005">Passengers Count from past 500 messages:</Xl8>}
+              labelText={<Xl8 xid="ls005">Passengers from past 500 messages:</Xl8>}
               inputType="text"
               name="passengerCount"
               callback={onChange}

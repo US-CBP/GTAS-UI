@@ -19,7 +19,7 @@ import { ROLE, TIME } from "./utils/constants";
 
 //login bundle
 import Login from "./pages/login/Login";
-import SignUp from "./pages/signUp/SignUp";
+import SignUp from "./pages/login/SignUp";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Page404 from "./pages/page404/Page404";
