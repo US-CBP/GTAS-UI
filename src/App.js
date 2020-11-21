@@ -398,13 +398,13 @@ export default class App extends React.Component {
                                 name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
                                 desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}
                                 icon="kibana"
-                                path={process.env.REACT_APP_KIBANA_LOGIN}
+                                path=${process.env.REACT_APP_KIBANA_LOGIN}
                                 hasExternalLink={true}
                               ></Auxiliary>
                               <Auxiliary
                                 name={<Xl8 xid="app033">Neo4j</Xl8>}
                                 desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
-                                path={process.env.REACT_APP_NEO4J_BROWSER}
+                                path=${process.env.REACT_APP_NEO4J_BROWSER}
                                 icon="neo4j"
                                 hasExternalLink={true}
                               ></Auxiliary>
