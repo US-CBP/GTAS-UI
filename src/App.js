@@ -200,12 +200,10 @@ export default class App extends React.Component {
                   <ForgotPassword path="/forgot-password"></ForgotPassword>
                 </Router>
               </Suspense>
-              <GModal>
                 <div>
                   <h1>{process.env.REACT_APP_NEO4J_BROWSER}</h1>
                   <h1>{process.env.REACT_APP_KIBANA_LOGIN}</h1>
                 </div>
-              </GModal>
               {this.state.showModal ? (
                 <GModal>
                   <div>
