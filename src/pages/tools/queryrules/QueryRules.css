@@ -114,6 +114,7 @@
   border-width: 1px;
   color: rgb(73, 80, 87);
   padding: 2px 4px;
+  max-width: 300px !important;
 }
 
 .widget--widget > select[multiple] {
