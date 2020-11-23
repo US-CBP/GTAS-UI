@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Container, Alert } from "react-bootstrap";
+import React from "react";
+import { Button, Container } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
 import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
@@ -12,8 +12,6 @@ import Modal, {
 } from "../../../../components/modal/Modal";
 
 const CreditCardTypeModal = props => {
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertContent] = useState("");
   const cb = function(result) {};
   const data = props.editRowDetails || {};
 
@@ -31,12 +29,6 @@ const CreditCardTypeModal = props => {
     return [res];
   };
 
-  const restoreSpecificCode = () => {
-    codeEditor.put.restoreCctype(data).then(res => {
-      postSubmit(ACTION.UPDATE);
-    });
-  };
-
   let customButtons = [];
 
   if (props.isEdit) {
@@ -47,7 +39,7 @@ const CreditCardTypeModal = props => {
           className="m-2 outline-dark-outline"
           variant="outline-dark"
           key="restore"
-          onClick={restoreSpecificCode}
+          onClick={() => props.actionCallback(ACTION.UPDATE)}
         >
           <Xl8 xid="cctm001">Restore</Xl8>
         </Button>
@@ -59,11 +51,7 @@ const CreditCardTypeModal = props => {
         className="m-2 outline-dark-outline"
         variant="outline-dark"
         key="delete"
-        onClick={() => {
-          codeEditor.delete.deleteCctype(data.id).then(res => {
-            postSubmit(ACTION.DELETE);
-          });
-        }}
+        onClick={() => props.actionCallback(ACTION.DELETE)}
       >
         <Xl8 xid="cctm002">Delete</Xl8>
       </Button>
@@ -82,13 +70,6 @@ const CreditCardTypeModal = props => {
       <ModalHeader closeButton>
         <ModalTitle>{props.title}</ModalTitle>
       </ModalHeader>
-      <Alert show={showAlert}>
-        {alertContent}
-        <hr />
-        <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          <Xl8 xid="form003">Confirm</Xl8>
-        </Button>
-      </Alert>
       <ModalBody>
         <Container fluid>
           <Form

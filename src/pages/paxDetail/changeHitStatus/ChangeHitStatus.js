@@ -22,46 +22,41 @@ const ChangeHitStatus = props => {
     props.updateStatus(status, true);
     setShow(false);
   };
-  return (
-    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.CASEMGR]} alt={<></>}>
-      <SplitButton
-        key="paxHitStatus"
-        title={<Xl8 xid="chs001">Change Status</Xl8>}
-        className="dropdown-item"
-      >
-        {props.hasOpenHit && (
-          <Dropdown.Item
-            key="statusReviewed"
-            onClick={() => {
-              setShow(true);
-              setStatus("REVIEWED");
-            }}
-          >
-            {/* <Xl8 xid="chs002">Reviewed</Xl8> */}
-            Reviewed
-          </Dropdown.Item>
-        )}
+  const nextStatus = props.hasOpenHit ? "REVIEWED" : "Re_Opened";
 
-        {!props.hasOpenHit && (
-          <Dropdown.Item
-            key="statusReopened"
-            onClick={() => {
-              setShow(true);
-              setStatus("Re_Opened");
-            }}
-          >
-            {/* <Xl8 xid="chs003">Re-opened</Xl8> */}
-            Re-opened
-          </Dropdown.Item>
-        )}
-      </SplitButton>
+  const changeHitStatusText = props.hasOpenHit ? (
+    <Xl8 xid="chs006">Set to REVIEWED</Xl8>
+  ) : (
+    <Xl8 xid="chs007">Set to RE-OPENED</Xl8>
+  );
+
+  const handleShow = () => {
+    if (show) return setShow(false);
+
+    setShow(true);
+    setStatus(nextStatus);
+  };
+
+  const launcher = props.icon ? (
+    <div onClick={handleShow}>
+      <i className="fa fa-check-square-o" />
+    </div>
+  ) : (
+    <div className="dropdown-item" onClick={handleShow}>
+      {changeHitStatusText}
+    </div>
+  );
+
+  return (
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
+      {launcher}
 
       <Modal show={show} onHide={handleCancel} centered>
         <ModalHeader closeButton>
           <Xl8 xid="chs004">Update Hit Status</Xl8>
         </ModalHeader>
         <ModalBody>
-          <Xl8 xid="chs005">Please confirm to change the status to:</Xl8> {status}
+          <Xl8 xid="chs005">Please click confirm to change the status to:</Xl8> {status}
         </ModalBody>
         <ModalFooter>
           <Button variant="outline-success" onClick={handleConfirm}>

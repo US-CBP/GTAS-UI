@@ -23,12 +23,19 @@ export const ACTION = {
   CANCEL: "Cancel",
   CLOSE: "Close",
   UPDATE: "Update",
-  RUN: "Run"
+  RUN: "Run",
+  UPDATEALL: "Update All"
 };
 
 export const STATUS = {
   SUCCESS: "SUCCESS",
   FAILURE: "FAILURE"
+};
+
+export const HIT_STATUS = {
+  REVIEWED: "Reviewed",
+  NEW: "New",
+  REOPENED: "Re_opened"
 };
 
 export const ROLE = {
@@ -39,7 +46,7 @@ export const ROLE = {
   RULEMGR: "Manage Rules",
   SYSADMIN: "SysAdmin", //TODO remove?
   HITMGR: "Manage Hits",
-  CASEMGR: "Manage Cases", //TODO remove?
+  // CASEMGR: "Manage Cases", //TODO remove?
   FLIGHTVWR: "View Flights",
   ANY: "Any"
 };

@@ -7,6 +7,8 @@ import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Modal, { ModalBody, ModalHeader } from "../../../components/modal/Modal";
+import { ROLE } from "../../../utils/constants";
+import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 
 const ReviewPVL = props => {
   const eventNotesHeader = {
@@ -77,62 +79,64 @@ const ReviewPVL = props => {
   }, [paxId]);
 
   return (
-    <Modal
-      show={props.show}
-      onHide={props.onHide}
-      size="md"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-      className="max-500-width-container"
-    >
-      <ModalHeader closeButton>
-        <Button variant="outline-danger" size="sm" onClick={updateHitStatus}>
-          <Xl8 xid="rev001">Change Status to Review</Xl8>
-        </Button>
-      </ModalHeader>
-      <ModalBody>
-        <Form
-          title=""
-          submitService={paxEventNotesHistory.post}
-          callback={cb}
-          action="add"
-          id="reviewnote"
-          afterProcessed={cb}
-          recordId={`${paxId}`}
-        >
-          <LabelledInput
-            inputType="select"
-            alt="Choose not type"
-            name="noteType"
-            labelText=""
-            placeholder="Choose note type"
-            datafield="noteType"
-            required="required"
-            options={noteTypes}
+    <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
+      <Modal
+        show={props.show}
+        onHide={props.onHide}
+        size="md"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        className="max-500-width-container"
+      >
+        <ModalHeader closeButton>
+          <Button variant="outline-danger" size="sm" onClick={updateHitStatus}>
+            <Xl8 xid="rev001">Change Status to Review</Xl8>
+          </Button>
+        </ModalHeader>
+        <ModalBody>
+          <Form
+            title=""
+            submitService={paxEventNotesHistory.post}
+            callback={cb}
+            action="add"
+            id="reviewnote"
+            afterProcessed={cb}
+            recordId={`${paxId}`}
+          >
+            <LabelledInput
+              inputType="select"
+              alt="Choose not type"
+              name="noteType"
+              labelText=""
+              placeholder="Choose note type"
+              datafield="noteType"
+              required="required"
+              options={noteTypes}
+            />
+            <LabelledInput
+              inputType="textarea"
+              alt="Add note here..."
+              name="plainTextNote"
+              labelText=""
+              placeholder="Add note here..."
+              datafield="plainTextNote"
+              required="required"
+              inputVal=""
+            />
+          </Form>
+          <CardWithTable
+            data={eventNotes}
+            headers={eventNotesHeader}
+            title={<Xl8 xid="rev002">Event Note History</Xl8>}
           />
-          <LabelledInput
-            inputType="textarea"
-            alt="Add note here..."
-            name="plainTextNote"
-            labelText=""
-            placeholder="Add note here..."
-            datafield="plainTextNote"
-            required="required"
-            inputVal=""
+          <CardWithTable
+            data={historicalEventNotes}
+            headers={eventNotesHeader}
+            title={<Xl8 xid="rev003">Previous Notes History (Up to 10)</Xl8>}
           />
-        </Form>
-        <CardWithTable
-          data={eventNotes}
-          headers={eventNotesHeader}
-          title={<Xl8 xid="rev002">Event Note History</Xl8>}
-        />
-        <CardWithTable
-          data={historicalEventNotes}
-          headers={eventNotesHeader}
-          title={<Xl8 xid="rev003">Previous Notes History (Up to 10)</Xl8>}
-        />
-      </ModalBody>
-    </Modal>
+        </ModalBody>
+      </Modal>
+    </RoleAuthenticator>
   );
 };
 

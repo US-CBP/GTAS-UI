@@ -109,39 +109,8 @@ const AttachmentModal = props => {
 
   return (
     <>
-      <Button className="dropdown-item" onClick={handleShow}>
-        {/* <i className="fa fa-pencil"></i>Add Attachments */}
-        <Xl8 xid="attm007">Add Attachments</Xl8>
-      </Button>
-      {/*
-      <Modal
-        show={showModal}
-        onHide={handleClose}
-        size="md"
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Attachments</Modal.Title>
-        </Modal.Header>
-        <Alert show={showAlert} variant={variant}>
-          {alertContent}
-          <hr />
-          <Button onClick={() => setShowAlert(false)} variant="outline-success">
-            Confirm
-          </Button>
-        </Alert>
-        <Modal.Body>
-          <div className="container">
-            <div className="files">
-              <input type="file" multiple onChange={onChangeCb} />
-            </div>
-          </div>
-          {filesForDisplay != null &&
-          !filesForDisplay.empty &&
-          filesForDisplay.length > 0 ? (
-            <div className="container">
-              Files To Be Uploaded: */}
+      <div onClick={handleShow}>{props.children}</div>
+
       <Modal
         show={showModal}
         onHide={handleClose}

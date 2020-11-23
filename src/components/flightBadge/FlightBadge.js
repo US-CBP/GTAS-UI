@@ -1,17 +1,20 @@
 import React from "react";
-import { localeMonthDayTime, hasData } from "../../utils/utils";
+import { localeMonthDayTime, hasData, alt } from "../../utils/utils";
 import { Row } from "react-bootstrap";
 import "./FlightBadge.scss";
 
 const FlightBadge = props => {
   const res = props.data;
+  const style = `flight-badge ${alt(props.style, "reg")}`;
 
   if (!hasData(props.data?.flightNumber)) return <></>;
 
   const data = {
     arrival: [res.flightDestination, ...localeMonthDayTime(res.eta).split(",")],
     departure: [res.flightOrigin, ...localeMonthDayTime(res.etd).split(",")],
-    flightNumber: `${res.carrier}${res.flightNumber}`
+    flightNumber: res.flightNumberHasLink
+      ? res.flightNumber
+      : `${alt(res.carrier)}${res.flightNumber}`
   };
 
   const arrival = data.arrival || [];
@@ -19,7 +22,7 @@ const FlightBadge = props => {
   const flightNumber = data.flightNumber;
 
   return (
-    <div className="flight-badge">
+    <div className={style}>
       <div className="flight-number">{flightNumber}</div>
       <div className="flight-text">
         <Row flex="true" no-wrap="true" className="flight-badge-row">

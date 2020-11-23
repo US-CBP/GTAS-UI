@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Title from "../../../components/title/Title";
 import Main from "../../../components/main/Main";
 import Xl8 from "../../../components/xl8/Xl8";
-import { Tabs, Tab, Container } from "react-bootstrap";
+import { Tabs, Tab } from "react-bootstrap";
 import { navigate } from "@reach/router";
-import { getEndpoint, titleCase } from "../../../utils/utils";
+import { getEndpoint } from "../../../utils/utils";
 
 import "./CodeEditor.css";
 
@@ -71,7 +71,11 @@ const CodeEditor = props => {
 
   return (
     <Main className="full bg-white">
-      <Title title="Code Editor" leftChild={headerTabs} leftCb={tabHandler} />
+      <Title
+        title={<Xl8 xid="app020">Code Editor</Xl8>}
+        leftChild={headerTabs}
+        leftCb={tabHandler}
+      />
       {props.children}
     </Main>
   );

@@ -599,7 +599,8 @@ const QRModal = props => {
     const storedCcTypes = getLookupState(CTX.CCTYPES);
 
     // move to context.
-    if (/*hasData(storedCategories)*/ false) { //Categories are perhaps small enough in amount that caching them is unnecessary?
+    if (/*hasData(storedCategories)*/ false) {
+      //Categories are perhaps small enough in amount that caching them is unnecessary?
       setCategories(storedCategories);
     } else {
       hitcats.get().then(res => {
@@ -760,7 +761,7 @@ const QRModal = props => {
                   <LabelledInput
                     datafield
                     key={`rc${key}`}
-                    labelText={<Xl8 xid="qrm006">Rule Category</Xl8>}
+                    labelText={<Xl8 xid="qrm006">Category</Xl8>}
                     inputType="select"
                     options={categories}
                     inputVal={summaryData?.ruleCat}
@@ -821,7 +822,7 @@ const QRModal = props => {
               variant="outline-dark"
               onClick={onRun}
             >
-              <Xl8 xid="qrm010">Run</Xl8>
+              <Xl8 xid="qrm010">Query</Xl8>
             </Button>
           </RoleAuthenticator>
           {isEdit && (

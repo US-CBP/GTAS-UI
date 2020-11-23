@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Title from "../../components/title/Title";
 import Table from "../../components/table/Table";
+import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
 import { search } from "../../services/serviceWrapper";
 import { hasData, localeDate } from "../../utils/utils";
-import { Container } from "react-bootstrap";
-import { useParams } from "@reach/router";
+import { Link, useParams } from "@reach/router";
 import "./Search.scss";
 
 const Search = props => {
@@ -17,25 +17,22 @@ const Search = props => {
   const getHighlight = text => {
     return searchedTextUpper.includes(("" + text).toUpperCase()) ? "highlight" : "";
   };
+
+  const linkToPaxdetails = (passengerId, flightId, displayText) => {
+    return <Link to={`/gtas/paxDetail/${flightId}/${passengerId}`}>{displayText} </Link>;
+  };
   const Headers = [
-    {
-      Accessor: "passengerId",
-      Header: "Id",
-      Cell: ({ row }) => {
-        return (
-          <span className={getHighlight(row.original.passengerId)}>
-            {row.original.passengerId}
-          </span>
-        );
-      }
-    },
     {
       Accessor: "lastName",
       Header: "Last Name",
       Cell: ({ row }) => {
         return (
           <span className={getHighlight(row.original.lastName)}>
-            {row.original.lastName}
+            {linkToPaxdetails(
+              row.original.passengerId,
+              row.original.flightId,
+              row.original.lastName
+            )}
           </span>
         );
       }
@@ -83,6 +80,17 @@ const Search = props => {
       }
     },
     {
+      Accessor: "destination",
+      Header: "Destination",
+      Cell: ({ row }) => {
+        return (
+          <span className={getHighlight(row.original.destination)}>
+            {row.original.destination}
+          </span>
+        );
+      }
+    },
+    {
       Accessor: "etd",
       Header: "ETD",
       Cell: ({ row }) => {
@@ -119,8 +127,15 @@ const Search = props => {
   }, [searchParam]);
 
   return (
-    <Container fluid>
-      <Title title={`Search Result for ${searchedTextUpper}`} uri={props.uri} />
+    <Main className="full bg-white">
+      <Title
+        title={
+          <>
+            <Xl8 xid="srch001">Search Result for: </Xl8> {searchedTextUpper}
+          </>
+        }
+        uri={props.uri}
+      />
       <Table
         data={data}
         id="searchTable"
@@ -129,7 +144,7 @@ const Search = props => {
         key={refreshKey}
         enableColumnFilter={true}
       />
-    </Container>
+    </Main>
   );
 };
 

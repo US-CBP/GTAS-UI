@@ -12,9 +12,10 @@ import CSVReader from "../../../components/CSVReader/CSVReader";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
 import "./Watchlist.css";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const Watchlist = props => {
-  const cb = function(result) {};
   const TAB = { PAX: "passenger", DOX: "document" };
   const mode = (props.mode || "").toLowerCase();
   const isDox = mode === TAB.DOX;
@@ -78,6 +79,8 @@ const Watchlist = props => {
     });
   };
 
+  const cb = function(result) {};
+
   const launchModal = recordId => {
     setId(recordId);
     setShowModal(true);
@@ -106,7 +109,7 @@ const Watchlist = props => {
     });
   };
 
-  const getDeleteColumData = id => {
+  const getDeleteColumnData = id => {
     return (
       <Confirm header={deleteText.title} message={deleteText.message}>
         {confirm => (
@@ -253,6 +256,7 @@ const Watchlist = props => {
       Xl8: true,
       Header: ["edit001", "Edit"],
       disableExport: true,
+      disableSortBy: true,
       Cell: ({ row }) => getEditRowData(row.original)
     },
     { Accessor: "documentType", Xl8: true, Header: ["wl011", "Document Type"] },
@@ -263,7 +267,7 @@ const Watchlist = props => {
       Xl8: true,
       Header: ["wl014", "Delete"],
       disableExport: true,
-      Cell: ({ row }) => getDeleteColumData(row.original.id)
+      Cell: ({ row }) => getDeleteColumnData(row.original.id)
     }
   ];
 
@@ -272,6 +276,7 @@ const Watchlist = props => {
       Accessor: "id",
       Xl8: true,
       disableExport: true,
+      disableSortBy: true,
       Header: ["edit001", "Edit"],
       Cell: ({ row }) => getEditRowData(row.original)
     },
@@ -284,23 +289,12 @@ const Watchlist = props => {
       Xl8: true,
       disableExport: true,
       Header: ["wl014", "Delete"],
-      Cell: ({ row }) => getDeleteColumData(row.original.id)
+      Cell: ({ row }) => getDeleteColumnData(row.original.id)
     }
   ];
 
   const header = tab === TAB.DOX ? doxHeader : paxHeader;
   const wlType = tab;
-
-  const dropdown = (
-    <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
-      <Dropdown.Item as="button" onClick={() => launchModal(0)}>
-        {buttonTypeText}
-      </Dropdown.Item>
-      <Dropdown.Item as="button" onClick={e => launchImport(e)}>
-        <CSVReader ref={importRef} callback={handleImportData} file={file} />
-      </Dropdown.Item>
-    </DropdownButton>
-  );
 
   return (
     <Main className="full bg-white">
@@ -308,7 +302,6 @@ const Watchlist = props => {
         title={<Xl8 xid="wl007">Watchlists</Xl8>}
         leftChild={tabs}
         leftCb={titleTabCallback}
-        rightChild={dropdown}
         key={tab}
       ></Title>
       <Table
@@ -318,6 +311,14 @@ const Watchlist = props => {
         callback={cb}
         exportFileName={`watchlists-${wlType}`}
       ></Table>
+      <Fab icon={<i className="fa fa-plus" />} variant="info">
+        <Action text={buttonTypeText} onClick={() => launchModal(0)}>
+          <i className="fa fa-plus" />
+        </Action>
+        <Action text={<Xl8 xid="csv001">Import CSV</Xl8>} onClick={e => launchImport(e)}>
+          <CSVReader ref={importRef} callback={handleImportData} file={file} />
+        </Action>
+      </Fab>
       <WLModal
         type={tab}
         show={showModal}
