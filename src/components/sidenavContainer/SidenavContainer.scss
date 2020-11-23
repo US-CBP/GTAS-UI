@@ -32,7 +32,7 @@ $wco-info: #009e9288;
   z-index: 1020;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .filter-container,
   .filter {
     width: 34px !important;
@@ -70,7 +70,7 @@ $wco-info: #009e9288;
   margin-top: 10px;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 768px) {
   .filter-toggle {
     display: none;
   }

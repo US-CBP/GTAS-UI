@@ -201,7 +201,7 @@ input[type="radio"] {
   margin: 15px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .max-600-width-container .modal-content {
     width: calc(100vw - 30px);
     min-width: 200px !important;
@@ -394,7 +394,7 @@ li .rtf--ab__c button[variant="rtf-red"] {
   height: calc(100vh - 150px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .grid-container {
     height: calc(100vh - 150px) !important;
     width: calc(100vw - 40px) !important;
@@ -428,7 +428,7 @@ li .rtf--ab__c button[variant="rtf-red"] {
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 768px) {
   .navbar-expand-md .navbar-toggler {
     display: none !important;
   }

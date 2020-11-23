@@ -20,7 +20,7 @@
   margin-right: 10px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .space-between > label {
     white-space: unset !important;
   }

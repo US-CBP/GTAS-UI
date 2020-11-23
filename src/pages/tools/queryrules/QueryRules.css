@@ -25,7 +25,7 @@
   max-width: calc(100vw - 30px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .qrm > .space-between {
     width: unset !important;
     justify-content: flex-start;
