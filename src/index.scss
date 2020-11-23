@@ -1,5 +1,5 @@
-@import "./fonts/Lato/Lato-Bold.ttf";
-@import "./fonts/Lato/Lato-Regular.ttf";
+@use "./fonts/Lato/Lato-Bold.ttf";
+@use "./fonts/Lato/Lato-Regular.ttf";
 
 // WCO theme overrides for bootstrap colors
 $blue: #0082c3;
@@ -20,6 +20,9 @@ $wco-blue-gray: #a4c7e3;
 $wco-turquoise: #009e92;
 
 $gtas-white: rgba(255, 255, 255, 0.9);
-$background-image-url: "../../images/3.jpg";
+// $idx: random(3);
+$idx: 2;
+
+$background-image-url: "../../images/" + $idx + ".jpg";
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
