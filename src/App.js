@@ -343,11 +343,7 @@ export default class App extends React.Component {
                               ></FileDownload>
                               <CodeEditor
                                 name={<Xl8 xid="app020">Code Editor</Xl8>}
-                                desc={
-                                  <Xl8 xid="app021">
-                                    View or edit Airport, Carrier, and Country codes
-                                  </Xl8>
-                                }
+                                desc={<Xl8 xid="app021">View or edit system codes</Xl8>}
                                 icon="fa-list-ul"
                                 path="codeeditor"
                                 startTab="country"
