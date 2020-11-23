@@ -44,9 +44,9 @@ const FlightPax = props => {
       item.hitCounts = `${item.lowPrioHitCount || 0}${item.medPrioHitCount ||
         0}${item.highPrioHitCount || 0}`;
       item.aggregateHitsCount = {
-        low: item.highPrioHitCount,
+        low: item.lowPrioHitCount,
         med: item.medPrioHitCount,
-        high: item.lowPrioHitCount
+        high: item.highPrioHitCount
       };
       return item;
     });
