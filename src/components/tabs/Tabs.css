@@ -14,7 +14,7 @@
   border-color: #d0d0d0 #d0d0d0 #d0d0d0 !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .gtas-tabs {
     margin-left: 20px;
   }
