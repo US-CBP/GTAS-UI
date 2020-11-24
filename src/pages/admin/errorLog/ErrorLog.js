@@ -16,6 +16,7 @@ const ErrorLog = ({ name }) => {
   const [refreshKey, setRefreshKey] = useState(1);
   const [filterKey, setFilterKey] = useState(1);
   const [errorCodes, setErrorCodes] = useState([]);
+  const selectAllCodes = "Select All Codes";
   let startDate = new Date();
   let endDate = new Date();
   endDate.setDate(endDate.getDate() + 1);
@@ -56,7 +57,7 @@ const ErrorLog = ({ name }) => {
       if (params.endDate) {
         parsedParams += "&endDate=" + params.endDate.toISOString();
       }
-      if (params.errorCode) {
+      if (params.errorCode != selectAllCodes) {
         parsedParams += "&code=" + params.errorCode;
       }
     }
@@ -66,12 +67,13 @@ const ErrorLog = ({ name }) => {
 
   useEffect(() => {
     errorlog.get.codes().then(res =>{
-      const codes = asArray(res).map(code => {
+      let codes = [{label:selectAllCodes, value:selectAllCodes}]; //Always top dummy value
+      codes = codes.concat(asArray(res).map(code => {
         return {
           label: code,
           value: code,
         };
-      });
+      }));
       setErrorCodes(codes);
       setFilterKey(filterKey+1);
     });
@@ -98,7 +100,7 @@ const ErrorLog = ({ name }) => {
                 datafield="errorCode"
                 inputType="select"
                 name="errorCode"
-                inputVal="ALL_ERRORS"
+                inputVal={selectAllCodes}
                 options={errorCodes}
                 required={true}
                 alt="nothing"

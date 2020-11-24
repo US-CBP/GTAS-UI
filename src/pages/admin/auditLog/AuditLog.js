@@ -16,6 +16,7 @@ const AuditLog = ({ name }) => {
   const [refreshKey, setRefreshKey] = useState(1);
   const [filterKey, setFilterKey] = useState(0);
   const [auditActions, setAuditActions] = useState([]);
+  const selectAllActions = "Select All Actions";
   let startDate = new Date();
   let endDate = new Date();
   endDate.setDate(endDate.getDate() + 1);
@@ -30,12 +31,13 @@ const AuditLog = ({ name }) => {
 
    useEffect(() => {
      auditlog.get.actions().then(res =>{
-       const acts = asArray(res).map(action => {
+       let acts = [{label:selectAllActions, value:selectAllActions}]; //Always top dummy value
+       acts = acts.concat(asArray(res).map(action => {
          return {
            label: action,
            value: action,
          };
-       });
+       }));
        setAuditActions(acts);
        setFilterKey(filterKey+1);
      });
@@ -50,7 +52,7 @@ const AuditLog = ({ name }) => {
       if (params.endDate) {
         parsedParams += "&endDate=" + params.endDate.toISOString();
       }
-      if (params.actionType) {
+      if (params.actionType != selectAllActions) {
         parsedParams += "&actionType=" + params.actionType;
       }
       if (params.user) {
@@ -118,7 +120,7 @@ const AuditLog = ({ name }) => {
               datafield="actionType"
               inputType="select"
               name="actionType"
-              inputVal="ALL_ACTIONS"
+              inputVal={selectAllActions}
               options={auditActions}
               required={true}
               alt="nothing"
