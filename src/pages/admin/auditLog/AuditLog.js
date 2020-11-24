@@ -114,7 +114,7 @@ const actionTypes = [{label: "test", value:"test"}];
             />
             <LabelledInput
               labelText={<Xl8 xid="al002">Actions</Xl8>}
-              datafield
+              datafield="actionType"
               inputType="select"
               name="actionType"
               inputVal="ALL_ACTIONS"

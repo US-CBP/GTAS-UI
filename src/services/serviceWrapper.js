@@ -96,6 +96,7 @@ const FLIGHTS = `${BASE_URL}gtas/api/flights`;
 const AUDITLOG = `${BASE_URL}gtas/api/auditlog`;
 const AUDITLOGACTIONS = `${BASE_URL}gtas/api/auditlog/actions`;
 const ERRORLOG = `${BASE_URL}gtas/api/errorlog`;
+const ERRORLOGCODES = `${BASE_URL}gtas/api/errorlog/codes`;
 const CASES = `${BASE_URL}gtas/hits`;
 const SETTINGSINFO = `${BASE_URL}gtas/settingsinfo`;
 const GETRULECATS = `${BASE_URL}getRuleCats`;
@@ -207,9 +208,14 @@ export const auditlog = {
   get: {
     logs: params => get(AUDITLOG, BASEHEADER, undefined, params),
     actions: params => get(AUDITLOGACTIONS, BASEHEADER, undefined, params)
-      }
+  }
 };
-export const errorlog = { get: params => get(ERRORLOG, BASEHEADER, undefined, params) };
+export const errorlog = {
+  get: {
+    logs: params => get(ERRORLOG, BASEHEADER, undefined, params),
+    codes: params => get(ERRORLOGCODES, BASEHEADER, undefined, params)
+  }
+};
 export const cases = {
   get: params => {
     return get(CASES, BASEHEADER, undefined, params);

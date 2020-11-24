@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Table from "../../../components/table/Table";
-import { errorlog } from "../../../services/serviceWrapper";
+import {errorlog} from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
@@ -8,12 +8,14 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import { Col } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import FilterForm from "../../../components/filterForm2/FilterForm";
-import { localeDate } from "../../../utils/utils";
+import {asArray, localeDate} from "../../../utils/utils";
 
 const ErrorLog = ({ name }) => {
   const cb = function(result) {};
   const [data, setData] = useState();
   const [refreshKey, setRefreshKey] = useState(1);
+  const [filterKey, setFilterKey] = useState(1);
+  const [errorCodes, setErrorCodes] = useState([]);
   let startDate = new Date();
   let endDate = new Date();
   endDate.setDate(endDate.getDate() + 1);
@@ -60,6 +62,19 @@ const ErrorLog = ({ name }) => {
     return parsedParams;
   };
 
+  useEffect(() => {
+    errorlog.get.codes().then(res =>{
+      const codes = asArray(res).map(code => {
+        return {
+          label: code,
+          value: code,
+        };
+      });
+      setErrorCodes(codes);
+      setFilterKey(filterKey+1);
+    });
+  }, []);
+
   const setDataWrapper = res => {
     setData(res);
     setRefreshKey(refreshKey + 1);
@@ -70,18 +85,22 @@ const ErrorLog = ({ name }) => {
       <SidenavContainer>
         <Col className="notopmargin">
           <FilterForm
-            service={errorlog.get}
+            service={errorlog.get.logs}
             paramCallback={preFetchCallback}
             callback={setDataWrapper}
             initialParamState={initialParamState}
+            key={filterKey}
           >
             <LabelledInput
-              labelText={<Xl8 xid="el001">Error Code</Xl8>}
-              datafield="errorCode"
-              name="code"
-              inputType="text"
-              callback={cb}
-              alt="Error Code"
+                labelText={<Xl8 xid="el001">Error Codes</Xl8>}
+                datafield="errorCode"
+                inputType="select"
+                name="errorCode"
+                inputVal="ALL_ERRORS"
+                options={errorCodes}
+                required={true}
+                alt="nothing"
+                callback={cb}
             />
             <LabelledInput
               datafield
