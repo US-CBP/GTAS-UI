@@ -1,8 +1,8 @@
 .about-container {
-  /* margin: 10px; */
   justify-content: center;
   overflow-y: auto;
   max-height: calc(100vh - 130px);
+  padding-right: 30px;
 }
 
 .about-container h2 {
@@ -33,4 +33,9 @@
 
 .about-sidenav .list-group {
   text-align: center;
+}
+
+.about.list-group > a {
+  padding: 5px;
+  font-weight: 600;
 }

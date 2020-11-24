@@ -183,7 +183,7 @@ const UserModal = props => {
             {props.isEdit ? (
               <LabelledInput
                 datafield
-                labelText={<Xl8 xid="um005">User ID:</Xl8>}
+                labelText={<Xl8 xid="um005">User ID</Xl8>}
                 inputType="text"
                 name="userId"
                 required={true}
@@ -196,7 +196,7 @@ const UserModal = props => {
             ) : (
               <LabelledInput
                 datafield
-                labelText={<Xl8 xid="um005">User ID:</Xl8>}
+                labelText={<Xl8 xid="um005">User ID</Xl8>}
                 inputType="text"
                 name="userId"
                 required={true}
@@ -211,7 +211,7 @@ const UserModal = props => {
 
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="um007">First Name:</Xl8>}
+              labelText={<Xl8 xid="um007">First Name</Xl8>}
               inputType="text"
               name="firstName"
               required={true}
@@ -222,7 +222,7 @@ const UserModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="um008">Last Name:</Xl8>}
+              labelText={<Xl8 xid="um008">Last Name</Xl8>}
               inputType="text"
               name="lastName"
               required={true}
@@ -234,7 +234,7 @@ const UserModal = props => {
 
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="um009">Email:</Xl8>}
+              labelText={<Xl8 xid="um009">Email</Xl8>}
               inputType="email"
               name="email"
               required={true}
@@ -245,7 +245,7 @@ const UserModal = props => {
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="um010">Phone Number:</Xl8>}
+              labelText={<Xl8 xid="um010">Phone Number</Xl8>}
               inputType="tel"
               name="phoneNumber"
               inputVal={row.phoneNumber}
@@ -262,13 +262,13 @@ const UserModal = props => {
               inputVal={selectedRoles}
               options={roleOptions}
               callback={cb}
-              alt={<Xl8 xid="um015">Roles</Xl8>}
+              alt="Roles"
               spacebetween
             />
 
             <LabelledInput
               datafield="emailEnabled"
-              labelText={<Xl8 xid="um011">Enable User Email Notification:</Xl8>}
+              labelText={<Xl8 xid="um011">Enable User Email Notification</Xl8>}
               inputType="checkbox"
               name="emailEnabled"
               required={true}
@@ -281,7 +281,7 @@ const UserModal = props => {
 
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="um012">Automated Email Notification:</Xl8>}
+              labelText={<Xl8 xid="um012">Automated Email Notification</Xl8>}
               inputType="checkbox"
               name="highPriorityEmail"
               required={true}
@@ -294,7 +294,7 @@ const UserModal = props => {
             {props.isEdit ? (
               <LabelledInput
                 datafield
-                labelText={<Xl8 xid="um013">User Is Enabled:</Xl8>}
+                labelText={<Xl8 xid="um013">User Is Enabled</Xl8>}
                 inputType="checkbox"
                 name="active"
                 required={true}
@@ -308,7 +308,7 @@ const UserModal = props => {
             ) : (
               <LabelledInput
                 datafield
-                labelText={<Xl8 xid="um014">User Is Enabled:</Xl8>}
+                labelText={<Xl8 xid="um014">User Is Enabled</Xl8>}
                 inputType="checkbox"
                 name="active"
                 required={true}

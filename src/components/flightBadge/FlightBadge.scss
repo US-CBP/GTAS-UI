@@ -3,13 +3,13 @@
   font-weight: 600;
   text-align: center !important;
   background: #009fe3;
-  border: 1px solid white;
-  border-radius: 0.25rem;
-  margin: 0px 5px;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  margin: 0px;
   padding: 10px 5px;
+  color: white;
 
   .flight-number {
-    color: white;
     font-weight: 700;
     align-items: center;
   }
@@ -18,13 +18,15 @@
     justify-content: space-evenly;
     text-align: -moz-left;
     text-align: initial;
+    margin-right: unset;
+    margin-left: unset;
+
     .width40 {
       width: 40px;
     }
   }
 
   .flight-text {
-    color: white;
     font-size: large;
     font-weight: 501;
 

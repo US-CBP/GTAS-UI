@@ -1,11 +1,12 @@
+@import "../../index.scss";
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
-@font-face {
-  font-family: "Lato";
-  src: local("Lato"), url("../../fonts/Lato/Lato-Regular.ttf");
-}
+// @font-face {
+//   font-family: "Lato";
+//   src: local("Lato"), url("../../fonts/Lato/Lato-Regular.ttf");
+// }
 
 $wco-blue: rgb(0, 119, 200);
 $wco-blue-dark: darken($wco-blue, 20%);
@@ -15,7 +16,7 @@ $gtas-white: rgba(255, 255, 255, 0.9);
 $transparent: rgba(223, 231, 247, 0.14);
 
 // $bg-image: "../../images/sofy-m-halftoneco-N7uekwIyQ7E-unsplash.jpg";
-$bg-image: "../../images/chairs.jpg";
+// $bg-image: "../../images/chairs.jpg";
 
 .login-page-container {
   // background: linear-gradient($wco-blue, $transparent, $wco-blue),
@@ -23,7 +24,7 @@ $bg-image: "../../images/chairs.jpg";
 
   // A softer version of the background image. We may end up reverting back to the original (above)
   background: linear-gradient($transparent, #e5edf485),
-    url($bg-image) no-repeat center center fixed;
+    url($background-image-url) no-repeat center center fixed;
   background-size: cover;
   min-height: 100vh;
   margin-bottom: 0em;
@@ -105,7 +106,7 @@ $bg-image: "../../images/chairs.jpg";
 }
 
 .bg-image {
-  background: linear-gradient(#0082c3dd, #005aa7dd), url($bg-image);
+  background: linear-gradient(#0082c3dd, #005aa7dd), url($background-image-url);
   background-size: cover;
   background-position: center;
   background-blend-mode: color;
@@ -186,7 +187,7 @@ $bg-image: "../../images/chairs.jpg";
 
 .sign-up-container {
   background: linear-gradient($transparent, #e5edf485),
-    url($bg-image) no-repeat center center fixed;
+    url($background-image-url) no-repeat center center fixed;
   background-size: cover;
   min-height: 100vh;
   margin-bottom: 0em;
@@ -205,7 +206,7 @@ $bg-image: "../../images/chairs.jpg";
   max-width: 500px !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .unauthed-form {
     max-width: 350px !important;
   }
