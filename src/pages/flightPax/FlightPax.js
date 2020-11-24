@@ -187,8 +187,8 @@ const FlightPax = props => {
     return {
       flightNumber: flightData.fullFlightNumber,
       carrier: "",
-      flightDestination: flightData.destination,
-      flightOrigin: flightData.origin,
+      flightDestination: flightData.destination || flightData.flightDestination,
+      flightOrigin: flightData.origin || flightData.flightOrigin,
       eta: flightData.eta,
       etd: flightData.etd
     };
@@ -197,41 +197,43 @@ const FlightPax = props => {
   return (
     <>
       <SidenavContainer>
-        <Col>
-          <FlightBadge data={getFlightData()}></FlightBadge>
-          <br />
-          <div className="flightpax-countdown-container">
-            <CountdownBadge
-              future={flightData.direction === "O" ? flightData.etd : flightData.eta}
-              baseline={Date.now()}
-              direction={flightData.direction}
-            ></CountdownBadge>
-          </div>
-          <br />
-          {/* { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
+        <br />
+        <FlightBadge data={getFlightData()}></FlightBadge>
+        <Col className="notopmargin">
+          <div className="filterform-container form">
+            <div className="flightpax-countdown-container">
+              <CountdownBadge
+                future={flightData.direction === "O" ? flightData.etd : flightData.eta}
+                baseline={Date.now()}
+                direction={flightData.direction}
+              ></CountdownBadge>
+            </div>
+            <br />
+            {/* { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
       { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName }, */}
 
-          <table class="table table-sm table-borderless">
-            <tbody>
-              <tr class="flightpax-row">
-                <td class="left">
-                  <Xl8 xid="fp006">Direction:</Xl8>
-                </td>
-                <td class="right">{flightData.direction}</td>
-              </tr>
-              <tr class="flightpax-row">
-                <td class="left">
-                  <Xl8 xid="fp009">Passengers:</Xl8>
-                </td>
-                <td class="right">{flightData.passengerCount}</td>
-              </tr>
-            </tbody>
-          </table>
+            <table class="table table-sm table-borderless">
+              <tbody>
+                <tr class="flightpax-row">
+                  <td class="left">
+                    <Xl8 xid="fp006">Direction:</Xl8>
+                  </td>
+                  <td class="right">{flightData.direction}</td>
+                </tr>
+                <tr class="flightpax-row">
+                  <td class="left">
+                    <Xl8 xid="fp009">Passengers:</Xl8>
+                  </td>
+                  <td class="right">{flightData.passengerCount}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </Col>
       </SidenavContainer>
       <Main>
         <Title
-          title={<Xl8 xid="fp010">Flight Passengers</Xl8>}
+          title={<Xl8 xid="fp010">Passengers</Xl8>}
           leftChild={tabs}
           leftCb={titleTabCallback}
         ></Title>
@@ -239,7 +241,7 @@ const FlightPax = props => {
           key={key}
           header={headers}
           data={data}
-          id="Flight Passengers"
+          id="Passengers"
           callback={cb}
           disableGroupBy={false}
           enableColumnFilter={true}

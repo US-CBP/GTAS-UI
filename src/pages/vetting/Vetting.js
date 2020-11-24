@@ -238,6 +238,11 @@ const Vetting = props => {
     notetypes: []
   };
 
+  const getInitialState = () => {
+    showDateTimePicker.current = false;
+    setFilterFormKey(filterFormKey + 1);
+    return initialParamState;
+  };
   const changeStatus = (paxId, status) => {
     const newStatus =
       status === HIT_STATUS.REVIEWED ? HIT_STATUS.REOPENED : HIT_STATUS.REVIEWED;
@@ -369,7 +374,7 @@ const Vetting = props => {
             callback={setDataWrapper}
             paramCallback={parameterAdapter}
             key={filterFormKey}
-            initialParamState={initialParamState}
+            getInitialState={getInitialState}
           >
             <LabelledInput
               datafield="myRulesOnly"

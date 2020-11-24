@@ -1,10 +1,17 @@
 .cdb-row {
-  margin: unset !important;
+  /* margin: unset !important;
   white-space: nowrap;
   border-radius: 5px;
   padding-left: 4px;
   float: right;
   display: block;
+  flex-wrap: nowrap !important;
+   */
+  margin: unset !important;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  padding: 2px 4px;
+  display: inline-block;
   flex-wrap: nowrap !important;
 }
 

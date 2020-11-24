@@ -1,12 +1,13 @@
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
+@import "../../index.scss";
+// @import "~bootstrap/scss/functions";
+// @import "~bootstrap/scss/variables";
+// @import "~bootstrap/scss/mixins";
 
 // Primary colors
 $hover-color: rgb(177, 172, 172);
-$gtas-white: rgba(255, 255, 255, 0.9);
-$wco-blue: #0082c3;
-$wco-gray: rgb(141, 144, 147);
+// $gtas-white: rgba(255, 255, 255, 0.9);
+// $wco-blue: #0082c3;
+// $wco-gray: rgb(141, 144, 147);
 
 .header-navbar {
   padding: 0.25rem 1rem !important;
@@ -49,13 +50,14 @@ $wco-gray: rgb(141, 144, 147);
 
 .header-navbar .navbar-nav a.nav-link {
   color: $gtas-white;
+  border: 1px solid transparent;
 }
 
 .header-navbar .navbar-nav a.nav-link:hover {
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: 0.25rem;
-  box-shadow: 0px 0px 1px 1px white;
+  // box-shadow: 0px 0px 1px 1px white;
 }
 
 .header-navbar .navbar-toggler {
@@ -71,7 +73,8 @@ $wco-gray: rgb(141, 144, 147);
   color: $gtas-white !important;
 }
 
-@include media-breakpoint-up(md) {
+// @include media-breakpoint-up(md) {
+@media (min-width: 768px) {
   .navbar-expand-md .navbar-collapse {
     display: flex !important;
     flex-basis: auto;
@@ -84,7 +87,8 @@ $wco-gray: rgb(141, 144, 147);
 }
 
 //media query for small devices and down(bootstrap's way)
-@include media-breakpoint-down(sm) {
+// @include media-breakpoint-down(sm) {
+@media (max-width: 767px) {
   .navbar-expand-md .navbar-nav .dropdown-menu {
     position: absolute;
   }
@@ -101,20 +105,17 @@ $wco-gray: rgb(141, 144, 147);
   .nav-link {
     padding-bottom: 5px;
   }
-  .nav-tabs {
-    margin-right: 15px;
-  }
 }
 
 @media (max-width: 1050px) {
   .optional {
-    display: none;
+    display: none !important;
   }
 }
 
 @media (max-width: 950px) {
   .form-inline {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -156,4 +157,15 @@ $wco-gray: rgb(141, 144, 147);
 
 .nav-link.future {
   color: lightgray !important;
+}
+
+.ml-auto > form {
+  margin-right: 10px;
+}
+
+.collapsing {
+  position: absolute !important;
+  height: 0;
+  transition: height 0.2s ease !important;
+  width: 180px !important;
 }

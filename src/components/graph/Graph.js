@@ -137,7 +137,7 @@ const Graph = props => {
     <div className="line-container" ref={componentNodeRef}>
       <div className="ppt-body">
         <section className="ppt-section-main">
-          <div className="ppt-container-graph row">
+          <div className="ppt-container-graph">
             <nav id="popoto-saves" className="ppt-taxo-nav">
               <div id="saves">
                 <span className="ppt-header-span">
