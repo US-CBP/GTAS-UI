@@ -20,7 +20,7 @@
   margin-right: 10px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .space-between > label {
     white-space: unset !important;
   }
@@ -32,6 +32,7 @@
 
 .form-group > label {
   margin-bottom: 0px;
+  align-self: center !important;
 }
 
 .space-between-cols {

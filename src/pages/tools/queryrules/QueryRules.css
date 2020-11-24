@@ -25,7 +25,7 @@
   max-width: calc(100vw - 30px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .qrm > .space-between {
     width: unset !important;
     justify-content: flex-start;
@@ -114,7 +114,7 @@
   border-width: 1px;
   color: rgb(73, 80, 87);
   padding: 2px 4px;
-  max-width: 300px !important;
+  max-width: 200px !important;
 }
 
 .widget--widget > select[multiple] {
@@ -203,7 +203,6 @@ pre {
   padding: 5px 5px 1px 10px;
   line-height: 1.5rem;
   border: 2px solid #6a8eb3;
-  padding-top: 7px;
 }
 
 .group--conjunctions > .group--drag-handler {
@@ -295,7 +294,7 @@ pre {
 .query-builder {
   margin-top: -10px;
   overflow: inherit;
-  font-family: Lato;
+  font-family: "Lato script=latin rev=1", sans-serif !important;
 }
 
 .group--conjunctions > input[type="checkbox"],
