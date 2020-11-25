@@ -83,7 +83,7 @@ const Summary = props => {
     );
   };
 
-  useEffect(() => {
+  const fetchWatchlistNamesData = () => {
     paxWatchListLink.get(null, props.paxId).then(res => {
       const data = asArray(res).map(pwl => {
         const watchListDOB = Date.parse(pwl.watchListDOB);
@@ -95,9 +95,9 @@ const Summary = props => {
       });
       setWatchListLinks(data);
     });
-  }, [props.paxId]);
+  };
 
-  useEffect(() => {
+  const fetchHitSummaryData = () => {
     flightpaxHitSummary.get(props.flightId, props.paxId).then(res => {
       const formattedResults = asArray(res).map(rec => {
         return { ...rec, ruleConditions: formatRuleConditions(rec.ruleConditions) };
@@ -111,7 +111,9 @@ const Summary = props => {
       setHasHit(hasData(res));
       setHasOpenHit(openHit !== undefined);
     });
+  };
 
+  const fetchHistoricalHitsData = () => {
     historicalHits.get(props.paxId).then(res => {
       const parsedData = asArray(res).map(hit => {
         return {
@@ -122,7 +124,16 @@ const Summary = props => {
       });
       setPaxHistoricalHits(parsedData);
     });
-  }, [props.hitSummaryRefreshKey, props.paxId]);
+  };
+
+  useEffect(() => {
+    fetchHitSummaryData();
+  }, [props.paxId, props.hitSummaryRefreshKey]);
+
+  useEffect(() => {
+    fetchHistoricalHitsData();
+    fetchWatchlistNamesData();
+  }, [props.paxId]);
 
   useEffect(() => {
     paxEventNotesHistory.get(props.paxId, false).then(res => {
@@ -163,6 +174,7 @@ const Summary = props => {
           data={paxHitSummary}
           headers={headers.paxHitSummary}
           title={<Xl8 xid="sum021">Current Hits Summary</Xl8>}
+          refresh={fetchHitSummaryData}
         />
 
         <CardWithTable

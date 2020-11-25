@@ -78,7 +78,7 @@ const FlightHistory = props => {
   }, []);
 
   return (
-    <div className="paxdetail-container">
+    <div className="one-column-container">
       <CardColumns>
         <CardWithTable
           data={currentFlightHistory}

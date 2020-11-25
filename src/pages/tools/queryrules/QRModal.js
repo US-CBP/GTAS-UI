@@ -41,7 +41,7 @@ const QRModal = props => {
   const [ccTypes, setCcTypes] = useState([]);
   const [dataConfig, setDataConfig] = useState([]);
 
-  const [title, setTitle] = useState(props.title);
+  const [title, setTitle] = useState(props.data?.title);
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState(props.data?.query);
   const [showInvalid, setShowInvalid] = useState(false);
@@ -450,7 +450,7 @@ const QRModal = props => {
   };
 
   const highlightRequiredFormFields = () => {
-    if (!title) {
+    if (!hasData(title)) {
       document.querySelector('[name="title"]').classList.add("qrm-invalid");
     }
     if (!summaryData.ruleCat && mode === QR.RULE) {
@@ -683,9 +683,9 @@ const QRModal = props => {
       <Modal
         show={props.show}
         onHide={props.onHide}
-        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        className="modal-center"
       >
         <ModalHeader closeButton>
           <ModalTitle>
@@ -694,8 +694,8 @@ const QRModal = props => {
           </ModalTitle>
         </ModalHeader>
         <ModalBody className="qbrb-modal-body">
-          <Container fluid>
-            <Row className="card-columns qrm">
+          <div>
+            <Row className="qrm">
               <LabelledInput
                 datafield
                 key={`title${key}`}
@@ -721,7 +721,7 @@ const QRModal = props => {
             </Row>
             {mode === QR.RULE && (
               <>
-                <Row className="card-columns qrm">
+                <Row className="qrm">
                   <LabelledInput
                     datafield
                     labelText={<Xl8 xid="qrm003">Start Date</Xl8>}
@@ -746,7 +746,7 @@ const QRModal = props => {
                     spacebetween
                   />
                 </Row>
-                <Row className="card-columns qrm">
+                <Row className="qrm">
                   <LabelledInput
                     key={`en${key}`}
                     datafield
@@ -783,7 +783,7 @@ const QRModal = props => {
                 dataCallback={dataCallback}
               ></RAQB>
             )}
-          </Container>
+          </div>
         </ModalBody>
         <ModalFooter>
           <Button

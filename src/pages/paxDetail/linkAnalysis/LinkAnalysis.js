@@ -10,7 +10,7 @@ const LinkAnalysis = props => {
   }, []);
 
   return (
-    <div className="one-column-container">
+    <div className="one-column-grid-container">
       <ErrorBoundary message="something went wrong here ...">{graph}</ErrorBoundary>
     </div>
   );

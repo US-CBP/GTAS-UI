@@ -21,9 +21,68 @@
   min-width: 800px;
 }
 
+.modal-content {
+  max-width: calc(100vw - 30px);
+}
+
+@media (max-width: 767px) {
+  .qrm > .space-between {
+    width: unset !important;
+    justify-content: flex-start;
+  }
+  .qbrb-modal-body {
+    min-width: 300px;
+    max-width: calc(100vw);
+  }
+
+  .query-builder-container {
+    padding: 0px !important;
+  }
+  .query-builder {
+    margin: 0px !important;
+  }
+  .group-or-rule-container {
+    padding-right: 0px !important;
+  }
+  .group--header,
+  .group--footer {
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+  .rule_group {
+    display: flow-root !important;
+    margin-right: 10px !important;
+  }
+  /* .rule--widget,
+  .rule, */
+  .rule--body {
+    display: unset !important;
+    /* display: grid; */
+  }
+  .rule--operator,
+  .widget--widget,
+  .widget--valuesrc,
+  .widget--sep {
+    margin-left: 0px !important;
+  }
+  .modal-footer {
+    justify-content: center;
+    padding: 0.5rem;
+  }
+  .widget--widget > select {
+    max-width: 200px !important;
+    /* line-break: normal; */
+  }
+}
+
 .queryBuilder {
   min-width: 740px;
   margin: 0.5rem;
+}
+
+.qrm {
+  display: flow-root;
 }
 
 .qrm > .space-between {
@@ -55,6 +114,7 @@
   border-width: 1px;
   color: rgb(73, 80, 87);
   padding: 2px 4px;
+  max-width: 200px !important;
 }
 
 .widget--widget > select[multiple] {
@@ -143,7 +203,6 @@ pre {
   padding: 5px 5px 1px 10px;
   line-height: 1.5rem;
   border: 2px solid #6a8eb3;
-  padding-top: 7px;
 }
 
 .group--conjunctions > .group--drag-handler {
@@ -235,7 +294,7 @@ pre {
 .query-builder {
   margin-top: -10px;
   overflow: inherit;
-  font-family: Lato;
+  font-family: "Lato script=latin rev=1", sans-serif !important;
 }
 
 .group--conjunctions > input[type="checkbox"],

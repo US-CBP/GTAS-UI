@@ -1,21 +1,18 @@
+@import "../../index.scss";
+
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
-$background-image-url: "../../images/plane01.jpg";
 $wco-blue: #0082c3;
 $wco-blue-dark: darken($wco-blue, 20%);
 $wco-gray: rgb(141, 144, 147);
 $wco-gray-dark: #575756;
 $gtas-white: rgba(255, 255, 255, 0.9);
-$transparent: #0082c3d9;
+$wco-info: #009e9288;
 
 .profile {
   font-size: 200px;
-}
-
-.paxdetails-side-nav .filter-fg .col {
-  background-color: #005aa750;
 }
 
 .profile-container {
@@ -35,7 +32,7 @@ $transparent: #0082c3d9;
   z-index: 1020;
 }
 
-@include media-breakpoint-down(sm) {
+@media (max-width: 767px) {
   .filter-container,
   .filter {
     width: 34px !important;
@@ -55,15 +52,25 @@ $transparent: #0082c3d9;
     cursor: pointer;
   }
   .filter-toggle:hover {
-    background-color: $transparent;
+    background-color: $wco-info;
   }
+}
+
+.filter-bg {
+  z-index: 5;
+  // background: linear-gradient(#40403f, #40403fdd, #40403f55),
+  //   url($background-image-url) no-repeat no-repeat;
+
+  background: linear-gradient(#40403f, #40403fdd, #40403f22),
+    url($background-image-url) no-repeat no-repeat center;
+  background-size: cover;
 }
 
 .toggle-arrow {
   margin-top: 10px;
 }
 
-@include media-breakpoint-up(md) {
+@media (min-width: 768px) {
   .filter-toggle {
     display: none;
   }
@@ -91,10 +98,6 @@ $transparent: #0082c3d9;
   content: "\f060";
 }
 
-.main-overlay {
-  // display: none;
-}
-
 .main-overlay-open {
   height: calc(100vh - 80px);
   width: calc(100vw - 20px);
@@ -103,50 +106,8 @@ $transparent: #0082c3d9;
   z-index: 9;
 }
 
-.filter {
-  top: auto;
-  left: 0;
-  display: block;
-  position: fixed;
-  height: calc(100vh - 60px);
-  width: 260px;
-}
-
-.filter-fg,
-.filter-fg-open {
-  padding-right: 15px;
-  color: #f8f9fa;
-  z-index: 10;
-}
-
-.filter-fg::-webkit-scrollbar-thumb {
-  border: 3px solid #40403f !important;
-  background-color: white;
-  border-radius: 12px;
-}
-
-.margintop20 {
-  margin-top: 20px;
-}
-
-.filter-bg {
-  z-index: 5;
-  background: linear-gradient(#40403f, #40403fe8, #40403f99),
-    url($background-image-url) no-repeat no-repeat fixed;
-  background-position: -600px 0px;
-  background-size: cover;
-}
-
 hr {
   border-top: 1px solid rgba(230, 230, 230, 1);
-}
-
-.filter-fg > .col {
-  margin-top: 20px;
-  backdrop-filter: blur(2px);
-  border-radius: 0.5rem;
-  padding-bottom: 5px;
-  padding-right: 0px;
 }
 
 .notopmargin {
@@ -167,5 +128,8 @@ hr {
   line-break: anywhere;
 }
 
-.item-renderer > .input {
+.filterform-container > form,
+.filterform-container.form {
+  padding: 20px;
+  border-radius: 0.25rem;
 }

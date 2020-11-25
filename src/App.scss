@@ -1,4 +1,5 @@
-body {
+body,
+html {
   font-family: "Lato script=latin rev=1", sans-serif !important;
   /* -webkit-font-smoothing: antialiased; */
   -moz-osx-font-smoothing: grayscale;
@@ -128,7 +129,7 @@ input[type="radio"] {
 
 .nav-link.active {
   color: white !important;
-  background-color: #0082c3 !important;
+  background-color: #575756 !important;
 }
 
 .table-responsive > .table {
@@ -169,14 +170,8 @@ input[type="radio"] {
 
 .table-icon {
   font-size: 1.4em !important;
-  color: #0082c3;
+  color: #009e92;
 }
-
-/* .flight-number {
-  color: #0082c3;
-  font-weight: 700;
-  align-items: center;
-} */
 
 .action-button-div {
   position: absolute;
@@ -197,16 +192,35 @@ input[type="radio"] {
 .max-500-width-container .modal-content {
   max-width: 500px !important;
   min-width: 330px !important;
+  margin: 15px;
 }
 
 .max-600-width-container .modal-content {
   max-width: 600px !important;
   min-width: 530px !important;
+  margin: 15px;
+}
+
+@media (max-width: 767px) {
+  .max-600-width-container .modal-content {
+    width: calc(100vw - 30px);
+    min-width: 200px !important;
+    margin: 15px;
+  }
+
+  .max-700-width-container .modal-content {
+    min-width: 200px !important;
+  }
+
+  .nosmallmedia {
+    display: none;
+  }
 }
 
 .max-700-width-container .modal-content {
   max-width: 700px !important;
   min-width: 660px !important;
+  margin: 15px;
 }
 
 .scrollable {
@@ -317,6 +331,10 @@ li .rtf--ab__c button[variant="rtf-red"] {
   opacity: 1 !important;
 }
 
+.rtf--ab > div > i {
+  padding: 15px;
+}
+
 .table td {
   vertical-align: middle !important;
 }
@@ -333,4 +351,125 @@ li .rtf--ab__c button[variant="rtf-red"] {
   height: 60px;
   width: 60px;
   background-size: cover;
+}
+
+.filter {
+  top: auto;
+  left: 0;
+  display: block;
+  position: fixed;
+  height: calc(100vh - 60px);
+  width: 260px;
+}
+
+.filter-fg,
+.filter-fg-open {
+  color: #f8f9fa;
+  z-index: 10;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.filter-fg::-webkit-scrollbar-thumb,
+.filter-fg-open::-webkit-scrollbar-thumb {
+  border: 3px solid #40403f !important;
+  background-color: white;
+  border-radius: 12px;
+}
+
+.filter-fg > .col,
+.filter-fg-open > .col {
+  margin-top: 20px;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  // border-radius: 0.5rem;
+  padding-bottom: 5px;
+  padding: 0px;
+  background-color: #40404022;
+}
+
+@media (max-width: 1024px) {
+  .large-media-only {
+    display: none;
+  }
+}
+
+.grid-container .table-main {
+  height: calc(100vh - 150px);
+}
+
+@media (max-width: 767px) {
+  .grid-container {
+    height: calc(100vh - 150px) !important;
+    width: calc(100vw - 40px) !important;
+    top: 140px !important;
+    position: fixed !important;
+    left: 20px !important;
+  }
+
+  .grid-container .table-main {
+    height: calc(100vh - 195px);
+  }
+}
+
+.title.stacker .nav {
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+}
+
+.max-500-width {
+  max-width: 500px !important;
+}
+
+@media (min-width: 768px) {
+  .navbar-expand-md .navbar-collapse {
+    display: none !important;
+    flex-basis: unset !important;
+  }
+
+  .navbar-expand-md .navbar-toggler {
+    display: unset !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-expand-md .navbar-toggler {
+    display: none !important;
+  }
+}
+
+.gtas-logo {
+  background: url("./images/WCO_logo.svg") no-repeat no-repeat;
+  height: 75px;
+  width: 82px;
+  background-size: cover;
+  display: inline-block;
+}
+
+.modal-center {
+  align-items: center !important;
+  justify-content: space-around !important;
+  min-height: 100vh;
+  display: flex !important;
+}
+
+.page-tiles {
+  min-width: 200px !important;
+  max-width: 220px;
+  margin: 10px;
+  min-height: 220px;
+  max-height: 240px;
+  border: 1.5px solid #0082c3 !important;
+}
+
+.card-link > .card-body,
+.page-tiles > .card-link {
+  height: 100%;
+  position: relative;
+}
+
+.page-tiles > a > .card-footer {
+  padding: 0.75rem 1.25rem;
+  background-color: transparent;
+  border-top: 1px solid transparent !important;
 }
