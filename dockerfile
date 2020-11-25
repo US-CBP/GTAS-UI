@@ -1,4 +1,4 @@
-FROM node:10.10.0 as build
+FROM node:12.1.0 as build
 
 RUN mkdir -p /usr/src/app
 #npm 6.14.4
