@@ -324,16 +324,7 @@ const Vetting = props => {
 
   const fetchData = () => {
     usersemails.get().then(res => {
-      const emails = asArray(res).map(userEmail => {
-        return {
-          label: userEmail.username,
-          key: userEmail.email,
-          name: userEmail.email,
-          type: "checkbox",
-          checked: false
-        };
-      });
-      setUsersEmails(emails);
+      setUsersEmails(res);
     });
 
     hitcats.get().then(res => {
