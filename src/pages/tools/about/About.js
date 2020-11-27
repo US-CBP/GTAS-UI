@@ -50,28 +50,6 @@ const About = () => {
         <br></br>
         <br></br>
       </Main>
-
-      {/* 
-      <Main className="main bg-white">
-        <Title title={<Xl8 xid="abt001">About</Xl8>}></Title>
-        <div className="about-container test" id="about-container">
-          <Scrollspy
-            items={raw.map(item => item.id)}
-            currentClassName="is-current"
-            onUpdate={ev => onUpdate(ev)}
-            rootEl="#about-container"
-          >
-            {asArray(raw).map(item => {
-              return (
-                <div id={item.id}>
-                  <a className="toc" href={`#${item.id}`}>
-                    {item.id}
-                  </a>
-                </div>
-              );
-            })}
-          </Scrollspy>
-        </div> */}
     </>
   );
 };

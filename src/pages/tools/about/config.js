@@ -62,45 +62,37 @@ export const raw = [
 `
   },
   {
-    id: "1.12.3",
-    val: `## 1.12.3
+    id: "1.12.0",
+    val: `## 1.12.0
 
 #### Front-end
-* Added ability for a user to manually create a hit on a passenger based on watchlist category.
-* Added latest release notes to the about page for GTAS.
-* Cached commonly called data on front end, lowering network usage by magnitudes. 
-* Added 'Severity' column to the watchlist table under the administrative controls.
+* Users are locked out after 5 attempts to log in.
+* Users are able to reset their password via email.`
+  },
+  {
+    id: "1.11.1",
+    val: `## 1.11.1
 
 #### Back-end
-* Flightpax object loading has been removed and table is no longer populated.
-* Rule engine can be reset through the database - recompiling on the start of a run instead of manually by resaving the rule.
-* Updated flight history to be more performant and accurate.
-* Added toggle-able feature to manage user data, allowing data to be both masked and deleted from GTAS application after a configurable period.
-* Added four settings, for managing both APIS and PNR data on separate pipelines.
-* Added ability to retain data on configurable settings.
-* Added masking and deleting for front end as well as back end.
-* Added relationship between a passenger's details and each specific message.
+* Fixed property on docker file related to automated email notifications.
 `
   },
   {
-    id: "1.12.1",
-    val: `## 1.12.2
+    id: "1.11.0",
+    val: `## 1.11.0
 
 #### Front-end
-* Added ability for a user to manually create a hit on a passenger based on watchlist category.
-* Added latest release notes to the about page for GTAS.
-* Cached commonly called data on front end, lowering network usage by magnitudes. 
-* Added 'Severity' column to the watchlist table under the administrative controls.
+* GTAS now supports asynchronous hits. At the start of each rule run the rule engine will process all hits from the pending hits table into hits. This allows for asynchronous rule hit processing.
+* Tamr integration. GTAS now supports a full Tamr integration. Tamr is used for passenger resolution. This is both used for resolving passengers to show flight history as well as to resolve passengers against a watchlist. 
+* Several enhancements to docker deployment including
+* Setting the the version of java used on scheduler and webapp as well as application properties.
 
 #### Back-end
-* Flightpax object loading has been removed and table is no longer populated.
-* Rule engine can be reset through the database - recompiling on the start of a run instead of manually by resaving the rule.
-* Updated flight history to be more performant and accurate.
-* Added toggle-able feature to manage user data, allowing data to be both masked and deleted from GTAS application after a configurable period.
-* Added four settings, for managing both APIS and PNR data on separate pipelines.
-* Added ability to retain data on configurable settings.
-* Added masking and deleting for front end as well as back end.
-* Added relationship between a passenger's details and each specific message.
+* Several docker bug fixes and updates
+* Rule engine can now process messages with no passengers.
+* Watchlist records can be deleted provided they have no hits.
+* Flightpax object has been deprecated. Portions of the front end that used the FlightPax object now use either calculated objects or different fields. 
+* Code Analysis shows 0 bugs (A rating), 0 vulnerabilities, x109 security hotspots(A rating), 39 day technical debt, 2.2k code smells (A rating), 33.7% code coverage, 295 unit test, 7.1% duplications, 249 duplicated blocks.
 `
   }
 ];
