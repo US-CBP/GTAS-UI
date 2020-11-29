@@ -152,7 +152,7 @@ class Form extends React.Component {
           this.setState({ showPending: false });
         }
       });
-    }
+    } else this.setState({ showPending: false });
   }
 
   onFormCancel() {
