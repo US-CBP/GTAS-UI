@@ -199,14 +199,14 @@ export default class App extends React.Component {
                   <ForgotPassword path="/forgot-password"></ForgotPassword>
                 </Router>
               </Suspense>
-              {this.state.showModal ? (
+              {/* {this.state.showModal ? (
                 <GModal>
                   <div>
                     <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
                     <button onClick={this.toggleModal}>OK</button>
                   </div>
                 </GModal>
-              ) : null}
+              ) : null} */}
               <div className="App">
                 <IdleTimer
                   ref={ref => {
