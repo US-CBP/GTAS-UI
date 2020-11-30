@@ -33,6 +33,14 @@ const FlightPax = props => {
   const [key, setKey] = useState(0);
   const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
 
+  const hasAnyHits = item => {
+    if (item.watchListCount > 0 || item.manualHitCount > 0 || item.fuzzyHitCount > 0 || item.ruleHitCount > 0
+        || item.graphHitCount > 0 || item.externalHitCount > 0) {
+      return true;
+    }
+    return false;
+  }
+
   const parseData = data => {
     return asArray(data).map(item => {
       const displayDobDate = localeDateOnly(
@@ -229,7 +237,7 @@ const FlightPax = props => {
       let parsed = parseData(res);
 
       const parsedHits = parsed.filter(item => {
-        return item.onRuleHitList || item.onWatchList;
+        return hasAnyHits(item);
       });
 
       setAllData(parsed);

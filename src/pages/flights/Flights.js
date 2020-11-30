@@ -34,6 +34,14 @@ const Flights = props => {
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
 
+  const hasAnyHits = item => {
+    if (item.watchListCount > 0 || item.manualHitCount > 0 || item.fuzzyHitCount > 0 || item.ruleHitCount > 0
+        || item.graphHitCount > 0 || item.externalHitCount > 0) {
+      return true;
+    }
+    return false;
+  }
+
   const setDataWrapper = (data, retainState) => {
     if (!retainState) setTableState(initTableState);
 
@@ -69,7 +77,7 @@ const Flights = props => {
     });
 
     const parsedHits = parsedAll.filter(item => {
-      return item.severity > 0;
+      return hasAnyHits(item);
     });
 
     setAllData(alt(parsedAll, []));
