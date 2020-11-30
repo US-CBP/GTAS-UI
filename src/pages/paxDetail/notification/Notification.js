@@ -5,18 +5,20 @@ import { notification, usersemails } from "../../../services/serviceWrapper";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { alt, asArray } from "../../../utils/utils";
+import { alt, asArray, hasData } from "../../../utils/utils";
 import "./Notification.scss";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
+import ErrorText from "../../../components/errorText/ErrorText";
 
 const Notification = props => {
   const cb = result => {};
   const [show, setShow] = useState(false);
   const [usersEmails, setUsersEmails] = useState(props.usersEmails);
+  const [showAlerText, setShowAlertText] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -38,6 +40,14 @@ const Notification = props => {
       to: allEmails
     };
     return [emailData];
+  };
+
+  const validateInputs = inputs => {
+    const hasValidEmails = hasData(inputs[0]["to"]);
+
+    if (!hasValidEmails) setShowAlertText(true);
+    else setShowAlertText(false);
+    return hasValidEmails;
   };
 
   useEffect(() => {
@@ -89,6 +99,16 @@ const Notification = props => {
         </ModalHeader>
         <ModalBody>
           <Container fluid>
+            {showAlerText && (
+              <ErrorText
+                message={
+                  <Xl8 xid="not007">
+                    No user is selected, or external email address is provided! Please
+                    select users from the current user group or add external user.
+                  </Xl8>
+                }
+              />
+            )}
             <Form
               title=""
               submitText={<Xl8 xid="not003">Notify</Xl8>}
@@ -98,6 +118,7 @@ const Notification = props => {
               id="notificationmodal"
               afterProcessed={handleClose}
               paramCallback={paramCallback}
+              validateInputs={validateInputs}
               cancellable
             >
               <LabelledInput
