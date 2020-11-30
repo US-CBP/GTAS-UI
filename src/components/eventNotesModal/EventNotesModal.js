@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
-import { paxEventNotesHistory, notetypes } from "../../../services/serviceWrapper";
-import Form from "../../../components/form/Form";
-import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { asArray } from "../../../utils/utils";
-import Xl8 from "../../../components/xl8/Xl8";
-import Modal, {
-  ModalBody,
-  ModalHeader,
-  ModalTitle
-} from "../../../components/modal/Modal";
+import { paxEventNotesHistory, notetypes } from "../../services/serviceWrapper";
+import Form from "../../components/form/Form";
+import LabelledInput from "../../components/labelledInput/LabelledInput";
+import { asArray, hasData } from "../../utils/utils";
+import Xl8 from "../../components/xl8/Xl8";
+import Modal, { ModalBody, ModalHeader, ModalTitle } from "../../components/modal/Modal";
 
 const EventNotesModal = props => {
   const [show, setShow] = useState(false);
@@ -18,7 +14,7 @@ const EventNotesModal = props => {
 
   const handleClose = (status, res) => {
     setShow(false);
-    props.setEventNoteRefreshKey(Date.now());
+    if (hasData(props.callback)) props.callback(status, res);
   };
   const handleShow = () => setShow(true);
   const paxId = props.paxId;
@@ -39,12 +35,19 @@ const EventNotesModal = props => {
     });
   }, []);
 
+  const launcher = props.icon ? (
+    <div onClick={handleShow}>
+      <i className="fa fa-edit"></i>
+    </div>
+  ) : (
+    <div className="dropdown-item" onClick={handleShow}>
+      <Xl8 xid="evn001">Add Event Notes</Xl8>
+    </div>
+  );
+
   return (
     <>
-      <Button className="dropdown-item" onClick={handleShow}>
-        {/* <i className="fa fa-pencil"></i> <Xl8 xid="evn001">Add Event Notes</Xl8> */}
-        <Xl8 xid="evn001">Add Event Notes</Xl8>
-      </Button>
+      {launcher}
 
       <Modal
         show={show}
@@ -96,7 +99,7 @@ const EventNotesModal = props => {
   );
 };
 EventNotesModal.propTypes = {
-  setEventNoteRefreshKey: PropTypes.func,
+  callback: PropTypes.func,
   paxId: PropTypes.string
 };
 export default EventNotesModal;

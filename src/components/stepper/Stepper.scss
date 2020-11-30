@@ -17,22 +17,21 @@
   content: " ";
   line-height: 30px;
   border-radius: 50%;
-  width: 17px;
-  height: 17px;
-  border: 1px solid rgb(252, 244, 244);
-  border-left: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid white;
   display: block;
   text-align: center;
   margin: 8.5px auto 0px;
-  background-color: rgb(252, 244, 244);
+  background-color: white;
 }
 .stepper li:after {
   content: "";
   position: absolute;
   width: 100%;
   height: 5px;
-  background-color: rgb(252, 244, 244);
-  border: 1px solid rgb(252, 244, 244);
+  background-color: white;
+  border: 1px solid white;
   border-right: none;
   top: 15px;
   left: -50%;
@@ -44,7 +43,7 @@
 }
 
 .stepper li.active:before {
-  border-color: #009fe3;
+  border-color: white;
   background-color: #009fe3;
 }
 

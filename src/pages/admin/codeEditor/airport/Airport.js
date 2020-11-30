@@ -1,18 +1,24 @@
 import React, { useState } from "react";
 import Table from "../../../../components/table/Table";
-// import Title from "../../../../components/title/Title";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { Dropdown, DropdownButton } from "react-bootstrap";
 import { codeEditor } from "../../../../services/serviceWrapper";
 import AirportModal from "./AirportModal";
+import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
+import { ACTION } from "../../../../utils/constants";
+import { Fab, Action } from "react-tiny-fab";
+import "react-tiny-fab/dist/styles.css";
 
 const Airports = ({ name }) => {
   const cb = function(result) {};
   const [showModal, setShowModal] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
   const [modalTitle, setModalTitle] = useState();
   const [editRowDetails, setEditRowDetails] = useState({});
+  const [action, setAction] = useState();
+  const [confirmModalHeader, setConfirmModalHeader] = useState();
+  const [confirmModalMessage, setConfirmModalMessage] = useState();
 
   const addAirport = <Xl8 xid="airp002">Add Airport</Xl8>;
   const editAirport = <Xl8 xid="airp003">Edit Airport</Xl8>;
@@ -26,6 +32,56 @@ const Airports = ({ name }) => {
     setModalTitle(editAirport);
     setEditRowDetails(rowDetails);
     setShowModal(true);
+  };
+
+  const confirm = action => {
+    if (action === ACTION.UPDATE) {
+      setConfirmModalHeader(<Xl8 xid="airpConf001">Restore Airport Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf002">Please confirm to restore the airport code</Xl8>
+      );
+    } else if (action === ACTION.DELETE) {
+      setConfirmModalHeader(<Xl8 xid="airpConf003">Delete Airport Code</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf004">Please confirm to delete the airport code</Xl8>
+      );
+    } else if (action === ACTION.UPDATEALL) {
+      setConfirmModalHeader(<Xl8 xid="airpConf004">Restore All Airport Codes</Xl8>);
+      setConfirmModalMessage(
+        <Xl8 xid="airpConf005">Please confirm to restore all airport codes</Xl8>
+      );
+    }
+    setAction(action);
+    setShowConfirm(true);
+    setShowModal(false);
+  };
+
+  const restoreCode = () => {
+    codeEditor.put.restoreAirport(editRowDetails).then(res => {
+      refresh();
+    });
+  };
+
+  const deleteCode = () => {
+    codeEditor.delete.deleteAirport(editRowDetails?.id).then(res => {
+      refresh();
+    });
+  };
+
+  const handleConfirm = confirmed => {
+    if (confirmed) {
+      if (action === ACTION.DELETE) deleteCode();
+      else if (action === ACTION.UPDATE) restoreCode();
+      else if (action === ACTION.UPDATEALL) restoreAll();
+    } else if (action !== ACTION.UPDATEALL) setShowModal(true);
+
+    setShowConfirm(false);
+  };
+
+  const restoreAll = () => {
+    codeEditor.put.restoreAirportsAll().then(res => {
+      refresh();
+    });
   };
 
   const headers = [
@@ -65,33 +121,14 @@ const Airports = ({ name }) => {
         editRowDetails={editRowDetails}
         refresh={refresh}
         callback={cb}
+        actionCallback={confirm}
       />
-
-      <div className="action-button-div">
-        <DropdownButton variant="info" title={<Xl8 xid="manu002">Choose Action</Xl8>}>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              setShowModal(true);
-              setModalTitle(addAirport);
-              setIsEditModal(false);
-              setEditRowDetails({});
-            }}
-          >
-            {addAirport}
-          </Dropdown.Item>
-          <Dropdown.Item
-            as="button"
-            onClick={() => {
-              codeEditor.put.restoreAirportsAll().then(res => {
-                refresh();
-              });
-            }}
-          >
-            {<Xl8 xid="airp002">Restore All Airports</Xl8>}
-          </Dropdown.Item>
-        </DropdownButton>
-      </div>
+      <ConfirmationModal
+        show={showConfirm}
+        callback={handleConfirm}
+        header={confirmModalHeader}
+        message={confirmModalMessage}
+      />
 
       <Table
         service={codeEditor.get.airportCodes}
@@ -100,6 +137,26 @@ const Airports = ({ name }) => {
         key={refreshKey}
         enableColumnFilter={true}
       ></Table>
+      <Fab icon={<i className="fa fa-plus" />} variant="info">
+        <Action
+          text={addAirport}
+          onClick={() => {
+            setShowModal(true);
+            setModalTitle(addAirport);
+            setIsEditModal(false);
+            setEditRowDetails({});
+          }}
+        >
+          <i className="fa fa-plus" />
+        </Action>
+        <Action
+          text={<Xl8 xid="airp002">Restore All Airports</Xl8>}
+          variant="rtf-red"
+          onClick={() => confirm(ACTION.UPDATEALL)}
+        >
+          <i className="fa fa-recycle" />
+        </Action>
+      </Fab>
     </div>
   );
 };

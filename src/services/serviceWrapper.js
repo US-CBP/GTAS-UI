@@ -94,12 +94,15 @@ const HITCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
 const HITCATSNONARCHIVED = `${BASE_URL}gtas/wl/watchlistCategories/nonarchived`;
 const FLIGHTS = `${BASE_URL}gtas/api/flights`;
 const AUDITLOG = `${BASE_URL}gtas/api/auditlog`;
+const AUDITLOGACTIONS = `${BASE_URL}gtas/api/auditlog/actions`;
 const ERRORLOG = `${BASE_URL}gtas/api/errorlog`;
+const ERRORLOGCODES = `${BASE_URL}gtas/api/errorlog/codes`;
 const CASES = `${BASE_URL}gtas/hits`;
 const SETTINGSINFO = `${BASE_URL}gtas/settingsinfo`;
 const GETRULECATS = `${BASE_URL}getRuleCats`;
 const PAX = `${BASE_URL}gtas/passengers/passenger`;
 const FLIGHTPAXHITSUMMARY = `${BASE_URL}gtas/hit/flightpassenger`;
+const HISTORICALHITS = `${PAX}/hitdetailhistory`;
 const FLIGHTPAX = `${BASE_URL}gtas/api/flights/flightpax`;
 const QUERIES = `${BASE_URL}gtas/query`;
 const QUERYPAX = `${BASE_URL}gtas/query/queryPassengers`;
@@ -201,8 +204,18 @@ export const userService = {
 };
 
 export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
-export const auditlog = { get: params => get(AUDITLOG, BASEHEADER, undefined, params) };
-export const errorlog = { get: params => get(ERRORLOG, BASEHEADER, undefined, params) };
+export const auditlog = {
+  get: {
+    logs: params => get(AUDITLOG, BASEHEADER, undefined, params),
+    actions: params => get(AUDITLOGACTIONS, BASEHEADER, undefined, params)
+  }
+};
+export const errorlog = {
+  get: {
+    logs: params => get(ERRORLOG, BASEHEADER, undefined, params),
+    codes: params => get(ERRORLOGCODES, BASEHEADER, undefined, params)
+  }
+};
 export const cases = {
   get: params => {
     return get(CASES, BASEHEADER, undefined, params);
@@ -250,6 +263,10 @@ export const flightpaxHitSummary = {
     return get(path, BASEHEADER);
   }
 };
+
+export const historicalHits = {
+  get: paxId => get(`${HISTORICALHITS}?paxId=${paxId}`, BASEHEADER)
+};
 export const paxEventNotesHistory = {
   get: (paxId, historicalNotes) => {
     const path = `${PAX}/notes?paxId=${paxId}&historicalNotes=${historicalNotes}`;
@@ -273,22 +290,7 @@ export const paxdetailsReport = {
   }
 };
 export const notification = {
-  post: (paxId, body) => {
-    const selectedEmail = asArray(body.to)
-      .filter(email => email.checked === true)
-      .map(email => email.key);
-
-    if (body.externalUsersEmail) {
-      selectedEmail.push(body.externalUsersEmail);
-    }
-
-    const bodyWithPaxId = {
-      note: body.note ? body.note : "",
-      paxId: paxId,
-      to: selectedEmail
-    };
-    return post(NOTIFICATION, BASEHEADER, stringify(bodyWithPaxId));
-  }
+  post: body => post(NOTIFICATION, BASEHEADER, stringify(body))
 };
 export const flightPassengers = { get: id => get(FLIGHTPAX, BASEHEADER, id) };
 export const loaderStats = { get: (id, params) => get(LOADERSTATISTICS, BASEHEADER) };

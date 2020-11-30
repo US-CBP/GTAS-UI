@@ -13,7 +13,7 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <h1>{this.props.message}</h1>;
+      return <div>{this.props.message}</div>;
       // return fallback component. Do we need this??
     }
     return this.props.children;

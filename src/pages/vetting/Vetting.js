@@ -7,19 +7,26 @@ import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
-import { Link } from "@reach/router";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
 import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import Overlay from "../../components/overlay/Overlay";
-import ReviewPVL from "./review/Review";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
-
-import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
-import { ROLE } from "../../utils/constants";
+import {
+  hasData,
+  asArray,
+  getShortText,
+  isShortText,
+  getAge,
+  alt
+} from "../../utils/utils";
+import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
+import Confirm from "../../components/confirmationModal/Confirm";
+import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
+import BiographicInfo from "./biographicInfo/BiographicInfo";
 
 const Vetting = props => {
   const hitTypeOptions = [
@@ -45,7 +52,7 @@ const Vetting = props => {
     }
   ];
 
-  const hitStatusdefaultValues = [
+  const hitStatusOptions = [
     {
       value: "NEW",
       label: "New"
@@ -53,58 +60,78 @@ const Vetting = props => {
     {
       value: "REVIEWED",
       label: "Reviewed"
-    }
-  ];
-
-  const hitStatusOptions = [
-    ...hitStatusdefaultValues,
+    },
     {
       value: "RE_OPENED",
-      label: "Re Opened"
+      label: "Reopen"
     }
   ];
 
   const getBiographicData = pax => {
-    return (
-      <ul className="bio-data">
-        <li>
-          <Xl8 xid="vet001">Name:</Xl8> {pax.paxName}
-        </li>
-        <li>
-          <Xl8 xid="vet002">DOB:</Xl8> {`${pax.dob} (${getAge(pax.dob)})`}
-        </li>
-        <li>
-          <Xl8 xid="vet003">Nationality:</Xl8> {pax.nationality}
-        </li>
-        <li>
-          <Xl8 xid="vet004">Document:</Xl8> {`${pax.document} (${pax.docType})`}
-        </li>
-      </ul>
-    );
+    return {
+      name: `${pax.lastName}, ${alt(pax.firstName).toLowerCase()}`,
+      gender: pax.gender,
+      dob: `${pax.dob} (${getAge(pax.dob)})`,
+      nationality: pax.nationality,
+      document: `DOC(${pax.docType}): ${pax.document}`,
+      flightId: pax.flightId,
+      paxId: pax.paxId
+    };
   };
   const Headers = [
     {
       Accessor: "paxId",
       Xl8: true,
-      Header: ["wl023", "Actions"],
-      disableFilters: true,
-      disableSortBy: true,
+      Header: ["vet023", "Actions"],
       Cell: ({ row }) => (
         <DropdownButton
-          variant="info"
+          variant="outline-info"
           title={<Xl8 xid="vet020">Choose Action</Xl8>}
           className="m-1 text-center"
         >
+          <EventNotesModal paxId={row.original.paxId} callback={cb}></EventNotesModal>
+          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId}>
+            <div className="dropdown-item">
+              <Xl8 xid="rep001">Download Report</Xl8>
+            </div>
+          </DownloadReport>
+          <Notification
+            paxId={`${row.original.paxId}`}
+            usersEmails={usersEmails}
+          ></Notification>
+
           <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.HITMGR]} alt={<></>}>
-            <Button
-              className="dropdown-item"
-              onClick={() => reviewPVL(row.original.paxId)}
+            <Confirm
+              header={<Xl8 xid="vet021">Update Hit Status</Xl8>}
+              message={
+                <span>
+                  <Xl8 xid="vet024">Please click confirm to change the status to:</Xl8>
+                  <br />
+                  <br />
+                  {row.original.status === HIT_STATUS.REVIEWED ? (
+                    <Xl8 xid="vet025">Reopened</Xl8>
+                  ) : (
+                    <Xl8 xid="vet026">Reviewed</Xl8>
+                  )}
+                </span>
+              }
             >
-              <Xl8 xid="rev018">Review</Xl8>
-            </Button>
+              {confirm => (
+                <Button
+                  className="dropdown-item"
+                  onClick={confirm(() =>
+                    changeStatus(row.original.paxId, row.original.status)
+                  )}
+                >
+                  {row.original.status === HIT_STATUS.REVIEWED ? (
+                    <Xl8 xid="vet027">Reopen</Xl8>
+                  ) : (
+                    <Xl8 xid="vet028">Reviewed</Xl8>
+                  )}
+                </Button>
+              )}
+            </Confirm>
           </RoleAuthenticator>
-          <Notification paxId={`${row.original.paxId}`} usersEmails={usersEmails} />
-          <DownloadReport paxId={row.original.paxId} flightId={row.original.flightId} />
         </DropdownButton>
       )
     },
@@ -162,23 +189,20 @@ const Vetting = props => {
             </Overlay>
           );
         });
-        return <ul>{listdata}</ul>;
+        return <ul className="bio-data">{listdata}</ul>;
       }
     },
     {
       Accessor: "paxName",
       Xl8: true,
       Header: ["wl021", "Biographic Information"],
-      Cell: ({ row }) => (
-        <Link to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}>
-          {getBiographicData(row.original)}
-        </Link>
-      )
+      Cell: ({ row }) => <BiographicInfo data={getBiographicData(row.original)} />
     },
     {
       Accessor: "status",
       Xl8: true,
-      Header: ["wl022", "Status"]
+      Header: ["vet022", "Status"],
+      Cell: ({ row }) => <div>{row.original.status}</div>
     }
   ];
 
@@ -192,34 +216,43 @@ const Vetting = props => {
   startDate.setHours(startDate.getHours() - 7);
   const [data, setData] = useState();
   const [hitCategoryOptions, setHitCategoryOptions] = useState();
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [filterFormKey, setFilterFormKey] = useState(0);
   const showDateTimePicker = useRef(false);
-  const [showReviewModal, setShowReviewModal] = useState(false);
-  const [currentPaxId, setCurrentPaxId] = useState();
   const [noteTypes, setNoteTypes] = useState([]);
   const [usersEmails, setUsersEmails] = useState({});
+  const [tableKey, setTableKey] = useState(0);
+
   const now = new Date();
   const initialParamState = {
     etaStart: startDate,
     etaEnd: endDate,
-    displayStatusCheckBoxes: hitStatusdefaultValues,
+    displayStatusCheckBoxes: hitStatusOptions,
     ruleTypes: hitTypeOptions,
     ruleCatFilter: hitCategoryOptions,
     notetypes: []
   };
 
-  const reviewPVL = paxId => {
-    setCurrentPaxId(paxId);
-    setShowReviewModal(true);
+  const getInitialState = () => {
+    showDateTimePicker.current = false;
+    setFilterFormKey(filterFormKey + 1);
+    return initialParamState;
+  };
+  const changeStatus = (paxId, status) => {
+    const newStatus =
+      status === HIT_STATUS.REVIEWED ? HIT_STATUS.REOPENED : HIT_STATUS.REVIEWED;
+    cases.updateStatus(paxId, newStatus.toUpperCase()).then(res => {
+      setFilterFormKey(filterFormKey + 1);
+    });
   };
 
   const toggleDateTimePicker = ev => {
     showDateTimePicker.current = !showDateTimePicker.current;
-    setRefreshKey(refreshKey + 1);
+    setFilterFormKey(filterFormKey + 1);
   };
 
   const setDataWrapper = data => {
     setData(data?.cases || []);
+    setTableKey(tableKey + 1);
   };
 
   const parameterAdapter = fields => {
@@ -285,16 +318,7 @@ const Vetting = props => {
 
   const fetchData = () => {
     usersemails.get().then(res => {
-      const emails = asArray(res).map(userEmail => {
-        return {
-          label: userEmail.username,
-          key: userEmail.email,
-          name: userEmail.email,
-          type: "checkbox",
-          checked: false
-        };
-      });
-      setUsersEmails(emails);
+      setUsersEmails(res);
     });
 
     hitcats.get().then(res => {
@@ -318,13 +342,12 @@ const Vetting = props => {
         return acc;
       }, []);
       setNoteTypes(nTypes);
-      setRefreshKey(nTypes);
+      setFilterFormKey(new Date());
     });
   };
 
   useEffect(() => {
     fetchData();
-    setRefreshKey(refreshKey + 1);
   }, []);
 
   return (
@@ -335,8 +358,8 @@ const Vetting = props => {
             service={cases.get}
             callback={setDataWrapper}
             paramCallback={parameterAdapter}
-            key={refreshKey}
-            initialParamState={initialParamState}
+            key={filterFormKey}
+            getInitialState={getInitialState}
           >
             <LabelledInput
               datafield="myRulesOnly"
@@ -354,7 +377,7 @@ const Vetting = props => {
               datafield="displayStatusCheckBoxes"
               labelText={<Xl8 xid="vet008">Passenger Hit Status</Xl8>}
               inputType="multiSelect"
-              inputVal={hitStatusdefaultValues}
+              inputVal={hitStatusOptions}
               options={hitStatusOptions}
               callback={cb}
               alt={<Xl8 xid="3">Passenger Hit Status</Xl8>}
@@ -362,23 +385,26 @@ const Vetting = props => {
             <LabelledInput
               name="ruleTypes"
               datafield="ruleTypes"
-              labelText={<Xl8 xid="vet009">Hit Types</Xl8>}
+              labelText={<Xl8 xid="vet009">Hit Source</Xl8>}
               inputType="multiSelect"
               inputVal={hitTypeOptions}
               options={hitTypeOptions}
               callback={cb}
-              alt={<Xl8 xid="3">Hit Types</Xl8>}
+              alt="Hit Source"
             />
-            <LabelledInput
-              datafield
-              name="noteTypes"
-              labelText={<Xl8 xid="vet019">Note Type</Xl8>}
-              inputType="multiSelect"
-              inputVal={[]}
-              options={noteTypes}
-              callback={cb}
-              alt={<Xl8 xid="vet019">Note Type</Xl8>}
-            />
+            {hasData(noteTypes) && (
+              <LabelledInput
+                datafield
+                name="noteTypes"
+                labelText={<Xl8 xid="vet019">Note Type</Xl8>}
+                inputType="multiSelect"
+                inputVal={[]}
+                options={noteTypes}
+                callback={cb}
+                alt={<Xl8 xid="vet019">Note Type</Xl8>}
+              />
+            )}
+
             {hasData(hitCategoryOptions) && (
               <LabelledInput
                 name="ruleCatFilter"
@@ -417,7 +443,7 @@ const Vetting = props => {
               callback={cb}
               toggleDateTimePicker={toggleDateTimePicker}
               selected={showDateTimePicker.current}
-              alt=""
+              alt="Show Date Time Picker"
               spacebetween
             />
             {showDateTimePicker.current && (
@@ -489,15 +515,7 @@ const Vetting = props => {
       </SidenavContainer>
       <Main>
         <Title title={<Xl8 xid="vet018">Priority Vetting</Xl8>} uri={props.uri} />
-        <Table data={data} callback={onTableChange} header={Headers} key={data} />
-
-        <ReviewPVL
-          paxId={currentPaxId}
-          callback={setRefreshKey}
-          show={showReviewModal}
-          onHide={() => setShowReviewModal(false)}
-          noteTypes={noteTypes}
-        />
+        <Table data={data} callback={onTableChange} header={Headers} key={tableKey} />
       </Main>
     </>
   );

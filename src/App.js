@@ -3,10 +3,6 @@ import { Router, Redirect, navigate } from "@reach/router";
 import IdleTimer from "react-idle-timer";
 import loadable from "@loadable/component";
 
-import "./App.css";
-import "font-awesome/css/font-awesome.min.css";
-// import "@fortawesome/free-solid-svg-icons";
-
 import Xl8 from "./components/xl8/Xl8";
 
 import Authenticator from "./context/authenticator/Authenticator";
@@ -19,10 +15,13 @@ import { ROLE, TIME } from "./utils/constants";
 
 //login bundle
 import Login from "./pages/login/Login";
-import SignUp from "./pages/signUp/SignUp";
+import SignUp from "./pages/login/SignUp";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Page404 from "./pages/page404/Page404";
+
+import "./App.scss";
+import "font-awesome/css/font-awesome.min.css";
 
 const Flights = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")
@@ -200,14 +199,14 @@ export default class App extends React.Component {
                   <ForgotPassword path="/forgot-password"></ForgotPassword>
                 </Router>
               </Suspense>
-              {this.state.showModal ? (
+              {/* {this.state.showModal ? (
                 <GModal>
                   <div>
                     <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
                     <button onClick={this.toggleModal}>OK</button>
                   </div>
                 </GModal>
-              ) : null}
+              ) : null} */}
               <div className="App">
                 <IdleTimer
                   ref={ref => {
@@ -337,18 +336,14 @@ export default class App extends React.Component {
                                 icon="fa-toggle-on"
                               ></Settings>
                               <FileDownload
-                                name={<Xl8 xid="app018">File Download</Xl8>}
+                                name={<Xl8 xid="app018">Download Logs</Xl8>}
                                 desc={<Xl8 xid="app019">Download system log files</Xl8>}
                                 icon="fa-download"
                                 path="filedownload"
                               ></FileDownload>
                               <CodeEditor
                                 name={<Xl8 xid="app020">Code Editor</Xl8>}
-                                desc={
-                                  <Xl8 xid="app021">
-                                    View or edit Airport, Carrier, and Country codes
-                                  </Xl8>
-                                }
+                                desc={<Xl8 xid="app021">View or edit system codes</Xl8>}
                                 icon="fa-list-ul"
                                 path="codeeditor"
                                 startTab="country"
@@ -397,7 +392,7 @@ export default class App extends React.Component {
                               <Auxiliary
                                 name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
                                 desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}
-                                icon="fa-line-chart"
+                                icon="kibana"
                                 path="https://localhost:5601/login?next=%2F"
                                 hasExternalLink={true}
                               ></Auxiliary>
@@ -405,7 +400,7 @@ export default class App extends React.Component {
                                 name={<Xl8 xid="app033">Neo4j</Xl8>}
                                 desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
                                 path="http://localhost:7474/browser/"
-                                icon="fa-database"
+                                icon="neo4j"
                                 hasExternalLink={true}
                               ></Auxiliary>
                             </Admin>

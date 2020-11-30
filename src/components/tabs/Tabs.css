@@ -10,8 +10,14 @@
 
 .gtas-tabs a {
   color: #0082c3;
-  padding: 0.2rem 0.5rem;
+  /* padding: 0.2rem 0.5rem; */
   border-color: #d0d0d0 #d0d0d0 #d0d0d0 !important;
+}
+
+@media (max-width: 767px) {
+  .gtas-tabs {
+    margin-left: 20px;
+  }
 }
 
 /* chrome tabs */

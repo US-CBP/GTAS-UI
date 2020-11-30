@@ -1,7 +1,7 @@
 import React from "react";
-import { Card, Table } from "react-bootstrap";
+import { Button, Card, Table } from "react-bootstrap";
 import "./CardWithTable.scss";
-import { asArray, isShortText, getShortText, alt } from "../../utils/utils";
+import { asArray, isShortText, getShortText, alt, hasData } from "../../utils/utils";
 import Overlay from "../overlay/Overlay";
 
 const CardWithTable = props => {
@@ -16,11 +16,16 @@ const CardWithTable = props => {
   });
 
   const tableRows = data.map((row, index) => {
+    let highlightRow = row.highlightRow;
     const tableData = Object.keys(headers).map(key => {
       const td = row[key];
       const triggerOverlay = !isShortText(td, textDisplayLimit);
       return (
-        <Overlay trigger={triggerOverlay ? "click" : ""} key={key} content={td}>
+        <Overlay
+          trigger={triggerOverlay ? ["click", "hover"] : ""}
+          key={key}
+          content={td}
+        >
           <td className={triggerOverlay ? "as-info" : ""}>
             {getShortText(td, textDisplayLimit)}
           </td>
@@ -29,7 +34,11 @@ const CardWithTable = props => {
     });
 
     return (
-      <tr key={index} onClick={() => cb(row.key)}>
+      <tr
+        key={index}
+        onClick={() => cb(row.key)}
+        className={highlightRow ? "highlight-table-row" : ""}
+      >
         {tableData}
       </tr>
     );
@@ -38,6 +47,11 @@ const CardWithTable = props => {
   return (
     <Card className={className}>
       <Card.Header className="customized-card-header">
+        {hasData(props.refresh) && (
+          <Button className="refresh" size="sm" onClick={props.refresh}>
+            <i className="fa fa-refresh"></i>
+          </Button>
+        )}
         {props.title || ""} <span className="row-count">{data.length}</span>
       </Card.Header>
       {data.length > 0 && (

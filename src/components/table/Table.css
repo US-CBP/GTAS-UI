@@ -15,6 +15,7 @@
   border: 1px solid #d0d0d0;
   background-color: white;
   border-radius: 3px;
+  min-width: 300px;
 }
 
 @media (max-width: 420px) {
@@ -39,6 +40,7 @@
   border: 1px solid #d0d0d0;
   background-color: white;
   border-radius: 3px;
+  min-width: 300px;
 }
 
 .mr-10 {
@@ -95,6 +97,11 @@
     display: none !important;
   }
 }
+@media (max-width: 767px) {
+  .one-column-grid-container > .table-main {
+    max-height: calc(100vh - 195px);
+  }
+}
 
 .tagrightpag {
   position: fixed;
@@ -146,9 +153,14 @@
 .export-btn,
 .export-btn:hover {
   color: black;
-  border: 1px solid #495057;
-  border-radius: 0.25rem;
+  border: 1px solid #495057 !important;
+  border-radius: 0.25rem !important;
+  padding: 4px 15px !important;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  background-color: white;
 }
+
 .export-btn:hover {
   background-color: rgba(67, 74, 82, 0.24);
 }
@@ -174,4 +186,10 @@
   align-items: baseline;
   justify-content: space-between;
   display: flex;
+}
+
+@media (max-width: 600px) {
+  .export-btn {
+    display: none !important;
+  }
 }

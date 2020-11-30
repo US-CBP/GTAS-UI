@@ -63,6 +63,7 @@
 
 .txtlabel {
   float: left;
+  align-self: center !important;
 }
 
 .form-select {
@@ -106,4 +107,8 @@
 .filter hr {
   margin-top: 0.3rem !important;
   margin-bottom: 0.3rem !important;
+}
+
+.dropdown-heading-value {
+  white-space: unset !important;
 }
