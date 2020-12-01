@@ -54,6 +54,7 @@ const FlightPax = props => {
       item.watchhit = item.onWatchList ? 1 : "";
       item.hitCounts = `${item.lowPrioHitCount || 0}${item.medPrioHitCount ||
         0}${item.highPrioHitCount || 0}`;
+      item.totalHitCounts = item.lowPrioHitCount+item.medPrioHitCount+item.highPrioHitCount;
       item.aggregateHitsCount = {
         low: item.lowPrioHitCount,
         med: item.medPrioHitCount,
@@ -115,10 +116,12 @@ const FlightPax = props => {
   ];
 
   const aggregateHitHeader = {
-    Accessor: "hitCounts",
+    Accessor: "totalHitCounts",
     Xl8: true,
     Header: ["fp026", "Hit Aggregates"],
     disableGroupBy: true,
+    aggregate: 'sum',
+    Aggregated: ({ value }) => `${value} Hits`,
     Cell: ({ row }) => {
       return (
         <span
