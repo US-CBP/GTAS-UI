@@ -34,7 +34,7 @@ const FlightPax = props => {
   const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
 
   const hasAnyHits = item => {
-    if (item.watchListCount > 0 || item.manualHitCount > 0 || item.fuzzyHitCount > 0 || item.ruleHitCount > 0
+    if (item.watchlistHitCount > 0 || item.manualHitCount > 0 || item.fuzzyHitCount > 0 || item.ruleHitCount > 0
         || item.graphHitCount > 0 || item.externalHitCount > 0) {
       return true;
     }
