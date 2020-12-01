@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
 import { errorlog } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
@@ -8,12 +8,15 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import { Col } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import FilterForm from "../../../components/filterForm2/FilterForm";
-import { localeDate } from "../../../utils/utils";
+import { asArray, localeDate } from "../../../utils/utils";
 
 const ErrorLog = ({ name }) => {
   const cb = function(result) {};
   const [data, setData] = useState();
   const [refreshKey, setRefreshKey] = useState(1);
+  const [filterKey, setFilterKey] = useState(1);
+  const [errorCodes, setErrorCodes] = useState([]);
+  const selectAllCodes = "Select All Codes";
   let startDate = new Date();
   let endDate = new Date();
   endDate.setDate(endDate.getDate() + 1);
@@ -54,13 +57,29 @@ const ErrorLog = ({ name }) => {
       if (params.endDate) {
         parsedParams += "&endDate=" + params.endDate.toISOString();
       }
-      if (params.errorCode) {
+      if (params.errorCode != selectAllCodes) {
         parsedParams += "&code=" + params.errorCode;
       }
     }
 
     return parsedParams;
   };
+
+  useEffect(() => {
+    errorlog.get.codes().then(res => {
+      let codes = [{ label: selectAllCodes, value: selectAllCodes }]; //Always top dummy value
+      codes = codes.concat(
+        asArray(res).map(code => {
+          return {
+            label: code,
+            value: code
+          };
+        })
+      );
+      setErrorCodes(codes);
+      setFilterKey(filterKey + 1);
+    });
+  }, []);
 
   const setDataWrapper = res => {
     setData(res);
@@ -72,18 +91,22 @@ const ErrorLog = ({ name }) => {
       <SidenavContainer>
         <Col className="notopmargin">
           <FilterForm
-            service={errorlog.get}
+            service={errorlog.get.logs}
             paramCallback={preFetchCallback}
             callback={setDataWrapper}
             getInitialState={initialParamState}
+            key={filterKey}
           >
             <LabelledInput
-              labelText={<Xl8 xid="el001">Error Code</Xl8>}
+              labelText={<Xl8 xid="el001">Error Codes</Xl8>}
               datafield="errorCode"
-              name="code"
-              inputType="text"
+              inputType="select"
+              name="errorCode"
+              inputVal={selectAllCodes}
+              options={errorCodes}
+              required={true}
+              alt="nothing"
               callback={cb}
-              alt="Error Code"
             />
             <LabelledInput
               datafield

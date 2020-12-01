@@ -1,8 +1,8 @@
 .about-container {
-  /* margin: 10px; */
   justify-content: center;
   overflow-y: auto;
   max-height: calc(100vh - 130px);
+  padding-right: 30px;
 }
 
 .about-container h2 {
@@ -21,6 +21,29 @@
   margin-left: 45px;
 }
 
+.about-container.test > ul {
+  margin-left: 0px;
+  display: flex;
+}
+
+.about-container.test > ul > div > a {
+  margin-left: -10px;
+  margin-right: -15px;
+  padding: 10px 30px;
+}
+
+.about-container.test > ul:before {
+  content: "\f104";
+}
+
+.about-container.test > ul:after {
+  content: "\f105";
+  /* font-family: ; */
+}
+
+.about-container.test > ul > div > a:before {
+}
+
 .about-sidenav {
   top: auto;
   left: 0;
@@ -33,4 +56,25 @@
 
 .about-sidenav .list-group {
   text-align: center;
+}
+
+.about.list-group > a {
+  padding: 5px;
+}
+
+a.toc.is-current,
+a.toc:hover {
+  font-weight: 600;
+  color: #0082c3;
+  text-decoration: none !important;
+}
+
+.toc {
+  display: block;
+  padding: 8px;
+  text-align: center;
+}
+
+a.toc {
+  color: black;
 }

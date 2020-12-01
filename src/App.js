@@ -3,10 +3,6 @@ import { Router, Redirect, navigate } from "@reach/router";
 import IdleTimer from "react-idle-timer";
 import loadable from "@loadable/component";
 
-import "./App.css";
-import "font-awesome/css/font-awesome.min.css";
-// import "@fortawesome/free-solid-svg-icons";
-
 import Xl8 from "./components/xl8/Xl8";
 
 import Authenticator from "./context/authenticator/Authenticator";
@@ -23,6 +19,9 @@ import SignUp from "./pages/login/SignUp";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Page404 from "./pages/page404/Page404";
+
+import "./App.scss";
+import "font-awesome/css/font-awesome.min.css";
 
 const kibanaUrl = process.env.REACT_APP_KIBANA_LOGIN;
 const neo4jUrl = process.env.REACT_APP_NEO4J_BROWSER;
@@ -203,18 +202,18 @@ export default class App extends React.Component {
                   <ForgotPassword path="/forgot-password"></ForgotPassword>
                 </Router>
               </Suspense>
-                <div>
-                  <h1>{process.env.REACT_APP_NEO4J_BROWSER}</h1>
-                  <h1>{process.env.REACT_APP_KIBANA_LOGIN}</h1>
-                </div>
-              {this.state.showModal ? (
+              <div>
+                <h1>{process.env.REACT_APP_NEO4J_BROWSER}</h1>
+                <h1>{process.env.REACT_APP_KIBANA_LOGIN}</h1>
+              </div>
+              {/* {this.state.showModal ? (
                 <GModal>
                   <div>
                     <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
                     <button onClick={this.toggleModal}>OK</button>
                   </div>
                 </GModal>
-              ) : null}
+              ) : null} */}
               <div className="App">
                 <IdleTimer
                   ref={ref => {
@@ -351,11 +350,7 @@ export default class App extends React.Component {
                               ></FileDownload>
                               <CodeEditor
                                 name={<Xl8 xid="app020">Code Editor</Xl8>}
-                                desc={
-                                  <Xl8 xid="app021">
-                                    View or edit Airport, Carrier, and Country codes
-                                  </Xl8>
-                                }
+                                desc={<Xl8 xid="app021">View or edit system codes</Xl8>}
                                 icon="fa-list-ul"
                                 path="codeeditor"
                                 startTab="country"

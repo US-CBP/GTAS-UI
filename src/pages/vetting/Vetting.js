@@ -7,20 +7,26 @@ import LabelledInput from "../../components/labelledInput/LabelledInput";
 import FilterForm from "../../components/filterForm2/FilterForm";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import Main from "../../components/main/Main";
-import { Link } from "@reach/router";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
 import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import Overlay from "../../components/overlay/Overlay";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
-
-import { hasData, asArray, getShortText, isShortText, getAge } from "../../utils/utils";
+import {
+  hasData,
+  asArray,
+  getShortText,
+  isShortText,
+  getAge,
+  alt
+} from "../../utils/utils";
 import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 import Confirm from "../../components/confirmationModal/Confirm";
 import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
+import BiographicInfo from "./biographicInfo/BiographicInfo";
 
 const Vetting = props => {
   const hitTypeOptions = [
@@ -62,23 +68,15 @@ const Vetting = props => {
   ];
 
   const getBiographicData = pax => {
-    return (
-      <ul className="bio-data">
-        <li>
-          <Xl8 xid="vet001">Name:</Xl8>{" "}
-          {`${pax.lastName}, ${(pax.firstName || "").toLowerCase()}`}
-        </li>
-        <li>
-          <Xl8 xid="vet002">DOB:</Xl8> {`${pax.dob} (${getAge(pax.dob)})`}
-        </li>
-        <li>
-          <Xl8 xid="vet003">Nationality:</Xl8> {pax.nationality}
-        </li>
-        <li>
-          <Xl8 xid="vet004">Document:</Xl8> {`${pax.document} (${pax.docType})`}
-        </li>
-      </ul>
-    );
+    return {
+      name: `${pax.lastName}, ${alt(pax.firstName).toLowerCase()}`,
+      gender: pax.gender,
+      dob: `${pax.dob} (${getAge(pax.dob)})`,
+      nationality: pax.nationality,
+      document: `DOC(${pax.docType}): ${pax.document}`,
+      flightId: pax.flightId,
+      paxId: pax.paxId
+    };
   };
   const Headers = [
     {
@@ -198,11 +196,7 @@ const Vetting = props => {
       Accessor: "paxName",
       Xl8: true,
       Header: ["wl021", "Biographic Information"],
-      Cell: ({ row }) => (
-        <Link to={`../paxDetail/${row.original.flightId}/${row.original.paxId}`}>
-          {getBiographicData(row.original)}
-        </Link>
-      )
+      Cell: ({ row }) => <BiographicInfo data={getBiographicData(row.original)} />
     },
     {
       Accessor: "status",
@@ -324,16 +318,7 @@ const Vetting = props => {
 
   const fetchData = () => {
     usersemails.get().then(res => {
-      const emails = asArray(res).map(userEmail => {
-        return {
-          label: userEmail.username,
-          key: userEmail.email,
-          name: userEmail.email,
-          type: "checkbox",
-          checked: false
-        };
-      });
-      setUsersEmails(emails);
+      setUsersEmails(res);
     });
 
     hitcats.get().then(res => {
