@@ -5,7 +5,7 @@ import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import { Tabs, Tab } from "react-bootstrap";
 import { wlpax, wldocs, hitcats } from "../../../services/serviceWrapper";
-import { hasData, localeDateOnly } from "../../../utils/utils";
+import { hasData, watchlistDateFormat } from "../../../utils/utils";
 import WLModal from "./WLModal";
 import "./constants.js";
 import CSVReader from "../../../components/CSVReader/CSVReader";
@@ -41,15 +41,6 @@ const Watchlist = props => {
     style: "danger"
   };
 
-  const parseDateInput = input => {
-    const stringDate = localeDateOnly(input); //[mm, dd, yyyy]
-
-    if (stringDate === "Invalid Date") return stringDate;
-
-    const splitedDate = stringDate.split("/");
-    return `${splitedDate[2]}-${splitedDate[0]}-${splitedDate[1]}`; //yyyy-mm-dd
-  };
-
   const handleImportData = results => {
     const service = tab === TAB.DOX ? wldocs : wlpax;
     const importedWl = { action: "Create", id: null, wlItems: [] };
@@ -58,7 +49,7 @@ const Watchlist = props => {
       const item = result.data || {};
       const catLabel = item["category"];
       item["categoryId"] = (wlcatData.find(item => item.label === catLabel) || {}).id;
-      if (item["dob"]) item["dob"] = parseDateInput(item["dob"]); //the rule engine throws error for date formated mm/dd/yyyy
+      if (item["dob"]) item["dob"] = watchlistDateFormat(item["dob"]); //the rule engine throws error for date formated mm/dd/yyyy
 
       delete item["category"]; // replaced by categoryId
 
