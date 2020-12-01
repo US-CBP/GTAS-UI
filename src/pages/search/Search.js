@@ -4,7 +4,7 @@ import Table from "../../components/table/Table";
 import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
 import { search } from "../../services/serviceWrapper";
-import { hasData, localeDate } from "../../utils/utils";
+import { asArray, hasData, localeDate } from "../../utils/utils";
 import { Link, useParams } from "@reach/router";
 import "./Search.scss";
 
@@ -116,11 +116,20 @@ const Search = props => {
 
   const pageSize = 500;
   const params = `?pageNumber=1&pageSize=${pageSize}&column=_score&dir=des&query=${searchParam}`;
-
+  const parseData = items => {
+    const parsedData = asArray(items).map(item => {
+      return {
+        ...item,
+        eta: localeDate(item.eta),
+        etd: localeDate(item.etd)
+      };
+    });
+    return parsedData;
+  };
   useEffect(() => {
     search.passengers(params).then(res => {
       if (hasData(res.result)) {
-        setData(res.result.passengers);
+        setData(parseData(res.result.passengers));
         setRefreshKey(refreshKey + 1);
       }
     });
