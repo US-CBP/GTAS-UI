@@ -22,4 +22,4 @@ RUN chmod +x env.sh
 COPY --from=build /usr/src/app/build/ /usr/share/nginx/html
 EXPOSE 80
 
-CMD ["/bin/bash", "-c", "./env.sh && nginx -g \"daemon off;\""]
+#CMD ["/bin/bash", "-c", "./env.sh && nginx -g \"daemon off;\""]
