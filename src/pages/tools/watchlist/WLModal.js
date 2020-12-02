@@ -5,7 +5,7 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
 
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
-import { hasData, asArray } from "../../../utils/utils";
+import { hasData, asArray, watchlistDateFormat } from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
 import Modal, {
   ModalBody,
@@ -21,6 +21,8 @@ const WLModal = props => {
   const id = props.id || 0;
   const isEdit = id !== 0;
   const mode = isEdit ? "Edit" : "Add";
+  const data = props.data;
+  const parsedData = hasData(data) ? { ...data, dob: new Date(data["dob"]) } : data;
   const title =
     (type || {}) === TAB.DOX ? (
       id === 0 ? (
@@ -113,12 +115,14 @@ const WLModal = props => {
       <LabelledInput
         datafield
         labelText={<Xl8 xid="wlm010"> Date of Birth</Xl8>}
-        inputType="text"
+        inputType="dateTime"
         name="dob"
         required={true}
         alt="Date of Birth"
         callback={onFormChange}
         spacebetween
+        format="MM/dd/yyyy"
+        disableCalendar={true}
       />
       <LabelledInput
         datafield
@@ -146,7 +150,7 @@ const WLModal = props => {
     const documentNumber = vals["documentNumber"];
     const firstName = vals["firstName"];
     const lastName = vals["lastName"];
-    const dob = vals["dob"]?.replaceAll("/", "-");
+    const dob = watchlistDateFormat(vals["dob"]);
     const categoryId = vals["categoryId"];
     const action = isEdit ? "Update" : "Create";
     const recordId = mode === "Add" ? "null" : id;
@@ -195,14 +199,14 @@ const WLModal = props => {
         <ModalTitle>{title}</ModalTitle>
       </ModalHeader>
       <ModalBody>
-        <Container fluid>
+        <Container fluid className="wl-modal">
           <Form
             submitService={service}
             title=""
             callback={onFormExit}
             action={mode.toLowerCase()}
             paramCallback={preSubmit}
-            data={props.data}
+            data={parsedData}
             cancellable
           >
             {fields.props.children}

@@ -3,9 +3,9 @@ import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import { Button, Tabs, Tab, Row, DropdownButton, Dropdown } from "react-bootstrap";
+import { Tabs, Tab } from "react-bootstrap";
 import { wlpax, wldocs, hitcats } from "../../../services/serviceWrapper";
-import { hasData } from "../../../utils/utils";
+import { hasData, watchlistDateFormat } from "../../../utils/utils";
 import WLModal from "./WLModal";
 import "./constants.js";
 import CSVReader from "../../../components/CSVReader/CSVReader";
@@ -23,7 +23,6 @@ const Watchlist = props => {
   const [file, setFile] = useState();
 
   const [showModal, setShowModal] = useState(false);
-  const [showImport, setShowImport] = useState(false);
   const [id, setId] = useState(0);
   const [key, setKey] = useState(0);
   const [data, setData] = useState();
@@ -43,29 +42,20 @@ const Watchlist = props => {
   };
 
   const handleImportData = results => {
-    const keys = {
-      "First Name": "firstName",
-      "Last Name": "lastName",
-      DOB: "dob",
-      Category: "categoryId",
-      "Document Number": "documentNumber",
-      "Document Type": "documentType"
-    };
-
     const service = tab === TAB.DOX ? wldocs : wlpax;
     const importedWl = { action: "Create", id: null, wlItems: [] };
     results.forEach(result => {
-      const item = {};
-
-      for (let key in result.data) {
-        const newKey = keys[key];
-
-        item[newKey] = result.data[key];
-      }
-      const catLabel = item["categoryId"];
+      let isValidItem = true;
+      const item = result.data || {};
+      const catLabel = item["category"];
       item["categoryId"] = (wlcatData.find(item => item.label === catLabel) || {}).id;
-      if (item["dob"]) item["dob"].replaceAll("/", "-"); //the rule engine throws error for date formated mm/dd/yyyy
-      importedWl.wlItems.push(item);
+      if (item["dob"]) item["dob"] = watchlistDateFormat(item["dob"]); //the rule engine throws error for date formated mm/dd/yyyy
+
+      delete item["category"]; // replaced by categoryId
+
+      if (item["dob"] === "Invalid Date") isValidItem = false;
+
+      if (isValidItem) importedWl.wlItems.push(item);
     });
 
     service.post(importedWl).then(res => {
