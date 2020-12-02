@@ -23,9 +23,6 @@ import Page404 from "./pages/page404/Page404";
 import "./App.scss";
 import "font-awesome/css/font-awesome.min.css";
 
-const kibanaUrl = process.env.REACT_APP_KIBANA_LOGIN;
-const neo4jUrl = process.env.REACT_APP_NEO4J_BROWSER;
-
 const Flights = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")
 );
@@ -202,10 +199,6 @@ export default class App extends React.Component {
                   <ForgotPassword path="/forgot-password"></ForgotPassword>
                 </Router>
               </Suspense>
-              <div>
-                <h1>{process.env.REACT_APP_NEO4J_BROWSER}</h1>
-                <h1>{process.env.REACT_APP_KIBANA_LOGIN}</h1>
-              </div>
               {/* {this.state.showModal ? (
                 <GModal>
                   <div>
