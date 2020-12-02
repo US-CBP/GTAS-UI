@@ -45,9 +45,7 @@ jobs:
         run: |
           echo >> .env
           echo REACT_APP_BASE_URL=$REACT_APP_BASE_URL >> .env
-          echo >> .env
           echo REACT_APP_KIBANA_LOGIN=$REACT_APP_KIBANA_LOGIN >> .env
-          echo >> .env
           echo REACT_APP_NEO4J_BROWSER=$REACT_APP_NEO4J_BROWSER >> .env
       - uses: docker/build-push-action@v2
         name: Build and push GTAS UI
