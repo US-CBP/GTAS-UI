@@ -81,7 +81,7 @@ function stringify(body) {
 }
 
 // APB - ENTITY CONSTANTS and ENTITY METHODS is the only code we should need to touch when adding new endpoints
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = window?._env_ ? window._env_.REACT_APP_BASE_URL : process.env.REACT_APP_BASE_URL;
 
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
@@ -142,8 +142,6 @@ const NOTIFICATION = `${BASE_URL}gtas/users/notify`;
 const HOST = `${BASE_URL}gtas/config/`;
 const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
-const NEO4JURL = HOST + "/neo4j/";
-const KIBANAURL = HOST + "/kibanaUrl/";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 const LOGFILE = `${BASE_URL}gtas/api/logs/`;
 const SIGNUP = `${BASE_URL}gtas/user/signup/new`;
@@ -510,9 +508,9 @@ export const seats = {
   get: flightId => get(SEATS, BASEHEADER, flightId)
 };
 
-export const neo4jUrl = {
-  get: () => get(NEO4JURL, BASEHEADER)
-};
-export const kibanaUrl = {
-  get: () => get(KIBANAURL, BASEHEADER)
-};
+// export const neo4jUrl = {
+//   get: () => get(NEO4JURL, BASEHEADER)
+// };
+// export const kibanaUrl = {
+//   get: () => get(KIBANAURL, BASEHEADER)
+// };

@@ -147,6 +147,9 @@ const LanguageEditor = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/lang/LanguageEditor")
 );
 
+const NEO4JURL = window?._env_ ? window._env_.REACT_APP_BASE_NEO4J_BROWSER : process.env.REACT_APP_BASE_NEO4J_BROWSER;
+const KIBANAURL = window?._env_ ? window._env_.REACT_APP_BASE_KIBANA_LOGIN : process.env.REACT_APP_KIBANA_LOGIN;
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -393,13 +396,13 @@ export default class App extends React.Component {
                                 name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
                                 desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}
                                 icon="kibana"
-                                path={window.location.origin + "/kibana"}
+                                path={KIBANAURL}
                                 hasExternalLink={true}
                               ></Auxiliary>
                               <Auxiliary
                                 name={<Xl8 xid="app033">Neo4j</Xl8>}
                                 desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
-                                path={window.location.origin + "/neo4j"}
+                                path={NEO4JURL}
                                 icon="neo4j"
                                 hasExternalLink={true}
                               ></Auxiliary>
