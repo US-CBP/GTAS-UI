@@ -40,6 +40,8 @@ jobs:
         shell: bash
         env:
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
+          REACT_APP_KIBANA_LOGIN: ${{ secrets.REACT_APP_KIBANA_LOGIN }}
+          REACT_APP_NEO4J_BROWSER: ${{ secrets.REACT_APP_NEO4J_BROWSER }}
         run: |
           echo >> .env
           echo REACT_APP_BASE_URL=$REACT_APP_BASE_URL >> .env
