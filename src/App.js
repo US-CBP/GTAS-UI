@@ -147,8 +147,8 @@ const LanguageEditor = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/lang/LanguageEditor")
 );
 
-const NEO4JURL = window?._env_ ? window._env_.REACT_APP_BASE_NEO4J_BROWSER : process.env.REACT_APP_BASE_NEO4J_BROWSER;
-const KIBANAURL = window?._env_ ? window._env_.REACT_APP_BASE_KIBANA_LOGIN : process.env.REACT_APP_KIBANA_LOGIN;
+const NEO4JURL = window?._env_ ? window._env_.REACT_APP_BASE_NEO4J_BROWSER : "https://localhost:5601/login?next=%2F";
+const KIBANAURL = window?._env_ ? window._env_.REACT_APP_BASE_KIBANA_LOGIN : "http://localhost:7474/browser/";
 
 export default class App extends React.Component {
   constructor(props) {
