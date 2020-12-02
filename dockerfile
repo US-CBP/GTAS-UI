@@ -14,8 +14,12 @@ FROM nginx:1.19.5-perl
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY main.conf /etc/nginx/nginx.conf
+COPY ./env.sh .
+COPY .env .
+
+RUN chmod +x env.sh
 
 COPY --from=build /usr/src/app/build/ /usr/share/nginx/html
 EXPOSE 80
 
-# CMD ["nginx", "-g", "daemon off;"]
+#CMD ["/bin/bash", "-c", "./env.sh && nginx -g \"daemon off;\""]
