@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Recreate config file
-rm -rf ./env-config.js
-touch ./env-config.js
+rm -rf ./public/env-config.js
+touch ./public/env-config.js
 
 # Add assignment
-echo "window._env_ = {" >> ./env-config.js
+echo "window._env_ = {" >> ./public/env-config.js
 
 # Read each line in .env file
 # Each line represents key=value pairs
@@ -26,4 +26,4 @@ do
   echo "  $varname: \"$value\"," >> ./public/env-config.js
 done < .env
 
-echo "}" >> ./env-config.js
+echo "}" >> ./public/env-config.js
