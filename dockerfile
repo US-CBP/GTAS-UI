@@ -14,6 +14,8 @@ FROM nginx:1.19.5-perl
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY main.conf /etc/nginx/nginx.conf
+
+WORKDIR /usr/share/nginx/html
 COPY ./env.sh .
 COPY .env .
 
