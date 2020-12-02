@@ -223,6 +223,8 @@ class LabelledInput extends Component {
           callback={this.onChangeDatePicker}
           required={this.state.required}
           readOnly={this.props.readOnly}
+          format={this.props.format}
+          disableCalendar={this.props.disableCalendar}
         />
       );
     }
@@ -274,7 +276,9 @@ LabelledInput.propTypes = {
   isVisible: PropTypes.bool,
   readOnly: PropTypes.bool,
   onChange: PropTypes.func,
-  toggleDateTimePicker: PropTypes.func
+  toggleDateTimePicker: PropTypes.func,
+  disableCalendar: PropTypes.bool,
+  format: PropTypes.string
 };
 
 export default LabelledInput;

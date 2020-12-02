@@ -339,3 +339,13 @@ export function formatRuleConditions(conditions) {
 
   return conditions.split("$$$").join("\n");
 }
+
+export const watchlistDateFormat = input => {
+  const stringDate = new Date(input);
+  if (stringDate === "Invalid Date") return "Invalid Date";
+  const day = stringDate.getDate(); // use getDate(). getDay() returns the day of the week
+  const month = stringDate.getMonth() + 1; // 0 based
+  const year = stringDate.getFullYear();
+
+  return `${year}-${month}-${day}`;
+};

@@ -4,6 +4,7 @@ import DateTimePicker from "react-datetime-picker";
 
 const ReactDateTimePicker = props => {
   const [value, setValue] = useState(props.inputVal);
+  const format = props.format || "MM/dd/yyyy hh:mm aa";
   const onchange = e => {
     setValue(e);
     props.callback(e);
@@ -21,12 +22,28 @@ const ReactDateTimePicker = props => {
         clearIcon={null}
         calendarIcon={null}
         disableClock={true}
-        format="MM/dd/yyyy hh:mm aa"
+        format={format}
+        yearPlaceholder="YYYY"
+        monthPlaceholder="MM"
+        dayPlaceholder="DD"
+        hourPlaceholder="hh"
+        minutePlaceholder="mm"
+        disableCalendar={props.disableCalendar}
       />
     </div>
   );
 };
 
-DateTimePicker.propTypes = {};
+ReactDateTimePicker.propTypes = {
+  className: PropTypes.string,
+  name: PropTypes.string,
+  required: PropTypes.oneOf([true, false, ""]),
+  alt: PropTypes.oneOf(PropTypes.object, PropTypes.string),
+  readOnly: PropTypes.string,
+  disableCalendar: PropTypes.bool,
+  callback: PropTypes.func,
+  format: PropTypes.string,
+  inputVal: PropTypes.oneOf(PropTypes.string, PropTypes.object)
+};
 
 export default ReactDateTimePicker;
