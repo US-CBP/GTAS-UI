@@ -6,3 +6,8 @@
 .wl-modal-content {
   min-width: 330px !important;
 }
+
+.wl-modal .date-picker {
+  width: 100%;
+  text-align: right;
+}

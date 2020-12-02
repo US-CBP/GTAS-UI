@@ -199,7 +199,7 @@ const WLModal = props => {
         <ModalTitle>{title}</ModalTitle>
       </ModalHeader>
       <ModalBody>
-        <Container fluid>
+        <Container fluid className="wl-modal">
           <Form
             submitService={service}
             title=""
