@@ -56,6 +56,7 @@ const WLModal = props => {
   const docFields = (
     <>
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm005"> Document Type</Xl8>}
         inputType="select"
@@ -69,22 +70,22 @@ const WLModal = props => {
         spacebetween
       />
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm006"> Document Number</Xl8>}
         inputType="text"
         name="documentNumber"
-        required={true}
         alt="Document Number"
         callback={onFormChange}
         spacebetween
       />
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm007"> Category ID</Xl8>}
         inputType="select"
         options={categories}
         name="categoryId"
-        required={true}
         alt="Category ID"
         callback={onFormChange}
         spacebetween
@@ -95,6 +96,7 @@ const WLModal = props => {
   const paxFields = (
     <>
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm008"> First Name</Xl8>}
         inputType="text"
@@ -104,6 +106,7 @@ const WLModal = props => {
         spacebetween
       />
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm009"> Last Name</Xl8>}
         inputType="text"
@@ -113,11 +116,11 @@ const WLModal = props => {
         spacebetween
       />
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm010"> Date of Birth</Xl8>}
         inputType="dateTime"
         name="dob"
-        required={true}
         alt="Date of Birth"
         callback={onFormChange}
         spacebetween
@@ -130,7 +133,7 @@ const WLModal = props => {
         inputType="select"
         options={categories}
         name="categoryId"
-        required={true}
+        required
         alt="Category ID"
         callback={onFormChange}
         spacebetween
@@ -193,7 +196,7 @@ const WLModal = props => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      className="max-500-width-container"
+      className="max-600-width-container"
     >
       <ModalHeader closeButton>
         <ModalTitle>{title}</ModalTitle>

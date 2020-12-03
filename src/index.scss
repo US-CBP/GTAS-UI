@@ -26,3 +26,9 @@ $idx: 2;
 $background-image-url: "../../images/" + $idx + ".jpg";
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+.global-modal {
+  position: absolute;
+  bottom: 15px;
+  right: 100px;
+}
