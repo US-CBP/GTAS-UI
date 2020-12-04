@@ -10,3 +10,19 @@
   width: 33%;
   text-align: center;
 }
+
+.hits-flag {
+  margin-right: 3px;
+}
+
+.hits-flag.high {
+  color: red;
+}
+
+.hits-flag.med {
+  color: orange;
+}
+
+.hits-flag.low {
+  color: #e2d402;
+}

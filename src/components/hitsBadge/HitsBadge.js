@@ -9,7 +9,7 @@ const HitsBadge = props => {
       <span className="hits-cell">
         {props.high > 0 && (
           <>
-            <i className="fa fa-flag" style={{ color: "red" }} title="top severity"></i>
+            <i className="fa fa-flag hits-flag high" title="top severity"></i>
             {props.high}
           </>
         )}
@@ -17,11 +17,7 @@ const HitsBadge = props => {
       <span className="hits-cell">
         {props.med > 0 && (
           <>
-            <i
-              className="fa fa-flag"
-              style={{ color: "orange" }}
-              title="high severity"
-            ></i>
+            <i className="fa fa-flag hits-flag med" title="high severity"></i>
             {props.med}
           </>
         )}
@@ -29,11 +25,7 @@ const HitsBadge = props => {
       <span className="hits-cell">
         {props.low > 0 && (
           <>
-            <i
-              className="fa fa-flag"
-              style={{ color: "#FCF300" }}
-              title="normal severity"
-            ></i>
+            <i className="fa fa-flag hits-flag low" title="normal severity"></i>
             {props.low}
           </>
         )}
