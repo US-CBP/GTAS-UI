@@ -6,10 +6,11 @@ import FlightBadge from "../../components/flightBadge/FlightBadge";
 // import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
-import { Col, Tabs, Tab } from "react-bootstrap";
+import HitsBadge from "../../components/hitsBadge/HitsBadge";
 import Main from "../../components/main/Main";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { Link } from "@reach/router";
+
 import { flightPassengers } from "../../services/serviceWrapper";
 import {
   asArray,
@@ -21,6 +22,7 @@ import {
   sortableDate
 } from "../../utils/utils";
 import { ROLE } from "../../utils/constants";
+import { Col, Tabs, Tab } from "react-bootstrap";
 import "./FlightPax.css";
 
 const FlightPax = props => {
@@ -34,12 +36,18 @@ const FlightPax = props => {
   const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
 
   const hasAnyHits = item => {
-    if (item.watchlistHitCount > 0 || item.manualHitCount > 0 || item.fuzzyHitCount > 0 || item.ruleHitCount > 0
-        || item.graphHitCount > 0 || item.externalHitCount > 0) {
+    if (
+      item.watchlistHitCount > 0 ||
+      item.manualHitCount > 0 ||
+      item.fuzzyHitCount > 0 ||
+      item.ruleHitCount > 0 ||
+      item.graphHitCount > 0 ||
+      item.externalHitCount > 0
+    ) {
       return true;
     }
     return false;
-  }
+  };
 
   const parseData = data => {
     return asArray(data).map(item => {
@@ -54,7 +62,8 @@ const FlightPax = props => {
       item.watchhit = item.onWatchList ? 1 : "";
       item.hitCounts = `${item.lowPrioHitCount || 0}${item.medPrioHitCount ||
         0}${item.highPrioHitCount || 0}`;
-      item.totalHitCounts = item.lowPrioHitCount+item.medPrioHitCount+item.highPrioHitCount;
+      item.totalHitCounts =
+        item.lowPrioHitCount + item.medPrioHitCount + item.highPrioHitCount;
       item.aggregateHitsCount = {
         low: item.lowPrioHitCount,
         med: item.medPrioHitCount,
@@ -120,7 +129,7 @@ const FlightPax = props => {
     Xl8: true,
     Header: ["fp026", "Hit Aggregates"],
     disableGroupBy: true,
-    aggregate: 'sum',
+    aggregate: "sum",
     Aggregated: ({ value }) => `${value} Hits`,
     Cell: ({ row }) => {
       return (
