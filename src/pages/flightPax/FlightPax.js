@@ -3,7 +3,6 @@ import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
-// import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import HitsBadge from "../../components/hitsBadge/HitsBadge";
@@ -18,7 +17,8 @@ import {
   getAge,
   alt,
   localeDateOnly,
-  localeDate,
+  aboveZero,
+  lpad5,
   sortableDate
 } from "../../utils/utils";
 import { ROLE } from "../../utils/constants";
@@ -60,16 +60,38 @@ const FlightPax = props => {
       item.dobAge = `${alt(displayDobDate)} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
-      item.hitCounts = `${item.highPrioHitCount || 0}${item.medPrioHitCount ||
-        0}${item.lowPrioHitCount || 0}`;
+      item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
+        item.medPrioHitCount
+      )}:${lpad5(item.lowPrioHitCount)}`;
 
       item.aggregateHitsCount = {
         low: item.lowPrioHitCount,
         med: item.medPrioHitCount,
         high: item.highPrioHitCount
       };
+
       return item;
     });
+  };
+
+  // For an array of hitCounts strings for all travelers in a co-traveler group we get the sum of all hits.
+  // This aggregation allows us to sort the hitCounts col by severity using the colon-delimited strings
+  // and still capture the total number of hits when the table is grouped by reservation number (co-travelers).
+  // So for a co-traveler hit array like this:
+  //    ["00002:00003:00000", "00000:00002:00000", "00000:00000:00001"]
+  // where each string represents the hits for a single co-traveler, we sum all the numeric sections
+  const sumCotravelerHits = cotravelerHits => {
+    const groupHitTotal = cotravelerHits.reduce(
+      (totalHitsAccumulator, hitCountString) => {
+        const sum = hitCountString
+          .split(":")
+          .reduce((currentPaxTotal, hitSection) => +currentPaxTotal + +hitSection, 0);
+        return +sum + totalHitsAccumulator;
+      },
+      0
+    );
+
+    return groupHitTotal;
   };
 
   const hitHeaders = [
@@ -79,7 +101,7 @@ const FlightPax = props => {
       Header: ["fp011", "Rule Hits"],
       disableGroupBy: true,
       aggregate: "sum",
-      Aggregated: ({ value }) => `${value} Hits`
+      Aggregated: ({ value }) => aboveZero(value)
     },
     {
       Accessor: "watchlistHitCount",
@@ -87,7 +109,7 @@ const FlightPax = props => {
       Header: ["fp012", "Watchlist Hits"],
       disableGroupBy: true,
       aggregate: "sum",
-      Aggregated: ({ value }) => `${value} Hits`
+      Aggregated: ({ value }) => aboveZero(value)
     },
     {
       Accessor: "graphHitCount",
@@ -95,7 +117,7 @@ const FlightPax = props => {
       Header: ["fp022", "Graph Hits"],
       disableGroupBy: true,
       aggregate: "sum",
-      Aggregated: ({ value }) => `${value} Hits`
+      Aggregated: ({ value }) => aboveZero(value)
     },
     {
       Accessor: "fuzzyHitCount",
@@ -103,7 +125,7 @@ const FlightPax = props => {
       Header: ["fp023", "Partial Hits"],
       disableGroupBy: true,
       aggregate: "sum",
-      Aggregated: ({ value }) => `${value} Hits`
+      Aggregated: ({ value }) => aboveZero(value)
     },
     {
       Accessor: "manualHitCount",
@@ -111,7 +133,7 @@ const FlightPax = props => {
       Header: ["fp024", "Manual Hits"],
       disableGroupBy: true,
       aggregate: "sum",
-      Aggregated: ({ value }) => `${value} Hits`
+      Aggregated: ({ value }) => aboveZero(value)
     },
     {
       Accessor: "externalHitCount",
@@ -119,27 +141,29 @@ const FlightPax = props => {
       Header: ["fp025", "External Hits"],
       disableGroupBy: true,
       aggregate: "sum",
-      Aggregated: ({ value }) => `${value} Hits`
+      Aggregated: ({ value }) => aboveZero(value)
     }
   ];
 
-  const aggregateHitHeader = {
-    Accessor: "hitCounts",
-    Xl8: true,
-    Header: ["fp026", "Hit Aggregates"],
-    disableGroupBy: true,
-    aggregate: "sum",
-    Aggregated: ({ value }) => `${value} Hits`,
-    Cell: ({ row }) => (
-      <HitsBadge
-        high={row.original.aggregateHitsCount.high}
-        med={row.original.aggregateHitsCount.med}
-        low={row.original.aggregateHitsCount.low}
-      ></HitsBadge>
-    )
-  };
+  const aggregateHitHeader = [
+    {
+      Accessor: "hitCounts",
+      Xl8: true,
+      Header: ["fp026", "Hit Aggregates"],
+      disableGroupBy: true,
+      aggregate: sumCotravelerHits,
+      Aggregated: ({ value }) => aboveZero(value),
+      Cell: ({ row }) => (
+        <HitsBadge
+          high={row.original.aggregateHitsCount.high}
+          med={row.original.aggregateHitsCount.med}
+          low={row.original.aggregateHitsCount.low}
+        ></HitsBadge>
+      )
+    }
+  ];
 
-  const arrayHeaderFixer = tab !== "hits" ? [aggregateHitHeader] : hitHeaders;
+  const arrayHeaderFixer = tab !== "hits" ? aggregateHitHeader : hitHeaders;
   const headers = [
     ...arrayHeaderFixer,
     {
@@ -165,8 +189,7 @@ const FlightPax = props => {
         );
       },
       disableGroupBy: true,
-      aggregate: "count",
-      Aggregated: ({}) => ``
+      Aggregated: () => ``
     },
     {
       Accessor: "firstName",
@@ -187,8 +210,7 @@ const FlightPax = props => {
       Header: ["fp018", "DOB"],
       Cell: ({ row }) => <div>{row.original.dobAge}</div>,
       disableGroupBy: true,
-      aggregate: "count",
-      Aggregated: ({}) => ``
+      Aggregated: () => ``
     },
     {
       Accessor: "docNumber",
@@ -286,8 +308,6 @@ const FlightPax = props => {
               ></CountdownBadge>
             </div>
             <br />
-            {/* { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
-      { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName }, */}
 
             <table class="table table-sm table-borderless">
               <tbody>

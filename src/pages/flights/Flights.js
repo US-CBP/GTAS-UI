@@ -14,7 +14,7 @@ import { UserContext } from "../../context/user/UserContext";
 
 import { Link } from "@reach/router";
 import { flights } from "../../services/serviceWrapper";
-import { hasData, alt, localeDate, asArray, aboveZero } from "../../utils/utils";
+import { hasData, alt, localeDate, asArray, aboveZero, lpad5 } from "../../utils/utils";
 import { TIME, ROLE } from "../../utils/constants";
 import { Col, Tabs, Tab } from "react-bootstrap";
 import "./Flights.css";
@@ -72,10 +72,9 @@ const Flights = props => {
       item.externalHitCount = aboveZero(item.externalHitCount);
       item.manualHitCount = aboveZero(item.manualHitCount);
 
-      item.hitCounts = `${alt(item.highPrioHitCount, 0)}${alt(
-        item.medPrioHitCount,
-        0
-      )}${alt(item.lowPrioHitCount, 0)}`;
+      item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
+        item.medPrioHitCount
+      )}:${lpad5(item.lowPrioHitCount)}`;
 
       item.aggregateHitsCount = {
         low: item.lowPrioHitCount,
@@ -93,8 +92,7 @@ const Flights = props => {
     setAllData(alt(parsedAll, []));
     setHitData(alt(parsedHits, []));
 
-    const newkey = tablekey + 1;
-    setTablekey(newkey);
+    setTablekey(tablekey + 1);
   };
 
   //TODO: refactor
@@ -126,8 +124,6 @@ const Flights = props => {
 
     return "?request=" + encodeURIComponent(JSON.stringify(paramObject));
   };
-
-  const now = new Date();
 
   const aggregateHitHeader = {
     Accessor: "hitCounts",
@@ -163,7 +159,7 @@ const Flights = props => {
       Cell: ({ row }) => (
         <CountdownBadge
           future={row.original.timer}
-          baseline={now}
+          baseline={new Date()}
           direction={row.original.direction}
         ></CountdownBadge>
       )

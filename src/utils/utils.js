@@ -353,3 +353,9 @@ export const watchlistDateFormat = input => {
 
   return `${year}-${month}-${day}`;
 };
+
+export const lpad5 = val => {
+  return alt(val, 0)
+    .toString()
+    .padStart(5, "0");
+};
