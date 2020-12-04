@@ -60,10 +60,9 @@ const FlightPax = props => {
       item.dobAge = `${alt(displayDobDate)} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
-      item.hitCounts = `${item.lowPrioHitCount || 0}${item.medPrioHitCount ||
-        0}${item.highPrioHitCount || 0}`;
-      item.totalHitCounts =
-        item.lowPrioHitCount + item.medPrioHitCount + item.highPrioHitCount;
+      item.hitCounts = `${item.highPrioHitCount || 0}${item.medPrioHitCount ||
+        0}${item.lowPrioHitCount || 0}`;
+
       item.aggregateHitsCount = {
         low: item.lowPrioHitCount,
         med: item.medPrioHitCount,
@@ -125,53 +124,21 @@ const FlightPax = props => {
   ];
 
   const aggregateHitHeader = {
-    Accessor: "totalHitCounts",
+    Accessor: "hitCounts",
     Xl8: true,
     Header: ["fp026", "Hit Aggregates"],
     disableGroupBy: true,
     aggregate: "sum",
     Aggregated: ({ value }) => `${value} Hits`,
-    Cell: ({ row }) => {
-      return (
-        <span
-          style={{
-            "justify-content": "space-between",
-            display: "flex",
-            "align-items": "baseline",
-            marginLeft: "5px",
-            marginRight: "5px"
-          }}
-        >
-          {row.original.aggregateHitsCount.low > 0 && (
-            <span>
-              <i
-                className="fa fa-flag"
-                style={{ color: "#FCF300" }}
-                title="normal severity"
-              ></i>
-              {row.original.aggregateHitsCount.low}
-            </span>
-          )}
-          {row.original.aggregateHitsCount.med > 0 && (
-            <span>
-              <i
-                className="fa fa-flag"
-                style={{ color: "orange" }}
-                title="high severity"
-              ></i>
-              {row.original.aggregateHitsCount.med}
-            </span>
-          )}
-          {row.original.aggregateHitsCount.high > 0 && (
-            <span>
-              <i className="fa fa-flag" style={{ color: "red" }} title="top severity"></i>{" "}
-              {row.original.aggregateHitsCount.high}
-            </span>
-          )}
-        </span>
-      );
-    }
+    Cell: ({ row }) => (
+      <HitsBadge
+        high={row.original.aggregateHitsCount.high}
+        med={row.original.aggregateHitsCount.med}
+        low={row.original.aggregateHitsCount.low}
+      ></HitsBadge>
+    )
   };
+
   const arrayHeaderFixer = tab !== "hits" ? [aggregateHitHeader] : hitHeaders;
   const headers = [
     ...arrayHeaderFixer,
