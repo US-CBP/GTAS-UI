@@ -190,10 +190,7 @@ const PaxDetail = props => {
       setFlightBadge(getFlightBadgeData(res));
       setPnr({ ...res.pnrVo, flightId: props.flightId });
       setApisMessage(res.apisMessageVo);
-
-      const fls = asArray(res.pnrVo?.flightLegs);
-      console.log("flight leg segment data!!", fls);
-      setFlightLegsSegmentData(fls);
+      setFlightLegsSegmentData(asArray(res.pnrVo?.flightLegs));
       setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
       setHasPnrRecord(res.pnrVo?.pnrRecordExists || false);
       setPaxDetailsData(res);
