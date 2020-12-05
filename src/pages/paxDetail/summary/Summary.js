@@ -157,7 +157,7 @@ const Summary = props => {
     paxEventNotesHistory.get(props.paxId, true).then(res => {
       const notesData = res.paxNotes
         ?.map(note => {
-          const type = (note.noteTypes || []).map(t => {
+          const type = (note.noteType || []).map(t => {
             return t.noteType;
           });
           return {
