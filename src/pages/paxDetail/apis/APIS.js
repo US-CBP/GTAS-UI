@@ -10,14 +10,14 @@ const APIS = props => {
   const data = hasData(props.data) ? props.data : {};
   const headers = {
     bags: {
-      bagId: <Xl8 xid="apis005">Bag Id</Xl8>
+      bagId: <Xl8 xid="apis005">Bag ID</Xl8>
     },
     phoneNumbers: {
       number: <Xl8 xid="apis006">Phone Number</Xl8>
     },
     passengersOnReservation: {
       lastName: <Xl8 xid="apis007">Last Name</Xl8>,
-      firstName: <Xl8 xid="apis008">first Name</Xl8>,
+      firstName: <Xl8 xid="apis008">First Name</Xl8>,
       middleName: <Xl8 xid="apis009">Middle Name</Xl8>,
       passengerType: <Xl8 xid="apis010">Type</Xl8>,
       residencyCountry: <Xl8 xid="apis011">Residence</Xl8>,
