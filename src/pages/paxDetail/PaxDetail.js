@@ -47,6 +47,7 @@ const PaxDetail = props => {
   const [paxDetailsData, setPaxDetailsData] = useState();
   const [paxDocuments, setPaxDocuments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isStepperLoading, setIsStepperLoading] = useState(false);
 
   const cb = () => {};
   const refreshEventNotesCard = () => {
@@ -182,12 +183,17 @@ const PaxDetail = props => {
   };
 
   const fetchData = () => {
+    setIsLoading(true);
+    setIsStepperLoading(true);
     paxdetails.get(props.flightId, props.paxId).then(res => {
       setPax(paxinfoData(res));
       setFlightBadge(getFlightBadgeData(res));
       setPnr({ ...res.pnrVo, flightId: props.flightId });
       setApisMessage(res.apisMessageVo);
-      setFlightLegsSegmentData(asArray(res.pnrVo?.flightLegs));
+
+      const fls = asArray(res.pnrVo?.flightLegs);
+      console.log("flight leg segment data!!", fls);
+      setFlightLegsSegmentData(fls);
       setHasApisRecord(res.apisMessageVo?.apisRecordExists || false);
       setHasPnrRecord(res.pnrVo?.pnrRecordExists || false);
       setPaxDetailsData(res);
@@ -199,7 +205,10 @@ const PaxDetail = props => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsStepperLoading(false);
+  }, [flightLegsSegmentData]);
+
+  useEffect(() => {
     fetchData();
   }, [props.paxId]);
 
@@ -216,9 +225,11 @@ const PaxDetail = props => {
         {hasData(flightBadge) && <FlightBadge data={flightBadge}></FlightBadge>}
         <Col className="notopmargin">
           <div className="filterform-container form">
-            {isLoading && <Loading></Loading>}
+            {isLoading && isStepperLoading && <Loading></Loading>}
             {!isLoading && <PaxInfo pax={pax}></PaxInfo>}
-            {hasData(flightLegsSegmentData) && <Stepper steps={flightLegsSegmentData} />}
+            {!isStepperLoading && hasData(flightLegsSegmentData) && (
+              <Stepper steps={flightLegsSegmentData} />
+            )}
           </div>
         </Col>
       </SidenavContainer>
