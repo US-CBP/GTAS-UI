@@ -34,6 +34,20 @@ const Flights = props => {
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
 
+  const hasAnyHits = item => {
+    if (
+      item.listHitCount > 0 ||
+      item.manualHitCount > 0 ||
+      item.fuzzyHitCount > 0 ||
+      item.ruleHitCount > 0 ||
+      item.graphHitCount > 0 ||
+      item.externalHitCount > 0
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   const setDataWrapper = (data, retainState) => {
     if (!retainState) setTableState(initTableState);
 
@@ -49,11 +63,39 @@ const Flights = props => {
       const severity = alt(item.ruleHitCount, 0) + alt(item.listHitCount, 0);
       item.severity = severity > 0 ? severity : "";
 
+      //Display null on hitcounts that are 0
+      if (item.listHitCount === 0) {
+        item.listHitCount = "";
+      }
+      if (item.ruleHitCount === 0) {
+        item.ruleHitCount = "";
+      }
+      if (item.graphHitCount === 0) {
+        item.graphHitCount = "";
+      }
+      if (item.fuzzyHitCount === 0) {
+        item.fuzzyHitCount = "";
+      }
+      if (item.externalHitCount === 0) {
+        item.externalHitCount = "";
+      }
+      if (item.manualHitCount === 0) {
+        item.manualHitCount = "";
+      }
+
+      item.hitCounts = `${item.lowPrioHitCount || 0}${item.medPrioHitCount ||
+        0}${item.highPrioHitCount || 0}`;
+      item.aggregateHitsCount = {
+        low: item.lowPrioHitCount,
+        med: item.medPrioHitCount,
+        high: item.highPrioHitCount
+      };
+
       return item;
     });
 
     const parsedHits = parsedAll.filter(item => {
-      return item.severity > 0;
+      return hasAnyHits(item);
     });
 
     setAllData(alt(parsedAll, []));
@@ -95,6 +137,63 @@ const Flights = props => {
 
   const now = new Date();
 
+  const aggregateHitHeader = {
+    Accessor: "hitCounts",
+    Xl8: true,
+    Header: ["fl024", "Hit Aggregates"],
+    disableGroupBy: true,
+    Cell: ({ row }) => {
+      return (
+        <span
+          style={{
+            "justify-content": "space-between",
+            display: "flex",
+            "align-items": "baseline",
+            marginLeft: "5px",
+            marginRight: "5px"
+          }}
+        >
+          {row.original.aggregateHitsCount.low > 0 && (
+            <span>
+              <i
+                className="fa fa-flag"
+                style={{ color: "#FCF300" }}
+                title="normal severity"
+              ></i>
+              {row.original.aggregateHitsCount.low}
+            </span>
+          )}
+          {row.original.aggregateHitsCount.med > 0 && (
+            <span>
+              <i
+                className="fa fa-flag"
+                style={{ color: "orange" }}
+                title="high severity"
+              ></i>
+              {row.original.aggregateHitsCount.med}
+            </span>
+          )}
+          {row.original.aggregateHitsCount.high > 0 && (
+            <span>
+              <i className="fa fa-flag" style={{ color: "red" }} title="top severity"></i>{" "}
+              {row.original.aggregateHitsCount.high}
+            </span>
+          )}
+        </span>
+      );
+    }
+  };
+
+  const hitHeaders = [
+    { Accessor: "listHitCount", Xl8: true, Header: ["fl013", "Watchlist Hits"] },
+    { Accessor: "ruleHitCount", Xl8: true, Header: ["fl014", "Rule Hits"] },
+    { Accessor: "graphHitCount", Xl8: true, Header: ["fl015", "Graph Hits"] },
+    { Accessor: "fuzzyHitCount", Xl8: true, Header: ["fl016", "Partial Hits"] },
+    { Accessor: "externalHitCount", Xl8: true, Header: ["fl017", "External Hits"] },
+    { Accessor: "manualHitCount", Xl8: true, Header: ["fl023", "Manual Hits"] }
+  ];
+
+  const arrayHeaderFixer = tab !== "hits" ? [aggregateHitHeader] : hitHeaders;
   const Headers = [
     {
       Accessor: "timer",
@@ -120,11 +219,7 @@ const Flights = props => {
       Header: ["fl011", "Departure"],
       Cell: ({ row }) => localeDate(row.original.etd)
     },
-    { Accessor: "listHitCount", Xl8: true, Header: ["fl013", "Watchlist Hits"] },
-    { Accessor: "ruleHitCount", Xl8: true, Header: ["fl014", "Rule Hits"] },
-    { Accessor: "graphHitCount", Xl8: true, Header: ["fl015", "Graph Hits"] },
-    { Accessor: "fuzzyHitCount", Xl8: true, Header: ["fl016", "Partial Hits"] },
-    { Accessor: "externalHitCount", Xl8: true, Header: ["fl017", "External Hits"] },
+    ...arrayHeaderFixer,
     {
       Accessor: "passengerCount",
       Xl8: true,
