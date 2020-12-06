@@ -59,7 +59,7 @@ const APIS = props => {
         <CardWithTable
           data={passengersOnReservation}
           headers={headers.passengersOnReservation}
-          title={<Xl8 xid="apis004">Passenger on Reservation</Xl8>}
+          title={<Xl8 xid="apis004">Passengers on Reservation</Xl8>}
         />
       </CardColumns>
     </Main>
