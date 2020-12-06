@@ -65,7 +65,7 @@ const EventNotesModal = props => {
         <ModalBody>
           <Form
             title=""
-            submitText={<Xl8 xid="evn003">Save</Xl8>}
+            // submitText={<Xl8 xid="evn003">Save</Xl8>}
             submitService={paxEventNotesHistory.post}
             callback={handleClose}
             action="add"

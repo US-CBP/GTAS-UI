@@ -167,7 +167,7 @@ const AttachmentModal = props => {
             title=""
             callback={postSubmit}
             action="add"
-            submitText={<Xl8 xid="attm005">Upload</Xl8>}
+            // submitText={<Xl8 xid="attm005">Upload</Xl8>}
             paramCallback={preSubmit}
             cancellable
           >

@@ -229,7 +229,7 @@ const PaxDetail = props => {
           leftChild={tablist}
         ></Title>
         <Fab icon={<i className="fa fa-plus" />} variant="info">
-          <Action text={<Xl8 xid="not001">Notify</Xl8>}>
+          <Action text={<Xl8 xid="not001">Notify Users</Xl8>}>
             <Notification paxId={props.paxId} icon />
           </Action>
           <Action text={<Xl8 xid="rep001">Download Report</Xl8>}>

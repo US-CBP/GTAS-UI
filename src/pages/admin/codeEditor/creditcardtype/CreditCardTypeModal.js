@@ -48,8 +48,8 @@ const CreditCardTypeModal = props => {
     customButtons.push(
       <Button
         type="button"
-        className="m-2 outline-dark-outline"
-        variant="outline-dark"
+        className="m-2"
+        variant="outline-danger"
         key="delete"
         onClick={() => props.actionCallback(ACTION.DELETE)}
       >
