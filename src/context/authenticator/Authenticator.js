@@ -1,16 +1,13 @@
 import React, { useContext } from "react";
-import { navigate } from "@reach/router";
+import { Redirect } from "@reach/router";
 import { UserContext } from "../user/UserContext";
-// import { hasData } from "../../utils/utils";
+import { FULLPATH_TO } from "../../utils/constants";
 
 const Authenticator = props => {
   const { getUserState } = useContext(UserContext);
   const user = getUserState() || {};
 
-  if (!user.authenticated) {
-    navigate("/login");
-    return <></>;
-  }
+  if (!user.authenticated) return <Redirect to={FULLPATH_TO.LOGIN} noThrow></Redirect>;
 
   return <>{props.children}</>;
 };
