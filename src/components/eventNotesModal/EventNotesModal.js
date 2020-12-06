@@ -55,7 +55,7 @@ const EventNotesModal = props => {
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        className="max-500-width-container"
+        className="max-600-width-container"
       >
         <ModalHeader closeButton>
           <ModalTitle>
