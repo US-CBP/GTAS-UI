@@ -53,7 +53,7 @@ const Summary = props => {
       category: <Xl8 xid="sum026">Category</Xl8>,
       passengerDocNumber: <Xl8 xid="sum027">Document Number</Xl8>,
       ruleConditions: <Xl8 xid="sum028">Conditions</Xl8>,
-      flightDate: <Xl8 xid="sum029">Flight ID</Xl8>,
+      date: <Xl8 xid="sum029">Flight Date</Xl8>,
       flightPaxLink: <Xl8 xid="sum030">Info</Xl8>
     }
   };
@@ -115,13 +115,17 @@ const Summary = props => {
 
   const fetchHistoricalHitsData = () => {
     historicalHits.get(props.paxId).then(res => {
-      const parsedData = asArray(res).map(hit => {
-        return {
-          ...hit,
-          flightPaxLink: getLinkToPaxDetails(hit),
-          ruleConditions: formatRuleConditions(hit.ruleConditions)
-        };
-      });
+      const parsedData = asArray(res)
+        .map(hit => {
+          return {
+            ...hit,
+            date: localeDate(hit.flightDate),
+            flightPaxLink: getLinkToPaxDetails(hit),
+            ruleConditions: formatRuleConditions(hit.ruleConditions)
+          };
+        })
+        .sort((a, b) => b.flightDate - a.flightDate);
+
       setPaxHistoricalHits(parsedData);
     });
   };
@@ -153,7 +157,7 @@ const Summary = props => {
     paxEventNotesHistory.get(props.paxId, true).then(res => {
       const notesData = res.paxNotes
         ?.map(note => {
-          const type = (note.noteTypes || []).map(t => {
+          const type = (note.noteType || []).map(t => {
             return t.noteType;
           });
           return {
