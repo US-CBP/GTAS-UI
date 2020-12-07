@@ -1,26 +1,26 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import { users, roles } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { UserContext } from "../../../context/user/UserContext";
-import { asArray, hasData, isValidPassword } from "../../../utils/utils";
+import { asArray, isValidPassword } from "../../../utils/utils";
 import { ACTION, ROLE } from "../../../utils/constants";
 import "./ManageUsers.scss";
-import Toast from "../../../components/toast/Toast";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
+import ErrorText from "../../../components/errorText/ErrorText";
 
 const UserModal = props => {
   const [allRoles, setAllRoles] = useState([]);
   const { getUserState } = useContext(UserContext);
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
-
+  const defaultRole = [{ label: ROLE.FLIGHTVWR, value: 9, disabled: true }];
   const cb = function(result) {};
   const row = props.editRowDetails || {};
   const loggedinUser = getUserState();
@@ -39,7 +39,9 @@ const UserModal = props => {
       (props.isEdit && isLoggedinUser(row.userId) && loggedinUserHasAdminRole())
     );
   };
-
+  const containsDefaultRole = roles => {
+    return asArray(roles).find(role => role.value === defaultRole[0].value);
+  };
   const compareRoles = (role1, role2) => {
     const roleDescription1 = role1.roleDescription?.toUpperCase();
     const roleDescription2 = role2.roleDescription?.toUpperCase();
@@ -59,7 +61,6 @@ const UserModal = props => {
       };
     });
 
-  const defaultRole = [{ label: ROLE.FLIGHTVWR, value: 9, disabled: true }];
   const existingRoles = asArray(props.editRowDetails.roles).map(role => {
     return {
       label: role.roleDescription,
@@ -68,7 +69,9 @@ const UserModal = props => {
     };
   });
 
-  const selectedRoles = hasData(existingRoles) ? existingRoles : defaultRole;
+  const selectedRoles = containsDefaultRole(existingRoles)
+    ? existingRoles
+    : existingRoles.concat(defaultRole);
 
   const postSubmit = (status, res) => {
     if (status === ACTION.CANCEL) {
@@ -171,6 +174,7 @@ const UserModal = props => {
       </ModalHeader>
       <ModalBody>
         <Container fluid>
+          {showAlert && <ErrorText message={alertContent} />}
           <Form
             submitService={props.isEdit ? users.put : users.post}
             title=""
@@ -320,14 +324,6 @@ const UserModal = props => {
               />
             )}
           </Form>
-
-          <Toast
-            onClose={() => setShowAlert(false)}
-            show={showAlert}
-            header={<Xl8 xid="um016">Add / Edit User</Xl8>}
-            body={alertContent}
-            variant={"danger"}
-          />
         </Container>
       </ModalBody>
     </Modal>
