@@ -25,7 +25,7 @@ yarn-error.log*
 
 .eslintrc.json
 eslintrc.json
+.eslintcache
 
 request.http
-.eslintcache
-.eslintcache
+
