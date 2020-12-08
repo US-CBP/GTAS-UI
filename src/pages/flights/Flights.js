@@ -6,6 +6,7 @@ import FilterForm from "../../components/filterForm2/FilterForm";
 import Main from "../../components/main/Main";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
+import HitsBadge from "../../components/hitsBadge/HitsBadge";
 
 import Xl8 from "../../components/xl8/Xl8";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
@@ -13,7 +14,7 @@ import { UserContext } from "../../context/user/UserContext";
 
 import { Link } from "@reach/router";
 import { flights } from "../../services/serviceWrapper";
-import { hasData, alt, localeDate, asArray } from "../../utils/utils";
+import { hasData, alt, localeDate, asArray, aboveZero, lpad5 } from "../../utils/utils";
 import { TIME, ROLE } from "../../utils/constants";
 import { Col, Tabs, Tab } from "react-bootstrap";
 import "./Flights.css";
@@ -61,30 +62,20 @@ const Flights = props => {
         item.sendRowToLink = `/gtas/flightpax/${item.id}`;
 
       const severity = alt(item.ruleHitCount, 0) + alt(item.listHitCount, 0);
-      item.severity = severity > 0 ? severity : "";
+      item.severity = aboveZero(severity);
 
       //Display null on hitcounts that are 0
-      if (item.listHitCount === 0) {
-        item.listHitCount = "";
-      }
-      if (item.ruleHitCount === 0) {
-        item.ruleHitCount = "";
-      }
-      if (item.graphHitCount === 0) {
-        item.graphHitCount = "";
-      }
-      if (item.fuzzyHitCount === 0) {
-        item.fuzzyHitCount = "";
-      }
-      if (item.externalHitCount === 0) {
-        item.externalHitCount = "";
-      }
-      if (item.manualHitCount === 0) {
-        item.manualHitCount = "";
-      }
+      item.listHitCount = aboveZero(item.listHitCount);
+      item.ruleHitCount = aboveZero(item.ruleHitCount);
+      item.graphHitCount = aboveZero(item.graphHitCount);
+      item.fuzzyHitCount = aboveZero(item.fuzzyHitCount);
+      item.externalHitCount = aboveZero(item.externalHitCount);
+      item.manualHitCount = aboveZero(item.manualHitCount);
 
-      item.hitCounts = `${item.lowPrioHitCount || 0}${item.medPrioHitCount ||
-        0}${item.highPrioHitCount || 0}`;
+      item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
+        item.medPrioHitCount
+      )}:${lpad5(item.lowPrioHitCount)}`;
+
       item.aggregateHitsCount = {
         low: item.lowPrioHitCount,
         med: item.medPrioHitCount,
@@ -101,8 +92,7 @@ const Flights = props => {
     setAllData(alt(parsedAll, []));
     setHitData(alt(parsedHits, []));
 
-    const newkey = tablekey + 1;
-    setTablekey(newkey);
+    setTablekey(tablekey + 1);
   };
 
   //TODO: refactor
@@ -135,8 +125,6 @@ const Flights = props => {
     return "?request=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 
-  const now = new Date();
-
   const aggregateHitHeader = {
     Accessor: "hitCounts",
     Xl8: true,
@@ -144,42 +132,11 @@ const Flights = props => {
     disableGroupBy: true,
     Cell: ({ row }) => {
       return (
-        <span
-          style={{
-            "justify-content": "space-between",
-            display: "flex",
-            "align-items": "baseline",
-            marginLeft: "5px",
-            marginRight: "5px"
-          }}
-        >
-          {row.original.aggregateHitsCount.low > 0 && (
-            <span>
-              <i
-                className="fa fa-flag"
-                style={{ color: "#FCF300" }}
-                title="normal severity"
-              ></i>
-              {row.original.aggregateHitsCount.low}
-            </span>
-          )}
-          {row.original.aggregateHitsCount.med > 0 && (
-            <span>
-              <i
-                className="fa fa-flag"
-                style={{ color: "orange" }}
-                title="high severity"
-              ></i>
-              {row.original.aggregateHitsCount.med}
-            </span>
-          )}
-          {row.original.aggregateHitsCount.high > 0 && (
-            <span>
-              <i className="fa fa-flag" style={{ color: "red" }} title="top severity"></i>{" "}
-              {row.original.aggregateHitsCount.high}
-            </span>
-          )}
-        </span>
+        <HitsBadge
+          high={row.original.aggregateHitsCount.high}
+          med={row.original.aggregateHitsCount.med}
+          low={row.original.aggregateHitsCount.low}
+        ></HitsBadge>
       );
     }
   };
@@ -202,7 +159,7 @@ const Flights = props => {
       Cell: ({ row }) => (
         <CountdownBadge
           future={row.original.timer}
-          baseline={now}
+          baseline={new Date()}
           direction={row.original.direction}
         ></CountdownBadge>
       )
