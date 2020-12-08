@@ -19,7 +19,7 @@ import {
   getShortText,
   isShortText,
   getAge,
-  alt
+  alt, localeDateOnly, sortableDate, lpad5
 } from "../../utils/utils";
 import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
@@ -173,7 +173,7 @@ const Vetting = props => {
       )
     },
     {
-      Accessor: "hitNames",
+      Accessor: "hitCounts",
       Xl8: true,
       Header: ["wl020", "Hits"],
       Cell: ({ row }) => {
@@ -251,7 +251,13 @@ const Vetting = props => {
   };
 
   const setDataWrapper = data => {
-    setData(data?.cases || []);
+    data = asArray(data.cases).map(item => {
+      item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
+          item.medPrioHitCount
+      )}:${lpad5(item.lowPrioHitCount)}`;
+      return item;
+    });
+    setData(data || []);
     setTableKey(tableKey + 1);
   };
 
