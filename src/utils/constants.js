@@ -46,7 +46,6 @@ export const ROLE = {
   RULEMGR: "Manage Rules",
   SYSADMIN: "SysAdmin", //TODO remove?
   HITMGR: "Manage Hits",
-  // CASEMGR: "Manage Cases", //TODO remove?
   FLIGHTVWR: "View Flights",
   ANY: "Any"
 };
