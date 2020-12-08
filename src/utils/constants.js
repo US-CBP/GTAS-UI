@@ -44,7 +44,6 @@ export const ROLE = {
   PAXVWR: "View Passenger",
   WLMGR: "Manage Watch List",
   RULEMGR: "Manage Rules",
-  SYSADMIN: "SysAdmin", //TODO remove?
   HITMGR: "Manage Hits",
   FLIGHTVWR: "View Flights",
   ANY: "Any"
@@ -57,6 +56,15 @@ export const CTX = {
   AIRPORTCODES: "airportcodes",
   CCTYPES: "cctypes",
   RULECATS: "rulecats"
+};
+
+// router paths to the most commonly referenced pages
+// may also need a util to build partials
+export const FULLPATH_TO = {
+  LOGIN: "/gtas/login",
+  FLIGHTS: "/gtas/flights",
+  FORGOTPWD: "/gtas/forgot-password",
+  SIGNUP: "/gtas/signup"
 };
 
 export const TIME = {

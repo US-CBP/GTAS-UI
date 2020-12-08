@@ -9,6 +9,7 @@ import Xl8 from "../../components/xl8/Xl8";
 import { asArray, hasData } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./Login.scss";
+import { FULLPATH_TO } from "../../utils/constants";
 
 const SignUp = props => {
   const [errorMsg, setErrorMsg] = useState("");
@@ -74,7 +75,7 @@ const SignUp = props => {
                 title=""
                 callback={signupCallback}
                 action="add"
-                redirectTo="/login"
+                redirectTo={FULLPATH_TO.LOGIN}
                 cancellable
                 key={locations}
               >

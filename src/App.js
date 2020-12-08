@@ -20,6 +20,7 @@ import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Page404 from "./pages/page404/Page404";
 
+import { FULLPATH_TO } from "./utils/constants";
 import "./App.scss";
 import "font-awesome/css/font-awesome.min.css";
 
@@ -175,7 +176,7 @@ export default class App extends React.Component {
 
     // Logout and redirect to login page
     // this.setState({ redirect: true });
-    navigate("/login");
+    navigate(FULLPATH_TO.LOGIN);
   }
 
   toggleModal() {
@@ -192,11 +193,12 @@ export default class App extends React.Component {
             <LiveEditProvider>
               <Suspense fallback="loading">
                 <Router>
-                  <Redirect from="/" to="/login" noThrow />
-                  <Login path="/login"></Login>
-                  <SignUp path="/signup"></SignUp>
-                  <ResetPassword path="/reset-password/:username/:resetToken"></ResetPassword>
-                  <ForgotPassword path="/forgot-password"></ForgotPassword>
+                  {/* TEST ME */}
+                  {/* <Redirect from="/" to="/gtas/login" noThrow /> */}
+                  <Login path={FULLPATH_TO.LOGIN}></Login>
+                  <SignUp path={FULLPATH_TO.SIGNUP}></SignUp>
+                  <ResetPassword path="/gtas/reset-password/:username/:resetToken"></ResetPassword>
+                  <ForgotPassword path={FULLPATH_TO.FORGOTPWD}></ForgotPassword>
                 </Router>
               </Suspense>
               {/* {this.state.showModal ? (
@@ -235,10 +237,10 @@ export default class App extends React.Component {
                           ROLE.FLIGHTVWR
                         ]}
                       >
-                        <Redirect from="/" to="/gtas" noThrow />
+                        <Redirect from="/" to={FULLPATH_TO.LOGIN} noThrow />
                         <Home path="/gtas">
                           <Page404 default></Page404>
-                          <Redirect from="/gtas" to="/gtas/flights" noThrow />
+                          <Redirect from="/gtas" to={FULLPATH_TO.FLIGHTS} noThrow />
                           <RoleAuthenticator
                             path="flights"
                             roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]}

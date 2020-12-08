@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import Form from "../../components/form/Form";
-import Xl8 from "../../components/xl8/Xl8";
+// import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
-import { login } from "../../services/serviceWrapper";
-import { Alert, Card, Button } from "react-bootstrap";
 import { navigate, Link } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
+import { login } from "../../services/serviceWrapper";
+import { Alert, Card, Button } from "react-bootstrap";
 
 import "./Login.scss";
+import { FULLPATH_TO } from "../../utils/constants";
 
 const Login = () => {
   const ctx = useContext(UserContext);
@@ -33,14 +34,14 @@ const Login = () => {
       };
 
       ctx.userAction({ user: newuser, type: "login" });
-      navigate("/gtas/flights");
+      navigate(FULLPATH_TO.FLIGHTS);
     }
 
     setAlertVis(true);
   };
 
   const customButton = (
-    <Button variant="outline-info" onClick={() => navigate("/signup")}>
+    <Button variant="outline-info" onClick={() => navigate(FULLPATH_TO.SIGNUP)}>
       Sign Up
     </Button>
   );
@@ -91,7 +92,7 @@ const Login = () => {
                       className="login-labeled-input"
                     />
                   </Form>
-                  <Link class="small" to="/forgot-password">
+                  <Link class="small" to={FULLPATH_TO.FORGOTPWD}>
                     Forgot password?
                   </Link>
                   <div>
