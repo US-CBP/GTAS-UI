@@ -19,7 +19,7 @@ import {
   getShortText,
   isShortText,
   getAge,
-  alt, localeDateOnly, sortableDate, lpad5
+  alt, lpad5
 } from "../../utils/utils";
 import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
