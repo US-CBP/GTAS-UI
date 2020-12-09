@@ -225,6 +225,10 @@ export function getParamList(fields) {
   return params;
 }
 
+export const aboveZero = (num, fallback) => {
+  return !isNaN(+num) && +num > 0 ? +num : fallback || "";
+};
+
 export const alt = (str, fallback) => {
   return hasData(str) && str !== "Invalid Date" ? str : fallback || "";
 };
@@ -348,4 +352,10 @@ export const watchlistDateFormat = input => {
   const year = stringDate.getFullYear();
 
   return `${year}-${month}-${day}`;
+};
+
+export const lpad5 = val => {
+  return alt(val, 0)
+    .toString()
+    .padStart(5, "0");
 };

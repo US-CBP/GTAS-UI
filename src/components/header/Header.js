@@ -1,5 +1,16 @@
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { Link } from "@reach/router";
+import { navigate, useLocation } from "@reach/router";
+import { UserContext } from "../../context/user/UserContext";
+import { LiveEditContext } from "../../context/translation/LiveEditContext";
+import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
+import { ACTION, FULLPATH_TO, ROLE } from "../../utils/constants";
+import { hasData } from "../../utils/utils";
+import Xl8 from "../../components/xl8/Xl8";
+import Toast from "../toast/Toast";
+import ChangePasswordModal from "../../pages/admin/manageUsers/changePasswordModal/ChangePasswordModal";
+
+import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
 import {
   Nav,
   Navbar,
@@ -9,17 +20,7 @@ import {
   Button,
   InputGroup
 } from "react-bootstrap";
-import { navigate, useLocation } from "@reach/router";
-import { UserContext } from "../../context/user/UserContext";
-import { LiveEditContext } from "../../context/translation/LiveEditContext";
-import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
-import { ACTION, ROLE } from "../../utils/constants";
-import { hasData } from "../../utils/utils";
 import "./Header.scss";
-import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
-import Xl8 from "../../components/xl8/Xl8";
-import Toast from "../toast/Toast";
-import ChangePasswordModal from "../../pages/admin/manageUsers/changePasswordModal/ChangePasswordModal";
 
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
@@ -44,12 +45,12 @@ const Header = () => {
     userAction({ type: "logoff" });
     action({ type: "read" });
 
-    navigate("/login");
+    navigate(FULLPATH_TO.LOGIN);
   };
 
   // allow a 'false' logout for admins translating pages outside the authed/loggedin bundle
   const pseudoLogout = () => {
-    navigate("/login");
+    navigate(FULLPATH_TO.LOGIN);
   };
 
   if (user === undefined) logout();
