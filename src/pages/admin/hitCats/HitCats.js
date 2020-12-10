@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../../components/table/Table";
-import { hitcats, users } from "../../../services/serviceWrapper";
+import { hitcats } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";

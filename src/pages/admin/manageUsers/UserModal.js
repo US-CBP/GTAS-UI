@@ -46,7 +46,9 @@ const UserModal = props => {
     );
   };
   const containsDefaultRole = roles => {
-    return asArray(roles).find(role => role.label === defaultRole.label);
+    return asArray(roles).find(
+      role => role.label === defaultRole.label || role.label === ROLE.ADMIN
+    );
   };
   const compareRoles = (role1, role2) => {
     const roleDescription1 = role1.roleDescription?.toUpperCase();
