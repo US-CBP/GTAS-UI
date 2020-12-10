@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 services:
   gtas-ui:
     deploy:
@@ -8,3 +8,4 @@ services:
     environment:
       REACT_APP_NEO4J_BROWSER: ${REACT_APP_NEO4J_BROWSER}
       REACT_APP_KIBANA_LOGIN: ${REACT_APP_KIBANA_LOGIN}
+      REACT_APP_NEO4J: ${REACT_APP_NEO4J}
