@@ -68,8 +68,10 @@ const AttachmentModal = props => {
   };
 
   const isCountValid = files => {
-    setAlertContent(<Xl8 xid="attm007">Too many files were selected</Xl8>);
-    return files.length <= fileUploadLimit;
+    const result = files.length <= fileUploadLimit;
+
+    if (!result) setAlertContent(<Xl8 xid="attm007">Too many files were selected</Xl8>);
+    return result;
   };
 
   const isSizeValid = files => {
