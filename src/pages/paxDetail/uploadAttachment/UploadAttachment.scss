@@ -1,12 +1,4 @@
 .files input {
-  // outline: 2px dashed #92b0b3;
-  // outline-offset: -10px;
-  // -webkit-transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
-  // transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
-  // padding: 120px 0px 85px 35%;
-  // text-align: center !important;
-  // margin: 0;
-  // width: 100% !important;
   width: 100% !important;
   opacity: 0;
   white-space: normal;
@@ -20,6 +12,7 @@
   transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
   border: 1px solid #92b0b3;
 }
+
 .files {
   position: relative;
   border: 2px dashed #009e92;
@@ -81,4 +74,12 @@
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+}
+
+.attachment-files-title {
+  display: flex;
+  .error-text {
+    margin-left: 20px;
+    align-self: center;
+  }
 }

@@ -134,6 +134,7 @@ const AddToWatchlist = props => {
                   This will add the following passenger and their applicable documents to
                   the watchlist:
                 </Xl8>
+                <br />
                 {passenger?.firstName} {passenger?.lastName}
               </Alert>
             </Form>

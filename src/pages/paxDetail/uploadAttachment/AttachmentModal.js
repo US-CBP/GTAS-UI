@@ -4,6 +4,7 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import Overlay from "../../../components/overlay/Overlay";
+import ErrorText from "../../../components/errorText/ErrorText";
 import { attachment } from "../../../services/serviceWrapper";
 import { ACTION } from "../../../utils/constants";
 import { hasData, isShortText, getShortText, formatBytes } from "../../../utils/utils";
@@ -18,15 +19,14 @@ const AttachmentModal = props => {
   const cb = function(result) {};
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [filesForDisplay, setFilesForDisplay] = useState([]);
-  const [showAlert, setShowAlert] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [alertContent, setAlertContent] = useState("");
-  const [variant, setVariant] = useState("");
   const paxId = props.paxId;
+  const fileUploadLimit = 4;
+  const maxHoverContentLength = 35;
 
   const handleClose = (status, res) => {
     setShowModal(false);
-    setShowAlert(false);
     setSelectedFiles([]);
     props.callback(status, res);
   };
@@ -39,11 +39,11 @@ const AttachmentModal = props => {
       if (resp.status === "SUCCESS") {
         handleClose(status, resp);
       } else {
-        setVariant("danger");
-        typeof resp.message != "undefined" && resp.message != null
-          ? setAlertContent(resp.message)
-          : setAlertContent("There was an issue with the server for that request.");
-        setShowAlert(true);
+        const serverError = (
+          <Xl8 xid="attm003">Server Error: the request could not be completed</Xl8>
+        );
+
+        setAlertContent(resp?.message || serverError);
         setSelectedFiles([]);
       }
     }
@@ -51,48 +51,44 @@ const AttachmentModal = props => {
 
   const toFileArray = filelist => {
     let result = [];
-    for (let x = 0; x < selectedFiles.length; x++) {
-      result.push(selectedFiles[x]);
+    for (let x = 0; x < filelist.length; x++) {
+      result.push(filelist[x]);
     }
     return result;
   };
 
   const onChangeCb = ev => {
-    if (maxFileSelect(ev) && maxFileSize) {
-      setFilesForDisplay(toFileArray(ev.target.files));
-      setSelectedFiles(ev.target.files);
+    const files = ev.target.files;
+    if (isCountValid(files) && isSizeValid(files)) {
+      setFilesForDisplay(toFileArray(files));
+      setSelectedFiles(files);
+    } else {
+      ev.target.value = null;
     }
   };
 
-  const maxFileSelect = ev => {
-    let files = ev.target.files; // create file object
-    if (files.length > 4) {
-      const msg = "Only 4 files may be uploaded at a time";
-      ev.target.value = null; // discard selected file
-      return false;
-    }
-    return true;
+  const isCountValid = files => {
+    setAlertContent(<Xl8 xid="attm007">Too many files were selected</Xl8>);
+    return files.length <= fileUploadLimit;
   };
 
-  const maxFileSize = ev => {
-    let files = ev.target.files;
-    let size = 15000;
-    let err = "";
+  const isSizeValid = files => {
+    let fiveMb = 5242880;
+    let isValid = true;
+
     for (var x = 0; x < files.length; x++) {
-      if (files[x].size > size) {
-        err += files[x].type + " exceeds file size limit \n";
+      if (files[x].size > fiveMb) {
+        isValid = false;
+        setAlertContent(<Xl8 xid="attm007">The file size limit is 5Mb per file</Xl8>);
       }
     }
-    if (err !== "") {
-      ev.target.value = null;
-      return false;
-    }
-    return true;
+
+    return isValid;
   };
 
   const preSubmit = fields => {
     let res = { ...fields[0] };
-    if (typeof selectedFiles != "undefined" && selectedFiles != null) {
+    if (hasData(selectedFiles)) {
       let desc = [];
       const formData = new FormData();
       for (let x = 0; x < selectedFiles.length; x++) {
@@ -107,6 +103,7 @@ const AttachmentModal = props => {
 
   useEffect(() => {
     const listItems = toFileArray(selectedFiles);
+    setAlertContent();
     setFilesForDisplay(listItems);
   }, [selectedFiles]);
 
@@ -126,16 +123,12 @@ const AttachmentModal = props => {
             <Xl8 xid="attm001">Attachments</Xl8>
           </ModalTitle>
         </ModalHeader>
-        <Alert show={showAlert} variant={variant}>
-          {alertContent}
-          <hr />
-          <Button onClick={() => setShowAlert(false)} variant="outline-success">
-            <Xl8 xid="form003">Confirm</Xl8>
-          </Button>
-        </Alert>
         <ModalBody>
           <div className="container attachment-files">
-            <Xl8 xid="attm002">Files (4 max)</Xl8>
+            <div className="attachment-files-title">
+              <Xl8 xid="attm002">Files (4 max)</Xl8>
+              <ErrorText message={alertContent}></ErrorText>
+            </div>
             <div className="files">
               <input type="file" multiple onChange={onChangeCb} />
             </div>
@@ -144,7 +137,7 @@ const AttachmentModal = props => {
           <div className="container attachment-data">
             {filesForDisplay.map((data, index) => {
               const content = data.name;
-              const triggerOverlay = !isShortText(content, 35);
+              const triggerOverlay = !isShortText(content, maxHoverContentLength);
 
               return (
                 <Overlay
@@ -153,7 +146,7 @@ const AttachmentModal = props => {
                   content={content}
                 >
                   <div className={triggerOverlay ? "as-info" : ""}>
-                    <span>{getShortText(content, 35)}</span>
+                    <span>{getShortText(content, maxHoverContentLength)}</span>
                     <span className="attachment-size">{formatBytes(data.size)}</span>
                   </div>
                 </Overlay>
