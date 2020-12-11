@@ -3,3 +3,7 @@ $transparent: rgba(133, 130, 130, 0.6);
 .overlay-content {
   background-color: $transparent;
 }
+
+.bs-popover-top {
+  z-index: 12000;
+}

@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button } from "react-bootstrap";
-import { attachment } from "../../../services/serviceWrapper";
-import "./UploadAttachment.scss";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
+import Overlay from "../../../components/overlay/Overlay";
+import { attachment } from "../../../services/serviceWrapper";
 import { ACTION } from "../../../utils/constants";
+import { hasData, isShortText, getShortText, formatBytes } from "../../../utils/utils";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
+import "./UploadAttachment.scss";
 
 const AttachmentModal = props => {
   const cb = function(result) {};
@@ -26,7 +28,6 @@ const AttachmentModal = props => {
     setShowModal(false);
     setShowAlert(false);
     setSelectedFiles([]);
-    // props.onHide();
     props.callback(status, res);
   };
   const handleShow = () => setShowModal(true);
@@ -48,8 +49,17 @@ const AttachmentModal = props => {
     }
   };
 
+  const toFileArray = filelist => {
+    let result = [];
+    for (let x = 0; x < selectedFiles.length; x++) {
+      result.push(selectedFiles[x]);
+    }
+    return result;
+  };
+
   const onChangeCb = ev => {
     if (maxFileSelect(ev) && maxFileSize) {
+      setFilesForDisplay(toFileArray(ev.target.files));
       setSelectedFiles(ev.target.files);
     }
   };
@@ -96,14 +106,7 @@ const AttachmentModal = props => {
   };
 
   useEffect(() => {
-    const listItems = [];
-    if (selectedFiles != null && typeof selectedFiles != "undefined") {
-      for (let x = 0; x < selectedFiles.length; x++) {
-        listItems.push(selectedFiles[x]);
-      }
-    } else {
-      setFilesForDisplay(null);
-    }
+    const listItems = toFileArray(selectedFiles);
     setFilesForDisplay(listItems);
   }, [selectedFiles]);
 
@@ -114,9 +117,9 @@ const AttachmentModal = props => {
       <Modal
         show={showModal}
         onHide={handleClose}
-        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        className="max-600-width-container"
       >
         <ModalHeader closeButton>
           <ModalTitle>
@@ -131,56 +134,52 @@ const AttachmentModal = props => {
           </Button>
         </Alert>
         <ModalBody>
-          <div className="container">
+          <div className="container attachment-files">
+            <Xl8 xid="attm002">Files (4 max)</Xl8>
             <div className="files">
               <input type="file" multiple onChange={onChangeCb} />
             </div>
           </div>
-          {filesForDisplay != null &&
-          !filesForDisplay.empty &&
-          filesForDisplay.length > 0 ? (
-            <div className="container">
-              <Xl8 xid="attm002">Files To Be Uploaded:</Xl8>
 
-              <ul>
-                {filesForDisplay.map((data, index) => {
-                  return (
-                    <li key={index}>
-                      <u>
-                        <Xl8 xid="attm003">File Name:</Xl8>
-                      </u>
-                      {data.name} <br></br>
-                      <u>
-                        <Xl8 xid="attm004">File Size:</Xl8>
-                      </u>
-                      {data.size} kbs
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ) : (
-            <div></div>
-          )}
-          <Form
-            submitService={attachment.post}
-            title=""
-            callback={postSubmit}
-            action="add"
-            // submitText={<Xl8 xid="attm005">Upload</Xl8>}
-            paramCallback={preSubmit}
-            cancellable
-          >
-            <LabelledInput
-              datafield="description"
-              inputType="textarea"
-              labelText={<Xl8 xid="attm006">Description:</Xl8>}
-              name="description"
-              required={true}
-              alt="nothing"
-              callback={cb}
-            />
-          </Form>
+          <div className="container attachment-data">
+            {filesForDisplay.map((data, index) => {
+              const content = data.name;
+              const triggerOverlay = !isShortText(content, 35);
+
+              return (
+                <Overlay
+                  trigger={triggerOverlay ? ["click", "hover"] : ""}
+                  key={data.name}
+                  content={content}
+                >
+                  <div className={triggerOverlay ? "as-info" : ""}>
+                    <span>{getShortText(content, 35)}</span>
+                    <span className="attachment-size">{formatBytes(data.size)}</span>
+                  </div>
+                </Overlay>
+              );
+            })}
+          </div>
+          <div className="attachment-form-container">
+            <Form
+              submitService={attachment.post}
+              title=""
+              callback={postSubmit}
+              action="add"
+              paramCallback={preSubmit}
+              cancellable
+            >
+              <LabelledInput
+                datafield="description"
+                inputType="textarea"
+                labelText={<Xl8 xid="attm006">Description</Xl8>}
+                name="description"
+                required={true}
+                alt="nothing"
+                callback={cb}
+              />
+            </Form>
+          </div>
         </ModalBody>
       </Modal>
     </>
