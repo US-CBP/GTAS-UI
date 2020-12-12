@@ -335,6 +335,11 @@ li .rtf--ab__c button[variant="rtf-red"] {
   padding: 15px;
 }
 
+.rtf--mb__c {
+  padding: unset !important;
+  margin: unset !important;
+}
+
 .table td {
   vertical-align: middle !important;
 }

@@ -225,6 +225,10 @@ export function getParamList(fields) {
   return params;
 }
 
+export const aboveZero = (num, fallback) => {
+  return !isNaN(+num) && +num > 0 ? +num : fallback || "";
+};
+
 export const alt = (str, fallback) => {
   return hasData(str) && str !== "Invalid Date" ? str : fallback || "";
 };
@@ -339,3 +343,19 @@ export function formatRuleConditions(conditions) {
 
   return conditions.split("$$$").join("\n");
 }
+
+export const watchlistDateFormat = input => {
+  const stringDate = new Date(input);
+  if (stringDate === "Invalid Date") return "Invalid Date";
+  const day = stringDate.getDate(); // use getDate(). getDay() returns the day of the week
+  const month = stringDate.getMonth() + 1; // 0 based
+  const year = stringDate.getFullYear();
+
+  return `${year}-${month}-${day}`;
+};
+
+export const lpad5 = val => {
+  return alt(val, 0)
+    .toString()
+    .padStart(5, "0");
+};

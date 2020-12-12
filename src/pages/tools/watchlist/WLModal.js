@@ -5,7 +5,7 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
 
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
-import { hasData, asArray } from "../../../utils/utils";
+import { hasData, asArray, watchlistDateFormat } from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
 import Modal, {
   ModalBody,
@@ -21,6 +21,8 @@ const WLModal = props => {
   const id = props.id || 0;
   const isEdit = id !== 0;
   const mode = isEdit ? "Edit" : "Add";
+  const data = props.data;
+  const parsedData = hasData(data) ? { ...data, dob: new Date(data["dob"]) } : data;
   const title =
     (type || {}) === TAB.DOX ? (
       id === 0 ? (
@@ -54,6 +56,7 @@ const WLModal = props => {
   const docFields = (
     <>
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm005"> Document Type</Xl8>}
         inputType="select"
@@ -67,22 +70,22 @@ const WLModal = props => {
         spacebetween
       />
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm006"> Document Number</Xl8>}
         inputType="text"
         name="documentNumber"
-        required={true}
         alt="Document Number"
         callback={onFormChange}
         spacebetween
       />
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm007"> Category ID</Xl8>}
         inputType="select"
         options={categories}
         name="categoryId"
-        required={true}
         alt="Category ID"
         callback={onFormChange}
         spacebetween
@@ -93,6 +96,7 @@ const WLModal = props => {
   const paxFields = (
     <>
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm008"> First Name</Xl8>}
         inputType="text"
@@ -102,6 +106,7 @@ const WLModal = props => {
         spacebetween
       />
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm009"> Last Name</Xl8>}
         inputType="text"
@@ -111,14 +116,16 @@ const WLModal = props => {
         spacebetween
       />
       <LabelledInput
+        required
         datafield
         labelText={<Xl8 xid="wlm010"> Date of Birth</Xl8>}
-        inputType="text"
+        inputType="dateTime"
         name="dob"
-        required={true}
         alt="Date of Birth"
         callback={onFormChange}
         spacebetween
+        format="MM/dd/yyyy"
+        disableCalendar={true}
       />
       <LabelledInput
         datafield
@@ -126,7 +133,7 @@ const WLModal = props => {
         inputType="select"
         options={categories}
         name="categoryId"
-        required={true}
+        required
         alt="Category ID"
         callback={onFormChange}
         spacebetween
@@ -146,7 +153,7 @@ const WLModal = props => {
     const documentNumber = vals["documentNumber"];
     const firstName = vals["firstName"];
     const lastName = vals["lastName"];
-    const dob = vals["dob"]?.replaceAll("/", "-");
+    const dob = watchlistDateFormat(vals["dob"]);
     const categoryId = vals["categoryId"];
     const action = isEdit ? "Update" : "Create";
     const recordId = mode === "Add" ? "null" : id;
@@ -189,20 +196,20 @@ const WLModal = props => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      className="max-500-width-container"
+      className="max-600-width-container"
     >
       <ModalHeader closeButton>
         <ModalTitle>{title}</ModalTitle>
       </ModalHeader>
       <ModalBody>
-        <Container fluid>
+        <Container fluid className="wl-modal">
           <Form
             submitService={service}
             title=""
             callback={onFormExit}
             action={mode.toLowerCase()}
             paramCallback={preSubmit}
-            data={props.data}
+            data={parsedData}
             cancellable
           >
             {fields.props.children}

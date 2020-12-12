@@ -3,13 +3,13 @@ import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
-// import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
-import { Col, Tabs, Tab } from "react-bootstrap";
+import HitsBadge from "../../components/hitsBadge/HitsBadge";
 import Main from "../../components/main/Main";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { Link } from "@reach/router";
+
 import { flightPassengers } from "../../services/serviceWrapper";
 import {
   asArray,
@@ -17,10 +17,12 @@ import {
   getAge,
   alt,
   localeDateOnly,
-  localeDate,
+  aboveZero,
+  lpad5,
   sortableDate
 } from "../../utils/utils";
 import { ROLE } from "../../utils/constants";
+import { Col, Tabs, Tab } from "react-bootstrap";
 import "./FlightPax.css";
 
 const FlightPax = props => {
@@ -33,6 +35,20 @@ const FlightPax = props => {
   const [key, setKey] = useState(0);
   const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
 
+  const hasAnyHits = item => {
+    if (
+      item.watchlistHitCount > 0 ||
+      item.manualHitCount > 0 ||
+      item.fuzzyHitCount > 0 ||
+      item.ruleHitCount > 0 ||
+      item.graphHitCount > 0 ||
+      item.externalHitCount > 0
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   const parseData = data => {
     return asArray(data).map(item => {
       const displayDobDate = localeDateOnly(
@@ -44,27 +60,112 @@ const FlightPax = props => {
       item.dobAge = `${alt(displayDobDate)} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
+      item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
+        item.medPrioHitCount
+      )}:${lpad5(item.lowPrioHitCount)}`;
+
+      item.aggregateHitsCount = {
+        low: item.lowPrioHitCount,
+        med: item.medPrioHitCount,
+        high: item.highPrioHitCount
+      };
+
       return item;
     });
   };
 
+  // For an array of hitCounts strings for all travelers in a co-traveler group we get the sum of all hits.
+  // This aggregation allows us to sort the hitCounts col by severity using the colon-delimited strings
+  // and still capture the total number of hits when the table is grouped by reservation number (co-travelers).
+  // So for a co-traveler hit array like this:
+  //    ["00002:00003:00000", "00000:00002:00000", "00000:00000:00001"]
+  // where each string represents the hits for a single co-traveler, we sum all the numeric sections
+  const sumCotravelerHits = cotravelerHits => {
+    const groupHitTotal = cotravelerHits.reduce(
+      (totalHitsAccumulator, hitCountString) => {
+        const sum = hitCountString
+          .split(":")
+          .reduce((currentPaxTotal, hitSection) => +currentPaxTotal + +hitSection, 0);
+        return +sum + totalHitsAccumulator;
+      },
+      0
+    );
+
+    return groupHitTotal;
+  };
+
+  const hitHeaders = [
+    {
+      Accessor: "ruleHitCount",
+      Xl8: true,
+      Header: ["fp011", "Rule Hits"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => aboveZero(value)
+    },
+    {
+      Accessor: "watchlistHitCount",
+      Xl8: true,
+      Header: ["fp012", "Watchlist Hits"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => aboveZero(value)
+    },
+    {
+      Accessor: "graphHitCount",
+      Xl8: true,
+      Header: ["fp022", "Graph Hits"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => aboveZero(value)
+    },
+    {
+      Accessor: "fuzzyHitCount",
+      Xl8: true,
+      Header: ["fp023", "Partial Hits"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => aboveZero(value)
+    },
+    {
+      Accessor: "manualHitCount",
+      Xl8: true,
+      Header: ["fp024", "Manual Hits"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => aboveZero(value)
+    },
+    {
+      Accessor: "externalHitCount",
+      Xl8: true,
+      Header: ["fp025", "External Hits"],
+      disableGroupBy: true,
+      aggregate: "sum",
+      Aggregated: ({ value }) => aboveZero(value)
+    }
+  ];
+
+  const aggregateHitHeader = [
+    {
+      Accessor: "hitCounts",
+      Xl8: true,
+      Header: ["fp026", "Hit Aggregates"],
+      disableGroupBy: true,
+      aggregate: sumCotravelerHits,
+      Aggregated: ({ value }) => aboveZero(value),
+      Cell: ({ row }) => (
+        <HitsBadge
+          high={row.original.aggregateHitsCount.high}
+          med={row.original.aggregateHitsCount.med}
+          low={row.original.aggregateHitsCount.low}
+        ></HitsBadge>
+      )
+    }
+  ];
+
+  const arrayHeaderFixer = tab !== "hits" ? aggregateHitHeader : hitHeaders;
   const headers = [
-    {
-      Accessor: "rulehit",
-      Xl8: true,
-      Header: ["fp011", "Rule Hit"],
-      disableGroupBy: true,
-      aggregate: "sum",
-      Aggregated: ({ value }) => `${value} Hits`
-    },
-    {
-      Accessor: "watchhit",
-      Xl8: true,
-      Header: ["fp012", "Watch Hit"],
-      disableGroupBy: true,
-      aggregate: "sum",
-      Aggregated: ({ value }) => `${value} Hits`
-    },
+    ...arrayHeaderFixer,
     {
       Accessor: "passengerType",
       Xl8: true,
@@ -88,8 +189,7 @@ const FlightPax = props => {
         );
       },
       disableGroupBy: true,
-      aggregate: "count",
-      Aggregated: ({}) => ``
+      Aggregated: () => ``
     },
     {
       Accessor: "firstName",
@@ -110,8 +210,7 @@ const FlightPax = props => {
       Header: ["fp018", "DOB"],
       Cell: ({ row }) => <div>{row.original.dobAge}</div>,
       disableGroupBy: true,
-      aggregate: "count",
-      Aggregated: ({}) => ``
+      Aggregated: () => ``
     },
     {
       Accessor: "docNumber",
@@ -139,7 +238,7 @@ const FlightPax = props => {
       let parsed = parseData(res);
 
       const parsedHits = parsed.filter(item => {
-        return item.onRuleHitList || item.onWatchList;
+        return hasAnyHits(item);
       });
 
       setAllData(parsed);
@@ -209,8 +308,6 @@ const FlightPax = props => {
               ></CountdownBadge>
             </div>
             <br />
-            {/* { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
-      { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName }, */}
 
             <table class="table table-sm table-borderless">
               <tbody>

@@ -7,6 +7,7 @@ import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import { hasData } from "../../utils/utils";
 import { useParams, Link } from "@reach/router";
+import { FULLPATH_TO } from "../../utils/constants";
 
 const ResetPassword = props => {
   const { resetToken, username } = useParams();
@@ -49,7 +50,7 @@ const ResetPassword = props => {
             <Alert variant="danger">
               {errorMessage}
               <br />
-              <Link to="/forgot-password">
+              <Link to={FULLPATH_TO.FORGOTPWD}>
                 <Xl8 xid="passres002">Send another password reset link?</Xl8>
               </Link>
             </Alert>
@@ -57,7 +58,7 @@ const ResetPassword = props => {
           {displaySuccessMessage ? (
             <Alert variant="success">
               <Xl8 xid="passres003">Your password has been reset! Click </Xl8>
-              <Link to="/login">
+              <Link to={FULLPATH_TO.LOGIN}>
                 <Xl8 xid="passres004">here</Xl8>
               </Link>
               <Xl8 xid="passres005">to login to GTAS</Xl8>
@@ -68,7 +69,7 @@ const ResetPassword = props => {
               title=""
               callback={passwordResetCallback}
               action="add"
-              redirectTo="/login"
+              redirectTo={FULLPATH_TO.LOGIN}
               paramCallback={preSubmitCallback}
               cancellable
             >

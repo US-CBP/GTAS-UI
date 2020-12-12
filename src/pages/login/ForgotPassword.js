@@ -8,6 +8,7 @@ import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
 import { hasData } from "../../utils/utils";
 import { Link } from "@reach/router";
+import { FULLPATH_TO } from "../../utils/constants";
 
 const ForgotPassword = props => {
   const cb = () => {};
@@ -40,7 +41,7 @@ const ForgotPassword = props => {
                 A password reset link was sent to your email with instructions for
                 resetting your password.
               </Alert>
-              <Link to="/login">Login to GTAS</Link>
+              <Link to={FULLPATH_TO.LOGIN}>Login to GTAS</Link>
             </>
           ) : (
             <>
@@ -54,7 +55,7 @@ const ForgotPassword = props => {
                 title=""
                 callback={forgotPasswordCallback}
                 action="add"
-                redirectTo="/login"
+                redirectTo={FULLPATH_TO.LOGIN}
                 cancellable
               >
                 <LabelledInput

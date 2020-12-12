@@ -3,17 +3,17 @@ import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import { Button, Tabs, Tab, Row, DropdownButton, Dropdown } from "react-bootstrap";
+import { Tabs, Tab } from "react-bootstrap";
 import { wlpax, wldocs, hitcats } from "../../../services/serviceWrapper";
-import { hasData } from "../../../utils/utils";
+import { hasData, watchlistDateFormat } from "../../../utils/utils";
 import WLModal from "./WLModal";
 import "./constants.js";
 import CSVReader from "../../../components/CSVReader/CSVReader";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
-import "./Watchlist.css";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
+import "./Watchlist.css";
 
 const Watchlist = props => {
   const TAB = { PAX: "passenger", DOX: "document" };
@@ -23,7 +23,6 @@ const Watchlist = props => {
   const [file, setFile] = useState();
 
   const [showModal, setShowModal] = useState(false);
-  const [showImport, setShowImport] = useState(false);
   const [id, setId] = useState(0);
   const [key, setKey] = useState(0);
   const [data, setData] = useState();
@@ -42,41 +41,52 @@ const Watchlist = props => {
     style: "danger"
   };
 
-  const handleImportData = results => {
-    const keys = {
-      "First Name": "firstName",
-      "Last Name": "lastName",
-      DOB: "dob",
-      Category: "categoryId",
-      "Document Number": "documentNumber",
-      "Document Type": "documentType"
-    };
+  const isValid = datarow => {
+    console.log(tab);
+    let result = true;
+    const fieldList =
+      tab === TAB.DOX
+        ? ["documentType", "documentNumber", "categoryId"]
+        : ["firstName", "lastName", "dob", "categoryId"];
 
+    fieldList.forEach(field => {
+      if (!hasData(datarow[field])) result = false;
+    });
+
+    if (datarow["dob"] === "Invalid Date") result = false;
+
+    return result;
+  };
+
+  const handleImportData = results => {
     const service = tab === TAB.DOX ? wldocs : wlpax;
     const importedWl = { action: "Create", id: null, wlItems: [] };
+
     results.forEach(result => {
-      const item = {};
-
-      for (let key in result.data) {
-        const newKey = keys[key];
-
-        item[newKey] = result.data[key];
-      }
-      const catLabel = item["categoryId"];
+      const item = result.data || {};
+      const catLabel = item["category"];
       item["categoryId"] = (wlcatData.find(item => item.label === catLabel) || {}).id;
-      if (item["dob"]) item["dob"].replaceAll("/", "-"); //the rule engine throws error for date formated mm/dd/yyyy
+      if (item["dob"]) item["dob"] = watchlistDateFormat(item["dob"]); //the rule engine throws error for date formated mm/dd/yyyy
+
+      if (!isValid(item)) return;
+
+      delete item["category"]; // replaced by categoryId
       importedWl.wlItems.push(item);
     });
 
     service.post(importedWl).then(res => {
       if (res.status === "SUCCESS") {
-        fetchData(); //get latest dataa
-        setToastHeader("Watchlist");
-        setToastVariant("success");
-        setToastContent(`${importedWl.wlItems.length} ${tab} watchlist items imported`);
-        setShowToast(true);
+        prepToast(`${importedWl.wlItems.length} ${tab} watchlist items imported`);
       }
     });
+  };
+
+  const prepToast = msg => {
+    fetchData(); //get latest dataa
+    setToastHeader("Watchlist");
+    setToastVariant("success");
+    setToastContent(msg);
+    setShowToast(true);
   };
 
   const cb = function(result) {};
@@ -91,7 +101,7 @@ const Watchlist = props => {
     setEditRow({});
     setShowModal(false);
 
-    if (ev === "SUCCESS") fetchData();
+    if (ev === "SUCCESS") prepToast(`${tab} saved`);
   };
 
   const launchImport = file => {
@@ -334,6 +344,7 @@ const Watchlist = props => {
         header={toastHeader}
         body={toastContent}
         variant={toastVariant}
+        containerClass="global-modal"
       />
     </Main>
   );

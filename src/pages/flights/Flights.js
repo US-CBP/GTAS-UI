@@ -6,6 +6,7 @@ import FilterForm from "../../components/filterForm2/FilterForm";
 import Main from "../../components/main/Main";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
+import HitsBadge from "../../components/hitsBadge/HitsBadge";
 
 import Xl8 from "../../components/xl8/Xl8";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
@@ -13,7 +14,7 @@ import { UserContext } from "../../context/user/UserContext";
 
 import { Link } from "@reach/router";
 import { flights } from "../../services/serviceWrapper";
-import { hasData, alt, localeDate, asArray } from "../../utils/utils";
+import { hasData, alt, localeDate, asArray, aboveZero, lpad5 } from "../../utils/utils";
 import { TIME, ROLE } from "../../utils/constants";
 import { Col, Tabs, Tab } from "react-bootstrap";
 import "./Flights.css";
@@ -34,6 +35,20 @@ const Flights = props => {
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
 
+  const hasAnyHits = item => {
+    if (
+      item.listHitCount > 0 ||
+      item.manualHitCount > 0 ||
+      item.fuzzyHitCount > 0 ||
+      item.ruleHitCount > 0 ||
+      item.graphHitCount > 0 ||
+      item.externalHitCount > 0
+    ) {
+      return true;
+    }
+    return false;
+  };
+
   const setDataWrapper = (data, retainState) => {
     if (!retainState) setTableState(initTableState);
 
@@ -47,20 +62,37 @@ const Flights = props => {
         item.sendRowToLink = `/gtas/flightpax/${item.id}`;
 
       const severity = alt(item.ruleHitCount, 0) + alt(item.listHitCount, 0);
-      item.severity = severity > 0 ? severity : "";
+      item.severity = aboveZero(severity);
+
+      //Display null on hitcounts that are 0
+      item.listHitCount = aboveZero(item.listHitCount);
+      item.ruleHitCount = aboveZero(item.ruleHitCount);
+      item.graphHitCount = aboveZero(item.graphHitCount);
+      item.fuzzyHitCount = aboveZero(item.fuzzyHitCount);
+      item.externalHitCount = aboveZero(item.externalHitCount);
+      item.manualHitCount = aboveZero(item.manualHitCount);
+
+      item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
+        item.medPrioHitCount
+      )}:${lpad5(item.lowPrioHitCount)}`;
+
+      item.aggregateHitsCount = {
+        low: item.lowPrioHitCount,
+        med: item.medPrioHitCount,
+        high: item.highPrioHitCount
+      };
 
       return item;
     });
 
     const parsedHits = parsedAll.filter(item => {
-      return item.severity > 0;
+      return hasAnyHits(item);
     });
 
     setAllData(alt(parsedAll, []));
     setHitData(alt(parsedHits, []));
 
-    const newkey = tablekey + 1;
-    setTablekey(newkey);
+    setTablekey(tablekey + 1);
   };
 
   //TODO: refactor
@@ -93,8 +125,32 @@ const Flights = props => {
     return "?request=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 
-  const now = new Date();
+  const aggregateHitHeader = {
+    Accessor: "hitCounts",
+    Xl8: true,
+    Header: ["fl024", "Hit Aggregates"],
+    disableGroupBy: true,
+    Cell: ({ row }) => {
+      return (
+        <HitsBadge
+          high={row.original.aggregateHitsCount.high}
+          med={row.original.aggregateHitsCount.med}
+          low={row.original.aggregateHitsCount.low}
+        ></HitsBadge>
+      );
+    }
+  };
 
+  const hitHeaders = [
+    { Accessor: "listHitCount", Xl8: true, Header: ["fl013", "Watchlist Hits"] },
+    { Accessor: "ruleHitCount", Xl8: true, Header: ["fl014", "Rule Hits"] },
+    { Accessor: "graphHitCount", Xl8: true, Header: ["fl015", "Graph Hits"] },
+    { Accessor: "fuzzyHitCount", Xl8: true, Header: ["fl016", "Partial Hits"] },
+    { Accessor: "externalHitCount", Xl8: true, Header: ["fl017", "External Hits"] },
+    { Accessor: "manualHitCount", Xl8: true, Header: ["fl023", "Manual Hits"] }
+  ];
+
+  const arrayHeaderFixer = tab !== "hits" ? [aggregateHitHeader] : hitHeaders;
   const Headers = [
     {
       Accessor: "timer",
@@ -103,7 +159,7 @@ const Flights = props => {
       Cell: ({ row }) => (
         <CountdownBadge
           future={row.original.timer}
-          baseline={now}
+          baseline={new Date()}
           direction={row.original.direction}
         ></CountdownBadge>
       )
@@ -120,11 +176,7 @@ const Flights = props => {
       Header: ["fl011", "Departure"],
       Cell: ({ row }) => localeDate(row.original.etd)
     },
-    { Accessor: "listHitCount", Xl8: true, Header: ["fl013", "Watchlist Hits"] },
-    { Accessor: "ruleHitCount", Xl8: true, Header: ["fl014", "Rule Hits"] },
-    { Accessor: "graphHitCount", Xl8: true, Header: ["fl015", "Graph Hits"] },
-    { Accessor: "fuzzyHitCount", Xl8: true, Header: ["fl016", "Partial Hits"] },
-    { Accessor: "externalHitCount", Xl8: true, Header: ["fl017", "External Hits"] },
+    ...arrayHeaderFixer,
     {
       Accessor: "passengerCount",
       Xl8: true,
