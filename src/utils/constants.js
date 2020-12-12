@@ -61,10 +61,11 @@ export const CTX = {
 // router paths to the most commonly referenced pages
 // may also need a util to build partials
 export const FULLPATH_TO = {
-  LOGIN: "/gtas/login",
+  LOGIN: "/login",
   FLIGHTS: "/gtas/flights",
-  FORGOTPWD: "/gtas/forgot-password",
-  SIGNUP: "/gtas/signup"
+  FORGOTPWD: "/forgot-password",
+  RESETPWD: "/reset-password",
+  SIGNUP: "/signup"
 };
 
 export const TIME = {

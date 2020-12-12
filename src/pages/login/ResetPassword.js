@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import Form from "../../components/form/Form";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { resetPassword } from "../../services/serviceWrapper";
-import { Container, Alert } from "react-bootstrap";
+import { Container, Alert, Col } from "react-bootstrap";
 import Title from "../../components/title/Title";
+import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
 import { hasData } from "../../utils/utils";
 import { useParams, Link } from "@reach/router";
@@ -42,68 +43,76 @@ const ResetPassword = props => {
   }, []);
 
   return (
-    <Container className="password-reset-container" fluid>
-      <Title title={<Xl8 xid="passres001">Reset Password</Xl8>} uri={props.uri} />
-      {validToken ? (
-        <>
-          {displayErrorMessage && (
-            <Alert variant="danger">
-              {errorMessage}
-              <br />
-              <Link to={FULLPATH_TO.FORGOTPWD}>
-                <Xl8 xid="passres002">Send another password reset link?</Xl8>
-              </Link>
-            </Alert>
-          )}
-          {displaySuccessMessage ? (
-            <Alert variant="success">
-              <Xl8 xid="passres003">Your password has been reset! Click </Xl8>
-              <Link to={FULLPATH_TO.LOGIN}>
-                <Xl8 xid="passres004">here</Xl8>
-              </Link>
-              <Xl8 xid="passres005">to login to GTAS</Xl8>
-            </Alert>
+    <Main className="unauthed bg-image">
+      <Container
+        className="login d-flex align-items-center py-5 justify-content-around"
+        fluid
+      >
+        <Col className="unauthed-form">
+          {validToken ? (
+            <>
+              {displayErrorMessage && (
+                <Alert variant="danger">
+                  {errorMessage}
+                  <br />
+                  <Link to={FULLPATH_TO.FORGOTPWD}>
+                    <Xl8 xid="passres002">Send another password reset link?</Xl8>
+                  </Link>
+                </Alert>
+              )}
+              {displaySuccessMessage ? (
+                <Alert variant="success">
+                  <Xl8 xid="passres003">Your password has been reset! Click </Xl8>
+                  <Link to={FULLPATH_TO.LOGIN}>
+                    <Xl8 xid="passres004">here</Xl8>
+                  </Link>
+                  <Xl8 xid="passres005">to login to GTAS</Xl8>
+                </Alert>
+              ) : (
+                <Form
+                  submitService={resetPassword.post}
+                  title=""
+                  callback={passwordResetCallback}
+                  action="add"
+                  redirectTo={FULLPATH_TO.LOGIN}
+                  paramCallback={preSubmitCallback}
+                  cancellable
+                >
+                  <LabelledInput
+                    datafield
+                    labelText={<Xl8 xid="pass004">New password</Xl8>}
+                    inputType="password"
+                    name="password"
+                    required={true}
+                    inputVal=""
+                    alt="nothing"
+                    callback={cb}
+                  />
+                  <LabelledInput
+                    datafield
+                    labelText={<Xl8 xid="pass005">Confirm new password</Xl8>}
+                    inputType="password"
+                    name="passwordConfirm"
+                    required={true}
+                    inputVal=""
+                    alt="nothing"
+                    callback={cb}
+                  />
+                </Form>
+              )}
+            </>
           ) : (
-            <Form
-              submitService={resetPassword.post}
-              title=""
-              callback={passwordResetCallback}
-              action="add"
-              redirectTo={FULLPATH_TO.LOGIN}
-              paramCallback={preSubmitCallback}
-              cancellable
-            >
-              <LabelledInput
-                datafield
-                labelText={<Xl8 xid="pass004">New password</Xl8>}
-                inputType="password"
-                name="password"
-                required={true}
-                inputVal=""
-                alt="nothing"
-                callback={cb}
-                spacebetween
-              />
-              <LabelledInput
-                datafield
-                labelText={<Xl8 xid="pass005">Confirm new password</Xl8>}
-                inputType="password"
-                name="passwordConfirm"
-                required={true}
-                inputVal=""
-                alt="nothing"
-                callback={cb}
-                spacebetween
-              />
-            </Form>
+            <>
+              <Alert variant="danger">
+                <Xl8 xid="passres006">Invalid token provided. Please try again!</Xl8>
+              </Alert>
+              <br />
+              <Link to={FULLPATH_TO.LOGIN}>Back to Login</Link>
+            </>
           )}
-        </>
-      ) : (
-        <Alert variant="danger">
-          <Xl8 xid="passres006">Invalid token provided. Please try again!</Xl8>
-        </Alert>
-      )}
-    </Container>
+        </Col>
+      </Container>
+    </Main>
   );
 };
 
