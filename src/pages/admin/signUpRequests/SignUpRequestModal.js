@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Form from "../../../components/form/Form";
-import { roles, signuprequests } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
+import Xl8 from "../../../components/xl8/Xl8";
+import { roles, signuprequests } from "../../../services/serviceWrapper";
 import { asArray } from "../../../utils/utils";
 import { ROLE } from "../../../utils/constants";
-import Title from "../../../components/title/Title";
-import Xl8 from "../../../components/xl8/Xl8";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
+import "./SignUpRequests.css";
 
 function SignUpRequestModal(props) {
   const [allRoles, setAllRoles] = useState([]);
@@ -56,10 +56,10 @@ function SignUpRequestModal(props) {
     <Modal
       show={props.show}
       onHide={props.onHide}
-      size="md"
+      // size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      className="max-500-width-container"
+      className="max-600-width-container"
     >
       <ModalHeader closeButton>
         <ModalTitle>{<Xl8 xid="surm001">Select Roles</Xl8>}</ModalTitle>
@@ -70,7 +70,6 @@ function SignUpRequestModal(props) {
           title=""
           callback={props.callback}
           action="add"
-          submitText={<Xl8 xid="surm002">Approve</Xl8>}
           paramCallback={preSubmit}
           cancellable
           recordId={props.requestId}
