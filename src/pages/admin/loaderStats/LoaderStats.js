@@ -8,17 +8,20 @@ import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import { localeDate } from "../../../utils/utils";
 
-const LoaderStats = ({ name }) => {
-  const onChange = function(result) {};
+const LoaderStats = () => {
+  const onChange = () => {};
   const cb = () => {};
 
   const parseData = function(res) {
     const drools = res?.lastMessageAnalyzedByDrools;
+    const msg = res?.lastMessageInSystem;
+    const hit = res?.mostRecentRuleHit;
+
     const parsedData = {
       ...res,
-      lastMessageInSystem: localeDate(res?.lastMessageInSystem),
+      lastMessageInSystem: msg > 0 ? localeDate(msg) : " -- ",
       lastMessageAnalyzedByDrools: drools > 0 ? localeDate(drools) : " -- ",
-      mostRecentRuleHit: localeDate(res?.mostRecentRuleHit)
+      mostRecentRuleHit: hit > 0 ? localeDate(hit) : " -- "
     };
 
     return parsedData;
