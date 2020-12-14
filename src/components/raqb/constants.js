@@ -261,12 +261,12 @@ export const ENTITIESEXT = {
     {
       id: "origin",
       type: "string",
-      multival: true
+      ...getMult()
     },
     {
       id: "destination",
       type: "string",
-      multival: true
+      ...getMult()
     }
   ],
   FrequentFlyer: [
