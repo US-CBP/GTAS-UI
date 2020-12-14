@@ -14,24 +14,21 @@ import "./About.css";
 const About = () => {
   return (
     <>
-      <Col>
-        <br></br>
-        <div className="about-sidenav">
-          <Scrollspy
-            items={raw.map(item => item.id)}
-            currentClassName="is-current"
-            rootEl="#about-container"
-          >
-            {asArray(raw).map(item => {
-              return (
-                <a className="toc" href={`#${item.id}`}>
-                  {item.id}
-                </a>
-              );
-            })}
-          </Scrollspy>
-        </div>
-      </Col>
+      <div className="about-sidenav">
+        <Scrollspy
+          items={raw.map(item => item.id)}
+          currentClassName="is-current"
+          rootEl="#about-container"
+        >
+          {asArray(raw).map(item => {
+            return (
+              <a className="toc" href={`#${item.id}`}>
+                {item.id}
+              </a>
+            );
+          })}
+        </Scrollspy>
+      </div>
 
       <Main className="main bg-white">
         <Title title={<Xl8 xid="abt001">About</Xl8>}></Title>

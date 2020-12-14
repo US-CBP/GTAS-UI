@@ -341,7 +341,7 @@ export const isValidPassword = password => {
 export function formatRuleConditions(conditions) {
   if (!hasData(conditions)) return "";
 
-  return conditions.split("$$$").join("\n");
+  return conditions.split("$$$").join(" \n ");
 }
 
 export const watchlistDateFormat = input => {
