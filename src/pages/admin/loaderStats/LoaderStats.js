@@ -14,7 +14,6 @@ const LoaderStats = ({ name }) => {
 
   const parseData = function(res) {
     const drools = res?.lastMessageAnalyzedByDrools;
-    console.log(drools);
     const parsedData = {
       ...res,
       lastMessageInSystem: localeDate(res?.lastMessageInSystem),
