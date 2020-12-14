@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../context/user/UserContext";
 import Tabs from "../../components/tabs/Tabs";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
 import { Col } from "react-bootstrap";
@@ -21,9 +22,10 @@ import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import AttachmentModal from "./uploadAttachment/AttachmentModal";
+
 import { paxdetails, cases } from "../../services/serviceWrapper";
-import { asArray, hasData } from "../../utils/utils";
-import { ACTION } from "../../utils/constants";
+import { asArray, hasData, titleCase } from "../../utils/utils";
+import { ACTION, ROLE } from "../../utils/constants";
 import { Link } from "@reach/router";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
@@ -215,6 +217,21 @@ const PaxDetail = props => {
   ) : (
     <Xl8 xid="chs007">Set to RE-OPENED</Xl8>
   );
+
+  const { getUserState } = useContext(UserContext);
+
+  // Todo - refactor knowledge of the required roles up to RoleAuth?
+  const hasAuthorizedRoles = roles => {
+    const userRoles = getUserState().userRoles.map(item => titleCase(item));
+    let isAuthorized = false;
+    roles.forEach(element => {
+      if (userRoles.includes(titleCase(element))) {
+        isAuthorized = true;
+      }
+    });
+    return isAuthorized;
+  };
+
   return (
     <>
       <SidenavContainer>
@@ -253,8 +270,7 @@ const PaxDetail = props => {
               <i className="fa fa-paperclip" />
             </AttachmentModal>
           </Action>
-
-          {hasHit && (
+          {hasAuthorizedRoles([ROLE.ADMIN, ROLE.HITMGR]) && hasHit && (
             <Action text={changeHitStatusText} variant="rtf-red">
               <ChangeHitStatus
                 updateStatus={updateHitStatus}
@@ -263,7 +279,7 @@ const PaxDetail = props => {
               />
             </Action>
           )}
-          {!hasHit && (
+          {hasAuthorizedRoles([ROLE.ADMIN, ROLE.HITMGR]) && !hasHit && (
             <Action text={<Xl8 xid="cmh001">Create Manual Hit</Xl8>} variant="rtf-red">
               <CreateManualHit
                 paxId={props.paxId}
@@ -273,9 +289,11 @@ const PaxDetail = props => {
               />
             </Action>
           )}
-          <Action text={<Xl8 xid="atw001">Add to Watchlist</Xl8>} variant="rtf-red">
-            <AddToWatchlist watchlistItems={watchlistData} icon />
-          </Action>
+          {hasAuthorizedRoles([ROLE.ADMIN, ROLE.WLMGR]) && (
+            <Action text={<Xl8 xid="atw001">Add to Watchlist</Xl8>} variant="rtf-red">
+              <AddToWatchlist watchlistItems={watchlistData} icon />
+            </Action>
+          )}
         </Fab>
       </Main>
     </>
