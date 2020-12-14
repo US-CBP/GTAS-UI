@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { SplitButton, Dropdown, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import Xl8 from "../../../components/xl8/Xl8";
 import { ROLE } from "../../../utils/constants";
