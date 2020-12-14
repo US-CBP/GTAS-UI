@@ -19,7 +19,8 @@ import {
   getShortText,
   isShortText,
   getAge,
-  alt, lpad5
+  alt,
+  lpad5
 } from "../../utils/utils";
 import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
@@ -253,7 +254,7 @@ const Vetting = props => {
   const setDataWrapper = data => {
     data = asArray(data.cases).map(item => {
       item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
-          item.medPrioHitCount
+        item.medPrioHitCount
       )}:${lpad5(item.lowPrioHitCount)}`;
       return item;
     });
