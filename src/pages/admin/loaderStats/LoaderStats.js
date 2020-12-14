@@ -11,13 +11,14 @@ import { localeDate } from "../../../utils/utils";
 const LoaderStats = ({ name }) => {
   const onChange = function(result) {};
   const cb = () => {};
-  const [key, setKey] = useState(0);
 
   const parseData = function(res) {
+    const drools = res?.lastMessageAnalyzedByDrools;
+    console.log(drools);
     const parsedData = {
       ...res,
-      lastMessageAnalyzedByDrools: localeDate(res?.lastMessageAnalyzedByDrools),
       lastMessageInSystem: localeDate(res?.lastMessageInSystem),
+      lastMessageAnalyzedByDrools: drools > 0 ? localeDate(drools) : " -- ",
       mostRecentRuleHit: localeDate(res?.mostRecentRuleHit)
     };
 
@@ -31,7 +32,6 @@ const LoaderStats = ({ name }) => {
       <Container>
         <Col lg={{ span: 4, offset: 4 }}>
           <Form
-            key={key}
             getService={loaderStats.get}
             title=""
             callback={cb}
