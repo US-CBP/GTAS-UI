@@ -5,7 +5,7 @@ import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { asArray, hasData, localeDate } from "../../../utils/utils";
+import { asArray, hasData, localeDate, formatBytes } from "../../../utils/utils";
 import "./fileDownload.css";
 
 const FileDownload = ({ name }) => {
@@ -79,7 +79,12 @@ const FileDownload = ({ name }) => {
       }
     },
     { Accessor: "fileName", Xl8: true, Header: ["fdl003", "File Name"] },
-    { Accessor: "size", Xl8: true, Header: ["fdl004", "Size"] },
+    {
+      Accessor: "size",
+      Xl8: true,
+      Header: ["fdl004", "Size"],
+      Cell: ({ row }) => formatBytes(row.original.size)
+    },
     {
       Accessor: "createDate",
       Xl8: true,
