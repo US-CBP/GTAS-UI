@@ -81,9 +81,20 @@ const CarrierModal = props => {
               labelText={<Xl8 xid="iata001">IATA: </Xl8>}
               inputType="text"
               name="iata"
-              required={true}
+              // required={true}
               alt={<Xl8 xid="0">IATA:</Xl8>}
               inputVal={data.iata}
+              callback={cb}
+              spacebetween
+            />
+            <LabelledInput
+              datafield
+              labelText={<Xl8 xid="icao001">ICAO: </Xl8>}
+              inputType="text"
+              name="icao"
+              // required={true}
+              alt="ICAO"
+              inputVal={data.icao}
               callback={cb}
               spacebetween
             />

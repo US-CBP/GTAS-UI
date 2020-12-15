@@ -97,6 +97,7 @@ const Carriers = ({ name }) => {
       }
     },
     { Accessor: "iata", Xl8: true, Header: ["iata001", "IATA"] },
+    { Accessor: "icao", Xl8: true, Header: ["icao001", "ICAO"] },
     { Accessor: "name", Xl8: true, Header: ["car005", "Name"] }
   ];
 
