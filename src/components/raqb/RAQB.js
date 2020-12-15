@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Query,
   Builder,
   BasicConfig,
   Utils as QbUtils
 } from "react-awesome-query-builder";
-import "react-awesome-query-builder/lib/css/styles.css";
 import Xl8 from "../../components/xl8/Xl8";
 import { operators } from "./config";
 import { importToTreeObject, exportToQueryObject } from "./utils";
+import "react-awesome-query-builder/lib/css/styles.css";
 
 const additionalOperators = [
   "equal",

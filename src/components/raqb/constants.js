@@ -422,7 +422,8 @@ export const ENTITIESEXT = {
     },
     {
       id: "paymentType",
-      type: "string"
+      type: "string",
+      ...getMult()
     }
   ],
   Pnr: [

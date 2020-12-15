@@ -598,9 +598,7 @@ const QRModal = props => {
     const storedCategories = getLookupState(CTX.RULECATS);
     const storedCcTypes = getLookupState(CTX.CCTYPES);
 
-    // move to context.
-    if (/*hasData(storedCategories)*/ false) {
-      //Categories are perhaps small enough in amount that caching them is unnecessary?
+    if (hasData(storedCategories)) {
       setCategories(storedCategories);
     } else {
       hitcats.get().then(res => {

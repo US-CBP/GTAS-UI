@@ -193,8 +193,6 @@ export default class App extends React.Component {
             <LiveEditProvider>
               <Suspense fallback="loading">
                 <Router>
-                  {/* TEST ME */}
-                  {/* <Redirect from="/" to="/gtas/login" noThrow /> */}
                   <Login path={FULLPATH_TO.LOGIN}></Login>
                   <SignUp path={FULLPATH_TO.SIGNUP}></SignUp>
                   <ResetPassword path="/gtas/reset-password/:username/:resetToken"></ResetPassword>
