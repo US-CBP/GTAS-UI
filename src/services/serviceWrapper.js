@@ -116,9 +116,13 @@ const LOGGEDIN_USER = `${BASE_URL}gtas/user`;
 const NOTE_TYPESPOST = `${BASE_URL}gtas/api/noteType`;
 const ROLES = `${BASE_URL}gtas/roles/`;
 const CODES_AIRPORT = `${BASE_URL}gtas/api/airport`;
+const CODES_AIRPORTNONARCHIVED = `${BASE_URL}gtas/api/airport/nonarchived`;
 const CODES_COUNTRY = `${BASE_URL}gtas/api/country`;
+const CODES_COUNTRYNONARCHIVED = `${BASE_URL}gtas/api/country/nonarchived`;
 const CODES_CARRIER = `${BASE_URL}gtas/api/carrier`;
+const CODES_CARRIERNONARCHIVED = `${BASE_URL}gtas/api/carrier/nonarchived`;
 const CODES_CCTYPE = `${BASE_URL}gtas/api/cctype`;
+const CODES_CCTYPENONARCHIVED = `${BASE_URL}gtas/api/cctype/nonarchived`;
 const CODES_AIRPORT_LK = `${BASE_URL}gtas/api/airportLookup`;
 const CODES_COUNTRY_LK = `${BASE_URL}gtas/api/countryLookup`;
 const CODES_CARRIER_LK = `${BASE_URL}gtas/api/carrierLookup`;
@@ -301,7 +305,11 @@ export const codeEditor = {
     carrierCodes: () => get(CODES_CARRIER, BASEHEADER),
     countryCodes: () => get(CODES_COUNTRY, BASEHEADER),
     airportCodes: () => get(CODES_AIRPORT, BASEHEADER),
-    cctypeCodes: () => get(CODES_CCTYPE, BASEHEADER)
+    cctypeCodes: () => get(CODES_CCTYPE, BASEHEADER),
+    carrierCodesNonArchived: () => get(CODES_CARRIERNONARCHIVED, BASEHEADER),
+    countryCodesNonArchived: () => get(CODES_COUNTRYNONARCHIVED, BASEHEADER),
+    airportCodesNonArchived: () => get(CODES_AIRPORTNONARCHIVED, BASEHEADER),
+    cctypeCodesNonArchived: () => get(CODES_CCTYPENONARCHIVED, BASEHEADER)
   },
   put: {
     updateCarrier: body => putNoId(CODES_CARRIER, BASEHEADER, stringify(body)),

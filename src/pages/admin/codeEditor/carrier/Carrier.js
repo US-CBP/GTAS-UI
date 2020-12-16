@@ -120,7 +120,7 @@ const Carriers = ({ name }) => {
       />
 
       <Table
-        service={codeEditor.get.carrierCodes}
+        service={codeEditor.get.carrierCodesNonArchived}
         callback={cb}
         header={headers}
         key={refreshKey}

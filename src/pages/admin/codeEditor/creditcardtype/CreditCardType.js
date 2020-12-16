@@ -123,7 +123,7 @@ const CreditCardType = ({ name }) => {
         message={confirmModalMessage}
       />
       <Table
-        service={codeEditor.get.cctypeCodes}
+        service={codeEditor.get.cctypeCodesNonArchived}
         callback={cb}
         header={headers}
         key={refreshKey}
