@@ -64,7 +64,7 @@ const ResetPassword = props => {
                 <Alert variant="success">
                   <Xl8 xid="passres003">Your password has been reset! Click </Xl8>
                   <Link to={FULLPATH_TO.LOGIN}>
-                    <Xl8 xid="passres004">here</Xl8>
+                    <Xl8 xid="passres004">here </Xl8>
                   </Link>
                   <Xl8 xid="passres005">to login to GTAS</Xl8>
                 </Alert>
