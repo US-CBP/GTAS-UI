@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
 import { codeEditor } from "../../../../services/serviceWrapper";
@@ -9,7 +9,7 @@ import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
 const Carriers = ({ name }) => {
-  const cb = function(result) {};
+  const cb = function() {};
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
@@ -19,10 +19,15 @@ const Carriers = ({ name }) => {
   const [confirmModalHeader, setConfirmModalHeader] = useState();
   const [confirmModalMessage, setConfirmModalMessage] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
+  const type = "carrier";
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
   };
+
+  useEffect(() => {
+    if (!showModal) setEditRowDetails({});
+  }, [showModal]);
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
@@ -54,13 +59,13 @@ const Carriers = ({ name }) => {
   };
 
   const restoreCode = () => {
-    codeEditor.put.restoreCarrier(editRowDetails).then(res => {
+    codeEditor.put.restore(type, editRowDetails).then(res => {
       refresh();
     });
   };
 
   const deleteCode = () => {
-    codeEditor.delete.deleteCarrier(editRowDetails?.id).then(res => {
+    codeEditor.del(type, editRowDetails?.id).then(res => {
       refresh();
     });
   };
@@ -76,7 +81,7 @@ const Carriers = ({ name }) => {
   };
 
   const restoreAll = () => {
-    codeEditor.put.restoreCarriersAll().then(res => {
+    codeEditor.put.restoreAll(type).then(res => {
       refresh();
     });
   };
@@ -121,7 +126,7 @@ const Carriers = ({ name }) => {
       />
 
       <Table
-        service={() => codeEditor.get("carrier")}
+        service={() => codeEditor.get(type)}
         callback={cb}
         header={headers}
         key={refreshKey}

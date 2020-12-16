@@ -10,6 +10,7 @@ import Modal, {
   ModalHeader,
   ModalTitle
 } from "../../../../components/modal/Modal";
+const type = "carrier";
 
 const CarrierModal = props => {
   const cb = function(result) {};
@@ -68,7 +69,9 @@ const CarrierModal = props => {
         <Container fluid>
           <Form
             submitService={
-              props.isEdit ? codeEditor.put.updateCarrier : codeEditor.post.createCarrier
+              props.isEdit
+                ? id => codeEditor.put.update(type, id)
+                : body => codeEditor.post(type, body)
             }
             callback={postSubmit}
             action="add"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
 import { codeEditor } from "../../../../services/serviceWrapper";
@@ -19,13 +19,18 @@ const CreditCardType = ({ name }) => {
   const [confirmModalHeader, setConfirmModalHeader] = useState();
   const [confirmModalMessage, setConfirmModalMessage] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
+  const type = "cctype";
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
   };
 
+  useEffect(() => {
+    if (!showModal) setEditRowDetails({});
+  }, [showModal]);
+
   const restoreAll = () => {
-    codeEditor.put.restoreCctypeAll().then(res => {
+    codeEditor.put.restoreAll(type).then(res => {
       refresh();
     });
   };
@@ -61,13 +66,13 @@ const CreditCardType = ({ name }) => {
   };
 
   const restoreCode = () => {
-    codeEditor.put.restoreCctype(editRowDetails).then(res => {
+    codeEditor.put.restore(type, editRowDetails).then(res => {
       refresh();
     });
   };
 
   const deleteCode = () => {
-    codeEditor.delete.deleteCctype(editRowDetails?.id).then(res => {
+    codeEditor.del(type, editRowDetails?.id).then(res => {
       refresh();
     });
   };
@@ -123,7 +128,7 @@ const CreditCardType = ({ name }) => {
         message={confirmModalMessage}
       />
       <Table
-        service={() => codeEditor.get("cctype")}
+        service={() => codeEditor.get(type)}
         callback={cb}
         header={headers}
         key={refreshKey}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
 import { codeEditor } from "../../../../services/serviceWrapper";
@@ -22,10 +22,15 @@ const Airports = ({ name }) => {
 
   const addAirport = <Xl8 xid="airp002">Add Airport</Xl8>;
   const editAirport = <Xl8 xid="airp003">Edit Airport</Xl8>;
+  const type = "airport";
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
   };
+
+  useEffect(() => {
+    if (!showModal) setEditRowDetails({});
+  }, [showModal]);
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
@@ -57,13 +62,13 @@ const Airports = ({ name }) => {
   };
 
   const restoreCode = () => {
-    codeEditor.put.restoreAirport(editRowDetails).then(res => {
+    codeEditor.put.restore(type, editRowDetails).then(res => {
       refresh();
     });
   };
 
   const deleteCode = () => {
-    codeEditor.delete.deleteAirport(editRowDetails?.id).then(res => {
+    codeEditor.delete.del(type, editRowDetails?.id).then(res => {
       refresh();
     });
   };
@@ -79,7 +84,7 @@ const Airports = ({ name }) => {
   };
 
   const restoreAll = () => {
-    codeEditor.put.restoreAirportsAll().then(res => {
+    codeEditor.put.restoreAll(type).then(res => {
       refresh();
     });
   };
@@ -131,7 +136,7 @@ const Airports = ({ name }) => {
       />
 
       <Table
-        service={() => codeEditor.get("airport")}
+        service={() => codeEditor.get(type)}
         callback={cb}
         header={headers}
         key={refreshKey}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
 import { codeEditor } from "../../../../services/serviceWrapper";
@@ -19,6 +19,7 @@ const Countries = ({ name }) => {
   const [confirmModalHeader, setConfirmModalHeader] = useState();
   const [confirmModalMessage, setConfirmModalMessage] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
+  const type = "country";
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
@@ -30,6 +31,10 @@ const Countries = ({ name }) => {
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
+
+  useEffect(() => {
+    if (!showModal) setEditRowDetails({});
+  }, [showModal]);
 
   const confirm = action => {
     if (action === ACTION.UPDATE) {
@@ -54,13 +59,13 @@ const Countries = ({ name }) => {
   };
 
   const restoreCode = () => {
-    codeEditor.put.restoreCountry(editRowDetails).then(res => {
+    codeEditor.put.restore(type, editRowDetails).then(res => {
       refresh();
     });
   };
 
   const deleteCode = () => {
-    codeEditor.delete.deleteCountry(editRowDetails?.id).then(res => {
+    codeEditor.del(type, editRowDetails?.id).then(res => {
       refresh();
     });
   };
@@ -76,7 +81,7 @@ const Countries = ({ name }) => {
   };
 
   const restoreAll = () => {
-    codeEditor.put.restoreCountriesAll().then(res => {
+    codeEditor.put.restoreAll(type).then(res => {
       refresh();
     });
   };
@@ -125,7 +130,7 @@ const Countries = ({ name }) => {
       />
 
       <Table
-        service={() => codeEditor.get("country")}
+        service={() => codeEditor.get(type)}
         callback={cb}
         header={headers}
         key={refreshKey}

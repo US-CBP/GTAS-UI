@@ -10,6 +10,7 @@ import Modal, {
   ModalHeader,
   ModalTitle
 } from "../../../../components/modal/Modal";
+const type = "country";
 
 const CountryModal = props => {
   const cb = function(result) {};
@@ -68,7 +69,9 @@ const CountryModal = props => {
         <Container fluid>
           <Form
             submitService={
-              props.isEdit ? codeEditor.put.updateCountry : codeEditor.post.createCountry
+              props.isEdit
+                ? body => codeEditor.put.update(type, body)
+                : body => codeEditor.post(type, body)
             }
             callback={postSubmit}
             action="add"

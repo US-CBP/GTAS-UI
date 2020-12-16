@@ -10,6 +10,7 @@ import Modal, {
   ModalHeader,
   ModalTitle
 } from "../../../../components/modal/Modal";
+const type = "cctype";
 
 const CreditCardTypeModal = props => {
   const cb = function(result) {};
@@ -74,7 +75,9 @@ const CreditCardTypeModal = props => {
         <Container fluid>
           <Form
             submitService={
-              props.isEdit ? codeEditor.put.updateCctype : codeEditor.post.createCctype
+              props.isEdit
+                ? body => codeEditor.put.update(type, body)
+                : body => codeEditor.post(type, body)
             }
             callback={postSubmit}
             action="add"

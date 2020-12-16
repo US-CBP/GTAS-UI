@@ -13,8 +13,9 @@ import Modal, {
 } from "../../../../components/modal/Modal";
 
 const AirportModal = props => {
-  const cb = function(result) {};
+  const cb = () => {};
   const data = props.editRowDetails || {};
+  const type = "airport";
 
   const postSubmit = (status = ACTION.CANCEL, results) => {
     props.onHide();
@@ -69,7 +70,9 @@ const AirportModal = props => {
         <Container fluid>
           <Form
             submitService={
-              props.isEdit ? codeEditor.put.updateAirport : codeEditor.post.createAirport
+              props.isEdit
+                ? body => codeEditor.put.update(type, body)
+                : body => codeEditor.post(type, body)
             }
             title=""
             callback={postSubmit}
