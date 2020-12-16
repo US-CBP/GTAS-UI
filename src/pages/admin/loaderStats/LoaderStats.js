@@ -8,17 +8,20 @@ import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import { localeDate } from "../../../utils/utils";
 
-const LoaderStats = ({ name }) => {
-  const onChange = function(result) {};
+const LoaderStats = () => {
+  const onChange = () => {};
   const cb = () => {};
-  const [key, setKey] = useState(0);
 
   const parseData = function(res) {
+    const drools = res?.lastMessageAnalyzedByDrools;
+    const msg = res?.lastMessageInSystem;
+    const hit = res?.mostRecentRuleHit;
+
     const parsedData = {
       ...res,
-      lastMessageAnalyzedByDrools: localeDate(res?.lastMessageAnalyzedByDrools),
-      lastMessageInSystem: localeDate(res?.lastMessageInSystem),
-      mostRecentRuleHit: localeDate(res?.mostRecentRuleHit)
+      lastMessageInSystem: msg > 0 ? localeDate(msg) : " -- ",
+      lastMessageAnalyzedByDrools: drools > 0 ? localeDate(drools) : " -- ",
+      mostRecentRuleHit: hit > 0 ? localeDate(hit) : " -- "
     };
 
     return parsedData;
@@ -31,7 +34,6 @@ const LoaderStats = ({ name }) => {
       <Container>
         <Col lg={{ span: 4, offset: 4 }}>
           <Form
-            key={key}
             getService={loaderStats.get}
             title=""
             callback={cb}
