@@ -105,7 +105,7 @@ const Header = () => {
         <Navbar.Brand className="header-navbar-brand">
           <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]} alt={<></>}>
             <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
-              <img src={wcoLogo} />
+              <img src={wcoLogo} alt="WCO logo" />
             </Link>
           </RoleAuthenticator>
         </Navbar.Brand>

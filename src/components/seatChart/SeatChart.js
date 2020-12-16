@@ -13,7 +13,7 @@ import Xl8 from "../xl8/Xl8";
 import "./SeatChart.scss";
 
 const SeatChart = ({ location }) => {
-  const { flightId, currentPaxSeat } = useParams();
+  const { flightId, paxId, currentPaxSeat } = useParams();
   const [reservedSeatsInfo, setReservedSeatsInfo] = useState({});
   const [columnWithReservedSeat, setColumnWithReservedSeat] = useState([]);
   const [rowsWithReservedSeat, setRowsWithReservedSeat] = useState([]);
@@ -31,7 +31,7 @@ const SeatChart = ({ location }) => {
           selected={currentPaxSeat === seatNumber}
           key={seatNumber}
           className={
-            selectedSeatInfo.coTravellers.includes(seatNumber) ? "co-traveler" : ""
+            selectedSeatInfo.coTravellers?.includes(seatNumber) ? "co-traveler" : ""
           }
         />
       );
@@ -66,6 +66,7 @@ const SeatChart = ({ location }) => {
       ? "left-of-middle-rows"
       : "";
   };
+
   useEffect(() => {
     seats.get(flightId).then(res => {
       processData(res);
@@ -78,14 +79,17 @@ const SeatChart = ({ location }) => {
   }, [reservedSeatsInfo]);
 
   const flightInfoData = [
-    { label: <Xl8 xid="seat004">Flight Number</Xl8>, value: location.state.flightNumber },
+    {
+      label: <Xl8 xid="seat004">Flight Number</Xl8>,
+      value: location.state?.flightNumber
+    },
     {
       label: <Xl8 xid="seat005">Arrival</Xl8>,
-      value: localeDate(location.state.arrival)
+      value: localeDate(location.state?.arrival)
     },
     {
       label: <Xl8 xid="seat006">Departure</Xl8>,
-      value: localeDate(location.state.departure)
+      value: localeDate(location.state?.departure)
     }
   ];
 
@@ -104,14 +108,10 @@ const SeatChart = ({ location }) => {
       value: selectedSeatInfo.number
     }
   ];
-  const linkToFlightPax = (
-    <Link to={`/gtas/flightpax/${location.state.flightId}`}>Flightpax</Link>
-  );
+  const linkToFlightPax = <Link to={`/gtas/flightpax/${flightId}`}>Flightpax</Link>;
 
   const linkToPaxdetails = (
-    <Link to={`/gtas/paxDetail/${selectedSeatInfo.flightId}/${selectedSeatInfo.paxId}`}>
-      Show passenger details
-    </Link>
+    <Link to={`/gtas/paxDetail/${flightId}/${paxId}`}>Show passenger details</Link>
   );
 
   return (

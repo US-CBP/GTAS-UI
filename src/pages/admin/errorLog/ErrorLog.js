@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
-import {errorlog} from "../../../services/serviceWrapper";
+import { errorlog } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
@@ -8,7 +8,7 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import { Col } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import FilterForm from "../../../components/filterForm2/FilterForm";
-import {asArray, localeDate} from "../../../utils/utils";
+import { asArray, localeDate } from "../../../utils/utils";
 
 const ErrorLog = ({ name }) => {
   const cb = function(result) {};
@@ -19,7 +19,7 @@ const ErrorLog = ({ name }) => {
   const selectAllCodes = "Select All Codes";
   let startDate = new Date();
   let endDate = new Date();
-  endDate.setDate(endDate.getDate() + 1);
+  endDate.setDate(endDate.getDate());
   startDate.setDate(startDate.getDate() - 1);
   const initialParamState = () => {
     return { startDate: startDate, endDate: endDate };
@@ -29,22 +29,22 @@ const ErrorLog = ({ name }) => {
     {
       Accessor: "errorId",
       Xl8: true,
-      Header: ["el005", "Error Id"]
+      Header: ["el005", "ID"]
     },
     {
       Accessor: "errorCode",
       Xl8: true,
-      Header: ["el006", "Error Code"]
+      Header: ["el006", "Code"]
     },
     {
       Accessor: "errorDescription",
       Xl8: true,
-      Header: ["el007", "Error Description"]
+      Header: ["el007", "Description"]
     },
     {
       Accessor: "timestamp",
       Xl8: true,
-      Header: ["el008", "Error Timestamp"],
+      Header: ["el008", "Timestamp"],
       Cell: ({ row }) => localeDate(row.original.timestamp)
     }
   ];
@@ -66,16 +66,18 @@ const ErrorLog = ({ name }) => {
   };
 
   useEffect(() => {
-    errorlog.get.codes().then(res =>{
-      let codes = [{label:selectAllCodes, value:selectAllCodes}]; //Always top dummy value
-      codes = codes.concat(asArray(res).map(code => {
-        return {
-          label: code,
-          value: code,
-        };
-      }));
+    errorlog.get.codes().then(res => {
+      let codes = [{ label: selectAllCodes, value: selectAllCodes }]; //Always top dummy value
+      codes = codes.concat(
+        asArray(res).map(code => {
+          return {
+            label: code,
+            value: code
+          };
+        })
+      );
       setErrorCodes(codes);
-      setFilterKey(filterKey+1);
+      setFilterKey(filterKey + 1);
     });
   }, []);
 
@@ -96,15 +98,15 @@ const ErrorLog = ({ name }) => {
             key={filterKey}
           >
             <LabelledInput
-                labelText={<Xl8 xid="el001">Error Codes</Xl8>}
-                datafield="errorCode"
-                inputType="select"
-                name="errorCode"
-                inputVal={selectAllCodes}
-                options={errorCodes}
-                required={true}
-                alt="nothing"
-                callback={cb}
+              labelText={<Xl8 xid="el001">Error Codes</Xl8>}
+              datafield="errorCode"
+              inputType="select"
+              name="errorCode"
+              inputVal={selectAllCodes}
+              options={errorCodes}
+              required={true}
+              alt="nothing"
+              callback={cb}
             />
             <LabelledInput
               datafield

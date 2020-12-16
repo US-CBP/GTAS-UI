@@ -4,7 +4,6 @@ import Form from "../../components/form/Form";
 import Main from "../../components/main/Main";
 import { signup, physicalLocations } from "../../services/serviceWrapper";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
-import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import { asArray, hasData } from "../../utils/utils";
 import { Link } from "@reach/router";
