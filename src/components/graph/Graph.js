@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import "../../services/configService";
+// import "../../services/configService";
 import Xl8 from "../xl8/Xl8";
 import { cypher, cypherAuth } from "../../services/serviceWrapper";
 import { provider, saves, palette } from "./structure";

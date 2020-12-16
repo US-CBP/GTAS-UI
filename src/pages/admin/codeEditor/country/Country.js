@@ -125,7 +125,7 @@ const Countries = ({ name }) => {
       />
 
       <Table
-        service={codeEditor.get.countryCodes}
+        service={() => codeEditor.get("country")}
         callback={cb}
         header={headers}
         key={refreshKey}

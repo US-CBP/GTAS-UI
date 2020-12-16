@@ -1,10 +1,5 @@
-import GenericService from "./genericService";
-import { hasData, asArray } from "../utils/utils";
+import { get, put, post, del, putNoId } from "./genericService";
 
-const GET = "get";
-const DELETE = "delete";
-const POST = "post";
-const PUT = "put";
 const AJSON = "application/json, text/plain, */*";
 const JSONUTF8 = "application/json;charset=UTF-8";
 const FORM = "application/x-www-form-urlencoded";
@@ -24,63 +19,6 @@ const SIGNUPHEADER = {
 };
 
 const BASEHEADER = { "Content-Type": JSONUTF8, Accept: AJSON };
-const PUTBODY = "The put method requires a valid body parameter.";
-const POSTBODY = "The post method requires a valid body or data parameter.";
-const PUTID = "The put method requires a valid id parameter.";
-const PUTPARAMS = "The put method requires parameters.";
-const DELETEID = "The delete method requires a valid id parameter.";
-
-function get(uri, headers, id, params) {
-  let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}${
-    hasData(params) ? params : ""
-  }`;
-
-  return GenericService({ uri: uricomplete, method: GET, headers: headers });
-}
-
-function post(uri, headers, body) {
-  return GenericService({
-    uri: uri,
-    method: POST,
-    headers: headers,
-    body: body
-  });
-}
-
-function put(uri, headers, id, body) {
-  // if (!hasData(body)) throw new TypeError(PUTBODY);
-
-  let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}`;
-
-  return GenericService({
-    uri: uricomplete,
-    method: PUT,
-    body: body,
-    headers: headers
-  });
-}
-
-function putNoId(uri, headers, body) {
-  return put(uri, headers, undefined, body);
-}
-
-function del(uri, headers, id) {
-  if (!hasData(id)) throw new TypeError(DELETEID);
-
-  let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}`;
-
-  return GenericService({
-    uri: uricomplete,
-    method: DELETE,
-    headers: headers
-  });
-}
-
-function stringify(body) {
-  return JSON.stringify({ ...body });
-}
-
-// APB - ENTITY CONSTANTS and ENTITY METHODS is the only code we should need to touch when adding new endpoints
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const LOGIN = `${BASE_URL}gtas/authenticate`;
@@ -110,26 +48,14 @@ const RULES = `${BASE_URL}gtas/udr`;
 const RULESALL = `${BASE_URL}gtas/all_udr`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/application/statistics`;
 const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
-const NOTE_TYPES = `${BASE_URL}gtas/passengers/passenger/notetypes`;
 const NOTE_TYPESNONARCHIVED = `${BASE_URL}gtas/api/noteType/nonarchived`;
 const LOGGEDIN_USER = `${BASE_URL}gtas/user`;
 const NOTE_TYPESPOST = `${BASE_URL}gtas/api/noteType`;
 const ROLES = `${BASE_URL}gtas/roles/`;
-const CODES_AIRPORT = `${BASE_URL}gtas/api/airport`;
-const CODES_COUNTRY = `${BASE_URL}gtas/api/country`;
-const CODES_CARRIER = `${BASE_URL}gtas/api/carrier`;
-const CODES_CCTYPE = `${BASE_URL}gtas/api/cctype`;
+const APIBASE = `${BASE_URL}gtas/api/`;
 const CODES_AIRPORT_LK = `${BASE_URL}gtas/api/airportLookup`;
 const CODES_COUNTRY_LK = `${BASE_URL}gtas/api/countryLookup`;
 const CODES_CARRIER_LK = `${BASE_URL}gtas/api/carrierLookup`;
-const CODES_RESTOREALL_AIRPORT = `${BASE_URL}gtas/api/airport/restoreAll`;
-const CODES_RESTOREALL_COUNTRY = `${BASE_URL}gtas/api/country/restoreAll`;
-const CODES_RESTOREALL_CARRIER = `${BASE_URL}gtas/api/carrier/restoreAll`;
-const CODES_RESTOREALL_CCTYPE = `${BASE_URL}gtas/api/cctype/restoreAll`;
-const CODES_RESTORE_AIRPORT = `${BASE_URL}gtas/api/airport/restore`;
-const CODES_RESTORE_CARRIER = `${BASE_URL}gtas/api/carrier/restore`;
-const CODES_RESTORE_COUNTRY = `${BASE_URL}gtas/api/country/restore`;
-const CODES_RESTORE_CCTYPE = `${BASE_URL}gtas/api/cctype/restore`;
 
 const WLDOCS = `${BASE_URL}gtas/wl/DOCUMENT/Document`;
 const WLDOCSPOST = `${BASE_URL}gtas/wl/document`;
@@ -159,6 +85,10 @@ const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
 const ATTACHMENTSMETA = `${BASE_URL}gtas/attachmentsmeta`;
 const DOWNLOADATTACHMENT = `${BASE_URL}gtas/attachment`;
 const TRANSLATIONS = `${BASE_URL}gtas/api/translation`;
+
+const stringify = body => {
+  return JSON.stringify({ ...body });
+};
 
 // ENTITY METHODS
 
@@ -219,14 +149,14 @@ export const cases = {
     return post(CASES, BASEHEADER, stringify(body));
   }
 };
-export const ruleCats = { get: (id, params) => get(RULE_CATS, BASEHEADER) };
+export const ruleCats = { get: () => get(RULE_CATS, BASEHEADER) };
 export const settingsinfo = {
-  get: (id, params) => get(SETTINGSINFO, BASEHEADER),
+  get: () => get(SETTINGSINFO, BASEHEADER),
   put: body => {
     return putNoId(SETTINGSINFO, BASEHEADER, stringify(body));
   }
 };
-export const getrulecats = { get: (id, params) => get(GETRULECATS, BASEHEADER) };
+export const getrulecats = { get: () => get(GETRULECATS, BASEHEADER) };
 export const paxdetails = {
   get: (flightId, paxId) => {
     const path = `${PAX}/${paxId}/details?flightId=${flightId}`;
@@ -287,50 +217,27 @@ export const notification = {
   post: body => post(NOTIFICATION, BASEHEADER, stringify(body))
 };
 export const flightPassengers = { get: id => get(FLIGHTPAX, BASEHEADER, id) };
-export const loaderStats = { get: (id, params) => get(LOADERSTATISTICS, BASEHEADER) };
+export const loaderStats = { get: () => get(LOADERSTATISTICS, BASEHEADER) };
 export const notetypes = {
-  get: (id, params) => get(NOTE_TYPESNONARCHIVED, BASEHEADER),
+  get: () => get(NOTE_TYPESNONARCHIVED, BASEHEADER),
   post: body => post(NOTE_TYPESPOST, BASEHEADER, stringify(body)),
   put: body => putNoId(NOTE_TYPESPOST, BASEHEADER, stringify(body)),
   del: id => del(NOTE_TYPESPOST, BASEHEADER, id)
 };
-export const loggedinUser = { get: (id, params) => get(LOGGEDIN_USER, BASEHEADER) };
+export const loggedinUser = { get: () => get(LOGGEDIN_USER, BASEHEADER) };
 export const roles = { get: () => get(ROLES, BASEHEADER) };
+
 export const codeEditor = {
-  get: {
-    carrierCodes: () => get(CODES_CARRIER, BASEHEADER),
-    countryCodes: () => get(CODES_COUNTRY, BASEHEADER),
-    airportCodes: () => get(CODES_AIRPORT, BASEHEADER),
-    cctypeCodes: () => get(CODES_CCTYPE, BASEHEADER)
-  },
+  get: type => get(APIBASE + type, BASEHEADER),
   put: {
-    updateCarrier: body => putNoId(CODES_CARRIER, BASEHEADER, stringify(body)),
-    updateCountry: body => putNoId(CODES_COUNTRY, BASEHEADER, stringify(body)),
-    updateAirport: body => putNoId(CODES_AIRPORT, BASEHEADER, stringify(body)),
-    updateCctype: body => putNoId(CODES_CCTYPE, BASEHEADER, stringify(body)),
-
-    restoreCarriersAll: body => putNoId(CODES_RESTOREALL_CARRIER, BASEHEADER, body),
-    restoreCountriesAll: body => putNoId(CODES_RESTOREALL_COUNTRY, BASEHEADER, body),
-    restoreAirportsAll: body => putNoId(CODES_RESTOREALL_AIRPORT, BASEHEADER, body),
-    restoreCctypeAll: body => putNoId(CODES_RESTOREALL_CCTYPE, BASEHEADER, body),
-
-    restoreCarrier: body => putNoId(CODES_RESTORE_CARRIER, BASEHEADER, stringify(body)),
-    restoreCountry: body => putNoId(CODES_RESTORE_COUNTRY, BASEHEADER, stringify(body)),
-    restoreAirport: body => putNoId(CODES_RESTORE_AIRPORT, BASEHEADER, stringify(body)),
-    restoreCctype: body => putNoId(CODES_RESTORE_CCTYPE, BASEHEADER, stringify(body))
+    update: (type, body) => putNoId(APIBASE + type, BASEHEADER, stringify(body)),
+    restore: (type, body) =>
+      putNoId(`${APIBASE}${type}/restore`, BASEHEADER, stringify(body)),
+    restoreAll: (type, body) =>
+      putNoId(`${APIBASE}${type}/restoreAll`, BASEHEADER, stringify(body))
   },
-  post: {
-    createCarrier: body => post(CODES_CARRIER, BASEHEADER, stringify(body)),
-    createCountry: body => post(CODES_COUNTRY, BASEHEADER, stringify(body)),
-    createAirport: body => post(CODES_AIRPORT, BASEHEADER, stringify(body)),
-    createCctype: body => post(CODES_CCTYPE, BASEHEADER, stringify(body))
-  },
-  delete: {
-    deleteCarrier: id => del(CODES_CARRIER, BASEHEADER, id),
-    deleteCountry: id => del(CODES_COUNTRY, BASEHEADER, id),
-    deleteAirport: id => del(CODES_AIRPORT, BASEHEADER, id),
-    deleteCctype: id => del(CODES_CCTYPE, BASEHEADER, id)
-  }
+  post: (type, body) => post(APIBASE + type, BASEHEADER, stringify(body)),
+  del: (type, id) => del(APIBASE + type, BASEHEADER, id)
 };
 
 export const attachment = {

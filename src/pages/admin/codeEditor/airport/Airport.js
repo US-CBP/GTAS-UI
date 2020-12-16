@@ -131,7 +131,7 @@ const Airports = ({ name }) => {
       />
 
       <Table
-        service={codeEditor.get.airportCodes}
+        service={() => codeEditor.get("airport")}
         callback={cb}
         header={headers}
         key={refreshKey}

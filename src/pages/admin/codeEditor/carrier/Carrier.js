@@ -121,7 +121,7 @@ const Carriers = ({ name }) => {
       />
 
       <Table
-        service={codeEditor.get.carrierCodes}
+        service={() => codeEditor.get("carrier")}
         callback={cb}
         header={headers}
         key={refreshKey}
