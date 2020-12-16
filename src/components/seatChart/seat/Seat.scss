@@ -1,13 +1,13 @@
 .seat {
   border-color: rgb(245, 241, 241) !important;
-  background-color: rgb(6, 146, 81);
+  background-color: rgb(6, 146, 81) !important;
   color: rgb(216, 211, 211);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
   border-radius: 0.3rem;
   max-width: 30px;
   min-width: 30px;
-  padding: 0.15px 0.15px;
+  padding: 0.15px 0.15px !important;
   transform: rotate(-90deg);
   margin-bottom: 2px;
 }

@@ -5,13 +5,11 @@ import Xl8 from "../../../components/xl8/Xl8";
 import { Tabs, Tab } from "react-bootstrap";
 import { navigate } from "@reach/router";
 import { getEndpoint } from "../../../utils/utils";
-
 import "./CodeEditor.css";
 
 const CodeEditor = props => {
   const endpoint = getEndpoint(props.location?.pathname);
   const startTab = endpoint === "codeeditor" ? "country" : endpoint;
-  const tabcontent = props.children.props.children;
   const [tab, setTab] = useState(startTab);
 
   function tabHandler(ev) {
@@ -28,7 +26,7 @@ const CodeEditor = props => {
   }, [tab]);
 
   const headerTabs = (
-    <Tabs defaultActiveKey="country" id="codeTabs" className="gtas-tabs">
+    <Tabs defaultActiveKey={startTab} id="codeTabs" className="gtas-tabs" key={startTab}>
       <Tab
         eventKey="country"
         title={
@@ -63,11 +61,6 @@ const CodeEditor = props => {
       ></Tab>
     </Tabs>
   );
-
-  let tabMap = {};
-  tabcontent.forEach(function(tab) {
-    tabMap[tab.props.path] = tab.props.name;
-  });
 
   return (
     <Main className="full bg-white">

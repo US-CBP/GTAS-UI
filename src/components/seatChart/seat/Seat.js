@@ -15,8 +15,7 @@ const Seat = props => {
     <>
       <Button
         variant="light"
-        size="sm"
-        className={`seat ${selectedSeatClass} ${hasHitClass} ${props.className} `}
+        className={`seat ${selectedSeatClass} ${hasHitClass} ${props.className}`}
         disabled={!reserved}
         onClick={() => setShowModal(true)}
       >
