@@ -14,13 +14,23 @@ import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
 import { QR, ACTION, CTX, ROLE } from "../../../utils/constants";
 import { LookupContext } from "../../../context/data/LookupContext";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
+// import Loading from "../../../components/loading/Loading";
+
+// import {
+//   hitcats,
+//   airportLookup,
+//   countryLookup,
+//   carrierLookup,
+//   codeEditor
+// } from "../../../services/serviceWrapper";
+
 import {
   hitcats,
   airportLookup,
   countryLookup,
   carrierLookup,
   codeEditor
-} from "../../../services/serviceWrapper";
+} from "../../../services/lookupService";
 
 import { numProps, txtProps, dateProps } from "../../../components/raqb/constants";
 import "./QueryRules.css";
@@ -59,7 +69,6 @@ const QRModal = props => {
       hasData(categories)
     )
       setLoaded(true);
-    else setLoaded(false);
   }, [countries, carriers, airports, ccTypes, categories]);
 
   const countryProps = useMemo(() => {
@@ -83,26 +92,23 @@ const QRModal = props => {
       valueSources: ["value"]
     };
   }, [carriers]);
-  const airportProps = useMemo(() => {
-    return {
-      type: "select",
-      fieldSettings: {
-        allowCustomValues: true,
-        listValues: airports
-      },
-      valueSources: ["value"]
-    };
-  }, [airports]);
-  const ccTypeProps = useMemo(() => {
-    return {
-      type: "select",
-      fieldSettings: {
-        allowCustomValues: false,
-        listValues: ccTypes
-      },
-      valueSources: ["value"]
-    };
-  }, [ccTypes]);
+
+  const airportProps = {
+    type: "select",
+    fieldSettings: {
+      allowCustomValues: true,
+      listValues: airports
+    },
+    valueSources: ["value"]
+  };
+  const ccTypeProps = {
+    type: "select",
+    fieldSettings: {
+      allowCustomValues: false,
+      listValues: ccTypes
+    },
+    valueSources: ["value"]
+  };
 
   const fieldConfigWithData = {
     fields: {
@@ -387,8 +393,8 @@ const QRModal = props => {
 
   useEffect(() => {
     if (loaded) {
-      setDataConfig(fieldConfigWithData);
       setKey(key + 1);
+      setDataConfig(fieldConfigWithData);
     }
   }, [loaded]);
 
@@ -489,9 +495,10 @@ const QRModal = props => {
   };
 
   const storeRule = () => {
+    const type = `last${mode}`;
     const saved = getSaveObject();
 
-    lookupAction({ data: saved, type: "lastRule" });
+    lookupAction({ data: saved, type: type });
   };
 
   const clearInvalid = () => {
@@ -590,89 +597,103 @@ const QRModal = props => {
   useEffect(() => {
     if (key > 0) return;
 
-    setData(props.data?.query);
-
+    if (loaded) return;
     const storedCountries = getLookupState(CTX.COUNTRIES);
     const storedCarriers = getLookupState(CTX.CARRIERS);
     const storedAirports = getLookupState(CTX.AIRPORTCODES);
     const storedCategories = getLookupState(CTX.RULECATS);
     const storedCcTypes = getLookupState(CTX.CCTYPES);
 
-    if (hasData(storedCategories)) {
-      setCategories(storedCategories);
-    } else {
-      hitcats.get().then(res => {
-        const cats = asArray(res).map(catitem => {
-          return { label: catitem.label, value: catitem.id };
-        });
+    setData(props.data?.query);
 
-        if (hasData(cats)) lookupAction({ data: cats, type: CTX.RULECATS });
-        setCategories(cats);
-      });
+    if (!hasData(categories)) {
+      if (hasData(storedCategories)) {
+        setCategories(storedCategories);
+      } else {
+        hitcats.get().then(res => {
+          const cats = asArray(res).map(catitem => {
+            return { label: catitem.label, value: catitem.id };
+          });
+
+          if (hasData(cats)) lookupAction({ data: cats, type: CTX.RULECATS });
+          setCategories(cats);
+        });
+      }
     }
 
-    if (hasData(storedCountries)) {
-      setCountries(storedCountries);
-    } else {
-      countryLookup.get().then(res => {
-        const ctyitems = asArray(res).map(ctyitem => {
-          return { value: ctyitem.iso3, title: ctyitem.name };
-        });
+    if (!hasData(countries)) {
+      if (hasData(storedCountries)) {
+        setCountries(storedCountries);
+      } else {
+        countryLookup.get().then(res => {
+          const ctyitems = asArray(res).map(ctyitem => {
+            return { value: ctyitem.iso3, title: ctyitem.name };
+          });
 
-        if (hasData(ctyitems)) lookupAction({ data: ctyitems, type: CTX.COUNTRIES });
-        setCountries(ctyitems);
-      });
+          if (hasData(ctyitems)) lookupAction({ data: ctyitems, type: CTX.COUNTRIES });
+          setCountries(ctyitems);
+        });
+      }
     }
 
-    if (hasData(storedCarriers)) {
-      setCarriers(storedCarriers);
-    } else {
-      carrierLookup.get().then(res => {
-        let caritems = asArray(res).map(caritem => {
-          return { title: `${caritem.name} (${caritem.iata})`, value: caritem.iata };
-        });
+    if (!hasData(carriers)) {
+      if (hasData(storedCarriers)) {
+        setCarriers(storedCarriers);
+      } else {
+        carrierLookup.get().then(res => {
+          let caritems = asArray(res).map(caritem => {
+            return { title: `${caritem.name} (${caritem.iata})`, value: caritem.iata };
+          });
 
-        const result = caritems.sort(function(a, b) {
-          return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
-        });
+          const result = caritems.sort(function(a, b) {
+            return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
+          });
 
-        if (hasData(result)) lookupAction({ data: result, type: CTX.CARRIERS });
-        setCarriers(result);
-      });
+          if (hasData(result)) lookupAction({ data: result, type: CTX.CARRIERS });
+          setCarriers(result);
+        });
+      }
     }
 
-    if (hasData(storedAirports)) {
-      setAirports(storedAirports);
-    } else {
-      airportLookup.get().then(res => {
-        let apitems = asArray(res).map(apitem => {
-          return { title: apitem.iata, value: apitem.iata };
-        });
+    if (!hasData(airports)) {
+      if (hasData(storedAirports)) {
+        setAirports(storedAirports);
+      } else {
+        airportLookup.get().then(res => {
+          let apitems = asArray(res).map(apitem => {
+            return { title: apitem.iata, value: apitem.iata };
+          });
 
-        const result = apitems.sort(function(a, b) {
-          return a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1;
-        });
+          const result = apitems.sort(function(a, b) {
+            return a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1;
+          });
 
-        if (hasData(result)) lookupAction({ data: result, type: CTX.AIRPORTCODES });
-        setAirports(result);
-      });
+          if (hasData(result)) lookupAction({ data: result, type: CTX.AIRPORTCODES });
+          setAirports(result);
+        });
+      }
     }
 
-    if (hasData(storedCcTypes)) {
-      setCcTypes(storedCcTypes);
-    } else {
-      codeEditor.get.cctypeCodes().then(res => {
-        let ccitem = asArray(res).map(ccitem => {
-          return { title: `${ccitem.description} (${ccitem.code})`, value: ccitem.code };
-        });
+    if (!hasData(ccTypes)) {
+      if (hasData(storedCcTypes)) {
+        setCcTypes(storedCcTypes);
+      } else {
+        codeEditor.get("cctype").then(res => {
+          let ccitem = asArray(res).map(ccitem => {
+            return {
+              title: `${ccitem.description} (${ccitem.code})`,
+              value: ccitem.code
+            };
+          });
 
-        const result = ccitem.sort(function(a, b) {
-          return a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1;
-        });
+          const result = ccitem.sort(function(a, b) {
+            return a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1;
+          });
 
-        if (hasData(result)) lookupAction({ data: result, type: CTX.CCTYPES });
-        setCcTypes(result);
-      });
+          if (hasData(result)) lookupAction({ data: result, type: CTX.CCTYPES });
+          setCcTypes(result);
+        });
+      }
     }
   }, []);
 
@@ -773,14 +794,12 @@ const QRModal = props => {
                 </Row>
               </>
             )}
-            {loaded && (
-              <RAQB
-                data={data}
-                key={key}
-                config={dataConfig}
-                dataCallback={dataCallback}
-              ></RAQB>
-            )}
+            <RAQB
+              data={data}
+              key={key}
+              config={dataConfig}
+              dataCallback={dataCallback}
+            ></RAQB>
           </div>
         </ModalBody>
         <ModalFooter className="qbrb-modal-footer">

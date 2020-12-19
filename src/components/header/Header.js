@@ -25,9 +25,21 @@ import "./Header.scss";
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
   const { getLiveEditState, action } = useContext(LiveEditContext);
+  const user = getUserState();
+
+  const logout = () => {
+    console.log("logout");
+    userAction({ type: "logoff" });
+    action({ type: "read" });
+
+    navigate(FULLPATH_TO.LOGIN);
+  };
+
+  if (user === undefined) logout();
+
   const [currentLang] = useState(window.navigator.language);
 
-  const [isEdit, setIsEdit] = useState(getLiveEditState().isEdit);
+  const [isEdit, setIsEdit] = useState();
   const [showChangePasswordModal, setShowChangePasswordModal] = useState();
   const [showTost, setShowToast] = useState(false);
 
@@ -38,22 +50,12 @@ const Header = () => {
 
   const searchInputRef = useRef();
 
-  const user = getUserState();
   const currentPath = useLocation();
-
-  const logout = () => {
-    userAction({ type: "logoff" });
-    action({ type: "read" });
-
-    navigate(FULLPATH_TO.LOGIN);
-  };
 
   // allow a 'false' logout for admins translating pages outside the authed/loggedin bundle
   const pseudoLogout = () => {
     navigate(FULLPATH_TO.LOGIN);
   };
-
-  if (user === undefined) logout();
 
   const userFullName = user?.fullName || "";
 

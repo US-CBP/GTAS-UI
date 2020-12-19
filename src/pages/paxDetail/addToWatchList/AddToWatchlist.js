@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container, Alert } from "react-bootstrap";
+import { Container, Alert } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { ROLE } from "../../../utils/constants";
-import { addWLItems, hitcats } from "../../../services/serviceWrapper";
+import { addWLItems } from "../../../services/serviceWrapper";
+import { hitcats } from "../../../services/lookupService";
 
 import { asArray } from "../../../utils/utils";
 import Modal, {

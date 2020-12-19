@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { asArray } from "../../../utils/utils";
 import { ROLE } from "../../../utils/constants";
-import { manualHit, hitcats } from "../../../services/serviceWrapper";
+import { manualHit } from "../../../services/serviceWrapper";
+import { hitcats } from "../../../services/lookupService";
 import Modal, {
   ModalBody,
   ModalHeader,

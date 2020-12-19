@@ -14,8 +14,7 @@ const initialState = {
   landingPage: undefined,
   emailEnabled: undefined,
   highPriorityEmail: undefined,
-  lastRule: {},
-  lastQuery: {}
+  lastRule: {}
 };
 
 export const UserContext = createContext();
@@ -41,6 +40,7 @@ const UserProvider = ({ children }) => {
         return initialState;
       }
       case "lastRule": {
+        console.log("usercontext lastrule");
         let storedUser = JSON.parse(sessionStorage.getItem(USERSTORE));
         storedUser.lastRule = action.lastRule;
         setStorage(USERSTORE, storedUser);

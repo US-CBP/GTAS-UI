@@ -3,7 +3,7 @@ import { Button, Container } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
 import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
-import { codeEditor } from "../../../../services/serviceWrapper";
+import { codeEditor } from "../../../../services/lookupService";
 import { ACTION } from "../../../../utils/constants";
 import Modal, {
   ModalBody,

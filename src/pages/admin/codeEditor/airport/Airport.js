@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { codeEditor } from "../../../../services/serviceWrapper";
 import AirportModal from "./AirportModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
+import { codeEditor } from "../../../../services/lookupService";
 import { ACTION } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";

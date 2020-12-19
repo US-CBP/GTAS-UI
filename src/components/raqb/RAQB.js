@@ -6,29 +6,10 @@ import {
   Utils as QbUtils
 } from "react-awesome-query-builder";
 import Xl8 from "../../components/xl8/Xl8";
+// import Loading from "../../components/loading/Loading";
 import { operators } from "./config";
 import { importToTreeObject, exportToQueryObject } from "./utils";
 import "react-awesome-query-builder/lib/css/styles.css";
-
-const additionalOperators = [
-  "equal",
-  "not_equal",
-  "is_empty",
-  "is_not_empty",
-  "like",
-  "not_like",
-  "starts_with",
-  "not_starts_with",
-  "not_ends_with",
-  "ends_with",
-  "in",
-  "not_in"
-];
-
-let queryValue = {
-  id: QbUtils.uuid(),
-  type: "group"
-};
 
 // let outer = {
 //   type: "rule",
@@ -38,6 +19,25 @@ let queryValue = {
 // queryValue.children1[QbUtils.uuid()] = outer;
 
 const RAQB = props => {
+  const additionalOperators = [
+    "equal",
+    "not_equal",
+    "is_empty",
+    "is_not_empty",
+    "like",
+    "not_like",
+    "starts_with",
+    "not_starts_with",
+    "not_ends_with",
+    "ends_with",
+    "in",
+    "not_in"
+  ];
+
+  let queryValue = {
+    id: QbUtils.uuid(),
+    type: "group"
+  };
   const dataConfig = props.config;
   let initconfig = { ...BasicConfig, ...dataConfig };
   initconfig.operators = { ...operators };
@@ -73,7 +73,7 @@ const RAQB = props => {
   //   </div>
   // );
 
-  const onChange = (immutableTree, cfg) => {
+  const onChange = immutableTree => {
     setTree(immutableTree);
     const exportedObj = exportToQueryObject(QbUtils.getTree(immutableTree, config), true);
 

@@ -42,8 +42,16 @@ const LookupProvider = ({ children }) => {
         setStorage("lastRule", action.data);
         return action.data;
       }
+      case "lastQuery": {
+        setStorage("lastQuery", action.data);
+        return action.data;
+      }
       case "removeRule": {
         sessionStorage.removeItem("lastRule");
+        return [];
+      }
+      case "removeQuery": {
+        sessionStorage.removeItem("lastQuery");
         return [];
       }
       default:

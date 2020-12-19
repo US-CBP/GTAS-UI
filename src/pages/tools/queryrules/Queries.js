@@ -72,22 +72,23 @@ const Queries = props => {
   };
 
   useEffect(() => {
+    console.log("q - modal key");
     if (modalKey > -1) setShowModal(true);
   }, [modalKey]);
 
   useEffect(() => {
-    const lastRule = ctx.getLookupState("lastRule");
+    const lastQuery = ctx.getLookupState("lastQuery");
 
-    if (hasData(lastRule)) {
+    if (hasData(lastQuery)) {
       const flatRule = {
-        ...lastRule,
-        tag: lastRule.query
+        ...lastQuery,
+        tag: lastQuery.query
       };
 
       setId(flatRule.id);
       setRecord(flatRule);
       launchModal(flatRule.id, flatRule);
-      ctx.lookupAction({ type: "removeRule" });
+      ctx.lookupAction({ type: "removeQuery" });
     }
   }, []);
 

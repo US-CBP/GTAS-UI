@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Table from "../../../components/table/Table";
-import { hitcats } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 import HitModal from "./HitModal";
+import { hitcats } from "../../../services/lookupService";
 import Confirm from "../../../components/confirmationModal/Confirm";
+import { Dropdown, DropdownButton } from "react-bootstrap";
 import { Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 

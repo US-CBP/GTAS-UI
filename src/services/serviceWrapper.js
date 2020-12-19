@@ -27,7 +27,6 @@ const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
 const USERSNONARCHIVED = `${USERS}/nonarchived`;
 const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
 const CHANGEPASSWORD = `${BASE_URL}gtas/user/change-password`;
-const HITCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
 const HITCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
 const HITCATSNONARCHIVED = `${BASE_URL}gtas/wl/watchlistCategories/nonarchived`;
 const FLIGHTS = `${BASE_URL}gtas/api/flights`;
@@ -37,7 +36,6 @@ const ERRORLOG = `${BASE_URL}gtas/api/errorlog`;
 const ERRORLOGCODES = `${BASE_URL}gtas/api/errorlog/codes`;
 const CASES = `${BASE_URL}gtas/hits`;
 const SETTINGSINFO = `${BASE_URL}gtas/settingsinfo`;
-const GETRULECATS = `${BASE_URL}getRuleCats`;
 const PAX = `${BASE_URL}gtas/passengers/passenger`;
 const FLIGHTPAXHITSUMMARY = `${BASE_URL}gtas/hit/flightpassenger`;
 const HISTORICALHITS = `${PAX}/hitdetailhistory`;
@@ -47,7 +45,6 @@ const QUERYPAX = `${BASE_URL}gtas/query/queryPassengers`;
 const RULES = `${BASE_URL}gtas/udr`;
 const RULESALL = `${BASE_URL}gtas/all_udr`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/application/statistics`;
-const RULE_CATS = `${BASE_URL}gtas/getRuleCats`;
 const NOTE_TYPESNONARCHIVED = `${BASE_URL}gtas/api/noteType/nonarchived`;
 const LOGGEDIN_USER = `${BASE_URL}gtas/user`;
 const NOTE_TYPESPOST = `${BASE_URL}gtas/api/noteType`;
@@ -112,11 +109,11 @@ export const users = {
 export const usersemails = {
   get: () => get(USERSEMAIL, BASEHEADER)
 };
-export const hitcats = {
-  get: (id, params) => get(HITCATSNONARCHIVED, BASEHEADER, id, params),
-  post: body => post(HITCATS, BASEHEADER, body),
-  del: id => del(HITCATS, BASEHEADER, id)
-};
+// export const hitcats = {
+//   get: (id, params) => get(HITCATSNONARCHIVED, BASEHEADER, id, params),
+//   post: body => post(HITCATS, BASEHEADER, body),
+//   del: id => del(HITCATS, BASEHEADER, id)
+// };
 
 export const hitcatspost = {
   post: body => {
@@ -149,14 +146,12 @@ export const cases = {
     return post(CASES, BASEHEADER, stringify(body));
   }
 };
-export const ruleCats = { get: () => get(RULE_CATS, BASEHEADER) };
 export const settingsinfo = {
   get: () => get(SETTINGSINFO, BASEHEADER),
   put: body => {
     return putNoId(SETTINGSINFO, BASEHEADER, stringify(body));
   }
 };
-export const getrulecats = { get: () => get(GETRULECATS, BASEHEADER) };
 export const paxdetails = {
   get: (flightId, paxId) => {
     const path = `${PAX}/${paxId}/details?flightId=${flightId}`;
@@ -226,19 +221,6 @@ export const notetypes = {
 };
 export const loggedinUser = { get: () => get(LOGGEDIN_USER, BASEHEADER) };
 export const roles = { get: () => get(ROLES, BASEHEADER) };
-
-export const codeEditor = {
-  get: type => get(APIBASE + type, BASEHEADER),
-  put: {
-    update: (type, body) => putNoId(APIBASE + type, BASEHEADER, stringify(body)),
-    restore: (type, body) =>
-      putNoId(`${APIBASE}${type}/restore`, BASEHEADER, stringify(body)),
-    restoreAll: (type, body) =>
-      putNoId(`${APIBASE}${type}/restoreAll`, BASEHEADER, stringify(body))
-  },
-  post: (type, body) => post(APIBASE + type, BASEHEADER, stringify(body)),
-  del: (type, id) => del(APIBASE + type, BASEHEADER, id)
-};
 
 export const attachment = {
   get: {

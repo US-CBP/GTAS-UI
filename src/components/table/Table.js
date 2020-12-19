@@ -363,7 +363,7 @@ const Table = props => {
     // Uri and service props are tested for truthy values.
     if (!hasData(props.uri) && !Array.isArray(props.data) && !hasData(props.service)) {
       // const err = new Error("Table requires a uri, service (func), or data prop");
-      console.log("Table requires a uri, service (func), or data prop");
+      // console.log("Table requires a uri, service (func), or data prop");
       // throw err;
     }
   };

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import Table from "../../components/table/Table";
-import { cases, notetypes, usersemails, hitcats } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
@@ -12,6 +11,9 @@ import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import Overlay from "../../components/overlay/Overlay";
+import Confirm from "../../components/confirmationModal/Confirm";
+import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
+import BiographicInfo from "./biographicInfo/BiographicInfo";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import {
   hasData,
@@ -22,12 +24,11 @@ import {
   alt,
   lpad5
 } from "../../utils/utils";
+import { cases, notetypes, usersemails } from "../../services/serviceWrapper";
+import { hitcats } from "../../services/lookupService";
 import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
-import Confirm from "../../components/confirmationModal/Confirm";
-import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
-import BiographicInfo from "./biographicInfo/BiographicInfo";
 
 const Vetting = props => {
   const hitTypeOptions = [

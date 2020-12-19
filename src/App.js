@@ -4,6 +4,7 @@ import IdleTimer from "react-idle-timer";
 import loadable from "@loadable/component";
 
 import Xl8 from "./components/xl8/Xl8";
+import Modal, { ModalBody, ModalHeader, ModalTitle } from "./components/modal/Modal";
 
 import UserProvider from "./context/user/UserContext";
 import LiveEditProvider from "./context/translation/LiveEditContext";
@@ -21,6 +22,7 @@ import Page404 from "./pages/page404/Page404";
 import { FULLPATH_TO } from "./utils/constants";
 import "./App.scss";
 import "font-awesome/css/font-awesome.min.css";
+import Loading from "./components/loading/Loading";
 
 const Authenticator = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./context/authenticator/Authenticator")
@@ -167,7 +169,9 @@ const App = props => {
 
   const onIdle = e => {
     console.log("user is idle", e);
-    console.log("last active", idleTimer.getLastActiveTime());
+    // console.log("last active", idleTimer.current.getLastActiveTime());
+
+    // toggleModal();
 
     // Logout and redirect to login page
     // this.setState({ redirect: true });
@@ -175,7 +179,7 @@ const App = props => {
   };
 
   const toggleModal = () => {
-    // this.setState({ showModal: !this.state.showModal });
+    setShowModal(!showModal);
   };
 
   const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
@@ -199,21 +203,21 @@ const App = props => {
                   <SignUp path={FULLPATH_TO.SIGNUP}></SignUp>
                 </Router>
               </Suspense>
-            </LiveEditProvider>
-          </LookupProvider>
-        </UserProvider>
 
-        {/* {this.state.showModal ? (
-                <GModal>
-                  <div>
-                    <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
-                    <button onClick={this.toggleModal}>OK</button>
-                  </div>
-                </GModal>
-              ) : null} */}
-        <UserProvider>
-          <LookupProvider>
-            <LiveEditProvider>
+              {/* <Modal show={showModal} onHide={toggleModal}>
+          <ModalHeader closeButton>
+            <ModalTitle>
+              <Xl8 xid="time001">Session timeout</Xl8>
+            </ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+            <Xl8 xid="time002">
+              Your session is about to expire. Click OK to continue.
+            </Xl8>
+            {idleTimer.current && idleTimer.current.getElapsedTime()}
+            <button onClick={toggleModal}>OK</button>
+          </ModalBody>
+        </Modal> */}
               <div className="App">
                 <IdleTimer
                   ref={idleTimer}
@@ -224,7 +228,7 @@ const App = props => {
                   debounce={250}
                   timeout={TIME.MINUTES_25}
                 />
-                <Suspense fallback="loading">
+                <Suspense fallback={<Loading></Loading>}>
                   <Router>
                     <Authenticator path="/gtas">
                       <RoleAuthenticator
@@ -276,7 +280,6 @@ const App = props => {
                           </RoleAuthenticator>
                           <Tools path="tools">
                             <Rules path="rules"></Rules>
-                            <Rules path="rules/:mode"></Rules>
                             <Queries path="queries"></Queries>
                             <QRDetails path="qrdetails"></QRDetails>
                             <RoleAuthenticator

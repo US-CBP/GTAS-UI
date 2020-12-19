@@ -1,7 +1,5 @@
 import React from "react";
 import { Button, Container } from "react-bootstrap";
-
-import { codeEditor } from "../../../../services/serviceWrapper";
 import Form from "../../../../components/form/Form";
 import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
@@ -11,6 +9,7 @@ import Modal, {
   ModalHeader,
   ModalTitle
 } from "../../../../components/modal/Modal";
+import { codeEditor } from "../../../../services/lookupService";
 
 const AirportModal = props => {
   const cb = () => {};

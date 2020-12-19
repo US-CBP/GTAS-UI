@@ -7,7 +7,7 @@ const Authenticator = props => {
   const { getUserState } = useContext(UserContext);
   const user = getUserState() || {};
 
-  if (!user.authenticated) return <Redirect to={FULLPATH_TO.LOGIN} noThrow></Redirect>;
+  if (!user?.authenticated) return <Redirect to={FULLPATH_TO.LOGIN} noThrow></Redirect>;
 
   return <>{props.children}</>;
 };

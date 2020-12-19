@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { codeEditor } from "../../../../services/serviceWrapper";
 import CountryModal from "./CountryModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
+import { codeEditor } from "../../../../services/lookupService";
 import { ACTION } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
 const Countries = ({ name }) => {
-  const cb = function(result) {};
+  const cb = () => {};
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);

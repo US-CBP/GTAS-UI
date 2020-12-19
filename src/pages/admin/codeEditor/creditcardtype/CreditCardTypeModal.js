@@ -3,7 +3,7 @@ import { Button, Container } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
 import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
-import { codeEditor } from "../../../../services/serviceWrapper";
+import { codeEditor } from "../../../../services/lookupService";
 import { ACTION } from "../../../../utils/constants";
 import Modal, {
   ModalBody,
@@ -13,7 +13,7 @@ import Modal, {
 const type = "cctype";
 
 const CreditCardTypeModal = props => {
-  const cb = function(result) {};
+  const cb = () => {};
   const data = props.editRowDetails || {};
 
   const postSubmit = (status = ACTION.CANCEL, results) => {
