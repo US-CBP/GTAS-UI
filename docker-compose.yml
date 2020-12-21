@@ -14,6 +14,8 @@ services:
       - 443:443
     restart: always
     secrets:
+      - source: env
+        target: /environment/.env
       - source: ui-cert
         target: /ui-cert/gtas.crt
       - source: ui-key
@@ -24,6 +26,8 @@ networks:
   gtas-webapp-network:
     attachable: true
 secrets:
+  env:
+    file: ./.env
   ui-cert:
     file: ./certs/gtas.crt
   ui-key:

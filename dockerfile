@@ -17,7 +17,6 @@ COPY main.conf /etc/nginx/nginx.conf
 
 WORKDIR /usr/share/nginx/html
 COPY ./env.sh .
-COPY .env .
 
 RUN chmod +x env.sh
 
