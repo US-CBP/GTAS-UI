@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Define and set NGINX resolvers dynamically
+echo resolver $(awk 'BEGIN{ORS=" "} $1=="nameserver" {print $2}' /etc/resolv.conf) ";" > /etc/nginx/resolvers.conf
+
 # Recreate config file
 rm -rf ./public/env-config.js
 touch ./public/env-config.js
