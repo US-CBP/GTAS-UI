@@ -8,7 +8,7 @@ COPY . .
 
 RUN mkdir /ui-cert /ui-key && npm install
 #RUN npm i -S -g serve
-RUN npm run build
+RUN npm run build || cat /root/.npm/_logs/*
 
 FROM nginx:1.19.5-perl
 
