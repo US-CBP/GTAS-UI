@@ -333,3 +333,12 @@ pre {
 .qbrb-modal-footer {
   justify-content: center !important;
 }
+
+.qrm .date-picker {
+  width: 100%;
+}
+
+.qrm .react-datetime-picker__wrapper {
+  padding-left: 10px;
+  text-align: left;
+}
