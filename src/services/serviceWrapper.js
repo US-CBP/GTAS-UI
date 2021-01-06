@@ -17,6 +17,7 @@ const LOGINHEADER = {
    Accept: AJSON,
   "Accept-Encoding": "gzip, deflate, br"
 };
+
 const SIGNUPHEADER = {
   "X-Login-Ajax-call": "true",
   "Router": "api",
