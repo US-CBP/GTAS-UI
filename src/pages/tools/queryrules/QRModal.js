@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useMemo, useContext } from "react";
 import RAQB from "../../../components/raqb/RAQB";
-import { Button, Container, Row } from "react-bootstrap";
+import { Button, Row } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
+import Modal, {
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle
+} from "../../../components/modal/Modal";
 import { navigate } from "@reach/router";
 import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
 import { QR, ACTION, CTX, ROLE } from "../../../utils/constants";
@@ -18,12 +24,6 @@ import {
 
 import { numProps, txtProps, dateProps } from "../../../components/raqb/constants";
 import "./QueryRules.css";
-import Modal, {
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  ModalTitle
-} from "../../../components/modal/Modal";
 
 const QRModal = props => {
   const id = props.id;
@@ -785,7 +785,7 @@ const QRModal = props => {
             )}
           </div>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter className="qbrb-modal-footer">
           <Button
             type="button"
             key="close"
@@ -793,7 +793,16 @@ const QRModal = props => {
             variant="outline-dark"
             onClick={onClose}
           >
-            <Xl8 xid="qrm007">Close</Xl8>
+            <Xl8 xid="qrm007">Cancel</Xl8>
+          </Button>
+          <Button
+            key="save"
+            type="button"
+            className="m-2 btn"
+            variant="primary"
+            onClick={onSave}
+          >
+            <Xl8 xid="qrm009">Submit</Xl8>
           </Button>
           <Button
             type="button"
@@ -803,15 +812,6 @@ const QRModal = props => {
             onClick={onClear}
           >
             <Xl8 xid="QRM008">Clear</Xl8>
-          </Button>
-          <Button
-            key="save"
-            type="button"
-            className="m-2 btn"
-            variant="primary"
-            onClick={onSave}
-          >
-            <Xl8 xid="qrm009">Save</Xl8>
           </Button>
 
           <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]} alt={<></>}>
@@ -829,8 +829,8 @@ const QRModal = props => {
             <Button
               key="delete"
               type="button"
-              className="m-2 outline-dark-outline"
-              variant="outline-dark"
+              className="m-2"
+              variant="outline-danger"
               onClick={onDelete}
             >
               <Xl8 xid="qrm011">Delete</Xl8>

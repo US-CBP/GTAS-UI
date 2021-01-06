@@ -19,7 +19,7 @@ const ErrorLog = ({ name }) => {
   const selectAllCodes = "Select All Codes";
   let startDate = new Date();
   let endDate = new Date();
-  endDate.setDate(endDate.getDate() + 1);
+  endDate.setDate(endDate.getDate());
   startDate.setDate(startDate.getDate() - 1);
   const initialParamState = () => {
     return { startDate: startDate, endDate: endDate };
@@ -29,22 +29,22 @@ const ErrorLog = ({ name }) => {
     {
       Accessor: "errorId",
       Xl8: true,
-      Header: ["el005", "Error Id"]
+      Header: ["el005", "ID"]
     },
     {
       Accessor: "errorCode",
       Xl8: true,
-      Header: ["el006", "Error Code"]
+      Header: ["el006", "Code"]
     },
     {
       Accessor: "errorDescription",
       Xl8: true,
-      Header: ["el007", "Error Description"]
+      Header: ["el007", "Description"]
     },
     {
       Accessor: "timestamp",
       Xl8: true,
-      Header: ["el008", "Error Timestamp"],
+      Header: ["el008", "Timestamp"],
       Cell: ({ row }) => localeDate(row.original.timestamp)
     }
   ];

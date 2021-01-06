@@ -55,7 +55,7 @@ const EventNotesModal = props => {
         size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        className="max-500-width-container"
+        className="max-600-width-container"
       >
         <ModalHeader closeButton>
           <ModalTitle>
@@ -65,7 +65,7 @@ const EventNotesModal = props => {
         <ModalBody>
           <Form
             title=""
-            submitText={<Xl8 xid="evn003">Save</Xl8>}
+            // submitText={<Xl8 xid="evn003">Save</Xl8>}
             submitService={paxEventNotesHistory.post}
             callback={handleClose}
             action="add"

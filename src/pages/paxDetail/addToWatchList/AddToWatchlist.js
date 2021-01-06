@@ -104,7 +104,7 @@ const AddToWatchlist = props => {
       >
         <ModalHeader closeButton>
           <ModalTitle>
-            <Xl8 xid="atw002">Add Passenger/Document to Watchlist</Xl8>
+            <Xl8 xid="atw002">Add to Watchlist</Xl8>
           </ModalTitle>
         </ModalHeader>
 
@@ -112,7 +112,7 @@ const AddToWatchlist = props => {
           <Container fluid>
             <Form
               submitService={addWLItems.post}
-              submitText={<Xl8 xid="atw003">Add to Watchlist</Xl8>}
+              // submitText={<Xl8 xid="atw002">Add to Watchlist</Xl8>}
               title=""
               callback={handleClose}
               action="add"
@@ -134,6 +134,7 @@ const AddToWatchlist = props => {
                   This will add the following passenger and their applicable documents to
                   the watchlist:
                 </Xl8>
+                <br />
                 {passenger?.firstName} {passenger?.lastName}
               </Alert>
             </Form>

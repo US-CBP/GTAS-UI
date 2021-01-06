@@ -341,7 +341,7 @@ export const isValidPassword = password => {
 export function formatRuleConditions(conditions) {
   if (!hasData(conditions)) return "";
 
-  return conditions.split("$$$").join("\n");
+  return conditions.split("$$$").join(" \n ");
 }
 
 export const watchlistDateFormat = input => {
@@ -358,4 +358,17 @@ export const lpad5 = val => {
   return alt(val, 0)
     .toString()
     .padStart(5, "0");
+};
+
+// copied direct from stacko, but tested.
+export const formatBytes = (bytes, decimals = 2) => {
+  if (bytes === 0) return "0 Bytes";
+
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 };

@@ -196,12 +196,6 @@ export const hitcatspost = {
     return putNoId(HITCATSPOST, BASEHEADER, stringify(body));
   }
 };
-export const userService = {
-  get: (id, params) => get(USERS, BASEHEADER),
-  post: body => {
-    return post(USERS, BASEHEADER, stringify(body));
-  }
-};
 
 export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
 export const auditlog = {

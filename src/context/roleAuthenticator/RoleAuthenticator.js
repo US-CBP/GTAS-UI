@@ -8,7 +8,6 @@ const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
 const RoleAuthenticator = props => {
   const alt = props.alt ?? UNAUTHED;
   const { getUserState } = useContext(UserContext);
-
   let hasRole = false;
 
   const userRoles = getUserState().userRoles.map(item => titleCase(item));

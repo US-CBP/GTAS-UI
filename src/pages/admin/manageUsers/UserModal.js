@@ -20,14 +20,20 @@ const UserModal = props => {
   const { getUserState } = useContext(UserContext);
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
-  const defaultRole = [{ label: ROLE.FLIGHTVWR, value: 9, disabled: true }];
+  const defaultRole = { label: ROLE.FLIGHTVWR, value: undefined, disabled: true };
   const cb = function(result) {};
   const row = props.editRowDetails || {};
   const loggedinUser = getUserState();
 
+  const launchAlert = msg => {
+    setAlertContent(msg);
+    setShowAlert(true);
+  };
+
   const isLoggedinUser = userId => {
     return loggedinUser.userId === userId;
   };
+
   const loggedinUserHasAdminRole = () => {
     const roles = loggedinUser.userRoles;
     return roles.includes(ROLE.ADMIN);
@@ -36,11 +42,13 @@ const UserModal = props => {
   const isRoleDisabled = role => {
     return (
       role.roleDescription === ROLE.FLIGHTVWR ||
-      (props.isEdit && isLoggedinUser(row.userId) && loggedinUserHasAdminRole())
+      (props.isEdit && isLoggedinUser(row.userId))
     );
   };
   const containsDefaultRole = roles => {
-    return asArray(roles).find(role => role.value === defaultRole[0].value);
+    return asArray(roles).find(
+      role => role.label === defaultRole.label || role.label === ROLE.ADMIN
+    );
   };
   const compareRoles = (role1, role2) => {
     const roleDescription1 = role1.roleDescription?.toUpperCase();
@@ -81,8 +89,7 @@ const UserModal = props => {
       const message = res.message || (
         <Xl8 xid="um03">There was an issue with the server for that request.</Xl8>
       );
-      setAlertContent(message);
-      setShowAlert(true);
+      launchAlert(message);
     } else {
       setShowAlert(false);
       props.onHide();
@@ -92,7 +99,6 @@ const UserModal = props => {
 
   const preSubmit = fields => {
     let res = { ...fields[0] };
-    //TODO selectedRoles is empty if no change occurs, which makes hard to apply default values
     res.roles = asArray(res.roles).map(role => {
       return { roleId: role.value, roleDescription: role.label };
     });
@@ -124,11 +130,9 @@ const UserModal = props => {
       validUserId = !existingUserIds.includes(res.userId?.toUpperCase());
     }
     if (!validUserId) {
-      setAlertContent(INVALID_USER_ERROR);
-      setShowAlert(true);
+      launchAlert(INVALID_USER_ERROR);
     } else if (!validPassword) {
-      setAlertContent(INVALID_PASSWORD_ERROR);
-      setShowAlert(true);
+      launchAlert(INVALID_PASSWORD_ERROR);
     }
 
     return validPassword && validUserId;

@@ -18,10 +18,7 @@ const UploadAttachment = props => {
   const [showModal, setShowModal] = useState(false);
   const paxId = props.paxId;
 
-  const cb = (status, resp) => { //SLATE FOR REMOVAL -- DOES NOTHING AS PAX DETAIL CONTROLS CALLBACK FOR ATTACHMENT MODAL NOW
-    if (status !== ACTION.CLOSE && status !== ACTION.CANCEL)
-      setRefreshDataKey(refreshDataKey + 1);
-  };
+  const cb = (status, resp) => {};
 
   const deleteAttachment = row => {
     attachment.del(row.id).then(resp => {
@@ -48,7 +45,7 @@ const UploadAttachment = props => {
       setData(resp);
       setTableKey(tableKey + 1);
     });
-  }, [props.attachmentRefreshKey]);
+  }, [refreshDataKey, props.attachmentRefreshKey]);
 
   const headers = [
     {
@@ -120,7 +117,6 @@ const UploadAttachment = props => {
 
   return (
     <div className="one-column-grid-container">
-      {/* <Title title={<Xl8 xid="att009">Uploaded Attachments</Xl8>} rightChild={button} /> */}
       <Table data={data} id="attachments" header={headers} key={tableKey} callback={cb} />
     </div>
   );
