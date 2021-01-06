@@ -13,19 +13,19 @@ const LOGINHEADER = {
   "X-Login-Ajax-call": "true",
   "Content-Type": FORM,
   "X-Requested-With": "XMLHttpRequest",
-  "Api-Proxy-Route-To": "api",
+  "Router": "api",
    Accept: AJSON,
   "Accept-Encoding": "gzip, deflate, br"
 };
 const SIGNUPHEADER = {
   "X-Login-Ajax-call": "true",
-  "Api-Proxy-Route-To": "api",
+  "Router": "api",
   "Content-Type": "application/json",
   "X-Requested-With": "XMLHttpRequest",
   Accept: AJSON
 };
 
-const BASEHEADER = { "Content-Type": JSONUTF8, "Api-Proxy-Route-To": "api" ,Accept: AJSON };
+const BASEHEADER = { "Content-Type": JSONUTF8, "Router": "api" ,Accept: AJSON };
 const PUTBODY = "The put method requires a valid body parameter.";
 const POSTBODY = "The post method requires a valid body or data parameter.";
 const PUTID = "The put method requires a valid id parameter.";
