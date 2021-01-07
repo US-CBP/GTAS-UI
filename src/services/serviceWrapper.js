@@ -505,9 +505,3 @@ export const seats = {
   get: flightId => get(SEATS, BASEHEADER, flightId)
 };
 
-// export const neo4jUrl = {
-//   get: () => get(NEO4JURL, BASEHEADER)
-// };
-// export const kibanaUrl = {
-//   get: () => get(KIBANAURL, BASEHEADER)
-// };
