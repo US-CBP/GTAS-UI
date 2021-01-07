@@ -13,17 +13,20 @@ const LOGINHEADER = {
   "X-Login-Ajax-call": "true",
   "Content-Type": FORM,
   "X-Requested-With": "XMLHttpRequest",
-  Accept: AJSON,
+  "Router": "api",
+   Accept: AJSON,
   "Accept-Encoding": "gzip, deflate, br"
 };
+
 const SIGNUPHEADER = {
   "X-Login-Ajax-call": "true",
+  "Router": "api",
   "Content-Type": "application/json",
   "X-Requested-With": "XMLHttpRequest",
   Accept: AJSON
 };
 
-const BASEHEADER = { "Content-Type": JSONUTF8, Accept: AJSON };
+const BASEHEADER = { "Content-Type": JSONUTF8, "Router": "api" ,Accept: AJSON };
 const PUTBODY = "The put method requires a valid body parameter.";
 const POSTBODY = "The post method requires a valid body or data parameter.";
 const PUTID = "The put method requires a valid id parameter.";
@@ -81,7 +84,7 @@ function stringify(body) {
 }
 
 // APB - ENTITY CONSTANTS and ENTITY METHODS is the only code we should need to touch when adding new endpoints
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = window?._env_ ? window._env_.REACT_APP_BASE_URL : process.env.REACT_APP_BASE_URL;
 
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
@@ -142,8 +145,6 @@ const NOTIFICATION = `${BASE_URL}gtas/users/notify`;
 const HOST = `${BASE_URL}gtas/config/`;
 const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
-const NEO4JURL = HOST + "/neo4j/";
-const KIBANAURL = HOST + "/kibanaUrl/";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 const LOGFILE = `${BASE_URL}gtas/api/logs/`;
 const SIGNUP = `${BASE_URL}gtas/user/signup/new`;
@@ -504,9 +505,3 @@ export const seats = {
   get: flightId => get(SEATS, BASEHEADER, flightId)
 };
 
-export const neo4jUrl = {
-  get: () => get(NEO4JURL, BASEHEADER)
-};
-export const kibanaUrl = {
-  get: () => get(KIBANAURL, BASEHEADER)
-};
