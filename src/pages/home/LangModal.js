@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button, Container, Alert } from "react-bootstrap";
+import React from "react";
+import { Modal, Container } from "react-bootstrap";
 import Form from "../../components/form/Form";
-import Xl8 from "../../components/xl8/Xl8";
 import { translations } from "../../services/serviceWrapper";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { ACTION } from "../../utils/constants";
-import { hasData } from "../../utils/utils";
 
 const LangModal = props => {
-  const cb = function(result) {};
+  const cb = () => {};
   const data = props.elem || {};
 
-  const postSubmit = (status, res) => {
+  const postSubmit = status => {
     props.onHide();
     if (status === ACTION.SAVE) window.location.reload();
   };
@@ -41,45 +39,45 @@ const LangModal = props => {
           >
             <LabelledInput
               datafield
-              labelText="Code:"
-              inputVal={data.xid}
-              inputType="label"
+              labelText="Code"
+              inputval={data.xid}
+              inputtype="label"
               required={true}
               readOnly
               name="code"
-              alt="Translation Code:"
+              alt="Translation Code"
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
-              labelText="Language:"
-              inputType="label"
+              labelText="Language"
+              inputtype="label"
               readOnly
-              inputVal={window.navigator.language.split("-")[0]}
+              inputval={window.navigator.language.split("-")[0]}
               name="language"
               alt="Language:"
               callback={cb}
               spacebetween
             />
             <LabelledInput
-              labelText="Default Text:"
-              inputType="label"
+              labelText="Default Text"
+              inputtype="label"
               readOnly
-              inputVal={data.orig}
+              inputval={data.orig}
               name="default"
-              alt="Default Text:"
+              alt="Default Text"
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
-              labelText="Translation:"
-              inputType="textarea"
-              inputVal={data.trans}
+              labelText="Translation"
+              inputtype="textarea"
+              inputval={data.trans}
               name="translation"
               required={true}
-              alt="Translation:"
+              alt="Translation"
               callback={cb}
               spacebetween
             />

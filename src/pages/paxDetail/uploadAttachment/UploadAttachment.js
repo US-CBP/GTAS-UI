@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { attachment } from "../../../services/serviceWrapper";
-import "./UploadAttachment.scss";
-import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Table from "../../../components/table/Table";
-import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 import Confirm from "../../../components/confirmationModal/Confirm";
 import AttachmentModal from "./AttachmentModal";
-import { ACTION } from "../../../utils/constants";
+import { Button, Dropdown, DropdownButton } from "react-bootstrap";
+import "./UploadAttachment.scss";
 
 const UploadAttachment = props => {
   const [selectedFiles] = useState(null);
@@ -18,7 +16,7 @@ const UploadAttachment = props => {
   const [showModal, setShowModal] = useState(false);
   const paxId = props.paxId;
 
-  const cb = (status, resp) => {};
+  const cb = () => {};
 
   const deleteAttachment = row => {
     attachment.del(row.id).then(resp => {
@@ -101,7 +99,7 @@ const UploadAttachment = props => {
         setShowModal(true);
       }}
       required={props.required}
-      value={props.inputVal}
+      value={props.inputval}
       alt={props.alt}
     >
       <Xl8 xid="att008">Add an Attachment</Xl8>

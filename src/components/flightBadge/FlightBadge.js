@@ -5,7 +5,7 @@ import "./FlightBadge.scss";
 
 const FlightBadge = props => {
   const res = props.data;
-  const style = `flight-badge ${alt(props.style, "reg")}`;
+  const style = `flight-badge ${alt(props.className, "reg")}`;
 
   if (!hasData(props.data?.flightNumber)) return <></>;
 

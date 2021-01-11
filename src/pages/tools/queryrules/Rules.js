@@ -24,12 +24,13 @@ const Rules = props => {
   const [service] = useState(rule);
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
-  const [data, setData] = useState({});
+  const [data, setData] = useState();
   const [modalTitle, setModalTitle] = useState(addRule);
   const [record, setRecord] = useState();
   const [modalKey, setModalKey] = useState();
   const [tablekey, setTablekey] = useState(0);
   const ctx = useContext(LookupContext);
+  const unsavedRuleKey = "lastRule";
 
   const cb = () => {};
 
@@ -170,6 +171,7 @@ const Rules = props => {
           };
         });
       }
+
       setData(parsed);
       setTablekey(tablekey + 1);
     });
@@ -186,7 +188,7 @@ const Rules = props => {
   // on load
   useEffect(() => {
     titleTabCallback(`--${RULETAB.MY}`);
-    const lastRule = ctx.getLookupState("lastRule");
+    const lastRule = ctx.getLookupState(unsavedRuleKey);
 
     if (hasData(lastRule)) {
       const flatRule = { ...lastRule.summary, query: lastRule.details, id: lastRule.id };
@@ -194,7 +196,7 @@ const Rules = props => {
       setId(flatRule.id);
       setRecord(flatRule);
       triggerShowModal(flatRule, flatRule.id);
-      ctx.lookupAction({ type: "removeRule" });
+      ctx.lookupAction({ type: unsavedRuleKey, method: "delete" });
     }
   }, []);
 
@@ -218,8 +220,6 @@ const Rules = props => {
       ></Tab>
     </Tabs>
   );
-
-  console.log(tablekey);
 
   return (
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.RULEMGR]}>

@@ -6,8 +6,8 @@ import MultiSelect from "react-multi-select-component";
 import { hasData } from "../../../utils/utils";
 
 const SelectInput = props => {
-  const [selected, setSelected] = useState(props.selected);
-  const type = props.inputType;
+  const [selected, setSelected] = useState(props.selected || "");
+  const type = props.inputtype;
   const hasDefaultValue = hasData(props.selected);
   const placeholder = props.placeholder || "Select...";
 
@@ -34,7 +34,6 @@ const SelectInput = props => {
   } else {
     return (
       <select
-        // className={`input-select ${props.className || ""}`}
         type="select"
         name={props.name}
         required={props.required}
@@ -45,14 +44,14 @@ const SelectInput = props => {
         disabled={props.readOnly === "readOnly" ? "disabled" : ""}
       >
         {!hasDefaultValue && (
-          <option value="" selected disabled>
+          <option value="" disabled>
             {placeholder}
           </option>
         )}
         {props.options.map(option => {
           return (
             <option key={option.value} value={option.value}>
-              {option.label}{" "}
+              {option.label}
             </option>
           );
         })}

@@ -29,7 +29,7 @@ function cb(e) {}
       id="loginform"
     >
       <LabelledInput
-        inputType="text"
+        inputtype="text"
         datafield
         labelText="Name"
         name="name"
@@ -37,7 +37,7 @@ function cb(e) {}
         alt="name"
       />
       <LabelledInput
-        inputType="number"
+        inputtype="number"
         datafield
         labelText="Age"
         name="age"
@@ -45,7 +45,7 @@ function cb(e) {}
         alt="age"
       />
       <LabelledInput
-        inputType="text"
+        inputtype="text"
         datafield
         labelText="School"
         name="school"
@@ -53,7 +53,7 @@ function cb(e) {}
         alt="school"
       />
       <LabelledInput
-        inputType="number"
+        inputtype="number"
         datafield
         labelText="Grade"
         name="grade"

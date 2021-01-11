@@ -4,7 +4,7 @@ import IdleTimer from "react-idle-timer";
 import loadable from "@loadable/component";
 
 import Xl8 from "./components/xl8/Xl8";
-import Modal, { ModalBody, ModalHeader, ModalTitle } from "./components/modal/Modal";
+// import Modal, { ModalBody, ModalHeader, ModalTitle } from "./components/modal/Modal";
 
 import UserProvider from "./context/user/UserContext";
 import LiveEditProvider from "./context/translation/LiveEditContext";

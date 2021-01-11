@@ -104,7 +104,7 @@ const ReviewPVL = props => {
             recordId={`${paxId}`}
           >
             <LabelledInput
-              inputType="select"
+              inputtype="select"
               alt="Choose not type"
               name="noteType"
               labelText=""
@@ -114,14 +114,14 @@ const ReviewPVL = props => {
               options={noteTypes}
             />
             <LabelledInput
-              inputType="textarea"
+              inputtype="textarea"
               alt="Add note here..."
               name="plainTextNote"
               labelText=""
               placeholder="Add note here..."
               datafield="plainTextNote"
               required="required"
-              inputVal=""
+              inputval=""
             />
           </Form>
           <CardWithTable

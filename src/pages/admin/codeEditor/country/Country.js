@@ -1,40 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
 import CountryModal from "./CountryModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
+import { LookupContext } from "../../../../context/data/LookupContext";
 import { codeEditor } from "../../../../services/lookupService";
-import { ACTION } from "../../../../utils/constants";
+import { ACTION, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
-const Countries = ({ name }) => {
+const Countries = () => {
   const cb = () => {};
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
   const [modalTitle, setModalTitle] = useState();
   const [action, setAction] = useState();
-  const [editRowDetails, setEditRowDetails] = useState({});
+  const [editRowDetails, setEditRowDetails] = useState();
   const [confirmModalHeader, setConfirmModalHeader] = useState();
   const [confirmModalMessage, setConfirmModalMessage] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
-  const type = "country";
+  const { refreshAndReturn } = useContext(LookupContext);
+  const type = LK.COUNTRY;
 
-  const refresh = () => {
+  async function refresh() {
     setRefreshKey(refreshKey + 1);
-  };
+    setEditRowDetails({});
+  }
 
   const openEditModal = rowDetails => {
-    setIsEditModal(true);
     setModalTitle(<Xl8 xid="cou001">Edit Country</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
+    setIsEditModal(true);
   };
 
-  useEffect(() => {
-    if (!showModal) setEditRowDetails({});
-  }, [showModal]);
+  const closeEditModal = () => {
+    setEditRowDetails({});
+    setShowModal(false);
+  };
 
   const confirm = action => {
     if (action === ACTION.UPDATE) {
@@ -48,9 +52,9 @@ const Countries = ({ name }) => {
         <Xl8 xid="couConf004">Please confirm to delete the country code</Xl8>
       );
     } else if (action === ACTION.UPDATEALL) {
-      setConfirmModalHeader(<Xl8 xid="couConf004">Restore All Country Codes</Xl8>);
+      setConfirmModalHeader(<Xl8 xid="couConf005">Restore All Country Codes</Xl8>);
       setConfirmModalMessage(
-        <Xl8 xid="couConf005">Please confirm to restore all country codes</Xl8>
+        <Xl8 xid="couConf006">Please confirm to restore all country codes</Xl8>
       );
     }
     setAction(action);
@@ -114,7 +118,7 @@ const Countries = ({ name }) => {
     <div>
       <CountryModal
         show={showModal}
-        onHide={() => setShowModal(false)}
+        onHide={closeEditModal}
         isEdit={isEditModal}
         title={modalTitle}
         editRowDetails={editRowDetails}
@@ -130,7 +134,7 @@ const Countries = ({ name }) => {
       />
 
       <Table
-        service={() => codeEditor.get(type)}
+        service={() => refreshAndReturn(type)}
         callback={cb}
         header={headers}
         key={refreshKey}
@@ -140,10 +144,10 @@ const Countries = ({ name }) => {
         <Action
           text={<Xl8 xid="cou004">Add Country</Xl8>}
           onClick={() => {
-            setShowModal(true);
+            setEditRowDetails({});
             setModalTitle(<Xl8 xid="cou004">Add Country</Xl8>);
             setIsEditModal(false);
-            setEditRowDetails({});
+            setShowModal(true);
           }}
         >
           <i className="fa fa-plus" />

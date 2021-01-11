@@ -10,7 +10,7 @@ const cb = () => {};
     <File
       name="cb1"
       alt="File input control"
-      inputType="file"
+      inputtype="file"
       onChange={cb}
       options={["jpg", "gif", "txt"]}
     />

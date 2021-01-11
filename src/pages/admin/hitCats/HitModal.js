@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Button, Container, Alert } from "react-bootstrap";
+import React from "react";
+import { Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
-import { hitcatspost } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
+import { hitcatspost } from "../../../services/serviceWrapper";
 import { ACTION } from "../../../utils/constants";
 import Modal, {
   ModalBody,
@@ -12,18 +12,15 @@ import Modal, {
 } from "../../../components/modal/Modal";
 
 const HitModal = props => {
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertContent, setAlertContent] = useState("");
-  const [variant, setVariant] = useState("");
   const row = props.editRowDetails || {};
-  const cb = function(result) {};
+  const cb = () => {};
   const severityLevels = [
     { value: "Top", label: "Top" },
     { value: "High", label: "High" },
     { value: "Normal", label: "Normal" }
   ];
 
-  const postSubmit = (status, res) => {
+  const postSubmit = status => {
     props.onHide();
 
     if (status !== ACTION.CANCEL) props.refresh();
@@ -47,13 +44,6 @@ const HitModal = props => {
       <ModalHeader closeButton>
         <ModalTitle>{props.title}</ModalTitle>
       </ModalHeader>
-      <Alert show={showAlert} variant={variant}>
-        {alertContent}
-        <hr />
-        <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          <Xl8 xid="form003">Confirm</Xl8>
-        </Button>
-      </Alert>
       <ModalBody>
         <Container fluid>
           <Form
@@ -67,8 +57,8 @@ const HitModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="wlm003">Name:</Xl8>}
-              inputType="text"
-              inputVal={row.label}
+              inputtype="text"
+              inputval={row.label}
               name="label"
               required={true}
               alt="nothing"
@@ -77,8 +67,8 @@ const HitModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="wlm004">Description:</Xl8>}
-              inputType="textarea"
-              inputVal={row.description}
+              inputtype="textarea"
+              inputval={row.description}
               name="description"
               required={true}
               alt="nothing"
@@ -87,9 +77,9 @@ const HitModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="wlm005">Severity Level:</Xl8>}
-              inputType="select"
+              inputtype="select"
               name="severity"
-              inputVal={props.isEdit ? row.severity : severityLevels[0].value}
+              inputval={props.isEdit ? row.severity : severityLevels[0].value}
               options={severityLevels}
               required={true}
               alt="nothing"

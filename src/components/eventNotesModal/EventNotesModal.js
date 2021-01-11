@@ -75,7 +75,7 @@ const EventNotesModal = props => {
             cancellable
           >
             <LabelledInput
-              inputType="select"
+              inputtype="select"
               alt="Choose not type"
               name="noteType"
               labelText={<Xl8 xid="evn004">Note Type</Xl8>}
@@ -84,13 +84,13 @@ const EventNotesModal = props => {
               options={notTypes}
             />
             <LabelledInput
-              inputType="textarea"
+              inputtype="textarea"
               labelText={<Xl8 xid="evn001">Notes</Xl8>}
               name="plainTextNote"
               alt={<Xl8 xid="11">Notes</Xl8>}
               datafield="plainTextNote"
               required="required"
-              inputVal=""
+              inputval=""
             />
           </Form>
         </ModalBody>
@@ -100,6 +100,6 @@ const EventNotesModal = props => {
 };
 EventNotesModal.propTypes = {
   callback: PropTypes.func,
-  paxId: PropTypes.string
+  paxId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 export default EventNotesModal;

@@ -10,27 +10,10 @@ import Modal, {
   ModalTitle
 } from "../../../components/modal/Modal";
 import { navigate } from "@reach/router";
-import { hasData, asArray, localeDateOnly } from "../../../utils/utils";
-import { QR, ACTION, CTX, ROLE } from "../../../utils/constants";
+import { hasData, localeDateOnly } from "../../../utils/utils";
+import { QR, ACTION, LK, ROLE } from "../../../utils/constants";
 import { LookupContext } from "../../../context/data/LookupContext";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
-// import Loading from "../../../components/loading/Loading";
-
-// import {
-//   hitcats,
-//   airportLookup,
-//   countryLookup,
-//   carrierLookup,
-//   codeEditor
-// } from "../../../services/serviceWrapper";
-
-import {
-  hitcats,
-  airportLookup,
-  countryLookup,
-  carrierLookup,
-  codeEditor
-} from "../../../services/lookupService";
 
 import { numProps, txtProps, dateProps } from "../../../components/raqb/constants";
 import "./QueryRules.css";
@@ -58,7 +41,7 @@ const QRModal = props => {
   const [refresh, setRefresh] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const isEdit = hasData(props.data);
-  const { getLookupState, lookupAction } = useContext(LookupContext);
+  const { lookupAction, getCachedKeyValues } = useContext(LookupContext);
 
   useEffect(() => {
     if (
@@ -233,7 +216,7 @@ const QRModal = props => {
         label: "Form of Payment",
         type: "!group",
         subfields: {
-          wholeDollarAmount: { label: "Monetary Amount(No Decimal)", ...numProps },
+          wholeDollarAmount: { label: "Monetary Amount (No Decimals)", ...numProps },
           paymentType: {
             label: "Form of Payment",
             type: "select",
@@ -403,6 +386,7 @@ const QRModal = props => {
     newSummary[ev.name] = ev.value;
 
     setSummaryData(newSummary);
+    // console.log(newSummary);
     setTitle(newSummary.title);
     setRefresh(true);
   };
@@ -498,7 +482,7 @@ const QRModal = props => {
     const type = `last${mode}`;
     const saved = getSaveObject();
 
-    lookupAction({ data: saved, type: type });
+    lookupAction({ data: saved, type: type, method: "add" });
   };
 
   const clearInvalid = () => {
@@ -595,106 +579,15 @@ const QRModal = props => {
   };
 
   useEffect(() => {
-    if (key > 0) return;
-
     if (loaded) return;
-    const storedCountries = getLookupState(CTX.COUNTRIES);
-    const storedCarriers = getLookupState(CTX.CARRIERS);
-    const storedAirports = getLookupState(CTX.AIRPORTCODES);
-    const storedCategories = getLookupState(CTX.RULECATS);
-    const storedCcTypes = getLookupState(CTX.CCTYPES);
+
+    getCachedKeyValues(LK.COUNTRY).then(res => setCountries(res));
+    getCachedKeyValues(LK.CARRIER).then(res => setCarriers(res));
+    getCachedKeyValues(LK.HITCAT).then(res => setCategories(res));
+    getCachedKeyValues(LK.AIRPORT).then(res => setAirports(res));
+    getCachedKeyValues(LK.CCTYPE).then(res => setCcTypes(res));
 
     setData(props.data?.query);
-
-    if (!hasData(categories)) {
-      if (hasData(storedCategories)) {
-        setCategories(storedCategories);
-      } else {
-        hitcats.get().then(res => {
-          const cats = asArray(res).map(catitem => {
-            return { label: catitem.label, value: catitem.id };
-          });
-
-          if (hasData(cats)) lookupAction({ data: cats, type: CTX.RULECATS });
-          setCategories(cats);
-        });
-      }
-    }
-
-    if (!hasData(countries)) {
-      if (hasData(storedCountries)) {
-        setCountries(storedCountries);
-      } else {
-        countryLookup.get().then(res => {
-          const ctyitems = asArray(res).map(ctyitem => {
-            return { value: ctyitem.iso3, title: ctyitem.name };
-          });
-
-          if (hasData(ctyitems)) lookupAction({ data: ctyitems, type: CTX.COUNTRIES });
-          setCountries(ctyitems);
-        });
-      }
-    }
-
-    if (!hasData(carriers)) {
-      if (hasData(storedCarriers)) {
-        setCarriers(storedCarriers);
-      } else {
-        carrierLookup.get().then(res => {
-          let caritems = asArray(res).map(caritem => {
-            return { title: `${caritem.name} (${caritem.iata})`, value: caritem.iata };
-          });
-
-          const result = caritems.sort(function(a, b) {
-            return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
-          });
-
-          if (hasData(result)) lookupAction({ data: result, type: CTX.CARRIERS });
-          setCarriers(result);
-        });
-      }
-    }
-
-    if (!hasData(airports)) {
-      if (hasData(storedAirports)) {
-        setAirports(storedAirports);
-      } else {
-        airportLookup.get().then(res => {
-          let apitems = asArray(res).map(apitem => {
-            return { title: apitem.iata, value: apitem.iata };
-          });
-
-          const result = apitems.sort(function(a, b) {
-            return a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1;
-          });
-
-          if (hasData(result)) lookupAction({ data: result, type: CTX.AIRPORTCODES });
-          setAirports(result);
-        });
-      }
-    }
-
-    if (!hasData(ccTypes)) {
-      if (hasData(storedCcTypes)) {
-        setCcTypes(storedCcTypes);
-      } else {
-        codeEditor.get("cctype").then(res => {
-          let ccitem = asArray(res).map(ccitem => {
-            return {
-              title: `${ccitem.description} (${ccitem.code})`,
-              value: ccitem.code
-            };
-          });
-
-          const result = ccitem.sort(function(a, b) {
-            return a.title.toUpperCase() > b.title.toUpperCase() ? 1 : -1;
-          });
-
-          if (hasData(result)) lookupAction({ data: result, type: CTX.CCTYPES });
-          setCcTypes(result);
-        });
-      }
-    }
   }, []);
 
   return (
@@ -719,8 +612,8 @@ const QRModal = props => {
                 datafield
                 key={`title${key}`}
                 labelText={<Xl8 xid="qrm001">Title</Xl8>}
-                inputType="text"
-                inputVal={summaryData?.title}
+                inputtype="text"
+                inputval={summaryData?.title}
                 name="title"
                 callback={cb}
                 alt="Title"
@@ -730,8 +623,8 @@ const QRModal = props => {
                 datafield
                 labelText={<Xl8 xid="qrm002">Description</Xl8>}
                 key={`desc${key}`}
-                inputType="text"
-                inputVal={summaryData?.description}
+                inputtype="text"
+                inputval={summaryData?.description}
                 name="description"
                 callback={cb}
                 alt="Description"
@@ -746,8 +639,8 @@ const QRModal = props => {
                     labelText={<Xl8 xid="qrm003">Start Date</Xl8>}
                     key={`sd${key}`}
                     required={true}
-                    inputType="text"
-                    inputVal={localeDateOnly(summaryData?.startDate)}
+                    inputtype="text"
+                    inputval={localeDateOnly(summaryData?.startDate)}
                     name="startDate"
                     callback={cb}
                     alt="start date"
@@ -757,8 +650,8 @@ const QRModal = props => {
                     datafield
                     labelText={<Xl8 xid="qrm004">End Date</Xl8>}
                     key={`ed${key}`}
-                    inputType="text"
-                    inputVal={localeDateOnly(summaryData?.endDate)}
+                    inputtype="text"
+                    inputval={localeDateOnly(summaryData?.endDate)}
                     name="endDate"
                     callback={cb}
                     alt="end date"
@@ -770,7 +663,7 @@ const QRModal = props => {
                     key={`en${key}`}
                     datafield
                     labelText={<Xl8 xid="qrm005">Enabled</Xl8>}
-                    inputType="checkbox"
+                    inputtype="checkbox"
                     name="enabled"
                     alt="query or rule is enabled"
                     selected={summaryData?.enabled}
@@ -781,9 +674,9 @@ const QRModal = props => {
                     datafield
                     key={`rc${key}`}
                     labelText={<Xl8 xid="qrm006">Category</Xl8>}
-                    inputType="select"
+                    inputtype="select"
                     options={categories}
-                    inputVal={summaryData?.ruleCat}
+                    inputval={summaryData?.ruleCat}
                     required={true}
                     name="ruleCat"
                     callback={cb}

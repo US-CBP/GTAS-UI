@@ -81,20 +81,20 @@ const ResetPassword = props => {
                   <LabelledInput
                     datafield
                     labelText={<Xl8 xid="pass004">New password</Xl8>}
-                    inputType="password"
+                    inputtype="password"
                     name="password"
                     required={true}
-                    inputVal=""
+                    inputval=""
                     alt="nothing"
                     callback={cb}
                   />
                   <LabelledInput
                     datafield
                     labelText={<Xl8 xid="pass005">Confirm new password</Xl8>}
-                    inputType="password"
+                    inputtype="password"
                     name="passwordConfirm"
                     required={true}
-                    inputVal=""
+                    inputval=""
                     alt="nothing"
                     callback={cb}
                   />

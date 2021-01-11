@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
 import CarrierModal from "./CarrierModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 import { codeEditor } from "../../../../services/lookupService";
-import { ACTION } from "../../../../utils/constants";
+import { LookupContext } from "../../../../context/data/LookupContext";
+import { ACTION, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
-const Carriers = ({ name }) => {
+const Carriers = () => {
   const cb = function() {};
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
@@ -19,21 +20,24 @@ const Carriers = ({ name }) => {
   const [confirmModalHeader, setConfirmModalHeader] = useState();
   const [confirmModalMessage, setConfirmModalMessage] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
-  const type = "carrier";
+  const { refreshAndReturn } = useContext(LookupContext);
+  const type = LK.CARRIER;
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
+    setEditRowDetails({});
   };
-
-  useEffect(() => {
-    if (!showModal) setEditRowDetails({});
-  }, [showModal]);
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
     setModalTitle(<Xl8 xid="car001">Edit Carrier</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
+  };
+
+  const closeEditModal = () => {
+    setEditRowDetails({});
+    setShowModal(false);
   };
 
   const confirm = action => {
@@ -48,9 +52,9 @@ const Carriers = ({ name }) => {
         <Xl8 xid="carConf004">Please confirm to delete the carrier code</Xl8>
       );
     } else if (action === ACTION.UPDATEALL) {
-      setConfirmModalHeader(<Xl8 xid="carConf004">Restore All Carrier Codes</Xl8>);
+      setConfirmModalHeader(<Xl8 xid="carConf005">Restore All Carrier Codes</Xl8>);
       setConfirmModalMessage(
-        <Xl8 xid="carConf005">Please confirm to restore all carrier codes</Xl8>
+        <Xl8 xid="carConf006">Please confirm to restore all carrier codes</Xl8>
       );
     }
     setAction(action);
@@ -85,11 +89,14 @@ const Carriers = ({ name }) => {
       refresh();
     });
   };
+
   const headers = [
     {
       Accessor: "Edit",
       Xl8: true,
       Header: ["edit001", "Edit"],
+      disableFilters: true,
+      disableSortBy: true,
       Cell: ({ row }) => {
         return (
           <div className="icon-col">
@@ -110,7 +117,7 @@ const Carriers = ({ name }) => {
     <div>
       <CarrierModal
         show={showModal}
-        onHide={() => setShowModal(false)}
+        onHide={closeEditModal}
         isEdit={isEditModal}
         title={modalTitle}
         editRowDetails={editRowDetails}
@@ -126,7 +133,7 @@ const Carriers = ({ name }) => {
       />
 
       <Table
-        service={() => codeEditor.get(type)}
+        service={() => refreshAndReturn(type)}
         callback={cb}
         header={headers}
         key={refreshKey}

@@ -11,7 +11,7 @@ import { Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
 const NoteCats = ({ name }) => {
-  const cb = function(result) {};
+  const cb = () => {};
   const addNewCat = <Xl8 xid="ntm001">Add Note Category</Xl8>;
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);

@@ -77,8 +77,8 @@ function SignUpRequestModal(props) {
           <div className="signup-checkbox">
             <LabelledInput
               datafield
-              inputType="checkboxGroup"
-              inputVal={allRoles}
+              inputtype="checkboxGroup"
+              inputval={allRoles}
               labelText={<Xl8 xid="surm003">Roles:</Xl8>}
               name="roles"
               alt="Roles"

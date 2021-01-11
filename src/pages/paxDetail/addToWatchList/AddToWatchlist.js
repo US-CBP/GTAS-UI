@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Container, Alert } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
-import { ROLE } from "../../../utils/constants";
-import { addWLItems } from "../../../services/serviceWrapper";
-import { hitcats } from "../../../services/lookupService";
-
-import { asArray } from "../../../utils/utils";
+import { LookupContext } from "../../../context/data/LookupContext";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
+import { addWLItems } from "../../../services/serviceWrapper";
+
+import { ROLE, LK } from "../../../utils/constants";
+import { asArray } from "../../../utils/utils";
 
 const AddToWatchlist = props => {
   const cb = () => {};
@@ -21,8 +21,9 @@ const AddToWatchlist = props => {
   const [wlCategories, setWlCategories] = useState([]);
   const passenger = props.watchlistItems.passenger;
   const documents = props.watchlistItems.documents;
+  const { refreshAndReturn } = useContext(LookupContext);
 
-  const handleClose = (status, res) => {
+  const handleClose = () => {
     setShow(false);
   };
   const handleShow = () => setShow(true);
@@ -70,7 +71,7 @@ const AddToWatchlist = props => {
   };
 
   useEffect(() => {
-    hitcats.get().then(res => {
+    refreshAndReturn(LK.HITCAT).then(res => {
       const wlc = asArray(res).map(wl => {
         return {
           label: wl.label,
@@ -123,7 +124,7 @@ const AddToWatchlist = props => {
               <LabelledInput
                 datafield
                 labelText={<Xl8 xid="atw004">Category ID:</Xl8>}
-                inputType="select"
+                inputtype="select"
                 options={wlCategories}
                 name="categoryId"
                 required={true}

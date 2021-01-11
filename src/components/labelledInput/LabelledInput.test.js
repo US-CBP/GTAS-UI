@@ -17,7 +17,7 @@ describe("LabelledInput", () => {
         callback={callback}
         alt={fake}
         name={fake}
-        inputType={type}
+        inputtype={type}
         lblText={fake}
       />,
       div
@@ -27,9 +27,9 @@ describe("LabelledInput", () => {
 
   it("renders a SELECT input", () => {
     const type = "text";
-    //    const foo = shallow(<select id={fake} callback={callback} name={fake} inputType={type}></select>);
+    //    const foo = shallow(<select id={fake} callback={callback} name={fake} inputtype={type}></select>);
 
-    // expect(ReactDOM.render(<LabelledInput id={fake} callback={callback} alt={fake} name={fake} inputType={type} lblText={fake}/>, div))
+    // expect(ReactDOM.render(<LabelledInput id={fake} callback={callback} alt={fake} name={fake} inputtype={type} lblText={fake}/>, div))
     // ReactDOM.unmountComponentAtNode(div);
   });
 
@@ -42,7 +42,7 @@ describe("LabelledInput", () => {
         callback={callback}
         alt={fake}
         name={fake}
-        inputType={type}
+        inputtype={type}
         lblText={fake}
       />,
       div
@@ -59,7 +59,7 @@ describe("LabelledInput", () => {
         callback={callback}
         alt={fake}
         name={fake}
-        inputType={type}
+        inputtype={type}
         lblText={fake}
         options={["false", "true"]}
       />,
@@ -77,7 +77,7 @@ describe("LabelledInput", () => {
         callback={callback}
         alt={fake}
         name={fake}
-        inputType={type}
+        inputtype={type}
         lblText={fake}
         options={[".doc", ".pdf"]}
       />,

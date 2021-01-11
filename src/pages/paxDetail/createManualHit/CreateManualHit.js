@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
-import { asArray } from "../../../utils/utils";
-import { ROLE } from "../../../utils/constants";
 import { manualHit } from "../../../services/serviceWrapper";
-import { hitcats } from "../../../services/lookupService";
+import { LookupContext } from "../../../context/data/LookupContext";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
+import { asArray } from "../../../utils/utils";
+import { ROLE, LK } from "../../../utils/constants";
 
 const CreateManualHit = props => {
   const cb = () => {};
@@ -20,15 +20,16 @@ const CreateManualHit = props => {
   const [wlCategories, setWlCategories] = useState([]);
   const paxId = props.paxId;
   const flightId = props.flightId;
+  const { refreshAndReturn } = useContext(LookupContext);
 
-  const handleClose = (status, res) => {
+  const handleClose = () => {
     setShow(false);
     props.callback(Date.now());
   };
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    hitcats.get().then(res => {
+    refreshAndReturn(LK.HITCAT).then(res => {
       const wlc = asArray(res).map(wl => {
         return {
           label: wl.label,
@@ -79,9 +80,9 @@ const CreateManualHit = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="cmh002">Passenger ID:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="paxId"
-              inputVal={paxId || ""}
+              inputval={paxId || ""}
               alt="nothing"
               readOnly={true}
               spacebetween
@@ -90,16 +91,16 @@ const CreateManualHit = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="cmh003">Flight ID:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="flightId"
-              inputVal={flightId || ""}
+              inputval={flightId || ""}
               alt={<Xl8 xid="2">Flight ID:</Xl8>}
               callback={cb}
               readOnly={true}
               spacebetween
             />
             <LabelledInput
-              inputType="select"
+              inputtype="select"
               labelText={<Xl8 xid="cmh004">Hit Category:</Xl8>}
               name="hitCategoryId"
               alt={<Xl8 xid="2">Hit Category:</Xl8>}
@@ -112,10 +113,10 @@ const CreateManualHit = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="cmh005">Description:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="description"
               required=""
-              inputVal=""
+              inputval=""
               alt={<Xl8 xid="2">Description:</Xl8>}
               callback={cb}
               spacebetween

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { hasData } from "../../utils/utils";
 import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import { useTranslation } from "react-i18next";
 

@@ -7,7 +7,7 @@ const DELETE = "delete";
 const POST = "post";
 const PUT = "put";
 
-const GenericService = async props => {
+export const GenericService = async props => {
   let param = {
     method: props.method,
     headers: {

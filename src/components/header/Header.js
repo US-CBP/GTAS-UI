@@ -1,16 +1,15 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Link } from "@reach/router";
 import { navigate, useLocation } from "@reach/router";
+import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
+import Toast from "../toast/Toast";
+import ChangePasswordModal from "../../pages/admin/manageUsers/changePasswordModal/ChangePasswordModal";
 import { UserContext } from "../../context/user/UserContext";
 import { LiveEditContext } from "../../context/translation/LiveEditContext";
-import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { ACTION, FULLPATH_TO, ROLE } from "../../utils/constants";
 import { hasData } from "../../utils/utils";
 import Xl8 from "../../components/xl8/Xl8";
-import Toast from "../toast/Toast";
-import ChangePasswordModal from "../../pages/admin/manageUsers/changePasswordModal/ChangePasswordModal";
 
-import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
 import {
   Nav,
   Navbar,
@@ -20,15 +19,15 @@ import {
   Button,
   InputGroup
 } from "react-bootstrap";
+import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
 import "./Header.scss";
 
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
-  const { getLiveEditState, action } = useContext(LiveEditContext);
+  const { action } = useContext(LiveEditContext);
   const user = getUserState();
 
   const logout = () => {
-    console.log("logout");
     userAction({ type: "logoff" });
     action({ type: "read" });
 
@@ -39,7 +38,6 @@ const Header = () => {
 
   const [currentLang] = useState(window.navigator.language);
 
-  const [isEdit, setIsEdit] = useState();
   const [showChangePasswordModal, setShowChangePasswordModal] = useState();
   const [showTost, setShowToast] = useState(false);
 
@@ -53,9 +51,9 @@ const Header = () => {
   const currentPath = useLocation();
 
   // allow a 'false' logout for admins translating pages outside the authed/loggedin bundle
-  const pseudoLogout = () => {
-    navigate(FULLPATH_TO.LOGIN);
-  };
+  // const pseudoLogout = () => {
+  //   navigate(FULLPATH_TO.LOGIN);
+  // };
 
   const userFullName = user?.fullName || "";
 
@@ -95,11 +93,6 @@ const Header = () => {
       setShowToast(true);
     }
   };
-
-  useEffect(() => {
-    const editstate = getLiveEditState();
-    setIsEdit(editstate.isEdit);
-  }, []);
 
   return (
     <>

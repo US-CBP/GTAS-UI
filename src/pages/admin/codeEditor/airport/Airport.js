@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
 import AirportModal from "./AirportModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 import { codeEditor } from "../../../../services/lookupService";
-import { ACTION } from "../../../../utils/constants";
+import { LookupContext } from "../../../../context/data/LookupContext";
+import { ACTION, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
-const Airports = ({ name }) => {
-  const cb = function(result) {};
+const Airports = () => {
+  const cb = () => {};
   const [showModal, setShowModal] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
@@ -19,24 +20,27 @@ const Airports = ({ name }) => {
   const [action, setAction] = useState();
   const [confirmModalHeader, setConfirmModalHeader] = useState();
   const [confirmModalMessage, setConfirmModalMessage] = useState();
+  const { refreshAndReturn } = useContext(LookupContext);
 
   const addAirport = <Xl8 xid="airp002">Add Airport</Xl8>;
   const editAirport = <Xl8 xid="airp003">Edit Airport</Xl8>;
-  const type = "airport";
+  const type = LK.AIRPORT;
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
+    setEditRowDetails({});
   };
-
-  useEffect(() => {
-    if (!showModal) setEditRowDetails({});
-  }, [showModal]);
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
     setModalTitle(editAirport);
     setEditRowDetails(rowDetails);
     setShowModal(true);
+  };
+
+  const closeEditModal = () => {
+    setEditRowDetails({});
+    setShowModal(false);
   };
 
   const confirm = action => {
@@ -51,9 +55,9 @@ const Airports = ({ name }) => {
         <Xl8 xid="airpConf004">Please confirm to delete the airport code</Xl8>
       );
     } else if (action === ACTION.UPDATEALL) {
-      setConfirmModalHeader(<Xl8 xid="airpConf004">Restore All Airport Codes</Xl8>);
+      setConfirmModalHeader(<Xl8 xid="airpConf005">Restore All Airport Codes</Xl8>);
       setConfirmModalMessage(
-        <Xl8 xid="airpConf005">Please confirm to restore all airport codes</Xl8>
+        <Xl8 xid="airpConf006">Please confirm to restore all airport codes</Xl8>
       );
     }
     setAction(action);
@@ -62,13 +66,13 @@ const Airports = ({ name }) => {
   };
 
   const restoreCode = () => {
-    codeEditor.put.restore(type, editRowDetails).then(res => {
+    codeEditor.put.restore(type, editRowDetails).then(() => {
       refresh();
     });
   };
 
   const deleteCode = () => {
-    codeEditor.delete.del(type, editRowDetails?.id).then(res => {
+    codeEditor.del(type, editRowDetails?.id).then(() => {
       refresh();
     });
   };
@@ -120,7 +124,7 @@ const Airports = ({ name }) => {
     <div>
       <AirportModal
         show={showModal}
-        onHide={() => setShowModal(false)}
+        onHide={closeEditModal}
         isEdit={isEditModal}
         title={modalTitle}
         editRowDetails={editRowDetails}
@@ -136,7 +140,7 @@ const Airports = ({ name }) => {
       />
 
       <Table
-        service={() => codeEditor.get(type)}
+        service={() => refreshAndReturn(type)}
         callback={cb}
         header={headers}
         key={refreshKey}

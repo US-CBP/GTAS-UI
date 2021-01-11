@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Xl8 from "../../../components/xl8/Xl8";
 import { CardColumns } from "react-bootstrap";
-import Main from "../../../components/main/Main";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { paxFlightHistory, paxFullTravelHistory } from "../../../services/serviceWrapper";
 import { asArray, hasData, localeDate } from "../../../utils/utils";
@@ -46,30 +45,32 @@ const FlightHistory = props => {
       flight.fullFlightNumber
     );
   };
-  const parseFlightData = data => {
-    return {
-      ...data,
-      etd: localeDate(data.etd),
-      eta: localeDate(data.eta),
-      fullFlightNumber: addLinkToFlight(data)
-    };
+  const parseFlightData = dataArray => {
+    return dataArray.map(data => {
+      return {
+        ...data,
+        id: data.flightId,
+        etd: localeDate(data.etd),
+        eta: localeDate(data.eta),
+        fullFlightNumber: addLinkToFlight(data)
+      };
+    });
   };
 
   const fetchData = () => {
     paxFlightHistory.get(props.flightId, props.paxId).then(res => {
-      const historyData = asArray(res)
-        .sort(sortFlightByEta)
-        .map(data => parseFlightData(data));
+      const historyData = asArray(res).sort(sortFlightByEta);
+      const data = parseFlightData(historyData);
 
-      setcurrentFlightHistory(historyData);
+      setcurrentFlightHistory(data);
     });
 
     paxFullTravelHistory.get(props.flightId, props.paxId).then(res => {
-      const historyData = asArray(res)
-        .sort(sortFlightByEta)
-        .map(data => parseFlightData(data));
+      const historyData = asArray(res).sort(sortFlightByEta);
 
-      setFullTravelHistory(historyData);
+      const data = parseFlightData(historyData);
+
+      setFullTravelHistory(data);
     });
   };
 

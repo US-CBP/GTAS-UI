@@ -3,8 +3,8 @@ import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import Main from "../../components/main/Main";
 import ExternalLink from "../../components/externalLink/ExternalLink";
-import { Card, CardDeck, Container } from "react-bootstrap";
-import { hasData, getEndpoint } from "../../utils/utils";
+import { Card, CardDeck } from "react-bootstrap";
+import { getEndpoint } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./Admin.css";
 

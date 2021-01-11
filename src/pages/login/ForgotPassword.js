@@ -61,10 +61,10 @@ const ForgotPassword = props => {
                 <LabelledInput
                   datafield
                   labelText="User Id"
-                  inputType="text"
+                  inputtype="text"
                   name="userId"
                   required={true}
-                  inputVal=""
+                  inputval=""
                   alt="nothing"
                   callback={cb}
                   spacebetween

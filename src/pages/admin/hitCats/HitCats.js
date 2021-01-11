@@ -1,23 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import HitModal from "./HitModal";
-import { hitcats } from "../../../services/lookupService";
 import Confirm from "../../../components/confirmationModal/Confirm";
+
+import { LookupContext } from "../../../context/data/LookupContext";
+import { hitcats } from "../../../services/lookupService";
+import { LK } from "../../../utils/constants";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
 const HitCats = ({ name }) => {
-  const cb = function() {};
+  const cb = () => {};
   const addNewCat = <Xl8 xid="wlm001">Add Category</Xl8>;
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
   const [editRowDetails, setEditRowDetails] = useState();
   const [modalTitle, setModalTitle] = useState(addNewCat);
+  const { refreshAndReturn } = useContext(LookupContext);
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
@@ -107,7 +111,7 @@ const HitCats = ({ name }) => {
     <Main className="full bg-white">
       <Title title={name}></Title>
       <Table
-        service={hitcats.get}
+        service={() => refreshAndReturn(LK.HITCAT)}
         key={refreshKey}
         callback={cb}
         header={headers}

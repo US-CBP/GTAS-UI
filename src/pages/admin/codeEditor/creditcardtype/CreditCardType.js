@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
 import CreditCardTypeModal from "./CreditCardTypeModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
+import { LookupContext } from "../../../../context/data/LookupContext";
 import { codeEditor } from "../../../../services/lookupService";
-import { ACTION } from "../../../../utils/constants";
+import { ACTION, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
-const CreditCardType = ({ name }) => {
-  const cb = function(result) {};
+const CreditCardType = () => {
+  const cb = () => {};
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
@@ -19,15 +20,13 @@ const CreditCardType = ({ name }) => {
   const [confirmModalHeader, setConfirmModalHeader] = useState();
   const [confirmModalMessage, setConfirmModalMessage] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
-  const type = "cctype";
+  const { refreshAndReturn } = useContext(LookupContext);
+  const type = LK.CCTYPE;
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
+    setEditRowDetails({});
   };
-
-  useEffect(() => {
-    if (!showModal) setEditRowDetails({});
-  }, [showModal]);
 
   const restoreAll = () => {
     codeEditor.put.restoreAll(type).then(res => {
@@ -41,6 +40,12 @@ const CreditCardType = ({ name }) => {
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
+
+  const closeEditModal = () => {
+    setEditRowDetails({});
+    setShowModal(false);
+  };
+
   const confirm = action => {
     if (action === ACTION.UPDATE) {
       setConfirmModalHeader(<Xl8 xid="cctConf001">Restore Credit Card Type Code</Xl8>);
@@ -54,10 +59,10 @@ const CreditCardType = ({ name }) => {
       );
     } else if (action === ACTION.UPDATEALL) {
       setConfirmModalHeader(
-        <Xl8 xid="cctConf004">Restore All Credit Card Type Codes</Xl8>
+        <Xl8 xid="cctConf005">Restore All Credit Card Type Codes</Xl8>
       );
       setConfirmModalMessage(
-        <Xl8 xid="cctConf005">Please confirm to restore all credit card type codes</Xl8>
+        <Xl8 xid="cctConf006">Please confirm to restore all credit card type codes</Xl8>
       );
     }
     setAction(action);
@@ -113,7 +118,7 @@ const CreditCardType = ({ name }) => {
     <div>
       <CreditCardTypeModal
         show={showModal}
-        onHide={() => setShowModal(false)}
+        onHide={closeEditModal}
         isEdit={isEditModal}
         title={modalTitle}
         editRowDetails={editRowDetails}
@@ -128,7 +133,7 @@ const CreditCardType = ({ name }) => {
         message={confirmModalMessage}
       />
       <Table
-        service={() => codeEditor.get(type)}
+        service={() => refreshAndReturn(type)}
         callback={cb}
         header={headers}
         key={refreshKey}

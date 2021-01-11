@@ -149,7 +149,7 @@ const FilterForm = props => {
         }
 
         fMap[componentname] = fieldname;
-        fields[fMap[componentname]] = child.props.inputVal;
+        fields[fMap[componentname]] = child.props.inputval;
 
         dfnames.push(fieldname);
       }
@@ -163,7 +163,9 @@ const FilterForm = props => {
 
   return (
     <div className="filterform-container">
-      {props.title && <Title style="subtitle text-center" title={props.title}></Title>}
+      {props.title && (
+        <Title className="subtitle text-center" title={props.title}></Title>
+      )}
       <RBForm
         className={props.className}
         onSubmit={onFormSubmit}

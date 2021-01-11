@@ -34,10 +34,10 @@ const UserModal = props => {
     return loggedinUser.userId === userId;
   };
 
-  const loggedinUserHasAdminRole = () => {
-    const roles = loggedinUser.userRoles;
-    return roles.includes(ROLE.ADMIN);
-  };
+  // const loggedinUserHasAdminRole = () => {
+  //   const roles = loggedinUser.userRoles;
+  //   return roles.includes(ROLE.ADMIN);
+  // };
 
   const isRoleDisabled = role => {
     return (
@@ -145,7 +145,7 @@ const UserModal = props => {
       <LabelledInput
         datafield
         labelText={<Xl8 xid="um04">Password</Xl8>}
-        inputType="password"
+        inputtype="password"
         name="password"
         required={true}
         alt="nothing"
@@ -192,10 +192,10 @@ const UserModal = props => {
               <LabelledInput
                 datafield
                 labelText={<Xl8 xid="um005">User ID</Xl8>}
-                inputType="text"
+                inputtype="text"
                 name="userId"
                 required={true}
-                inputVal={row.userId}
+                inputval={row.userId}
                 alt="nothing"
                 callback={cb}
                 readOnly={true}
@@ -205,10 +205,10 @@ const UserModal = props => {
               <LabelledInput
                 datafield
                 labelText={<Xl8 xid="um005">User ID</Xl8>}
-                inputType="text"
+                inputtype="text"
                 name="userId"
                 required={true}
-                inputVal={row.userId}
+                inputval={row.userId}
                 alt="nothing"
                 callback={cb}
                 spacebetween
@@ -220,10 +220,10 @@ const UserModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="um007">First Name</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="firstName"
               required={true}
-              inputVal={row.firstName}
+              inputval={row.firstName}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -231,10 +231,10 @@ const UserModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="um008">Last Name</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="lastName"
               required={true}
-              inputVal={row.lastName}
+              inputval={row.lastName}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -243,10 +243,10 @@ const UserModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="um009">Email</Xl8>}
-              inputType="email"
+              inputtype="email"
               name="email"
               required={true}
-              inputVal={row.email}
+              inputval={row.email}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -254,9 +254,9 @@ const UserModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="um010">Phone Number</Xl8>}
-              inputType="tel"
+              inputtype="tel"
               name="phoneNumber"
-              inputVal={row.phoneNumber}
+              inputval={row.phoneNumber}
               alt="nothing"
               placeholder="optional"
               callback={cb}
@@ -266,8 +266,8 @@ const UserModal = props => {
               name="roles"
               datafield="roles"
               labelText={<Xl8 xid="um015">Roles</Xl8>}
-              inputType="multiSelect"
-              inputVal={selectedRoles}
+              inputtype="multiSelect"
+              inputval={selectedRoles}
               options={roleOptions}
               callback={cb}
               alt="Roles"
@@ -277,11 +277,11 @@ const UserModal = props => {
             <LabelledInput
               datafield="emailEnabled"
               labelText={<Xl8 xid="um011">Enable User Email Notification</Xl8>}
-              inputType="checkbox"
+              inputtype="checkbox"
               name="emailEnabled"
               required={true}
               alt="nothing"
-              inputVal={row.emailEnabled}
+              inputval={row.emailEnabled}
               callback={cb}
               selected={row.emailEnabled}
               spacebetween
@@ -290,11 +290,11 @@ const UserModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="um012">Automated Email Notification</Xl8>}
-              inputType="checkbox"
+              inputtype="checkbox"
               name="highPriorityEmail"
               required={true}
               alt="nothing"
-              inputVal={row.highPriorityEmail}
+              inputval={row.highPriorityEmail}
               callback={cb}
               selected={row.highPriorityEmail}
               spacebetween
@@ -303,11 +303,11 @@ const UserModal = props => {
               <LabelledInput
                 datafield
                 labelText={<Xl8 xid="um013">User Is Enabled</Xl8>}
-                inputType="checkbox"
+                inputtype="checkbox"
                 name="active"
                 required={true}
                 alt="nothing"
-                inputVal={!!row.active}
+                inputval={!!row.active}
                 callback={cb}
                 selected={!!row.active}
                 readOnly={isLoggedinUser(row.userId)}
@@ -317,11 +317,11 @@ const UserModal = props => {
               <LabelledInput
                 datafield
                 labelText={<Xl8 xid="um014">User Is Enabled</Xl8>}
-                inputType="checkbox"
+                inputtype="checkbox"
                 name="active"
                 required={true}
                 alt="nothing"
-                inputVal={true}
+                inputval={true}
                 callback={cb}
                 selected={true}
                 spacebetween

@@ -89,24 +89,24 @@ const CreditCardTypeModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="cct002">Code:</Xl8>}
-              inputType="text"
+              inputtype="text"
               max-length="2"
               name="code"
               required={true}
               maxlength="2"
               alt="nothing"
-              inputVal={data.code?.toUpperCase()}
+              inputval={data.code?.toUpperCase()}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="cct003">Description:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="description"
               required={true}
               alt="nothing"
-              inputVal={data.description}
+              inputval={data.description}
               callback={cb}
               spacebetween
             />

@@ -84,77 +84,77 @@ const AirportModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="iata001">IATA: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="iata"
               required={true}
               alt="nothing"
-              inputVal={data.iata}
+              inputval={data.iata}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="icao001">ICAO: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="icao"
               required={true}
               alt="nothing"
-              inputVal={data.icao}
+              inputval={data.icao}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="airm003">Name: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="name"
               required={true}
               alt="nothing"
-              inputVal={data.name}
+              inputval={data.name}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="airm004">City: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="city"
               required={true}
               alt="nothing"
-              inputVal={data.city}
+              inputval={data.city}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="airm005">Country: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="country"
               required={true}
               alt="nothing"
-              inputVal={data.country}
+              inputval={data.country}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="lati001">Latitude: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="latitude"
               required={true}
               alt="nothing"
-              inputVal={data.latitude?.toString() || ""}
+              inputval={data.latitude?.toString() || ""}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="long001">Longitude: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="longitude"
               required={true}
               alt="nothing"
-              inputVal={data.longitude?.toString() || ""}
+              inputval={data.longitude?.toString() || ""}
               callback={cb}
               spacebetween
             />

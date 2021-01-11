@@ -51,14 +51,13 @@ const PaxDetail = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isStepperLoading, setIsStepperLoading] = useState(false);
 
-  const cb = () => {};
   const refreshEventNotesCard = () => {
     setEventNoteRefreshKey(new Date());
   };
   const tabs = [
     {
       title: <Xl8 xid="pd001">Summary</Xl8>,
-      titleText: "Summary",
+      titletext: "Summary",
       link: (
         <Summary
           paxId={props.paxId}
@@ -75,7 +74,7 @@ const PaxDetail = props => {
       ? [
           {
             title: <Xl8 xid="pd002">APIS</Xl8>,
-            titleText: "APIS",
+            titletext: "APIS",
             link: <APIS data={apisMessage}></APIS>
           }
         ]
@@ -84,28 +83,28 @@ const PaxDetail = props => {
       ? [
           {
             title: <Xl8 xid="pd003">PNR</Xl8>,
-            titleText: "PNR",
+            titletext: "PNR",
             link: <PNR data={pnr} />
           }
         ]
       : []),
     {
       title: <Xl8 xid="pd004">Flight History</Xl8>,
-      titleText: "Flight History",
+      titletext: "Flight History",
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
     ...(hasData(paxDetailsData)
       ? [
           {
             title: <Xl8 xid="pd005">Link Analysis</Xl8>,
-            titleText: "Link Analysis",
+            titletext: "Link Analysis",
             tabClassName: "large-media-only",
             link: <LinkAnalysis paxData={paxDetailsData} />
           }
         ]
       : []),
     {
-      titleText: "Attachments",
+      titletext: "Attachments",
       title: <Xl8 xid="pd006">Attachments</Xl8>,
       link: (
         <UploadAttachment
@@ -249,7 +248,7 @@ const PaxDetail = props => {
       </SidenavContainer>
       <Main className="main">
         <Title
-          style="stacker title"
+          className="stacker title"
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
           leftChild={tablist}
         ></Title>

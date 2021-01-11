@@ -39,7 +39,7 @@ const SettingModal = props => {
           <LabelledInput
             datafield
             labelText={<Xl8 xid="set002">Matching Threshold</Xl8>}
-            inputType="number"
+            inputtype="number"
             name="matchingThreshold"
             callback={cb}
             alt={<Xl8 xid="7">Matching Threshold</Xl8>}
@@ -47,7 +47,7 @@ const SettingModal = props => {
           <LabelledInput
             datafield
             labelText={<Xl8 xid="set003">Maximum Passenger Query Results: </Xl8>}
-            inputType="number"
+            inputtype="number"
             name="maxPassengerQueryResult"
             callback={cb}
             alt="nothing"
@@ -55,7 +55,7 @@ const SettingModal = props => {
           <LabelledInput
             datafield
             labelText={<Xl8 xid="set004">Maximum Flight Query Results: </Xl8>}
-            inputType="number"
+            inputtype="number"
             name="maxFlightQueryResult"
             callback={cb}
             alt="nothing"
@@ -65,7 +65,7 @@ const SettingModal = props => {
             labelText={
               <Xl8 xid="set005">Maximum Rule Hits Allowed Per Run on Rule: </Xl8>
             }
-            inputType="number"
+            inputtype="number"
             name="maxRuleHit"
             callback={cb}
             alt="nothing"
@@ -73,7 +73,7 @@ const SettingModal = props => {
           <LabelledInput
             datafield
             labelText={<Xl8 xid="set006">APIS Only Flag:</Xl8>}
-            inputType="select"
+            inputtype="select"
             options={[
               { value: "TRUE", label: "TRUE" },
               { value: "FALSE", label: "FALSE" }

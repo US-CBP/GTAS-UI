@@ -5,11 +5,11 @@ const FileInput = props => (
   <input
     className="form-input"
     name={props.name}
-    type={props.inputType}
+    type={props.inputtype}
     placeholder={props.placeholder}
     onChange={props.callback}
     required={props.required}
-    value={props.inputVal}
+    value={props.inputval}
     alt={props.alt}
     accept={props.options.join(",")}
   />
@@ -19,11 +19,11 @@ const FileInput = props => (
 //APB pass invalid state up to parent
 
 FileInput.propTypes = {
-  inputType: PropTypes.oneOf(["file"]).isRequired,
+  inputtype: PropTypes.oneOf(["file"]).isRequired,
   name: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
   callback: PropTypes.func.isRequired,
-  inputVal: PropTypes.any,
+  inputval: PropTypes.any,
   required: PropTypes.string,
   placeHolder: PropTypes.string,
   options: PropTypes.array.isRequired

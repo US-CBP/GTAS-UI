@@ -28,7 +28,6 @@ const USERSNONARCHIVED = `${USERS}/nonarchived`;
 const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
 const CHANGEPASSWORD = `${BASE_URL}gtas/user/change-password`;
 const HITCATSPOST = `${BASE_URL}gtas/wlput/wlcat/`;
-const HITCATSNONARCHIVED = `${BASE_URL}gtas/wl/watchlistCategories/nonarchived`;
 const FLIGHTS = `${BASE_URL}gtas/api/flights`;
 const AUDITLOG = `${BASE_URL}gtas/api/auditlog`;
 const AUDITLOGACTIONS = `${BASE_URL}gtas/api/auditlog/actions`;
@@ -49,10 +48,9 @@ const NOTE_TYPESNONARCHIVED = `${BASE_URL}gtas/api/noteType/nonarchived`;
 const LOGGEDIN_USER = `${BASE_URL}gtas/user`;
 const NOTE_TYPESPOST = `${BASE_URL}gtas/api/noteType`;
 const ROLES = `${BASE_URL}gtas/roles/`;
-const APIBASE = `${BASE_URL}gtas/api/`;
-const CODES_AIRPORT_LK = `${BASE_URL}gtas/api/airportLookup`;
-const CODES_COUNTRY_LK = `${BASE_URL}gtas/api/countryLookup`;
-const CODES_CARRIER_LK = `${BASE_URL}gtas/api/carrierLookup`;
+// const CODES_AIRPORT_LK = `${BASE_URL}gtas/api/airportLookup`;
+// const CODES_COUNTRY_LK = `${BASE_URL}gtas/api/countryLookup`;
+// const CODES_CARRIER_LK = `${BASE_URL}gtas/api/carrierLookup`;
 
 const WLDOCS = `${BASE_URL}gtas/wl/DOCUMENT/Document`;
 const WLDOCSPOST = `${BASE_URL}gtas/wl/document`;
@@ -109,11 +107,6 @@ export const users = {
 export const usersemails = {
   get: () => get(USERSEMAIL, BASEHEADER)
 };
-// export const hitcats = {
-//   get: (id, params) => get(HITCATSNONARCHIVED, BASEHEADER, id, params),
-//   post: body => post(HITCATS, BASEHEADER, body),
-//   del: id => del(HITCATS, BASEHEADER, id)
-// };
 
 export const hitcatspost = {
   post: body => {
@@ -243,9 +236,9 @@ export const attachment = {
   }
 };
 
-export const airportLookup = { get: () => get(CODES_AIRPORT_LK, BASEHEADER) };
-export const countryLookup = { get: () => get(CODES_COUNTRY_LK, BASEHEADER) };
-export const carrierLookup = { get: () => get(CODES_CARRIER_LK, BASEHEADER) };
+// export const airportLookup = { get: () => get(CODES_AIRPORT_LK, BASEHEADER) };
+// export const countryLookup = { get: () => get(CODES_COUNTRY_LK, BASEHEADER) };
+// export const carrierLookup = { get: () => get(CODES_CARRIER_LK, BASEHEADER) };
 
 export const login = {
   post: body => {

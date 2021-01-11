@@ -29,10 +29,10 @@ const Queries = props => {
   const [record, setRecord] = useState({});
   const [key, setKey] = useState(0);
   const [tablekey, setTablekey] = useState(0);
-  const ctx = useContext(LookupContext);
   const [modalKey, setModalKey] = useState(-1);
-
   const [modalTitle, setModalTitle] = useState(addQuery);
+  const ctx = useContext(LookupContext);
+  const unsavedQueryKey = "lastQuery";
 
   const header = [
     {
@@ -72,12 +72,11 @@ const Queries = props => {
   };
 
   useEffect(() => {
-    console.log("q - modal key");
     if (modalKey > -1) setShowModal(true);
   }, [modalKey]);
 
   useEffect(() => {
-    const lastQuery = ctx.getLookupState("lastQuery");
+    const lastQuery = ctx.getLookupState(unsavedQueryKey);
 
     if (hasData(lastQuery)) {
       const flatRule = {
@@ -88,7 +87,7 @@ const Queries = props => {
       setId(flatRule.id);
       setRecord(flatRule);
       launchModal(flatRule.id, flatRule);
-      ctx.lookupAction({ type: "removeQuery" });
+      ctx.lookupAction({ type: unsavedQueryKey, method: "delete" });
     }
   }, []);
 

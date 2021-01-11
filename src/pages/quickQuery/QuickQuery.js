@@ -4,7 +4,7 @@ import { users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 
 const QuickQuery = () => {
-  const cb = function(result) {};
+  const cb = () => {};
 
   return (
     <div className="container">
