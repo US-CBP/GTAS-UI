@@ -27,9 +27,8 @@ const Queries = props => {
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState(0);
   const [record, setRecord] = useState({});
-  const [key, setKey] = useState(0);
   const [tablekey, setTablekey] = useState(0);
-  const [modalKey, setModalKey] = useState(-1);
+  const [modalKey, setModalKey] = useState(0);
   const [modalTitle, setModalTitle] = useState(addQuery);
   const ctx = useContext(LookupContext);
   const unsavedQueryKey = "lastQuery";
@@ -54,25 +53,22 @@ const Queries = props => {
   ];
 
   const launchModal = (recordId, record) => {
-    if (showModal && !recordId) return closeModal();
-
     const title = recordId ? editQuery : addQuery;
 
-    setKey(key + 1);
     setId(recordId);
     setRecord(record);
     setModalTitle(title);
-    setModalKey(Date.now());
+    setModalKey(new Date());
   };
 
   const closeModal = () => {
     setId();
-    setRecord({});
+    setRecord();
     setShowModal(false);
   };
 
   useEffect(() => {
-    if (modalKey > -1) setShowModal(true);
+    if (modalKey !== 0) setShowModal(true);
   }, [modalKey]);
 
   useEffect(() => {
@@ -111,7 +107,7 @@ const Queries = props => {
           show={showModal}
           onHide={closeModal}
           callback={cb}
-          key={key}
+          key={modalKey}
           data={record}
           title={modalTitle}
           id={id}
