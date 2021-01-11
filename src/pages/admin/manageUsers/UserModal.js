@@ -2,18 +2,19 @@ import React, { useEffect, useState, useContext } from "react";
 import { Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
-import { users, roles } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { UserContext } from "../../../context/user/UserContext";
-import { asArray, isValidPassword } from "../../../utils/utils";
-import { ACTION, ROLE } from "../../../utils/constants";
-import "./ManageUsers.scss";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
 import ErrorText from "../../../components/errorText/ErrorText";
+import { users } from "../../../services/serviceWrapper";
+import { roles } from "../../../services/lookupService";
+import { UserContext } from "../../../context/user/UserContext";
+import { asArray, isValidPassword } from "../../../utils/utils";
+import { ACTION, ROLE } from "../../../utils/constants";
+import "./ManageUsers.scss";
 
 const UserModal = props => {
   const [allRoles, setAllRoles] = useState([]);

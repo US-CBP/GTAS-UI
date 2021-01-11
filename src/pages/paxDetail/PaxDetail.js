@@ -22,6 +22,7 @@ import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import AttachmentModal from "./uploadAttachment/AttachmentModal";
+import Loading from "../../components/loading/Loading";
 
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import { asArray, hasData, titleCase } from "../../utils/utils";
@@ -30,7 +31,6 @@ import { Link } from "@reach/router";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./PaxDetail.scss";
-import Loading from "../../components/loading/Loading";
 
 const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState();

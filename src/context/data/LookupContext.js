@@ -1,6 +1,6 @@
 import React, { createContext, useReducer, useEffect } from "react";
 import Dexie from "dexie";
-import { codeEditor, hitcats } from "../../services/lookupService";
+import { codeEditor, hitcats, roles, notetype } from "../../services/lookupService";
 import { LK } from "../../utils/constants";
 import { formatBytes } from "../../utils/utils";
 import { showEstimatedQuota } from "./utils";
@@ -28,8 +28,8 @@ db.version(version).stores({
   country: "id, name, iso3, archived",
   cctype: "id, code, archived",
   hitcats: "id, label, archived",
-  roles: "role_id, role_description"
-  // notetypes: "id, nt_type, archived"
+  role: "roleId, roleDescription",
+  notetype: "id, noteType, archived"
 });
 
 db.open();
@@ -86,7 +86,7 @@ const LookupProvider = ({ children }) => {
    * 5. Basic fetch and refresh logic
    */
   const createDb = () => {
-    console.log("CREATE IDB");
+    console.info("CREATE IDB");
     Dexie.exists(lookupDB).then(function(exists) {
       if (!exists) populateStatusTable();
       // else updateStatusTable();
@@ -134,7 +134,7 @@ const LookupProvider = ({ children }) => {
     const missingRecord = statusData.find(item => item.name === type);
 
     if (!missingRecord) {
-      console.log(`No status record initialization data found for type ${type}`);
+      console.error(`No status record initialization data found for type ${type}`);
       return STATUS.ERROR;
     }
 
@@ -169,6 +169,8 @@ const LookupProvider = ({ children }) => {
 
   const svc = lkType => {
     if (lkType === LK.HITCAT) return hitcats;
+    if (lkType === LK.ROLE) return roles;
+    if (lkType === LK.NOTETYPE) return notetype;
     return codeEditor;
   };
 
@@ -188,7 +190,7 @@ const LookupProvider = ({ children }) => {
 
   const refresh = (type, forcePartial, forceFull, returnResults) => {
     if (!svc(type)) {
-      console.log(`No service found for type ${type}`);
+      console.error(`No service found for type ${type}`);
       return;
     }
 
@@ -203,25 +205,6 @@ const LookupProvider = ({ children }) => {
       return dataSync(rec, forcePartial, forceFull, returnResults);
     });
   }; // refresh
-
-  // // background refresh. Use state vars to trigger idb update.
-  // const refresh = (type, forcePartial, forceFull) => {
-  //   if (!svc(type)) {
-  //     console.log(`No service found for type ${type}`);
-  //     return;
-  //   }
-
-  //   db.status.where({ name: type }).first(rec => {
-  //     if (!rec) {
-  //       createMissingStatusRec(type).then(res => {
-  //         if (res === STATUS.ERROR) return res;
-
-  //         backgroundDataSync(res, forcePartial, forceFull);
-  //       });
-  //     }
-  //     backgroundDataSync(rec, forcePartial, forceFull);
-  //   });
-  // }; // refresh
 
   // Supports periodic fetches that sync once per interval unless forced.
   // forcePartial - forces a partial update (data changed since the last partial fetch) before the nextUpdateDate has passed
@@ -278,7 +261,7 @@ const LookupProvider = ({ children }) => {
           return STATUS.SUCCESS;
         })
         .catch(ex => {
-          console.log("error", ex);
+          console.error("error", type, ex);
           return STATUS.ERROR;
         });
     });
@@ -295,7 +278,9 @@ const LookupProvider = ({ children }) => {
     { lk: LK.CARRIER, fields: ["name", "iata"], sortBy: "iata" },
     { lk: LK.COUNTRY, fields: ["name", "iso3"], sortBy: "iso3" },
     { lk: LK.CCTYPE, fields: ["description", "code"], sortBy: "code" },
-    { lk: LK.HITCAT, fields: ["label", "id"], sortBy: "label", useLabel: true }
+    { lk: LK.HITCAT, fields: ["label", "id"], sortBy: "label", useLabel: true },
+    { lk: LK.ROLE, fields: ["label", "id"], sortBy: "label" },
+    { lk: LK.NOTETYPE, fields: ["noteType", "id"], sortBy: "noteType", useLabel: true }
   ];
 
   const getLookupState = type => {
@@ -319,7 +304,7 @@ const LookupProvider = ({ children }) => {
     const fieldMap = lkCoreFields.find(item => item.lk === type);
 
     if (!fieldMap) {
-      console.log(`No fieldMap exists for type ${type}`);
+      console.error(`No fieldMap exists for type ${type}`);
       return [];
     }
 

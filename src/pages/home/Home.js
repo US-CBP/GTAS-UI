@@ -12,6 +12,8 @@ const Home = props => {
     lookupAction({ method: "refresh", type: LK.CARRIER });
     lookupAction({ method: "refresh", type: LK.AIRPORT });
     lookupAction({ method: "refresh", type: LK.CCTYPE });
+    lookupAction({ method: "refresh", type: LK.ROLE });
+    lookupAction({ method: "refresh", type: LK.NOTETYPE });
   }, []);
 
   return (

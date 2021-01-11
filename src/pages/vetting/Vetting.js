@@ -24,7 +24,7 @@ import {
   alt,
   lpad5
 } from "../../utils/utils";
-import { cases, notetypes, usersemails } from "../../services/serviceWrapper";
+import { cases, usersemails } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
 import { ROLE, HIT_STATUS, LK } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
@@ -228,11 +228,9 @@ const Vetting = props => {
 
   const now = new Date();
 
-  const getInitialState = () => {
-    // showDateTimePicker.current = false;
-    setFilterFormKey(filterFormKey + 1);
-    // return initialParamState;
-  };
+  // const getInitialState = () => {
+  //   setFilterFormKey(filterFormKey + 1);
+  // };
 
   const changeStatus = (paxId, status) => {
     const newStatus =
@@ -335,24 +333,23 @@ const Vetting = props => {
       setHitCategoryOptions(options);
     });
 
-    notetypes.get().then(types => {
+    getCachedKeyValues(LK.NOTETYPE).then(types => {
       const nTypes = asArray(types).reduce((acc, type) => {
         if (type.noteType !== "DELETED") {
           acc.push({
-            value: type.id,
-            label: type.noteType
+            value: type.value,
+            label: type.label
           });
         }
         return acc;
       }, []);
       setNoteTypes(nTypes);
-      setFilterFormKey(filterFormKey + 1);
     });
   };
 
   useEffect(() => {
     setFilterFormKey(filterFormKey + 1);
-  }, [hitCategoryOptions]);
+  }, [hitCategoryOptions, noteTypes]);
 
   useEffect(() => {
     fetchData();
@@ -367,7 +364,7 @@ const Vetting = props => {
             callback={setDataWrapper}
             paramCallback={parameterAdapter}
             key={filterFormKey}
-            getInitialState={getInitialState}
+            // getInitialState={getInitialState}
           >
             <LabelledInput
               datafield="myRulesOnly"
@@ -400,18 +397,18 @@ const Vetting = props => {
               callback={cb}
               alt="Hit Source"
             />
-            {hasData(noteTypes) && (
-              <LabelledInput
-                datafield
-                name="noteTypes"
-                labelText={<Xl8 xid="vet019">Note Type</Xl8>}
-                inputtype="multiSelect"
-                inputval={[]}
-                options={noteTypes}
-                callback={cb}
-                alt={<Xl8 xid="vet019">Note Type</Xl8>}
-              />
-            )}
+            {/* {hasData(noteTypes) && ( */}
+            <LabelledInput
+              datafield
+              name="noteTypes"
+              labelText={<Xl8 xid="vet019">Note Type</Xl8>}
+              inputtype="multiSelect"
+              key={noteTypes}
+              options={noteTypes}
+              callback={cb}
+              alt={<Xl8 xid="vet019">Note Type</Xl8>}
+            />
+            {/* )} */}
 
             <LabelledInput
               name="ruleCatFilter"

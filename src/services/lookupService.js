@@ -2,8 +2,8 @@ import { GenericService, get, post, putNoId, del } from "./genericService";
 import * as b from "./baseService";
 import { hasData } from "../utils/utils";
 
-const NOTE_TYPESPOST = `${b.BASE_URL}gtas/api/noteType`;
-const ROLES = `${b.BASE_URL}gtas/roles/`;
+const NOTETYPE = `${b.BASE_URL}gtas/api/noteType`;
+const ROLES = `${b.BASE_URL}gtas/roles`;
 const APIBASE = `${b.BASE_URL}gtas/api/`;
 const HITCATS = `${b.BASE_URL}gtas/wl/watchlistCategories`;
 // const HITCATSNONARCHIVED = `${b.BASE_URL}gtas/wl/watchlistCategories/nonarchived`;
@@ -18,10 +18,9 @@ const getCache = (uri, headers, id, params) => {
   return GenericService({ uri: uricomplete, method: GET, headers: headers });
 };
 
-export const notetypes = {
-  post: body => post(NOTE_TYPESPOST, b.BASEHEADER, b.stringify(body)),
-  put: body => putNoId(NOTE_TYPESPOST, b.BASEHEADER, b.stringify(body)),
-  del: id => del(NOTE_TYPESPOST, b.BASEHEADER, id)
+export const notetype = {
+  get: () => get(NOTETYPE, b.BASEHEADER),
+  getUpdated: () => get(NOTETYPE, b.BASEHEADER)
 };
 
 export const roles = {

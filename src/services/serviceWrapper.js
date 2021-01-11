@@ -46,8 +46,8 @@ const RULESALL = `${BASE_URL}gtas/all_udr`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/application/statistics`;
 const NOTE_TYPESNONARCHIVED = `${BASE_URL}gtas/api/noteType/nonarchived`;
 const LOGGEDIN_USER = `${BASE_URL}gtas/user`;
-const NOTE_TYPESPOST = `${BASE_URL}gtas/api/noteType`;
-const ROLES = `${BASE_URL}gtas/roles/`;
+const NOTETYPE = `${BASE_URL}gtas/api/noteType`;
+// const ROLES = `${BASE_URL}gtas/roles/`;
 // const CODES_AIRPORT_LK = `${BASE_URL}gtas/api/airportLookup`;
 // const CODES_COUNTRY_LK = `${BASE_URL}gtas/api/countryLookup`;
 // const CODES_CARRIER_LK = `${BASE_URL}gtas/api/carrierLookup`;
@@ -207,13 +207,11 @@ export const notification = {
 export const flightPassengers = { get: id => get(FLIGHTPAX, BASEHEADER, id) };
 export const loaderStats = { get: () => get(LOADERSTATISTICS, BASEHEADER) };
 export const notetypes = {
-  get: () => get(NOTE_TYPESNONARCHIVED, BASEHEADER),
-  post: body => post(NOTE_TYPESPOST, BASEHEADER, stringify(body)),
-  put: body => putNoId(NOTE_TYPESPOST, BASEHEADER, stringify(body)),
-  del: id => del(NOTE_TYPESPOST, BASEHEADER, id)
+  post: body => post(NOTETYPE, BASEHEADER, stringify(body)),
+  put: body => putNoId(NOTETYPE, BASEHEADER, stringify(body)),
+  del: id => del(NOTETYPE, BASEHEADER, id)
 };
 export const loggedinUser = { get: () => get(LOGGEDIN_USER, BASEHEADER) };
-export const roles = { get: () => get(ROLES, BASEHEADER) };
 
 export const attachment = {
   get: {

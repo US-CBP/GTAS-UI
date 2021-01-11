@@ -55,8 +55,7 @@ export const LK = {
   AIRPORT: "airport",
   CCTYPE: "cctype",
   HITCAT: "hitcats",
-  RULECAT: "rulecats",
-  NOTETYPE: "notetypes",
+  NOTETYPE: "notetype",
   ROLE: "role"
 };
 

@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { paxEventNotesHistory, notetypes } from "../../services/serviceWrapper";
 import Form from "../../components/form/Form";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
-import { asArray, hasData } from "../../utils/utils";
 import Xl8 from "../../components/xl8/Xl8";
+import { paxEventNotesHistory } from "../../services/serviceWrapper";
+// import { notetype } from "../../services/lookupService";
 import Modal, { ModalBody, ModalHeader, ModalTitle } from "../../components/modal/Modal";
+import { LookupContext } from "../../context/data/LookupContext";
+import { LK } from "../../utils/constants";
+
+import { asArray, hasData } from "../../utils/utils";
 
 const EventNotesModal = props => {
   const [show, setShow] = useState(false);
   const [notTypes, setNoteTypes] = useState([]);
+  const { getCachedKeyValues } = useContext(LookupContext);
 
   const handleClose = (status, res) => {
     setShow(false);
@@ -20,13 +24,13 @@ const EventNotesModal = props => {
   const paxId = props.paxId;
 
   useEffect(() => {
-    notetypes.get().then(types => {
+    getCachedKeyValues(LK.NOTETYPE).then(types => {
       const nTypes = [];
       asArray(types).forEach(type => {
         if (type.noteType !== "DELETED") {
           nTypes.push({
-            value: `{"id":"${type.id}", "noteType":"${type.noteType}"}`,
-            label: type.noteType
+            value: `{"id":"${type.value}", "noteType":"${type.label}"}`,
+            label: type.label
           });
         }
       });

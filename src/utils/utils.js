@@ -362,7 +362,7 @@ export const lpad5 = val => {
 
 // copied direct from stacko, but tested.
 export const formatBytes = (bytes, decimals = 2) => {
-  if (bytes === 0) return "0 Bytes";
+  if (bytes === 0 || !bytes) return "0 Bytes";
 
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;

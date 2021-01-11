@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Table from "../../../components/table/Table";
-import { notetypes } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import { Dropdown, DropdownButton, Row } from "react-bootstrap";
 import NoteTypeModal from "./NoteModal.js";
 import Confirm from "../../../components/confirmationModal/Confirm";
+import { notetypes } from "../../../services/serviceWrapper";
+import { LookupContext } from "../../../context/data/LookupContext";
+import { LK } from "../../../utils/constants";
+
 import { Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
@@ -18,6 +21,7 @@ const NoteCats = ({ name }) => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [editRowDetails, setEditRowDetails] = useState();
   const [modalTitle, setModalTitle] = useState(addNewCat);
+  const { refreshAndReturn } = useContext(LookupContext);
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
@@ -103,7 +107,7 @@ const NoteCats = ({ name }) => {
       <Title title={name}></Title>
       <Row></Row>
       <Table
-        service={notetypes.get}
+        service={() => refreshAndReturn(LK.NOTETYPE)}
         key={refreshKey}
         callback={cb}
         header={headers}
