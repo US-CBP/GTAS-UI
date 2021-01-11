@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Form from "../../../../components/form/Form";
 import { changePassword } from "../../../../services/serviceWrapper";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { Container, Alert } from "react-bootstrap";
-import Title from "../../../../components/title/Title";
+
 import Xl8 from "../../../../components/xl8/Xl8";
 import "./ChangePassword.scss";
 import { hasData, isValidPassword } from "../../../../utils/utils";
-import ErrorText from "../../../../components/errorText/ErrorText";
 
 const ChangePassword = props => {
   const [oldPassword, setOldPassword] = useState();
