@@ -24,4 +24,8 @@ COPY --from=build /usr/src/app/build/ /usr/share/nginx/html
 RUN mkdir public
 EXPOSE 80
 
-CMD ["/bin/bash", "-c", "./env.sh && nginx -g \"daemon off;\""]
+RUN apt-get -y update && apt-get install -y wget
+RUN wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz
+RUN tar -C /usr/local/bin -xzf dockerize-linux-amd64-v0.6.1.tar.gz
+
+CMD ["/bin/bash", "-c", "./env.sh && dockerize -wait tcp://web-app:8443 -timeout 1000s && nginx -g \"daemon off;\""]
