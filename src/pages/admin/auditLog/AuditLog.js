@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
 import { auditlog } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
@@ -8,7 +8,7 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Main from "../../../components/main/Main";
-import {asArray, localeDate} from "../../../utils/utils";
+import { asArray, localeDate } from "../../../utils/utils";
 
 const AuditLog = ({ name }) => {
   const cb = function(result) {};
@@ -29,19 +29,21 @@ const AuditLog = ({ name }) => {
     };
   };
 
-   useEffect(() => {
-     auditlog.get.actions().then(res =>{
-       let acts = [{label:selectAllActions, value:selectAllActions}]; //Always top dummy value
-       acts = acts.concat(asArray(res).map(action => {
-         return {
-           label: action,
-           value: action,
-         };
-       }));
-       setAuditActions(acts);
-       setFilterKey(filterKey+1);
-     });
-   }, []);
+  useEffect(() => {
+    auditlog.get.actions().then(res => {
+      let acts = [{ label: selectAllActions, value: selectAllActions }]; //Always top dummy value
+      acts = acts.concat(
+        asArray(res).map(action => {
+          return {
+            label: action,
+            value: action
+          };
+        })
+      );
+      setAuditActions(acts);
+      setFilterKey(filterKey + 1);
+    });
+  }, []);
 
   const preFetchCallback = params => {
     let parsedParams = "?";

@@ -1,0 +1,34 @@
+version: '3.7'
+services:
+  gtas-ui:
+    image: wcogtas/gtas-ui:dev
+    container_name: gtas-ui
+    labels:
+      kompose.image-pull-policy: "Always"
+      kompose.service.type: "LoadBalancer"
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+#      - 80:80
+      - 443:443
+    restart: always
+    secrets:
+      - source: env
+        target: /environment/.env
+      - source: ui-cert
+        target: /ui-cert/gtas.crt
+      - source: ui-key
+        target: /ui-key/gtas.key
+    networks:
+      - gtas-webapp-network
+networks:
+  gtas-webapp-network:
+    attachable: true
+secrets:
+  env:
+    file: ./.env
+  ui-cert:
+    file: ./certs/gtas.crt
+  ui-key:
+    file: ./certs/gtas.key
