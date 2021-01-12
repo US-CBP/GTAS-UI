@@ -4,17 +4,20 @@ import Form from "../../components/form/Form";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { navigate, Link } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
+import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import { login } from "../../services/serviceWrapper";
-import { Alert, Card, Button } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 
 import "./Login.scss";
 import { FULLPATH_TO } from "../../utils/constants";
 
 const Login = () => {
   const ctx = useContext(UserContext);
+  const { action } = useContext(LiveEditContext);
   const [alertVis, setAlertVis] = useState(false);
 
   useEffect(() => {
+    action({ type: "read" });
     ctx.userAction({ type: "logoff" });
   }, []);
 
