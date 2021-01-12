@@ -141,6 +141,7 @@ const SignUpRequests = () => {
     },
 
     { Accessor: "username", Xl8: true, Header: ["sur008", "Username"] },
+    { Accessor: "email", Xl8: true, Header: ["sur016", "Email"] },
     { Accessor: "firstName", Xl8: true, Header: ["sur009", "First Name"] },
     { Accessor: "lastName", Xl8: true, Header: ["sur010", "Last Name"] },
     { Accessor: "signupLocation", Xl8: true, Header: ["sur011", "Signup Location"] },
