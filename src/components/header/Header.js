@@ -42,8 +42,8 @@ const Header = () => {
   const currentPath = useLocation();
 
   const logout = () => {
-    userAction({ type: "logoff" });
     action({ type: "read" });
+    userAction({ type: "logoff" });
 
     navigate(FULLPATH_TO.LOGIN);
   };
