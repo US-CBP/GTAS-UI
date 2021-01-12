@@ -46,11 +46,10 @@ jobs:
           REACT_APP_NEO4J_BROWSER: ${{ secrets.REACT_APP_NEO4J_BROWSER }}
           REACT_APP_NEO4J: ${{ secrets.REACT_APP_NEO4J }}
         run: |
-          echo >> .env
-          echo REACT_APP_BASE_URL=$REACT_APP_BASE_URL >> .env
-          echo REACT_APP_KIBANA_LOGIN=$REACT_APP_KIBANA_LOGIN >> .env
-          echo REACT_APP_NEO4J_BROWSER=$REACT_APP_NEO4J_BROWSER >> .env
-          echo REACT_APP_NEO4J=$REACT_APP_NEO4J >> .env
+          sed -i.bak "s~REACT_APP_BASE_URL=.*~REACT_APP_BASE_URL=$REACT_APP_BASE_URL~g" .env
+          sed -i.bak "s~REACT_APP_KIBANA_LOGIN=.*~REACT_APP_KIBANA_LOGIN=$REACT_APP_KIBANA_LOGIN~g" .env
+          sed -i.bak "s~REACT_APP_NEO4J_BROWSER=.*~REACT_APP_NEO4J_BROWSER=$REACT_APP_NEO4J_BROWSER~g" .env
+          sed -i.bak "s~REACT_APP_NEO4J=.*~REACT_APP_NEO4J=$REACT_APP_NEO4J~g" .env
       - uses: docker/build-push-action@v2
         name: Build and push GTAS UI
         with:
