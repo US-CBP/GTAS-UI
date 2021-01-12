@@ -60,8 +60,8 @@ const SignUp = props => {
                   approval.
                 </Xl8>
               </Alert>
-              <Link to="/">
-                <Xl8 xid="sup010">Home</Xl8>
+              <Link to={FULLPATH_TO.LOGIN}>
+                <Xl8 xid="sup010">Login</Xl8>
               </Link>
             </>
           ) : (
