@@ -40,7 +40,7 @@ const ReviewPVL = props => {
 
   useEffect(() => {
     isMountedRef.current = true;
-    if (paxId != undefined) {
+    if (paxId !== undefined) {
       paxEventNotesHistory.get(paxId, false).then(res => {
         if (isMountedRef.current) {
           const notesData = res.paxNotes?.map(note => {
