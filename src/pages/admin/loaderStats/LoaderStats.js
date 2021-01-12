@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
@@ -10,14 +10,17 @@ import { localeDate } from "../../../utils/utils";
 
 const LoaderStats = () => {
   const cb = () => {};
-  const [key, setKey] = useState(0);
 
   const parseData = function(res) {
+    const drools = res?.lastMessageAnalyzedByDrools;
+    const msg = res?.lastMessageInSystem;
+    const hit = res?.mostRecentRuleHit;
+
     const parsedData = {
       ...res,
-      lastMessageAnalyzedByDrools: localeDate(res?.lastMessageAnalyzedByDrools),
-      lastMessageInSystem: localeDate(res?.lastMessageInSystem),
-      mostRecentRuleHit: localeDate(res?.mostRecentRuleHit)
+      lastMessageInSystem: msg > 0 ? localeDate(msg) : " -- ",
+      lastMessageAnalyzedByDrools: drools > 0 ? localeDate(drools) : " -- ",
+      mostRecentRuleHit: hit > 0 ? localeDate(hit) : " -- "
     };
 
     return parsedData;
@@ -30,7 +33,6 @@ const LoaderStats = () => {
       <Container>
         <Col lg={{ span: 4, offset: 4 }}>
           <Form
-            key={key}
             getService={loaderStats.get}
             title=""
             callback={cb}

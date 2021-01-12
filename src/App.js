@@ -154,6 +154,14 @@ const LanguageEditor = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/lang/LanguageEditor")
 );
 
+const NEO4JURL = window?._env_
+    ? window._env_.REACT_APP_NEO4J_BROWSER
+    : process.env.REACT_APP_NEO4J_BROWSER;
+
+const KIBANAURL = window?._env_
+    ? window._env_.REACT_APP_BASE_KIBANA_LOGIN
+    : process.env.REACT_APP_KIBANA_LOGIN;
+
 const App = props => {
   const [showModal, setShowModal] = useState(false);
   const idleTimer = useRef(null);
@@ -399,13 +407,13 @@ const App = props => {
                                 name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
                                 desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}
                                 icon="kibana"
-                                path="https://localhost:5601/login?next=%2F"
+                                path={KIBANAURL}
                                 hasExternalLink={true}
                               ></Auxiliary>
                               <Auxiliary
                                 name={<Xl8 xid="app033">Neo4j</Xl8>}
                                 desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
-                                path="http://localhost:7474/browser/"
+                                path={NEO4JURL}
                                 icon="neo4j"
                                 hasExternalLink={true}
                               ></Auxiliary>

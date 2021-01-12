@@ -8,19 +8,23 @@ const LOGINHEADER = {
   "X-Login-Ajax-call": "true",
   "Content-Type": FORM,
   "X-Requested-With": "XMLHttpRequest",
+  Router: "api",
   Accept: AJSON,
   "Accept-Encoding": "gzip, deflate, br"
 };
+
 const SIGNUPHEADER = {
   "X-Login-Ajax-call": "true",
+  Router: "api",
   "Content-Type": "application/json",
   "X-Requested-With": "XMLHttpRequest",
   Accept: AJSON
 };
 
-const BASEHEADER = { "Content-Type": JSONUTF8, Accept: AJSON };
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
+const BASEHEADER = { "Content-Type": JSONUTF8, Router: "api", Accept: AJSON };
+const BASE_URL = window?._env_
+  ? window._env_.REACT_APP_BASE_URL
+  : process.env.REACT_APP_BASE_URL;
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
 const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
@@ -44,13 +48,8 @@ const QUERYPAX = `${BASE_URL}gtas/query/queryPassengers`;
 const RULES = `${BASE_URL}gtas/udr`;
 const RULESALL = `${BASE_URL}gtas/all_udr`;
 const LOADERSTATISTICS = `${BASE_URL}gtas/api/application/statistics`;
-const NOTE_TYPESNONARCHIVED = `${BASE_URL}gtas/api/noteType/nonarchived`;
 const LOGGEDIN_USER = `${BASE_URL}gtas/user`;
 const NOTETYPE = `${BASE_URL}gtas/api/noteType`;
-// const ROLES = `${BASE_URL}gtas/roles/`;
-// const CODES_AIRPORT_LK = `${BASE_URL}gtas/api/airportLookup`;
-// const CODES_COUNTRY_LK = `${BASE_URL}gtas/api/countryLookup`;
-// const CODES_CARRIER_LK = `${BASE_URL}gtas/api/carrierLookup`;
 
 const WLDOCS = `${BASE_URL}gtas/wl/DOCUMENT/Document`;
 const WLDOCSPOST = `${BASE_URL}gtas/wl/document`;
@@ -63,8 +62,6 @@ const NOTIFICATION = `${BASE_URL}gtas/users/notify`;
 const HOST = `${BASE_URL}gtas/config/`;
 const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
-const NEO4JURL = HOST + "/neo4j/";
-const KIBANAURL = HOST + "/kibanaUrl/";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 const LOGFILE = `${BASE_URL}gtas/api/logs/`;
 const SIGNUP = `${BASE_URL}gtas/user/signup/new`;
@@ -382,11 +379,4 @@ export const search = {
 };
 export const seats = {
   get: flightId => get(SEATS, BASEHEADER, flightId)
-};
-
-export const neo4jUrl = {
-  get: () => get(NEO4JURL, BASEHEADER)
-};
-export const kibanaUrl = {
-  get: () => get(KIBANAURL, BASEHEADER)
 };
