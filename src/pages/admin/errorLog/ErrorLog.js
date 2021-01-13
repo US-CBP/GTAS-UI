@@ -21,7 +21,7 @@ const ErrorLog = ({ name }) => {
   let endDate = addMinutes(new Date(), 1);
   startDate.setDate(startDate.getDate() - 1);
   const initialParamState = () => {
-    return { startDate: startDate, endDate: endDate };
+    return { startDate: startDate, endDate: endDate, errorCode: selectAllCodes };
   };
 
   const headers = [

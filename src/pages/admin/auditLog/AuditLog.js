@@ -25,7 +25,8 @@ const AuditLog = ({ name }) => {
   const initialParamState = () => {
     return {
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
+      actionType: selectAllActions
     };
   };
 
