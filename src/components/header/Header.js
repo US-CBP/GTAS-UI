@@ -28,8 +28,8 @@ const Header = () => {
   const user = getUserState();
 
   const logout = () => {
-    userAction({ type: "logoff" });
     action({ type: "read" });
+    userAction({ type: "logoff" });
 
     navigate(FULLPATH_TO.LOGIN);
   };
@@ -178,7 +178,7 @@ const Header = () => {
                 {<Xl8 xid="head005">Change password</Xl8>}
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to="#" onClick={logout}>
+              <NavDropdown.Item onClick={logout}>
                 {<Xl8 xid="head006">Logout</Xl8>}
               </NavDropdown.Item>
             </NavDropdown>
