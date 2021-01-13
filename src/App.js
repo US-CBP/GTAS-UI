@@ -21,6 +21,7 @@ import Page404 from "./pages/page404/Page404";
 import { FULLPATH_TO } from "./utils/constants";
 import "./App.scss";
 import "font-awesome/css/font-awesome.min.css";
+import { hasData } from "./utils/utils";
 
 const Authenticator = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./context/authenticator/Authenticator")
@@ -400,20 +401,26 @@ const App = props => {
                                 icon="fa-comment"
                                 path="notecats"
                               ></NoteCats>
-                              <Auxiliary
-                                name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
-                                desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}
-                                icon="kibana"
-                                path={KIBANAURL}
-                                hasExternalLink={true}
-                              ></Auxiliary>
-                              <Auxiliary
-                                name={<Xl8 xid="app033">Neo4j</Xl8>}
-                                desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
-                                path={NEO4JURL}
-                                icon="neo4j"
-                                hasExternalLink={true}
-                              ></Auxiliary>
+                              {hasData(KIBANAURL) && (
+                                <Auxiliary
+                                  name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
+                                  desc={
+                                    <Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>
+                                  }
+                                  icon="kibana"
+                                  path={KIBANAURL}
+                                  hasExternalLink={true}
+                                ></Auxiliary>
+                              )}
+                              {hasData(NEO4JURL) && (
+                                <Auxiliary
+                                  name={<Xl8 xid="app033">Neo4j</Xl8>}
+                                  desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
+                                  path={NEO4JURL}
+                                  icon="neo4j"
+                                  hasExternalLink={true}
+                                ></Auxiliary>
+                              )}
                             </Admin>
                           </RoleAuthenticator>
                           {UNAUTHED}
