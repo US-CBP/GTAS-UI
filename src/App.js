@@ -4,7 +4,6 @@ import IdleTimer from "react-idle-timer";
 import loadable from "@loadable/component";
 
 import Xl8 from "./components/xl8/Xl8";
-// import Modal, { ModalBody, ModalHeader, ModalTitle } from "./components/modal/Modal";
 
 import UserProvider from "./context/user/UserContext";
 import LiveEditProvider from "./context/translation/LiveEditContext";
@@ -36,9 +35,6 @@ const PriorityVetting = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/vetting/Vetting")
 );
 const Home = loadable(() => import(/* webpackChunkName: "authed" */ "./pages/home/Home"));
-// const Dashboard = loadable(() =>
-//   import(/* webpackChunkName: "authed" */ "./pages/dashboard/Dashboard")
-// );
 const PaxDetail = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/paxDetail/PaxDetail")
 );
