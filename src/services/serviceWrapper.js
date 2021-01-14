@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import GenericService from "./genericService";
 import { hasData, asArray } from "../utils/utils";
 
@@ -13,20 +17,20 @@ const LOGINHEADER = {
   "X-Login-Ajax-call": "true",
   "Content-Type": FORM,
   "X-Requested-With": "XMLHttpRequest",
-  "Router": "api",
-   Accept: AJSON,
+  Router: "api",
+  Accept: AJSON,
   "Accept-Encoding": "gzip, deflate, br"
 };
 
 const SIGNUPHEADER = {
   "X-Login-Ajax-call": "true",
-  "Router": "api",
+  Router: "api",
   "Content-Type": "application/json",
   "X-Requested-With": "XMLHttpRequest",
   Accept: AJSON
 };
 
-const BASEHEADER = { "Content-Type": JSONUTF8, "Router": "api" ,Accept: AJSON };
+const BASEHEADER = { "Content-Type": JSONUTF8, Router: "api", Accept: AJSON };
 const PUTBODY = "The put method requires a valid body parameter.";
 const POSTBODY = "The post method requires a valid body or data parameter.";
 const PUTID = "The put method requires a valid id parameter.";
@@ -84,7 +88,9 @@ function stringify(body) {
 }
 
 // APB - ENTITY CONSTANTS and ENTITY METHODS is the only code we should need to touch when adding new endpoints
-const BASE_URL = window?._env_ ? window._env_.REACT_APP_BASE_URL : process.env.REACT_APP_BASE_URL;
+const BASE_URL = window?._env_
+  ? window._env_.REACT_APP_BASE_URL
+  : process.env.REACT_APP_BASE_URL;
 
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
@@ -504,4 +510,3 @@ export const search = {
 export const seats = {
   get: flightId => get(SEATS, BASEHEADER, flightId)
 };
-
