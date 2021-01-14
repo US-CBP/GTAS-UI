@@ -372,3 +372,12 @@ export const formatBytes = (bytes, decimals = 2) => {
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 };
+
+export const isValidDate = date => {
+  return date instanceof Date && !isNaN(date.getTime());
+};
+export const addMinutes = (date, minutes = 1) => {
+  if (!isValidDate(date)) return "Invalid Date";
+
+  return new Date(date.getTime() + minutes * 60000);
+};
