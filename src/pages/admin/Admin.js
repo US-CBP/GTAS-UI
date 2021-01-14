@@ -18,6 +18,9 @@ const Admin = props => {
         <CardDeck className="page-deck">
           {children.map(info => {
             const data = info.props;
+
+            if (!data) return;
+
             return (
               <Card className="page-tiles" key={data.path}>
                 {data.hasExternalLink ? (
