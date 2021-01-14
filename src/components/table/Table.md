@@ -1,3 +1,9 @@
+<!--
+ All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+
+ Please see license.txt for details.
+-->
+
 Table example:
 
 The table component can accept either a data array, a uri, or a function that fetches data. It will attempt to auto-format the headers, or you can optionally pass in an array of strings representing the header text for each column.
