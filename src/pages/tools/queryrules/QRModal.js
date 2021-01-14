@@ -47,7 +47,7 @@ const QRModal = props => {
   const [showInvalid, setShowInvalid] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const isEdit = hasData(props.data);
+  const isEdit = hasData(props.data?.id);
   const { getLookupState, lookupAction } = useContext(LookupContext);
 
   useEffect(() => {
@@ -407,7 +407,7 @@ const QRModal = props => {
   };
 
   const onDelete = () => {
-    if (hasData(svc)) {
+    if (hasData(svc) && hasData(id)) {
       svc.del(id).then(res => {
         props.callback(ACTION.DELETE);
       });
