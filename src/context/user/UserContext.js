@@ -40,7 +40,6 @@ const UserProvider = ({ children }) => {
         return initialState;
       }
       case "lastRule": {
-        console.log("usercontext lastrule");
         let storedUser = JSON.parse(sessionStorage.getItem(USERSTORE));
         storedUser.lastRule = action.lastRule;
         setStorage(USERSTORE, storedUser);

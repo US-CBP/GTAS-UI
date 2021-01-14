@@ -23,10 +23,10 @@ const Countries = () => {
   const { refreshAndReturn } = useContext(LookupContext);
   const type = LK.COUNTRY;
 
-  async function refresh() {
+  const refresh = () => {
     setRefreshKey(refreshKey + 1);
     setEditRowDetails({});
-  }
+  };
 
   const openEditModal = rowDetails => {
     setModalTitle(<Xl8 xid="cou001">Edit Country</Xl8>);
