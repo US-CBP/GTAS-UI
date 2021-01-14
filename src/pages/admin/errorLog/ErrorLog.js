@@ -8,7 +8,7 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import { Col } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import FilterForm from "../../../components/filterForm2/FilterForm";
-import { asArray, localeDate } from "../../../utils/utils";
+import { addMinutes, asArray, localeDate } from "../../../utils/utils";
 
 const ErrorLog = ({ name }) => {
   const cb = function(result) {};
@@ -18,11 +18,10 @@ const ErrorLog = ({ name }) => {
   const [errorCodes, setErrorCodes] = useState([]);
   const selectAllCodes = "Select All Codes";
   let startDate = new Date();
-  let endDate = new Date();
-  endDate.setDate(endDate.getDate());
+  let endDate = addMinutes(new Date(), 1);
   startDate.setDate(startDate.getDate() - 1);
   const initialParamState = () => {
-    return { startDate: startDate, endDate: endDate };
+    return { startDate: startDate, endDate: endDate, errorCode: selectAllCodes };
   };
 
   const headers = [
@@ -55,7 +54,8 @@ const ErrorLog = ({ name }) => {
         parsedParams += "startDate=" + params.startDate.toISOString();
       }
       if (params.endDate) {
-        parsedParams += "&endDate=" + params.endDate.toISOString();
+        const endDate = addMinutes(params.endDate, 1);
+        parsedParams += "&endDate=" + endDate.toISOString();
       }
       if (params.errorCode != selectAllCodes) {
         parsedParams += "&code=" + params.errorCode;

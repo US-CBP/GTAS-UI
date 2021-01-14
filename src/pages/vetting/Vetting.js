@@ -20,7 +20,8 @@ import {
   isShortText,
   getAge,
   alt,
-  lpad5
+  lpad5,
+  addMinutes
 } from "../../utils/utils";
 import { ROLE, HIT_STATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
@@ -226,7 +227,7 @@ const Vetting = props => {
   const now = new Date();
   const initialParamState = {
     etaStart: startDate,
-    etaEnd: endDate,
+    etaEnd: addMinutes(endDate, 1),
     displayStatusCheckBoxes: hitStatusOptions,
     ruleTypes: hitTypeOptions,
     ruleCatFilter: hitCategoryOptions,
@@ -277,7 +278,7 @@ const Vetting = props => {
       etaStart.setHours(etaEnd.getHours() - startRange);
 
       paramObject["etaStart"] = etaStart;
-      paramObject["etaEnd"] = etaEnd;
+      paramObject["etaEnd"] = addMinutes(etaEnd, 1);
 
       delete fieldscopy["startHourRange"];
       delete fieldscopy["endHourRange"];
@@ -285,8 +286,13 @@ const Vetting = props => {
 
     const fieldNames = Object.keys(fieldscopy);
     fieldNames.forEach(name => {
-      if (name === "etaStart" || name === "etaEnd") {
+      if (name === "etaStart") {
         const date = new Date(fields[name]);
+        paramObject[name] = date.toISOString();
+      }
+
+      if (name === "etaEnd") {
+        const date = addMinutes(new Date(fields[name]), 1);
         paramObject[name] = date.toISOString();
       }
 

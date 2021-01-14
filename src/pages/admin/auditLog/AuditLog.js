@@ -8,7 +8,7 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Main from "../../../components/main/Main";
-import { asArray, localeDate } from "../../../utils/utils";
+import { addMinutes, asArray, localeDate } from "../../../utils/utils";
 
 const AuditLog = ({ name }) => {
   const cb = function(result) {};
@@ -18,14 +18,15 @@ const AuditLog = ({ name }) => {
   const [auditActions, setAuditActions] = useState([]);
   const selectAllActions = "Select All Actions";
   let startDate = new Date();
-  let endDate = new Date();
-  endDate.setDate(endDate.getDate() + 1);
   startDate.setDate(startDate.getDate() - 1);
+
+  let endDate = addMinutes(new Date(), 1);
 
   const initialParamState = () => {
     return {
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
+      actionType: selectAllActions
     };
   };
 
@@ -52,7 +53,8 @@ const AuditLog = ({ name }) => {
         parsedParams += "startDate=" + params.startDate.toISOString();
       }
       if (params.endDate) {
-        parsedParams += "&endDate=" + params.endDate.toISOString();
+        const endDate = addMinutes(params.endDate, 1);
+        parsedParams += "&endDate=" + endDate.toISOString();
       }
       if (params.actionType != selectAllActions) {
         parsedParams += "&actionType=" + params.actionType;
