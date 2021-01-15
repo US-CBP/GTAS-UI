@@ -1,12 +1,12 @@
 import { GenericService, get, post, putNoId, del } from "./genericService";
-import * as b from "./baseService";
+import BASE_URL, { BASEHEADER, stringify } from "./baseService";
 import { hasData } from "../utils/utils";
 
-const NOTETYPE = `${b.BASE_URL}gtas/api/noteType`;
-const ROLES = `${b.BASE_URL}gtas/roles`;
-const APIBASE = `${b.BASE_URL}gtas/api/`;
-const HITCATS = `${b.BASE_URL}gtas/wl/watchlistCategories`;
-// const HITCATSNONARCHIVED = `${b.BASE_URL}gtas/wl/watchlistCategories/nonarchived`;
+const NOTETYPE = `${BASE_URL}gtas/api/noteType`;
+const ROLES = `${BASE_URL}gtas/roles`;
+const APIBASE = `${BASE_URL}gtas/api/`;
+const HITCATS = `${BASE_URL}gtas/wl/watchlistCategories`;
+// const HITCATSNONARCHIVED = `${BASE_URL}gtas/wl/watchlistCategories/nonarchived`;
 
 const GET = "get";
 
@@ -19,32 +19,32 @@ const getCache = (uri, headers, id, params) => {
 };
 
 export const notetype = {
-  get: () => get(NOTETYPE, b.BASEHEADER),
-  getUpdated: () => get(NOTETYPE, b.BASEHEADER)
+  get: () => get(NOTETYPE, BASEHEADER),
+  getUpdated: () => get(NOTETYPE, BASEHEADER)
 };
 
 export const roles = {
-  get: () => get(ROLES, b.BASEHEADER),
-  getUpdated: () => get(ROLES, b.BASEHEADER)
+  get: () => get(ROLES, BASEHEADER),
+  getUpdated: () => get(ROLES, BASEHEADER)
 };
 
 export const codeEditor = {
-  get: type => get(APIBASE + type, b.BASEHEADER),
-  getUpdated: (type, dt) => getCache(`${APIBASE}${type}updated/${dt}`, b.BASEHEADER),
+  get: type => get(APIBASE + type, BASEHEADER),
+  getUpdated: (type, dt) => getCache(`${APIBASE}${type}updated/${dt}`, BASEHEADER),
   put: {
-    update: (type, body) => putNoId(APIBASE + type, b.BASEHEADER, b.stringify(body)),
+    update: (type, body) => putNoId(APIBASE + type, BASEHEADER, stringify(body)),
     restore: (type, body) =>
-      putNoId(`${APIBASE}${type}/restore`, b.BASEHEADER, b.stringify(body)),
+      putNoId(`${APIBASE}${type}/restore`, BASEHEADER, stringify(body)),
     restoreAll: (type, body) =>
-      putNoId(`${APIBASE}${type}/restoreAll`, b.BASEHEADER, b.stringify(body))
+      putNoId(`${APIBASE}${type}/restoreAll`, BASEHEADER, stringify(body))
   },
-  post: (type, body) => post(APIBASE + type, b.BASEHEADER, b.stringify(body)),
-  del: (type, id) => del(APIBASE + type, b.BASEHEADER, id)
+  post: (type, body) => post(APIBASE + type, BASEHEADER, stringify(body)),
+  del: (type, id) => del(APIBASE + type, BASEHEADER, id)
 };
 
 export const hitcats = {
-  get: () => get(HITCATS, b.BASEHEADER),
-  getUpdated: () => get(HITCATS, b.BASEHEADER),
-  post: body => post(HITCATS, b.BASEHEADER, body),
-  del: id => del(HITCATS, b.BASEHEADER, id)
+  get: () => get(HITCATS, BASEHEADER),
+  getUpdated: () => get(HITCATS, BASEHEADER),
+  post: body => post(HITCATS, BASEHEADER, body),
+  del: id => del(HITCATS, BASEHEADER, id)
 };
