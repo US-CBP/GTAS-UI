@@ -1,6 +1,5 @@
 import React, { Suspense, useState, useRef } from "react";
 import { Router, Redirect, navigate } from "@reach/router";
-import IdleTimer from "react-idle-timer";
 import loadable from "@loadable/component";
 
 import Xl8 from "./components/xl8/Xl8";
@@ -9,8 +8,6 @@ import UserProvider from "./context/user/UserContext";
 import LiveEditProvider from "./context/translation/LiveEditContext";
 import LookupProvider from "./context/data/LookupContext";
 
-import { ROLE, TIME } from "./utils/constants";
-
 //login bundle
 import Login from "./pages/login/Login";
 import SignUp from "./pages/login/SignUp";
@@ -18,10 +15,10 @@ import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Page404 from "./pages/page404/Page404";
 
-import { FULLPATH_TO } from "./utils/constants";
+import { hasData } from "./utils/utils";
+import { ROLE, FULLPATH_TO } from "./utils/constants";
 import "./App.scss";
 import "font-awesome/css/font-awesome.min.css";
-import { hasData } from "./utils/utils";
 
 const Authenticator = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./context/authenticator/Authenticator")
@@ -163,29 +160,6 @@ const KIBANAURL = window?._env_
 
 const App = props => {
   const [showModal, setShowModal] = useState(false);
-  const idleTimer = useRef(null);
-
-  const onAction = e => {
-    // console.log('user did something', e)
-  };
-
-  const onActive = e => {
-    // console.log('user is active', e)
-    // console.log('time remaining', idleTimer.getRemainingTime())
-  };
-
-  const onIdle = e => {
-    console.log("user is idle", e);
-    console.log("last active", idleTimer.getLastActiveTime());
-
-    // Logout and redirect to login page
-    // this.setState({ redirect: true });
-    navigate(FULLPATH_TO.LOGIN);
-  };
-
-  const toggleModal = () => {
-    // this.setState({ showModal: !this.state.showModal });
-  };
 
   const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
   const NF404 = <Page404 path="page404"></Page404>;
@@ -212,27 +186,10 @@ const App = props => {
           </LookupProvider>
         </UserProvider>
 
-        {/* {this.state.showModal ? (
-                <GModal>
-                  <div>
-                    <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
-                    <button onClick={this.toggleModal}>OK</button>
-                  </div>
-                </GModal>
-              ) : null} */}
         <UserProvider>
           <LookupProvider>
             <LiveEditProvider>
               <div className="App">
-                <IdleTimer
-                  ref={idleTimer}
-                  element={document}
-                  onActive={onActive}
-                  onIdle={onIdle}
-                  onAction={onAction}
-                  debounce={250}
-                  timeout={TIME.MINUTES_25}
-                />
                 <Suspense fallback="loading">
                   <Router>
                     <Authenticator path="/gtas">

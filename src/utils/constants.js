@@ -74,7 +74,8 @@ export const TIME = {
   MINUTES_10: 600000,
   MINUTES_25: 1500000,
   SECS_30: 30000,
-  SECS_10: 10000
+  SECS_10: 10000,
+  SECOND: 1000
 };
 
 export const MS = secs => secs * 1000;

@@ -18,6 +18,7 @@ const Login = () => {
 
   useEffect(() => {
     action({ type: "read" });
+    action({ type: "hide" });
     ctx.userAction({ type: "logoff" });
   }, []);
 

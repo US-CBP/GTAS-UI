@@ -1,51 +1,88 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import IdleTimer from "react-idle-timer";
 import Header from "../../components/header/Header";
-import LangModal from "./LangModal";
-import { LiveEditContext } from "../../context/translation/LiveEditContext";
-import { hasData } from "../../utils/utils";
+import { navigate } from "@reach/router";
+import TimeoutModal from "../../components/timeoutModal/TimeoutModal";
+import { TIME, FULLPATH_TO } from "../../utils/constants";
 
 const Home = props => {
-  const location = props.location?.pathname;
-  const [showModal, setShowModal] = useState(false);
-  const hideModal = () => setShowModal(false);
-  const [xid, setXl8] = useState();
-  const { getLiveEditState, action, EditModal } = useContext(LiveEditContext);
+  const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+
+  const idleTimer = useRef(null);
+
+  const onAction = e => {
+    // if (!idleTimer?.current) return;
+    // console.log("onAction - time remaining", idleTimer.current.getRemainingTime());
+  };
+
+  const onActive = e => {
+    if (!idleTimer?.current) return;
+    console.log("time remaining", idleTimer.current.getRemainingTime());
+  };
+
+  const onIdle = e => {
+    if (!idleTimer) return;
+    console.log("last active", new Date(idleTimer.current.getLastActiveTime()));
+
+    idleTimer.current.pause();
+    toggleModal();
+  };
+
+  const reset = () => {
+    if (!idleTimer) return;
+
+    setShowTimeoutModal(false);
+    idleTimer.current.reset();
+  };
+
+  const logout = () => {
+    navigate(FULLPATH_TO.LOGIN);
+  };
+
+  const toggleModal = () => {
+    setShowTimeoutModal(!showTimeoutModal);
+  };
 
   useEffect(() => {
-    const isEdit = getLiveEditState();
-    setShowModal(isEdit);
+    if (!idleTimer.current) return;
+    idleTimer.current.reset();
   }, []);
-  // const handleClick = ev => {
-  //   // show modal with this xid
-  //   ev.preventDefault();
-  //   // console.log(ev.target.attributes);
 
-  //   const id = ev.target.attributes["xid"]?.value;
-
-  //   if (hasData(id)) {
-  //     setXl8(id);
-  //     setShowModal(true);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   setTimeout(function() {
-  //     //Start the timer
-  //     const xids = document.querySelectorAll("[xid]");
-
-  //     Array.from(xids).forEach(item => {
-  //       item.classList.add("xid");
-  //       item.addEventListener("click", handleClick);
-  //     });
-  //   }, 1000);
-  // }, [location]);
+  const activeEvents = [
+    "keydown",
+    "wheel",
+    "DOMMouseScroll",
+    "mousewheel",
+    "mousedown",
+    "touchstart",
+    "touchmove",
+    "MSPointerDown",
+    "MSPointerMove",
+    "visibilitychange"
+  ];
 
   return (
     <div>
       <Header></Header>
+      <IdleTimer
+        ref={idleTimer}
+        element={document}
+        onActive={onActive}
+        onIdle={onIdle}
+        onAction={onAction}
+        debounce={250}
+        timeout={TIME.MINUTE_25}
+        events={activeEvents}
+      />
+      {showTimeoutModal && (
+        <TimeoutModal
+          idleTime={() => idleTimer.current.getLastActiveTime()}
+          show={showTimeoutModal}
+          reset={reset}
+          logout={logout}
+        ></TimeoutModal>
+      )}
       {props.children}
-      {EditModal}
-      {/* <LangModal show={showModal} onHide={hideModal} elem={{ xid: "foo" }}></LangModal> */}
     </div>
   );
 };
