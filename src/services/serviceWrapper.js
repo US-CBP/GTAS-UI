@@ -3,33 +3,13 @@
 // Please see license.txt for details.
 
 import { get, put, post, del, putNoId } from "./genericService";
+import BASE_URL, {
+  BASEHEADER,
+  LOGINHEADER,
+  SIGNUPHEADER,
+  stringify
+} from "./baseService";
 
-const AJSON = "application/json, text/plain, */*";
-const JSONUTF8 = "application/json;charset=UTF-8";
-const FORM = "application/x-www-form-urlencoded";
-
-//These variables are also defined in baseService.js
-const LOGINHEADER = {
-  "X-Login-Ajax-call": "true",
-  "Content-Type": FORM,
-  "X-Requested-With": "XMLHttpRequest",
-  Router: "api",
-  Accept: AJSON,
-  "Accept-Encoding": "gzip, deflate, br"
-};
-
-const SIGNUPHEADER = {
-  "X-Login-Ajax-call": "true",
-  Router: "api",
-  "Content-Type": "application/json",
-  "X-Requested-With": "XMLHttpRequest",
-  Accept: AJSON
-};
-
-const BASEHEADER = { "Content-Type": JSONUTF8, Router: "api", Accept: AJSON };
-const BASE_URL = window?._env_
-  ? window._env_.REACT_APP_BASE_URL
-  : process.env.REACT_APP_BASE_URL;
 const LOGIN = `${BASE_URL}gtas/authenticate`;
 const USERS = `${BASE_URL}gtas/users`;
 const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
@@ -82,10 +62,6 @@ const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
 const ATTACHMENTSMETA = `${BASE_URL}gtas/attachmentsmeta`;
 const DOWNLOADATTACHMENT = `${BASE_URL}gtas/attachment`;
 const TRANSLATIONS = `${BASE_URL}gtas/api/translation`;
-
-const stringify = body => {
-  return JSON.stringify({ ...body });
-};
 
 // ENTITY METHODS
 
