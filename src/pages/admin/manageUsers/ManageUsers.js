@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useContext, useEffect, useState } from "react";
 import { Button, DropdownButton, Dropdown } from "react-bootstrap";
 import Table from "../../../components/table/Table";
@@ -8,13 +12,13 @@ import Xl8 from "../../../components/xl8/Xl8";
 import { asArray } from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
 
-import "./ManageUsers.scss";
 import UserModal from "./UserModal";
 import Confirm from "../../../components/confirmationModal/Confirm";
 import ChangePasswordModal from "./changePasswordModal/ChangePasswordModal";
 import Toast from "../../../components/toast/Toast";
 import { UserContext } from "../../../context/user/UserContext";
 import { Fab } from "react-tiny-fab";
+import "./ManageUsers.scss";
 import "react-tiny-fab/dist/styles.css";
 
 const ManageUsers = props => {

@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import ReactDOM from "react-dom";
 // import {shallow} from 'enzyme';
@@ -17,7 +21,7 @@ describe("LabelledInput", () => {
         callback={callback}
         alt={fake}
         name={fake}
-        inputType={type}
+        inputtype={type}
         lblText={fake}
       />,
       div
@@ -27,9 +31,9 @@ describe("LabelledInput", () => {
 
   it("renders a SELECT input", () => {
     const type = "text";
-    //    const foo = shallow(<select id={fake} callback={callback} name={fake} inputType={type}></select>);
+    //    const foo = shallow(<select id={fake} callback={callback} name={fake} inputtype={type}></select>);
 
-    // expect(ReactDOM.render(<LabelledInput id={fake} callback={callback} alt={fake} name={fake} inputType={type} lblText={fake}/>, div))
+    // expect(ReactDOM.render(<LabelledInput id={fake} callback={callback} alt={fake} name={fake} inputtype={type} lblText={fake}/>, div))
     // ReactDOM.unmountComponentAtNode(div);
   });
 
@@ -42,7 +46,7 @@ describe("LabelledInput", () => {
         callback={callback}
         alt={fake}
         name={fake}
-        inputType={type}
+        inputtype={type}
         lblText={fake}
       />,
       div
@@ -59,7 +63,7 @@ describe("LabelledInput", () => {
         callback={callback}
         alt={fake}
         name={fake}
-        inputType={type}
+        inputtype={type}
         lblText={fake}
         options={["false", "true"]}
       />,
@@ -77,7 +81,7 @@ describe("LabelledInput", () => {
         callback={callback}
         alt={fake}
         name={fake}
-        inputType={type}
+        inputtype={type}
         lblText={fake}
         options={[".doc", ".pdf"]}
       />,

@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect, useContext } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
@@ -267,7 +271,7 @@ const Flights = props => {
               labelText={<Xl8 xid="fl003"> Origin Airports</Xl8>}
               datafield="originAirports"
               name="originAirports"
-              inputType="text"
+              inputtype="text"
               callback={cb}
               alt={<Xl8 xid="0">Origin Airports</Xl8>}
             />
@@ -275,21 +279,21 @@ const Flights = props => {
               labelText={<Xl8 xid="fl004"> Destination Airports</Xl8>}
               datafield="destinationAirports"
               name="destinationAirports"
-              inputType="text"
+              inputtype="text"
               callback={cb}
               alt={<Xl8 xid="1"> Destination Airports</Xl8>}
             />
             <LabelledInput
               datafield="flightNumber"
               labelText={<Xl8 xid="fl005">Flight Number</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="flightNumber"
               callback={cb}
               alt={<Xl8 xid="7">Flight Number</Xl8>}
             />
             <LabelledInput
               datafield="direction"
-              inputType="select"
+              inputtype="select"
               labelText={<Xl8 xid="fl006">Direction</Xl8>}
               inputStyle="form-select"
               callback={cb}
@@ -299,9 +303,9 @@ const Flights = props => {
             />
             <LabelledInput
               labelText={<Xl8 xid="fl007">Hour Range</Xl8>}
-              inputType="select"
+              inputtype="select"
               name="hourRange"
-              inputVal="96"
+              inputval="96"
               inputStyle="form-select"
               datafield="hourRange"
               options={[

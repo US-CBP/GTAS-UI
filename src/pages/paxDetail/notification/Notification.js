@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect } from "react";
 
 import { Container } from "react-bootstrap";
@@ -15,7 +19,7 @@ import Modal, {
 import ErrorText from "../../../components/errorText/ErrorText";
 
 const Notification = props => {
-  const cb = result => {};
+  const cb = () => {};
   const [show, setShow] = useState(false);
   const [usersEmails, setUsersEmails] = useState(props.usersEmails);
   const [showAlertText, setShowAlertText] = useState(false);
@@ -124,30 +128,30 @@ const Notification = props => {
                 name="to"
                 datafield="to"
                 labelText={<Xl8 xid="not004">Users in current group</Xl8>}
-                inputType="multiSelect"
-                inputVal={[]}
+                inputtype="multiSelect"
+                inputval={[]}
                 options={emialOptions}
                 callback={cb}
                 alt="Users in current group"
               />
 
               <LabelledInput
-                inputType="text"
+                inputtype="text"
                 alt="nothing"
                 name="externalUsersEmail"
                 labelText={<Xl8 xid="not005">External user emails</Xl8>}
                 placeholder="email@example.com"
                 datafield
-                inputVal=""
+                inputval=""
                 callback={cb}
               />
 
               <LabelledInput
-                inputType="textarea"
+                inputtype="textarea"
                 labelText={<Xl8 xid="not006">Notes</Xl8>}
                 name="note"
                 datafield="note"
-                inputVal=""
+                inputval=""
                 callback={cb}
               />
             </Form>

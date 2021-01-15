@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
@@ -57,7 +61,7 @@ const Tools = props => {
           <CardDeck className="page-deck">
             {tiles.map(data => {
               return (
-                <RoleAuthenticator alt={<></>} roles={data.roles}>
+                <RoleAuthenticator alt={<></>} roles={data.roles} key={data.path}>
                   <Card className="page-tiles" key={data.path}>
                     <Link to={data.path} className="card-link">
                       <Card.Body>

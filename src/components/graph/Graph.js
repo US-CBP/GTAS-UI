@@ -1,12 +1,16 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useRef, useState } from "react";
-import "../../services/configService";
+// import "../../services/configService";
 import Xl8 from "../xl8/Xl8";
 import { cypher, cypherAuth } from "../../services/serviceWrapper";
 import { provider, saves, palette } from "./structure";
+import * as d3 from "d3";
 import "./Graph.css";
 import "../../../node_modules/vaquita/css/vaquita-svg.css";
 import "vaquita/dist/vaquita.min.css";
-import * as d3 from "d3";
 
 const vaqu = require("vaquita");
 

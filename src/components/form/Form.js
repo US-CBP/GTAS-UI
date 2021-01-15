@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import PropTypes from "prop-types";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
@@ -173,13 +177,13 @@ class Form extends React.Component {
       let cleanprops = Object.assign({}, child.props);
       delete cleanprops.callback;
       if (assignInputVals) {
-        populatedFields[child.props.name] = child.props.inputVal;
+        populatedFields[child.props.name] = child.props.inputval;
       }
 
       let newchild = React.cloneElement(child, {
         key: idx,
         callback: this.onChange,
-        inputVal: populatedFields[this.state.fieldMap[child.props.name]],
+        inputval: populatedFields[this.state.fieldMap[child.props.name]],
         ...cleanprops
       });
 
@@ -258,14 +262,14 @@ class Form extends React.Component {
 
 Form.propTypes = {
   title: PropTypes.string,
-  submitText: PropTypes.string,
+  submitText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   cancellable: PropTypes.oneOf(["true", true, ""]),
   cancelText: PropTypes.string,
   redirectTo: PropTypes.string,
   getService: PropTypes.func,
   submitService: PropTypes.func,
-  action: PropTypes.oneOf(["add", "edit", "readonly", ""]),
-  recordId: PropTypes.string,
+  action: PropTypes.oneOf(["add", "edit", "readonly", "refresh", ""]),
+  recordId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   data: PropTypes.object,
   callback: PropTypes.func.isRequired,
   paramCallback: PropTypes.func,

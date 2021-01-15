@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import { Toast as RBToast } from "react-bootstrap";
 import PropTypes from "prop-types";
@@ -27,8 +31,8 @@ function Toast(props) {
 
 Toast.propTypes = {
   onClose: PropTypes.func,
-  header: PropTypes.string,
-  body: PropTypes.string,
+  header: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  body: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   show: PropTypes.bool,
   delay: PropTypes.number,
   variant: PropTypes.string

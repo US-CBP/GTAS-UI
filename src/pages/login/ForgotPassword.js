@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState } from "react";
 import Form from "../../components/form/Form";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
@@ -61,10 +65,10 @@ const ForgotPassword = props => {
                 <LabelledInput
                   datafield
                   labelText="User Id"
-                  inputType="text"
+                  inputtype="text"
                   name="userId"
                   required={true}
-                  inputVal=""
+                  inputval=""
                   alt="nothing"
                   callback={cb}
                   spacebetween

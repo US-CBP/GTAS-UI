@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
@@ -26,7 +30,7 @@ import { Col, Tabs, Tab } from "react-bootstrap";
 import "./FlightPax.css";
 
 const FlightPax = props => {
-  const cb = function(result) {};
+  const cb = () => {};
 
   const [data, setData] = useState();
   const [hitData, setHitData] = useState();
@@ -309,19 +313,19 @@ const FlightPax = props => {
             </div>
             <br />
 
-            <table class="table table-sm table-borderless">
+            <table className="table table-sm table-borderless">
               <tbody>
-                <tr class="flightpax-row">
-                  <td class="left">
+                <tr className="flightpax-row">
+                  <td className="left">
                     <Xl8 xid="fp006">Direction:</Xl8>
                   </td>
-                  <td class="right">{flightData.direction}</td>
+                  <td className="right">{flightData.direction}</td>
                 </tr>
-                <tr class="flightpax-row">
-                  <td class="left">
+                <tr className="flightpax-row">
+                  <td className="left">
                     <Xl8 xid="fp009">Passengers:</Xl8>
                   </td>
-                  <td class="right">{flightData.passengerCount}</td>
+                  <td className="right">{flightData.passengerCount}</td>
                 </tr>
               </tbody>
             </table>

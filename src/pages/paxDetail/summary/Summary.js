@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect } from "react";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Xl8 from "../../../components/xl8/Xl8";
@@ -14,10 +18,10 @@ import {
   localeDateOnly,
   formatRuleConditions
 } from "../../../utils/utils";
-import { CardColumns } from "react-bootstrap";
-import "./Summary.scss";
 import { HIT_STATUS } from "../../../utils/constants";
 import { Link } from "@reach/router";
+import { CardColumns } from "react-bootstrap";
+import "./Summary.scss";
 
 const Summary = props => {
   const headers = {

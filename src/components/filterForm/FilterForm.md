@@ -1,3 +1,9 @@
+<!--
+ All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+
+ Please see license.txt for details.
+-->
+
 Requires:
 
 - an **`entity`** prop with a post or get method. Entities are defined in serviceWrapper.js.
@@ -29,7 +35,7 @@ function cb(e) {}
     callback={cb}
   >
     <LabelledInput
-      inputType="text"
+      inputtype="text"
       datafield
       labelText="Name"
       name="name"
@@ -37,7 +43,7 @@ function cb(e) {}
       alt="name"
     />
     <LabelledInput
-      inputType="number"
+      inputtype="number"
       datafield
       labelText="Age"
       name="age"
@@ -45,7 +51,7 @@ function cb(e) {}
       alt="age"
     />
     <LabelledInput
-      inputType="text"
+      inputtype="text"
       datafield
       labelText="School"
       name="school"
@@ -53,7 +59,7 @@ function cb(e) {}
       alt="school"
     />
     <LabelledInput
-      inputType="number"
+      inputtype="number"
       datafield
       labelText="Grade"
       name="grade"

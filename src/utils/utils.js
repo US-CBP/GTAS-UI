@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import { NO_URI } from "./constants";
 // import i18n from "../i18n";
 
@@ -362,7 +366,7 @@ export const lpad5 = val => {
 
 // copied direct from stacko, but tested.
 export const formatBytes = (bytes, decimals = 2) => {
-  if (bytes === 0) return "0 Bytes";
+  if (bytes === 0 || !bytes) return "0 Bytes";
 
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
@@ -371,4 +375,13 @@ export const formatBytes = (bytes, decimals = 2) => {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+};
+
+export const isValidDate = date => {
+  return date instanceof Date && !isNaN(date.getTime());
+};
+export const addMinutes = (date, minutes = 1) => {
+  if (!isValidDate(date)) return "Invalid Date";
+
+  return new Date(date.getTime() + minutes * 60000);
 };
