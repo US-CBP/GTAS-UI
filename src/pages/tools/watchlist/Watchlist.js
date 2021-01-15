@@ -2,19 +2,22 @@
 //
 // Please see license.txt for details.
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import { Tabs, Tab } from "react-bootstrap";
-import { wlpax, wldocs, hitcats } from "../../../services/serviceWrapper";
-import { hasData, watchlistDateFormat, timezoneFreeDate } from "../../../utils/utils";
 import WLModal from "./WLModal";
-import "./constants.js";
 import CSVReader from "../../../components/CSVReader/CSVReader";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
+import { LookupContext } from "../../../context/data/LookupContext";
+import { wlpax, wldocs } from "../../../services/serviceWrapper";
+import { hasData, watchlistDateFormat, timezoneFreeDate } from "../../../utils/utils";
+import { LK } from "../../../utils/constants";
+import "./constants.js";
+
+import { Tabs, Tab } from "react-bootstrap";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./Watchlist.css";
@@ -38,6 +41,7 @@ const Watchlist = props => {
   const [toastHeader, setToastHeader] = useState();
   const [toastContent, setToastContent] = useState();
   const [toastVariant, setToastVariant] = useState();
+  const { getCached } = useContext(LookupContext);
 
   const deleteText = {
     message: <Xl8 xid="wl005">Are you sure you want to delete the record?</Xl8>,
@@ -207,7 +211,7 @@ const Watchlist = props => {
   }, []);
 
   const getCats = () => {
-    hitcats.get().then(res => {
+    getCached(LK.HITCAT, true).then(res => {
       setWlcatData(res);
     });
   };

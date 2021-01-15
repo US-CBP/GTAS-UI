@@ -18,8 +18,7 @@ const initialState = {
   landingPage: undefined,
   emailEnabled: undefined,
   highPriorityEmail: undefined,
-  lastRule: {},
-  lastQuery: {}
+  lastRule: {}
 };
 
 export const UserContext = createContext();

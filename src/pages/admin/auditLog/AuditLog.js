@@ -119,16 +119,16 @@ const AuditLog = ({ name }) => {
               labelText={<Xl8 xid="al001">User</Xl8>}
               datafield="user"
               name="user"
-              inputType="text"
+              inputtype="text"
               callback={cb}
               alt="User"
             />
             <LabelledInput
               labelText={<Xl8 xid="al002">Actions</Xl8>}
               datafield="actionType"
-              inputType="select"
+              inputtype="select"
               name="actionType"
-              inputVal={selectAllActions}
+              inputval={selectAllActions}
               options={auditActions}
               required={true}
               alt="nothing"
@@ -136,8 +136,8 @@ const AuditLog = ({ name }) => {
             />
             <LabelledInput
               datafield
-              inputType="dateTime"
-              inputVal={startDate}
+              inputtype="dateTime"
+              inputval={startDate}
               labelText={<Xl8 xid="al003">Start Date</Xl8>}
               name="startDate"
               callback={cb}
@@ -146,8 +146,8 @@ const AuditLog = ({ name }) => {
             />
             <LabelledInput
               datafield
-              inputType="dateTime"
-              inputVal={endDate}
+              inputtype="dateTime"
+              inputval={endDate}
               labelText={<Xl8 xid="al004">End Date</Xl8>}
               name="endDate"
               callback={cb}

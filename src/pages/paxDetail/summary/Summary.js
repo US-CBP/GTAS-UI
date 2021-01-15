@@ -18,10 +18,10 @@ import {
   timezoneFreeDate,
   formatRuleConditions
 } from "../../../utils/utils";
-import { CardColumns } from "react-bootstrap";
-import "./Summary.scss";
 import { HIT_STATUS } from "../../../utils/constants";
 import { Link } from "@reach/router";
+import { CardColumns } from "react-bootstrap";
+import "./Summary.scss";
 
 const Summary = props => {
   const headers = {

@@ -3,8 +3,6 @@
 // Please see license.txt for details.
 
 import React from "react";
-import { localeMonthDayTime, hasData, alt } from "../../utils/utils";
-import { Row } from "react-bootstrap";
 import "./HitsBadge.css";
 
 const HitsBadge = props => {
