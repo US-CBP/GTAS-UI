@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState } from "react";
 import { Container, Alert, Col } from "react-bootstrap";
 import Form from "../../components/form/Form";
@@ -81,49 +85,49 @@ const SignUp = props => {
                 <LabelledInput
                   datafield
                   labelText={<Xl8 xid="sup002">First Name</Xl8>}
-                  inputType="text"
+                  inputtype="text"
                   name="firstName"
                   required={true}
-                  inputVal=""
+                  inputval=""
                   alt="nothing"
                   callback={cb}
                 />
                 <LabelledInput
                   datafield
                   labelText={<Xl8 xid="sup003">Last Name</Xl8>}
-                  inputType="text"
+                  inputtype="text"
                   name="lastName"
                   required={true}
-                  inputVal=""
+                  inputval=""
                   alt="nothing"
                   callback={cb}
                 />
                 <LabelledInput
                   datafield
                   labelText={<Xl8 xid="sup004">User Name</Xl8>}
-                  inputType="text"
+                  inputtype="text"
                   name="username"
                   required={true}
-                  inputVal=""
+                  inputval=""
                   alt="nothing"
                   callback={cb}
                 />
                 <LabelledInput
                   datafield
                   labelText={<Xl8 xid="sup005">Email</Xl8>}
-                  inputType="email"
+                  inputtype="email"
                   name="email"
                   required={true}
-                  inputVal=""
+                  inputval=""
                   alt="nothing"
                   callback={cb}
                 />
                 <LabelledInput
                   datafield
                   labelText={<Xl8 xid="sup006">Phone Number</Xl8>}
-                  inputType="tel"
+                  inputtype="tel"
                   name="phoneNumber"
-                  inputVal=""
+                  inputval=""
                   alt="nothing"
                   placeholder="optional"
                   callback={cb}
@@ -131,10 +135,10 @@ const SignUp = props => {
                 <LabelledInput
                   datafield
                   labelText={<Xl8 xid="sup007">Location</Xl8>}
-                  inputType="select"
+                  inputtype="select"
                   name="signupLocationId"
                   required={true}
-                  inputVal=""
+                  inputval=""
                   options={locations}
                   alt="nothing"
                   callback={cb}
@@ -142,10 +146,10 @@ const SignUp = props => {
                 <LabelledInput
                   datafield
                   labelText={<Xl8 xid="sup008">Supervisor</Xl8>}
-                  inputType="text"
+                  inputtype="text"
                   name="supervisor"
                   required={true}
-                  inputVal=""
+                  inputval=""
                   alt="nothing"
                   callback={cb}
                 />

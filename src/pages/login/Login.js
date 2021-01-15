@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect, useContext } from "react";
 import Form from "../../components/form/Form";
 // import Xl8 from "../../components/xl8/Xl8";
@@ -8,8 +12,8 @@ import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import { login } from "../../services/serviceWrapper";
 import { Alert, Button } from "react-bootstrap";
 
-import "./Login.scss";
 import { FULLPATH_TO } from "../../utils/constants";
+import "./Login.scss";
 
 const Login = () => {
   const ctx = useContext(UserContext);
@@ -72,30 +76,30 @@ const Login = () => {
                     id="loginform"
                   >
                     <LabelledInput
-                      inputType="text"
+                      inputtype="text"
                       alt="Enter the user name"
                       name="username"
                       labelText=""
                       placeholder="Username"
                       datafield="username"
-                      required="required"
-                      inputVal=""
-                      autofocus="true"
+                      required
+                      inputval=""
+                      autoFocus
                       className="login-labeled-input"
                     />
                     <LabelledInput
-                      inputType="password"
+                      inputtype="password"
                       alt="Enter the password"
                       name="password"
                       labelText=""
                       placeholder="Password"
                       datafield="password"
-                      required="required"
-                      inputVal=""
+                      required
+                      inputval=""
                       className="login-labeled-input"
                     />
                   </Form>
-                  <Link class="small" to={FULLPATH_TO.FORGOTPWD}>
+                  <Link className="small" to={FULLPATH_TO.FORGOTPWD}>
                     Forgot password?
                   </Link>
                   <div>
@@ -105,7 +109,7 @@ const Login = () => {
                         dismissible
                         onClose={() => setAlertVis(false)}
                       >
-                        Login failed.
+                        Login failed
                       </Alert>
                     )}
                   </div>

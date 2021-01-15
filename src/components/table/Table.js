@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import { hasData, titleCase, asArray, altObj } from "../../utils/utils";
@@ -181,13 +185,13 @@ const Table = props => {
                 return (
                   <Fragment key={index}>
                     <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map(column => {
+                      {headerGroup.headers.map((column, idx) => {
                         let hdr = column.render("Header");
 
                         if (Array.isArray(hdr)) hdr = <Xl8 xid={hdr[0]}>{hdr[1]}</Xl8>;
 
                         return (
-                          <th className="table-header">
+                          <th className="table-header" key={idx}>
                             <span
                               className="table-sort-span"
                               {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -202,7 +206,7 @@ const Table = props => {
                                   ) : column.isGrouped ? (
                                     <i className="fa fa-object-ungroup"></i>
                                   ) : (
-                                    <i class="fa fa-object-group"></i>
+                                    <i className="fa fa-object-group"></i>
                                   )}
                                 </span>
                               ) : (
@@ -238,7 +242,7 @@ const Table = props => {
                 const sendRowToLink = !isGroupBy ? row.original.sendRowToLink : "";
                 const linked = link ? "linked" : "";
                 return (
-                  <tr {...row.getRowProps()} className={linked}>
+                  <tr {...row.getRowProps()} className={linked} key={row.original.id}>
                     {row.cells.map(cell => {
                       const style = cell.column.className || "";
                       if (link) {
@@ -363,7 +367,7 @@ const Table = props => {
     // Uri and service props are tested for truthy values.
     if (!hasData(props.uri) && !Array.isArray(props.data) && !hasData(props.service)) {
       // const err = new Error("Table requires a uri, service (func), or data prop");
-      console.log("Table requires a uri, service (func), or data prop");
+      // console.log("Table requires a uri, service (func), or data prop");
       // throw err;
     }
   };
@@ -423,6 +427,7 @@ const Table = props => {
         columns.push(cellconfig);
       }
     });
+
     setDisplayColumnFilter(isPopulated);
     setData(sdata);
     setHeader(sheader);
@@ -469,7 +474,7 @@ const Table = props => {
 };
 
 Table.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   callback: PropTypes.func.isRequired,
   service: PropTypes.func,
   uri: PropTypes.string,

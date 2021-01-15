@@ -1,5 +1,9 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState } from "react";
-import { Dropdown, DropdownButton, Button, Col } from "react-bootstrap";
+import { Dropdown, DropdownButton, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import Table from "../../../components/table/Table";
 import { signuprequests } from "../../../services/serviceWrapper";
@@ -24,8 +28,10 @@ const SignUpRequests = () => {
   const [variant, setVariant] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [requestId, setRequestId] = useState();
+
   const cb = () => {};
   const actions = { REJECT: "Reject", APPROVE: "Approve" };
+
   const setDataWrapper = data => {
     setData(data);
     setRefreshKey(refreshKey + 1);
@@ -162,7 +168,7 @@ const SignUpRequests = () => {
               labelText={<Xl8 xid="sur003">Username</Xl8>}
               datafield
               name="username"
-              inputType="text"
+              inputtype="text"
               callback={cb}
               alt="Username"
             />
@@ -170,8 +176,8 @@ const SignUpRequests = () => {
               labelText={<Xl8 xid="sur004">Status</Xl8>}
               datafield
               name="status"
-              inputType="select"
-              inputVal="NEW"
+              inputtype="select"
+              inputval="NEW"
               inputStyle="form-select"
               options={requestStatusOptions}
               callback={cb}
@@ -181,7 +187,7 @@ const SignUpRequests = () => {
               labelText={<Xl8 xid="sur005">Location</Xl8>}
               datafield
               name="location"
-              inputType="text"
+              inputtype="text"
               callback={cb}
               alt="Location"
             />

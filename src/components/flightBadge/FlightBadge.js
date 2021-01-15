@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import { localeMonthDayTime, hasData, alt } from "../../utils/utils";
 import { Row } from "react-bootstrap";
@@ -5,7 +9,7 @@ import "./FlightBadge.scss";
 
 const FlightBadge = props => {
   const res = props.data;
-  const style = `flight-badge ${alt(props.style, "reg")}`;
+  const style = `flight-badge ${alt(props.className, "reg")}`;
 
   if (!hasData(props.data?.flightNumber)) return <></>;
 

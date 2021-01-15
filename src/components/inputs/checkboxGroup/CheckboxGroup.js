@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 /*
  *
  *  * All Application code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
@@ -9,10 +13,9 @@
 import React, { useEffect, useState } from "react";
 import GroupCheckBox from "./GroupCheckBox";
 import LabelledInputDisplayWrapper from "../LabelledInputDecorator";
-import { roles } from "../../../services/serviceWrapper";
 
 const CheckboxGroup = props => {
-  const [values, setValues] = useState([...props.inputVal]);
+  const [values, setValues] = useState([...props.inputval]);
 
   const handleFieldChange = id => {
     const newValues = [...values];

@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import PropTypes from "prop-types";
 import "../Inputs.scss";
@@ -12,17 +16,17 @@ const TextareaInput = props => (
     readOnly={props.readOnly}
     onChange={props.callback}
     aria-required={props.required}
-    type={props.inputType}
-    value={props.inputVal}
+    type={props.inputtype}
+    value={props.inputval}
   />
 );
 
 TextareaInput.propTypes = {
-  inputType: PropTypes.oneOf(["textarea"]).isRequired,
+  inputtype: PropTypes.oneOf(["textarea"]).isRequired,
   name: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
   callback: PropTypes.func.isRequired,
-  inputVal: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
+  inputval: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   required: PropTypes.bool,
   placeHolder: PropTypes.string,
   readOnly: PropTypes.string

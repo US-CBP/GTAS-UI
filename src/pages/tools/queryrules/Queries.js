@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect, useContext } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
@@ -27,12 +31,11 @@ const Queries = props => {
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState(0);
   const [record, setRecord] = useState({});
-  const [key, setKey] = useState(0);
   const [tablekey, setTablekey] = useState(0);
-  const ctx = useContext(LookupContext);
-  const [modalKey, setModalKey] = useState(-1);
-
+  const [modalKey, setModalKey] = useState(0);
   const [modalTitle, setModalTitle] = useState(addQuery);
+  const ctx = useContext(LookupContext);
+  const unsavedQueryKey = "lastQuery";
 
   const header = [
     {
@@ -54,40 +57,37 @@ const Queries = props => {
   ];
 
   const launchModal = (recordId, record) => {
-    if (showModal && !recordId) return closeModal();
-
     const title = recordId ? editQuery : addQuery;
 
-    setKey(key + 1);
     setId(recordId);
     setRecord(record);
     setModalTitle(title);
-    setModalKey(Date.now());
+    setModalKey(new Date());
   };
 
   const closeModal = () => {
     setId();
-    setRecord({});
+    setRecord();
     setShowModal(false);
   };
 
   useEffect(() => {
-    if (modalKey > -1) setShowModal(true);
+    if (modalKey !== 0) setShowModal(true);
   }, [modalKey]);
 
   useEffect(() => {
-    const lastRule = ctx.getLookupState("lastRule");
+    const lastQuery = ctx.getLookupState(unsavedQueryKey);
 
-    if (hasData(lastRule)) {
+    if (hasData(lastQuery)) {
       const flatRule = {
-        ...lastRule,
-        tag: lastRule.query
+        ...lastQuery,
+        tag: lastQuery.query
       };
 
       setId(flatRule.id);
       setRecord(flatRule);
       launchModal(flatRule.id, flatRule);
-      ctx.lookupAction({ type: "removeRule" });
+      ctx.lookupAction({ type: unsavedQueryKey, method: "delete" });
     }
   }, []);
 
@@ -111,7 +111,7 @@ const Queries = props => {
           show={showModal}
           onHide={closeModal}
           callback={cb}
-          key={key}
+          key={modalKey}
           data={record}
           title={modalTitle}
           id={id}

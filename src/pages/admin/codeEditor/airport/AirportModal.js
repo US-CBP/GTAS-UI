@@ -1,7 +1,9 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import { Button, Container } from "react-bootstrap";
-
-import { codeEditor } from "../../../../services/serviceWrapper";
 import Form from "../../../../components/form/Form";
 import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
@@ -11,10 +13,12 @@ import Modal, {
   ModalHeader,
   ModalTitle
 } from "../../../../components/modal/Modal";
+import { codeEditor } from "../../../../services/lookupService";
 
 const AirportModal = props => {
-  const cb = function(result) {};
+  const cb = () => {};
   const data = props.editRowDetails || {};
+  const type = "airport";
 
   const postSubmit = (status = ACTION.CANCEL, results) => {
     props.onHide();
@@ -69,7 +73,9 @@ const AirportModal = props => {
         <Container fluid>
           <Form
             submitService={
-              props.isEdit ? codeEditor.put.updateAirport : codeEditor.post.createAirport
+              props.isEdit
+                ? body => codeEditor.put.update(type, body)
+                : body => codeEditor.post(type, body)
             }
             title=""
             callback={postSubmit}
@@ -82,77 +88,77 @@ const AirportModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="iata001">IATA: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="iata"
               required={true}
               alt="nothing"
-              inputVal={data.iata}
+              inputval={data.iata}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="icao001">ICAO: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="icao"
               required={true}
               alt="nothing"
-              inputVal={data.icao}
+              inputval={data.icao}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="airm003">Name: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="name"
               required={true}
               alt="nothing"
-              inputVal={data.name}
+              inputval={data.name}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="airm004">City: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="city"
               required={true}
               alt="nothing"
-              inputVal={data.city}
+              inputval={data.city}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="airm005">Country: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="country"
               required={true}
               alt="nothing"
-              inputVal={data.country}
+              inputval={data.country}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="lati001">Latitude: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="latitude"
               required={true}
               alt="nothing"
-              inputVal={data.latitude?.toString() || ""}
+              inputval={data.latitude?.toString() || ""}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="long001">Longitude: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="longitude"
               required={true}
               alt="nothing"
-              inputVal={data.longitude?.toString() || ""}
+              inputval={data.longitude?.toString() || ""}
               callback={cb}
               spacebetween
             />

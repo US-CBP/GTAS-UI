@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
 import { logfile } from "../../../services/serviceWrapper";
@@ -14,7 +18,7 @@ const FileDownload = ({ name }) => {
   const [selRefreshKey, setSelRefreshKey] = useState(0); //Should be safe as should only ever be updated once.
   const [tblRefreshKey, setTblRefreshKey] = useState(2);
   const [currentLogType, setCurrentLogType] = useState("");
-  const cb = function(result) {};
+  const cb = () => {};
 
   const onLogTypeSelect = target => {
     let logFileType = target.selectedOptions[0].value;
@@ -102,7 +106,7 @@ const FileDownload = ({ name }) => {
   const fileTypeCtrl = (
     <div className="filedownload-action-buttons">
       <LabelledInput
-        inputType="select"
+        inputtype="select"
         labelText={<Xl8 xid="fdl007">Log Type</Xl8>}
         inputStyle="file-type"
         name="severity"
@@ -118,7 +122,7 @@ const FileDownload = ({ name }) => {
 
   return (
     <Main className="full bg-white">
-      <Title title={name} leftChild={fileTypeCtrl} style="stacker title"></Title>
+      <Title title={name} leftChild={fileTypeCtrl} className="stacker title"></Title>
       <div className="grid-container">
         <Table callback={cb} key={tblRefreshKey} data={data} header={headers}></Table>
       </div>

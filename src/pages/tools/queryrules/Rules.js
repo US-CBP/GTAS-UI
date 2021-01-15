@@ -1,14 +1,17 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect, useContext } from "react";
 import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import { Button, Tabs, Tab } from "react-bootstrap";
-import { navigate } from "@reach/router";
+import { Tabs, Tab } from "react-bootstrap";
 import { LookupContext } from "../../../context/data/LookupContext";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
-import { hasData, getEndpoint } from "../../../utils/utils";
+import { hasData } from "../../../utils/utils";
 import { QR, ACTION, RULETAB, ROLE } from "../../../utils/constants";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import QRModal from "./QRModal";
@@ -21,19 +24,19 @@ import "./QueryRules.css";
 const Rules = props => {
   const addRule = <Xl8 xid="rul001">Add Rule</Xl8>;
   const editRule = <Xl8 xid="rul002">Edit Rule</Xl8>;
-  const endpoint = getEndpoint(props.location.pathname);
-  const [tab, setTab] = useState(endpoint === "rules" ? RULETAB.MY : RULETAB.ALL);
-  const service = endpoint === "all" ? rulesall : rule;
+  const [tab, setTab] = useState(RULETAB.MY);
+  const [service] = useState(rule);
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
-  const [data, setData] = useState({});
+  const [data, setData] = useState();
   const [modalTitle, setModalTitle] = useState(addRule);
   const [record, setRecord] = useState();
-  const [modalKey, setModalKey] = useState(-1);
+  const [modalKey, setModalKey] = useState();
   const [tablekey, setTablekey] = useState(0);
   const ctx = useContext(LookupContext);
+  const unsavedRuleKey = "lastRule";
 
-  const cb = res => {};
+  const cb = () => {};
 
   const modalCb = (status, res) => {
     if (status === ACTION.DELETE || status === ACTION.SAVE) return closeModalAndRefresh();
@@ -116,26 +119,22 @@ const Rules = props => {
 
         setId(selectedId);
         setRecord(res);
-        triggerShowModal(selectedId);
+        triggerShowModal(res, selectedId);
       }
     });
   };
 
   // Causes show modal to update in a useEffect. This gives the setRecord and setId (see fetchDetail) time to refresh
   // so the modal doesn't launch with stale or missing data.
-  const triggerShowModal = recId => {
-    if (showModal && !recId) return closeModal();
+  const triggerShowModal = (rec, recId) => {
+    if (showModal && !rec) return closeModal();
     const recordId = recId;
     const title = recordId ? editRule : addRule;
 
-    setModalTitle(title);
-    // timestamp as key ensures the modal gets refreshed and displayed on each launch.
     setModalKey(Date.now());
+    setModalTitle(title);
+    setShowModal(true);
   };
-
-  useEffect(() => {
-    if (modalKey > -1) setShowModal(true);
-  }, [modalKey]);
 
   const closeModalAndRefresh = () => {
     closeModal();
@@ -145,6 +144,7 @@ const Rules = props => {
   const closeModal = () => {
     setId();
     setRecord();
+    setModalKey();
     setShowModal(false);
   };
 
@@ -155,16 +155,14 @@ const Rules = props => {
 
     if ((selectedTabName || RULETAB.MY).toLowerCase() === RULETAB.ALL) {
       setTab(RULETAB.ALL);
-      navigate(`/gtas/tools/rules/${RULETAB.ALL}`);
     } else {
       setTab(RULETAB.MY);
-      navigate(`/gtas/tools/rules/${RULETAB.MY}`);
     }
   };
 
-  const fetchTableData = () => {
-    service.get().then(res => {
-      let parsed = [{}];
+  const fetchTableData = svc => {
+    (svc || service).get().then(res => {
+      let parsed = [];
 
       if (hasData(res)) {
         parsed = res.map(item => {
@@ -176,32 +174,33 @@ const Rules = props => {
             ...item.summary
           };
         });
-        setData(parsed);
-
-        setTablekey(tablekey + 1);
       }
+
+      setData(parsed);
+      setTablekey(tablekey + 1);
     });
   };
 
+  // on tab
   useEffect(() => {
-    if (endpoint === "rules") {
-      // Builds a dummy string with the default tabname in the 3rd position;
-      titleTabCallback(`--${RULETAB.MY}`);
+    if (tab) {
+      const svc = tab === RULETAB.ALL ? rulesall : rule;
+      fetchTableData(svc);
     }
+  }, [tab]);
 
-    fetchTableData();
-  }, [endpoint]);
-
+  // on load
   useEffect(() => {
-    const lastRule = ctx.getLookupState("lastRule");
+    titleTabCallback(`--${RULETAB.MY}`);
+    const lastRule = ctx.getLookupState(unsavedRuleKey);
 
     if (hasData(lastRule)) {
       const flatRule = { ...lastRule.summary, query: lastRule.details, id: lastRule.id };
 
       setId(flatRule.id);
       setRecord(flatRule);
-      triggerShowModal(flatRule.id);
-      ctx.lookupAction({ type: "removeRule" });
+      triggerShowModal(flatRule, flatRule.id);
+      ctx.lookupAction({ type: unsavedRuleKey, method: "delete" });
     }
   }, []);
 
@@ -235,31 +234,24 @@ const Rules = props => {
           leftChild={tabs}
           leftCb={titleTabCallback}
         ></Title>
-        <Table
-          data={data}
-          callback={cb}
-          header={header}
-          key={`table-${tablekey}`}
-        ></Table>
+        <Table data={data} callback={cb} header={header} key={tablekey}></Table>
         <Fab
           icon={<i className="fa fa-plus nospin" />}
           variant="info"
-          onClick={() => triggerShowModal()}
+          onClick={triggerShowModal}
         ></Fab>
 
-        {showModal && (
-          <QRModal
-            show="true"
-            onHide={closeModal}
-            callback={modalCb}
-            mode={QR.RULE}
-            key={modalKey}
-            data={record}
-            title={modalTitle}
-            id={id}
-            service={rule}
-          />
-        )}
+        <QRModal
+          show={showModal}
+          onHide={closeModal}
+          callback={modalCb}
+          mode={QR.RULE}
+          key={modalKey}
+          data={record}
+          title={modalTitle}
+          id={id}
+          service={rule}
+        />
       </Main>
     </RoleAuthenticator>
   );
