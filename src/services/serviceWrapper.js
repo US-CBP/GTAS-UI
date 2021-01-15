@@ -8,6 +8,7 @@ const AJSON = "application/json, text/plain, */*";
 const JSONUTF8 = "application/json;charset=UTF-8";
 const FORM = "application/x-www-form-urlencoded";
 
+//These variables are also defined in baseService.js
 const LOGINHEADER = {
   "X-Login-Ajax-call": "true",
   "Content-Type": FORM,
