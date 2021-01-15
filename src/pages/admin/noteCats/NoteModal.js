@@ -16,13 +16,10 @@ import Modal, {
 } from "../../../components/modal/Modal";
 
 const NoteModal = props => {
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertContent, setAlertContent] = useState("");
-  const [variant, setVariant] = useState("");
   const row = props.editRowDetails || {};
-  const cb = function(result) {};
+  const cb = () => {};
 
-  const postSubmit = (status, res) => {
+  const postSubmit = status => {
     props.onHide();
 
     if (status !== ACTION.CANCEL) props.refresh();
@@ -46,13 +43,6 @@ const NoteModal = props => {
       <ModalHeader closeButton>
         <ModalTitle>{props.title}</ModalTitle>
       </ModalHeader>
-      <Alert show={showAlert} variant={variant}>
-        {alertContent}
-        <hr />
-        <Button onClick={() => setShowAlert(false)} variant="outline-success">
-          <Xl8 xid="form002">Confirm</Xl8>
-        </Button>
-      </Alert>
       <ModalBody>
         <Container fluid>
           <Form
@@ -67,8 +57,8 @@ const NoteModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="ntm003">Category</Xl8>}
-              inputType="text"
-              inputVal={row.noteType}
+              inputtype="text"
+              inputval={row.noteType}
               name="noteType"
               required={true}
               alt="nothing"

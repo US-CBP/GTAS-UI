@@ -2,7 +2,6 @@
 //
 // Please see license.txt for details.
 
-import { Link } from "@reach/router";
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../labelledInput/LabelledInput";
@@ -20,8 +19,8 @@ const SeatChartCard = props => {
               <LabelledInput
                 alt="Flight Number"
                 // inputStyle="big-name-sidebar"
-                inputType="label"
-                inputVal={item.value}
+                inputtype="label"
+                inputval={item.value}
               />
             </Col>
           </Row>

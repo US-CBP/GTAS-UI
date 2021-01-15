@@ -7,9 +7,10 @@ import PropTypes from "prop-types";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
-import { roles, signuprequests } from "../../../services/serviceWrapper";
+import { signuprequests } from "../../../services/serviceWrapper";
+import { roles } from "../../../services/lookupService";
 import { asArray } from "../../../utils/utils";
-import { ROLE } from "../../../utils/constants";
+import { ROLE, LK } from "../../../utils/constants";
 import Modal, {
   ModalBody,
   ModalHeader,
@@ -81,8 +82,8 @@ function SignUpRequestModal(props) {
           <div className="signup-checkbox">
             <LabelledInput
               datafield
-              inputType="checkboxGroup"
-              inputVal={allRoles}
+              inputtype="checkboxGroup"
+              inputval={allRoles}
               labelText={<Xl8 xid="surm003">Roles:</Xl8>}
               name="roles"
               alt="Roles"

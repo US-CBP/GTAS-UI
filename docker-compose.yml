@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 services:
   gtas-ui:
     image: wcogtas/gtas-ui:dev
@@ -10,7 +10,7 @@ services:
       context: .
       dockerfile: dockerfile
     ports:
-#      - 80:80
+      #      - 80:80
       - 443:443
     restart: always
     secrets:

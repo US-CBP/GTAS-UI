@@ -31,8 +31,8 @@ function Toast(props) {
 
 Toast.propTypes = {
   onClose: PropTypes.func,
-  header: PropTypes.string,
-  body: PropTypes.string,
+  header: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  body: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   show: PropTypes.bool,
   delay: PropTypes.number,
   variant: PropTypes.string

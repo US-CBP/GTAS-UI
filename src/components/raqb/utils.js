@@ -3,7 +3,7 @@
 // Please see license.txt for details.
 
 import { Utils as QbUtils } from "react-awesome-query-builder";
-import { hasData, asHash53 } from "../../utils/utils";
+import { hasData } from "../../utils/utils";
 import { operatorMap, valueTypeMap, ENTITIESEXT, QB } from "./constants";
 
 // import raw QueryObject from the DB and convert it to a jsontree object for the RAQB component.

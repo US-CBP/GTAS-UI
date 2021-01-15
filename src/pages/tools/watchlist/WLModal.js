@@ -2,8 +2,8 @@
 //
 // Please see license.txt for details.
 
-import React, { useEffect, useState } from "react";
-import { Container, Button } from "react-bootstrap";
+import React from "react";
+import { Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
@@ -16,7 +16,6 @@ import Modal, {
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
-import Confirm from "../../../components/confirmationModal/Confirm";
 import "./Watchlist.css";
 
 const WLModal = props => {
@@ -63,7 +62,7 @@ const WLModal = props => {
         required
         datafield
         labelText={<Xl8 xid="wlm005"> Document Type</Xl8>}
-        inputType="select"
+        inputtype="select"
         name="documentType"
         options={[
           { value: "P", label: "Passport" },
@@ -77,7 +76,7 @@ const WLModal = props => {
         required
         datafield
         labelText={<Xl8 xid="wlm006"> Document Number</Xl8>}
-        inputType="text"
+        inputtype="text"
         name="documentNumber"
         alt="Document Number"
         callback={onFormChange}
@@ -87,7 +86,7 @@ const WLModal = props => {
         required
         datafield
         labelText={<Xl8 xid="wlm007"> Category ID</Xl8>}
-        inputType="select"
+        inputtype="select"
         options={categories}
         name="categoryId"
         alt="Category ID"
@@ -103,7 +102,7 @@ const WLModal = props => {
         required
         datafield
         labelText={<Xl8 xid="wlm008"> First Name</Xl8>}
-        inputType="text"
+        inputtype="text"
         name="firstName"
         callback={onFormChange}
         alt="First Name"
@@ -113,7 +112,7 @@ const WLModal = props => {
         required
         datafield
         labelText={<Xl8 xid="wlm009"> Last Name</Xl8>}
-        inputType="text"
+        inputtype="text"
         name="lastName"
         callback={onFormChange}
         alt="Last Name"
@@ -123,7 +122,7 @@ const WLModal = props => {
         required
         datafield
         labelText={<Xl8 xid="wlm010"> Date of Birth</Xl8>}
-        inputType="dateTime"
+        inputtype="dateTime"
         name="dob"
         alt="Date of Birth"
         callback={onFormChange}
@@ -134,7 +133,7 @@ const WLModal = props => {
       <LabelledInput
         datafield
         labelText={<Xl8 xid="wlm007"> Category ID</Xl8>}
-        inputType="select"
+        inputtype="select"
         options={categories}
         name="categoryId"
         required

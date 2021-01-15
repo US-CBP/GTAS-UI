@@ -68,7 +68,7 @@ const ResetPassword = props => {
                 <Alert variant="success">
                   <Xl8 xid="passres003">Your password has been reset! Click </Xl8>
                   <Link to={FULLPATH_TO.LOGIN}>
-                    <Xl8 xid="passres004">here</Xl8>
+                    <Xl8 xid="passres004">here </Xl8>
                   </Link>
                   <Xl8 xid="passres005">to login to GTAS</Xl8>
                 </Alert>
@@ -85,20 +85,20 @@ const ResetPassword = props => {
                   <LabelledInput
                     datafield
                     labelText={<Xl8 xid="pass004">New password</Xl8>}
-                    inputType="password"
+                    inputtype="password"
                     name="password"
                     required={true}
-                    inputVal=""
+                    inputval=""
                     alt="nothing"
                     callback={cb}
                   />
                   <LabelledInput
                     datafield
                     labelText={<Xl8 xid="pass005">Confirm new password</Xl8>}
-                    inputType="password"
+                    inputtype="password"
                     name="passwordConfirm"
                     required={true}
-                    inputVal=""
+                    inputval=""
                     alt="nothing"
                     callback={cb}
                   />
