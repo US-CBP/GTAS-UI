@@ -9,7 +9,7 @@ import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
 import { Tabs, Tab } from "react-bootstrap";
 import { wlpax, wldocs, hitcats } from "../../../services/serviceWrapper";
-import { hasData, watchlistDateFormat } from "../../../utils/utils";
+import { hasData, watchlistDateFormat, timezoneFreeDate } from "../../../utils/utils";
 import WLModal from "./WLModal";
 import "./constants.js";
 import CSVReader from "../../../components/CSVReader/CSVReader";
@@ -244,7 +244,7 @@ const Watchlist = props => {
               id: item.id,
               firstName: firstName,
               lastName: lastName,
-              dob: dob,
+              dob: timezoneFreeDate(dob),
               categoryId: categoryId,
               category: category
             };

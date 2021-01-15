@@ -55,9 +55,7 @@ const FlightPax = props => {
 
   const parseData = data => {
     return asArray(data).map(item => {
-      const displayDobDate = localeDateOnly(
-        new Date(item.dob).toISOString().slice(0, -14)
-      );
+      const displayDobDate = new Date(item.dob).toLocaleDateString();
       item.docNumber = item.documents?.length > 0 ? item.documents[0] : ""; // TODO Documents: shd show all or none here.
       item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
       item.dobStr = `${sortableDate(new Date(item.dob))} ${displayDobDate} ${item.age}`;

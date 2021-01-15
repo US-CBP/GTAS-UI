@@ -9,14 +9,18 @@ import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Xl8 from "../../../components/xl8/Xl8";
 
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
-import { hasData, asArray, watchlistDateFormat } from "../../../utils/utils";
+import {
+  hasData,
+  asArray,
+  watchlistDateFormat,
+  timezoneFreeDate
+} from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
-import Confirm from "../../../components/confirmationModal/Confirm";
 import "./Watchlist.css";
 
 const WLModal = props => {
@@ -183,7 +187,7 @@ const WLModal = props => {
               {
                 firstName: firstName,
                 lastName: lastName,
-                dob: dob,
+                dob: timezoneFreeDate(dob),
                 categoryId: categoryId,
                 id: recordId
               }

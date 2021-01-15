@@ -23,6 +23,7 @@ export function titleCase(input) {
 }
 
 export function hasData(obj) {
+  if (typeof obj === "object" && !isNaN(Date.parse(obj))) return true;
   if (typeof obj === "object" || typeof obj === "undefined")
     return Object.keys(obj || {}).length > 0;
   else return String(obj).trim().length > 0;
@@ -151,6 +152,16 @@ export function localeDate(val) {
 //   }
 //   return false;
 // }
+
+// Takes incoming strings like "yyyy-mm-dd" for DOB, document expiration dates, etc. and avoids
+// date conversions that default to UTC (eg Date.parse()) that throw the value off by a day.
+export const timezoneFreeDate = val => {
+  if (!hasData(val)) return "";
+
+  let asDate = new Date(...val.split("-"));
+  asDate.setMonth(asDate.getMonth() - 1);
+  return localeDateOnly(asDate);
+};
 
 // Locale Date-only formatter
 export function localeDateOnly(val) {

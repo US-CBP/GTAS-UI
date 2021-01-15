@@ -15,7 +15,7 @@ import {
   localeDate,
   asArray,
   hasData,
-  localeDateOnly,
+  timezoneFreeDate,
   formatRuleConditions
 } from "../../../utils/utils";
 import { CardColumns } from "react-bootstrap";
@@ -72,10 +72,9 @@ const Summary = props => {
 
   const parseDocumentData = documents => {
     const parsedDocs = asArray(documents).map(document => {
-      const expirationDate = Date.parse(document.expirationDate);
       return {
         ...document,
-        expirationDate: localeDateOnly(expirationDate)
+        expirationDate: timezoneFreeDate(document.expirationDate)
       };
     });
     return parsedDocs;
@@ -90,10 +89,9 @@ const Summary = props => {
   const fetchWatchlistNamesData = () => {
     paxWatchListLink.get(null, props.paxId).then(res => {
       const data = asArray(res).map(pwl => {
-        const watchListDOB = Date.parse(pwl.watchListDOB);
         return {
           ...pwl,
-          watchListDOB: localeDateOnly(watchListDOB),
+          watchListDOB: timezoneFreeDate(pwl.watchListDOB),
           percentMatch: `${pwl.percentMatch * 100}%`
         };
       });
