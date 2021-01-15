@@ -17,12 +17,12 @@ const Home = props => {
 
   const onActive = e => {
     if (!idleTimer?.current) return;
-    console.log("time remaining", idleTimer.current.getRemainingTime());
+    // console.log("time remaining", idleTimer.current.getRemainingTime());
   };
 
   const onIdle = e => {
     if (!idleTimer) return;
-    console.log("last active", new Date(idleTimer.current.getLastActiveTime()));
+    // console.log("last active", new Date(idleTimer.current.getLastActiveTime()));
 
     idleTimer.current.pause();
     toggleModal();
