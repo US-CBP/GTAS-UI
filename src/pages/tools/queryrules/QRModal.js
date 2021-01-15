@@ -643,8 +643,8 @@ const QRModal = props => {
                     labelText={<Xl8 xid="qrm003">Start Date</Xl8>}
                     key={`sd${key}`}
                     required={true}
-                    inputType="dateTime"
-                    inputVal={localeDateOnly(summaryData?.startDate)}
+                    inputtype="dateTime"
+                    inputval={localeDateOnly(summaryData?.startDate)}
                     name="startDate"
                     callback={cb}
                     alt="start date"
@@ -656,8 +656,8 @@ const QRModal = props => {
                     datafield
                     labelText={<Xl8 xid="qrm004">End Date</Xl8>}
                     key={`ed${key}`}
-                    inputType="dateTime"
-                    inputVal={localeDateOnly(summaryData?.endDate)}
+                    inputtype="dateTime"
+                    inputval={localeDateOnly(summaryData?.endDate)}
                     name="endDate"
                     callback={cb}
                     alt="end date"
