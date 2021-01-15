@@ -1,3 +1,9 @@
+<!--
+ All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+
+ Please see license.txt for details.
+-->
+
 Requires:
 
 - an **`entity`** prop with a post method for Add, or with get and put methods for Edit. Entities are defined in serviceWrapper.js.
