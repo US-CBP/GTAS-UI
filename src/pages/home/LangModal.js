@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Container, Alert } from "react-bootstrap";
 import Form from "../../components/form/Form";

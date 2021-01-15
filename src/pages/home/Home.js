@@ -1,5 +1,10 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect, useRef } from "react";
 import IdleTimer from "react-idle-timer";
+
 import Header from "../../components/header/Header";
 import { navigate } from "@reach/router";
 import TimeoutModal from "../../components/timeoutModal/TimeoutModal";

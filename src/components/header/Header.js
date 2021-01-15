@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useContext, useRef, useState, useEffect } from "react";
 import { Link } from "@reach/router";
 import { navigate, useLocation } from "@reach/router";

@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect, useMemo, useContext } from "react";
 import RAQB from "../../../components/raqb/RAQB";
 import { Button, Row } from "react-bootstrap";
@@ -727,23 +731,27 @@ const QRModal = props => {
                     labelText={<Xl8 xid="qrm003">Start Date</Xl8>}
                     key={`sd${key}`}
                     required={true}
-                    inputType="text"
+                    inputType="dateTime"
                     inputVal={localeDateOnly(summaryData?.startDate)}
                     name="startDate"
                     callback={cb}
                     alt="start date"
                     spacebetween
+                    format="MM/dd/yyyy"
+                    disableCalendar={true}
                   />
                   <LabelledInput
                     datafield
                     labelText={<Xl8 xid="qrm004">End Date</Xl8>}
                     key={`ed${key}`}
-                    inputType="text"
+                    inputType="dateTime"
                     inputVal={localeDateOnly(summaryData?.endDate)}
                     name="endDate"
                     callback={cb}
                     alt="end date"
                     spacebetween
+                    format="MM/dd/yyyy"
+                    disableCalendar={true}
                   />
                 </Row>
                 <Row className="qrm">
