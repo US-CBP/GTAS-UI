@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -7,7 +11,7 @@ const LabelInput = props => {
   const cls = props.className + (props.inline ? " inline" : " label");
   return (
     <label className={cls} name={props.name} alt={props.alt}>
-      {props.inputVal}
+      {props.inputval}
     </label>
   );
 };
@@ -15,7 +19,7 @@ const LabelInput = props => {
 LabelInput.propTypes = {
   name: PropTypes.string,
   alt: PropTypes.string.isRequired,
-  inputVal: PropTypes.any,
+  inputval: PropTypes.any,
   className: PropTypes.string
 };
 

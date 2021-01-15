@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import Title from "../../../components/title/Title";
 import Main from "../../../components/main/Main";
@@ -8,7 +12,6 @@ import Scrollspy from "react-scrollspy";
 import { asArray } from "../../../utils/utils";
 import raw from "./config";
 
-import { Col } from "react-bootstrap";
 import "./About.css";
 
 const About = () => {
@@ -22,7 +25,7 @@ const About = () => {
         >
           {asArray(raw).map(item => {
             return (
-              <a className="toc" href={`#${item.id}`}>
+              <a className="toc" href={`#${item.id}`} key={item.id}>
                 {item.id}
               </a>
             );

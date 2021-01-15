@@ -1,10 +1,13 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import PropsTypes from "prop-types";
 import { Link } from "@reach/router";
 import { hasData } from "../../../utils/utils";
 import { Col, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../labelledInput/LabelledInput";
-import Title from "../../title/Title";
 
 const SeatInfo = props => {
   const selectedSeatInfo = props.info;
@@ -19,8 +22,8 @@ const SeatInfo = props => {
           <LabelledInput
             alt="First Name"
             inputStyle="big-name-sidebar"
-            inputType="label"
-            inputVal={selectedSeatInfo.firstName}
+            inputtype="label"
+            inputval={selectedSeatInfo.firstName}
           />
         </Col>
       </Row>
@@ -32,8 +35,8 @@ const SeatInfo = props => {
           <LabelledInput
             alt="Last Name"
             inputStyle="big-name-sidebar"
-            inputType="label"
-            inputVal={selectedSeatInfo.lastName}
+            inputtype="label"
+            inputval={selectedSeatInfo.lastName}
           />
         </Col>
       </Row>
@@ -45,8 +48,8 @@ const SeatInfo = props => {
           <LabelledInput
             alt="Middle Name"
             inputStyle="big-name-sidebar"
-            inputType="label"
-            inputVal={selectedSeatInfo.middleInitial}
+            inputtype="label"
+            inputval={selectedSeatInfo.middleInitial}
           />
         </Col>
       </Row>
@@ -58,8 +61,8 @@ const SeatInfo = props => {
           <LabelledInput
             alt="Seat Number"
             inputStyle="big-name-sidebar"
-            inputType="label"
-            inputVal={selectedSeatInfo.number}
+            inputtype="label"
+            inputval={selectedSeatInfo.number}
           />
         </Col>
       </Row>

@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useContext } from "react";
 import { UserContext } from "../user/UserContext";
 import { asArray, titleCase } from "../../utils/utils";
@@ -9,8 +13,11 @@ const RoleAuthenticator = props => {
   const alt = props.alt ?? UNAUTHED;
   const { getUserState } = useContext(UserContext);
   let hasRole = false;
+  const validUser = getUserState();
 
-  const userRoles = getUserState().userRoles.map(item => titleCase(item));
+  if (!validUser) return alt;
+
+  const userRoles = validUser.userRoles.map(item => titleCase(item));
 
   (asArray(props.roles) || []).forEach(element => {
     if (userRoles.includes(titleCase(element))) {

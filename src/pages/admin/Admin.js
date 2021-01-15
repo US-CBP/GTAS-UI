@@ -1,10 +1,14 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import Main from "../../components/main/Main";
 import ExternalLink from "../../components/externalLink/ExternalLink";
-import { Card, CardDeck, Container } from "react-bootstrap";
-import { hasData, getEndpoint } from "../../utils/utils";
+import { Card, CardDeck } from "react-bootstrap";
+import { getEndpoint } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./Admin.css";
 
@@ -18,6 +22,9 @@ const Admin = props => {
         <CardDeck className="page-deck">
           {children.map(info => {
             const data = info.props;
+
+            if (!data) return;
+
             return (
               <Card className="page-tiles" key={data.path}>
                 {data.hasExternalLink ? (

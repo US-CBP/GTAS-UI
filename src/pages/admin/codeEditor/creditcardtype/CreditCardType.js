@@ -1,15 +1,20 @@
-import React, { useState } from "react";
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+import React, { useState, useContext } from "react";
 import Table from "../../../../components/table/Table";
 import Xl8 from "../../../../components/xl8/Xl8";
-import { codeEditor } from "../../../../services/serviceWrapper";
 import CreditCardTypeModal from "./CreditCardTypeModal";
-import { ACTION } from "../../../../utils/constants";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
+import { LookupContext } from "../../../../context/data/LookupContext";
+import { codeEditor } from "../../../../services/lookupService";
+import { ACTION, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
-const CreditCardType = ({ name }) => {
-  const cb = function(result) {};
+const CreditCardType = () => {
+  const cb = () => {};
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
@@ -19,13 +24,16 @@ const CreditCardType = ({ name }) => {
   const [confirmModalHeader, setConfirmModalHeader] = useState();
   const [confirmModalMessage, setConfirmModalMessage] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
+  const { refreshAndReturn } = useContext(LookupContext);
+  const type = LK.CCTYPE;
 
   const refresh = () => {
     setRefreshKey(refreshKey + 1);
+    setEditRowDetails({});
   };
 
   const restoreAll = () => {
-    codeEditor.put.restoreCctypeAll().then(res => {
+    codeEditor.put.restoreAll(type).then(res => {
       refresh();
     });
   };
@@ -36,6 +44,12 @@ const CreditCardType = ({ name }) => {
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
+
+  const closeEditModal = () => {
+    setEditRowDetails({});
+    setShowModal(false);
+  };
+
   const confirm = action => {
     if (action === ACTION.UPDATE) {
       setConfirmModalHeader(<Xl8 xid="cctConf001">Restore Credit Card Type Code</Xl8>);
@@ -49,10 +63,10 @@ const CreditCardType = ({ name }) => {
       );
     } else if (action === ACTION.UPDATEALL) {
       setConfirmModalHeader(
-        <Xl8 xid="cctConf004">Restore All Credit Card Type Codes</Xl8>
+        <Xl8 xid="cctConf005">Restore All Credit Card Type Codes</Xl8>
       );
       setConfirmModalMessage(
-        <Xl8 xid="cctConf005">Please confirm to restore all credit card type codes</Xl8>
+        <Xl8 xid="cctConf006">Please confirm to restore all credit card type codes</Xl8>
       );
     }
     setAction(action);
@@ -61,13 +75,13 @@ const CreditCardType = ({ name }) => {
   };
 
   const restoreCode = () => {
-    codeEditor.put.restoreCctype(editRowDetails).then(res => {
+    codeEditor.put.restore(type, editRowDetails).then(res => {
       refresh();
     });
   };
 
   const deleteCode = () => {
-    codeEditor.delete.deleteCctype(editRowDetails?.id).then(res => {
+    codeEditor.del(type, editRowDetails?.id).then(res => {
       refresh();
     });
   };
@@ -108,7 +122,7 @@ const CreditCardType = ({ name }) => {
     <div>
       <CreditCardTypeModal
         show={showModal}
-        onHide={() => setShowModal(false)}
+        onHide={closeEditModal}
         isEdit={isEditModal}
         title={modalTitle}
         editRowDetails={editRowDetails}
@@ -123,7 +137,7 @@ const CreditCardType = ({ name }) => {
         message={confirmModalMessage}
       />
       <Table
-        service={codeEditor.get.cctypeCodes}
+        service={() => refreshAndReturn(type)}
         callback={cb}
         header={headers}
         key={refreshKey}

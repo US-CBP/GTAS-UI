@@ -1,5 +1,8 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState } from "react";
-import { Alert, Button } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
@@ -16,7 +19,7 @@ import Modal, {
 import "./UploadAttachment.scss";
 
 const AttachmentModal = props => {
-  const cb = function(result) {};
+  const cb = () => {};
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [filesForDisplay, setFilesForDisplay] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -166,7 +169,7 @@ const AttachmentModal = props => {
             >
               <LabelledInput
                 datafield="description"
-                inputType="textarea"
+                inputtype="textarea"
                 labelText={<Xl8 xid="attm006">Description</Xl8>}
                 name="description"
                 required={true}

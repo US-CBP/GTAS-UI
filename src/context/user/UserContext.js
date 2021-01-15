@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { createContext, useReducer } from "react";
 import Cookies from "js-cookie";
 import { hasData } from "../../utils/utils";
@@ -14,8 +18,7 @@ const initialState = {
   landingPage: undefined,
   emailEnabled: undefined,
   highPriorityEmail: undefined,
-  lastRule: {},
-  lastQuery: {}
+  lastRule: {}
 };
 
 export const UserContext = createContext();

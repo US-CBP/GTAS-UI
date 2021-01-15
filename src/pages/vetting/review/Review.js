@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "react-bootstrap";
 import { paxEventNotesHistory, cases } from "../../../services/serviceWrapper";
@@ -40,7 +44,7 @@ const ReviewPVL = props => {
 
   useEffect(() => {
     isMountedRef.current = true;
-    if (paxId != undefined) {
+    if (paxId !== undefined) {
       paxEventNotesHistory.get(paxId, false).then(res => {
         if (isMountedRef.current) {
           const notesData = res.paxNotes?.map(note => {
@@ -104,7 +108,7 @@ const ReviewPVL = props => {
             recordId={`${paxId}`}
           >
             <LabelledInput
-              inputType="select"
+              inputtype="select"
               alt="Choose not type"
               name="noteType"
               labelText=""
@@ -114,14 +118,14 @@ const ReviewPVL = props => {
               options={noteTypes}
             />
             <LabelledInput
-              inputType="textarea"
+              inputtype="textarea"
               alt="Add note here..."
               name="plainTextNote"
               labelText=""
               placeholder="Add note here..."
               datafield="plainTextNote"
               required="required"
-              inputVal=""
+              inputval=""
             />
           </Form>
           <CardWithTable

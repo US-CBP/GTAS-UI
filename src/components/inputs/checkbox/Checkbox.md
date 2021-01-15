@@ -1,3 +1,9 @@
+<!--
+ All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+
+ Please see license.txt for details.
+-->
+
 Checkbox and Radio examples:
 
 ```js
@@ -9,36 +15,36 @@ const cb = () => {};
   <div>
     <Checkbox
       name="cb1"
-      inputType="checkbox"
+      inputtype="checkbox"
       alt="cb1"
-      inputVal="Mangoes"
+      inputval="Mangoes"
       callback={cb}
     />
     <Checkbox
       name="cb2"
-      inputType="checkbox"
+      inputtype="checkbox"
       alt="cb2"
-      inputVal="Carrots"
+      inputval="Carrots"
       callback={cb}
     />
     <Checkbox
       name="cb3"
-      inputType="checkbox"
+      inputtype="checkbox"
       alt="cb3"
-      inputVal="Onions"
+      inputval="Onions"
       callback={cb}
       selected="true"
     />
   </div>
   <br />
   <div>
-    <Checkbox name="r1" inputType="radio" alt="r1" inputVal="Orange" callback={cb} />
-    <Checkbox name="r2" inputType="radio" alt="r2" inputVal="Yellow" callback={cb} />
+    <Checkbox name="r1" inputtype="radio" alt="r1" inputval="Orange" callback={cb} />
+    <Checkbox name="r2" inputtype="radio" alt="r2" inputval="Yellow" callback={cb} />
     <Checkbox
       name="r3"
-      inputType="radio"
+      inputtype="radio"
       alt="r3"
-      inputVal="Blue"
+      inputval="Blue"
       callback={cb}
       selected="true"
     />

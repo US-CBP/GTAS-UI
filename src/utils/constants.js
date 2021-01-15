@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 export const NO_URI = "No URI was received in props";
 
 export const QR = {
@@ -47,6 +51,16 @@ export const ROLE = {
   HITMGR: "Manage Hits",
   FLIGHTVWR: "View Flights",
   ANY: "Any"
+};
+
+export const LK = {
+  COUNTRY: "country",
+  CARRIER: "carrier",
+  AIRPORT: "airport",
+  CCTYPE: "cctype",
+  HITCAT: "hitcats",
+  NOTETYPE: "notetype",
+  ROLE: "role"
 };
 
 export const CTX = {

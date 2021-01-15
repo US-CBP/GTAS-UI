@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CheckboxInput from "../inputs/checkbox/Checkbox";
@@ -8,9 +12,9 @@ import FileInput from "../inputs/file/File";
 import SelectInput from "../inputs/select/Select";
 import LabelInput from "../inputs/label/Label";
 import { hasData, alt } from "../../utils/utils";
+import ReactDateTimePicker from "../inputs/dateTimePicker/DateTimePicker";
 import { FormGroup } from "react-bootstrap";
 import "./LabelledInput.css";
-import ReactDateTimePicker from "../inputs/dateTimePicker/DateTimePicker";
 
 const textTypes = ["text", "number", "password", "email", "search", "tel"];
 const boolTypes = ["radio", "checkbox", "toggle"];
@@ -36,7 +40,7 @@ class LabelledInput extends Component {
     this.state = {
       isValid: true,
       labelText: alt(props.labelText),
-      inputVal: alt(props.inputVal),
+      inputval: alt(props.inputval),
       options: props.options,
       placeholder: alt(props.placeholder),
       required: alt(props.required),
@@ -48,7 +52,7 @@ class LabelledInput extends Component {
     const value = e.target.value;
 
     this.setState({
-      inputVal: value,
+      inputval: value,
       selected: value,
       isValid: hasData(value) || this.props.required !== REQUIRED
     });
@@ -64,7 +68,7 @@ class LabelledInput extends Component {
 
   onChangeArray(e, label) {
     this.setState({
-      inputVal: e.value,
+      inputval: e.value,
       isValid: hasData(e) || this.props.required !== REQUIRED
     });
 
@@ -73,7 +77,7 @@ class LabelledInput extends Component {
 
   onMultiSelectChange(e) {
     this.setState({
-      inputVal: e,
+      inputval: e,
       isValid: hasData(e) || this.props.required !== REQUIRED
     });
 
@@ -82,7 +86,7 @@ class LabelledInput extends Component {
 
   onChangeDatePicker(e) {
     this.setState({
-      inputVal: e,
+      inputval: e,
       isValid: hasData(e) || this.props.required !== REQUIRED
     });
     this.props.callback({ value: e, name: this.props.name });
@@ -90,7 +94,7 @@ class LabelledInput extends Component {
 
   //APB - REFACTOR
   getInputByType() {
-    const type = this.props.inputType;
+    const type = this.props.inputtype;
     const inputStyle = `${alt(type)} ${alt(this.props.className)}`;
 
     if (type === textareaType) {
@@ -99,8 +103,8 @@ class LabelledInput extends Component {
           className={inputStyle}
           alt={this.props.alt}
           name={this.props.name}
-          inputType={this.props.inputType}
-          inputVal={alt(this.state.inputVal)}
+          inputtype={this.props.inputtype}
+          inputval={alt(this.state.inputval)}
           callback={this.onChange}
           required={this.state.required}
           placeholder={this.state.placeholder}
@@ -115,7 +119,7 @@ class LabelledInput extends Component {
           className={this.props.inputStyle}
           alt={this.props.alt}
           name={this.props.name}
-          inputVal={this.props.inputVal}
+          inputval={this.props.inputval}
           inline={this.props.inline}
         />
       );
@@ -129,11 +133,11 @@ class LabelledInput extends Component {
           className={this.props.className}
           alt={this.props.alt}
           name={this.props.name}
-          inputType={this.props.inputType}
-          inputVal={alt(this.state.inputVal)}
+          inputtype={this.props.inputtype}
+          inputval={alt(this.state.inputval)}
           required={this.state.required}
           placeholder={this.state.placeholder}
-          maxlength={this.props.maxlength}
+          maxLength={this.props.maxlength}
           readOnly={this.props.readOnly}
           callback={this.onChange}
         />
@@ -146,8 +150,8 @@ class LabelledInput extends Component {
           className={inputStyle}
           alt={this.props.alt}
           name={this.props.name}
-          inputType={this.props.inputType}
-          selected={this.props.inputVal}
+          inputtype={this.props.inputtype}
+          selected={this.props.inputval}
           callback={type === "select" ? this.onChange : this.onMultiSelectChange}
           required={this.state.required}
           placeholder={this.state.placeholder}
@@ -164,8 +168,8 @@ class LabelledInput extends Component {
             className={inputStyle}
             name={this.props.name}
             key={this.props.name}
-            inputType={this.props.inputType}
-            inputVal={this.props.inputVal}
+            inputtype={this.props.inputtype}
+            inputval={this.props.inputval}
             callback={this.onChange}
             required={this.state.required}
             selected={this.props.selected}
@@ -186,8 +190,8 @@ class LabelledInput extends Component {
             name={this.props.name}
             label={this.props.labelText}
             key={this.props.name}
-            inputType="checkbox"
-            inputVal={this.props.inputVal}
+            inputtype="checkbox"
+            inputval={this.props.inputval}
             callback={this.onChangeArray}
             required={this.state.required}
             selected={this.props.selected}
@@ -203,8 +207,8 @@ class LabelledInput extends Component {
         <FileInput
           className={inputStyle}
           name={this.props.name}
-          inputType={this.props.inputType}
-          inputVal={this.props.inputVal}
+          inputtype={this.props.inputtype}
+          inputval={this.props.inputval}
           options={this.state.options}
           callback={this.onChange}
           required={this.state.required}
@@ -219,7 +223,7 @@ class LabelledInput extends Component {
         <ReactDateTimePicker
           className={inputStyle}
           name={this.props.name}
-          inputVal={this.props.inputVal}
+          inputval={this.props.inputval}
           callback={this.onChangeDatePicker}
           required={this.state.required}
           readOnly={this.props.readOnly}
@@ -235,7 +239,7 @@ class LabelledInput extends Component {
   render() {
     const cls = !!this.props.spacebetween ? " space-between" : "";
     const inline = !!this.props.inline ? " input-group-append" : "";
-    const textlabelStyle = this.props.inputType === "multiSelect" ? "" : "txtlabel";
+    const textlabelStyle = this.props.inputtype === "multiSelect" ? "" : "txtlabel";
     return (
       <FormGroup className={`${this.state.visibleStyle}${cls}${inline}`}>
         <label className={textlabelStyle}>{this.state.labelText}</label>
@@ -248,8 +252,8 @@ class LabelledInput extends Component {
 LabelledInput.propTypes = {
   name: PropTypes.string,
   autoFocus: PropTypes.oneOf([true, ""]),
-  labelText: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
-  inputType: PropTypes.oneOf([
+  labelText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  inputtype: PropTypes.oneOf([
     "text",
     "textarea",
     "number",
@@ -268,7 +272,7 @@ LabelledInput.propTypes = {
     "dateTime"
   ]).isRequired,
   callback: PropTypes.func,
-  inputVal: PropTypes.any,
+  inputval: PropTypes.any,
   selected: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   options: PropTypes.array,
   placeholder: PropTypes.string,

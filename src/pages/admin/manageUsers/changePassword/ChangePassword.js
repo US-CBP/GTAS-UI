@@ -1,9 +1,12 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect } from "react";
 import Form from "../../../../components/form/Form";
 import { changePassword } from "../../../../services/serviceWrapper";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { Container, Alert } from "react-bootstrap";
-import Title from "../../../../components/title/Title";
 import Xl8 from "../../../../components/xl8/Xl8";
 import "./ChangePassword.scss";
 import { hasData, isValidPassword } from "../../../../utils/utils";
@@ -152,10 +155,10 @@ const ChangePassword = props => {
           <LabelledInput
             datafield
             labelText={<Xl8 xid="pass003">Old password</Xl8>}
-            inputType="password"
+            inputtype="password"
             name="oldPassword"
             required={true}
-            inputVal={oldPassword}
+            inputval={oldPassword}
             alt={<Xl8 xid="7">Old password</Xl8>}
             callback={cb}
             onChange={changeInput}
@@ -165,10 +168,10 @@ const ChangePassword = props => {
         <LabelledInput
           datafield
           labelText={<Xl8 xid="pass004">New password</Xl8>}
-          inputType="password"
+          inputtype="password"
           name="newPassword"
           required={true}
-          inputVal={newPassword}
+          inputval={newPassword}
           alt={<Xl8 xid="7">New password</Xl8>}
           callback={cb}
           onChange={changeInput}
@@ -177,10 +180,10 @@ const ChangePassword = props => {
         <LabelledInput
           datafield
           labelText={<Xl8 xid="pass005">Confirm password</Xl8>}
-          inputType="password"
+          inputtype="password"
           name="confirmPassword"
           required={true}
-          inputVal={confirmedPassword}
+          inputval={confirmedPassword}
           alt="nothing"
           callback={cb}
           onChange={changeInput}

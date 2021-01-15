@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
 import { errorlog } from "../../../services/serviceWrapper";
@@ -8,21 +12,20 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import { Col } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import FilterForm from "../../../components/filterForm2/FilterForm";
-import { asArray, localeDate } from "../../../utils/utils";
+import { addMinutes, asArray, localeDate } from "../../../utils/utils";
 
 const ErrorLog = ({ name }) => {
-  const cb = function(result) {};
+  const cb = () => {};
   const [data, setData] = useState();
   const [refreshKey, setRefreshKey] = useState(1);
   const [filterKey, setFilterKey] = useState(1);
   const [errorCodes, setErrorCodes] = useState([]);
   const selectAllCodes = "Select All Codes";
   let startDate = new Date();
-  let endDate = new Date();
-  endDate.setDate(endDate.getDate());
+  let endDate = addMinutes(new Date(), 1);
   startDate.setDate(startDate.getDate() - 1);
   const initialParamState = () => {
-    return { startDate: startDate, endDate: endDate };
+    return { startDate: startDate, endDate: endDate, errorCode: selectAllCodes };
   };
 
   const headers = [
@@ -55,7 +58,8 @@ const ErrorLog = ({ name }) => {
         parsedParams += "startDate=" + params.startDate.toISOString();
       }
       if (params.endDate) {
-        parsedParams += "&endDate=" + params.endDate.toISOString();
+        const endDate = addMinutes(params.endDate, 1);
+        parsedParams += "&endDate=" + endDate.toISOString();
       }
       if (params.errorCode != selectAllCodes) {
         parsedParams += "&code=" + params.errorCode;
@@ -100,9 +104,9 @@ const ErrorLog = ({ name }) => {
             <LabelledInput
               labelText={<Xl8 xid="el001">Error Codes</Xl8>}
               datafield="errorCode"
-              inputType="select"
+              inputtype="select"
               name="errorCode"
-              inputVal={selectAllCodes}
+              inputval={selectAllCodes}
               options={errorCodes}
               required={true}
               alt="nothing"
@@ -110,8 +114,8 @@ const ErrorLog = ({ name }) => {
             />
             <LabelledInput
               datafield
-              inputType="dateTime"
-              inputVal={startDate}
+              inputtype="dateTime"
+              inputval={startDate}
               labelText={<Xl8 xid="el003">Start Date</Xl8>}
               name="startDate"
               callback={cb}
@@ -120,8 +124,8 @@ const ErrorLog = ({ name }) => {
             />
             <LabelledInput
               datafield
-              inputType="dateTime"
-              inputVal={endDate}
+              inputtype="dateTime"
+              inputval={endDate}
               labelText={<Xl8 xid="el004">End Date</Xl8>}
               name="endDate"
               callback={cb}
