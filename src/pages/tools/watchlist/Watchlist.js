@@ -50,7 +50,6 @@ const Watchlist = props => {
   };
 
   const isValid = datarow => {
-    console.log(tab);
     let result = true;
     const fieldList =
       tab === TAB.DOX
@@ -240,7 +239,7 @@ const Watchlist = props => {
           const categoryId = getPropertyVal(item, "categoryId");
           const documentType = getPropertyVal(item, "documentType");
           const documentNumber = getPropertyVal(item, "documentNumber");
-          const category = (wlcatData.find(item => item.id == categoryId) || {}).label; // allow coersion. item.id is an int, categoryId is a string.
+          const category = (wlcatData.find(item => item.id === +categoryId) || {}).label;
 
           //TODO: consolidate pax/doc fetches??
           if (tab === TAB.PAX)
