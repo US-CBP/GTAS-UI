@@ -278,8 +278,8 @@ export const paxEventNotesHistory = {
 };
 
 export const paxdetailsReport = {
-  get: (paxId, flightId) => {
-    const path = `${PAXDETAILSREPORT}?paxId=${paxId}&flightId=${flightId}`;
+  get: (paxId, flightId, language) => {
+    const path = `${PAXDETAILSREPORT}?paxId=${paxId}&flightId=${flightId}&language=${language}`;
     return get(path, BASEHEADER);
   }
 };
