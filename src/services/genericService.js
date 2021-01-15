@@ -3,7 +3,7 @@
 // Please see license.txt for details.
 
 // import PropTypes from "prop-types";
-import { hasData } from "../utils/utils";
+
 import Cookies from "js-cookie";
 
 const GenericService = async props => {

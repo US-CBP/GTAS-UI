@@ -12,7 +12,6 @@ import Scrollspy from "react-scrollspy";
 import { asArray } from "../../../utils/utils";
 import raw from "./config";
 
-import { Col } from "react-bootstrap";
 import "./About.css";
 
 const About = () => {
@@ -45,11 +44,6 @@ const About = () => {
             );
           })}
         </div>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
       </Main>
     </>
   );
