@@ -380,6 +380,7 @@ export const formatBytes = (bytes, decimals = 2) => {
 export const isValidDate = date => {
   return date instanceof Date && !isNaN(date.getTime());
 };
+
 export const addMinutes = (date, minutes = 1) => {
   if (!isValidDate(date)) return "Invalid Date";
 

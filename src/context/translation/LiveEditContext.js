@@ -4,7 +4,6 @@
 
 import React, { createContext, useReducer, createRef, useState } from "react";
 import LangModal from "../../pages/home/LangModal";
-// import { hasData } from "../../utils/utils";
 
 export const LiveEditContext = createContext();
 const modalRef = createRef();

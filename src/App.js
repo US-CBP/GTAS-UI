@@ -2,9 +2,8 @@
 //
 // Please see license.txt for details.
 
-import React, { Suspense, useState, useRef } from "react";
-import { Router, Redirect, navigate } from "@reach/router";
-import IdleTimer from "react-idle-timer";
+import React, { Suspense } from "react";
+import { Router, Redirect } from "@reach/router";
 import loadable from "@loadable/component";
 
 import Xl8 from "./components/xl8/Xl8";
@@ -22,7 +21,7 @@ import Page404 from "./pages/page404/Page404";
 import Loading from "./components/loading/Loading";
 
 import { hasData } from "./utils/utils";
-import { ROLE, TIME, FULLPATH_TO } from "./utils/constants";
+import { ROLE, FULLPATH_TO } from "./utils/constants";
 import "./App.scss";
 import "font-awesome/css/font-awesome.min.css";
 
@@ -78,9 +77,6 @@ const Watchlist = loadable(() =>
 );
 const About = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/tools/about/About")
-);
-const GModal = loadable(() =>
-  import(/* webpackChunkName: "authed" */ "./components/modal/GModal")
 );
 const PageUnauthorized = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
@@ -162,33 +158,6 @@ const KIBANAURL = window?._env_
   : process.env.REACT_APP_KIBANA_LOGIN;
 
 const App = props => {
-  const [showModal, setShowModal] = useState(false);
-  const idleTimer = useRef(null);
-
-  const onAction = e => {
-    // console.log('user did something', e)
-  };
-
-  const onActive = e => {
-    // console.log('user is active', e)
-    // console.log('time remaining', idleTimer.getRemainingTime())
-  };
-
-  const onIdle = e => {
-    console.log("user is idle", e);
-    // console.log("last active", idleTimer.current.getLastActiveTime());
-
-    // toggleModal();
-
-    // Logout and redirect to login page
-    // this.setState({ redirect: true });
-    navigate(FULLPATH_TO.LOGIN);
-  };
-
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
-
   const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
   const NF404 = <Page404 path="page404"></Page404>;
 
@@ -210,31 +179,7 @@ const App = props => {
                   <SignUp path={FULLPATH_TO.SIGNUP}></SignUp>
                 </Router>
               </Suspense>
-
-              {/* <Modal show={showModal} onHide={toggleModal}>
-          <ModalHeader closeButton>
-            <ModalTitle>
-              <Xl8 xid="time001">Session timeout</Xl8>
-            </ModalTitle>
-          </ModalHeader>
-          <ModalBody>
-            <Xl8 xid="time002">
-              Your session is about to expire. Click OK to continue.
-            </Xl8>
-            {idleTimer.current && idleTimer.current.getElapsedTime()}
-            <button onClick={toggleModal}>OK</button>
-          </ModalBody>
-        </Modal> */}
               <div className="App">
-                <IdleTimer
-                  ref={idleTimer}
-                  element={document}
-                  onActive={onActive}
-                  onIdle={onIdle}
-                  onAction={onAction}
-                  debounce={250}
-                  timeout={TIME.MINUTES_25}
-                />
                 <Suspense fallback={<Loading></Loading>}>
                   <Router>
                     <Authenticator path="/gtas">
