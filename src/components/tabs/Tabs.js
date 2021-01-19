@@ -10,7 +10,7 @@ const Tabs = props => {
   const [key, setKey] = useState();
   const tablist = props.tabs.map(tab => {
     return (
-      <Tab {...tab} eventKey={tab.titleText} key={tab.titleText}>
+      <Tab {...tab} eventKey={tab.titletext} key={tab.titletext}>
         {tab.link}
       </Tab>
     );

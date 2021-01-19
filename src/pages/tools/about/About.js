@@ -25,7 +25,7 @@ const About = () => {
         >
           {asArray(raw).map(item => {
             return (
-              <a className="toc" href={`#${item.id}`}>
+              <a className="toc" href={`#${item.id}`} key={item.id}>
                 {item.id}
               </a>
             );

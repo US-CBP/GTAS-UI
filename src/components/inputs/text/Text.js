@@ -11,20 +11,20 @@ const TextInput = props => (
   <input
     {...props}
     className={`form-input ${props.className || ""}`}
-    type={props.inputType}
-    value={props.inputVal}
+    type={props.inputtype}
+    value={props.inputval}
     onChange={props.callback}
     aria-required={props.required}
   />
 );
 
 TextInput.propTypes = {
-  inputType: PropTypes.oneOf(["text", "number", "email", "password", "search", "tel"])
+  inputtype: PropTypes.oneOf(["text", "number", "email", "password", "search", "tel"])
     .isRequired,
   name: PropTypes.string.isRequired,
-  alt: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
+  alt: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   callback: PropTypes.func.isRequired,
-  inputVal: PropTypes.string.isRequired,
+  inputval: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   required: PropTypes.oneOf(["required", true, ""]),
   placeHolder: PropTypes.string,
   readOnly: PropTypes.oneOf(["readOnly", true])

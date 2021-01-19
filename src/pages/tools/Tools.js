@@ -61,7 +61,7 @@ const Tools = props => {
           <CardDeck className="page-deck">
             {tiles.map(data => {
               return (
-                <RoleAuthenticator alt={<></>} roles={data.roles}>
+                <RoleAuthenticator alt={<></>} roles={data.roles} key={data.path}>
                   <Card className="page-tiles" key={data.path}>
                     <Link to={data.path} className="card-link">
                       <Card.Body>

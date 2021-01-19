@@ -10,18 +10,14 @@ import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { translations } from "../../services/serviceWrapper";
-import { useTranslation } from "react-i18next";
 import "./LanguageEditor.css";
 
 const LanguageEditor = () => {
   const { getLiveEditState, action } = useContext(LiveEditContext);
 
-  const [isEdit, setIsEdit] = useState(0);
+  const [isEdit, setIsEdit] = useState();
   const [refresh, setRefresh] = useState(0);
   const [data, setData] = useState();
-  const [t, i18n] = useTranslation();
-
-  const currentLanguage = window.navigator.language.split("-")[0];
 
   const cb = () => {};
 
@@ -76,8 +72,10 @@ const LanguageEditor = () => {
         rightChild={
           <div className="liveedit">
             <LabelledInput
-              inputType="checkbox"
+              inputtype="checkbox"
+              name="liveEdit"
               labelText={<Xl8 xid="led002">Live Edit</Xl8>}
+              alt="Live Edit"
               selected={isEdit}
               spacebetween
               callback={handleClick}

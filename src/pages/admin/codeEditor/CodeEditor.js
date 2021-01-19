@@ -9,11 +9,12 @@ import Xl8 from "../../../components/xl8/Xl8";
 import { Tabs, Tab } from "react-bootstrap";
 import { navigate } from "@reach/router";
 import { getEndpoint } from "../../../utils/utils";
+import { LK } from "../../../utils/constants";
 import "./CodeEditor.css";
 
 const CodeEditor = props => {
   const endpoint = getEndpoint(props.location?.pathname);
-  const startTab = endpoint === "codeeditor" ? "country" : endpoint;
+  const startTab = endpoint === "codeeditor" ? LK.COUNTRY : endpoint;
   const [tab, setTab] = useState(startTab);
 
   function tabHandler(ev) {
@@ -32,7 +33,7 @@ const CodeEditor = props => {
   const headerTabs = (
     <Tabs defaultActiveKey={startTab} id="codeTabs" className="gtas-tabs" key={startTab}>
       <Tab
-        eventKey="country"
+        eventKey={LK.COUNTRY}
         title={
           <Xl8 xid="app022" id="codeTabs-tab-country">
             Country
@@ -40,7 +41,7 @@ const CodeEditor = props => {
         }
       ></Tab>
       <Tab
-        eventKey="airport"
+        eventKey={LK.AIRPORT}
         title={
           <Xl8 xid="app023" id="codeTabs-tab-airport">
             Airport
@@ -48,7 +49,7 @@ const CodeEditor = props => {
         }
       ></Tab>
       <Tab
-        eventKey="carrier"
+        eventKey={LK.CARRIER}
         title={
           <Xl8 xid="app024" id="codeTabs-tab-carrier">
             Carrier
@@ -56,7 +57,7 @@ const CodeEditor = props => {
         }
       ></Tab>
       <Tab
-        eventKey="cctype"
+        eventKey={LK.CCTYPE}
         title={
           <Xl8 xid="app035" id="codeTabs-tab-cctype">
             Credit Card Type
@@ -72,7 +73,7 @@ const CodeEditor = props => {
         title={<Xl8 xid="app020">Code Editor</Xl8>}
         leftChild={headerTabs}
         leftCb={tabHandler}
-        style="stacker title"
+        className="stacker title"
       />
       <div className="grid-container">{props.children}</div>
     </Main>

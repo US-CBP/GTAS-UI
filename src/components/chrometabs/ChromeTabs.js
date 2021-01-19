@@ -17,22 +17,22 @@ const ChromeTabs = props => {
   const initTabList = props.tabs.map(tab => {
     return (
       <Tab
-        eventKey={tab.titleText}
-        key={tab.titleText}
+        eventKey={tab.titletext}
+        key={tab.titletext}
         data-chrome-tabs-instance-id={instanceId++}
         {...tab}
       >
         <div
           class="chrome-tab"
-          eventKey={tab.titleText}
-          key={tab.titleText}
+          eventKey={tab.titletext}
+          key={tab.titletext}
           data-chrome-tabs-instance-id={instanceId++}
         >
           <div class="chrome-tab-dividers"></div>
           <div class="chrome-tab-background"></div>
           <div class="chrome-tab-content">
             {/* <div class="chrome-tab-favicon"></div> */}
-            <div class="chrome-tab-title">{tab.titleText}</div>
+            <div class="chrome-tab-title">{tab.titletext}</div>
             <div class="chrome-tab-drag-handle"></div>
             {/* <div class="chrome-tab-close"></div> */}
           </div>
@@ -41,15 +41,15 @@ const ChromeTabs = props => {
 
       // <div
       //   class="chrome-tab"
-      //   eventKey={tab.titleText}
-      //   key={tab.titleText}
+      //   eventKey={tab.titletext}
+      //   key={tab.titletext}
       //   data-chrome-tabs-instance-id={instanceId++}
       // >
       //   <div class="chrome-tab-dividers"></div>
       //   <div class="chrome-tab-background"></div>
       //   <div class="chrome-tab-content">
       //     <div class="chrome-tab-favicon"></div>
-      //     <div class="chrome-tab-title">{tab.titleText}</div>
+      //     <div class="chrome-tab-title">{tab.titletext}</div>
       //     <div class="chrome-tab-drag-handle"></div>
       //     <div class="chrome-tab-close"></div>
       //   </div>
@@ -306,19 +306,19 @@ const ChromeTabs = props => {
       const updatedTab = (
         // <div
         //   class="chrome-tab-content"
-        //   eventKey={tabEl.titleText}
-        //   key={tabEl.titleText}
+        //   eventKey={tabEl.titletext}
+        //   key={tabEl.titletext}
         //   data-chrome-tabs-instance-id={idx++}
         //   style={elStyle}
         // >
         //   <div class="chrome-tab-favicon"></div>
-        //   <div class="chrome-tab-title">{tabEl.titleText}</div>
+        //   <div class="chrome-tab-title">{tabEl.titletext}</div>
         //   <div class="chrome-tab-drag-handle"></div>
         // </div>
 
         <Tab
-          eventKey={tab.titleText}
-          key={tab.titleText}
+          eventKey={tab.titletext}
+          key={tab.titletext}
           data-chrome-tabs-instance-id={idx++}
           {...tab}
           style={elStyle}
@@ -328,7 +328,7 @@ const ChromeTabs = props => {
           <div class="chrome-tab-background"></div>
           <div class="chrome-tab-content">
             {/* <div class="chrome-tab-favicon"></div> */}
-            <div class="chrome-tab-title">{tab.titleText}</div>
+            <div class="chrome-tab-title">{tab.titletext}</div>
             <div class="chrome-tab-drag-handle"></div>
             {/* <div class="chrome-tab-close"></div> */}
           </div>

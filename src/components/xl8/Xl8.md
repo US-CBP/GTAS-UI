@@ -27,10 +27,10 @@ const cb = () => {};
       <div>
         <Checkbox
           name="cb1"
-          inputType="checkbox"
+          inputtype="checkbox"
           xid="1"
-          xname="inputVal"
-          inputVal="Mangoes"
+          xname="inputval"
+          inputval="Mangoes"
           callback={cb}
         />
         <div>
@@ -38,27 +38,27 @@ const cb = () => {};
             name="chkboxfield"
             callback={cb}
             xid="xx"
-            xname="inputVal"
-            inputType="checkbox"
-            inputVal="Strawberry (not translated)"
+            xname="inputval"
+            inputtype="checkbox"
+            inputval="Strawberry (not translated)"
             alt="Checkbox is available"
             selected="true"
           />
         </div>
         <Checkbox
           name="cb2"
-          inputType="checkbox"
+          inputtype="checkbox"
           xid="2"
-          xname="inputVal"
-          inputVal="Carrots"
+          xname="inputval"
+          inputval="Carrots"
           callback={cb}
         />
         <Checkbox
           name="cb3"
-          inputType="checkbox"
+          inputtype="checkbox"
           xid="3"
-          xname="inputVal"
-          inputVal="Onions"
+          xname="inputval"
+          inputval="Onions"
           callback={cb}
           selected="true"
         />
@@ -75,33 +75,33 @@ const cb = () => {};
           callback={cb}
           alt="text input field"
           labelText="This text will not be translated"
-          inputType="text"
-          inputVal=" the xid is invalid"
+          inputtype="text"
+          inputval=" the xid is invalid"
           selected="true"
         />
         <br />
         <Checkbox
           name="r1"
-          inputType="radio"
+          inputtype="radio"
           xid="4"
-          xname="inputVal"
-          inputVal="Green"
+          xname="inputval"
+          inputval="Green"
           callback={cb}
         />
         <Checkbox
           name="r2"
-          inputType="radio"
+          inputtype="radio"
           xid="5"
-          xname="inputVal"
-          inputVal="Yellow"
+          xname="inputval"
+          inputval="Yellow"
           callback={cb}
         />
         <Checkbox
           name="r3"
-          inputType="radio"
+          inputtype="radio"
           xid="6"
-          xname="inputVal"
-          inputVal="Blue"
+          xname="inputval"
+          inputval="Blue"
           callback={cb}
           selected="true"
         />

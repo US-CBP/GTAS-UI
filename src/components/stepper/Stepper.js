@@ -3,9 +3,10 @@
 // Please see license.txt for details.
 
 import React, { useState, useEffect } from "react";
-import "./Stepper.scss";
 import PropTypes from "prop-types";
 import { Row, Container } from "react-bootstrap";
+import "./Stepper.scss";
+
 const Stepper = props => {
   const raw = props.steps || [];
 

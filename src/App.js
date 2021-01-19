@@ -13,19 +13,18 @@ import UserProvider from "./context/user/UserContext";
 import LiveEditProvider from "./context/translation/LiveEditContext";
 import LookupProvider from "./context/data/LookupContext";
 
-import { ROLE, TIME } from "./utils/constants";
-
 //login bundle
 import Login from "./pages/login/Login";
 import SignUp from "./pages/login/SignUp";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Page404 from "./pages/page404/Page404";
+import Loading from "./components/loading/Loading";
 
-import { FULLPATH_TO } from "./utils/constants";
+import { hasData } from "./utils/utils";
+import { ROLE, TIME, FULLPATH_TO } from "./utils/constants";
 import "./App.scss";
 import "font-awesome/css/font-awesome.min.css";
-import { hasData } from "./utils/utils";
 
 const Authenticator = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./context/authenticator/Authenticator")
@@ -40,9 +39,6 @@ const PriorityVetting = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/vetting/Vetting")
 );
 const Home = loadable(() => import(/* webpackChunkName: "authed" */ "./pages/home/Home"));
-// const Dashboard = loadable(() =>
-//   import(/* webpackChunkName: "authed" */ "./pages/dashboard/Dashboard")
-// );
 const PaxDetail = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/paxDetail/PaxDetail")
 );
@@ -180,7 +176,9 @@ const App = props => {
 
   const onIdle = e => {
     console.log("user is idle", e);
-    console.log("last active", idleTimer.getLastActiveTime());
+    // console.log("last active", idleTimer.current.getLastActiveTime());
+
+    // toggleModal();
 
     // Logout and redirect to login page
     // this.setState({ redirect: true });
@@ -188,7 +186,7 @@ const App = props => {
   };
 
   const toggleModal = () => {
-    // this.setState({ showModal: !this.state.showModal });
+    setShowModal(!showModal);
   };
 
   const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
@@ -212,21 +210,21 @@ const App = props => {
                   <SignUp path={FULLPATH_TO.SIGNUP}></SignUp>
                 </Router>
               </Suspense>
-            </LiveEditProvider>
-          </LookupProvider>
-        </UserProvider>
 
-        {/* {this.state.showModal ? (
-                <GModal>
-                  <div>
-                    <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
-                    <button onClick={this.toggleModal}>OK</button>
-                  </div>
-                </GModal>
-              ) : null} */}
-        <UserProvider>
-          <LookupProvider>
-            <LiveEditProvider>
+              {/* <Modal show={showModal} onHide={toggleModal}>
+          <ModalHeader closeButton>
+            <ModalTitle>
+              <Xl8 xid="time001">Session timeout</Xl8>
+            </ModalTitle>
+          </ModalHeader>
+          <ModalBody>
+            <Xl8 xid="time002">
+              Your session is about to expire. Click OK to continue.
+            </Xl8>
+            {idleTimer.current && idleTimer.current.getElapsedTime()}
+            <button onClick={toggleModal}>OK</button>
+          </ModalBody>
+        </Modal> */}
               <div className="App">
                 <IdleTimer
                   ref={idleTimer}
@@ -237,7 +235,7 @@ const App = props => {
                   debounce={250}
                   timeout={TIME.MINUTES_25}
                 />
-                <Suspense fallback="loading">
+                <Suspense fallback={<Loading></Loading>}>
                   <Router>
                     <Authenticator path="/gtas">
                       <RoleAuthenticator
@@ -289,7 +287,6 @@ const App = props => {
                           </RoleAuthenticator>
                           <Tools path="tools">
                             <Rules path="rules"></Rules>
-                            <Rules path="rules/:mode"></Rules>
                             <Queries path="queries"></Queries>
                             <QRDetails path="qrdetails"></QRDetails>
                             <RoleAuthenticator
