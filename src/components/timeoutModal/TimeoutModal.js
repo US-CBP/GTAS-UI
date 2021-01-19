@@ -40,6 +40,7 @@ const TimeoutModal = ({ show, reset, logout }) => {
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      backdrop="static"
       className="max-500-width-container"
     >
       <ModalHeader closeButton>
