@@ -43,7 +43,9 @@ const TimeoutModal = ({ show, reset, logout }) => {
       className="max-500-width-container"
     >
       <ModalHeader closeButton>
-        <ModalTitle>Session Timeout</ModalTitle>
+        <ModalTitle>
+          <Xl8 xid="time004">Session Timeout</Xl8>
+        </ModalTitle>
       </ModalHeader>
       <ModalBody>
         <Xl8 xid="time003">
