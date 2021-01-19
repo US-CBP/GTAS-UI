@@ -13,10 +13,9 @@
 import React, { useEffect, useState } from "react";
 import GroupCheckBox from "./GroupCheckBox";
 import LabelledInputDisplayWrapper from "../LabelledInputDecorator";
-import { roles } from "../../../services/serviceWrapper";
 
 const CheckboxGroup = props => {
-  const [values, setValues] = useState([...props.inputVal]);
+  const [values, setValues] = useState([...props.inputval]);
 
   const handleFieldChange = id => {
     const newValues = [...values];

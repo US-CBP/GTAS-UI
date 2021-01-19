@@ -2,8 +2,8 @@
 //
 // Please see license.txt for details.
 
-import React, { Suspense, useState, useRef } from "react";
-import { Router, Redirect, navigate } from "@reach/router";
+import React, { Suspense } from "react";
+import { Router, Redirect } from "@reach/router";
 import loadable from "@loadable/component";
 
 import Xl8 from "./components/xl8/Xl8";
@@ -18,6 +18,7 @@ import SignUp from "./pages/login/SignUp";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Page404 from "./pages/page404/Page404";
+import Loading from "./components/loading/Loading";
 
 import { hasData } from "./utils/utils";
 import { ROLE, FULLPATH_TO } from "./utils/constants";
@@ -37,9 +38,6 @@ const PriorityVetting = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/vetting/Vetting")
 );
 const Home = loadable(() => import(/* webpackChunkName: "authed" */ "./pages/home/Home"));
-// const Dashboard = loadable(() =>
-//   import(/* webpackChunkName: "authed" */ "./pages/dashboard/Dashboard")
-// );
 const PaxDetail = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/paxDetail/PaxDetail")
 );
@@ -79,9 +77,6 @@ const Watchlist = loadable(() =>
 );
 const About = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/tools/about/About")
-);
-const GModal = loadable(() =>
-  import(/* webpackChunkName: "authed" */ "./components/modal/GModal")
 );
 const PageUnauthorized = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
@@ -163,8 +158,6 @@ const KIBANAURL = window?._env_
   : process.env.REACT_APP_KIBANA_LOGIN;
 
 const App = props => {
-  const [showModal, setShowModal] = useState(false);
-
   const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
   const NF404 = <Page404 path="page404"></Page404>;
 
@@ -186,15 +179,8 @@ const App = props => {
                   <SignUp path={FULLPATH_TO.SIGNUP}></SignUp>
                 </Router>
               </Suspense>
-            </LiveEditProvider>
-          </LookupProvider>
-        </UserProvider>
-
-        <UserProvider>
-          <LookupProvider>
-            <LiveEditProvider>
               <div className="App">
-                <Suspense fallback="loading">
+                <Suspense fallback={<Loading></Loading>}>
                   <Router>
                     <Authenticator path="/gtas">
                       <RoleAuthenticator
@@ -246,7 +232,6 @@ const App = props => {
                           </RoleAuthenticator>
                           <Tools path="tools">
                             <Rules path="rules"></Rules>
-                            <Rules path="rules/:mode"></Rules>
                             <Queries path="queries"></Queries>
                             <QRDetails path="qrdetails"></QRDetails>
                             <RoleAuthenticator

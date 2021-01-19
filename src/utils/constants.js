@@ -53,6 +53,16 @@ export const ROLE = {
   ANY: "Any"
 };
 
+export const LK = {
+  COUNTRY: "country",
+  CARRIER: "carrier",
+  AIRPORT: "airport",
+  CCTYPE: "cctype",
+  HITCAT: "hitcats",
+  NOTETYPE: "notetype",
+  ROLE: "role"
+};
+
 export const CTX = {
   CARRIERS: "carriers",
   COUNTRIES: "countries",

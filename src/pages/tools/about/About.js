@@ -12,7 +12,6 @@ import Scrollspy from "react-scrollspy";
 import { asArray } from "../../../utils/utils";
 import raw from "./config";
 
-import { Col } from "react-bootstrap";
 import "./About.css";
 
 const About = () => {
@@ -26,7 +25,7 @@ const About = () => {
         >
           {asArray(raw).map(item => {
             return (
-              <a className="toc" href={`#${item.id}`}>
+              <a className="toc" href={`#${item.id}`} key={item.id}>
                 {item.id}
               </a>
             );

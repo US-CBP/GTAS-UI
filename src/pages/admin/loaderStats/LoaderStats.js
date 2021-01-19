@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
@@ -13,7 +13,6 @@ import Title from "../../../components/title/Title";
 import { localeDate } from "../../../utils/utils";
 
 const LoaderStats = () => {
-  const onChange = () => {};
   const cb = () => {};
 
   const parseData = function(res) {
@@ -48,45 +47,45 @@ const LoaderStats = () => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="ls004">Last message received:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="lastMessageInSystem"
               alt="Last message received"
               readOnly
-              callback={onChange}
+              callback={cb}
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="ls002">Last message analyzed:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="lastMessageAnalyzedByDrools"
-              callback={onChange}
+              callback={cb}
               readOnly
               alt="Last message analyzed"
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="ls003">Most recent rule hit (Partial excluded):</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="mostRecentRuleHit"
-              callback={onChange}
+              callback={cb}
               readOnly
               alt="Most recent rule hit (Partial excluded) timestamp"
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="ls005">Passengers from past 500 messages:</Xl8>}
-              inputType="text"
+              labelText={<Xl8 xid="ls005">Passengers last 500 messages:</Xl8>}
+              inputtype="text"
               name="passengerCount"
-              callback={onChange}
+              callback={cb}
               readOnly
               alt="Passengers Count from past 500 messages"
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="ls006">Loading/Parsing errors past 500 messages:</Xl8>}
-              inputType="text"
+              labelText={<Xl8 xid="ls006">Loading/Parsing errors last 500 messages:</Xl8>}
+              inputtype="text"
               name="totalLoadingParsingErrors"
-              callback={onChange}
+              callback={cb}
               readOnly
               alt="Loading/Parsing errors past 500 messages"
             />
@@ -94,9 +93,9 @@ const LoaderStats = () => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="ls007">Rule errors last 500 messages:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="totalRuleErros"
-              callback={onChange}
+              callback={cb}
               readOnly
               alt="Rule errors last 500 messages"
             />

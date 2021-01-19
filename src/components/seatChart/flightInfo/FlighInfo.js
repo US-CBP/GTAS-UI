@@ -18,8 +18,8 @@ const FlightInfo = props => {
           <LabelledInput
             alt="Flight Number"
             inputStyle="big-name-sidebar fa fa-plane"
-            inputType="label"
-            inputVal={props.flightNumber}
+            inputtype="label"
+            inputval={props.flightNumber}
           />
         </Col>
       </Row>
@@ -33,8 +33,8 @@ const FlightInfo = props => {
           <LabelledInput
             alt="Arrival"
             inputStyle="big-name-sidebar fa fa-arrow-circle-down"
-            inputType="label"
-            inputVal={props.arrival}
+            inputtype="label"
+            inputval={props.arrival}
           />
         </Col>
       </Row>
@@ -47,8 +47,8 @@ const FlightInfo = props => {
           <LabelledInput
             alt="Arrival"
             inputStyle="big-name-sidebar fa fa-arrow-circle-up"
-            inputType="label"
-            inputVal={props.departure}
+            inputtype="label"
+            inputval={props.departure}
           />
         </Col>
       </Row>

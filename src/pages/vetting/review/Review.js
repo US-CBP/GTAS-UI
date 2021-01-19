@@ -44,7 +44,7 @@ const ReviewPVL = props => {
 
   useEffect(() => {
     isMountedRef.current = true;
-    if (paxId != undefined) {
+    if (paxId !== undefined) {
       paxEventNotesHistory.get(paxId, false).then(res => {
         if (isMountedRef.current) {
           const notesData = res.paxNotes?.map(note => {
@@ -108,7 +108,7 @@ const ReviewPVL = props => {
             recordId={`${paxId}`}
           >
             <LabelledInput
-              inputType="select"
+              inputtype="select"
               alt="Choose not type"
               name="noteType"
               labelText=""
@@ -118,14 +118,14 @@ const ReviewPVL = props => {
               options={noteTypes}
             />
             <LabelledInput
-              inputType="textarea"
+              inputtype="textarea"
               alt="Add note here..."
               name="plainTextNote"
               labelText=""
               placeholder="Add note here..."
               datafield="plainTextNote"
               required="required"
-              inputVal=""
+              inputval=""
             />
           </Form>
           <CardWithTable

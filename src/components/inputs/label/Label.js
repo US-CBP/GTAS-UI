@@ -11,7 +11,7 @@ const LabelInput = props => {
   const cls = props.className + (props.inline ? " inline" : " label");
   return (
     <label className={cls} name={props.name} alt={props.alt}>
-      {props.inputVal}
+      {props.inputval}
     </label>
   );
 };
@@ -19,7 +19,7 @@ const LabelInput = props => {
 LabelInput.propTypes = {
   name: PropTypes.string,
   alt: PropTypes.string.isRequired,
-  inputVal: PropTypes.any,
+  inputval: PropTypes.any,
   className: PropTypes.string
 };
 

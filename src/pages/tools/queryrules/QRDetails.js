@@ -7,16 +7,15 @@ import Table from "../../../components/table/Table";
 import Main from "../../../components/main/Main";
 import { querypax } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Toast from "../../../components/toast/Toast";
 import Xl8 from "../../../components/xl8/Xl8";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { Link } from "@reach/router";
-// import { Container } from "react-bootstrap";
 import { asArray, getAge, alt, localeDateOnly, localeDate } from "../../../utils/utils";
 import { ROLE } from "../../../utils/constants";
-import Toast from "../../../components/toast/Toast";
 
 const QRDetails = props => {
-  const cb = function(result) {};
+  const cb = () => {};
   const [data, setData] = useState();
   const [key, setKey] = useState(0);
   const [showToast, setShowToast] = useState(false);

@@ -72,7 +72,7 @@ class FilterForm extends React.Component {
     const fieldname = datafield;
     const getChildVal = this.getChildValue();
     fieldMap[componentname] = fieldname;
-    fields[fieldMap[componentname]] = getChildVal(child.props.inputVal[datafield]);
+    fields[fieldMap[componentname]] = getChildVal(child.props.inputval[datafield]);
     datafieldNames.push(fieldname);
   }
   addDataFieldFromObject(idx, child, datafield, fieldMap, fields, datafieldNames) {
@@ -80,7 +80,7 @@ class FilterForm extends React.Component {
     const fieldname = child.props.name;
     const getChildVal = this.getChildValue();
     fieldMap[componentname] = fieldname;
-    fields[fieldMap[componentname]] = getChildVal(child.props.inputVal);
+    fields[fieldMap[componentname]] = getChildVal(child.props.inputval);
     datafieldNames.push(fieldname);
   }
   getChildValue() {
@@ -104,7 +104,7 @@ class FilterForm extends React.Component {
     }
     const getChildVal = this.getChildValue();
     fieldMap[componentname] = fieldname;
-    fields[fieldMap[componentname]] = getChildVal(child.props.inputVal);
+    fields[fieldMap[componentname]] = getChildVal(child.props.inputval);
     datafieldNames.push(fieldname);
   }
 

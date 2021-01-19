@@ -2,8 +2,10 @@
 //
 // Please see license.txt for details.
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import IdleTimer from "react-idle-timer";
+import { LookupContext } from "../../context/data/LookupContext";
+import { LK } from "../../utils/constants";
 
 import Header from "../../components/header/Header";
 import { navigate } from "@reach/router";
@@ -11,7 +13,18 @@ import TimeoutModal from "../../components/timeoutModal/TimeoutModal";
 import { TIME, FULLPATH_TO } from "../../utils/constants";
 
 const Home = props => {
+  const { lookupAction } = useContext(LookupContext);
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+
+  useEffect(() => {
+    lookupAction({ method: "refresh", type: LK.HITCAT });
+    lookupAction({ method: "refresh", type: LK.COUNTRY });
+    lookupAction({ method: "refresh", type: LK.CARRIER });
+    lookupAction({ method: "refresh", type: LK.AIRPORT });
+    lookupAction({ method: "refresh", type: LK.CCTYPE });
+    lookupAction({ method: "refresh", type: LK.ROLE });
+    lookupAction({ method: "refresh", type: LK.NOTETYPE });
+  }, []);
 
   const idleTimer = useRef(null);
 
@@ -21,7 +34,7 @@ const Home = props => {
   };
 
   const onActive = e => {
-    if (!idleTimer?.current) return;
+    // if (!idleTimer?.current) return;
     // console.log("time remaining", idleTimer.current.getRemainingTime());
   };
 

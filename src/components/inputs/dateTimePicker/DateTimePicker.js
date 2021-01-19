@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import DateTimePicker from "react-datetime-picker";
 
 const ReactDateTimePicker = props => {
-  const [value, setValue] = useState(props.inputVal);
+  const [value, setValue] = useState(props.inputval);
   const format = props.format || "MM/dd/yyyy hh:mm aa";
   const onchange = e => {
     setValue(e);
@@ -42,12 +42,12 @@ ReactDateTimePicker.propTypes = {
   className: PropTypes.string,
   name: PropTypes.string,
   required: PropTypes.oneOf([true, false, ""]),
-  alt: PropTypes.oneOf(PropTypes.object, PropTypes.string),
+  alt: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   readOnly: PropTypes.string,
   disableCalendar: PropTypes.bool,
   callback: PropTypes.func,
   format: PropTypes.string,
-  inputVal: PropTypes.oneOf(PropTypes.string, PropTypes.object)
+  inputval: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 
 export default ReactDateTimePicker;

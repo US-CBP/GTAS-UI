@@ -9,7 +9,6 @@ import Xl8 from "../../components/xl8/Xl8";
 import {
   hasData,
   localeDateOnly,
-  localeDate,
   localeMonthDayTime,
   passengerTypeMapper
 } from "../../utils/utils";
@@ -26,19 +25,6 @@ const PaxInfo = props => {
     //   : undefined;
     // const dob = Date.parse(res.dob);
 
-    const apisrec = hasData(res.lastApisReceived)
-      ? {
-          label: <Xl8 xid="pd018">Last APIS Received</Xl8>,
-          value: localeMonthDayTime(res.lastApisReceived)
-        }
-      : {};
-
-    const pnrrec = hasData(res.lastPnrReceived)
-      ? {
-          label: <Xl8 xid="pd017">Last PNR Received</Xl8>,
-          value: localeMonthDayTime(res.lastPnrReceived)
-        }
-      : {};
     return [
       {
         label: <Xl8 xid="pd007">Last Name</Xl8>,
@@ -72,8 +58,14 @@ const PaxInfo = props => {
         label: <Xl8 xid="pd016">Passenger Type</Xl8>,
         value: passengerTypeMapper(res.passengerType)
       },
-      pnrrec,
-      apisrec
+      {
+        label: <Xl8 xid="pd017">Last PNR Received</Xl8>,
+        value: localeMonthDayTime(res.lastPnrReceived)
+      },
+      {
+        label: <Xl8 xid="pd018">Last APIS Received</Xl8>,
+        value: localeMonthDayTime(res.lastApisReceived)
+      }
     ];
   };
 
