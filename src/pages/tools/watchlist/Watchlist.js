@@ -7,13 +7,13 @@ import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
+import WLModal from "./WLModal";
 import CSVReader from "../../../components/CSVReader/CSVReader";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
-import WLModal from "./WLModal";
 import { LookupContext } from "../../../context/data/LookupContext";
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
-import { hasData, watchlistDateFormat } from "../../../utils/utils";
+import { hasData, watchlistDateFormat, timezoneFreeDate } from "../../../utils/utils";
 import { LK } from "../../../utils/constants";
 import "./constants.js";
 
@@ -50,7 +50,6 @@ const Watchlist = props => {
   };
 
   const isValid = datarow => {
-    console.log(tab);
     let result = true;
     const fieldList =
       tab === TAB.DOX
@@ -240,7 +239,7 @@ const Watchlist = props => {
           const categoryId = getPropertyVal(item, "categoryId");
           const documentType = getPropertyVal(item, "documentType");
           const documentNumber = getPropertyVal(item, "documentNumber");
-          const category = (wlcatData.find(item => item.id == categoryId) || {}).label; // allow coersion. item.id is an int, categoryId is a string.
+          const category = (wlcatData.find(item => item.id === +categoryId) || {}).label;
 
           //TODO: consolidate pax/doc fetches??
           if (tab === TAB.PAX)
@@ -248,7 +247,7 @@ const Watchlist = props => {
               id: item.id,
               firstName: firstName,
               lastName: lastName,
-              dob: dob,
+              dob: timezoneFreeDate(dob),
               categoryId: categoryId,
               category: category
             };
