@@ -12,7 +12,8 @@ import {
   hasData,
   localeDate,
   localeDateOnly,
-  localeMonthYear
+  localeMonthYear,
+  timezoneFreeDate
 } from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
 import { Link } from "@reach/router";
@@ -232,10 +233,10 @@ const PNR = props => {
     };
   });
   const documents = asArray(data.documents).map(doc => {
-    const expirationDate = Date.parse(doc.expirationDate);
+    // const expirationDate = Date.parse(doc.expirationDate);
     return {
       ...doc,
-      expirationDate: localeDateOnly(expirationDate),
+      expirationDate: timezoneFreeDate(doc.expirationDate),
       key: `DOCS${doc.documentNumber} `
     };
   });

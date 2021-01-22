@@ -44,11 +44,6 @@ const About = () => {
             );
           })}
         </div>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
       </Main>
     </>
   );
