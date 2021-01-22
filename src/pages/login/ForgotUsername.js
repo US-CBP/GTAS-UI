@@ -16,14 +16,14 @@ import { FULLPATH_TO } from "../../utils/constants";
 const ForgotUsername = props => {
   const cb = () => {};
 
-  const [emailSent, setEmailSetnt] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [displayErrorMessage, setDisplayErrorMessage] = useState(false);
 
   const forgotUsernameCallback = (action, res) => {
     const responseStatus = hasData(res) ? res.status : "";
     if (responseStatus === "SUCCESS") {
-      setEmailSetnt(true);
+      setEmailSent(true);
       setDisplayErrorMessage(false);
     } else if (responseStatus === "FAILURE") {
       setErrorMessage(res.message);
@@ -42,7 +42,7 @@ const ForgotUsername = props => {
             <>
               <Alert variant="success">
                 <Xl8 xid="fun001">
-                  Your username is sent to your email. Check your mailbox.
+                  Please check your email for a message containing your username.
                 </Xl8>
               </Alert>
               <Link to={FULLPATH_TO.LOGIN}>
@@ -57,7 +57,7 @@ const ForgotUsername = props => {
               </div>
               <p>
                 <Xl8 xid="fun004">
-                  Please enter the email address associated to your account.
+                  Please enter the email address associated with your account.
                 </Xl8>
               </p>
               <br />
