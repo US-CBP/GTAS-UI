@@ -9,10 +9,19 @@ import DateTimePicker from "react-datetime-picker";
 const ReactDateTimePicker = props => {
   const [value, setValue] = useState(props.inputval);
   const format = props.format || "MM/dd/yyyy hh:mm aa";
+
+  // const isValidDate = (currentDate, selectedDate) => {
+  //   console.log(selectedDate);
+  //   return (
+  //     new Date(selectedDate).getFullYear() < new Date(currentDate).getFullYear() + 100
+  //   );
+  // };
+
   const onchange = e => {
     setValue(e);
     props.callback(e);
   };
+
   return (
     <div className="date-picker">
       <DateTimePicker
@@ -27,6 +36,7 @@ const ReactDateTimePicker = props => {
         calendarIcon={null}
         disableClock={true}
         format={format}
+        locale={window.navigator.language}
         yearPlaceholder="YYYY"
         monthPlaceholder="MM"
         dayPlaceholder="DD"

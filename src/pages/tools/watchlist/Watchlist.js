@@ -247,7 +247,8 @@ const Watchlist = props => {
               id: item.id,
               firstName: firstName,
               lastName: lastName,
-              dob: timezoneFreeDate(dob),
+              dob: dob,
+              dobDisplay: timezoneFreeDate(dob),
               categoryId: categoryId,
               category: category
             };
@@ -299,7 +300,7 @@ const Watchlist = props => {
     },
     { Accessor: "firstName", Xl8: true, Header: ["wl015", "First Name"] },
     { Accessor: "lastName", Xl8: true, Header: ["wl016", "Last Name"] },
-    { Accessor: "dob", Xl8: true, Header: ["wl016", "DOB"] },
+    { Accessor: "dobDisplay", Xl8: true, Header: ["wl018", "DOB"] },
     { Accessor: "category", Xl8: true, Header: ["wl017", "Category"] },
     {
       Accessor: "delete",

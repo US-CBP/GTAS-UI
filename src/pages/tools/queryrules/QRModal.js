@@ -29,7 +29,7 @@ const QRModal = props => {
   const [data, setData] = useState(props.data?.query);
   const [key, setKey] = useState(0);
   const [summaryData, setSummaryData] = useState(
-    props.data || { startDate: localeDateOnly(Date.now()), enabled: true }
+    props.data || { startDate: Date.now(), enabled: true }
   );
 
   const [airports, setAirports] = useState([]);
@@ -644,12 +644,12 @@ const QRModal = props => {
                     key={`sd${key}`}
                     required={true}
                     inputtype="dateTime"
-                    inputval={localeDateOnly(summaryData?.startDate)}
+                    inputval={summaryData?.startDate}
                     name="startDate"
                     callback={cb}
                     alt="start date"
                     spacebetween
-                    format="MM/dd/yyyy"
+                    format="yyyy/MM/dd"
                     disableCalendar={true}
                   />
                   <LabelledInput
@@ -657,12 +657,12 @@ const QRModal = props => {
                     labelText={<Xl8 xid="qrm004">End Date</Xl8>}
                     key={`ed${key}`}
                     inputtype="dateTime"
-                    inputval={localeDateOnly(summaryData?.endDate)}
+                    inputval={summaryData?.endDate}
                     name="endDate"
                     callback={cb}
                     alt="end date"
                     spacebetween
-                    format="MM/dd/yyyy"
+                    format="yyyy/MM/dd"
                     disableCalendar={true}
                   />
                 </Row>

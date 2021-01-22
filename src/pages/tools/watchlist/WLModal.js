@@ -30,7 +30,9 @@ const WLModal = props => {
   const isEdit = id !== 0;
   const mode = isEdit ? "Edit" : "Add";
   const data = props.data;
-  const parsedData = hasData(data) ? { ...data, dob: new Date(data["dob"]) } : data;
+  const parsedData = hasData(data)
+    ? { ...data, dob: timezoneFreeDate(data["dob"]) }
+    : data;
   const title =
     (type || {}) === TAB.DOX ? (
       id === 0 ? (
@@ -44,6 +46,7 @@ const WLModal = props => {
       <Xl8 xid="wlm004"> Edit Passenger</Xl8>
     );
 
+  console.log(data);
   const onFormChange = () => {};
 
   // Form submitted or closed
@@ -132,7 +135,8 @@ const WLModal = props => {
         alt="Date of Birth"
         callback={onFormChange}
         spacebetween
-        format="MM/dd/yyyy"
+        format="yyyy/MM/dd"
+        locale={window.navigator.language}
         disableCalendar={true}
       />
       <LabelledInput
@@ -187,7 +191,7 @@ const WLModal = props => {
               {
                 firstName: firstName,
                 lastName: lastName,
-                dob: timezoneFreeDate(dob),
+                dob: dob,
                 categoryId: categoryId,
                 id: recordId
               }

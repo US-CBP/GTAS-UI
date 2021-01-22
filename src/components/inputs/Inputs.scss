@@ -64,7 +64,14 @@
   -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
-
+.react-datetime-picker__inputGroup__leadingZero {
+  height: calc(100% - 2px);
+  position: relative;
+  border: 0;
+  background: none;
+  font: inherit;
+  box-sizing: content-box;
+}
 .txtlabel {
   float: left;
   align-self: center !important;
