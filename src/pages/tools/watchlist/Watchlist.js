@@ -96,7 +96,7 @@ const Watchlist = props => {
     setShowToast(true);
   };
 
-  const cb = function(result) {};
+  const cb = () => {};
 
   const launchModal = recordId => {
     setId(recordId);
