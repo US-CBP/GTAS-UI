@@ -242,7 +242,7 @@ const Table = props => {
                 const sendRowToLink = !isGroupBy ? row.original.sendRowToLink : "";
                 const linked = link ? "linked" : "";
                 return (
-                  <tr {...row.getRowProps()} className={linked} key={row.original.id}>
+                  <tr {...row.getRowProps()} className={linked} key= {!isGroupBy ? row.original.id : row.groupByVal}>
                     {row.cells.map(cell => {
                       const style = cell.column.className || "";
                       if (link) {
