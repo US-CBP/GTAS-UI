@@ -46,7 +46,6 @@ const WLModal = props => {
       <Xl8 xid="wlm004"> Edit Passenger</Xl8>
     );
 
-  console.log(data);
   const onFormChange = () => {};
 
   // Form submitted or closed
