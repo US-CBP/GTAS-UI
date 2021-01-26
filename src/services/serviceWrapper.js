@@ -55,6 +55,7 @@ const SIGNUPREQUESTS = `${BASE_URL}gtas/api/signup-requests`;
 const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
 const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
 const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
+const FORGOTUSERNAME = `${BASE_URL}gtas/forgot-username`;
 const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 const SEARCH = `${BASE_URL}gtas/search`;
 const SEATS = `${BASE_URL}gtas/seats`;
@@ -360,4 +361,11 @@ export const search = {
 };
 export const seats = {
   get: flightId => get(SEATS, BASEHEADER, flightId)
+};
+
+export const forgotUsername = {
+  post: body => {
+    const header = `${FORGOTUSERNAME}?userEmail=${body.userEmail}`;
+    return post(header, SIGNUPHEADER, stringify(body));
+  }
 };
