@@ -103,6 +103,11 @@ const Login = () => {
                   <Link className="small" to={FULLPATH_TO.FORGOTPWD}>
                     Forgot password?
                   </Link>
+                  <br />
+                  <Link className="small space" to={FULLPATH_TO.FORGOTUSERNAME}>
+                    Forgot username?
+                  </Link>
+
                   <div>
                     {alertVis && (
                       <Alert

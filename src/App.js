@@ -24,6 +24,7 @@ import { hasData } from "./utils/utils";
 import { ROLE, FULLPATH_TO } from "./utils/constants";
 import "./App.scss";
 import "font-awesome/css/font-awesome.min.css";
+import ForgotUsername from "./pages/login/ForgotUsername";
 
 const Authenticator = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./context/authenticator/Authenticator")
@@ -177,6 +178,7 @@ const App = props => {
                   <ForgotPassword path={FULLPATH_TO.FORGOTPWD}></ForgotPassword>
                   <Login path={FULLPATH_TO.LOGIN}></Login>
                   <SignUp path={FULLPATH_TO.SIGNUP}></SignUp>
+                  <ForgotUsername path={FULLPATH_TO.FORGOTUSERNAME}></ForgotUsername>
                 </Router>
               </Suspense>
               <div className="App">
