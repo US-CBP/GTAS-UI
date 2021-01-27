@@ -374,6 +374,15 @@ const QRModal = props => {
           city: { label: "City", ...txtProps },
           phone: { label: "Phone", ...txtProps }
         }
+      },
+      SavedSegment: {
+        label: "Saved Segment",
+        type: "!group",
+        subfields: {
+          segmentName: { label: "Segment Name", ...txtProps },
+          rawSegment: { label: "Raw Segment", ...txtProps },
+          regex: { label: "Regex", ...txtProps }
+        }
       }
     }
   };
