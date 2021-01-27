@@ -10,15 +10,14 @@ const SeatChartCard = props => {
   return (
     <Container>
       {props.data &&
-        props.data?.map(item => (
-          <Row>
+        props.data?.map((item, index) => (
+          <Row key={index}>
             <Col>
               <b>{item.label}:</b>
             </Col>
             <Col>
               <LabelledInput
                 alt="Flight Number"
-                // inputStyle="big-name-sidebar"
                 inputtype="label"
                 inputval={item.value}
               />
