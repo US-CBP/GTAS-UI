@@ -3,7 +3,7 @@
 // Please see license.txt for details.
 
 import { NO_URI } from "./constants";
-// import i18n from "../i18n";
+const locale = window.navigator.language;
 
 // APB - shd add handling for other naming patterns like underscores and dashes, and maybe
 // reference an enum of well-know acronyms to preserve casing there.
@@ -131,7 +131,6 @@ export function asOrderedHash(value) {
 // for fields that might.
 export function localeDate(val) {
   if (!hasData(val)) return "";
-  const locale = window.navigator.language;
   const options = {
     // localeMatcher: "lookup",
     year: "numeric",
@@ -167,9 +166,7 @@ export const timezoneFreeDate = val => {
 export function localeDateOnly(val) {
   if (!hasData(val)) return "";
 
-  const locale = window.navigator.language;
   const options = {
-    // localeMatcher: "lookup",
     year: "numeric",
     month: "2-digit",
     day: "2-digit"
@@ -180,7 +177,6 @@ export function localeDateOnly(val) {
 export function localeMonthDayTime(val) {
   if (!hasData(val)) return "";
 
-  const locale = window.navigator.language;
   const options = {
     month: "short",
     day: "2-digit",
@@ -194,12 +190,39 @@ export function localeMonthDayTime(val) {
 export const localeMonthYear = val => {
   if (!hasData(val)) return "";
 
-  const locale = window.navigator.language;
   const options = {
     month: "2-digit",
     year: "2-digit"
   };
   return new Date(val).toLocaleString(locale, options);
+};
+
+// DATE ONLY format string for the dateTime picker control. Not displayed to the user.
+// this is just a quick way to get the locale-specific date format by converting a known
+// date into the correct format for the locale, then swaping the date parts with date format codes,
+// eg. "31/12/2021" => "dd/MM/yyyy" for France
+//     "31.12.2021" => "dd.MM.yyyy" for Germany, etc
+export const localeDateFormatString = () => {
+  const knowndate = window.Intl
+    ? new Intl.DateTimeFormat(locale, {
+        numberingSystem: "latn",
+        calendar: "gregory"
+      }).format(new Date(2021, 11, 31))
+    : "";
+
+  return knowndate
+    .replace("2021", "yyyy")
+    .replace("31", "dd")
+    .replace("12", "MM");
+};
+
+// Date and time format string for the dateTime picker control. Not displayed to the user.
+// this isa temporary hack.
+// It appends the hours, minutes and AM/PM selector, which DOES NOT adhere to all locale patterns
+// currrently. Need to use the AM/PM selector only for locales using a 12 hour format by default,
+// and enable a more natural patterns for the time and minutes.
+export const localeDateTimeFormatString = () => {
+  return `${localeDateFormatString()} hh:mm aa`;
 };
 
 // sortable date string - not for display as it is not locale specific
@@ -222,11 +245,8 @@ export const sortableDate = val => {
 
 // Returns the day of the week for a given date string
 // WARNING: dates in the format yyyy-mm-dd with no timezone indicated are interpreted
-// as UTC dates, which will NOT equal the locale date for the hours where the UTC timezone
-// has passed midnight, but the locale timezone has not.
+// as UTC dates, which will not equal the locale date 24 hours a day unless local timezone is GMT +0.
 export function dayOf(dateStr) {
-  // const locale = i18n.language;
-  const locale = window.navigator.language;
   return new Intl.DateTimeFormat(locale, { weekday: "short" }).format(new Date(dateStr));
   // return (new Date(dateStr)).toLocaleDateString(locale, {weekday: 'short'});
 }

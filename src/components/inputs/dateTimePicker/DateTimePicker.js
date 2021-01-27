@@ -5,17 +5,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import DateTimePicker from "react-datetime-picker";
+import { localeDateFormatString, localeDateTimeFormatString } from "../../../utils/utils";
 
 const ReactDateTimePicker = props => {
   const [value, setValue] = useState(props.inputval);
-  const format = props.format || "MM/dd/yyyy hh:mm aa";
-
-  // const isValidDate = (currentDate, selectedDate) => {
-  //   console.log(selectedDate);
-  //   return (
-  //     new Date(selectedDate).getFullYear() < new Date(currentDate).getFullYear() + 100
-  //   );
-  // };
+  const format = props.dateOnly ? localeDateFormatString() : localeDateTimeFormatString();
 
   const onchange = e => {
     setValue(e);
@@ -35,8 +29,9 @@ const ReactDateTimePicker = props => {
         clearIcon={null}
         calendarIcon={null}
         disableClock={true}
+        showLeadingZeros={true}
         format={format}
-        locale={window.navigator.language}
+        // locale={window.navigator.language}
         yearPlaceholder="YYYY"
         monthPlaceholder="MM"
         dayPlaceholder="DD"
@@ -55,6 +50,7 @@ ReactDateTimePicker.propTypes = {
   alt: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   readOnly: PropTypes.string,
   disableCalendar: PropTypes.bool,
+  dateOnly: PropTypes.bool,
   callback: PropTypes.func,
   format: PropTypes.string,
   inputval: PropTypes.oneOfType([PropTypes.string, PropTypes.object])

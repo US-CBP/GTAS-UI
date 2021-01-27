@@ -14,7 +14,7 @@ import Modal, {
   ModalTitle
 } from "../../../components/modal/Modal";
 import { navigate } from "@reach/router";
-import { hasData, localeDateOnly } from "../../../utils/utils";
+import { hasData, localeDateOnly, localeDateFormatString } from "../../../utils/utils";
 import { QR, ACTION, LK, ROLE } from "../../../utils/constants";
 import { LookupContext } from "../../../context/data/LookupContext";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
@@ -390,7 +390,6 @@ const QRModal = props => {
     newSummary[ev.name] = ev.value;
 
     setSummaryData(newSummary);
-    // console.log(newSummary);
     setTitle(newSummary.title);
     setRefresh(true);
   };
@@ -643,26 +642,26 @@ const QRModal = props => {
                     labelText={<Xl8 xid="qrm003">Start Date</Xl8>}
                     key={`sd${key}`}
                     required={true}
+                    dateOnly={true}
                     inputtype="dateTime"
                     inputval={summaryData?.startDate}
                     name="startDate"
                     callback={cb}
                     alt="start date"
                     spacebetween
-                    format="yyyy/MM/dd"
                     disableCalendar={true}
                   />
                   <LabelledInput
                     datafield
                     labelText={<Xl8 xid="qrm004">End Date</Xl8>}
                     key={`ed${key}`}
+                    dateOnly={true}
                     inputtype="dateTime"
                     inputval={summaryData?.endDate}
                     name="endDate"
                     callback={cb}
                     alt="end date"
                     spacebetween
-                    format="yyyy/MM/dd"
                     disableCalendar={true}
                   />
                 </Row>

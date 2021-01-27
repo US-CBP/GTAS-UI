@@ -227,6 +227,7 @@ class LabelledInput extends Component {
           callback={this.onChangeDatePicker}
           required={this.state.required}
           readOnly={this.props.readOnly}
+          dateOnly={this.props.dateOnly}
           format={this.props.format}
           disableCalendar={this.props.disableCalendar}
         />

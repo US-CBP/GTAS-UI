@@ -11,7 +11,7 @@ import { Tabs, Tab } from "react-bootstrap";
 import { LookupContext } from "../../../context/data/LookupContext";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
-import { hasData } from "../../../utils/utils";
+import { hasData, localeDateOnly } from "../../../utils/utils";
 import { QR, ACTION, RULETAB, ROLE } from "../../../utils/constants";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import QRModal from "./QRModal";
@@ -169,7 +169,7 @@ const Rules = props => {
           return {
             id: item.id,
             hitCount: item.hitCount,
-            modifiedOn: item.modifiedOn,
+            modifiedOn: localeDateOnly(item.modifiedOn),
             modifiedBy: item.modifiedBy,
             ...item.summary
           };

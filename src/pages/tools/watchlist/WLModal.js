@@ -13,7 +13,7 @@ import {
   hasData,
   asArray,
   watchlistDateFormat,
-  timezoneFreeDate
+  localeDateFormatString
 } from "../../../utils/utils";
 import { ACTION } from "../../../utils/constants";
 import Modal, {
@@ -29,10 +29,9 @@ const WLModal = props => {
   const id = props.id || 0;
   const isEdit = id !== 0;
   const mode = isEdit ? "Edit" : "Add";
-  const data = props.data;
-  const parsedData = hasData(data)
-    ? { ...data, dob: timezoneFreeDate(data["dob"]) }
-    : data;
+  const data = { ...props.data, dob: props.data?.dob + " 00:00" };
+  const dateFormatString = localeDateFormatString();
+
   const title =
     (type || {}) === TAB.DOX ? (
       id === 0 ? (
@@ -130,12 +129,11 @@ const WLModal = props => {
         datafield
         labelText={<Xl8 xid="wlm010"> Date of Birth</Xl8>}
         inputtype="dateTime"
+        dateOnly={true}
         name="dob"
         alt="Date of Birth"
         callback={onFormChange}
         spacebetween
-        format="yyyy/MM/dd"
-        locale={window.navigator.language}
         disableCalendar={true}
       />
       <LabelledInput
@@ -220,7 +218,7 @@ const WLModal = props => {
             callback={onFormExit}
             action={mode.toLowerCase()}
             paramCallback={preSubmit}
-            data={parsedData}
+            data={data}
             cancellable
           >
             {fields.props.children}
