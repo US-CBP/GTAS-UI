@@ -8,7 +8,8 @@ import Xl8 from "../../../components/xl8/Xl8";
 
 const DownloadReport = props => {
   const download = () => {
-    paxdetailsReport.get(props.paxId, props.flightId).then(res => {
+	  const currentLanguage = window.navigator.language.split("-")[0];
+    paxdetailsReport.get(props.paxId, props.flightId, currentLanguage).then(res => {
       if (res) {
         let data = new Uint8Array(res);
         let blob = new Blob([data], { type: "application/pdf" });

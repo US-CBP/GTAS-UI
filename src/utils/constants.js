@@ -79,7 +79,8 @@ export const FULLPATH_TO = {
   FLIGHTS: "/gtas/flights",
   FORGOTPWD: "/forgot-password",
   RESETPWD: "/reset-password",
-  SIGNUP: "/signup"
+  SIGNUP: "/signup",
+  FORGOTUSERNAME: "/forgot-username"
 };
 
 export const TIME = {

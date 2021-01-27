@@ -533,5 +533,20 @@ export const ENTITIESEXT = {
       id: "phone",
       type: "string"
     }
+  ],
+  SavedSegment: [
+    {
+      id: "segmentName",
+      type: "string",
+      ...getMult()
+    },
+    {
+      id: "rawSegment",
+      type: "string"
+    },
+    {
+      id: "regex",
+      type: "string"
+    }
   ]
 };
