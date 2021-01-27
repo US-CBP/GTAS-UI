@@ -354,6 +354,15 @@ const QRModal = props => {
           tripDuration: { label: "Trip Duration", ...numProps }
         }
       },
+      SavedSegment: {
+        label: "Saved Segment",
+        type: "!group",
+        subfields: {
+          segmentName: { label: "Segment Name", ...txtProps },
+          rawSegment: { label: "Raw Segment", ...txtProps },
+          regex: { label: "Regex", ...txtProps }
+        }
+      },
       Seat: {
         label: "Seat",
         type: "!group",
