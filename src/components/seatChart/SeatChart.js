@@ -2,19 +2,18 @@
 //
 // Please see license.txt for details.
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Seat from "./seat/Seat";
 import { Container, Row, CardDeck, Card } from "react-bootstrap";
 import { seats } from "../../services/serviceWrapper";
 import { asArray, localeDate } from "../../utils/utils";
 import { Link, useParams } from "@reach/router";
-// import SeatInfo from "./seatInfo/SeatInfo";
 import Legend from "./legend/Legend";
-// import FlightInfo from "./flightInfo/FlighInfo";
 import SeatChartCard from "./seatChartCard/SeatChartCard";
 import Loading from "../loading/Loading";
 import Xl8 from "../xl8/Xl8";
 import "./SeatChart.scss";
+import SearchSeat from "./searchSeat/SearchSeat";
 
 const SeatChart = ({ location }) => {
   const { flightId, paxId, currentPaxSeat } = useParams();
@@ -23,13 +22,32 @@ const SeatChart = ({ location }) => {
   const [rowsWithReservedSeat, setRowsWithReservedSeat] = useState([]);
   const [selectedSeatInfo, setSelectedSeatInfo] = useState({});
   const [showPending, setShowPending] = useState(true);
+  const [searchedSeats, setSearchedSeats] = useState();
+  const seatRefs = useRef({});
+  const searchRef = useRef({});
 
+  const resetSearch = () => {
+    asArray(searchedSeats).forEach(seatNumber => {
+      const seat = seatRefs.current[seatNumber];
+      seat.classList.remove("search-result");
+    });
+  };
+  const searchCallback = searchResult => {
+    resetSearch();
+    setSearchedSeats(searchResult);
+    asArray(searchResult).forEach(seatNumber => {
+      const seat = seatRefs.current[seatNumber];
+      seat.classList.add("search-result");
+      seat.focus();
+    });
+  };
   const getRow = letter => {
     const row = [];
     columnWithReservedSeat.forEach(col => {
       const seatNumber = `${col}${letter}`;
       row.push(
         <Seat
+          ref={seat => (seatRefs.current[seatNumber] = seat)}
           seatNumber={seatNumber}
           seatInfo={reservedSeatsInfo[seatNumber]}
           selected={currentPaxSeat === seatNumber}
@@ -120,6 +138,11 @@ const SeatChart = ({ location }) => {
 
   return (
     <Container fluid>
+      <SearchSeat
+        ref={searchRef}
+        reservedSeats={Object.values(reservedSeatsInfo)}
+        searchCallback={searchCallback}
+      />
       {showPending && <Loading></Loading>}
       <div className="seat-chart">
         {asArray(rowsWithReservedSeat).map((row, index) => (
