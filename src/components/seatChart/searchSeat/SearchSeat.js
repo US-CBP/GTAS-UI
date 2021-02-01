@@ -6,11 +6,17 @@ import React from "react";
 import { Form, Button } from "react-bootstrap";
 import { asArray, hasData } from "../../../utils/utils";
 
-const SearchSeat = ({ searchCallback, reservedSeats }, ref) => {
+const SearchSeat = ({ searchCallback, reservedSeats, resetFilterForm }, ref) => {
   const areEqual = (str1, str2) => {
     return str1.toUpperCase() === str2.toUpperCase();
   };
 
+  const reset = () => {
+    ref.current["firstName"].value = "";
+    ref.current["lastName"].value = "";
+    ref.current["middleName"].value = "";
+    resetFilterForm();
+  };
   const search = () => {
     const firstName = ref.current["firstName"].value;
     const lastName = ref.current["lastName"].value;
@@ -117,7 +123,10 @@ const SearchSeat = ({ searchCallback, reservedSeats }, ref) => {
             className="search-seats-input"
           />
         </Form.Group>
-        <Button variant="secondary" onClick={search}>
+        <Button variant="dark m-1 text-white outline-dark-outline" onClick={reset}>
+          Reset
+        </Button>
+        <Button variant="primary m-1" onClick={search}>
           Search
         </Button>
       </Form>

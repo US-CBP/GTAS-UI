@@ -145,6 +145,7 @@ const SeatChart = ({ location }) => {
           ref={searchRef}
           reservedSeats={Object.values(reservedSeatsInfo)}
           searchCallback={searchCallback}
+          resetFilterForm={resetSearch}
         />
       </SidenavContainer>
       <Main>
