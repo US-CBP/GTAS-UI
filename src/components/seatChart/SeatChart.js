@@ -14,6 +14,8 @@ import Loading from "../loading/Loading";
 import Xl8 from "../xl8/Xl8";
 import "./SeatChart.scss";
 import SearchSeat from "./searchSeat/SearchSeat";
+import SidenavContainer from "../sidenavContainer/SidenavContainer";
+import Main from "../main/Main";
 
 const SeatChart = ({ location }) => {
   const { flightId, paxId, currentPaxSeat } = useParams();
@@ -137,41 +139,45 @@ const SeatChart = ({ location }) => {
   );
 
   return (
-    <Container fluid>
-      <SearchSeat
-        ref={searchRef}
-        reservedSeats={Object.values(reservedSeatsInfo)}
-        searchCallback={searchCallback}
-      />
-      {showPending && <Loading></Loading>}
-      <div className="seat-chart">
-        {asArray(rowsWithReservedSeat).map((row, index) => (
-          <Row className={getClassNameByRow(index)} key={index}>
-            {getRow(row)}
-          </Row>
-        ))}
-      </div>
-      <CardDeck className="seat-info-display">
-        <Card>
-          <Card.Header>
-            <Xl8 xid="seat001">Legend</Xl8>
-          </Card.Header>
-          <Legend cotravellersCount={selectedSeatInfo.coTravellers?.length || 0} />
-        </Card>
-        <Card>
-          <Card.Header>
-            <Xl8 xid="seat002">Flight Information</Xl8>
-          </Card.Header>
-          <SeatChartCard data={flightInfoData} link={linkToFlightPax} />
-        </Card>
-        <Card>
-          <Card.Header>
-            <Xl8 xid="seat003">Passenger Information</Xl8>
-          </Card.Header>
-          <SeatChartCard data={seatInfoData} link={linkToPaxdetails} />
-        </Card>
-      </CardDeck>
-    </Container>
+    <>
+      <SidenavContainer>
+        <SearchSeat
+          ref={searchRef}
+          reservedSeats={Object.values(reservedSeatsInfo)}
+          searchCallback={searchCallback}
+        />
+      </SidenavContainer>
+      <Main>
+        {showPending && <Loading></Loading>}
+        <div className="seat-chart">
+          {asArray(rowsWithReservedSeat).map((row, index) => (
+            <Row className={getClassNameByRow(index)} key={index}>
+              {getRow(row)}
+            </Row>
+          ))}
+        </div>
+        <CardDeck className="seat-info-display">
+          <Card>
+            <Card.Header>
+              <Xl8 xid="seat001">Legend</Xl8>
+            </Card.Header>
+            <Legend cotravellersCount={selectedSeatInfo.coTravellers?.length || 0} />
+          </Card>
+          <Card>
+            <Card.Header>
+              <Xl8 xid="seat002">Flight Information</Xl8>
+            </Card.Header>
+            <SeatChartCard data={flightInfoData} link={linkToFlightPax} />
+          </Card>
+          <Card>
+            <Card.Header>
+              <Xl8 xid="seat003">Passenger Information</Xl8>
+            </Card.Header>
+            <SeatChartCard data={seatInfoData} link={linkToPaxdetails} />
+          </Card>
+        </CardDeck>
+      </Main>
+    </>
   );
 };
 

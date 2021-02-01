@@ -3,7 +3,7 @@
 // Please see license.txt for details.
 
 import React from "react";
-import { Form, FormControl, InputGroup, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { asArray, hasData } from "../../../utils/utils";
 
 const SearchSeat = ({ searchCallback, reservedSeats }, ref) => {
@@ -91,33 +91,37 @@ const SearchSeat = ({ searchCallback, reservedSeats }, ref) => {
   };
 
   return (
-    <Form inline>
-      <InputGroup>
-        <FormControl
-          type="text"
-          ref={input => (ref.current["firstName"] = input)}
-          placeholder="First name"
-          className="search-seats-input"
-        />
-        <FormControl
-          type="text"
-          ref={input => (ref.current["middleName"] = input)}
-          placeholder="Middle name"
-          className="search-seats-input"
-        />
-        <FormControl
-          type="text"
-          ref={input => (ref.current["lastName"] = input)}
-          placeholder="Last name"
-          className="search-seats-input"
-        />
-        <InputGroup.Append>
-          <Button variant="secondary" onClick={search}>
-            <i className="fa fa-search"></i>
-          </Button>
-        </InputGroup.Append>
-      </InputGroup>
-    </Form>
+    <div className="filterform-container">
+      <Form>
+        <Form.Group>
+          <Form.Control
+            type="text"
+            ref={input => (ref.current["firstName"] = input)}
+            placeholder="First name"
+            className="search-seats-input"
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            type="text"
+            ref={input => (ref.current["middleName"] = input)}
+            placeholder="Middle name"
+            className="search-seats-input"
+          />
+        </Form.Group>
+        <Form.Group>
+          <Form.Control
+            type="text"
+            ref={input => (ref.current["lastName"] = input)}
+            placeholder="Last name"
+            className="search-seats-input"
+          />
+        </Form.Group>
+        <Button variant="secondary" onClick={search}>
+          Search
+        </Button>
+      </Form>
+    </div>
   );
 };
 
