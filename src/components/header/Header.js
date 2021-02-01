@@ -167,7 +167,7 @@ const Header = () => {
             </RoleAuthenticator>
           </Nav>
           <Nav className="ml-auto">
-            <Form inline>
+            <Form inline className="header-search">
               <InputGroup>
                 <FormControl type="text" ref={searchInputRef} className="search-150" />
                 <InputGroup.Append>

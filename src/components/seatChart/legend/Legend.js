@@ -29,6 +29,10 @@ const Legend = props => {
         <span className="legend-icon selected-pax-seat"> </span>
         <Xl8 xid="resv004">Selected Passenger</Xl8>
       </div>
+      <div className="seat-legend">
+        <span className="legend-icon legend-search-result"> </span>
+        <Xl8 xid="resv005">Search Result</Xl8>
+      </div>
     </div>
   );
 };
