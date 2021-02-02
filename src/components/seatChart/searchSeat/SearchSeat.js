@@ -18,82 +18,35 @@ const SearchSeat = ({ searchCallback, reservedSeats, resetFilterForm }, ref) => 
     resetFilterForm();
   };
   const search = () => {
-    const firstName = ref.current["firstName"].value;
-    const lastName = ref.current["lastName"].value;
-    const middleName = ref.current["middleName"].value;
+    const searchFields = [];
+    if (hasData(ref.current["firstName"].value)) searchFields.push("firstName");
+    if (hasData(ref.current["lastName"].value)) searchFields.push("lastName");
+    if (hasData(ref.current["middleName"].value)) searchFields.push("middleName");
 
-    const searchResult = asArray(reservedSeats).reduce((result, currentSeat) => {
-      const currentFirstName = currentSeat.firstName;
-      const currentLastName = currentSeat.lastName;
-      const currentMiddleName = currentSeat.middleInitial;
+    //If we don't have any fields to compare, return an empty array.
+    if (searchFields.length === 0) {
+      searchCallback([]);
+    } else {
+      const searchResult = asArray(reservedSeats).reduce((result, currentSeat) => {
+        currentSeat["middleName"] = currentSeat.middleInitial;
+        let match = true;
 
-      //No value provided to search on (returns an empty array)
-      if (!hasData(firstName) && !hasData(middleName) && !hasData(lastName)) {
+        searchFields.forEach(searchField => {
+          if (!areEqual(currentSeat[searchField], ref.current[searchField].value)) {
+            match = false;
+            return;
+          }
+        });
+
+        if (match) {
+          result.push(currentSeat.number);
+        }
+
         return result;
-      }
+      }, []);
 
-      //Search by first, middle, and last name
-      if (hasData(firstName) && hasData(middleName) && hasData(lastName)) {
-        if (
-          areEqual(currentFirstName, firstName) &&
-          areEqual(currentMiddleName, middleName) &&
-          areEqual(currentLastName, lastName)
-        ) {
-          result.push(currentSeat.number);
-        }
-      }
-
-      //Search by first and midlle name
-      else if (hasData(firstName) && hasData(middleName)) {
-        if (
-          areEqual(currentFirstName, firstName) &&
-          areEqual(currentMiddleName, middleName)
-        ) {
-          result.push(currentSeat.number);
-        }
-      }
-
-      //Search by first and last name
-      else if (hasData(firstName) && hasData(lastName)) {
-        if (
-          areEqual(currentFirstName, firstName) &&
-          areEqual(currentLastName, lastName)
-        ) {
-          result.push(currentSeat.number);
-        }
-      }
-      //Search by middle and last name
-      else if (hasData(middleName) && hasData(lastName)) {
-        if (
-          areEqual(currentMiddleName, middleName) &&
-          areEqual(currentLastName, lastName)
-        ) {
-          result.push(currentSeat.number);
-        }
-      }
-      //Search by first name
-      else if (hasData(firstName)) {
-        if (areEqual(currentFirstName, firstName)) {
-          result.push(currentSeat.number);
-        }
-      }
-      //Search by middle name
-      else if (hasData(middleName)) {
-        if (areEqual(currentMiddleName, middleName)) {
-          result.push(currentSeat.number);
-        }
-      }
-      //Search by last name
-      else if (hasData(lastName)) {
-        if (areEqual(currentLastName, lastName)) {
-          result.push(currentSeat.number);
-        }
-      }
-
-      return result;
-    }, []);
-
-    searchCallback(searchResult);
+      searchCallback(searchResult);
+    }
   };
 
   return (
