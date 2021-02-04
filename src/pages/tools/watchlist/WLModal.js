@@ -161,7 +161,7 @@ const WLModal = props => {
     const documentNumber = vals["documentNumber"];
     const firstName = vals["firstName"];
     const lastName = vals["lastName"];
-    const dob = watchlistDateFormat(vals["dob"]);
+    const dob = vals["dob"];
     const categoryId = vals["categoryId"];
     const action = isEdit ? "Update" : "Create";
     const recordId = mode === "Add" ? "null" : id;
@@ -187,7 +187,7 @@ const WLModal = props => {
               {
                 firstName: firstName,
                 lastName: lastName,
-                dob: timezoneFreeDate(dob),
+                dob: watchlistDateFormat(dob),
                 categoryId: categoryId,
                 id: recordId
               }
