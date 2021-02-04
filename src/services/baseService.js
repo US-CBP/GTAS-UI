@@ -24,6 +24,7 @@ const BASE_URL = window?._env_
   : process.env.REACT_APP_BASE_URL;
 
 export const BASEHEADER = { "Content-Type": JSONUTF8, Router: "api", Accept: AJSON };
+export const BASEFILEHEADER = { Router: "api", Accept: AJSON}
 
 export const stringify = body => {
   return JSON.stringify({ ...body });
