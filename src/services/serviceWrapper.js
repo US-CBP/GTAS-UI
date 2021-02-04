@@ -4,6 +4,7 @@
 
 import { get, put, post, del, putNoId } from "./genericService";
 import BASE_URL, {
+  BASEFILEHEADER,
   BASEHEADER,
   LOGINHEADER,
   SIGNUPHEADER,
@@ -207,7 +208,7 @@ export const attachment = {
       window.open(path, "_self");
     }
   },
-  post: body => post(ATTACHMENTS, "", body),
+  post: body => post(ATTACHMENTS, BASEFILEHEADER, body),
   del: attachmentId => {
     return del(ATTACHMENTS, BASEHEADER, attachmentId);
   }
