@@ -161,6 +161,7 @@ const KIBANAURL = window?._env_
 const App = props => {
   const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
   const NF404 = <Page404 path="page404"></Page404>;
+  const NF404Default = <Page404 path="page404" default></Page404>;
 
   return (
     <React.StrictMode>
@@ -200,6 +201,7 @@ const App = props => {
                         {UNAUTHED}
                         <Home path="/">
                           <Redirect from="/" to={FULLPATH_TO.FLIGHTS} noThrow />
+                          {NF404Default}
                           <RoleAuthenticator
                             path="flights"
                             roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]}
@@ -217,7 +219,9 @@ const App = props => {
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}
                           >
                             <PaxDetail path="/">
-                              <Summary path="summary" default></Summary>
+                              {NF404Default}
+                              <Redirect from="/" to="summary" noThrow />
+                              <Summary path="summary"></Summary>
                               <APIS path="apis"></APIS>
                               <PNR path="pnr"></PNR>
                               <FlightHistory path="flighthistory"></FlightHistory>
@@ -244,6 +248,7 @@ const App = props => {
                               <Watchlist path="/:mode"></Watchlist>
                             </RoleAuthenticator>
                             <About path="about"></About>
+                            <Redirect from="/*" to="/gtas/tools"></Redirect>
                           </Tools>
                           <Search path="search/:searchParam"></Search>
                           <RoleAuthenticator
@@ -369,6 +374,7 @@ const App = props => {
                                   hasExternalLink={true}
                                 ></Auxiliary>
                               )}
+                              <Redirect from="/*" to="/gtas/admin"></Redirect>
                             </Admin>
                           </RoleAuthenticator>
                           {UNAUTHED}
