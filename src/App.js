@@ -207,12 +207,14 @@ const App = props => {
                             roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]}
                           >
                             <Flights path="/"></Flights>
+                            {NF404Default}
                           </RoleAuthenticator>
                           <RoleAuthenticator
                             path="flightpax"
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}
                           >
                             <FlightPax path="/:id"></FlightPax>
+                            {NF404Default}
                           </RoleAuthenticator>
                           <RoleAuthenticator
                             path="paxDetail/:flightId/:paxId"
@@ -235,6 +237,7 @@ const App = props => {
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}
                           >
                             <PriorityVetting path="/"></PriorityVetting>
+                            {NF404Default}
                           </RoleAuthenticator>
                           <Tools path="tools">
                             <Rules path="rules"></Rules>
@@ -245,7 +248,7 @@ const App = props => {
                               roles={[ROLE.ADMIN, ROLE.WLMGR]}
                             >
                               <Watchlist path="/"></Watchlist>
-                              <Watchlist path="/:mode"></Watchlist>
+                              {NF404Default}
                             </RoleAuthenticator>
                             <About path="about"></About>
                             <Redirect from="/*" to="/gtas/tools"></Redirect>
@@ -259,6 +262,7 @@ const App = props => {
                           </RoleAuthenticator>
                           <RoleAuthenticator path="langEditor" roles={[ROLE.ADMIN]}>
                             <LanguageEditor path="/"></LanguageEditor>
+                            {NF404Default}
                           </RoleAuthenticator>
                           <RoleAuthenticator path="admin" roles={[ROLE.ADMIN]}>
                             <Admin path="/" default>
@@ -312,10 +316,16 @@ const App = props => {
                                 icon="fa-list-ul"
                                 path="codeeditor"
                               >
+                                {/* <Redirect from="/" to="country" noThrow></Redirect> */}
+                                {/* <Redirect
+                                  from="undefined"
+                                  to="country"
+                                  noThrow
+                                ></Redirect> */}
+                                <Country path="/"></Country>
                                 <Country
                                   name={<Xl8 xid="app022">Country</Xl8>}
                                   path="country"
-                                  default
                                 ></Country>
                                 <Airport
                                   name={<Xl8 xid="app023">Airport</Xl8>}
@@ -329,6 +339,12 @@ const App = props => {
                                   name={<Xl8 xid="app035">Card Types</Xl8>}
                                   path="cctype"
                                 ></CreditCardType>
+                                <Redirect
+                                  from="/*"
+                                  to="../codeeditor/country"
+                                  noThrow
+                                ></Redirect>
+                                {/* <Page404 path="/:id"></Page404> */}
                               </CodeEditor>
                               <LoaderStats
                                 name={<Xl8 xid="app025">Loader Statistics</Xl8>}
@@ -374,7 +390,7 @@ const App = props => {
                                   hasExternalLink={true}
                                 ></Auxiliary>
                               )}
-                              <Redirect from="/*" to="/gtas/admin"></Redirect>
+                              <Redirect from="/*" to="/gtas/admin" noThrow></Redirect>
                             </Admin>
                           </RoleAuthenticator>
                           {UNAUTHED}
