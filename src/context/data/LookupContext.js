@@ -25,14 +25,14 @@ const setStorage = (key, val) => {
 
 const db = new Dexie(lookupDB);
 db.version(version).stores({
-  status: "&id, name",
-  airport: "id, name, iata, favorite, archived",
-  carrier: "id, name, iata, archived",
-  country: "id, name, iso3, archived",
-  cctype: "id, code, archived",
-  hitcats: "id, label, archived",
-  role: "roleId, roleDescription",
-  notetype: "id, noteType, archived"
+  status: "&id, &name",
+  airport: "&id, &originId, name, iata, favorite, archived",
+  carrier: "&id, &originId, name, iata, archived",
+  country: "&id, &originId, name, iso3, archived",
+  cctype: "&id, &originId, code, archived",
+  hitcats: "&id, label, archived",
+  role: "&roleId, &roleDescription",
+  notetype: "&id, noteType, archived"
 });
 
 db.open();
