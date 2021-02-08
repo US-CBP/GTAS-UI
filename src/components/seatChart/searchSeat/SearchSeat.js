@@ -28,7 +28,6 @@ const SearchSeat = ({ searchCallback, reservedSeats, resetFilterForm }, ref) => 
       searchCallback([]);
     } else {
       const searchResult = asArray(reservedSeats).reduce((result, currentSeat) => {
-        currentSeat["middleName"] = currentSeat.middleInitial;
         let match = true;
 
         searchFields.forEach(searchField => {
