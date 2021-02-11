@@ -3,8 +3,8 @@
 // Please see license.txt for details.
 
 import React, {useContext, useState} from "react";
-import {asArray} from "../../utils/utils";
-import {OverlayTrigger, Row, Tooltip} from "react-bootstrap";
+import {asArray, hasData} from "../../utils/utils";
+import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import {LookupContext} from "../../context/data/LookupContext";
 
 const ToolTipWrapper = props => {
@@ -12,7 +12,7 @@ const ToolTipWrapper = props => {
     const initToolTipState = "Loading...";
     const [toolTipVal, setToolTipVal] = useState(initToolTipState);
 
-    const renderTooltip = (val, props) => (
+    const renderTooltip = (props) => (
         <Tooltip id="tooltipWrapper-tooltip" {...props}>
             {toolTipVal}
         </Tooltip>
@@ -23,7 +23,7 @@ const ToolTipWrapper = props => {
         getCachedKeyValues(codeType).then(types => {
             asArray(types).forEach(type => {
                 if (type.value === val) {
-                    console.log("tooltip found! " + val);
+                    //console.log("tooltip found! " + val);
                     setToolTipVal(type.title);
                 }
             })
@@ -32,21 +32,22 @@ const ToolTipWrapper = props => {
 
     const data = {
         "val": props.data.val,
-        "lookup": props.data.lkup
+        "lookup": props.data.lkup,
+        "placement": hasData(props.data.placement) ? props.data.placement : "top",
+        "show": hasData(props.data.show) ? props.data.show : 250,
+        "hide": hasData(props.data.hide) ? props.data.hide : 400
     };
 
     return (
-        <div>
             <OverlayTrigger
-                placement="top"
-                delay={{show: 250, hide: 400}}
+                placement={data.placement}
+                delay={{show: data.show, hide: data.hide}}
                 onEnter={() => getToolTipValue(data.val, data.lookup)}
                 //onExited={() => setToolTipVal(initToolTipState)}
                 overlay={renderTooltip()}
             >
                 <span>{data.val}</span>
             </OverlayTrigger>
-        </div>
     );
 };
 

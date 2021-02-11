@@ -2,13 +2,13 @@
 //
 // Please see license.txt for details.
 
-import React, {useContext, useEffect, useState} from "react";
-import {Button, Card, OverlayTrigger, Popover, Table, Tooltip} from "react-bootstrap";
+import React from "react";
+import {Button, Card, Table} from "react-bootstrap";
 import "./CardWithTable.scss";
 import { asArray, isShortText, getShortText, alt, hasData } from "../../utils/utils";
 import Overlay from "../overlay/Overlay";
 import {LK} from "../../utils/constants";
-import {LookupContext} from "../../context/data/LookupContext";
+import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 
 const CardWithTable = props => {
   const data = asArray(props.data); //[{key:value}]
@@ -17,33 +17,11 @@ const CardWithTable = props => {
   const textDisplayLimit = 30;
   const className = `${alt(props.className)} card-with-table`;
   const toolTipLKMap = { "issuanceCountry":LK.COUNTRY, "originCountry":LK.COUNTRY, "origin":LK.AIRPORT, "destinationCountry":LK.COUNTRY,
-    "destination":LK.AIRPORT, "carrier":LK.CARRIER, "country":LK.COUNTRY, "residencyCountry":LK.COUNTRY, "location":LK.AIRPORT};
+    "destination":LK.AIRPORT, "carrier":LK.CARRIER, "country":LK.COUNTRY, "residencyCountry":LK.COUNTRY, "location":LK.AIRPORT, "portOfFirstArrival":LK.AIRPORT};
   const needsTooltip = (key) => {
     if(typeof toolTipLKMap[key] != "undefined") return true;
     return false;
   }
-  const { getCachedKeyValues } = useContext(LookupContext);
-  const initToolTipState = "Loading...";
-  const [toolTipVal, setToolTipVal] = useState(initToolTipState);
-
-  const renderTooltip = (val, props) => (
-      <Tooltip id="cardwithtbl-tooltip" {...props}>
-        {toolTipVal}
-      </Tooltip>
-  );
-
-  const getToolTipValue = (val, codeType) => {
-    setToolTipVal(initToolTipState);
-    getCachedKeyValues(codeType).then(types => {
-      asArray(types).forEach(type => {
-        if (type.value === val) {
-          console.log("tooltip found! " + val);
-          setToolTipVal(type.title);
-        }
-      })
-    })
-  };
-
 
   const tableHeaders = Object.keys(headers).map(key => {
     return <th key={key}>{headers[key]}</th>;
@@ -57,18 +35,11 @@ const CardWithTable = props => {
       const triggerTooltip = needsTooltip(key);
       return (
           triggerTooltip ? [
-                <OverlayTrigger
-                    placement="top"
-                    delay={{ show: 250, hide: 400 }}
-                    key={index}
-                    onEnter={() => getToolTipValue(td, toolTipLKMap[key])}
-                    //onExit={() => setToolTipVal("Loading...")}
-                    overlay={renderTooltip()}
-                >
-                  <td className="cardwithtable-tooltip">
-                    {getShortText(td, textDisplayLimit)}
-                  </td>
-                </OverlayTrigger>
+                <td className="cardwithtable-tooltip">
+                  <ToolTipWrapper data={{val:td, lkup:toolTipLKMap[key]}}>
+                      {getShortText(td, textDisplayLimit)}
+                  </ToolTipWrapper>
+                </td>
               ] :
               [
         <Overlay
