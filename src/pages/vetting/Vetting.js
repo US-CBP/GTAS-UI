@@ -247,7 +247,7 @@ const Vetting = props => {
 
   const getInitialState = () => {
     return initialParamState;
-  }
+  };
 
   const changeStatus = (paxId, status) => {
     const newStatus =
@@ -507,6 +507,7 @@ const Vetting = props => {
                 inputStyle="form-select"
                 datafield="startHourRange"
                 options={[
+                  { value: "0", label: "0 hour" },
                   { value: "6", label: "-6 hours" },
                   { value: "12", label: "-12 hours" },
                   { value: "24", label: "-24 hours" },
@@ -526,6 +527,7 @@ const Vetting = props => {
                 inputStyle="form-select"
                 datafield="endHourRange"
                 options={[
+                  { value: "0", label: "0 hour" },
                   { value: "6", label: "+6 hours" },
                   { value: "12", label: "+12 hours" },
                   { value: "24", label: "+24 hours" },
