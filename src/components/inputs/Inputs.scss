@@ -58,6 +58,9 @@
 .react-datetime-picker__inputGroup__input:focus {
   border: 0;
 }
+.react-calendar__navigation button {
+  min-width: unset !important;
+}
 .form-input:focus {
   border-color: #80bdff;
   outline: 0;
