@@ -221,8 +221,8 @@ const Vetting = props => {
 
   let startDate = new Date();
   let endDate = new Date();
-  endDate.setDate(endDate.getDate() + 7);
-  startDate.setHours(startDate.getHours() - 7);
+  endDate.setDate(endDate.getDate() + 4);
+  startDate.setHours(startDate.getHours() - 6);
   const [data, setData] = useState();
   const [hitCategoryOptions, setHitCategoryOptions] = useState([]);
   const [filterFormKey, setFilterFormKey] = useState(0);
@@ -281,7 +281,7 @@ const Vetting = props => {
 
     if (!showDateTimePicker.current) {
       //passed range values insted of date
-      const startRange = fields["startHourRange"] || 96; // default to 96 hours
+      const startRange = fields["startHourRange"] || 6; // default to -6 hours
       const endRange = fields["endHourRange"] || 96;
       let etaEnd = new Date();
       let etaStart = new Date();
@@ -503,7 +503,7 @@ const Vetting = props => {
                 labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
                 inputtype="select"
                 name="startHourRange"
-                inputval="96"
+                inputval="6"
                 inputStyle="form-select"
                 datafield="startHourRange"
                 options={[
