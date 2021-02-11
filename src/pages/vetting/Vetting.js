@@ -246,6 +246,8 @@ const Vetting = props => {
   // };
 
   const getInitialState = () => {
+    showDateTimePicker.current = false;
+    setFilterFormKey(filterFormKey + 1);
     return initialParamState;
   };
 
