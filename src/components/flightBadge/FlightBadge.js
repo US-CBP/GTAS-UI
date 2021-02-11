@@ -2,14 +2,36 @@
 //
 // Please see license.txt for details.
 
-import React from "react";
-import { localeMonthDayTime, hasData, alt } from "../../utils/utils";
-import { Row } from "react-bootstrap";
+import React, {useContext, useState} from "react";
+import {localeMonthDayTime, hasData, alt, asArray} from "../../utils/utils";
+import {OverlayTrigger, Row, Tooltip} from "react-bootstrap";
 import "./FlightBadge.scss";
+import {LookupContext} from "../../context/data/LookupContext";
+import {LK} from "../../utils/constants";
 
 const FlightBadge = props => {
   const res = props.data;
   const style = `flight-badge ${alt(props.className, "reg")}`;
+  const { getCachedKeyValues } = useContext(LookupContext);
+  const initToolTipState = "Loading...";
+  const [toolTipVal, setToolTipVal] = useState(initToolTipState);
+
+  const renderTooltip = (val, props) => (
+      <Tooltip id="cardwithtbl-tooltip" {...props}>
+        {toolTipVal}
+      </Tooltip>
+  );
+
+  const getToolTipValue = (val, codeType) => {
+    getCachedKeyValues(codeType).then(types => {
+      asArray(types).forEach(type => {
+        if (type.value === val) {
+          console.log("tooltip found! " + val);
+          setToolTipVal(type.title);
+        }
+      })
+    })
+  };
 
   if (!hasData(props.data?.flightNumber)) return <></>;
 
@@ -31,13 +53,30 @@ const FlightBadge = props => {
       <div className="flight-text">
         <Row flex="true" no-wrap="true" className="flight-badge-row">
           <span className="img-departure"></span>
-          <span className="width40">{departure[0]}</span>
+          <OverlayTrigger
+              placement="top"
+              delay={{ show: 250, hide: 400 }}
+              onEnter={() => getToolTipValue(departure[0], LK.AIRPORT)}
+              onExited={() => setToolTipVal(initToolTipState)}
+              overlay={renderTooltip()}
+          >
+            <span className="width40">{departure[0]}</span>
+          </OverlayTrigger>
           <span>{departure[1]}</span>
           <span>{departure[2]}</span>
         </Row>
         <Row flex="true" no-wrap="true" className="flight-badge-row">
           <span className="img-arrival"></span>
-          <span className="width40">{arrival[0]}</span>
+
+          <OverlayTrigger
+              placement="top"
+              delay={{ show: 250, hide: 400 }}
+              onEnter={() => getToolTipValue(arrival[0], LK.AIRPORT)}
+              onExited={() => setToolTipVal(initToolTipState)}
+              overlay={renderTooltip()}
+          >
+            <span className="width40">{arrival[0]}</span>
+          </OverlayTrigger>
           <span>{arrival[1]}</span>
           <span>{arrival[2]}</span>
         </Row>
