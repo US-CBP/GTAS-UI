@@ -29,6 +29,7 @@ import {LK, ROLE} from "../../utils/constants";
 import {Col, Tabs, Tab, OverlayTrigger, Popover, Tooltip} from "react-bootstrap";
 import "./FlightPax.css";
 import {LookupContext} from "../../context/data/LookupContext";
+import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 
 const FlightPax = props => {
   const cb = () => {};
@@ -39,27 +40,6 @@ const FlightPax = props => {
   const [tab, setTab] = useState("all");
   const [key, setKey] = useState(0);
   const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
-  const { getCachedKeyValues } = useContext(LookupContext);
-  const initToolTipState = "Loading...";
-  const [toolTipVal, setToolTipVal] = useState(initToolTipState);
-
-
-  const renderTooltip = (val, props) => (
-      <Tooltip id="flightpaxtbl-tooltip" {...props}>
-        {toolTipVal}
-      </Tooltip>
-  );
-
-  const getToolTipValue = (val, codeType) => (
-      getCachedKeyValues(codeType).then( types =>{
-        asArray(types).forEach(type=>{
-          if(type.value === val){
-            console.log("tooltip found! "+val);
-            setToolTipVal(type.title);
-          }
-        })
-      })
-  );
 
   const hasAnyHits = item => {
     if (
@@ -248,15 +228,11 @@ const FlightPax = props => {
       Header: ["fp020", "Nationality"],
       disableGroupBy: true,
       Cell: ({row}) => { return (
-        <OverlayTrigger
-            placement="right"
-            delay={{ show: 250, hide: 400 }}
-            onEnter={() => getToolTipValue(row.original.nationality, LK.COUNTRY)}
-            overlay={renderTooltip()}
-         >
-        <span>{row.original.nationality}</span>
-        </OverlayTrigger>
-        );
+            <ToolTipWrapper
+                data={{val:row.original.nationality, lkup:LK.COUNTRY}}>
+              className="sm"
+            </ToolTipWrapper>
+        )
       }
     },
     { Accessor: "coTravellerId", Xl8: true, Header: ["fp021", "PNR Record Loc."] }

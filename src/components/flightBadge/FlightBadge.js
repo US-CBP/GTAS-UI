@@ -23,6 +23,7 @@ const FlightBadge = props => {
   );
 
   const getToolTipValue = (val, codeType) => {
+    setToolTipVal(initToolTipState);
     getCachedKeyValues(codeType).then(types => {
       asArray(types).forEach(type => {
         if (type.value === val) {
@@ -57,7 +58,7 @@ const FlightBadge = props => {
               placement="top"
               delay={{ show: 250, hide: 400 }}
               onEnter={() => getToolTipValue(departure[0], LK.AIRPORT)}
-              onExited={() => setToolTipVal(initToolTipState)}
+              //onExited={() => setToolTipVal(initToolTipState)}
               overlay={renderTooltip()}
           >
             <span className="width40">{departure[0]}</span>
@@ -72,7 +73,7 @@ const FlightBadge = props => {
               placement="top"
               delay={{ show: 250, hide: 400 }}
               onEnter={() => getToolTipValue(arrival[0], LK.AIRPORT)}
-              onExited={() => setToolTipVal(initToolTipState)}
+              //onExited={() => setToolTipVal(initToolTipState)}
               overlay={renderTooltip()}
           >
             <span className="width40">{arrival[0]}</span>

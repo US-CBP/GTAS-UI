@@ -23,6 +23,7 @@ import {TIME, ROLE, LK} from "../../utils/constants";
 import {Col, Tabs, Tab, Tooltip, OverlayTrigger, Button, Popover} from "react-bootstrap";
 import "./Flights.css";
 import {LookupContext} from "../../context/data/LookupContext";
+import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 
 const Flights = props => {
   const cb = () => {};
@@ -31,8 +32,6 @@ const Flights = props => {
     pageSize: 50,
     sortBy: [{ id: "timer", desc: false }]
   };
-  const initToolTipState = "Loading...";
-  const { getCachedKeyValues } = useContext(LookupContext);
 
   const { getUserState } = useContext(UserContext);
   const [data, setData] = useState();
@@ -41,42 +40,6 @@ const Flights = props => {
   const [tab, setTab] = useState("all");
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
-  const [toolTipVal, setToolTipVal] = useState(initToolTipState);
-
-
-  const UpdatingTooltip = React.forwardRef(
-      ({ popper, children, show: _, ...props }, ref) => {
-        useEffect(() => {
-          console.log('updating!');
-          popper.scheduleUpdate();
-        }, [children, popper, toolTipVal]);
-
-        return (
-            <Popover ref={ref} content {...props}>
-              {children}
-            </Popover>
-        );
-      },
-  );
-
-  const renderTooltip = (val, props) => (
-      <Tooltip id="flightstbl-tooltip" key={toolTipVal} {...props}>
-        {toolTipVal}
-      </Tooltip>
-  );
-
-  const getToolTipValue = (val, codeType) => {
-    //setToolTipVal(initToolTipState);
-      getCachedKeyValues(codeType).then( types =>{
-        asArray(types).forEach(type=>{
-          if(type.value === val){
-            console.log("tooltip found! "+val);
-            setToolTipVal(type.title);
-            //setTablekey(tablekey+1);
-          }
-        })
-      })
-  };
 
   const hasAnyHits = item => {
     if (
@@ -238,26 +201,21 @@ const Flights = props => {
     { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl019", "Flight"]},
     { Accessor: "origin", Xl8: true, Header: ["fl020", "Origin"],
       Cell: ({row}) => (
-          <OverlayTrigger
-              placement="right"
-              delay={{ show: 250, hide: 400 }}
-              onEnter={() => getToolTipValue(row.original.origin, LK.AIRPORT)}
-              //onExited={() => setToolTipVal(initToolTipState)}
-              overlay={renderTooltip()}
-          >
-            <span>{row.original.origin}</span>
-          </OverlayTrigger>
+          <>
+            <ToolTipWrapper
+                data={{val:row.original.origin, lkup:LK.AIRPORT}}>
+              className="sm"
+            </ToolTipWrapper>
+          </>
       )},
     { Accessor: "destination", Xl8: true, Header: ["fl021", "Destination"],
       Cell: ({row}) => (
-          <OverlayTrigger
-              placement="right"
-              delay={{ show: 250, hide: 400 }}
-              onEnter={() => getToolTipValue(row.original.destination, LK.AIRPORT)}
-              overlay={renderTooltip()}
-          >
-            <div>{row.original.destination}</div>
-          </OverlayTrigger>
+          <>
+            <ToolTipWrapper
+            data={{val:row.original.destination, lkup:LK.AIRPORT}}>
+              className="sm"
+            </ToolTipWrapper>
+          </>
       )},
     { Accessor: "direction", Xl8: true, Header: ["fl022", "Direction"]},
   ];
