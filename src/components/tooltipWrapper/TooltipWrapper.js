@@ -21,12 +21,10 @@ const ToolTipWrapper = props => {
     const getToolTipValue = (val, codeType) => {
         setToolTipVal(initToolTipState);
         getCachedKeyValues(codeType).then(types => {
-            asArray(types).forEach(type => {
-                if (type.value === val) {
-                    //console.log("tooltip found! " + val);
-                    setToolTipVal(type.title);
-                }
-            })
+            const type = asArray(types).find( t => {
+                return t.value === val;
+            });
+            setToolTipVal(type.title);
         })
     };
 

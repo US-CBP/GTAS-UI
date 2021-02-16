@@ -233,7 +233,8 @@ const FlightPax = props => {
               className="sm"
             </ToolTipWrapper>
         )
-      }
+      },
+      Aggregated: () => ``
     },
     { Accessor: "coTravellerId", Xl8: true, Header: ["fp021", "PNR Record Loc."] }
   ];
