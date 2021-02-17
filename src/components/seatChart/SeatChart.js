@@ -125,7 +125,7 @@ const SeatChart = ({ location }) => {
     },
     {
       label: <Xl8 xid="seat009">Middle Name</Xl8>,
-      value: selectedSeatInfo.middleInitial
+      value: selectedSeatInfo.middleName
     },
     {
       label: <Xl8 xid="seat010">Seat Number</Xl8>,
