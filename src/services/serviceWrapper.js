@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import { get, put, post, del, putNoId } from "./genericService";
+import {get, put, post, del, putNoId, downloadWrap} from "./genericService";
 import BASE_URL, {
   BASEFILEHEADER,
   BASEHEADER,
@@ -203,9 +203,12 @@ export const attachment = {
       const path = ATTACHMENTSMETA + `?paxId=${paxId}`;
       return get(path, BASEHEADER);
     },
-    download: attachmentId => {
+    download: (attachmentId, fileName) => {
       const path = DOWNLOADATTACHMENT + `?attachmentId=${attachmentId}`;
-      window.open(path, "_self");
+      get(path, BASEFILEHEADER, true).then(res =>{
+        downloadWrap(res, fileName);
+      });
+      //window.open(path, "_self");
     }
   },
   post: body => post(ATTACHMENTS, BASEFILEHEADER, body),
@@ -319,7 +322,12 @@ export const manualHit = {
 
 export const logfile = {
   get: (id, params) => get(LOGFILE, BASEHEADER, id, params),
-  download: params => window.open(LOGFILE + params, "_self")
+  download: (params, fileName) => {
+    get(LOGFILE+params, BASEHEADER).then(res=>{
+      downloadWrap(res, fileName);
+    });
+    //window.open(LOGFILE + params, "_self")
+  }
 };
 
 export const changePassword = {
