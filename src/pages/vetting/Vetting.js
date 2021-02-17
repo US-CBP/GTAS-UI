@@ -221,8 +221,8 @@ const Vetting = props => {
 
   let startDate = new Date();
   let endDate = new Date();
-  endDate.setDate(endDate.getDate() + 7);
-  startDate.setHours(startDate.getHours() - 7);
+  endDate.setDate(endDate.getDate() + 4);
+  startDate.setHours(startDate.getHours() - 6);
   const [data, setData] = useState();
   const [hitCategoryOptions, setHitCategoryOptions] = useState([]);
   const [filterFormKey, setFilterFormKey] = useState(0);
@@ -246,8 +246,10 @@ const Vetting = props => {
   // };
 
   const getInitialState = () => {
+    showDateTimePicker.current = false;
+    setFilterFormKey(filterFormKey + 1);
     return initialParamState;
-  }
+  };
 
   const changeStatus = (paxId, status) => {
     const newStatus =
@@ -281,7 +283,7 @@ const Vetting = props => {
 
     if (!showDateTimePicker.current) {
       //passed range values insted of date
-      const startRange = fields["startHourRange"] || 96; // default to 96 hours
+      const startRange = fields["startHourRange"] || 6; // default to -6 hours
       const endRange = fields["endHourRange"] || 96;
       let etaEnd = new Date();
       let etaStart = new Date();
@@ -503,10 +505,11 @@ const Vetting = props => {
                 labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
                 inputtype="select"
                 name="startHourRange"
-                inputval="96"
+                inputval="6"
                 inputStyle="form-select"
                 datafield="startHourRange"
                 options={[
+                  { value: "0", label: "0 hour" },
                   { value: "6", label: "-6 hours" },
                   { value: "12", label: "-12 hours" },
                   { value: "24", label: "-24 hours" },
@@ -526,6 +529,7 @@ const Vetting = props => {
                 inputStyle="form-select"
                 datafield="endHourRange"
                 options={[
+                  { value: "0", label: "0 hour" },
                   { value: "6", label: "+6 hours" },
                   { value: "12", label: "+12 hours" },
                   { value: "24", label: "+24 hours" },
