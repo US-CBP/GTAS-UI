@@ -13,27 +13,6 @@ import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 const FlightBadge = props => {
   const res = props.data;
   const style = `flight-badge ${alt(props.className, "reg")}`;
-  const { getCachedKeyValues } = useContext(LookupContext);
-  const initToolTipState = "Loading...";
-  const [toolTipVal, setToolTipVal] = useState(initToolTipState);
-
-  const renderTooltip = (val, props) => (
-      <Tooltip id="cardwithtbl-tooltip" {...props}>
-        {toolTipVal}
-      </Tooltip>
-  );
-
-  const getToolTipValue = (val, codeType) => {
-    setToolTipVal(initToolTipState);
-    getCachedKeyValues(codeType).then(types => {
-      asArray(types).forEach(type => {
-        if (type.value === val) {
-          console.log("tooltip found! " + val);
-          setToolTipVal(type.title);
-        }
-      })
-    })
-  };
 
   if (!hasData(props.data?.flightNumber)) return <></>;
 
