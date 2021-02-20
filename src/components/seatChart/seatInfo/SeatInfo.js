@@ -49,7 +49,7 @@ const SeatInfo = props => {
             alt="Middle Name"
             inputStyle="big-name-sidebar"
             inputtype="label"
-            inputval={selectedSeatInfo.middleInitial}
+            inputval={selectedSeatInfo.middleName}
           />
         </Col>
       </Row>

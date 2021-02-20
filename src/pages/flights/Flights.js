@@ -19,9 +19,19 @@ import { UserContext } from "../../context/user/UserContext";
 import { Link } from "@reach/router";
 import { flights } from "../../services/serviceWrapper";
 import { hasData, alt, localeDate, asArray, aboveZero, lpad5 } from "../../utils/utils";
-import { TIME, ROLE } from "../../utils/constants";
-import { Col, Tabs, Tab } from "react-bootstrap";
+import { TIME, ROLE, LK } from "../../utils/constants";
+import {
+  Col,
+  Tabs,
+  Tab,
+  Tooltip,
+  OverlayTrigger,
+  Button,
+  Popover
+} from "react-bootstrap";
 import "./Flights.css";
+import { LookupContext } from "../../context/data/LookupContext";
+import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 
 const Flights = props => {
   const cb = () => {};
@@ -197,8 +207,30 @@ const Flights = props => {
       )
     },
     { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl019", "Flight"] },
-    { Accessor: "origin", Xl8: true, Header: ["fl020", "Origin"] },
-    { Accessor: "destination", Xl8: true, Header: ["fl021", "Destination"] },
+    {
+      Accessor: "origin",
+      Xl8: true,
+      Header: ["fl020", "Origin"],
+      Cell: ({ row }) => (
+        <>
+          <ToolTipWrapper data={{ val: row.original.origin, lkup: LK.AIRPORT }}>
+            className="sm"
+          </ToolTipWrapper>
+        </>
+      )
+    },
+    {
+      Accessor: "destination",
+      Xl8: true,
+      Header: ["fl021", "Destination"],
+      Cell: ({ row }) => (
+        <>
+          <ToolTipWrapper data={{ val: row.original.destination, lkup: LK.AIRPORT }}>
+            className="sm"
+          </ToolTipWrapper>
+        </>
+      )
+    },
     { Accessor: "direction", Xl8: true, Header: ["fl022", "Direction"] }
   ];
 

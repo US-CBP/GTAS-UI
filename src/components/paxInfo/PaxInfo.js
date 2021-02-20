@@ -14,6 +14,8 @@ import {
 } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./PaxInfo.scss";
+import { LK } from "../../utils/constants";
+import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 
 const PaxInfo = props => {
   const getPaxInfo = res => {
@@ -28,7 +30,14 @@ const PaxInfo = props => {
 
       { label: <Xl8 xid="pd011">DOB</Xl8>, value: timezoneFreeDate(res.dob) },
       { label: <Xl8 xid="pd012">Gender</Xl8>, value: res.gender },
-      { label: <Xl8 xid="pd013">Nationality</Xl8>, value: res.nationality },
+      {
+        label: <Xl8 xid="pd013">Nationality</Xl8>,
+        value: (
+          <ToolTipWrapper
+            data={{ val: res.nationality, lkup: LK.COUNTRY }}
+          ></ToolTipWrapper>
+        )
+      },
       { label: <Xl8 xid="pd014">Residence</Xl8>, value: res.residenceCountry },
       {
         label: <Xl8 xid="pd015">Seat</Xl8>,

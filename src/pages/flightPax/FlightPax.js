@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
@@ -25,9 +25,11 @@ import {
   lpad5,
   sortableDate
 } from "../../utils/utils";
-import { ROLE } from "../../utils/constants";
-import { Col, Tabs, Tab } from "react-bootstrap";
+import { LK, ROLE } from "../../utils/constants";
+import { Col, Tabs, Tab, OverlayTrigger, Popover, Tooltip } from "react-bootstrap";
 import "./FlightPax.css";
+import { LookupContext } from "../../context/data/LookupContext";
+import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 
 const FlightPax = props => {
   const cb = () => {};
@@ -224,7 +226,15 @@ const FlightPax = props => {
       Accessor: "nationality",
       Xl8: true,
       Header: ["fp020", "Nationality"],
-      disableGroupBy: true
+      disableGroupBy: true,
+      Cell: ({ row }) => {
+        return (
+          <ToolTipWrapper data={{ val: row.original.nationality, lkup: LK.COUNTRY }}>
+            className="sm"
+          </ToolTipWrapper>
+        );
+      },
+      Aggregated: () => ``
     },
     { Accessor: "coTravellerId", Xl8: true, Header: ["fp021", "PNR Record Loc."] }
   ];

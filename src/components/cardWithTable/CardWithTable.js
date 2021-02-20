@@ -7,6 +7,8 @@ import { Button, Card, Table } from "react-bootstrap";
 import "./CardWithTable.scss";
 import { asArray, isShortText, getShortText, alt, hasData } from "../../utils/utils";
 import Overlay from "../overlay/Overlay";
+import { LK } from "../../utils/constants";
+import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 
 const CardWithTable = props => {
   const data = asArray(props.data); //[{key:value}]
@@ -14,6 +16,22 @@ const CardWithTable = props => {
   const cb = props.callback ? props.callback : () => {}; //callback may not be passed as a prop
   const textDisplayLimit = 30;
   const className = `${alt(props.className)} card-with-table`;
+  const toolTipLKMap = {
+    issuanceCountry: LK.COUNTRY,
+    originCountry: LK.COUNTRY,
+    origin: LK.AIRPORT,
+    destinationCountry: LK.COUNTRY,
+    destination: LK.AIRPORT,
+    carrier: LK.CARRIER,
+    country: LK.COUNTRY,
+    residencyCountry: LK.COUNTRY,
+    location: LK.AIRPORT,
+    portOfFirstArrival: LK.AIRPORT
+  };
+  const needsTooltip = key => {
+    if (typeof toolTipLKMap[key] != "undefined") return true;
+    return false;
+  };
 
   const tableHeaders = Object.keys(headers).map(key => {
     return <th key={key}>{headers[key]}</th>;
@@ -21,20 +39,29 @@ const CardWithTable = props => {
 
   const tableRows = data.map((row, index) => {
     let highlightRow = row.highlightRow;
-    const tableData = Object.keys(headers).map(key => {
+    const tableData = Object.keys(headers).map((key, index) => {
       const td = row[key];
       const triggerOverlay = !isShortText(td, textDisplayLimit);
-      return (
-        <Overlay
-          trigger={triggerOverlay ? ["click", "hover"] : ""}
-          key={key}
-          content={td}
-        >
-          <td className={triggerOverlay ? "as-info" : ""}>
-            {getShortText(td, textDisplayLimit)}
-          </td>
-        </Overlay>
-      );
+      const triggerTooltip = needsTooltip(key);
+      return triggerTooltip
+        ? [
+            <td className="cardwithtable-tooltip">
+              <ToolTipWrapper data={{ val: td, lkup: toolTipLKMap[key] }}>
+                {getShortText(td, textDisplayLimit)}
+              </ToolTipWrapper>
+            </td>
+          ]
+        : [
+            <Overlay
+              trigger={triggerOverlay ? ["click", "hover"] : ""}
+              key={key}
+              content={td}
+            >
+              <td className={triggerOverlay ? "as-info" : ""}>
+                {getShortText(td, textDisplayLimit)}
+              </td>
+            </Overlay>
+          ];
     });
 
     return (
