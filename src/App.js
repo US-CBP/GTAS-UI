@@ -316,12 +316,6 @@ const App = props => {
                                 icon="fa-list-ul"
                                 path="codeeditor"
                               >
-                                {/* <Redirect from="/" to="country" noThrow></Redirect> */}
-                                {/* <Redirect
-                                  from="undefined"
-                                  to="country"
-                                  noThrow
-                                ></Redirect> */}
                                 <Country path="/"></Country>
                                 <Country
                                   name={<Xl8 xid="app022">Country</Xl8>}
