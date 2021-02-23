@@ -29,7 +29,7 @@ const UploadAttachment = props => {
   };
 
   const downloadAttachment = row => {
-    attachment.get.download(row.id);
+    attachment.get.download(row.id, row.filename);
   };
 
   useEffect(() => {

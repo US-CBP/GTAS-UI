@@ -31,6 +31,7 @@ export const GenericService = async props => {
       if (response.ok) {
         if (response.url.endsWith("/authenticate")) return response;
         if (response.url.includes("paxdetailreport")) return response.arrayBuffer();
+        if (response.url.includes("attachmentId") || (response.url.includes("logs") && props.uri.split("/").length === 8)) return response.blob();
         return response.json().then(res => res.data || res || response);
       } else {
         return response;
@@ -84,3 +85,15 @@ export const del = (uri, headers, id) => {
     headers: headers
   });
 };
+
+export const downloadWrap = (blob, fileName) => {
+  var tempEl = document.createElement("a");
+  document.body.appendChild(tempEl);
+  tempEl.style = "display: none";
+  var url = window.URL.createObjectURL(blob);
+  tempEl.href = url;
+  tempEl.download = fileName;
+  tempEl.click();
+  window.URL.revokeObjectURL(url);
+  tempEl.remove();
+}

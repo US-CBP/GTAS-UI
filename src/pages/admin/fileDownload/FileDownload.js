@@ -62,7 +62,7 @@ const FileDownload = ({ name }) => {
   };
 
   const downloadFile = rowDetails => {
-    logfile.download(currentLogType + "/" + rowDetails.fileName);
+    logfile.download(currentLogType + "/" + rowDetails.fileName, rowDetails.fileName);
   };
 
   const headers = [
