@@ -4,7 +4,7 @@
 
 import React from "react";
 import { Row } from "react-bootstrap";
-import { alt } from "../../utils/utils";
+import { alt, hasData } from "../../utils/utils";
 import "./CountdownBadge.css";
 import Xl8 from "../xl8/Xl8";
 
@@ -54,24 +54,24 @@ const CountdownBadge = props => {
   const h = <Xl8 xid="cdb002">h</Xl8>;
   const m = <Xl8 xid="cdb003">m</Xl8>;
   const formatedDays = days ? (
-    <span>
-      <span className="">{days}</span>
+    <span className="">
+      {days}
       {d}
     </span>
   ) : (
     days
   );
   const formatedHours = hours ? (
-    <span>
-      <span className="">{hours}</span>
+    <span className="">
+      {hours}
       {h}
     </span>
   ) : (
     hours
   );
   const formatedMinutes = minutes ? (
-    <span>
-      <span className="">{minutes}</span>
+    <span className="">
+      {minutes}
       {m}
     </span>
   ) : (
@@ -89,13 +89,18 @@ const CountdownBadge = props => {
     return "bordered cdb-red";
   };
 
+  const getSpanStyle = val => {
+    if (hasData(val)) return "cdb-days-div";
+    return "";
+  };
+
   return (
     <Row flex="true" no-wrap="true" className={`cdb-row sm ${getStyle()}`}>
       <span className={getIconClass()}></span>
       <span>{sign}</span>
-      <span className="cdb-days-div">{formatedDays}</span>
-      <span className="cdb-days-div">{formatedHours}</span>
-      <span className="cdb-days-div">{formatedMinutes}</span>
+      <span className={getSpanStyle(formatedDays)}>{formatedDays}</span>
+      <span className={getSpanStyle(formatedHours)}>{formatedHours}</span>
+      <span className={getSpanStyle(minutes)}>{formatedMinutes}</span>
     </Row>
   );
 };
