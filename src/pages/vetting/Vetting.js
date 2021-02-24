@@ -336,8 +336,6 @@ const Vetting = props => {
       }
     });
 
-    // console.log(paramObject);
-
     return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 
