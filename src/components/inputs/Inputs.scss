@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 %input-css-properties {
   background-clip: padding-box;
   border-radius: 4px;
@@ -53,6 +57,9 @@
 }
 .react-datetime-picker__inputGroup__input:focus {
   border: 0;
+}
+.react-calendar__navigation button {
+  min-width: unset !important;
 }
 .form-input:focus {
   border-color: #80bdff;

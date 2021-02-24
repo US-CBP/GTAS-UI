@@ -1,18 +1,21 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState } from "react";
 import Table from "../../../components/table/Table";
 import Main from "../../../components/main/Main";
 import { querypax } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
+import Toast from "../../../components/toast/Toast";
 import Xl8 from "../../../components/xl8/Xl8";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { Link } from "@reach/router";
-// import { Container } from "react-bootstrap";
-import { asArray, getAge, alt, localeDateOnly, localeDate } from "../../../utils/utils";
+import { asArray, getAge, alt, localeDate, timezoneFreeDate } from "../../../utils/utils";
 import { ROLE } from "../../../utils/constants";
-import Toast from "../../../components/toast/Toast";
 
 const QRDetails = props => {
-  const cb = function(result) {};
+  const cb = () => {};
   const [data, setData] = useState();
   const [key, setKey] = useState(0);
   const [showToast, setShowToast] = useState(false);
@@ -31,7 +34,7 @@ const QRDetails = props => {
       item.docNumber = item.documents?.length > 0 ? item.documents[0].documentNumber : ""; // TODO Documents: shd show all or none here.
       item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
       item.dobStr = new Date(item.dob).toISOString().slice(0, -14);
-      item.dobAge = `${alt(localeDateOnly(item.dobStr))} ${item.age}`;
+      item.dobAge = `${alt(timezoneFreeDate(item.dobStr))} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
       item.flight = item.carrier + item.flightNumber;

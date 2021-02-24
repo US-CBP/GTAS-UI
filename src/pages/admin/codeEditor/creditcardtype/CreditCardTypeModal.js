@@ -1,18 +1,23 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import { Button, Container } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
 import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
-import { codeEditor } from "../../../../services/serviceWrapper";
+import { codeEditor } from "../../../../services/lookupService";
 import { ACTION } from "../../../../utils/constants";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../../components/modal/Modal";
+const type = "cctype";
 
 const CreditCardTypeModal = props => {
-  const cb = function(result) {};
+  const cb = () => {};
   const data = props.editRowDetails || {};
 
   const postSubmit = (status = ACTION.CANCEL, results) => {
@@ -48,8 +53,8 @@ const CreditCardTypeModal = props => {
     customButtons.push(
       <Button
         type="button"
-        className="m-2 outline-dark-outline"
-        variant="outline-dark"
+        className="m-2"
+        variant="outline-danger"
         key="delete"
         onClick={() => props.actionCallback(ACTION.DELETE)}
       >
@@ -74,7 +79,9 @@ const CreditCardTypeModal = props => {
         <Container fluid>
           <Form
             submitService={
-              props.isEdit ? codeEditor.put.updateCctype : codeEditor.post.createCctype
+              props.isEdit
+                ? body => codeEditor.put.update(type, body)
+                : body => codeEditor.post(type, body)
             }
             callback={postSubmit}
             action="add"
@@ -86,24 +93,24 @@ const CreditCardTypeModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="cct002">Code:</Xl8>}
-              inputType="text"
+              inputtype="text"
               max-length="2"
               name="code"
               required={true}
               maxlength="2"
               alt="nothing"
-              inputVal={data.code?.toUpperCase()}
+              inputval={data.code?.toUpperCase()}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="cct003">Description:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="description"
               required={true}
               alt="nothing"
-              inputVal={data.description}
+              inputval={data.description}
               callback={cb}
               spacebetween
             />

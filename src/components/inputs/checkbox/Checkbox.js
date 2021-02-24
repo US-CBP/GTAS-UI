@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
@@ -25,8 +29,8 @@ const CheckboxInput = props => {
         name={props.name}
         onChange={onChange}
         className={style}
-        type={props.inputType}
-        value={props.inputVal}
+        type={props.inputtype}
+        value={props.inputval}
         checked={selected}
         disabled={props.disabled || props.readOnly}
       />
@@ -35,8 +39,8 @@ const CheckboxInput = props => {
 };
 
 CheckboxInput.propTypes = {
-  inputType: PropTypes.oneOf(["checkbox", "radio", "toggle"]),
-  inputVal: PropTypes.any,
+  inputtype: PropTypes.oneOf(["checkbox", "radio", "toggle"]),
+  inputval: PropTypes.any,
   name: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
   // options: PropTypes.array.isRequired,
@@ -45,6 +49,6 @@ CheckboxInput.propTypes = {
   callback: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   readOnly: PropTypes.bool,
-  className: PropTypes.bool
+  className: PropTypes.string
 };
 export default CheckboxInput;

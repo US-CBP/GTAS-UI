@@ -1,3 +1,9 @@
+<!--
+ All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+
+ Please see license.txt for details.
+-->
+
 # serviceWrapper is the set of utils that abstract details about specific endpoints and build the crud operations that
 
 # should be exposed for each. An entity represents each endpoint, If the existing crud ops cover all use cases, you

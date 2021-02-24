@@ -1,29 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import "./Seat.scss";
 import { hasData } from "../../../utils/utils";
 import SeatInfoModal from "./SeatInfoModal";
 
-const Seat = props => {
-  const reserved = hasData(props.seatInfo);
+const Seat = ({ seatInfo, selected, className, seatNumber }, ref) => {
+  const reserved = hasData(seatInfo);
   const [showModal, setShowModal] = useState(false);
-  const selectedSeatClass = props.selected ? "selected-seat" : "";
-  const hasHitClass = props.seatInfo?.hasHits ? "has-hit" : "";
-
+  const selectedSeatClass = selected ? "selected-seat" : "";
+  const hasHitClass = seatInfo?.hasHits ? "has-hit" : "";
   return (
     <>
       <Button
+        ref={ref}
         variant="light"
-        size="sm"
-        className={`seat ${selectedSeatClass} ${hasHitClass} ${props.className} `}
+        className={`seat ${selectedSeatClass} ${hasHitClass} ${className}`}
         disabled={!reserved}
         onClick={() => setShowModal(true)}
       >
-        {props.seatNumber}
+        {seatNumber}
       </Button>
       <SeatInfoModal
-        seatInfo={props.seatInfo}
+        seatInfo={seatInfo}
         show={showModal}
         onHide={() => setShowModal(false)}
       />
@@ -33,8 +36,9 @@ const Seat = props => {
 Seat.propTypes = {
   seatNumber: PropTypes.string,
   seatInfo: PropTypes.any,
-  currentPaxSeat: PropTypes.string,
   selected: PropTypes.bool,
   className: PropTypes.string
 };
-export default Seat;
+
+const forwardedSeat = React.forwardRef(Seat);
+export default forwardedSeat;

@@ -1,6 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+import React, { useEffect, useState, useRef, useContext } from "react";
 import Table from "../../components/table/Table";
-import { cases, notetypes, usersemails, hitcats } from "../../services/serviceWrapper";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
@@ -12,6 +15,9 @@ import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import Overlay from "../../components/overlay/Overlay";
+import Confirm from "../../components/confirmationModal/Confirm";
+import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
+import BiographicInfo from "./biographicInfo/BiographicInfo";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import {
   hasData,
@@ -19,16 +25,20 @@ import {
   getShortText,
   isShortText,
   getAge,
-  alt, lpad5
+  alt,
+  lpad5,
+  addMinutes
 } from "../../utils/utils";
-import { ROLE, HIT_STATUS } from "../../utils/constants";
+import { cases, usersemails } from "../../services/serviceWrapper";
+import { LookupContext } from "../../context/data/LookupContext";
+import { ROLE, HIT_STATUS, LK } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
-import Confirm from "../../components/confirmationModal/Confirm";
-import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
-import BiographicInfo from "./biographicInfo/BiographicInfo";
 
 const Vetting = props => {
+  const { getCachedKeyValues } = useContext(LookupContext);
+
+  // TODO - move hit types and statuses to db
   const hitTypeOptions = [
     {
       value: "WATCHLIST",
@@ -167,7 +177,7 @@ const Vetting = props => {
               eta: row.original.flightETADate,
               etd: row.original.flightETDDate
             }}
-            style="sm"
+            className="sm"
           ></FlightBadge>
         </>
       )
@@ -207,15 +217,14 @@ const Vetting = props => {
   ];
 
   const onTableChange = () => {};
-  const onTextChange = () => {};
   const cb = () => {};
 
   let startDate = new Date();
   let endDate = new Date();
-  endDate.setDate(endDate.getDate() + 7);
-  startDate.setHours(startDate.getHours() - 7);
+  endDate.setDate(endDate.getDate() + 4);
+  startDate.setHours(startDate.getHours() - 6);
   const [data, setData] = useState();
-  const [hitCategoryOptions, setHitCategoryOptions] = useState();
+  const [hitCategoryOptions, setHitCategoryOptions] = useState([]);
   const [filterFormKey, setFilterFormKey] = useState(0);
   const showDateTimePicker = useRef(false);
   const [noteTypes, setNoteTypes] = useState([]);
@@ -225,18 +234,23 @@ const Vetting = props => {
   const now = new Date();
   const initialParamState = {
     etaStart: startDate,
-    etaEnd: endDate,
+    etaEnd: addMinutes(endDate, 1),
     displayStatusCheckBoxes: hitStatusOptions,
     ruleTypes: hitTypeOptions,
     ruleCatFilter: hitCategoryOptions,
     notetypes: []
   };
 
+  // const getInitialState = () => {
+  //   setFilterFormKey(filterFormKey + 1);
+  // };
+
   const getInitialState = () => {
     showDateTimePicker.current = false;
     setFilterFormKey(filterFormKey + 1);
     return initialParamState;
   };
+
   const changeStatus = (paxId, status) => {
     const newStatus =
       status === HIT_STATUS.REVIEWED ? HIT_STATUS.REOPENED : HIT_STATUS.REVIEWED;
@@ -252,8 +266,9 @@ const Vetting = props => {
 
   const setDataWrapper = data => {
     data = asArray(data.cases).map(item => {
+      item.id = item.id || `${item.flightId}${item.paxId}`;
       item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
-          item.medPrioHitCount
+        item.medPrioHitCount
       )}:${lpad5(item.lowPrioHitCount)}`;
       return item;
     });
@@ -268,7 +283,7 @@ const Vetting = props => {
 
     if (!showDateTimePicker.current) {
       //passed range values insted of date
-      const startRange = fields["startHourRange"] || 96; // default to 96 hours
+      const startRange = fields["startHourRange"] || 6; // default to -6 hours
       const endRange = fields["endHourRange"] || 96;
       let etaEnd = new Date();
       let etaStart = new Date();
@@ -276,7 +291,7 @@ const Vetting = props => {
       etaStart.setHours(etaEnd.getHours() - startRange);
 
       paramObject["etaStart"] = etaStart;
-      paramObject["etaEnd"] = etaEnd;
+      paramObject["etaEnd"] = addMinutes(etaEnd, 1);
 
       delete fieldscopy["startHourRange"];
       delete fieldscopy["endHourRange"];
@@ -284,8 +299,13 @@ const Vetting = props => {
 
     const fieldNames = Object.keys(fieldscopy);
     fieldNames.forEach(name => {
-      if (name === "etaStart" || name === "etaEnd") {
+      if (name === "etaStart") {
         const date = new Date(fields[name]);
+        paramObject[name] = date.toISOString();
+      }
+
+      if (name === "etaEnd") {
+        const date = addMinutes(new Date(fields[name]), 1);
         paramObject[name] = date.toISOString();
       }
 
@@ -327,7 +347,7 @@ const Vetting = props => {
       setUsersEmails(res);
     });
 
-    hitcats.get().then(res => {
+    getCachedKeyValues(LK.HITCAT).then(res => {
       const options = asArray(res).map(hitCat => {
         return {
           label: hitCat.label,
@@ -337,20 +357,23 @@ const Vetting = props => {
       setHitCategoryOptions(options);
     });
 
-    notetypes.get().then(types => {
+    getCachedKeyValues(LK.NOTETYPE).then(types => {
       const nTypes = asArray(types).reduce((acc, type) => {
         if (type.noteType !== "DELETED") {
           acc.push({
-            value: type.id,
-            label: type.noteType
+            value: type.value,
+            label: type.label
           });
         }
         return acc;
       }, []);
       setNoteTypes(nTypes);
-      setFilterFormKey(new Date());
     });
   };
+
+  useEffect(() => {
+    setFilterFormKey(filterFormKey + 1);
+  }, [hitCategoryOptions, noteTypes]);
 
   useEffect(() => {
     fetchData();
@@ -371,8 +394,8 @@ const Vetting = props => {
               datafield="myRulesOnly"
               name="myRulesOnly"
               labelText={<Xl8 xid="vet007">My Rules Only</Xl8>}
-              inputType="checkbox"
-              inputVal={false}
+              inputtype="checkbox"
+              inputval={false}
               callback={cb}
               selected={false}
               alt="My Rules Only"
@@ -382,8 +405,8 @@ const Vetting = props => {
               name="displayStatusCheckBoxes"
               datafield="displayStatusCheckBoxes"
               labelText={<Xl8 xid="vet008">Passenger Hit Status</Xl8>}
-              inputType="multiSelect"
-              inputVal={hitStatusOptions}
+              inputtype="multiSelect"
+              inputval={hitStatusOptions}
               options={hitStatusOptions}
               callback={cb}
               alt={<Xl8 xid="3">Passenger Hit Status</Xl8>}
@@ -392,51 +415,50 @@ const Vetting = props => {
               name="ruleTypes"
               datafield="ruleTypes"
               labelText={<Xl8 xid="vet009">Hit Source</Xl8>}
-              inputType="multiSelect"
-              inputVal={hitTypeOptions}
+              inputtype="multiSelect"
+              inputval={hitTypeOptions}
               options={hitTypeOptions}
               callback={cb}
               alt="Hit Source"
             />
-            {hasData(noteTypes) && (
-              <LabelledInput
-                datafield
-                name="noteTypes"
-                labelText={<Xl8 xid="vet019">Note Type</Xl8>}
-                inputType="multiSelect"
-                inputVal={[]}
-                options={noteTypes}
-                callback={cb}
-                alt={<Xl8 xid="vet019">Note Type</Xl8>}
-              />
-            )}
+            {/* {hasData(noteTypes) && ( */}
+            <LabelledInput
+              datafield
+              name="noteTypes"
+              labelText={<Xl8 xid="vet019">Note Type</Xl8>}
+              inputtype="multiSelect"
+              key={noteTypes}
+              options={noteTypes}
+              callback={cb}
+              alt={<Xl8 xid="vet019">Note Type</Xl8>}
+            />
+            {/* )} */}
 
-            {hasData(hitCategoryOptions) && (
-              <LabelledInput
-                name="ruleCatFilter"
-                datafield="ruleCatFilter"
-                labelText={<Xl8 xid="vet010">Passenger Hit Categories</Xl8>}
-                inputType="multiSelect"
-                inputVal={hitCategoryOptions}
-                options={hitCategoryOptions}
-                callback={cb}
-                alt={<Xl8 xid="3">Passenger Hit Categories</Xl8>}
-              />
-            )}
+            <LabelledInput
+              name="ruleCatFilter"
+              datafield="ruleCatFilter"
+              labelText={<Xl8 xid="vet010">Passenger Hit Categories</Xl8>}
+              inputtype="multiSelect"
+              inputval={hitCategoryOptions}
+              key={hitCategoryOptions}
+              options={hitCategoryOptions}
+              callback={cb}
+              alt={<Xl8 xid="3">Passenger Hit Categories</Xl8>}
+            />
             <LabelledInput
               datafield="lastName"
               labelText={<Xl8 xid="vet011">Last Name</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="lastName"
-              callback={onTextChange}
+              callback={cb}
               alt={<Xl8 xid="3">Last Name</Xl8>}
             />
             <LabelledInput
               datafield="flightNumber"
               labelText={<Xl8 xid="vet012">Flight Number</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="flightNumber"
-              callback={onTextChange}
+              callback={cb}
               alt={<Xl8 xid="3">Flight Number</Xl8>}
             />
             <hr />
@@ -444,8 +466,8 @@ const Vetting = props => {
               datafield="showDateTimePicker"
               name="showDateTimePicker"
               labelText={<Xl8 xid="vet013">Show Date Time Picker</Xl8>}
-              inputType="checkbox"
-              inputVal={showDateTimePicker.current}
+              inputtype="checkbox"
+              inputval={showDateTimePicker.current}
               callback={cb}
               toggleDateTimePicker={toggleDateTimePicker}
               selected={showDateTimePicker.current}
@@ -455,8 +477,8 @@ const Vetting = props => {
             {showDateTimePicker.current && (
               <LabelledInput
                 datafield="etaStart"
-                inputType="dateTime"
-                inputVal={startDate}
+                inputtype="dateTime"
+                inputval={startDate}
                 labelText={<Xl8 xid="vet014">Start Date</Xl8>}
                 name="etaStart"
                 callback={cb}
@@ -468,8 +490,8 @@ const Vetting = props => {
             {showDateTimePicker.current && (
               <LabelledInput
                 datafield="etaEnd"
-                inputType="dateTime"
-                inputVal={endDate}
+                inputtype="dateTime"
+                inputval={endDate}
                 labelText={<Xl8 xid="vet015">End Date</Xl8>}
                 name="etaEnd"
                 callback={cb}
@@ -481,12 +503,13 @@ const Vetting = props => {
             {!showDateTimePicker.current && (
               <LabelledInput
                 labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
-                inputType="select"
+                inputtype="select"
                 name="startHourRange"
-                inputVal="96"
+                inputval="6"
                 inputStyle="form-select"
                 datafield="startHourRange"
                 options={[
+                  { value: "0", label: "0 hour" },
                   { value: "6", label: "-6 hours" },
                   { value: "12", label: "-12 hours" },
                   { value: "24", label: "-24 hours" },
@@ -500,12 +523,13 @@ const Vetting = props => {
             {!showDateTimePicker.current && (
               <LabelledInput
                 labelText={<Xl8 xid="vet017">Hour Range (End)</Xl8>}
-                inputType="select"
+                inputtype="select"
                 name="endHourRange"
-                inputVal="96"
+                inputval="96"
                 inputStyle="form-select"
                 datafield="endHourRange"
                 options={[
+                  { value: "0", label: "0 hour" },
                   { value: "6", label: "+6 hours" },
                   { value: "12", label: "+12 hours" },
                   { value: "24", label: "+24 hours" },

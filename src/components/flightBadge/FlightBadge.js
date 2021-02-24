@@ -1,11 +1,18 @@
-import React from "react";
-import { localeMonthDayTime, hasData, alt } from "../../utils/utils";
-import { Row } from "react-bootstrap";
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+import React, {useContext, useState} from "react";
+import {localeMonthDayTime, hasData, alt, asArray} from "../../utils/utils";
+import {Row, Tooltip} from "react-bootstrap";
 import "./FlightBadge.scss";
+import {LookupContext} from "../../context/data/LookupContext";
+import {LK} from "../../utils/constants";
+import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 
 const FlightBadge = props => {
   const res = props.data;
-  const style = `flight-badge ${alt(props.style, "reg")}`;
+  const style = `flight-badge ${alt(props.className, "reg")}`;
 
   if (!hasData(props.data?.flightNumber)) return <></>;
 
@@ -27,13 +34,17 @@ const FlightBadge = props => {
       <div className="flight-text">
         <Row flex="true" no-wrap="true" className="flight-badge-row">
           <span className="img-departure"></span>
-          <span className="width40">{departure[0]}</span>
+            <span className="width40">
+              <ToolTipWrapper data={{val:departure[0], lkup:LK.AIRPORT}}></ToolTipWrapper>
+            </span>
           <span>{departure[1]}</span>
           <span>{departure[2]}</span>
         </Row>
         <Row flex="true" no-wrap="true" className="flight-badge-row">
           <span className="img-arrival"></span>
-          <span className="width40">{arrival[0]}</span>
+            <span className="width40">
+              <ToolTipWrapper data={{val:arrival[0], lkup:LK.AIRPORT}}></ToolTipWrapper>
+            </span>
           <span>{arrival[1]}</span>
           <span>{arrival[2]}</span>
         </Row>

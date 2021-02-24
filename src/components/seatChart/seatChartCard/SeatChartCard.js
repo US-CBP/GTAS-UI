@@ -1,4 +1,7 @@
-import { Link } from "@reach/router";
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import LabelledInput from "../../labelledInput/LabelledInput";
@@ -7,17 +10,16 @@ const SeatChartCard = props => {
   return (
     <Container>
       {props.data &&
-        props.data?.map(item => (
-          <Row>
+        props.data?.map((item, index) => (
+          <Row key={index}>
             <Col>
               <b>{item.label}:</b>
             </Col>
             <Col>
               <LabelledInput
                 alt="Flight Number"
-                // inputStyle="big-name-sidebar"
-                inputType="label"
-                inputVal={item.value}
+                inputtype="label"
+                inputval={item.value}
               />
             </Col>
           </Row>

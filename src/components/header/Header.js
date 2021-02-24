@@ -1,16 +1,19 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+import React, { useContext, useRef, useState } from "react";
 import { Link } from "@reach/router";
 import { navigate, useLocation } from "@reach/router";
+import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
+import Toast from "../toast/Toast";
+import ChangePasswordModal from "../../pages/admin/manageUsers/changePasswordModal/ChangePasswordModal";
 import { UserContext } from "../../context/user/UserContext";
 import { LiveEditContext } from "../../context/translation/LiveEditContext";
-import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { ACTION, FULLPATH_TO, ROLE } from "../../utils/constants";
 import { hasData } from "../../utils/utils";
 import Xl8 from "../../components/xl8/Xl8";
-import Toast from "../toast/Toast";
-import ChangePasswordModal from "../../pages/admin/manageUsers/changePasswordModal/ChangePasswordModal";
 
-import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
 import {
   Nav,
   Navbar,
@@ -20,14 +23,25 @@ import {
   Button,
   InputGroup
 } from "react-bootstrap";
+import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
 import "./Header.scss";
 
 const Header = () => {
   const { getUserState, userAction } = useContext(UserContext);
-  const { getLiveEditState, action } = useContext(LiveEditContext);
+  const { action } = useContext(LiveEditContext);
+  const user = getUserState();
+
+  const logout = () => {
+    action({ type: "read" });
+    userAction({ type: "logoff" });
+
+    navigate(FULLPATH_TO.LOGIN);
+  };
+
+  if (user === undefined) logout();
+
   const [currentLang] = useState(window.navigator.language);
 
-  const [isEdit, setIsEdit] = useState(getLiveEditState().isEdit);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState();
   const [showTost, setShowToast] = useState(false);
 
@@ -38,22 +52,12 @@ const Header = () => {
 
   const searchInputRef = useRef();
 
-  const user = getUserState();
   const currentPath = useLocation();
 
-  const logout = () => {
-    userAction({ type: "logoff" });
-    action({ type: "read" });
-
-    navigate(FULLPATH_TO.LOGIN);
-  };
-
   // allow a 'false' logout for admins translating pages outside the authed/loggedin bundle
-  const pseudoLogout = () => {
-    navigate(FULLPATH_TO.LOGIN);
-  };
-
-  if (user === undefined) logout();
+  // const pseudoLogout = () => {
+  //   navigate(FULLPATH_TO.LOGIN);
+  // };
 
   const userFullName = user?.fullName || "";
 
@@ -94,18 +98,13 @@ const Header = () => {
     }
   };
 
-  useEffect(() => {
-    const editstate = getLiveEditState();
-    setIsEdit(editstate.isEdit);
-  }, []);
-
   return (
     <>
       <Navbar sticky="top" expand="md" className="header-navbar" variant="dark">
         <Navbar.Brand className="header-navbar-brand">
           <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]} alt={<></>}>
             <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
-              <img src={wcoLogo} />
+              <img src={wcoLogo} alt="WCO logo" />
             </Link>
           </RoleAuthenticator>
         </Navbar.Brand>
@@ -168,7 +167,7 @@ const Header = () => {
             </RoleAuthenticator>
           </Nav>
           <Nav className="ml-auto">
-            <Form inline>
+            <Form inline className="header-search">
               <InputGroup>
                 <FormControl type="text" ref={searchInputRef} className="search-150" />
                 <InputGroup.Append>
@@ -183,7 +182,7 @@ const Header = () => {
                 {<Xl8 xid="head005">Change password</Xl8>}
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to="#" onClick={logout}>
+              <NavDropdown.Item onClick={logout}>
                 {<Xl8 xid="head006">Logout</Xl8>}
               </NavDropdown.Item>
             </NavDropdown>

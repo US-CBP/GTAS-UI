@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 export const NO_URI = "No URI was received in props";
 
 export const QR = {
@@ -49,6 +53,16 @@ export const ROLE = {
   ANY: "Any"
 };
 
+export const LK = {
+  COUNTRY: "country",
+  CARRIER: "carrier",
+  AIRPORT: "airport",
+  CCTYPE: "cctype",
+  HITCAT: "hitcats",
+  NOTETYPE: "notetype",
+  ROLE: "role"
+};
+
 export const CTX = {
   CARRIERS: "carriers",
   COUNTRIES: "countries",
@@ -61,10 +75,12 @@ export const CTX = {
 // router paths to the most commonly referenced pages
 // may also need a util to build partials
 export const FULLPATH_TO = {
-  LOGIN: "/gtas/login",
+  LOGIN: "/login",
   FLIGHTS: "/gtas/flights",
-  FORGOTPWD: "/gtas/forgot-password",
-  SIGNUP: "/gtas/signup"
+  FORGOTPWD: "/forgot-password",
+  RESETPWD: "/reset-password",
+  SIGNUP: "/signup",
+  FORGOTUSERNAME: "/forgot-username"
 };
 
 export const TIME = {
@@ -73,7 +89,8 @@ export const TIME = {
   MINUTES_10: 600000,
   MINUTES_25: 1500000,
   SECS_30: 30000,
-  SECS_10: 10000
+  SECS_10: 10000,
+  SECOND: 1000
 };
 
 export const MS = secs => secs * 1000;

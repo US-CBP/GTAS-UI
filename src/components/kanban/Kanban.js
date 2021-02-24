@@ -1,6 +1,9 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import Main from "../../components/main/Main";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import { CardDeck } from "react-bootstrap";
 import { randomIntOfLength } from "../../utils/utils";
@@ -11,7 +14,6 @@ import "./Kanban.css";
 const Kanban = props => {
   const randdate = (length = 1) => new Date(Date.now() + randomIntOfLength(length));
 
-  console.log(randdate(9));
   const actives = [
     {
       id: "1001",

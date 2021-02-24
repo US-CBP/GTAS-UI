@@ -18,6 +18,8 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.idea
+
 .eslintcache
 
 npm-debug.log*
@@ -29,4 +31,3 @@ eslintrc.json
 .eslintcache
 
 request.http
-

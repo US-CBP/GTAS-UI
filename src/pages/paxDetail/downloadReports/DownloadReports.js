@@ -1,11 +1,15 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import { paxdetailsReport } from "../../../services/serviceWrapper";
 import Xl8 from "../../../components/xl8/Xl8";
-import { Button } from "react-bootstrap";
 
 const DownloadReport = props => {
   const download = () => {
-    paxdetailsReport.get(props.paxId, props.flightId).then(res => {
+	  const currentLanguage = window.navigator.language.split("-")[0];
+    paxdetailsReport.get(props.paxId, props.flightId, currentLanguage).then(res => {
       if (res) {
         let data = new Uint8Array(res);
         let blob = new Blob([data], { type: "application/pdf" });

@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
@@ -68,7 +72,7 @@ class FilterForm extends React.Component {
     const fieldname = datafield;
     const getChildVal = this.getChildValue();
     fieldMap[componentname] = fieldname;
-    fields[fieldMap[componentname]] = getChildVal(child.props.inputVal[datafield]);
+    fields[fieldMap[componentname]] = getChildVal(child.props.inputval[datafield]);
     datafieldNames.push(fieldname);
   }
   addDataFieldFromObject(idx, child, datafield, fieldMap, fields, datafieldNames) {
@@ -76,7 +80,7 @@ class FilterForm extends React.Component {
     const fieldname = child.props.name;
     const getChildVal = this.getChildValue();
     fieldMap[componentname] = fieldname;
-    fields[fieldMap[componentname]] = getChildVal(child.props.inputVal);
+    fields[fieldMap[componentname]] = getChildVal(child.props.inputval);
     datafieldNames.push(fieldname);
   }
   getChildValue() {
@@ -100,7 +104,7 @@ class FilterForm extends React.Component {
     }
     const getChildVal = this.getChildValue();
     fieldMap[componentname] = fieldname;
-    fields[fieldMap[componentname]] = getChildVal(child.props.inputVal);
+    fields[fieldMap[componentname]] = getChildVal(child.props.inputval);
     datafieldNames.push(fieldname);
   }
 

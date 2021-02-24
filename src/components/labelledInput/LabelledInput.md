@@ -1,20 +1,26 @@
 <!--
+ All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+
+ Please see license.txt for details.
+-->
+
+<!--
 
 ## Input basic types are text, select, checkbox, and file input
 
 
 # text
-<LabelledInput lblText='text' inputType='text' inputVal={this.state.txt2} name='text' callback={this.onTextChange} alt='nothing' readOnly='readOnly' />
+<LabelledInput lblText='text' inputtype='text' inputval={this.state.txt2} name='text' callback={this.onTextChange} alt='nothing' readOnly='readOnly' />
 
 # file upload
-<LabelledInput lblText='File Upload' inputType='file' name='fileupload' callback={() => {}} alt='nothing' options={['image/*', 'application/msword', '.pdf']} />
+<LabelledInput lblText='File Upload' inputtype='file' name='fileupload' callback={() => {}} alt='nothing' options={['image/*', 'application/msword', '.pdf']} />
 
 # select
-<LabelledInput lblText='New Input' inputType='select' name='newinput' id='newinput' callback={this.onChange}
+<LabelledInput lblText='New Input' inputtype='select' name='newinput' id='newinput' callback={this.onChange}
 selected={[this.state.txt2]} alt='nothing' options={['one', 'two', 'three']} />
 
 #checkbox
-<LabelledInput lblText='New Input' inputType='select' name='newinput' id='newinput' callback={this.onChange}
+<LabelledInput lblText='New Input' inputtype='select' name='newinput' id='newinput' callback={this.onChange}
 selected={[this.state.txt2]} alt='nothing' options={['one', 'two', 'three']} />
  -->
 
@@ -31,16 +37,16 @@ const cb = () => {};
       className="checkbox"
       callback={cb}
       labelText="Do you have access to a checkbox field?"
-      inputType="checkbox"
-      inputVal="Yes I do"
+      inputtype="checkbox"
+      inputval="Yes I do"
       alt="Checkbox is available"
       selected="true"
     />
     <LabelledInput
       name="selectfield"
       labelText="Three select options"
-      inputType="select"
-      inputVal="possibly"
+      inputtype="select"
+      inputval="possibly"
       alt="Dropdown with 3 options"
       options={[
         { value: "true", label: "True" },
@@ -56,8 +62,8 @@ const cb = () => {};
       callback={cb}
       alt="text field input"
       labelText="Text field"
-      inputType="text"
-      inputVal="text field text"
+      inputtype="text"
+      inputval="text field text"
       selected="true"
     />
     <LabelledInput
@@ -66,8 +72,8 @@ const cb = () => {};
       callback={cb}
       alt="Textarea input"
       labelText="Textarea field"
-      inputType="textarea"
-      inputVal="textarea field text"
+      inputtype="textarea"
+      inputval="textarea field text"
     />
   </div>
 </section>;

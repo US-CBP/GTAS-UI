@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import { Modal as RBModal } from "react-bootstrap";
 import "./Modal.css";
@@ -12,7 +16,6 @@ const Modal = props => {
         size={size}
         aria-labelledby="contained-modal-title-vcenter"
         centered
-        animation={false}
       >
         {props.children}
       </RBModal>

@@ -1,32 +1,36 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState } from "react";
-import { Alert, Button } from "react-bootstrap";
-import { attachment } from "../../../services/serviceWrapper";
-import "./UploadAttachment.scss";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
+import Overlay from "../../../components/overlay/Overlay";
+import ErrorText from "../../../components/errorText/ErrorText";
+import { attachment } from "../../../services/serviceWrapper";
 import { ACTION } from "../../../utils/constants";
+import { hasData, isShortText, getShortText, formatBytes } from "../../../utils/utils";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
+import "./UploadAttachment.scss";
 
 const AttachmentModal = props => {
-  const cb = function(result) {};
+  const cb = () => {};
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [filesForDisplay, setFilesForDisplay] = useState([]);
-  const [showAlert, setShowAlert] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [alertContent, setAlertContent] = useState("");
-  const [variant, setVariant] = useState("");
   const paxId = props.paxId;
+  const fileUploadLimit = 4;
+  const maxHoverContentLength = 35;
 
   const handleClose = (status, res) => {
     setShowModal(false);
-    setShowAlert(false);
     setSelectedFiles([]);
-    // props.onHide();
     props.callback(status, res);
   };
   const handleShow = () => setShowModal(true);
@@ -38,51 +42,58 @@ const AttachmentModal = props => {
       if (resp.status === "SUCCESS") {
         handleClose(status, resp);
       } else {
-        setVariant("danger");
-        typeof resp.message != "undefined" && resp.message != null
-          ? setAlertContent(resp.message)
-          : setAlertContent("There was an issue with the server for that request.");
-        setShowAlert(true);
+        const serverError = (
+          <Xl8 xid="attm003">Server Error: the request could not be completed</Xl8>
+        );
+
+        setAlertContent(resp?.message || serverError);
         setSelectedFiles([]);
       }
     }
   };
 
+  const toFileArray = filelist => {
+    let result = [];
+    for (let x = 0; x < filelist.length; x++) {
+      result.push(filelist[x]);
+    }
+    return result;
+  };
+
   const onChangeCb = ev => {
-    if (maxFileSelect(ev) && maxFileSize) {
-      setSelectedFiles(ev.target.files);
+    const files = ev.target.files;
+    if (isCountValid(files) && isSizeValid(files)) {
+      setFilesForDisplay(toFileArray(files));
+      setSelectedFiles(files);
+    } else {
+      ev.target.value = null;
     }
   };
 
-  const maxFileSelect = ev => {
-    let files = ev.target.files; // create file object
-    if (files.length > 4) {
-      const msg = "Only 4 files may be uploaded at a time";
-      ev.target.value = null; // discard selected file
-      return false;
-    }
-    return true;
+  const isCountValid = files => {
+    const result = files.length <= fileUploadLimit;
+
+    if (!result) setAlertContent(<Xl8 xid="attm007">Too many files were selected</Xl8>);
+    return result;
   };
 
-  const maxFileSize = ev => {
-    let files = ev.target.files;
-    let size = 15000;
-    let err = "";
+  const isSizeValid = files => {
+    let fiveMb = 5242880;
+    let isValid = true;
+
     for (var x = 0; x < files.length; x++) {
-      if (files[x].size > size) {
-        err += files[x].type + " exceeds file size limit \n";
+      if (files[x].size > fiveMb) {
+        isValid = false;
+        setAlertContent(<Xl8 xid="attm007">The file size limit is 5Mb per file</Xl8>);
       }
     }
-    if (err !== "") {
-      ev.target.value = null;
-      return false;
-    }
-    return true;
+
+    return isValid;
   };
 
   const preSubmit = fields => {
     let res = { ...fields[0] };
-    if (typeof selectedFiles != "undefined" && selectedFiles != null) {
+    if (hasData(selectedFiles)) {
       let desc = [];
       const formData = new FormData();
       for (let x = 0; x < selectedFiles.length; x++) {
@@ -96,14 +107,8 @@ const AttachmentModal = props => {
   };
 
   useEffect(() => {
-    const listItems = [];
-    if (selectedFiles != null && typeof selectedFiles != "undefined") {
-      for (let x = 0; x < selectedFiles.length; x++) {
-        listItems.push(selectedFiles[x]);
-      }
-    } else {
-      setFilesForDisplay(null);
-    }
+    const listItems = toFileArray(selectedFiles);
+    setAlertContent();
     setFilesForDisplay(listItems);
   }, [selectedFiles]);
 
@@ -114,73 +119,65 @@ const AttachmentModal = props => {
       <Modal
         show={showModal}
         onHide={handleClose}
-        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        className="max-600-width-container"
       >
         <ModalHeader closeButton>
           <ModalTitle>
             <Xl8 xid="attm001">Attachments</Xl8>
           </ModalTitle>
         </ModalHeader>
-        <Alert show={showAlert} variant={variant}>
-          {alertContent}
-          <hr />
-          <Button onClick={() => setShowAlert(false)} variant="outline-success">
-            <Xl8 xid="form003">Confirm</Xl8>
-          </Button>
-        </Alert>
         <ModalBody>
-          <div className="container">
+          <div className="container attachment-files">
+            <div className="attachment-files-title">
+              <Xl8 xid="attm002">Files (4 max)</Xl8>
+              <ErrorText message={alertContent}></ErrorText>
+            </div>
             <div className="files">
               <input type="file" multiple onChange={onChangeCb} />
             </div>
           </div>
-          {filesForDisplay != null &&
-          !filesForDisplay.empty &&
-          filesForDisplay.length > 0 ? (
-            <div className="container">
-              <Xl8 xid="attm002">Files To Be Uploaded:</Xl8>
 
-              <ul>
-                {filesForDisplay.map((data, index) => {
-                  return (
-                    <li key={index}>
-                      <u>
-                        <Xl8 xid="attm003">File Name:</Xl8>
-                      </u>
-                      {data.name} <br></br>
-                      <u>
-                        <Xl8 xid="attm004">File Size:</Xl8>
-                      </u>
-                      {data.size} kbs
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ) : (
-            <div></div>
-          )}
-          <Form
-            submitService={attachment.post}
-            title=""
-            callback={postSubmit}
-            action="add"
-            submitText={<Xl8 xid="attm005">Upload</Xl8>}
-            paramCallback={preSubmit}
-            cancellable
-          >
-            <LabelledInput
-              datafield="description"
-              inputType="textarea"
-              labelText={<Xl8 xid="attm006">Description:</Xl8>}
-              name="description"
-              required={true}
-              alt="nothing"
-              callback={cb}
-            />
-          </Form>
+          <div className="container attachment-data">
+            {filesForDisplay.map((data, index) => {
+              const content = data.name;
+              const triggerOverlay = !isShortText(content, maxHoverContentLength);
+
+              return (
+                <Overlay
+                  trigger={triggerOverlay ? ["click", "hover"] : ""}
+                  key={data.name}
+                  content={content}
+                >
+                  <div className={triggerOverlay ? "as-info" : ""}>
+                    <span>{getShortText(content, maxHoverContentLength)}</span>
+                    <span className="attachment-size">{formatBytes(data.size)}</span>
+                  </div>
+                </Overlay>
+              );
+            })}
+          </div>
+          <div className="attachment-form-container">
+            <Form
+              submitService={attachment.post}
+              title=""
+              callback={postSubmit}
+              action="add"
+              paramCallback={preSubmit}
+              cancellable
+            >
+              <LabelledInput
+                datafield="description"
+                inputtype="textarea"
+                labelText={<Xl8 xid="attm006">Description</Xl8>}
+                name="description"
+                required={true}
+                alt="nothing"
+                callback={cb}
+              />
+            </Form>
+          </div>
         </ModalBody>
       </Modal>
     </>

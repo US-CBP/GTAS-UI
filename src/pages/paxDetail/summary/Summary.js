@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect } from "react";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Xl8 from "../../../components/xl8/Xl8";
@@ -11,13 +15,13 @@ import {
   localeDate,
   asArray,
   hasData,
-  localeDateOnly,
+  timezoneFreeDate,
   formatRuleConditions
 } from "../../../utils/utils";
-import { CardColumns } from "react-bootstrap";
-import "./Summary.scss";
 import { HIT_STATUS } from "../../../utils/constants";
 import { Link } from "@reach/router";
+import { CardColumns } from "react-bootstrap";
+import "./Summary.scss";
 
 const Summary = props => {
   const headers = {
@@ -68,10 +72,9 @@ const Summary = props => {
 
   const parseDocumentData = documents => {
     const parsedDocs = asArray(documents).map(document => {
-      const expirationDate = Date.parse(document.expirationDate);
       return {
         ...document,
-        expirationDate: localeDateOnly(expirationDate)
+        expirationDate: timezoneFreeDate(document.expirationDate)
       };
     });
     return parsedDocs;
@@ -86,10 +89,9 @@ const Summary = props => {
   const fetchWatchlistNamesData = () => {
     paxWatchListLink.get(null, props.paxId).then(res => {
       const data = asArray(res).map(pwl => {
-        const watchListDOB = Date.parse(pwl.watchListDOB);
         return {
           ...pwl,
-          watchListDOB: localeDateOnly(watchListDOB),
+          watchListDOB: timezoneFreeDate(pwl.watchListDOB),
           percentMatch: `${pwl.percentMatch * 100}%`
         };
       });

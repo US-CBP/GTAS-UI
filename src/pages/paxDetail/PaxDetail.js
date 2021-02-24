@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from "react";
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../context/user/UserContext";
 import Tabs from "../../components/tabs/Tabs";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
 import { Col } from "react-bootstrap";
@@ -21,14 +26,15 @@ import Stepper from "../../components/stepper/Stepper";
 import AddToWatchlist from "./addToWatchList/AddToWatchlist";
 import UploadAttachment from "./uploadAttachment/UploadAttachment";
 import AttachmentModal from "./uploadAttachment/AttachmentModal";
+import Loading from "../../components/loading/Loading";
+
 import { paxdetails, cases } from "../../services/serviceWrapper";
-import { asArray, hasData } from "../../utils/utils";
-import { ACTION } from "../../utils/constants";
+import { asArray, hasData, titleCase } from "../../utils/utils";
+import { ACTION, ROLE } from "../../utils/constants";
 import { Link } from "@reach/router";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./PaxDetail.scss";
-import Loading from "../../components/loading/Loading";
 
 const PaxDetail = props => {
   const [flightBadge, setFlightBadge] = useState();
@@ -49,14 +55,13 @@ const PaxDetail = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [isStepperLoading, setIsStepperLoading] = useState(false);
 
-  const cb = () => {};
   const refreshEventNotesCard = () => {
     setEventNoteRefreshKey(new Date());
   };
   const tabs = [
     {
       title: <Xl8 xid="pd001">Summary</Xl8>,
-      titleText: "Summary",
+      titletext: "Summary",
       link: (
         <Summary
           paxId={props.paxId}
@@ -73,7 +78,7 @@ const PaxDetail = props => {
       ? [
           {
             title: <Xl8 xid="pd002">APIS</Xl8>,
-            titleText: "APIS",
+            titletext: "APIS",
             link: <APIS data={apisMessage}></APIS>
           }
         ]
@@ -82,28 +87,28 @@ const PaxDetail = props => {
       ? [
           {
             title: <Xl8 xid="pd003">PNR</Xl8>,
-            titleText: "PNR",
+            titletext: "PNR",
             link: <PNR data={pnr} />
           }
         ]
       : []),
     {
       title: <Xl8 xid="pd004">Flight History</Xl8>,
-      titleText: "Flight History",
+      titletext: "Flight History",
       link: <FlightHistory paxId={props.paxId} flightId={props.flightId} />
     },
     ...(hasData(paxDetailsData)
       ? [
           {
             title: <Xl8 xid="pd005">Link Analysis</Xl8>,
-            titleText: "Link Analysis",
+            titletext: "Link Analysis",
             tabClassName: "large-media-only",
             link: <LinkAnalysis paxData={paxDetailsData} />
           }
         ]
       : []),
     {
-      titleText: "Attachments",
+      titletext: "Attachments",
       title: <Xl8 xid="pd006">Attachments</Xl8>,
       link: (
         <UploadAttachment
@@ -215,6 +220,21 @@ const PaxDetail = props => {
   ) : (
     <Xl8 xid="chs007">Set to RE-OPENED</Xl8>
   );
+
+  const { getUserState } = useContext(UserContext);
+
+  // Todo - refactor knowledge of the required roles up to RoleAuth?
+  const hasAuthorizedRoles = roles => {
+    const userRoles = getUserState().userRoles.map(item => titleCase(item));
+    let isAuthorized = false;
+    roles.forEach(element => {
+      if (userRoles.includes(titleCase(element))) {
+        isAuthorized = true;
+      }
+    });
+    return isAuthorized;
+  };
+
   return (
     <>
       <SidenavContainer>
@@ -232,12 +252,12 @@ const PaxDetail = props => {
       </SidenavContainer>
       <Main className="main">
         <Title
-          style="stacker title"
+          className="stacker title"
           title={<Xl8 xid="pd019">Passenger Detail</Xl8>}
           leftChild={tablist}
         ></Title>
         <Fab icon={<i className="fa fa-plus" />} variant="info">
-          <Action text={<Xl8 xid="not001">Notify</Xl8>}>
+          <Action text={<Xl8 xid="not001">Notify Users</Xl8>}>
             <Notification paxId={props.paxId} icon />
           </Action>
           <Action text={<Xl8 xid="rep001">Download Report</Xl8>}>
@@ -253,8 +273,7 @@ const PaxDetail = props => {
               <i className="fa fa-paperclip" />
             </AttachmentModal>
           </Action>
-
-          {hasHit && (
+          {hasAuthorizedRoles([ROLE.ADMIN, ROLE.HITMGR]) && hasHit && (
             <Action text={changeHitStatusText} variant="rtf-red">
               <ChangeHitStatus
                 updateStatus={updateHitStatus}
@@ -263,7 +282,7 @@ const PaxDetail = props => {
               />
             </Action>
           )}
-          {!hasHit && (
+          {hasAuthorizedRoles([ROLE.ADMIN, ROLE.HITMGR]) && !hasHit && (
             <Action text={<Xl8 xid="cmh001">Create Manual Hit</Xl8>} variant="rtf-red">
               <CreateManualHit
                 paxId={props.paxId}
@@ -273,9 +292,11 @@ const PaxDetail = props => {
               />
             </Action>
           )}
-          <Action text={<Xl8 xid="atw001">Add to Watchlist</Xl8>} variant="rtf-red">
-            <AddToWatchlist watchlistItems={watchlistData} icon />
-          </Action>
+          {hasAuthorizedRoles([ROLE.ADMIN, ROLE.WLMGR]) && (
+            <Action text={<Xl8 xid="atw001">Add to Watchlist</Xl8>} variant="rtf-red">
+              <AddToWatchlist watchlistItems={watchlistData} icon />
+            </Action>
+          )}
         </Fab>
       </Main>
     </>

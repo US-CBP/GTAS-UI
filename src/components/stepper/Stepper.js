@@ -1,7 +1,14 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState, useEffect } from "react";
-import "./Stepper.scss";
 import PropTypes from "prop-types";
 import { Row, Container } from "react-bootstrap";
+import "./Stepper.scss";
+import {LK} from "../../utils/constants";
+import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
+
 const Stepper = props => {
   const raw = props.steps || [];
 
@@ -64,7 +71,10 @@ const Stepper = props => {
                 style={{ width: 100 / steps.length + "%" }}
                 key={index}
               >
-                {step.label}
+                <ToolTipWrapper
+                    data={{val:step.label, lkup:LK.AIRPORT}}>
+                  className="sm"
+                </ToolTipWrapper>
               </li>
             ))}
           </ul>

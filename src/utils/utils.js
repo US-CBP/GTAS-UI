@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import { NO_URI } from "./constants";
 // import i18n from "../i18n";
 
@@ -19,6 +23,7 @@ export function titleCase(input) {
 }
 
 export function hasData(obj) {
+  if (typeof obj === "object" && !isNaN(Date.parse(obj))) return true;
   if (typeof obj === "object" || typeof obj === "undefined")
     return Object.keys(obj || {}).length > 0;
   else return String(obj).trim().length > 0;
@@ -147,6 +152,16 @@ export function localeDate(val) {
 //   }
 //   return false;
 // }
+
+// Takes incoming strings like "yyyy-mm-dd" for DOB, document expiration dates, etc. and avoids
+// date conversions that default to UTC (eg Date.parse()) that throw the value off by a day.
+export const timezoneFreeDate = val => {
+  if (!hasData(val)) return "";
+
+  let asDate = new Date(...val.split("-"));
+  asDate.setMonth(asDate.getMonth() - 1);
+  return localeDateOnly(asDate);
+};
 
 // Locale Date-only formatter
 export function localeDateOnly(val) {
@@ -341,21 +356,43 @@ export const isValidPassword = password => {
 export function formatRuleConditions(conditions) {
   if (!hasData(conditions)) return "";
 
-  return conditions.split("$$$").join("\n");
+  return conditions.split("$$$").join(" \n ");
 }
 
 export const watchlistDateFormat = input => {
   const stringDate = new Date(input);
   if (stringDate === "Invalid Date") return "Invalid Date";
-  const day = stringDate.getDate(); // use getDate(). getDay() returns the day of the week
-  const month = stringDate.getMonth() + 1; // 0 based
-  const year = stringDate.getFullYear();
-
-  return `${year}-${month}-${day}`;
+  const formattedDate = stringDate.getFullYear() 
+  + '-' + ('0' + (stringDate.getMonth()+1)).slice(-2) 
+  + '-' + ('0' + stringDate.getDate()).slice(-2);
+  return formattedDate;
 };
 
 export const lpad5 = val => {
   return alt(val, 0)
     .toString()
     .padStart(5, "0");
+};
+
+// copied direct from stacko, but tested.
+export const formatBytes = (bytes, decimals = 2) => {
+  if (bytes === 0 || !bytes) return "0 Bytes";
+
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+};
+
+export const isValidDate = date => {
+  return date instanceof Date && !isNaN(date.getTime());
+};
+
+export const addMinutes = (date, minutes = 1) => {
+  if (!isValidDate(date)) return "Invalid Date";
+
+  return new Date(date.getTime() + minutes * 60000);
 };

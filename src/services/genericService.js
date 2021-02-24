@@ -1,8 +1,17 @@
-// import PropTypes from "prop-types";
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import { hasData } from "../utils/utils";
 import Cookies from "js-cookie";
 
-const GenericService = async props => {
+const DELETEID = "The delete method requires a valid id parameter.";
+const GET = "get";
+const DELETE = "delete";
+const POST = "post";
+const PUT = "put";
+
+export const GenericService = async props => {
   let param = {
     method: props.method,
     headers: {
@@ -22,6 +31,7 @@ const GenericService = async props => {
       if (response.ok) {
         if (response.url.endsWith("/authenticate")) return response;
         if (response.url.includes("paxdetailreport")) return response.arrayBuffer();
+        if (response.url.includes("attachmentId") || (response.url.includes("logs") && props.uri.split("/").length === 8)) return response.blob();
         return response.json().then(res => res.data || res || response);
       } else {
         return response;
@@ -32,14 +42,58 @@ const GenericService = async props => {
     });
 };
 
-// GenericService.propTypes = {
-//   uri: PropTypes.string.isRequired,
-//   method: PropTypes.oneOf(['get', 'delete', 'post', 'put']).isRequired,
-//   body: PropTypes.object,
-//   contentTypeReceive: PropTypes.string,
-//   mode: PropTypes.string,
-//   headers: PropTypes.object,
-//   contentTypeServer: PropTypes.string
-// };
+export const get = (uri, headers, id, params) => {
+  let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}${
+    hasData(params) ? params : ""
+  }`;
 
-export default GenericService;
+  return GenericService({ uri: uricomplete, method: GET, headers: headers });
+};
+
+export const post = (uri, headers, body) => {
+  return GenericService({
+    uri: uri,
+    method: POST,
+    headers: headers,
+    body: body
+  });
+};
+
+export const put = (uri, headers, id, body) => {
+  let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}`;
+
+  return GenericService({
+    uri: uricomplete,
+    method: PUT,
+    body: body,
+    headers: headers
+  });
+};
+
+export const putNoId = (uri, headers, body) => {
+  return put(uri, headers, undefined, body);
+};
+
+export const del = (uri, headers, id) => {
+  if (!hasData(id)) throw new TypeError(DELETEID);
+
+  let uricomplete = `${uri}${hasData(id) ? `/${id}` : ""}`;
+
+  return GenericService({
+    uri: uricomplete,
+    method: DELETE,
+    headers: headers
+  });
+};
+
+export const downloadWrap = (blob, fileName) => {
+  var tempEl = document.createElement("a");
+  document.body.appendChild(tempEl);
+  tempEl.style = "display: none";
+  var url = window.URL.createObjectURL(blob);
+  tempEl.href = url;
+  tempEl.download = fileName;
+  tempEl.click();
+  window.URL.revokeObjectURL(url);
+  tempEl.remove();
+}

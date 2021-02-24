@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import { Link } from "@reach/router";
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
@@ -14,8 +18,8 @@ const FlightInfo = props => {
           <LabelledInput
             alt="Flight Number"
             inputStyle="big-name-sidebar fa fa-plane"
-            inputType="label"
-            inputVal={props.flightNumber}
+            inputtype="label"
+            inputval={props.flightNumber}
           />
         </Col>
       </Row>
@@ -29,8 +33,8 @@ const FlightInfo = props => {
           <LabelledInput
             alt="Arrival"
             inputStyle="big-name-sidebar fa fa-arrow-circle-down"
-            inputType="label"
-            inputVal={props.arrival}
+            inputtype="label"
+            inputval={props.arrival}
           />
         </Col>
       </Row>
@@ -43,8 +47,8 @@ const FlightInfo = props => {
           <LabelledInput
             alt="Arrival"
             inputStyle="big-name-sidebar fa fa-arrow-circle-up"
-            inputType="label"
-            inputVal={props.departure}
+            inputtype="label"
+            inputval={props.departure}
           />
         </Col>
       </Row>

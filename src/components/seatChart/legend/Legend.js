@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import Xl8 from "../../xl8/Xl8";
 import "./Legend.scss";
@@ -24,6 +28,10 @@ const Legend = props => {
       <div className="seat-legend">
         <span className="legend-icon selected-pax-seat"> </span>
         <Xl8 xid="resv004">Selected Passenger</Xl8>
+      </div>
+      <div className="seat-legend">
+        <span className="legend-icon legend-search-result"> </span>
+        <Xl8 xid="resv005">Search Result</Xl8>
       </div>
     </div>
   );

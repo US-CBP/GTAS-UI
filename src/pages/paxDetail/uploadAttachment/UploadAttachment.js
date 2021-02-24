@@ -1,13 +1,15 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState } from "react";
 import { attachment } from "../../../services/serviceWrapper";
-import "./UploadAttachment.scss";
-import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Table from "../../../components/table/Table";
-import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 import Confirm from "../../../components/confirmationModal/Confirm";
 import AttachmentModal from "./AttachmentModal";
-import { ACTION } from "../../../utils/constants";
+import { Button, Dropdown, DropdownButton } from "react-bootstrap";
+import "./UploadAttachment.scss";
 
 const UploadAttachment = props => {
   const [selectedFiles] = useState(null);
@@ -18,10 +20,7 @@ const UploadAttachment = props => {
   const [showModal, setShowModal] = useState(false);
   const paxId = props.paxId;
 
-  const cb = (status, resp) => { //SLATE FOR REMOVAL -- DOES NOTHING AS PAX DETAIL CONTROLS CALLBACK FOR ATTACHMENT MODAL NOW
-    if (status !== ACTION.CLOSE && status !== ACTION.CANCEL)
-      setRefreshDataKey(refreshDataKey + 1);
-  };
+  const cb = () => {};
 
   const deleteAttachment = row => {
     attachment.del(row.id).then(resp => {
@@ -30,7 +29,7 @@ const UploadAttachment = props => {
   };
 
   const downloadAttachment = row => {
-    attachment.get.download(row.id);
+    attachment.get.download(row.id, row.filename);
   };
 
   useEffect(() => {
@@ -48,7 +47,7 @@ const UploadAttachment = props => {
       setData(resp);
       setTableKey(tableKey + 1);
     });
-  }, [props.attachmentRefreshKey]);
+  }, [refreshDataKey, props.attachmentRefreshKey]);
 
   const headers = [
     {
@@ -104,7 +103,7 @@ const UploadAttachment = props => {
         setShowModal(true);
       }}
       required={props.required}
-      value={props.inputVal}
+      value={props.inputval}
       alt={props.alt}
     >
       <Xl8 xid="att008">Add an Attachment</Xl8>
@@ -120,7 +119,6 @@ const UploadAttachment = props => {
 
   return (
     <div className="one-column-grid-container">
-      {/* <Title title={<Xl8 xid="att009">Uploaded Attachments</Xl8>} rightChild={button} /> */}
       <Table data={data} id="attachments" header={headers} key={tableKey} callback={cb} />
     </div>
   );

@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 const txtops = [
   "equal",
   "not_equal",
@@ -261,12 +265,12 @@ export const ENTITIESEXT = {
     {
       id: "origin",
       type: "string",
-      multival: true
+      ...getMult()
     },
     {
       id: "destination",
       type: "string",
-      multival: true
+      ...getMult()
     }
   ],
   FrequentFlyer: [
@@ -422,7 +426,8 @@ export const ENTITIESEXT = {
     },
     {
       id: "paymentType",
-      type: "string"
+      type: "string",
+      ...getMult()
     }
   ],
   Pnr: [
@@ -526,6 +531,21 @@ export const ENTITIESEXT = {
     },
     {
       id: "phone",
+      type: "string"
+    }
+  ],
+  SavedSegment: [
+    {
+      id: "segmentName",
+      type: "string",
+      ...getMult()
+    },
+    {
+      id: "rawSegment",
+      type: "string"
+    },
+    {
+      id: "regex",
       type: "string"
     }
   ]

@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+import React from "react";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
@@ -8,17 +12,19 @@ import { Container, Col } from "react-bootstrap";
 import Title from "../../../components/title/Title";
 import { localeDate } from "../../../utils/utils";
 
-const LoaderStats = ({ name }) => {
-  const onChange = function(result) {};
+const LoaderStats = () => {
   const cb = () => {};
-  const [key, setKey] = useState(0);
 
   const parseData = function(res) {
+    const drools = res?.lastMessageAnalyzedByDrools;
+    const msg = res?.lastMessageInSystem;
+    const hit = res?.mostRecentRuleHit;
+
     const parsedData = {
       ...res,
-      lastMessageAnalyzedByDrools: localeDate(res?.lastMessageAnalyzedByDrools),
-      lastMessageInSystem: localeDate(res?.lastMessageInSystem),
-      mostRecentRuleHit: localeDate(res?.mostRecentRuleHit)
+      lastMessageInSystem: msg > 0 ? localeDate(msg) : " -- ",
+      lastMessageAnalyzedByDrools: drools > 0 ? localeDate(drools) : " -- ",
+      mostRecentRuleHit: hit > 0 ? localeDate(hit) : " -- "
     };
 
     return parsedData;
@@ -31,7 +37,6 @@ const LoaderStats = ({ name }) => {
       <Container>
         <Col lg={{ span: 4, offset: 4 }}>
           <Form
-            key={key}
             getService={loaderStats.get}
             title=""
             callback={cb}
@@ -42,45 +47,45 @@ const LoaderStats = ({ name }) => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="ls004">Last message received:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="lastMessageInSystem"
               alt="Last message received"
               readOnly
-              callback={onChange}
+              callback={cb}
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="ls002">Last message analyzed:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="lastMessageAnalyzedByDrools"
-              callback={onChange}
+              callback={cb}
               readOnly
               alt="Last message analyzed"
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="ls003">Most recent rule hit (Partial excluded):</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="mostRecentRuleHit"
-              callback={onChange}
+              callback={cb}
               readOnly
               alt="Most recent rule hit (Partial excluded) timestamp"
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="ls005">Passengers from past 500 messages:</Xl8>}
-              inputType="text"
+              labelText={<Xl8 xid="ls005">Passengers last 500 messages:</Xl8>}
+              inputtype="text"
               name="passengerCount"
-              callback={onChange}
+              callback={cb}
               readOnly
               alt="Passengers Count from past 500 messages"
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="ls006">Loading/Parsing errors past 500 messages:</Xl8>}
-              inputType="text"
+              labelText={<Xl8 xid="ls006">Loading/Parsing errors last 500 messages:</Xl8>}
+              inputtype="text"
               name="totalLoadingParsingErrors"
-              callback={onChange}
+              callback={cb}
               readOnly
               alt="Loading/Parsing errors past 500 messages"
             />
@@ -88,9 +93,9 @@ const LoaderStats = ({ name }) => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="ls007">Rule errors last 500 messages:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="totalRuleErros"
-              callback={onChange}
+              callback={cb}
               readOnly
               alt="Rule errors last 500 messages"
             />

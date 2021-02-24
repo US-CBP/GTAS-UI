@@ -1,3 +1,9 @@
+<!--
+ All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+
+ Please see license.txt for details.
+-->
+
 Not currently using this since our page hierarchy is relatively flat, but
 below is a non-functional example of how it might look.
 

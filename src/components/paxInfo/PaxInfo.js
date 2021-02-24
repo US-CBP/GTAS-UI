@@ -1,40 +1,24 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import Xl8 from "../../components/xl8/Xl8";
 
 import {
   hasData,
-  localeDateOnly,
-  localeDate,
   localeMonthDayTime,
-  passengerTypeMapper
+  passengerTypeMapper,
+  timezoneFreeDate
 } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./PaxInfo.scss";
+import {LK} from "../../utils/constants";
+import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 
 const PaxInfo = props => {
   const getPaxInfo = res => {
-    // const lastPnrRecieved = hasData(res.pnrVo?.transmissionDate)
-    //   ? Date.parse(res.pnrVo?.transmissionDate)
-    //   : undefined;
-    // const lastApisRecieved = hasData(res.apisMessageVo?.transmissionDate)
-    //   ? Date.parse(res.apisMessageVo?.transmissionDate)
-    //   : undefined;
-    // const dob = Date.parse(res.dob);
-
-    const apisrec = hasData(res.lastApisReceived)
-      ? {
-          label: <Xl8 xid="pd018">Last APIS Received</Xl8>,
-          value: localeMonthDayTime(res.lastApisReceived)
-        }
-      : {};
-
-    const pnrrec = hasData(res.lastPnrReceived)
-      ? {
-          label: <Xl8 xid="pd017">Last PNR Received</Xl8>,
-          value: localeMonthDayTime(res.lastPnrReceived)
-        }
-      : {};
     return [
       {
         label: <Xl8 xid="pd007">Last Name</Xl8>,
@@ -43,9 +27,13 @@ const PaxInfo = props => {
       { label: <Xl8 xid="pd008">First Name</Xl8>, value: res.firstName },
       { label: <Xl8 xid="pd009">Middle Name</Xl8>, value: res.middleName },
       { label: <Xl8 xid="pd010">Age</Xl8>, value: res.age },
-      { label: <Xl8 xid="pd011">DOB</Xl8>, value: localeDateOnly(Date.parse(res.dob)) },
+
+      { label: <Xl8 xid="pd011">DOB</Xl8>, value: timezoneFreeDate(res.dob) },
       { label: <Xl8 xid="pd012">Gender</Xl8>, value: res.gender },
-      { label: <Xl8 xid="pd013">Nationality</Xl8>, value: res.nationality },
+      { label: <Xl8 xid="pd013">Nationality</Xl8>, value: (
+            <ToolTipWrapper
+                data={{val:res.nationality, lkup:LK.COUNTRY}}>
+            </ToolTipWrapper>)},
       { label: <Xl8 xid="pd014">Residence</Xl8>, value: res.residenceCountry },
       {
         label: <Xl8 xid="pd015">Seat</Xl8>,
@@ -68,8 +56,14 @@ const PaxInfo = props => {
         label: <Xl8 xid="pd016">Passenger Type</Xl8>,
         value: passengerTypeMapper(res.passengerType)
       },
-      pnrrec,
-      apisrec
+      {
+        label: <Xl8 xid="pd017">Last PNR Received</Xl8>,
+        value: localeMonthDayTime(res.lastPnrReceived)
+      },
+      {
+        label: <Xl8 xid="pd018">Last APIS Received</Xl8>,
+        value: localeMonthDayTime(res.lastApisReceived)
+      }
     ];
   };
 

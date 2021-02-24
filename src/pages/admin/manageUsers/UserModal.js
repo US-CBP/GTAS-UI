@@ -1,46 +1,59 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useEffect, useState, useContext } from "react";
 import { Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
-import { users, roles } from "../../../services/serviceWrapper";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { UserContext } from "../../../context/user/UserContext";
-import { asArray, isValidPassword } from "../../../utils/utils";
-import { ACTION, ROLE } from "../../../utils/constants";
-import "./ManageUsers.scss";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../components/modal/Modal";
 import ErrorText from "../../../components/errorText/ErrorText";
+import { users } from "../../../services/serviceWrapper";
+import { roles } from "../../../services/lookupService";
+import { UserContext } from "../../../context/user/UserContext";
+import { asArray, isValidPassword } from "../../../utils/utils";
+import { ACTION, ROLE } from "../../../utils/constants";
+import "./ManageUsers.scss";
 
 const UserModal = props => {
   const [allRoles, setAllRoles] = useState([]);
   const { getUserState } = useContext(UserContext);
   const [showAlert, setShowAlert] = useState(false);
   const [alertContent, setAlertContent] = useState("");
-  const defaultRole = [{ label: ROLE.FLIGHTVWR, value: 9, disabled: true }];
+  const defaultRole = { label: ROLE.FLIGHTVWR, value: undefined, disabled: true };
   const cb = function(result) {};
   const row = props.editRowDetails || {};
   const loggedinUser = getUserState();
 
+  const launchAlert = msg => {
+    setAlertContent(msg);
+    setShowAlert(true);
+  };
+
   const isLoggedinUser = userId => {
     return loggedinUser.userId === userId;
   };
-  const loggedinUserHasAdminRole = () => {
-    const roles = loggedinUser.userRoles;
-    return roles.includes(ROLE.ADMIN);
-  };
+
+  // const loggedinUserHasAdminRole = () => {
+  //   const roles = loggedinUser.userRoles;
+  //   return roles.includes(ROLE.ADMIN);
+  // };
 
   const isRoleDisabled = role => {
     return (
       role.roleDescription === ROLE.FLIGHTVWR ||
-      (props.isEdit && isLoggedinUser(row.userId) && loggedinUserHasAdminRole())
+      (props.isEdit && isLoggedinUser(row.userId))
     );
   };
   const containsDefaultRole = roles => {
-    return asArray(roles).find(role => role.value === defaultRole[0].value);
+    return asArray(roles).find(
+      role => role.label === defaultRole.label || role.label === ROLE.ADMIN
+    );
   };
   const compareRoles = (role1, role2) => {
     const roleDescription1 = role1.roleDescription?.toUpperCase();
@@ -81,8 +94,7 @@ const UserModal = props => {
       const message = res.message || (
         <Xl8 xid="um03">There was an issue with the server for that request.</Xl8>
       );
-      setAlertContent(message);
-      setShowAlert(true);
+      launchAlert(message);
     } else {
       setShowAlert(false);
       props.onHide();
@@ -92,7 +104,6 @@ const UserModal = props => {
 
   const preSubmit = fields => {
     let res = { ...fields[0] };
-    //TODO selectedRoles is empty if no change occurs, which makes hard to apply default values
     res.roles = asArray(res.roles).map(role => {
       return { roleId: role.value, roleDescription: role.label };
     });
@@ -124,11 +135,9 @@ const UserModal = props => {
       validUserId = !existingUserIds.includes(res.userId?.toUpperCase());
     }
     if (!validUserId) {
-      setAlertContent(INVALID_USER_ERROR);
-      setShowAlert(true);
+      launchAlert(INVALID_USER_ERROR);
     } else if (!validPassword) {
-      setAlertContent(INVALID_PASSWORD_ERROR);
-      setShowAlert(true);
+      launchAlert(INVALID_PASSWORD_ERROR);
     }
 
     return validPassword && validUserId;
@@ -141,7 +150,7 @@ const UserModal = props => {
       <LabelledInput
         datafield
         labelText={<Xl8 xid="um04">Password</Xl8>}
-        inputType="password"
+        inputtype="password"
         name="password"
         required={true}
         alt="nothing"
@@ -188,10 +197,10 @@ const UserModal = props => {
               <LabelledInput
                 datafield
                 labelText={<Xl8 xid="um005">User ID</Xl8>}
-                inputType="text"
+                inputtype="text"
                 name="userId"
                 required={true}
-                inputVal={row.userId}
+                inputval={row.userId}
                 alt="nothing"
                 callback={cb}
                 readOnly={true}
@@ -201,10 +210,10 @@ const UserModal = props => {
               <LabelledInput
                 datafield
                 labelText={<Xl8 xid="um005">User ID</Xl8>}
-                inputType="text"
+                inputtype="text"
                 name="userId"
                 required={true}
-                inputVal={row.userId}
+                inputval={row.userId}
                 alt="nothing"
                 callback={cb}
                 spacebetween
@@ -216,10 +225,10 @@ const UserModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="um007">First Name</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="firstName"
               required={true}
-              inputVal={row.firstName}
+              inputval={row.firstName}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -227,10 +236,10 @@ const UserModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="um008">Last Name</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="lastName"
               required={true}
-              inputVal={row.lastName}
+              inputval={row.lastName}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -239,10 +248,10 @@ const UserModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="um009">Email</Xl8>}
-              inputType="email"
+              inputtype="email"
               name="email"
               required={true}
-              inputVal={row.email}
+              inputval={row.email}
               alt="nothing"
               callback={cb}
               spacebetween
@@ -250,9 +259,9 @@ const UserModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="um010">Phone Number</Xl8>}
-              inputType="tel"
+              inputtype="tel"
               name="phoneNumber"
-              inputVal={row.phoneNumber}
+              inputval={row.phoneNumber}
               alt="nothing"
               placeholder="optional"
               callback={cb}
@@ -262,8 +271,8 @@ const UserModal = props => {
               name="roles"
               datafield="roles"
               labelText={<Xl8 xid="um015">Roles</Xl8>}
-              inputType="multiSelect"
-              inputVal={selectedRoles}
+              inputtype="multiSelect"
+              inputval={selectedRoles}
               options={roleOptions}
               callback={cb}
               alt="Roles"
@@ -273,11 +282,11 @@ const UserModal = props => {
             <LabelledInput
               datafield="emailEnabled"
               labelText={<Xl8 xid="um011">Enable User Email Notification</Xl8>}
-              inputType="checkbox"
+              inputtype="checkbox"
               name="emailEnabled"
               required={true}
               alt="nothing"
-              inputVal={row.emailEnabled}
+              inputval={row.emailEnabled}
               callback={cb}
               selected={row.emailEnabled}
               spacebetween
@@ -286,11 +295,11 @@ const UserModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="um012">Automated Email Notification</Xl8>}
-              inputType="checkbox"
+              inputtype="checkbox"
               name="highPriorityEmail"
               required={true}
               alt="nothing"
-              inputVal={row.highPriorityEmail}
+              inputval={row.highPriorityEmail}
               callback={cb}
               selected={row.highPriorityEmail}
               spacebetween
@@ -299,11 +308,11 @@ const UserModal = props => {
               <LabelledInput
                 datafield
                 labelText={<Xl8 xid="um013">User Is Enabled</Xl8>}
-                inputType="checkbox"
+                inputtype="checkbox"
                 name="active"
                 required={true}
                 alt="nothing"
-                inputVal={!!row.active}
+                inputval={!!row.active}
                 callback={cb}
                 selected={!!row.active}
                 readOnly={isLoggedinUser(row.userId)}
@@ -313,11 +322,11 @@ const UserModal = props => {
               <LabelledInput
                 datafield
                 labelText={<Xl8 xid="um014">User Is Enabled</Xl8>}
-                inputType="checkbox"
+                inputtype="checkbox"
                 name="active"
                 required={true}
                 alt="nothing"
-                inputVal={true}
+                inputval={true}
                 callback={cb}
                 selected={true}
                 spacebetween

@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 import SegmentTable from "../../../components/segmentTable/SegmentTable";
@@ -8,7 +12,8 @@ import {
   hasData,
   localeDate,
   localeDateOnly,
-  localeMonthYear
+  localeMonthYear,
+  timezoneFreeDate
 } from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
 import { Link } from "@reach/router";
@@ -228,10 +233,10 @@ const PNR = props => {
     };
   });
   const documents = asArray(data.documents).map(doc => {
-    const expirationDate = Date.parse(doc.expirationDate);
+    // const expirationDate = Date.parse(doc.expirationDate);
     return {
       ...doc,
-      expirationDate: localeDateOnly(expirationDate),
+      expirationDate: timezoneFreeDate(doc.expirationDate),
       key: `DOCS${doc.documentNumber} `
     };
   });

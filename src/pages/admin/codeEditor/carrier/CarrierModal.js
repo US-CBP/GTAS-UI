@@ -1,15 +1,20 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React from "react";
 import { Button, Container } from "react-bootstrap";
 import Form from "../../../../components/form/Form";
 import Xl8 from "../../../../components/xl8/Xl8";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
-import { codeEditor } from "../../../../services/serviceWrapper";
+import { codeEditor } from "../../../../services/lookupService";
 import { ACTION } from "../../../../utils/constants";
 import Modal, {
   ModalBody,
   ModalHeader,
   ModalTitle
 } from "../../../../components/modal/Modal";
+const type = "carrier";
 
 const CarrierModal = props => {
   const cb = function(result) {};
@@ -42,8 +47,8 @@ const CarrierModal = props => {
         </Button>,
         <Button
           type="button"
-          className="m-2 outline-dark-outline"
-          variant="outline-dark"
+          className="m-2 "
+          variant="outline-danger"
           key="delete"
           onClick={() => props.actionCallback(ACTION.DELETE)}
         >
@@ -68,7 +73,9 @@ const CarrierModal = props => {
         <Container fluid>
           <Form
             submitService={
-              props.isEdit ? codeEditor.put.updateCarrier : codeEditor.post.createCarrier
+              props.isEdit
+                ? id => codeEditor.put.update(type, id)
+                : body => codeEditor.post(type, body)
             }
             callback={postSubmit}
             action="add"
@@ -79,22 +86,33 @@ const CarrierModal = props => {
             <LabelledInput
               datafield
               labelText={<Xl8 xid="iata001">IATA: </Xl8>}
-              inputType="text"
+              inputtype="text"
               name="iata"
               required={true}
               alt={<Xl8 xid="0">IATA:</Xl8>}
-              inputVal={data.iata}
+              inputval={data.iata}
+              callback={cb}
+              spacebetween
+            />
+            <LabelledInput
+              datafield
+              labelText={<Xl8 xid="icao001">ICAO: </Xl8>}
+              inputtype="text"
+              name="icao"
+              // required={true}
+              alt="ICAO"
+              inputval={data.icao}
               callback={cb}
               spacebetween
             />
             <LabelledInput
               datafield
               labelText={<Xl8 xid="carm001">Name:</Xl8>}
-              inputType="text"
+              inputtype="text"
               name="name"
               required={true}
               alt=""
-              inputVal={data.name}
+              inputval={data.name}
               callback={cb}
               spacebetween
             />

@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react";
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+import React, {useContext, useEffect, useState} from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
@@ -21,12 +25,14 @@ import {
   lpad5,
   sortableDate
 } from "../../utils/utils";
-import { ROLE } from "../../utils/constants";
-import { Col, Tabs, Tab } from "react-bootstrap";
+import {LK, ROLE} from "../../utils/constants";
+import {Col, Tabs, Tab, OverlayTrigger, Popover, Tooltip} from "react-bootstrap";
 import "./FlightPax.css";
+import {LookupContext} from "../../context/data/LookupContext";
+import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 
 const FlightPax = props => {
-  const cb = function(result) {};
+  const cb = () => {};
 
   const [data, setData] = useState();
   const [hitData, setHitData] = useState();
@@ -51,9 +57,7 @@ const FlightPax = props => {
 
   const parseData = data => {
     return asArray(data).map(item => {
-      const displayDobDate = localeDateOnly(
-        new Date(item.dob).toISOString().slice(0, -14)
-      );
+      const displayDobDate = new Date(item.dob).toLocaleDateString();
       item.docNumber = item.documents?.length > 0 ? item.documents[0] : ""; // TODO Documents: shd show all or none here.
       item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
       item.dobStr = `${sortableDate(new Date(item.dob))} ${displayDobDate} ${item.age}`;
@@ -222,7 +226,15 @@ const FlightPax = props => {
       Accessor: "nationality",
       Xl8: true,
       Header: ["fp020", "Nationality"],
-      disableGroupBy: true
+      disableGroupBy: true,
+      Cell: ({row}) => { return (
+            <ToolTipWrapper
+                data={{val:row.original.nationality, lkup:LK.COUNTRY}}>
+              className="sm"
+            </ToolTipWrapper>
+        )
+      },
+      Aggregated: () => ``
     },
     { Accessor: "coTravellerId", Xl8: true, Header: ["fp021", "PNR Record Loc."] }
   ];
@@ -309,19 +321,19 @@ const FlightPax = props => {
             </div>
             <br />
 
-            <table class="table table-sm table-borderless">
+            <table className="table table-sm table-borderless">
               <tbody>
-                <tr class="flightpax-row">
-                  <td class="left">
+                <tr className="flightpax-row">
+                  <td className="left">
                     <Xl8 xid="fp006">Direction:</Xl8>
                   </td>
-                  <td class="right">{flightData.direction}</td>
+                  <td className="right">{flightData.direction}</td>
                 </tr>
-                <tr class="flightpax-row">
-                  <td class="left">
+                <tr className="flightpax-row">
+                  <td className="left">
                     <Xl8 xid="fp009">Passengers:</Xl8>
                   </td>
-                  <td class="right">{flightData.passengerCount}</td>
+                  <td className="right">{flightData.passengerCount}</td>
                 </tr>
               </tbody>
             </table>

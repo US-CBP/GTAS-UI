@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
 import Form from "../../../../components/form/Form";
 import { changePassword } from "../../../../services/serviceWrapper";
 import LabelledInput from "../../../../components/labelledInput/LabelledInput";
 import { Container, Alert } from "react-bootstrap";
-import Title from "../../../../components/title/Title";
+
 import Xl8 from "../../../../components/xl8/Xl8";
 import "./ChangePassword.scss";
 import { hasData, isValidPassword } from "../../../../utils/utils";
@@ -14,7 +18,7 @@ const ChangePassword = props => {
   const [confirmedPassword, setConfirmedPassword] = useState();
   const [errorMessage, setErrorMessage] = useState("");
   const [displayErrorMsg, setDisplayErrorMsg] = useState(false);
-  const [style, setStyle] = useState("passwords-do-not-match");
+  const [formKey, setFormKey] = useState(0);
   const chagneByAdmin = hasData(props.userId);
 
   const service = chagneByAdmin ? changePassword.byAdmin : changePassword.byloggedInUser;
@@ -58,6 +62,21 @@ const ChangePassword = props => {
     </Xl8>
   );
 
+  const highlightInvalidInputs = inputName => {
+    const inputField = document.querySelector(`[name=${inputName}]`);
+    if (hasData(inputField)) {
+      inputField.classList.add("invalid-password");
+    }
+  };
+
+  const clearInvalidInputHighlight = inputName => {
+    const inputField = document.querySelector(`[name=${inputName}]`);
+
+    if (hasData(inputField)) {
+      inputField.classList.remove("invalid-password");
+    }
+  };
+
   const showAlert = message => {
     setErrorMessage(message);
     setDisplayErrorMsg(true);
@@ -65,12 +84,15 @@ const ChangePassword = props => {
 
   const changeInput = input => {
     if (input.name === "oldPassword") {
+      clearInvalidInputHighlight("oldPassword");
       setOldPassword(input.value);
     }
     if (input.name === "newPassword") {
+      clearInvalidInputHighlight("newPassword");
       setNewPassword(input.value);
     }
     if (input.name === "confirmPassword") {
+      clearInvalidInputHighlight("confirmPassword");
       setConfirmedPassword(input.value);
     }
   };
@@ -81,21 +103,14 @@ const ChangePassword = props => {
 
     if (!validPassword) {
       showAlert(invalidPasswordError);
+      highlightInvalidInputs("newPassword");
     } else if (!passwordsMatch) {
       showAlert(passwordsDoNotMatchError);
+      highlightInvalidInputs("confirmPassword");
     }
 
     return passwordsMatch && validPassword;
   };
-
-  useEffect(() => {
-    setDisplayErrorMsg(false);
-    if (confirmedPassword?.length >= 10 && confirmedPassword === newPassword) {
-      setStyle("passwords-match");
-    } else {
-      setStyle("passwords-do-not-match");
-    }
-  }, [newPassword, confirmedPassword]);
 
   const cb = () => {};
   const passwordChangeCallback = (status, res) => {
@@ -114,6 +129,8 @@ const ChangePassword = props => {
         //Or other System errors
         setErrorMessage(message);
         setDisplayErrorMsg(true);
+        setFormKey(formKey + 1);
+        highlightInvalidInputs("oldPassword");
       }
     }
   };
@@ -124,10 +141,6 @@ const ChangePassword = props => {
         <div className="modal-title h4">
           <Xl8 xid="pass001">Change Password</Xl8>
         </div>
-        {/* <button type="button" class="close">
-          <span aria-hidden="true">×</span>
-          <span class="sr-only">Close</span>
-        </button> */}
       </div>
       <div className="password-rules">{passwordRule}</div>
       {displayErrorMsg && (
@@ -144,7 +157,7 @@ const ChangePassword = props => {
         action="add"
         cancellable
         recordId={recordId}
-        key={style}
+        key={formKey}
       >
         {chagneByAdmin ? (
           <></>
@@ -152,10 +165,10 @@ const ChangePassword = props => {
           <LabelledInput
             datafield
             labelText={<Xl8 xid="pass003">Old password</Xl8>}
-            inputType="password"
+            inputtype="password"
             name="oldPassword"
             required={true}
-            inputVal={oldPassword}
+            inputval={oldPassword}
             alt={<Xl8 xid="7">Old password</Xl8>}
             callback={cb}
             onChange={changeInput}
@@ -165,10 +178,10 @@ const ChangePassword = props => {
         <LabelledInput
           datafield
           labelText={<Xl8 xid="pass004">New password</Xl8>}
-          inputType="password"
+          inputtype="password"
           name="newPassword"
           required={true}
-          inputVal={newPassword}
+          inputval={newPassword}
           alt={<Xl8 xid="7">New password</Xl8>}
           callback={cb}
           onChange={changeInput}
@@ -177,14 +190,13 @@ const ChangePassword = props => {
         <LabelledInput
           datafield
           labelText={<Xl8 xid="pass005">Confirm password</Xl8>}
-          inputType="password"
+          inputtype="password"
           name="confirmPassword"
           required={true}
-          inputVal={confirmedPassword}
+          inputval={confirmedPassword}
           alt="nothing"
           callback={cb}
           onChange={changeInput}
-          className={style}
           spacebetween
         />
       </Form>

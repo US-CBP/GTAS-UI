@@ -1,62 +1,80 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 .files input {
-  outline: 2px dashed #92b0b3;
-  outline-offset: -10px;
-  -webkit-transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
-  transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
-  padding: 120px 0px 85px 35%;
-  text-align: center !important;
-  margin: 0;
   width: 100% !important;
+  opacity: 0;
+  white-space: normal;
+  height: 150px;
 }
-.files input:focus {
-  outline: 2px dashed #92b0b3;
-  outline-offset: -10px;
-  -webkit-transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
-  transition: outline-offset 0.15s ease-in-out, background-color 0.15s linear;
-  border: 1px solid #92b0b3;
-}
+
 .files {
   position: relative;
+  border: 2px dashed #009e92;
+  border-radius: 0.25rem;
 }
-.files:after {
-  pointer-events: none;
+
+.files::before {
+  content: "\f0ab";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  font-size: 120px;
+  color: #e3f7f6;
+  top: calc(50% - 60px);
+  left: calc(50% - 60px);
+  line-height: 1;
   position: absolute;
-  top: 60px;
-  left: 0;
-  width: 50px;
-  right: 0;
-  height: 56px;
-  content: "";
-  background-image: url(https://image.flaticon.com/icons/png/128/109/109612.png);
-  display: block;
-  margin: 0 auto;
-  background-size: 100%;
-  background-repeat: no-repeat;
+}
+
+.files:hover {
+  background-color: #e3f7f6;
 }
 .color input {
   background-color: #f1f1f1;
 }
-.files:before {
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  pointer-events: none;
-  width: 100%;
-  right: 0;
-  height: 57px;
-  content: " or drag it here. ";
-  display: block;
-  margin: 0 auto;
-  color: #2ea591;
-  font-weight: 600;
-  text-transform: capitalize;
-  text-align: center;
-}
 
 .upload input[type="file"] {
-  text-indent: -999em;
   outline: none;
   width: 100%;
   height: 100%;
   position: absolute;
+}
+
+.attachment-data {
+  position: absolute;
+  top: 45px;
+  left: 30px;
+  width: calc(100% - 60px);
+}
+
+.attachment-data > div {
+  white-space: nowrap !important;
+  overflow: hidden;
+}
+
+.attachment-size {
+  margin-left: 10px;
+}
+
+.attachment-form-container {
+  margin-top: 20px;
+}
+
+.attachment-form-container > div {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.attachment-files-title {
+  display: flex;
+  .error-text {
+    margin-left: 20px;
+    align-self: center;
+  }
 }

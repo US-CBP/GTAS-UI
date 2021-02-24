@@ -1,3 +1,7 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 @import "../../index.scss";
 // @import "~bootstrap/scss/functions";
 // @import "~bootstrap/scss/variables";
@@ -114,7 +118,7 @@ $hover-color: rgb(177, 172, 172);
 }
 
 @media (max-width: 950px) {
-  .form-inline {
+  .header-search {
     display: none !important;
   }
 }

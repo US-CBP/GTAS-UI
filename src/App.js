@@ -1,17 +1,16 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { Suspense } from "react";
-import { Router, Redirect, navigate } from "@reach/router";
-import IdleTimer from "react-idle-timer";
+import { Router, Redirect } from "@reach/router";
 import loadable from "@loadable/component";
 
 import Xl8 from "./components/xl8/Xl8";
 
-import Authenticator from "./context/authenticator/Authenticator";
-import RoleAuthenticator from "./context/roleAuthenticator/RoleAuthenticator";
 import UserProvider from "./context/user/UserContext";
 import LiveEditProvider from "./context/translation/LiveEditContext";
 import LookupProvider from "./context/data/LookupContext";
-
-import { ROLE, TIME } from "./utils/constants";
 
 //login bundle
 import Login from "./pages/login/Login";
@@ -19,11 +18,20 @@ import SignUp from "./pages/login/SignUp";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 import Page404 from "./pages/page404/Page404";
+import Loading from "./components/loading/Loading";
 
-import { FULLPATH_TO } from "./utils/constants";
+import { hasData } from "./utils/utils";
+import { ROLE, FULLPATH_TO } from "./utils/constants";
 import "./App.scss";
 import "font-awesome/css/font-awesome.min.css";
+import ForgotUsername from "./pages/login/ForgotUsername";
 
+const Authenticator = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./context/authenticator/Authenticator")
+);
+const RoleAuthenticator = loadable(() =>
+  import(/* webpackChunkName: "authed" */ "./context/roleAuthenticator/RoleAuthenticator")
+);
 const Flights = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/flights/Flights")
 );
@@ -31,9 +39,6 @@ const PriorityVetting = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/vetting/Vetting")
 );
 const Home = loadable(() => import(/* webpackChunkName: "authed" */ "./pages/home/Home"));
-const Dashboard = loadable(() =>
-  import(/* webpackChunkName: "authed" */ "./pages/dashboard/Dashboard")
-);
 const PaxDetail = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/paxDetail/PaxDetail")
 );
@@ -73,9 +78,6 @@ const Watchlist = loadable(() =>
 );
 const About = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/tools/about/About")
-);
-const GModal = loadable(() =>
-  import(/* webpackChunkName: "authed" */ "./components/modal/GModal")
 );
 const PageUnauthorized = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
@@ -148,83 +150,41 @@ const LanguageEditor = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/lang/LanguageEditor")
 );
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.idleTimer = null;
-    this.onAction = this._onAction.bind(this);
-    this.onActive = this._onActive.bind(this);
-    this.onIdle = this._onIdle.bind(this);
-    this.state = {
-      showModal: false,
-      redirect: false
-    };
-  }
+const NEO4JURL = window?._env_
+  ? window._env_.REACT_APP_NEO4J_BROWSER
+  : process.env.REACT_APP_NEO4J_BROWSER;
 
-  _onAction(e) {
-    // console.log('user did something', e)
-  }
+const KIBANAURL = window?._env_
+  ? window._env_.REACT_APP_BASE_KIBANA_LOGIN
+  : process.env.REACT_APP_KIBANA_LOGIN;
 
-  _onActive(e) {
-    // console.log('user is active', e)
-    // console.log('time remaining', this.idleTimer.getRemainingTime())
-  }
+const App = props => {
+  const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
+  const NF404 = <Page404 path="page404"></Page404>;
 
-  _onIdle(e) {
-    console.log("user is idle", e);
-    console.log("last active", this.idleTimer.getLastActiveTime());
-
-    // Logout and redirect to login page
-    // this.setState({ redirect: true });
-    navigate(FULLPATH_TO.LOGIN);
-  }
-
-  toggleModal() {
-    // this.setState({ showModal: !this.state.showModal });
-  }
-
-  render() {
-    const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
-
-    return (
-      <React.StrictMode>
+  return (
+    <React.StrictMode>
+      <>
         <UserProvider>
           <LookupProvider>
             <LiveEditProvider>
               <Suspense fallback="loading">
                 <Router>
-                  {/* TEST ME */}
-                  {/* <Redirect from="/" to="/gtas/login" noThrow /> */}
+                  {NF404}
+                  <Redirect from="/" to={FULLPATH_TO.LOGIN} noThrow />
+                  <ResetPassword
+                    path={`${FULLPATH_TO.RESETPWD}/:username/:resetToken`}
+                  ></ResetPassword>
+                  <ForgotPassword path={FULLPATH_TO.FORGOTPWD}></ForgotPassword>
                   <Login path={FULLPATH_TO.LOGIN}></Login>
                   <SignUp path={FULLPATH_TO.SIGNUP}></SignUp>
-                  <ResetPassword path="/gtas/reset-password/:username/:resetToken"></ResetPassword>
-                  <ForgotPassword path={FULLPATH_TO.FORGOTPWD}></ForgotPassword>
+                  <ForgotUsername path={FULLPATH_TO.FORGOTUSERNAME}></ForgotUsername>
                 </Router>
               </Suspense>
-              {/* {this.state.showModal ? (
-                <GModal>
-                  <div>
-                    <h1>You have been inactive for {this.idleTimer.getElapsedTime()}</h1>
-                    <button onClick={this.toggleModal}>OK</button>
-                  </div>
-                </GModal>
-              ) : null} */}
               <div className="App">
-                <IdleTimer
-                  ref={ref => {
-                    this.idleTimer = ref;
-                  }}
-                  element={document}
-                  onActive={this.onActive}
-                  onIdle={this.onIdle}
-                  onAction={this.onAction}
-                  debounce={250}
-                  timeout={TIME.MINUTES_25}
-                />
-                <Suspense fallback="loading">
-                  <Authenticator>
-                    <Router>
-                      {UNAUTHED}
+                <Suspense fallback={<Loading></Loading>}>
+                  <Router>
+                    <Authenticator path="/gtas">
                       <RoleAuthenticator
                         path="/"
                         roles={[
@@ -237,10 +197,9 @@ export default class App extends React.Component {
                           ROLE.FLIGHTVWR
                         ]}
                       >
-                        <Redirect from="/" to={FULLPATH_TO.LOGIN} noThrow />
-                        <Home path="/gtas">
-                          <Page404 default></Page404>
-                          <Redirect from="/gtas" to={FULLPATH_TO.FLIGHTS} noThrow />
+                        {UNAUTHED}
+                        <Home path="/">
+                          <Redirect from="/" to={FULLPATH_TO.FLIGHTS} noThrow />
                           <RoleAuthenticator
                             path="flights"
                             roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]}
@@ -275,15 +234,18 @@ export default class App extends React.Component {
                           </RoleAuthenticator>
                           <Tools path="tools">
                             <Rules path="rules"></Rules>
-                            <Rules path="rules/:mode"></Rules>
                             <Queries path="queries"></Queries>
                             <QRDetails path="qrdetails"></QRDetails>
-                            <Watchlist path="watchlist"></Watchlist>
-                            <Watchlist path="watchlist/:mode"></Watchlist>
+                            <RoleAuthenticator
+                              path="watchlist"
+                              roles={[ROLE.ADMIN, ROLE.WLMGR]}
+                            >
+                              <Watchlist path="/"></Watchlist>
+                              <Watchlist path="/:mode"></Watchlist>
+                            </RoleAuthenticator>
                             <About path="about"></About>
                           </Tools>
                           <Search path="search/:searchParam"></Search>
-                          <SeatChart path="seat-chart/:flightId/:paxId/:currentPaxSeat"></SeatChart>
                           <RoleAuthenticator
                             path="seat-chart/:flightId/:paxId/:currentPaxSeat"
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}
@@ -293,12 +255,8 @@ export default class App extends React.Component {
                           <RoleAuthenticator path="langEditor" roles={[ROLE.ADMIN]}>
                             <LanguageEditor path="/"></LanguageEditor>
                           </RoleAuthenticator>
-                          <RoleAuthenticator
-                            path="admin"
-                            alt={UNAUTHED}
-                            roles={[ROLE.ADMIN]}
-                          >
-                            <Admin path="/">
+                          <RoleAuthenticator path="admin" roles={[ROLE.ADMIN]}>
+                            <Admin path="/" default>
                               <ManageUser
                                 name={<Xl8 xid="app009">Manage Users</Xl8>}
                                 path="manageusers"
@@ -348,11 +306,11 @@ export default class App extends React.Component {
                                 desc={<Xl8 xid="app021">View or edit system codes</Xl8>}
                                 icon="fa-list-ul"
                                 path="codeeditor"
-                                startTab="country"
                               >
                                 <Country
                                   name={<Xl8 xid="app022">Country</Xl8>}
                                   path="country"
+                                  default
                                 ></Country>
                                 <Airport
                                   name={<Xl8 xid="app023">Airport</Xl8>}
@@ -391,33 +349,41 @@ export default class App extends React.Component {
                                 icon="fa-comment"
                                 path="notecats"
                               ></NoteCats>
-                              <Auxiliary
-                                name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
-                                desc={<Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>}
-                                icon="kibana"
-                                path="https://localhost:5601/login?next=%2F"
-                                hasExternalLink={true}
-                              ></Auxiliary>
-                              <Auxiliary
-                                name={<Xl8 xid="app033">Neo4j</Xl8>}
-                                desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
-                                path="http://localhost:7474/browser/"
-                                icon="neo4j"
-                                hasExternalLink={true}
-                              ></Auxiliary>
+                              {hasData(KIBANAURL) && (
+                                <Auxiliary
+                                  name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
+                                  desc={
+                                    <Xl8 xid="app032">Go to the Kibana Dashboard</Xl8>
+                                  }
+                                  icon="kibana"
+                                  path={KIBANAURL}
+                                  hasExternalLink={true}
+                                ></Auxiliary>
+                              )}
+                              {hasData(NEO4JURL) && (
+                                <Auxiliary
+                                  name={<Xl8 xid="app033">Neo4j</Xl8>}
+                                  desc={<Xl8 xid="app034">Browse the Neo4j database</Xl8>}
+                                  path={NEO4JURL}
+                                  icon="neo4j"
+                                  hasExternalLink={true}
+                                ></Auxiliary>
+                              )}
                             </Admin>
                           </RoleAuthenticator>
                           {UNAUTHED}
                         </Home>
                       </RoleAuthenticator>
-                    </Router>
-                  </Authenticator>
+                    </Authenticator>
+                  </Router>
                 </Suspense>
               </div>
             </LiveEditProvider>
           </LookupProvider>
         </UserProvider>
-      </React.StrictMode>
-    );
-  }
-}
+      </>
+    </React.StrictMode>
+  );
+};
+
+export default App;

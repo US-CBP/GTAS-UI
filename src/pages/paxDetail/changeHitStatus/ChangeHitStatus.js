@@ -1,6 +1,10 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { SplitButton, Dropdown, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import Xl8 from "../../../components/xl8/Xl8";
 import { ROLE } from "../../../utils/constants";
@@ -56,14 +60,17 @@ const ChangeHitStatus = props => {
           <Xl8 xid="chs004">Update Hit Status</Xl8>
         </ModalHeader>
         <ModalBody>
-          <Xl8 xid="chs005">Please click confirm to change the status to:</Xl8> {status}
+          <Xl8 xid="chs005">Please click confirm to change the status to:</Xl8>
+          <br />
+          <br />
+          {status}
         </ModalBody>
         <ModalFooter>
-          <Button variant="outline-success" onClick={handleConfirm}>
-            Confirm
-          </Button>
-          <Button variant="outline-danger" onClick={handleCancel}>
+          <Button variant="outline-dark" onClick={handleCancel}>
             Cancel
+          </Button>
+          <Button variant="primary" onClick={handleConfirm}>
+            Confirm
           </Button>
         </ModalFooter>
       </Modal>
