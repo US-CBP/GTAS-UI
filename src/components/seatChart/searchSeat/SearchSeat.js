@@ -4,11 +4,11 @@
 
 import React from "react";
 import { Form, Button } from "react-bootstrap";
-import { asArray, hasData } from "../../../utils/utils";
+import { asArray, hasData, alt } from "../../../utils/utils";
 
 const SearchSeat = ({ searchCallback, reservedSeats, resetFilterForm }, ref) => {
   const areEqual = (str1, str2) => {
-    return str1.toUpperCase() === str2.toUpperCase();
+    return alt(str1).toUpperCase() === alt(str2).toUpperCase();
   };
 
   const reset = () => {
