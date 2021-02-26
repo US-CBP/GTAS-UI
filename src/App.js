@@ -248,10 +248,10 @@ const App = props => {
                               roles={[ROLE.ADMIN, ROLE.WLMGR]}
                             >
                               <Watchlist path="/"></Watchlist>
-                              {NF404Default}
+                              <Redirect from="/*" to="/gtas/tools" noThrow></Redirect>
                             </RoleAuthenticator>
                             <About path="about"></About>
-                            <Redirect from="/*" to="/gtas/tools"></Redirect>
+                            <Redirect from="/*" to="/gtas/tools" noThrow></Redirect>
                           </Tools>
                           <Search path="search/:searchParam"></Search>
                           <RoleAuthenticator
