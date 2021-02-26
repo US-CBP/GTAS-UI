@@ -338,7 +338,6 @@ const App = props => {
                                   to="../codeeditor/country"
                                   noThrow
                                 ></Redirect>
-                                {/* <Page404 path="/:id"></Page404> */}
                               </CodeEditor>
                               <LoaderStats
                                 name={<Xl8 xid="app025">Loader Statistics</Xl8>}
