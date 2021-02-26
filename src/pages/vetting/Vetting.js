@@ -241,10 +241,6 @@ const Vetting = props => {
     notetypes: []
   };
 
-  // const getInitialState = () => {
-  //   setFilterFormKey(filterFormKey + 1);
-  // };
-
   const getInitialState = () => {
     showDateTimePicker.current = false;
     setFilterFormKey(filterFormKey + 1);

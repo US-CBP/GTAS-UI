@@ -7,24 +7,20 @@ import "./Loading.scss";
 
 export default function Loading() {
   return (
-    <div className="loading">
-      <svg
-        className="spinner"
-        width="65px"
-        height="65px"
-        viewBox="0 0 66 66"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle
-          className="path"
-          fill="none"
-          strokeWidth="6"
-          strokeLinecap="round"
-          cx="33"
-          cy="33"
-          r="30"
-        ></circle>
-      </svg>
+    <div>
+      <div className="loading">
+        <svg class="spinner" viewBox="25 25 50 50">
+          <circle
+            className="path"
+            fill="none"
+            stroke-width="2"
+            stroke-miterlimit="10"
+            cx="50"
+            cy="50"
+            r="20"
+          ></circle>
+        </svg>
+      </div>
     </div>
   );
 }
