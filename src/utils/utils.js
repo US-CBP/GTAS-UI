@@ -362,9 +362,12 @@ export function formatRuleConditions(conditions) {
 export const watchlistDateFormat = input => {
   const stringDate = new Date(input);
   if (stringDate === "Invalid Date") return "Invalid Date";
-  const formattedDate = stringDate.getFullYear() 
-  + '-' + ('0' + (stringDate.getMonth()+1)).slice(-2) 
-  + '-' + ('0' + stringDate.getDate()).slice(-2);
+  const formattedDate =
+    stringDate.getFullYear() +
+    "-" +
+    ("0" + (stringDate.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + stringDate.getDate()).slice(-2);
   return formattedDate;
 };
 
