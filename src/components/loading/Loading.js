@@ -13,7 +13,7 @@ export default function Loading() {
           <circle
             className="path"
             fill="none"
-            stroke-width="2"
+            stroke-width="4"
             stroke-miterlimit="10"
             cx="50"
             cy="50"
