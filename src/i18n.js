@@ -12,7 +12,7 @@ const lang = window.navigator.language;
 let prefetchedData = [];
 
 const backendOptions = {
-  fxn: translations.get,
+  // fxn: translations.get,
   parse: function() {
     return prefetchedData;
   }
@@ -20,13 +20,13 @@ const backendOptions = {
 
 translations.get(lang).then(data => {
   let keyvals = {};
-  if (!hasData(data)) return [];
 
-  data.forEach(item => {
-    keyvals[item["code"]] = item["translation"];
-  });
-
-  prefetchedData = keyvals;
+  if (Array.isArray(data)) {
+    data.forEach(item => {
+      keyvals[item["code"]] = item["translation"];
+    });
+    prefetchedData = keyvals;
+  }
 
   i18n
     .use(initReactI18next)
