@@ -34,6 +34,7 @@ class Backend {
     this.init(services, options);
   }
 
+  type = "backend";
   static type = "backend";
 
   init(services, options = {}) {
@@ -52,87 +53,15 @@ class Backend {
   }
 
   read(language, ns, callback) {
-    // return this.loadUrl(this.getLoadPath(), callback);
-    return this.execFxn(language, callback);
+    return this.loadUrl(callback);
   }
 
   readMulti(language, ns, callback) {
-    // return this.loadUrl(this.getLoadPath(), callback);
-    return this.execFxn(language, callback);
+    return this.loadUrl(callback);
   }
 
-  execFxn(language, callback) {
-    const { fxn, parse } = this.options;
-
-    return fxn(language)
-      .then(
-        response => {
-          const { ok, status } = response;
-
-          if (!ok) {
-            const retry = status >= 500 && status < 600; // don't retry for 4xx codes
-            throw new BackendError(`failed loading `, retry);
-          }
-
-          return response.text();
-        },
-        () => {
-          throw new BackendError(`failed loading `);
-        }
-      )
-      .then(data => {
-        console.log("got data, parsing it!");
-        console.log(callback);
-        try {
-          return callback(null, parse(data));
-        } catch (e) {
-          throw new BackendError(`failed parsing to json`, false);
-        }
-      })
-      .catch(e => {
-        if (e instanceof BackendError) {
-          callback(e.message, e.retry);
-        }
-      });
-  }
-
-  loadUrl(url, callback) {
-    const { fetch, requestOptions, parse } = this.options;
-
-    return callback(null, parse());
-
-    // fetch(url, requestOptions)
-    //   .then(
-    //     response => {
-    //       const { ok, status } = response;
-
-    //       console.log(response);
-    //       if (!ok) {
-    //         const retry = status >= 500 && status < 600; // don't retry for 4xx codes
-
-    //         // throw new BackendError(`failed loading ${url}`, retry);
-    //         return [];
-    //       }
-
-    //       return response.text();
-    //     },
-    //     () => {
-    //       // throw new BackendError(`failed loading ${url}`);
-    //       return parse([]);
-    //     }
-    //   )
-    //   .then(data => {
-    //     try {
-    //       return callback(null, parse(data, url));
-    //     } catch (e) {
-    //       throw new BackendError(`failed parsing ${url} to json`, false);
-    //     }
-    //   })
-    //   .catch(e => {
-    //     if (e instanceof BackendError) {
-    //       callback(e.message, e.retry);
-    //     }
-    //   });
+  loadUrl(callback) {
+    return callback(null, this.options.parse());
   }
 
   create(languages, namespace, key, fallbackValue) {
