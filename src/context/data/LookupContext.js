@@ -183,6 +183,7 @@ const LookupProvider = ({ children }) => {
 
     return cacheData(res, type).then(stat => {
       if (stat === STATUS.SUCCESS) setStatusData(type, interval);
+      // setStatusData(type, interval);
       if (returnResults) return getLookupCache(type);
     });
   };
@@ -264,7 +265,15 @@ const LookupProvider = ({ children }) => {
           return STATUS.SUCCESS;
         })
         .catch(ex => {
+          if (ex.failures?.length === 1 && ex.failures[0].name === "ConstraintError") {
+            // log to cached log
+            return STATUS.SUCCESS; // disregard constraint issues, signal the caller to update the status
+          }
           console.error("error", type, ex);
+          // log distinct errors
+          // ex.failures.forEach(failure => {
+          //   console.error(type, failure.message);
+          // });
           return STATUS.ERROR;
         });
     });
