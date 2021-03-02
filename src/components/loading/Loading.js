@@ -9,12 +9,12 @@ export default function Loading() {
   return (
     <div>
       <div className="loading">
-        <svg class="spinner" viewBox="25 25 50 50">
+        <svg className="spinner" viewBox="25 25 50 50">
           <circle
             className="path"
             fill="none"
-            stroke-width="4"
-            stroke-miterlimit="10"
+            strokeWidth="4"
+            strokeMiterlimit="10"
             cx="50"
             cy="50"
             r="20"
