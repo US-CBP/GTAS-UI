@@ -92,6 +92,8 @@ const Vetting = props => {
     {
       Accessor: "paxId",
       Xl8: true,
+      disableFilters: true,
+      disableSortBy: true,
       Header: ["vet023", "Actions"],
       Cell: ({ row }) => (
         <DropdownButton
