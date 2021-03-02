@@ -8,11 +8,10 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import HttpApi from "i18next-http-backend";
 import Cookies from "js-cookie";
 
-// let testlang = window.navigator.language; //.split("-")[0];
-let testlang = window.navigator.language.split("-")[0];
+let browserlang = window.navigator.language.split("-")[0];
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const loadpath = `${BASE_URL}gtas/api/translation/${testlang}`;
+const loadpath = `${BASE_URL}gtas/api/translation/${browserlang}`;
 
 const backendOptions = {
   requestOptions: {
@@ -20,7 +19,8 @@ const backendOptions = {
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
       Accept: "application/json, text/plain, */*",
-      Cookie: `JSESSIONID: ${Cookies.get("JSESSIONID")}`
+      Cookie: `JSESSIONID: ${Cookies.get("JSESSIONID")}`,
+      router: "api"
     },
     credentials: "include"
   },
@@ -34,7 +34,6 @@ const backendOptions = {
 
     return keyvals;
   }
-  // addPath: `/locales/${testlang}/{{ns}}`
 };
 
 i18n
