@@ -2,11 +2,10 @@
 //
 // Please see license.txt for details.
 
-import React, { createContext, useReducer, createRef, useState } from "react";
+import React, { createContext, useReducer, useState } from "react";
 import LangModal from "../../pages/home/LangModal";
 
 export const LiveEditContext = createContext();
-const modalRef = createRef();
 const LIVEEDITSTATE = "liveEditState";
 
 const LiveEditProvider = ({ children }) => {
@@ -66,12 +65,7 @@ const LiveEditProvider = ({ children }) => {
     <Provider value={{ getLiveEditState, action, setShowModal }}>
       <>
         {children}
-        <LangModal
-          show={showModal}
-          elem={editState.data}
-          ref={modalRef}
-          onHide={onHide}
-        ></LangModal>
+        <LangModal show={showModal} elem={editState.data} onHide={onHide}></LangModal>
       </>
     </Provider>
   );

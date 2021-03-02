@@ -8,7 +8,7 @@ const defaults = {
   fetch,
   fxn: () => {
     return new Promise((resolve, reject) => {
-      resolve();
+      resolve("No fxn property has set in backend options");
     });
   },
 
@@ -97,38 +97,42 @@ class Backend {
   }
 
   loadUrl(url, callback) {
-    console.log("loadurl");
     const { fetch, requestOptions, parse } = this.options;
 
-    fetch(url, requestOptions)
-      .then(
-        response => {
-          const { ok, status } = response;
+    return callback(null, parse());
 
-          if (!ok) {
-            const retry = status >= 500 && status < 600; // don't retry for 4xx codes
+    // fetch(url, requestOptions)
+    //   .then(
+    //     response => {
+    //       const { ok, status } = response;
 
-            throw new BackendError(`failed loading ${url}`, retry);
-          }
+    //       console.log(response);
+    //       if (!ok) {
+    //         const retry = status >= 500 && status < 600; // don't retry for 4xx codes
 
-          return response.text();
-        },
-        () => {
-          throw new BackendError(`failed loading ${url}`);
-        }
-      )
-      .then(data => {
-        try {
-          return callback(null, parse(data, url));
-        } catch (e) {
-          throw new BackendError(`failed parsing ${url} to json`, false);
-        }
-      })
-      .catch(e => {
-        if (e instanceof BackendError) {
-          callback(e.message, e.retry);
-        }
-      });
+    //         // throw new BackendError(`failed loading ${url}`, retry);
+    //         return [];
+    //       }
+
+    //       return response.text();
+    //     },
+    //     () => {
+    //       // throw new BackendError(`failed loading ${url}`);
+    //       return parse([]);
+    //     }
+    //   )
+    //   .then(data => {
+    //     try {
+    //       return callback(null, parse(data, url));
+    //     } catch (e) {
+    //       throw new BackendError(`failed parsing ${url} to json`, false);
+    //     }
+    //   })
+    //   .catch(e => {
+    //     if (e instanceof BackendError) {
+    //       callback(e.message, e.retry);
+    //     }
+    //   });
   }
 
   create(languages, namespace, key, fallbackValue) {

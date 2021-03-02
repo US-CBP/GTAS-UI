@@ -5,15 +5,16 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 // import LanguageDetector from "i18next-browser-languagedetector";
-import HttpApi from "i18next-http-backend";
-import Cookies from "js-cookie";
+// import HttpApi from "i18next-http-backend";
+// import Cookies from "js-cookie";
 import Backend from "./fetch";
 import { translations } from "./services/serviceWrapper";
+import { hasData } from "./utils/utils";
 
 let browserlang = window.navigator.language.split("-")[0];
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-// const loadpath = `${BASE_URL}gtas/api/translation/${browserlang}`;
+const loadpath = `${BASE_URL}gtas/api/translation/${browserlang}`;
 
 const backendOptions = {
   // requestOptions: {
@@ -26,16 +27,23 @@ const backendOptions = {
   //   },
   //   credentials: "include"
   // },
-  // loadPath: loadpath,
+  loadPath: loadpath,
   fxn: translations.get,
-  parse: dataset => {
+  // parse: function(data) { return data.replace(/a/g, ''); },
+  parse: function(data) {
+    console.log("parse");
+    // return translations.get(browserlang).then(data => {
     let keyvals = {};
 
-    JSON.parse(dataset).forEach(item => {
+    if (!hasData(data)) return [];
+
+    data.forEach(item => {
       keyvals[item["code"]] = item["translation"];
     });
 
+    console.log(keyvals);
     return keyvals;
+    // });
   }
 };
 
@@ -46,11 +54,11 @@ i18n
   .use(Backend)
   .init({
     lng: browserlang,
-    // fallbackLng: "en",
+    fallbackLng: browserlang,
     keySeparator: false,
-    backend: backendOptions,
-    // debug: true
-    interpolation: { escapeValue: false }
+    backend: backendOptions
+    // debug: true,
+    // interpolation: { escapeValue: false }
   });
 
 export default i18n;
