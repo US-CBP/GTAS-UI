@@ -52,11 +52,13 @@ class Backend {
   }
 
   read(language, ns, callback) {
-    return this.loadUrl(this.getLoadPath(), callback);
+    // return this.loadUrl(this.getLoadPath(), callback);
+    return this.execFxn(language, callback);
   }
 
   readMulti(language, ns, callback) {
-    return this.loadUrl(this.getLoadPath(), callback);
+    // return this.loadUrl(this.getLoadPath(), callback);
+    return this.execFxn(language, callback);
   }
 
   execFxn(language, callback) {
