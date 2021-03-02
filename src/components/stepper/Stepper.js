@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Row, Container } from "react-bootstrap";
 import "./Stepper.scss";
-import {LK} from "../../utils/constants";
+import { LK } from "../../utils/constants";
 import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 
 const Stepper = props => {
@@ -71,8 +71,7 @@ const Stepper = props => {
                 style={{ width: 100 / steps.length + "%" }}
                 key={index}
               >
-                <ToolTipWrapper
-                    data={{val:step.label, lkup:LK.AIRPORT}}>
+                <ToolTipWrapper data={{ val: step.label, lkup: LK.AIRPORT }}>
                   className="sm"
                 </ToolTipWrapper>
               </li>
