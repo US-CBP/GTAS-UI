@@ -6,7 +6,6 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import Backend from "./fetch";
 import { translations } from "./services/serviceWrapper";
-// import { hasData } from "./utils/utils";
 
 const lang = window.navigator.language;
 let prefetchedData = [];
@@ -14,7 +13,6 @@ let prefetchedData = [];
 export const getI18n = () =>
   translations.get(lang).then(data => {
     const backendOptions = {
-      // loadPath: "http://localhost:8080/gtas/api/translation/{{lng}}",
       parse: function() {
         return prefetchedData;
       }
