@@ -6,7 +6,7 @@ import Dexie from "dexie";
 import { codeEditor, hitcats, roles, notetype } from "../../services/lookupService";
 import { LK } from "../../utils/constants";
 import { formatBytes } from "../../utils/utils";
-import { showEstimatedQuota } from "./utils";
+import { showEstimatedQuota, tryPersistWithoutPromtingUser } from "./utils";
 
 const initialState = [];
 const version = 1;
@@ -35,7 +35,15 @@ db.version(version).stores({
   notetype: "id, noteType, archived"
 });
 
-db.open();
+// var foo = tryPersistWithoutPromtingUser().then(res => {
+//   console.log(res);
+// });
+
+try {
+  db.open();
+} catch (ex) {
+  console.error("IDB is inaccessible: ", ex);
+}
 
 const statusData = [
   { id: 1, name: LK.ROLE, lastUpdated: "", nextUpdate: "", interval: longInterval },
@@ -90,28 +98,32 @@ const LookupProvider = ({ children }) => {
    */
   const createDb = () => {
     console.info("CREATE IDB");
-    Dexie.exists(lookupDB).then(function(exists) {
-      if (!exists) populateStatusTable();
-      // else updateStatusTable();
-    });
+    Dexie.exists(lookupDB)
+      .then(function(exists) {
+        if (!exists) populateStatusTable();
+        // else updateStatusTable();
 
-    db.status.count().then(count => {
-      if (count < statusData.length) populateStatusTable();
-    });
+        db.status.count().then(count => {
+          if (count < statusData.length) populateStatusTable();
+        });
 
-    showEstimatedQuota().then(res => {
-      if (!res) return;
+        showEstimatedQuota().then(res => {
+          if (!res) return;
 
-      console.table({
-        quota: formatBytes(res.quota),
-        usage: formatBytes(res.usage),
-        caches: formatBytes(res.usageDetails?.caches),
-        indexedDB: formatBytes(res.usageDetails?.indexedDB),
-        serviceWorkerRegistrations: formatBytes(
-          res.usageDetails?.serviceWorkerRegistrations
-        )
+          console.table({
+            quota: formatBytes(res.quota),
+            usage: formatBytes(res.usage),
+            caches: formatBytes(res.usageDetails?.caches),
+            indexedDB: formatBytes(res.usageDetails?.indexedDB),
+            serviceWorkerRegistrations: formatBytes(
+              res.usageDetails?.serviceWorkerRegistrations
+            )
+          });
+        });
+      })
+      .catch(ex => {
+        console.info("IDB is inaccessible: ", ex);
       });
-    });
   };
 
   const populateStatusTable = () => {
@@ -198,16 +210,21 @@ const LookupProvider = ({ children }) => {
       return;
     }
 
-    return db.status.where({ name: type }).first(rec => {
-      if (!rec) {
-        createMissingStatusRec(type).then(res => {
-          if (res === STATUS.ERROR) return res;
+    return db.status
+      .where({ name: type })
+      .first(rec => {
+        if (!rec) {
+          createMissingStatusRec(type).then(res => {
+            if (res === STATUS.ERROR) return res;
 
-          return dataSync(res, forcePartial, forceFull, returnResults);
-        });
-      }
-      return dataSync(rec, forcePartial, forceFull, returnResults);
-    });
+            return dataSync(res, forcePartial, forceFull, returnResults);
+          });
+        }
+        return dataSync(rec, forcePartial, forceFull, returnResults);
+      })
+      .catch(ex => {
+        console.error("Refresh - unhandled exception", ex);
+      });
   }; // refresh
 
   // Supports periodic fetches that sync once per interval unless forced.

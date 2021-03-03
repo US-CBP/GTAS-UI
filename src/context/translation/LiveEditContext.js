@@ -14,11 +14,11 @@ const LiveEditProvider = ({ children }) => {
 
   const LiveEditReducer = (state, action) => {
     let updatedState = JSON.parse(sessionStorage.getItem(LIVEEDITSTATE)) || {};
+
     switch (action.type) {
       case "show": {
         updatedState.data = action.data;
         sessionStorage.setItem(LIVEEDITSTATE, JSON.stringify(updatedState));
-
         return updatedState;
       }
       case "hide": {
@@ -27,6 +27,11 @@ const LiveEditProvider = ({ children }) => {
       }
       case "edit": {
         updatedState.isEdit = true;
+        sessionStorage.setItem(LIVEEDITSTATE, JSON.stringify(updatedState));
+        return updatedState;
+      }
+      case "dataloaded": {
+        updatedState.dataloaded = action.isDataLoaded;
         sessionStorage.setItem(LIVEEDITSTATE, JSON.stringify(updatedState));
         return updatedState;
       }
@@ -47,7 +52,8 @@ const LiveEditProvider = ({ children }) => {
     show: false,
     showModal: () => null,
     isEdit: false,
-    data: null
+    data: null,
+    dataloaded: false
   };
   const [editState, action] = useReducer(LiveEditReducer, initContext);
 

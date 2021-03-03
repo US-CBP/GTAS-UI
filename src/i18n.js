@@ -6,39 +6,65 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import Backend from "./fetch";
 import { translations } from "./services/serviceWrapper";
-import { hasData } from "./utils/utils";
+// import { hasData } from "./utils/utils";
 
 const lang = window.navigator.language;
 let prefetchedData = [];
 
-const backendOptions = {
-  // fxn: translations.get,
-  parse: function() {
-    return prefetchedData;
-  }
-};
+export const getI18n = () =>
+  translations.get(lang).then(data => {
+    const backendOptions = {
+      loadPath: "http://localhost:8080/gtas/api/translation/{{lng}}",
+      parse: function() {
+        return prefetchedData;
+      }
+    };
 
-translations.get(lang).then(data => {
-  let keyvals = {};
+    let keyvals = {};
 
-  if (Array.isArray(data)) {
-    data.forEach(item => {
-      keyvals[item["code"]] = item["translation"];
-    });
-    prefetchedData = keyvals;
-  }
+    if (Array.isArray(data)) {
+      data.forEach(item => {
+        keyvals[item["code"]] = item["translation"];
+      });
+      prefetchedData = keyvals;
+      setTranslationStatus(true);
+    } else setTranslationStatus(false);
 
-  i18n
-    .use(initReactI18next)
-    .use(Backend)
-    .init({
-      lng: lang,
-      fallbackLng: lang,
-      backend: backendOptions,
-      keySeparator: false,
-      // debug: true,
-      interpolation: { escapeValue: false }
-    });
+    return i18n
+      .use(initReactI18next)
+      .use(Backend)
+      .init({
+        lng: lang,
+        fallbackLng: lang,
+        backend: backendOptions,
+        keySeparator: false,
+        // debug: true,
+        interpolation: { escapeValue: false }
+      });
+  });
+
+getI18n();
+
+i18n.on("failedLoading", function(lng, ns, msg) {
+  //apb test
+  console.error("Translation fetch failed");
 });
+
+const setTranslationStatus = val => {
+  let initState = {
+    hideModal: () => null,
+    show: false,
+    showModal: () => null,
+    isEdit: false,
+    data: null,
+    dataloaded: false
+  };
+
+  const LIVEEDITSTATE = "liveEditState";
+  let currentState = JSON.parse(sessionStorage.getItem(LIVEEDITSTATE)) || initState;
+
+  currentState.dataloaded = val;
+  sessionStorage.setItem(LIVEEDITSTATE, JSON.stringify(currentState));
+};
 
 export default i18n;
