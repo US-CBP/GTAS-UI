@@ -5,62 +5,61 @@
 .loading {
   margin-top: 20px;
   margin-bottom: 20px;
-  align-self: center !important;
-  color: #0077c8;
   text-align: center;
 }
 
-$offset: 187;
-$duration: 1.4s;
-
-.spinner {
-  animation: rotator $duration linear infinite;
-}
-
-@keyframes rotator {
+@keyframes rotate {
   0% {
     transform: rotate(0deg);
   }
   100% {
-    transform: rotate(270deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
 .path {
-  stroke-dasharray: $offset;
+  stroke-dasharray: 1, 200;
   stroke-dashoffset: 0;
-  transform-origin: center;
-  animation: dash $duration ease-in-out infinite,
-    colors ($duration * 4) ease-in-out infinite;
+  -webkit-animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+  animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+  stroke-linecap: round;
 }
 
-@keyframes colors {
+@keyframes color {
+  100%,
   0% {
     stroke: #0082c3;
   }
-  100% {
-    stroke: #0082c3;
+  33% {
+    stroke: #009e92;
+  }
+  66% {
+    stroke: #575756;
   }
 }
-
-// @keyframes colors {
-// 	0% { stroke: #0082c3; }
-// 	25% { stroke: #DE3E35; }
-// 	50% { stroke: #F7C223; }
-// 	75% { stroke: #1B9A59; }
-//   100% { stroke: #4285F4; }
-// }
 
 @keyframes dash {
   0% {
-    stroke-dashoffset: $offset;
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
   }
   50% {
-    stroke-dashoffset: $offset/4;
-    transform: rotate(135deg);
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35;
   }
   100% {
-    stroke-dashoffset: $offset;
-    transform: rotate(450deg);
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124;
   }
+}
+.spinner {
+  -webkit-animation: rotate 2s linear infinite;
+  animation: rotate 2s linear infinite;
+  height: 100px;
+  -webkit-transform-origin: center center;
+  -ms-transform-origin: center center;
+  transform-origin: center center;
+  width: 100px;
+  margin: auto;
 }
