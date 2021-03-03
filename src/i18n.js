@@ -14,7 +14,7 @@ let prefetchedData = [];
 export const getI18n = () =>
   translations.get(lang).then(data => {
     const backendOptions = {
-      loadPath: "http://localhost:8080/gtas/api/translation/{{lng}}",
+      // loadPath: "http://localhost:8080/gtas/api/translation/{{lng}}",
       parse: function() {
         return prefetchedData;
       }

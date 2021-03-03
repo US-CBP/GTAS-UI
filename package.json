@@ -15,8 +15,6 @@
     "dotenv-webpack": "^1.8.0",
     "font-awesome": "^4.7.0",
     "i18next": "^19.7.0",
-    "i18next-fetch-backend": "^3.0.0",
-    "i18next-http-backend": "^1.0.20",
     "js-cookie": "^2.2.1",
     "node-sass": "^4.14.1",
     "pretty-quick": "^2.0.1",
