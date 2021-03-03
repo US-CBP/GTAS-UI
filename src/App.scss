@@ -480,3 +480,9 @@ li .rtf--ab__c button[variant="rtf-red"] {
   background-color: transparent;
   border-top: 1px solid transparent !important;
 }
+
+.invalid-input {
+  box-shadow: 0 0 0 0.2rem red;
+  outline: 0;
+  border-radius: 3px;
+}
