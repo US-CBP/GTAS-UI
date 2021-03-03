@@ -348,7 +348,7 @@ export function getShortText(text, shortTextLength = 50) {
 
 export const isValidPassword = password => {
   const passwordConstraint = new RegExp(
-    "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{10,20})"
+    "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{10,20}$)"
   );
   return passwordConstraint.test(password);
 };
@@ -374,7 +374,7 @@ export const containslowerChar = strInput => {
 };
 export const satisfiesLengthConstraint = (strInput, minLen = 10, maxLen = 20) => {
   if (!hasData(strInput)) return false;
-  const regExString = "^(?=.{" + minLen + "," + maxLen + "})";
+  const regExString = "^(?=.{" + minLen + "," + maxLen + "}$)";
   const checker = new RegExp(regExString);
   return checker.test(strInput);
 };
