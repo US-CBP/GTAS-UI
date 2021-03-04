@@ -243,10 +243,9 @@ input[type="radio"] {
   color: #008177;
 }
 
-.overlay-content {
-  background-color: white !important;
-  border: 1px solid #009e92 !important;
-  border-radius: 0.25rem;
+.bs-popover-top > .arrow::after,
+.bs-popover-auto[x-placement^="top"] > .arrow::after {
+  border-top-color: #575756 !important;
 }
 
 .img-arrival {
@@ -485,4 +484,20 @@ li .rtf--ab__c button[variant="rtf-red"] {
   box-shadow: 0 0 0 0.2rem red;
   outline: 0;
   border-radius: 3px;
+}
+
+.tooltip-inner {
+  background-color: #575756 !important;
+  opacity: 1;
+}
+
+.bs-tooltip-top .arrow::before,
+.bs-tooltip-auto[x-placement^="top"] .arrow::before {
+  top: 0;
+  border-width: 0.4rem 0.4rem 0;
+  border-top-color: #575756 !important;
+}
+
+.tooltip.show {
+  opacity: 1 !important ;
 }

@@ -5,7 +5,9 @@
 $transparent: rgba(133, 130, 130, 0.6);
 
 .overlay-content {
-  background-color: $transparent;
+  background-color: #575756;
+  color: white !important;
+  border-radius: 0.25rem;
   text-align: center;
 }
 

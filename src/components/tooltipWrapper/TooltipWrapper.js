@@ -12,11 +12,7 @@ const ToolTipWrapper = props => {
   const initToolTipState = "Loading...";
   const [toolTipVal, setToolTipVal] = useState(initToolTipState);
 
-  const renderTooltip = props => (
-    <Tooltip id="tooltipWrapper-tooltip" {...props}>
-      {toolTipVal}
-    </Tooltip>
-  );
+  const renderTooltip = props => <Tooltip {...props}>{toolTipVal}</Tooltip>;
 
   const getToolTipValue = (val, codeType) => {
     setToolTipVal(initToolTipState);
@@ -42,7 +38,7 @@ const ToolTipWrapper = props => {
       delay={{ show: data.show, hide: data.hide }}
       onEnter={() => getToolTipValue(data.val, data.lookup)}
       //onExited={() => setToolTipVal(initToolTipState)}
-      overlay={renderTooltip()}
+      overlay={renderTooltip}
     >
       <span>{data.val}</span>
     </OverlayTrigger>
