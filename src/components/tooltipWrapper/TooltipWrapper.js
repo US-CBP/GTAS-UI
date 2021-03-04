@@ -22,6 +22,7 @@ const ToolTipWrapper = props => {
   );
 
   const getToolTipValue = () => {
+    setToolTipVal(initToolTipState);
     getCachedKeyValues(lkup).then(types => {
       const type = asArray(types).find(t => {
         return t.value === val;
