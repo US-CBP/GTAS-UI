@@ -154,6 +154,10 @@ const SignUpRequests = () => {
     { Accessor: "status", Xl8: true, Header: ["sur012", "Status"] }
   ];
 
+  const initialParamState = () => {
+    return { username: "", status: "NEW", location: "" };
+  };
+
   return (
     <>
       <SidenavContainer>
@@ -163,6 +167,7 @@ const SignUpRequests = () => {
             paramCallback={preFetchCallback}
             callback={setDataWrapper}
             key={fetchData}
+            getInitialState={initialParamState}
           >
             <LabelledInput
               labelText={<Xl8 xid="sur003">Username</Xl8>}

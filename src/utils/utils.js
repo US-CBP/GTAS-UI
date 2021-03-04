@@ -348,9 +348,50 @@ export function getShortText(text, shortTextLength = 50) {
 
 export const isValidPassword = password => {
   const passwordConstraint = new RegExp(
-    "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{10,20})"
+    "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{10,20}$)"
   );
   return passwordConstraint.test(password);
+};
+export const containsNumber = strInput => {
+  if (!hasData(strInput)) return false;
+  const checker = new RegExp("^(?=.*[0-9])");
+  return checker.test(strInput);
+};
+export const containsSpecialChar = strInput => {
+  if (!hasData(strInput)) return false;
+  const checker = new RegExp("^(?=.*[!@#$%^&?*])");
+  return checker.test(strInput);
+};
+export const containsUpperChar = strInput => {
+  if (!hasData(strInput)) return false;
+  const checker = new RegExp("^(?=.*[A-Z])");
+  return checker.test(strInput);
+};
+export const containslowerChar = strInput => {
+  if (!hasData(strInput)) return false;
+  const checker = new RegExp("^(?=.*[a-z])");
+  return checker.test(strInput);
+};
+export const satisfiesLengthConstraint = (strInput, minLen = 10, maxLen = 20) => {
+  if (!hasData(strInput)) return false;
+  const regExString = "^(?=.{" + minLen + "," + maxLen + "}$)";
+  const checker = new RegExp(regExString);
+  return checker.test(strInput);
+};
+
+export const highlightInvalidField = fieldName => {
+  const inputField = document.querySelector(`[name=${fieldName}]`);
+  if (hasData(inputField)) {
+    inputField.classList.add("invalid-input");
+  }
+};
+
+export const clearInvalidFieldHighlight = fieldName => {
+  const inputField = document.querySelector(`[name=${fieldName}]`);
+
+  if (hasData(inputField)) {
+    inputField.classList.remove("invalid-input");
+  }
 };
 
 export function formatRuleConditions(conditions) {
@@ -362,9 +403,12 @@ export function formatRuleConditions(conditions) {
 export const watchlistDateFormat = input => {
   const stringDate = new Date(input);
   if (stringDate === "Invalid Date") return "Invalid Date";
-  const formattedDate = stringDate.getFullYear() 
-  + '-' + ('0' + (stringDate.getMonth()+1)).slice(-2) 
-  + '-' + ('0' + stringDate.getDate()).slice(-2);
+  const formattedDate =
+    stringDate.getFullYear() +
+    "-" +
+    ("0" + (stringDate.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + stringDate.getDate()).slice(-2);
   return formattedDate;
 };
 

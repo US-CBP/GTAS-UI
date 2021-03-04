@@ -92,6 +92,8 @@ const Vetting = props => {
     {
       Accessor: "paxId",
       Xl8: true,
+      disableFilters: true,
+      disableSortBy: true,
       Header: ["vet023", "Actions"],
       Cell: ({ row }) => (
         <DropdownButton
@@ -226,7 +228,7 @@ const Vetting = props => {
   const [data, setData] = useState();
   const [hitCategoryOptions, setHitCategoryOptions] = useState([]);
   const [filterFormKey, setFilterFormKey] = useState(0);
-  const showDateTimePicker = useRef(false);
+  const [showDateTimePicker, setShowDateTimePicker] = useState(false);
   const [noteTypes, setNoteTypes] = useState([]);
   const [usersEmails, setUsersEmails] = useState({});
   const [tableKey, setTableKey] = useState(0);
@@ -241,12 +243,8 @@ const Vetting = props => {
     notetypes: []
   };
 
-  // const getInitialState = () => {
-  //   setFilterFormKey(filterFormKey + 1);
-  // };
-
   const getInitialState = () => {
-    showDateTimePicker.current = false;
+    setShowDateTimePicker(false);
     setFilterFormKey(filterFormKey + 1);
     return initialParamState;
   };
@@ -259,8 +257,8 @@ const Vetting = props => {
     });
   };
 
-  const toggleDateTimePicker = ev => {
-    showDateTimePicker.current = !showDateTimePicker.current;
+  const toggleDateTimePicker = () => {
+    setShowDateTimePicker(value => !value);
     setFilterFormKey(filterFormKey + 1);
   };
 
@@ -277,18 +275,19 @@ const Vetting = props => {
   };
 
   const parameterAdapter = fields => {
-    let paramObject = { pageSize: 100, pageNumber: 1 };
+    let paramObject = { pageSize: 500, pageNumber: 1 };
     const fieldscopy = Object.assign([], fields);
     delete fieldscopy["showDateTimePicker"];
 
-    if (!showDateTimePicker.current) {
+    if (!showDateTimePicker) {
       //passed range values insted of date
       const startRange = fields["startHourRange"] || 6; // default to -6 hours
       const endRange = fields["endHourRange"] || 96;
       let etaEnd = new Date();
       let etaStart = new Date();
-      etaEnd.setHours(etaEnd.getHours() + endRange);
-      etaStart.setHours(etaEnd.getHours() - startRange);
+
+      etaEnd.setHours(etaEnd.getHours() + +endRange);
+      etaStart.setHours(etaStart.getHours() - +startRange);
 
       paramObject["etaStart"] = etaStart;
       paramObject["etaEnd"] = addMinutes(etaEnd, 1);
@@ -467,14 +466,14 @@ const Vetting = props => {
               name="showDateTimePicker"
               labelText={<Xl8 xid="vet013">Show Date Time Picker</Xl8>}
               inputtype="checkbox"
-              inputval={showDateTimePicker.current}
+              inputval={showDateTimePicker}
               callback={cb}
               toggleDateTimePicker={toggleDateTimePicker}
-              selected={showDateTimePicker.current}
+              selected={showDateTimePicker}
               alt="Show Date Time Picker"
               spacebetween
             />
-            {showDateTimePicker.current && (
+            {showDateTimePicker && (
               <LabelledInput
                 datafield="etaStart"
                 inputtype="dateTime"
@@ -487,7 +486,7 @@ const Vetting = props => {
                 alt="Start Date"
               />
             )}
-            {showDateTimePicker.current && (
+            {showDateTimePicker && (
               <LabelledInput
                 datafield="etaEnd"
                 inputtype="dateTime"
@@ -500,7 +499,7 @@ const Vetting = props => {
                 alt="End Date"
               />
             )}
-            {!showDateTimePicker.current && (
+            {!showDateTimePicker && (
               <LabelledInput
                 labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
                 inputtype="select"
@@ -520,7 +519,7 @@ const Vetting = props => {
                 alt="Hour range (Start)"
               />
             )}
-            {!showDateTimePicker.current && (
+            {!showDateTimePicker && (
               <LabelledInput
                 labelText={<Xl8 xid="vet017">Hour Range (End)</Xl8>}
                 inputtype="select"

@@ -7,12 +7,17 @@ import Form from "../../components/form/Form";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { resetPassword } from "../../services/serviceWrapper";
 import { Container, Alert, Col } from "react-bootstrap";
-import Title from "../../components/title/Title";
 import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
-import { hasData } from "../../utils/utils";
+import {
+  clearInvalidFieldHighlight,
+  hasData,
+  highlightInvalidField,
+  isValidPassword
+} from "../../utils/utils";
 import { useParams, Link } from "@reach/router";
 import { FULLPATH_TO } from "../../utils/constants";
+import PasswordConstraints from "../../components/PasswordConstraints/PasswordConstraints";
 
 const ResetPassword = props => {
   const { resetToken, username } = useParams();
@@ -20,7 +25,17 @@ const ResetPassword = props => {
   const [errorMessage, setErrorMessage] = useState("");
   const [displayErrorMessage, setDisplayErrorMessage] = useState(false);
   const [displaySuccessMessage, setDisplaySuccessMessage] = useState(false);
+  const [newPassword, setNewPassword] = useState();
+  const [confirmedPassword, setConfirmedPassword] = useState();
   const cb = () => {};
+  const passwordsDoNotMatchError = (
+    <Xl8 xid="pass012">The passwords you entered do not match</Xl8>
+  );
+  const invalidPasswordError = (
+    <Xl8 xid="pass013">
+      The password you entered does not satisfy the password criteria.
+    </Xl8>
+  );
   const passwordResetCallback = (action, res) => {
     if (hasData(res) && res.status === "FAILURE") {
       setErrorMessage(res.message);
@@ -29,6 +44,31 @@ const ResetPassword = props => {
       setDisplaySuccessMessage(true);
       setDisplayErrorMessage(false);
     }
+  };
+  const changeInput = input => {
+    if (input.name === "password") {
+      clearInvalidFieldHighlight("password");
+      setNewPassword(input.value);
+    }
+    if (input.name === "passwordConfirm") {
+      clearInvalidFieldHighlight("passwordConfirm");
+      setConfirmedPassword(input.value);
+    }
+  };
+
+  const validateInputs = fields => {
+    const passwordsMatch = confirmedPassword === newPassword;
+    const validPassword = isValidPassword(newPassword);
+
+    if (!validPassword) {
+      setErrorMessage(invalidPasswordError);
+      highlightInvalidField("password");
+    } else if (!passwordsMatch) {
+      setErrorMessage(passwordsDoNotMatchError);
+      highlightInvalidField("passwordConfirm");
+    }
+
+    return passwordsMatch && validPassword;
   };
 
   const preSubmitCallback = fields => {
@@ -73,36 +113,42 @@ const ResetPassword = props => {
                   <Xl8 xid="passres005">to login to GTAS</Xl8>
                 </Alert>
               ) : (
-                <Form
-                  submitService={resetPassword.post}
-                  title=""
-                  callback={passwordResetCallback}
-                  action="add"
-                  redirectTo={FULLPATH_TO.LOGIN}
-                  paramCallback={preSubmitCallback}
-                  cancellable
-                >
-                  <LabelledInput
-                    datafield
-                    labelText={<Xl8 xid="pass004">New password</Xl8>}
-                    inputtype="password"
-                    name="password"
-                    required={true}
-                    inputval=""
-                    alt="nothing"
-                    callback={cb}
-                  />
-                  <LabelledInput
-                    datafield
-                    labelText={<Xl8 xid="pass005">Confirm new password</Xl8>}
-                    inputtype="password"
-                    name="passwordConfirm"
-                    required={true}
-                    inputval=""
-                    alt="nothing"
-                    callback={cb}
-                  />
-                </Form>
+                <div>
+                  <PasswordConstraints password={newPassword} errorText={errorMessage} />
+                  <Form
+                    submitService={resetPassword.post}
+                    title=""
+                    callback={passwordResetCallback}
+                    action="add"
+                    redirectTo={FULLPATH_TO.LOGIN}
+                    paramCallback={preSubmitCallback}
+                    validateInputs={validateInputs}
+                    cancellable
+                  >
+                    <LabelledInput
+                      datafield
+                      labelText={<Xl8 xid="pass004">New password</Xl8>}
+                      inputtype="password"
+                      name="password"
+                      required={true}
+                      inputval=""
+                      alt="nothing"
+                      callback={cb}
+                      onChange={changeInput}
+                    />
+                    <LabelledInput
+                      datafield
+                      labelText={<Xl8 xid="pass005">Confirm new password</Xl8>}
+                      inputtype="password"
+                      name="passwordConfirm"
+                      required={true}
+                      inputval={confirmedPassword}
+                      alt="nothing"
+                      callback={cb}
+                      onChange={changeInput}
+                    />
+                  </Form>
+                </div>
               )}
             </>
           ) : (
