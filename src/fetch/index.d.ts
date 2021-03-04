@@ -1,5 +1,9 @@
 import { BackendModule, Services, ReadCallback, InitOptions } from "i18next";
 
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
 export interface FetchOptions {
   loadPath: string;
   addPath: string;
@@ -27,12 +31,8 @@ export default class Backend implements BackendModule<FetchOptions> {
     key: string,
     fallbackValue: string
   ): void;
-  /**
-   * @throws {BackendError} - If the fetch fails or the parsing the response to json fails.
-   */
+
   read(language: string, namespace: string, callback: ReadCallback): void;
-  /**
-   * @throws {BackendError} - If the fetch fails or the parsing the response to json fails.
-   */
+
   readMulti(languages: string[], namespaces: string[], callback: ReadCallback): void;
 }

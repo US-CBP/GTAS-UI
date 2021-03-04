@@ -7,7 +7,8 @@ import { initReactI18next } from "react-i18next";
 import Backend from "./fetch";
 import { translations } from "./services/serviceWrapper";
 
-const lang = window.navigator.language;
+const lang = window.navigator.language.split("-")[0];
+
 let prefetchedData = [];
 
 export const getI18n = () =>
