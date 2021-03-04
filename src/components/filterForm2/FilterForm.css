@@ -19,6 +19,7 @@
   max-width: unset;
   left: 240px;
   bottom: 5px;
+  height: 270px;
 }
 
 .input:optional {

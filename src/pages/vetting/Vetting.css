@@ -4,20 +4,6 @@
  * Please see license.txt for details.
  */
 
-@media (min-height: 940px) {
-  .dtp-vetting-upper > span > div > .react-calendar {
-    top: auto;
-    bottom: unset;
-  }
-}
-
-@media (min-height: 995px) {
-  .dtp-vetting-lower > span > div > .react-calendar {
-    top: auto;
-    bottom: unset;
-  }
-}
-
 .bio-data {
   list-style: none;
   padding-left: 0.25rem !important;
