@@ -480,3 +480,38 @@ li .rtf--ab__c button[variant="rtf-red"] {
   background-color: transparent;
   border-top: 1px solid transparent !important;
 }
+
+.audit-top .filterform-container .react-calendar,
+.audit-bottom .filterform-container .react-calendar,
+.error-top .filterform-container .react-calendar,
+.error-bottom .filterform-container .react-calendar {
+  bottom: 5px;
+}
+
+@media (min-height: 620px) {
+  .audit-top > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
+}
+
+@media (min-height: 675px) {
+  .audit-bottom > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
+}
+
+@media (min-height: 540px) {
+  .error-top > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
+}
+
+@media (min-height: 605px) {
+  .error-bottom > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
+}

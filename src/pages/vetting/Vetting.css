@@ -4,8 +4,18 @@
  * Please see license.txt for details.
  */
 
-.dtp-vetting-lower > span > div > .react-calendar {
-  /* bottom: calc(0vh + 10px); */
+@media (min-height: 940px) {
+  .dtp-vetting-upper > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
+}
+
+@media (min-height: 995px) {
+  .dtp-vetting-lower > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
 }
 
 .bio-data {
