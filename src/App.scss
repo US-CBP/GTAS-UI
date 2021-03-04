@@ -501,3 +501,25 @@ li .rtf--ab__c button[variant="rtf-red"] {
 .tooltip.show {
   opacity: 1 !important ;
 }
+
+.sidebar-tooltip > .tooltip-inner {
+  background-color: white;
+}
+
+.overlay-content {
+  background-color: #575756;
+  color: white !important;
+  border-radius: 0.3rem;
+  text-align: center;
+}
+
+.overlay-content-light {
+  color: #575756;
+  background-color: white !important;
+  border-radius: 0.3rem;
+  text-align: center;
+}
+
+.popover {
+  border-radius: 0.5rem !important;
+}
