@@ -118,6 +118,7 @@ const ErrorLog = ({ name }) => {
               inputval={startDate}
               labelText={<Xl8 xid="el003">Start Date</Xl8>}
               name="startDate"
+              className="error-top"
               callback={cb}
               required={true}
               alt="Start Date"
@@ -126,6 +127,7 @@ const ErrorLog = ({ name }) => {
               datafield
               inputtype="dateTime"
               inputval={endDate}
+              className="error-bottom"
               labelText={<Xl8 xid="el004">End Date</Xl8>}
               name="endDate"
               callback={cb}

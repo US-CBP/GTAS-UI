@@ -18,8 +18,8 @@
   display: block;
   max-width: unset;
   left: 240px;
-  max-height: 300px;
-  overflow-y: scroll;
+  bottom: 5px;
+  height: 270px;
 }
 
 .input:optional {
