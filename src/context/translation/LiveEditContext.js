@@ -2,11 +2,10 @@
 //
 // Please see license.txt for details.
 
-import React, { createContext, useReducer, createRef, useState } from "react";
+import React, { createContext, useReducer, useState } from "react";
 import LangModal from "../../pages/home/LangModal";
 
 export const LiveEditContext = createContext();
-const modalRef = createRef();
 const LIVEEDITSTATE = "liveEditState";
 
 const LiveEditProvider = ({ children }) => {
@@ -15,11 +14,11 @@ const LiveEditProvider = ({ children }) => {
 
   const LiveEditReducer = (state, action) => {
     let updatedState = JSON.parse(sessionStorage.getItem(LIVEEDITSTATE)) || {};
+
     switch (action.type) {
       case "show": {
         updatedState.data = action.data;
         sessionStorage.setItem(LIVEEDITSTATE, JSON.stringify(updatedState));
-
         return updatedState;
       }
       case "hide": {
@@ -28,6 +27,11 @@ const LiveEditProvider = ({ children }) => {
       }
       case "edit": {
         updatedState.isEdit = true;
+        sessionStorage.setItem(LIVEEDITSTATE, JSON.stringify(updatedState));
+        return updatedState;
+      }
+      case "dataloaded": {
+        updatedState.dataloaded = action.isDataLoaded;
         sessionStorage.setItem(LIVEEDITSTATE, JSON.stringify(updatedState));
         return updatedState;
       }
@@ -48,7 +52,8 @@ const LiveEditProvider = ({ children }) => {
     show: false,
     showModal: () => null,
     isEdit: false,
-    data: null
+    data: null,
+    dataloaded: false
   };
   const [editState, action] = useReducer(LiveEditReducer, initContext);
 
@@ -66,12 +71,7 @@ const LiveEditProvider = ({ children }) => {
     <Provider value={{ getLiveEditState, action, setShowModal }}>
       <>
         {children}
-        <LangModal
-          show={showModal}
-          elem={editState.data}
-          ref={modalRef}
-          onHide={onHide}
-        ></LangModal>
+        <LangModal show={showModal} elem={editState.data} onHide={onHide}></LangModal>
       </>
     </Provider>
   );

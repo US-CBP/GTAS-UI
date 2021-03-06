@@ -105,9 +105,11 @@ $hover-color: rgb(177, 172, 172);
     padding: 5px;
     border-radius: 3px;
     padding-bottom: 10px;
+    border: 1px solid #575756;
   }
   .nav-link {
     padding-bottom: 5px;
+    padding-left: 10px !important;
   }
 }
 
@@ -121,6 +123,11 @@ $hover-color: rgb(177, 172, 172);
   .header-search {
     display: none !important;
   }
+}
+
+.nav-link {
+  display: block;
+  padding: 0.3rem 1rem !important;
 }
 
 .dropdown-item:hover,
