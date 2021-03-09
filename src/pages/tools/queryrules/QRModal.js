@@ -258,6 +258,10 @@ const QRModal = props => {
             label: "Hours Before Take Off",
             ...numProps
           },
+          "passengerTripDetails.daysOutOfCountry": {
+            label: "Days Out Of Country",
+            ...numProps
+          },
           "passengerDetails.nationality": { label: "Nationality", ...countryProps },
           "passengerTripDetails.debarkation": {
             label: "Debarkation Airport",
