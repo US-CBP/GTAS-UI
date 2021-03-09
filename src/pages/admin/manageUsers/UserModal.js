@@ -19,6 +19,7 @@ import { UserContext } from "../../../context/user/UserContext";
 import { asArray, isValidPassword } from "../../../utils/utils";
 import { ACTION, ROLE } from "../../../utils/constants";
 import "./ManageUsers.scss";
+import PasswordConstraints from "../../../components/PasswordConstraints/PasswordConstraints";
 
 const UserModal = props => {
   const [allRoles, setAllRoles] = useState([]);
@@ -143,6 +144,12 @@ const UserModal = props => {
     return validPassword && validUserId;
   };
 
+  const validatePasswordInput = value => {
+    const valid = isValidPassword(value);
+
+    return { valid: valid, info: <PasswordConstraints password={value} /> };
+  };
+
   const getPasswordInput = () => {
     return props.isEdit ? (
       <></>
@@ -156,6 +163,7 @@ const UserModal = props => {
         alt="nothing"
         callback={cb}
         spacebetween
+        validateInput={validatePasswordInput}
       />
     );
   };

@@ -556,3 +556,15 @@ li .rtf--ab__c button[variant="rtf-red"] {
   outline: 0;
   border-radius: 3px;
 }
+
+.valid-input-checkbox {
+  color: green !important;
+  align-self: center;
+  padding-left: 4px;
+}
+
+.invalid-input-checkbox {
+  color: red;
+  align-self: center;
+  padding-left: 4px;
+}
