@@ -40,7 +40,7 @@ const Header = () => {
 
   if (user === undefined) logout();
 
-  const [currentLang] = useState(window.navigator.language);
+  const [currentLang] = useState(window.navigator.language.split("-")[0]);
 
   const [showChangePasswordModal, setShowChangePasswordModal] = useState();
   const [showTost, setShowToast] = useState(false);

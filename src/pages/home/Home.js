@@ -5,16 +5,18 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import IdleTimer from "react-idle-timer";
 import { LookupContext } from "../../context/data/LookupContext";
-import { LK } from "../../utils/constants";
+import { LiveEditContext } from "../../context/translation/LiveEditContext";
 
 import Header from "../../components/header/Header";
 import { navigate } from "@reach/router";
 import TimeoutModal from "../../components/timeoutModal/TimeoutModal";
-import { TIME, FULLPATH_TO } from "../../utils/constants";
+import { TIME, FULLPATH_TO, LK } from "../../utils/constants";
+import { getI18n } from "../../i18n";
 
 const Home = props => {
   const { lookupAction } = useContext(LookupContext);
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+  const { getLiveEditState } = useContext(LiveEditContext);
 
   useEffect(() => {
     lookupAction({ method: "refresh", type: LK.HITCAT });
@@ -24,6 +26,12 @@ const Home = props => {
     lookupAction({ method: "refresh", type: LK.CCTYPE });
     lookupAction({ method: "refresh", type: LK.ROLE });
     lookupAction({ method: "refresh", type: LK.NOTETYPE });
+
+    const loaded = getLiveEditState().dataloaded;
+
+    if (!loaded) {
+      getI18n();
+    }
   }, []);
 
   const idleTimer = useRef(null);

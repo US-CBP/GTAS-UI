@@ -4,50 +4,66 @@
 
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import HttpApi from "i18next-http-backend";
-import Cookies from "js-cookie";
+import Backend from "./fetch";
+import { translations } from "./services/serviceWrapper";
 
-// let testlang = window.navigator.language; //.split("-")[0];
-let testlang = window.navigator.language.split("-")[0];
+const lang = window.navigator.language.split("-")[0];
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-const loadpath = `${BASE_URL}gtas/api/translation/${testlang}`;
+let prefetchedData = [];
 
-const backendOptions = {
-  requestOptions: {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-      Accept: "application/json, text/plain, */*",
-      Cookie: `JSESSIONID: ${Cookies.get("JSESSIONID")}`
-    },
-    credentials: "include"
-  },
-  loadPath: loadpath,
-  parse: dataset => {
+export const getI18n = () =>
+  translations.get(lang).then(data => {
+    const backendOptions = {
+      parse: function() {
+        return prefetchedData;
+      }
+    };
+
     let keyvals = {};
 
-    JSON.parse(dataset).forEach(item => {
-      keyvals[item["code"]] = item["translation"];
-    });
+    if (Array.isArray(data)) {
+      data.forEach(item => {
+        keyvals[item["code"]] = item["translation"];
+      });
+      prefetchedData = keyvals;
+      setTranslationStatus(true);
+    } else setTranslationStatus(false);
 
-    return keyvals;
-  }
-  // addPath: `/locales/${testlang}/{{ns}}`
-};
-
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .use(HttpApi)
-  .init({
-    // lng: "fr",
-    // fallbackLng: "en",
-    keySeparator: false,
-    backend: backendOptions
-    // debug: true
-    // interpolation: { escapeValue: false }
+    return i18n
+      .use(initReactI18next)
+      .use(Backend)
+      .init({
+        lng: lang,
+        fallbackLng: lang,
+        backend: backendOptions,
+        keySeparator: false,
+        // debug: true,
+        interpolation: { escapeValue: false }
+      });
   });
+
+getI18n();
+
+i18n.on("failedLoading", function(lng, ns, msg) {
+  //apb test
+  console.error("Translation fetch failed");
+});
+
+const setTranslationStatus = val => {
+  let initState = {
+    hideModal: () => null,
+    show: false,
+    showModal: () => null,
+    isEdit: false,
+    data: null,
+    dataloaded: false
+  };
+
+  const LIVEEDITSTATE = "liveEditState";
+  let currentState = JSON.parse(sessionStorage.getItem(LIVEEDITSTATE)) || initState;
+
+  currentState.dataloaded = val;
+  sessionStorage.setItem(LIVEEDITSTATE, JSON.stringify(currentState));
+};
 
 export default i18n;

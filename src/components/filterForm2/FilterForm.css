@@ -7,16 +7,19 @@
 .filterform-container {
   overflow-x: hidden;
   overflow-y: auto;
+  height: 100%;
 }
 
 .filterform-container .react-calendar {
   position: fixed;
   top: auto;
   line-height: 0.5rem;
-  width: 240px !important;
   border-radius: 5px;
   display: block;
   max-width: unset;
+  left: 240px;
+  bottom: 5px;
+  height: 270px;
 }
 
 .input:optional {

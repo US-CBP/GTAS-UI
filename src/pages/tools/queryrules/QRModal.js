@@ -559,15 +559,15 @@ const QRModal = props => {
 
   const onRun = () => {
     if (!validateAll()) return;
-
     storeRule();
-
+    var minOffset = new Date().getTimezoneOffset();
     navigate("/gtas/tools/qrdetails", {
       state: {
         data: {
           pageNumber: 1,
           pageSize: 10,
-          query: query || data
+          query: query || data,
+          utcMinuteOffset: minOffset
         }
       }
     });

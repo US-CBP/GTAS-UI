@@ -23,7 +23,7 @@ const Admin = props => {
           {children.map(info => {
             const data = info.props;
 
-            if (!data) return;
+            if (!data?.name) return;
 
             return (
               <Card className="page-tiles" key={data.path}>

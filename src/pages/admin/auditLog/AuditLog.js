@@ -140,6 +140,7 @@ const AuditLog = ({ name }) => {
               inputval={startDate}
               labelText={<Xl8 xid="al003">Start Date</Xl8>}
               name="startDate"
+              className="audit-top"
               callback={cb}
               required={true}
               alt="Start Date"
@@ -151,6 +152,7 @@ const AuditLog = ({ name }) => {
               labelText={<Xl8 xid="al004">End Date</Xl8>}
               name="endDate"
               callback={cb}
+              className="audit-bottom"
               required={true}
               alt="End Date"
             />

@@ -140,6 +140,7 @@ class LabelledInput extends Component {
           maxLength={this.props.maxlength}
           readOnly={this.props.readOnly}
           callback={this.onChange}
+          validateInput={this.props.validateInput}
         />
       );
     }
