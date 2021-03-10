@@ -2,17 +2,98 @@
 //
 // Please see license.txt for details.
 
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import { CardDeck } from "react-bootstrap";
-import { randomIntOfLength } from "../../utils/utils";
+import {asArray, randomIntOfLength} from "../../utils/utils";
 import Xl8 from "../../components/xl8/Xl8";
 
 import "./Kanban.css";
+import {poe} from "../../services/serviceWrapper";
 
 const Kanban = props => {
   const randdate = (length = 1) => new Date(Date.now() + randomIntOfLength(length));
+  const [poeLanes, setPoeLanes] = useState({});
+  const [poeTiles, setPoeTiles] = useState([]);
+
+  const convertTileToData = (tile, poeStatus) => {
+    const req = {
+      paxId : tile.paxId,
+      paxFirstName : null,
+      paxLastName : null,
+       document : null,
+      hitCategory : null,
+      flightCountdownTime : null,
+      poeStatus : poeStatus
+    };
+    return req;
+  };
+
+  useEffect(() => {
+    const tiles = [];
+    const lanes = {};
+    // TODO: Do the date part here differently
+    let etaEnd = new Date();
+    etaEnd.setHours(etaEnd.getHours() + 24);
+    let etaStart = new Date();
+    etaStart.setHours(etaStart.getHours() - 24);
+    let params = { etaStart: etaStart, etaEnd: etaEnd};
+    params = "?requestDto=" + encodeURIComponent(JSON.stringify(params))
+
+    //Fetch and create all poe lanes
+    poe.get.getAllTiles(params).then(tileRes => {
+      asArray(tileRes.slice(0,100)).map(tile =>{ //TODO: Remove splice
+        tiles.push(createPOETile(tile)) //creates tile, adds to tile array
+      })
+      //THEN fetch and create all lanes, feeding tiles to each lane to calc if they belong base on poeStatus
+      poe.get.getAllLanes().then(laneRes => {
+        asArray(laneRes).map(lane => {
+          lanes[lane.ord] = createPOELane(lane, tiles) //creates lane, adds to lane object
+        })
+        //After lanes AND tiles have both been created , set the constants
+        setPoeLanes(lanes);
+        setColumns(lanes);
+        setPoeTiles(tiles);
+      })
+    });
+  },[] );
+
+  const createPOETile = tileData =>{
+    return {
+      paxId: tileData.paxId,
+      id: tileData.paxId+"",
+      content: (
+          <div>
+            <div className="font-weight-bolder">{tileData.paxLastName}, {tileData.paxFirstName}</div>
+            <div> Doc #: {tileData.document.documentNumber}</div>
+            <div className="poe-countdown-outer">
+              <span>Reason: {tileData.hitCategory}</span>
+              <div className="poe-countdown-inner">
+                <CountdownBadge future={randdate(9)} baseline={randdate()}></CountdownBadge>
+              </div>
+            </div>
+          </div>
+      ),
+      poeStatus: tileData.poeStatus
+    }
+  }
+
+  const createPOELane = (laneData, tiles) => {
+    const tileList = [];
+    tiles.forEach( tile =>{ //Give each lane its appropriate tile list
+      if(laneData.poeStatusEnum === tile.poeStatus){
+        tileList.push(tile);
+      }
+    });
+    return {
+        name: <Xl8 xid="poe0001">{laneData.displayName}</Xl8>,
+        items: tileList,
+        background: "#f0f0f0",
+        dragbackground: "#c0ddec",
+        poeStatus: laneData.poeStatusEnum
+    }
+  }
 
   const actives = [
     {
@@ -289,7 +370,7 @@ const Kanban = props => {
       dragbackground: "lightgray"
     }
   };
-  const [columns, setColumns] = useState(columnsFromBackend);
+  const [columns, setColumns] = useState({});
 
   const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
@@ -302,6 +383,7 @@ const Kanban = props => {
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
+      poe.put.updatePOETile(convertTileToData(removed, destColumn.poeStatus)).then(res => {console.log("updateSuccess")});
       setColumns({
         ...columns,
         [source.droppableId]: {

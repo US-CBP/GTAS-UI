@@ -64,6 +64,8 @@ const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
 const ATTACHMENTSMETA = `${BASE_URL}gtas/attachmentsmeta`;
 const DOWNLOADATTACHMENT = `${BASE_URL}gtas/attachment`;
 const TRANSLATIONS = `${BASE_URL}gtas/api/translation`;
+const POELANES = `${BASE_URL}gtas/api/POE/lanes`;
+const POETILES = `${BASE_URL}gtas/api/POE/tiles`;
 
 // ENTITY METHODS
 
@@ -376,5 +378,17 @@ export const forgotUsername = {
   post: body => {
     const header = `${FORGOTUSERNAME}?userEmail=${body.userEmail}`;
     return post(header, SIGNUPHEADER, stringify(body));
+  }
+};
+
+export const poe = {
+  get: {
+    getAllLanes: () => get(POELANES, BASEHEADER),
+    getAllTiles: (params) => get(POETILES, BASEHEADER, undefined, params)
+  },
+  put : {
+    updatePOETile: body => {
+      return putNoId(POETILES, BASEHEADER, stringify(body));
+   }
   }
 };
