@@ -2,25 +2,28 @@
 //
 // Please see license.txt for details.
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo } from "react";
 import { asArray, hasData } from "../../utils/utils";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 import { LookupContext } from "../../context/data/LookupContext";
 
 const ToolTipWrapper = props => {
+  const className = props?.className || "overlay-content";
   const { getCachedKeyValues } = useContext(LookupContext);
   const initToolTipState = "Loading...";
   const [toolTipVal, setToolTipVal] = useState(initToolTipState);
+  const val = props.data.val;
+  const lkup = props.data.lkup;
 
   const renderTooltip = props => (
-    <Tooltip id="tooltipWrapper-tooltip" {...props}>
-      {toolTipVal}
-    </Tooltip>
+    <Popover {...props}>
+      <Popover.Content className={className}>{toolTipVal}</Popover.Content>
+    </Popover>
   );
 
-  const getToolTipValue = (val, codeType) => {
+  const getToolTipValue = () => {
     setToolTipVal(initToolTipState);
-    getCachedKeyValues(codeType).then(types => {
+    getCachedKeyValues(lkup).then(types => {
       const type = asArray(types).find(t => {
         return t.value === val;
       });
@@ -29,8 +32,8 @@ const ToolTipWrapper = props => {
   };
 
   const data = {
-    val: props.data.val,
-    lookup: props.data.lkup,
+    val: val,
+    lookup: lkup,
     placement: hasData(props.data.placement) ? props.data.placement : "top",
     show: hasData(props.data.show) ? props.data.show : 250,
     hide: hasData(props.data.hide) ? props.data.hide : 400
@@ -40,9 +43,9 @@ const ToolTipWrapper = props => {
     <OverlayTrigger
       placement={data.placement}
       delay={{ show: data.show, hide: data.hide }}
-      onEnter={() => getToolTipValue(data.val, data.lookup)}
+      onEnter={getToolTipValue}
       //onExited={() => setToolTipVal(initToolTipState)}
-      overlay={renderTooltip()}
+      overlay={renderTooltip}
     >
       <span>{data.val}</span>
     </OverlayTrigger>

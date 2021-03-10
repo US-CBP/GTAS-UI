@@ -34,6 +34,7 @@ const PaxInfo = props => {
         label: <Xl8 xid="pd013">Nationality</Xl8>,
         value: (
           <ToolTipWrapper
+            className="overlay-content-light"
             data={{ val: res.nationality, lkup: LK.COUNTRY }}
           ></ToolTipWrapper>
         )

@@ -213,9 +213,9 @@ const Flights = props => {
       Header: ["fl020", "Origin"],
       Cell: ({ row }) => (
         <>
-          <ToolTipWrapper data={{ val: row.original.origin, lkup: LK.AIRPORT }}>
-            className="sm"
-          </ToolTipWrapper>
+          <ToolTipWrapper
+            data={{ val: row.original.origin, lkup: LK.AIRPORT }}
+          ></ToolTipWrapper>
         </>
       )
     },
@@ -225,9 +225,9 @@ const Flights = props => {
       Header: ["fl021", "Destination"],
       Cell: ({ row }) => (
         <>
-          <ToolTipWrapper data={{ val: row.original.destination, lkup: LK.AIRPORT }}>
-            className="sm"
-          </ToolTipWrapper>
+          <ToolTipWrapper
+            data={{ val: row.original.destination, lkup: LK.AIRPORT }}
+          ></ToolTipWrapper>
         </>
       )
     },
