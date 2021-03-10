@@ -7,6 +7,8 @@ html {
   font-family: "Lato script=latin rev=1", sans-serif !important;
   /* -webkit-font-smoothing: antialiased; */
   -moz-osx-font-smoothing: grayscale;
+  min-height: 420px;
+  height: 420px;
 }
 
 .on-top {
@@ -480,6 +482,74 @@ li .rtf--ab__c button[variant="rtf-red"] {
   border-top: 1px solid transparent !important;
 }
 
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
+  padding: 0.84rem;
+  line-height: 16px;
+}
+
+.audit-top > span > div > .react-calendar,
+.audit-bottom > span > div > .react-calendar,
+.error-top > span > div > .react-calendar,
+.error-bottom > span > div > .react-calendar {
+  bottom: 5px;
+}
+
+@media (max-height: 340px) {
+  .audit-top > span > div > .react-calendar,
+  .audit-bottom > span > div > .react-calendar,
+  .error-top > span > div > .react-calendar,
+  .error-bottom > span > div > .react-calendar,
+  .dtp-vetting-lower > span > div > .react-calendar,
+  .dtp-vetting-upper > span > div > .react-calendar {
+    top: 5px;
+    bottom: unset;
+  }
+}
+
+@media (min-height: 543px) {
+  .audit-top > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
+}
+
+@media (min-height: 598px) {
+  .audit-bottom > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
+}
+
+@media (min-height: 476px) {
+  .error-top > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
+}
+
+@media (min-height: 543px) {
+  .error-bottom > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
+}
+
+@media (min-height: 860px) {
+  .dtp-vetting-upper > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
+}
+
+@media (min-height: 932px) {
+  .dtp-vetting-lower > span > div > .react-calendar {
+    top: auto;
+    bottom: unset;
+  }
+}
+
 .invalid-input {
   box-shadow: 0 0 0 0.2rem red;
   outline: 0;
@@ -522,4 +592,16 @@ li .rtf--ab__c button[variant="rtf-red"] {
 
 .popover {
   border-radius: 0.5rem !important;
+}
+
+.valid-input-checkbox {
+  color: green !important;
+  align-self: center;
+  padding-left: 4px;
+}
+
+.invalid-input-checkbox {
+  color: red;
+  align-self: center;
+  padding-left: 4px;
 }

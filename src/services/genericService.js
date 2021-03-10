@@ -31,7 +31,11 @@ export const GenericService = async props => {
       if (response.ok) {
         if (response.url.endsWith("/authenticate")) return response;
         if (response.url.includes("paxdetailreport")) return response.arrayBuffer();
-        if (response.url.includes("attachmentId") || (response.url.includes("logs") && props.uri.split("/").length === 8)) return response.blob();
+        if (
+          response.url.includes("attachmentId") ||
+          (response.url.includes("logs") && props.uri.split("/").length === 8)
+        )
+          return response.blob();
         return response.json().then(res => res.data || res || response);
       } else {
         return response;
@@ -48,6 +52,15 @@ export const get = (uri, headers, id, params) => {
   }`;
 
   return GenericService({ uri: uricomplete, method: GET, headers: headers });
+};
+
+export const asJson = (cb, uri, headers, params) => {
+  const result = cb(uri, headers, ...params);
+
+  if (result.ok) {
+    return result.json().then(res => res.data || res || result);
+  }
+  return result;
 };
 
 export const post = (uri, headers, body) => {
@@ -96,4 +109,4 @@ export const downloadWrap = (blob, fileName) => {
   tempEl.click();
   window.URL.revokeObjectURL(url);
   tempEl.remove();
-}
+};
