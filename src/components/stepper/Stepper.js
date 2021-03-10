@@ -71,9 +71,9 @@ const Stepper = props => {
                 style={{ width: 100 / steps.length + "%" }}
                 key={index}
               >
-                <ToolTipWrapper data={{ val: step.label, lkup: LK.AIRPORT }}>
-                  className="sm"
-                </ToolTipWrapper>
+                <ToolTipWrapper
+                  data={{ val: step.label, lkup: LK.AIRPORT }}
+                ></ToolTipWrapper>
               </li>
             ))}
           </ul>
