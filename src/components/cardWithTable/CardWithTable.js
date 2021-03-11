@@ -43,25 +43,25 @@ const CardWithTable = props => {
       const td = row[key];
       const triggerOverlay = !isShortText(td, textDisplayLimit);
       const triggerTooltip = needsTooltip(key);
-      return triggerTooltip
-        ? [
-            <td className="cardwithtable-tooltip">
-              <ToolTipWrapper data={{ val: td, lkup: toolTipLKMap[key] }}>
-                {getShortText(td, textDisplayLimit)}
-              </ToolTipWrapper>
-            </td>
-          ]
-        : [
-            <Overlay
-              trigger={triggerOverlay ? ["click", "hover"] : ""}
-              key={key}
-              content={td}
-            >
-              <td className={triggerOverlay ? "as-info" : ""}>
-                {getShortText(td, textDisplayLimit)}
-              </td>
-            </Overlay>
-          ];
+      return triggerTooltip ? (
+        <td className="as-info">
+          <ToolTipWrapper data={{ val: td, lkup: toolTipLKMap[key] }}>
+            {getShortText(td, textDisplayLimit)}
+          </ToolTipWrapper>
+        </td>
+      ) : triggerOverlay ? (
+        <Overlay
+          trigger={triggerOverlay ? ["click", "hover"] : ""}
+          key={key}
+          content={td}
+        >
+          <td className={triggerOverlay ? "as-info" : ""}>
+            {getShortText(td, textDisplayLimit)}
+          </td>
+        </Overlay>
+      ) : (
+        <td>{td}</td>
+      );
     });
 
     return (
