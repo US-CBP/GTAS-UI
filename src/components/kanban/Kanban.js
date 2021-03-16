@@ -35,9 +35,9 @@ const Kanban = props => {
     const lanes = {};
     // TODO: Do the date part here differently
     let etaEnd = new Date();
-    etaEnd.setHours(etaEnd.getHours() + 24);
+    etaEnd.setHours(etaEnd.getHours() + 48);
     let etaStart = new Date();
-    etaStart.setHours(etaStart.getHours() - 24);
+    etaStart.setHours(etaStart.getHours() - 48);
     let params = { etaStart: etaStart, etaEnd: etaEnd};
     params = "?requestDto=" + encodeURIComponent(JSON.stringify(params))
 
@@ -383,7 +383,7 @@ const Kanban = props => {
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
-      poe.put.updatePOETile(convertTileToData(removed, destColumn.poeStatus)).then(res => {console.log("updateSuccess")});
+      poe.put.updatePOEStatus(convertTileToData(removed, destColumn.poeStatus)).then(res => {console.log("updateSuccess")});
       setColumns({
         ...columns,
         [source.droppableId]: {
