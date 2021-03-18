@@ -132,10 +132,16 @@ const SeatChart = ({ location }) => {
       value: selectedSeatInfo.number
     }
   ];
-  const linkToFlightPax = <Link to={`/gtas/flightpax/${flightId}`}>Flightpax</Link>;
+  const linkToFlightPax = (
+    <Link to={`/gtas/flightpax/${flightId}`}>
+      <Xl8 xid="seat011">Show flight passengers</Xl8>
+    </Link>
+  );
 
   const linkToPaxdetails = (
-    <Link to={`/gtas/paxDetail/${flightId}/${paxId}`}>Show passenger details</Link>
+    <Link to={`/gtas/paxDetail/${flightId}/${paxId}`}>
+      <Xl8 xid="seat012">Show passenger details</Xl8>
+    </Link>
   );
 
   return (

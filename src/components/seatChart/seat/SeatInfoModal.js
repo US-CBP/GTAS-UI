@@ -11,6 +11,7 @@ import Modal, {
   ModalHeader,
   ModalTitle
 } from "../../modal/Modal";
+import { Col } from "react-bootstrap";
 
 const SeatInfoModal = props => {
   const info = props.seatInfo || {};
@@ -28,9 +29,11 @@ const SeatInfoModal = props => {
       </ModalBody>
 
       <ModalFooter>
-        <Link to={`/gtas/paxDetail/${info.flightId}/${info.paxId}`}>
-          Show passenger details
-        </Link>
+        <Col>
+          <Link to={`/gtas/paxDetail/${info.flightId}/${info.paxId}`}>
+            Show passenger details
+          </Link>
+        </Col>
       </ModalFooter>
     </Modal>
   );
