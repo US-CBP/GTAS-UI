@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import "./Label.css";
 
 const LabelInput = props => {
-  const cls = props.className + (props.inline ? " inline" : " label");
+  const cls = props.className + (props.inline ? " inline" : "");
   return (
     <label className={cls} name={props.name} alt={props.alt}>
       {props.inputval}

@@ -73,7 +73,7 @@ const LangModal = props => {
               name="default"
               alt="Default Text"
               callback={cb}
-              spacebetween
+              spacebetweenwrap
             />
             <LabelledInput
               datafield

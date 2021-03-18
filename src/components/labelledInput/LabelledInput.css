@@ -21,7 +21,23 @@
   width: unset !important;
   text-align: right;
   white-space: nowrap;
-  /* min-width: 90px; */
+  min-width: 30%;
+  margin-right: 10px;
+}
+
+.space-between-wrap > .label {
+  text-align: right;
+  display: block;
+  max-width: 65%;
+  float: right;
+  font-style: italic;
+  margin-bottom: 0.25rem !important;
+}
+
+.space-between-wrap .txtlabel {
+  width: unset !important;
+  text-align: right;
+  white-space: nowrap;
   min-width: 30%;
   margin-right: 10px;
 }
