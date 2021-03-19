@@ -389,6 +389,19 @@ export const poe = {
   put : {
     updatePOEstatus: body => {
       return putNoId(POETILES, BASEHEADER, stringify(body));
-   }
+   },
+    updateLane: body =>{
+      return putNoId(POELANES, BASEHEADER, stringify(body))
+    }
+  },
+  post:{
+    createNewLane: body => {
+      return post(POELANES, BASEHEADER, stringify(body))
+    }
+  },
+  del:{
+    deleteLane: id => {
+      return del(POELANES, BASEHEADER, id)
+    }
   }
 };

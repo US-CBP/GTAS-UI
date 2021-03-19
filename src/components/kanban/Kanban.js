@@ -17,7 +17,7 @@ const Kanban = props => {
   const [poeLanes, setPoeLanes] = useState({});
   const [poeTiles, setPoeTiles] = useState([]);
 
-  const convertTileToData = (tile, poeStatus) => {
+  const convertTileToData = (tile, status) => {
     const req = {
       paxId : tile.paxId,
       paxFirstName : null,
@@ -25,7 +25,7 @@ const Kanban = props => {
        document : null,
       hitCategory : null,
       flightCountdownTime : null,
-      poeStatus : poeStatus
+      status : status
     };
     return req;
   };
@@ -75,14 +75,14 @@ const Kanban = props => {
             </div>
           </div>
       ),
-      poeStatus: tileData.poeStatus
+      status: tileData.status
     }
   }
 
   const createPOELane = (laneData, tiles) => {
     const tileList = [];
     tiles.forEach( tile =>{ //Give each lane its appropriate tile list
-      if(laneData.poeStatusEnum === tile.poeStatus){
+      if(laneData.status === tile.status){
         tileList.push(tile);
       }
     });
@@ -91,7 +91,7 @@ const Kanban = props => {
         items: tileList,
         background: "#f0f0f0",
         dragbackground: "#c0ddec",
-        poeStatus: laneData.poeStatusEnum
+        status: laneData.status
     }
   }
 
@@ -383,7 +383,7 @@ const Kanban = props => {
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
-      poe.put.updatePOEStatus(convertTileToData(removed, destColumn.poeStatus)).then(res => {console.log("updateSuccess")});
+      poe.put.updatePOEStatus(convertTileToData(removed, destColumn.status)).then(res => {console.log("updateSuccess")});
       setColumns({
         ...columns,
         [source.droppableId]: {

@@ -149,6 +149,9 @@ const Auxiliary = loadable(() =>
 const LanguageEditor = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/lang/LanguageEditor")
 );
+const LookoutLanes = loadable(() =>
+    import(/* webpackChunkName: "admin" */ "./pages/admin/lookoutLanes/LookoutLanes")
+);
 
 const NEO4JURL = window?._env_
   ? window._env_.REACT_APP_NEO4J_BROWSER
@@ -363,6 +366,14 @@ const App = props => {
                                 icon="fa-comment"
                                 path="notecats"
                               ></NoteCats>
+                              <LookoutLanes
+                                name={<Xl8 xid="app036">Lookout Lanes</Xl8>}
+                                desc={
+                                <Xl8 xid="app037">View or edit Lookout Lanes</Xl8>
+                              }
+                                icon="fa-road"
+                                path="lookoutlanes"
+                              ></LookoutLanes>
                               {hasData(KIBANAURL) && (
                                 <Auxiliary
                                   name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
