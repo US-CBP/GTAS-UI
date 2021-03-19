@@ -22,9 +22,9 @@ const SeatInfoModal = props => {
       </ModalHeader>
       <ModalBody>
         <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+          <li>Last Name: {info.lastName}</li>
           <li>First Name: {info.firstName}</li>
-          <li> Last Name: {info.lastName}</li>
-          <li> Middle Name: {info.middleName}</li>
+          <li>Middle Name: {info.middleName}</li>
         </ul>
       </ModalBody>
 
