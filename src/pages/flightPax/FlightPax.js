@@ -155,6 +155,7 @@ const FlightPax = props => {
       Xl8: true,
       Header: ["fp026", "Hit Aggregates"],
       disableGroupBy: true,
+      disableFilters: true,
       aggregate: sumCotravelerHits,
       Aggregated: ({ value }) => aboveZero(value),
       Cell: ({ row }) => (
