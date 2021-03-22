@@ -50,6 +50,7 @@ const Rules = props => {
       Xl8: true,
       disableSortBy: true,
       Header: ["edit001", "Edit"],
+      disableFilters: true,
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -80,9 +81,17 @@ const Rules = props => {
       Accessor: "overMaxHits",
       Xl8: true,
       Header: ["rul010", "Over Max Hits"],
-      Cell: ({ row }) => (
-        <div className="icon-col">{row.original.overMaxHits ? "Yes" : "No"}</div>
-      )
+      isBoolean: true,
+      Cell: ({ row }) => {
+        if (row.original.overMaxHits === 1) {
+          return (
+            <div className="icon-col">
+              <i className="fa fa-check-square qbrb-icon-check-red"></i>
+            </div>
+          );
+        }
+        return <div className="icon-col"></div>;
+      }
     },
     { Accessor: "modifiedOn", Xl8: true, Header: ["rul011", "Modified On"] },
     { Accessor: "modifiedBy", Xl8: true, Header: ["rul012", "Modified By"] },
@@ -90,9 +99,10 @@ const Rules = props => {
     {
       Accessor: "enabled",
       Xl8: true,
+      isBoolean: true,
       Header: ["rul014", "Enabled"],
       Cell: ({ row }) => {
-        if (row.original.enabled === true) {
+        if (row.original.enabled === 1) {
           return (
             <div className="icon-col">
               <i className="fa fa-check-square qbrb-icon-check"></i>
@@ -171,7 +181,9 @@ const Rules = props => {
             hitCount: item.hitCount,
             modifiedOn: item.modifiedOn,
             modifiedBy: item.modifiedBy,
-            ...item.summary
+            ...item.summary,
+            overMaxHits: item.summary.overMaxHits === true ? 1 : 0,
+            enabled: item.summary.enabled === true ? 1 : 0
           };
         });
       }
@@ -234,7 +246,13 @@ const Rules = props => {
           leftChild={tabs}
           leftCb={titleTabCallback}
         ></Title>
-        <Table data={data} callback={cb} header={header} key={tablekey}></Table>
+        <Table
+          data={data}
+          callback={cb}
+          header={header}
+          key={tablekey}
+          enableColumnFilter={true}
+        ></Table>
         <Fab
           icon={<i className="fa fa-plus nospin" />}
           variant="info"
