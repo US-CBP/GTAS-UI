@@ -11,6 +11,7 @@ import WLModal from "./WLModal";
 import CSVReader from "../../../components/CSVReader/CSVReader";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
+import { Fab, Action } from "react-tiny-fab";
 import { LookupContext } from "../../../context/data/LookupContext";
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
 import { hasData, watchlistDateFormat, timezoneFreeDate } from "../../../utils/utils";
@@ -18,7 +19,6 @@ import { LK } from "../../../utils/constants";
 import "./constants.js";
 
 import { Tabs, Tab } from "react-bootstrap";
-import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./Watchlist.css";
 
