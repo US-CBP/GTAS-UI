@@ -274,6 +274,7 @@ const Watchlist = props => {
       Header: ["edit001", "Edit"],
       disableExport: true,
       disableSortBy: true,
+      disableFilters: true,
       Cell: ({ row }) => getEditRowData(row.original)
     },
     { Accessor: "documentType", Xl8: true, Header: ["wl011", "Document Type"] },
@@ -283,6 +284,7 @@ const Watchlist = props => {
       Accessor: "delete",
       Xl8: true,
       Header: ["wl014", "Delete"],
+      disableFilters: true,
       disableExport: true,
       Cell: ({ row }) => getDeleteColumnData(row.original.id)
     }
