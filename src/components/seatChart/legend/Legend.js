@@ -15,7 +15,8 @@ const Legend = props => {
       </div>
       <div className="seat-legend">
         <span className="legend-icon legend-co-traveler"></span>
-        {`Co-Traveler (${props.cotravellersCount})`}
+        <Xl8 xid="resv006">Co-travelers</Xl8>
+        {` (${props.cotravellersCount})`}
       </div>
       <div className="seat-legend">
         <span className="legend-icon legend-hit"></span>

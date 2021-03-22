@@ -24,7 +24,11 @@ const Settings = () => {
     setShowModal(false);
   };
 
-  const editButton = <Button onClick={() => setShowModal(true)}>Edit Settings</Button>;
+  const editButton = (
+    <Button onClick={() => setShowModal(true)}>
+      <Xl8 xid="set007">Edit Settings</Xl8>
+    </Button>
+  );
   useEffect(() => {
     settingsinfo.get().then(res => {
       setData(res);

@@ -8,7 +8,7 @@ import LabelledInput from "../../labelledInput/LabelledInput";
 
 const SeatChartCard = props => {
   return (
-    <Container>
+    <Container className="m-1">
       {props.data &&
         props.data?.map((item, index) => (
           <Row key={index}>
@@ -25,7 +25,7 @@ const SeatChartCard = props => {
           </Row>
         ))}
 
-      <Row>{props.link}</Row>
+      <div>{props.link}</div>
     </Container>
   );
 };

@@ -3,19 +3,19 @@
 // Please see license.txt for details.
 
 import React, { useEffect, useRef, useState } from "react";
-import Seat from "./seat/Seat";
-import { Container, Row, CardDeck, Card } from "react-bootstrap";
-import { seats } from "../../services/serviceWrapper";
-import { asArray, localeDate } from "../../utils/utils";
 import { Link, useParams } from "@reach/router";
+import Seat from "./seat/Seat";
 import Legend from "./legend/Legend";
 import SeatChartCard from "./seatChartCard/SeatChartCard";
 import Loading from "../loading/Loading";
 import Xl8 from "../xl8/Xl8";
-import "./SeatChart.scss";
 import SearchSeat from "./searchSeat/SearchSeat";
 import SidenavContainer from "../sidenavContainer/SidenavContainer";
 import Main from "../main/Main";
+import { seats } from "../../services/serviceWrapper";
+import { Row, CardDeck, Card } from "react-bootstrap";
+import { asArray, localeDate } from "../../utils/utils";
+import "./SeatChart.scss";
 
 const SeatChart = ({ location }) => {
   const { flightId, paxId, currentPaxSeat } = useParams();
@@ -34,6 +34,7 @@ const SeatChart = ({ location }) => {
       seat.classList.remove("search-result");
     });
   };
+
   const searchCallback = searchResult => {
     resetSearch();
     setSearchedSeats(searchResult);
@@ -43,6 +44,7 @@ const SeatChart = ({ location }) => {
       seat.focus();
     });
   };
+
   const getRow = letter => {
     const row = [];
     columnWithReservedSeat.forEach(col => {
@@ -132,10 +134,16 @@ const SeatChart = ({ location }) => {
       value: selectedSeatInfo.number
     }
   ];
-  const linkToFlightPax = <Link to={`/gtas/flightpax/${flightId}`}>Flightpax</Link>;
+  const linkToFlightPax = (
+    <Link to={`/gtas/flightpax/${flightId}`}>
+      <Xl8 xid="seat011">Show flight passengers</Xl8>
+    </Link>
+  );
 
   const linkToPaxdetails = (
-    <Link to={`/gtas/paxDetail/${flightId}/${paxId}`}>Show passenger details</Link>
+    <Link to={`/gtas/paxDetail/${flightId}/${paxId}`}>
+      <Xl8 xid="seat012">Show passenger details</Xl8>
+    </Link>
   );
 
   return (
