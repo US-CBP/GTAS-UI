@@ -294,6 +294,7 @@ const Watchlist = props => {
       Xl8: true,
       disableExport: true,
       disableSortBy: true,
+      disableFilters: true,
       Header: ["edit001", "Edit"],
       Cell: ({ row }) => getEditRowData(row.original)
     },
@@ -305,6 +306,7 @@ const Watchlist = props => {
       Accessor: "delete",
       Xl8: true,
       disableExport: true,
+      disableFilters: true,
       Header: ["wl014", "Delete"],
       Cell: ({ row }) => getDeleteColumnData(row.original.id)
     }
@@ -327,6 +329,7 @@ const Watchlist = props => {
         header={header}
         callback={cb}
         exportFileName={`watchlists-${wlType}`}
+        enableColumnFilter={true}
       ></Table>
       <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action text={buttonTypeText} onClick={() => launchModal(0)}>
