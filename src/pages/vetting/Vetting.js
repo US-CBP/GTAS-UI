@@ -245,7 +245,7 @@ const Vetting = props => {
 
   const getInitialState = () => {
     setShowDateTimePicker(false);
-    setFilterFormKey(filterFormKey + 1);
+    //setFilterFormKey(filterFormKey + 1); Initial state no longer calls, we call only once hit cats/note types are returned.
     return initialParamState;
   };
 
@@ -371,8 +371,10 @@ const Vetting = props => {
   };
 
   useEffect(() => {
-    setFilterFormKey(filterFormKey + 1);
-  }, [hitCategoryOptions, noteTypes]);
+    if(hasData(noteTypes) && hasData(hitCategoryOptions)){ //When both are fully loaded, impossible to know which one will finish first, check both
+      setFilterFormKey(filterFormKey+1);
+    }
+  }, [noteTypes, hitCategoryOptions]);
 
   useEffect(() => {
     fetchData();
