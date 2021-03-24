@@ -214,6 +214,7 @@ const FlightPax = props => {
       Xl8: true,
       Header: ["fp018", "DOB"],
       Cell: ({ row }) => <div>{row.original.dobAge}</div>,
+      Aggregated: () => ``,
       disableGroupBy: true
     },
     {
