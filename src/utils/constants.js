@@ -122,3 +122,5 @@ export const DAYS = days => {
     inSeconds: () => days * HOURS(rate).inSeconds()
   };
 };
+
+export const UNDEFINEDCHAR = "ꞏ"; // unicode U+A78F. Char not mapped to any language char, good as a delimiter.

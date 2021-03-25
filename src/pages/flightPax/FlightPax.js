@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
@@ -12,6 +12,7 @@ import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import HitsBadge from "../../components/hitsBadge/HitsBadge";
 import Main from "../../components/main/Main";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
+import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import { Link } from "@reach/router";
 
 import { flightPassengers } from "../../services/serviceWrapper";
@@ -23,13 +24,11 @@ import {
   localeDateOnly,
   aboveZero,
   lpad5,
-  sortableDate
+  sortableDob
 } from "../../utils/utils";
 import { LK, ROLE } from "../../utils/constants";
-import { Col, Tabs, Tab, OverlayTrigger, Popover, Tooltip } from "react-bootstrap";
+import { Col, Tabs, Tab } from "react-bootstrap";
 import "./FlightPax.css";
-import { LookupContext } from "../../context/data/LookupContext";
-import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 
 const FlightPax = props => {
   const cb = () => {};
@@ -57,10 +56,11 @@ const FlightPax = props => {
 
   const parseData = data => {
     return asArray(data).map(item => {
-      const displayDobDate = new Date(item.dob).toLocaleDateString();
+      const displayDobDate = localeDateOnly(new Date(item.dob));
       item.docNumber = item.documents?.length > 0 ? item.documents[0] : ""; // TODO Documents: shd show all or none here.
       item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
-      item.dobStr = `${sortableDate(new Date(item.dob))} ${displayDobDate} ${item.age}`;
+      item.dobStr = `${sortableDob(new Date(item.dob))} ${displayDobDate} ${item.age}`;
+
       item.dobAge = `${alt(displayDobDate)} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
@@ -155,6 +155,7 @@ const FlightPax = props => {
       Xl8: true,
       Header: ["fp026", "Hit Aggregates"],
       disableGroupBy: true,
+      disableFilters: true,
       aggregate: sumCotravelerHits,
       Aggregated: ({ value }) => aboveZero(value),
       Cell: ({ row }) => (
@@ -167,9 +168,9 @@ const FlightPax = props => {
     }
   ];
 
-  const arrayHeaderFixer = tab !== "hits" ? aggregateHitHeader : hitHeaders;
+  const tabSpecificHeaders = tab !== "hits" ? aggregateHitHeader : hitHeaders;
   const headers = [
-    ...arrayHeaderFixer,
+    ...tabSpecificHeaders,
     {
       Accessor: "passengerType",
       Xl8: true,
@@ -213,8 +214,8 @@ const FlightPax = props => {
       Xl8: true,
       Header: ["fp018", "DOB"],
       Cell: ({ row }) => <div>{row.original.dobAge}</div>,
-      disableGroupBy: true,
-      Aggregated: () => ``
+      Aggregated: () => ``,
+      disableGroupBy: true
     },
     {
       Accessor: "docNumber",

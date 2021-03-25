@@ -3,25 +3,33 @@
 // Please see license.txt for details.
 
 import React from "react";
-import { Form, Button } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import { asArray, hasData, alt } from "../../../utils/utils";
+import Xl8 from "../../xl8/Xl8";
+import FilterForm from "../../filterForm2/FilterForm";
+import LabelledInput from "../../labelledInput/LabelledInput";
 
 const SearchSeat = ({ searchCallback, reservedSeats, resetFilterForm }, ref) => {
   const areEqual = (str1, str2) => {
     return alt(str1).toUpperCase() === alt(str2).toUpperCase();
   };
 
-  const reset = () => {
-    ref.current["firstName"].value = "";
-    ref.current["lastName"].value = "";
-    ref.current["middleName"].value = "";
-    resetFilterForm();
+  const cb = () => {};
+
+  // this does nothing but it satisfies FilterForm's service fxn requirement.
+  // we don't need a service since we are just filtering the data the parent provides us.
+  const noop = () => {
+    return new Promise((resolve, err) => {
+      return resolve();
+    });
   };
-  const search = () => {
+
+  // Filter the existing data and call the parent callback directly
+  const search = ev => {
     const searchFields = [];
-    if (hasData(ref.current["firstName"].value)) searchFields.push("firstName");
-    if (hasData(ref.current["lastName"].value)) searchFields.push("lastName");
-    if (hasData(ref.current["middleName"].value)) searchFields.push("middleName");
+    if (hasData(ev["firstName"])) searchFields.push("firstName");
+    if (hasData(ev["lastName"])) searchFields.push("lastName");
+    if (hasData(ev["middleName"])) searchFields.push("middleName");
 
     //If we don't have any fields to compare, return an empty array.
     if (searchFields.length === 0) {
@@ -31,7 +39,7 @@ const SearchSeat = ({ searchCallback, reservedSeats, resetFilterForm }, ref) => 
         let match = true;
 
         searchFields.forEach(searchField => {
-          if (!areEqual(currentSeat[searchField], ref.current[searchField].value)) {
+          if (!areEqual(currentSeat[searchField], ev[searchField])) {
             match = false;
             return;
           }
@@ -44,45 +52,41 @@ const SearchSeat = ({ searchCallback, reservedSeats, resetFilterForm }, ref) => 
         return result;
       }, []);
 
-      searchCallback(searchResult);
+      return searchCallback(searchResult);
     }
   };
 
   return (
-    <div className="filterform-container">
-      <Form>
-        <Form.Group>
-          <Form.Control
-            type="text"
-            ref={input => (ref.current["firstName"] = input)}
-            placeholder="First name"
-            className="search-seats-input"
+    <>
+      <Col className="notopmargin">
+        <FilterForm service={noop} paramCallback={search} callback={cb}>
+          <LabelledInput
+            labelText={<Xl8 xid="fl003">First Name</Xl8>}
+            name="firstName"
+            datafield
+            inputtype="text"
+            callback={cb}
+            alt="First Name"
           />
-        </Form.Group>
-        <Form.Group>
-          <Form.Control
-            type="text"
-            ref={input => (ref.current["middleName"] = input)}
-            placeholder="Middle name"
-            className="search-seats-input"
+          <LabelledInput
+            labelText={<Xl8 xid="fl004">Middle Name</Xl8>}
+            name="middleName"
+            datafield
+            inputtype="text"
+            callback={cb}
+            alt="Middle Name"
           />
-        </Form.Group>
-        <Form.Group>
-          <Form.Control
-            type="text"
-            ref={input => (ref.current["lastName"] = input)}
-            placeholder="Last name"
-            className="search-seats-input"
+          <LabelledInput
+            datafield
+            name="lastName"
+            labelText={<Xl8 xid="fl005">Last Name</Xl8>}
+            inputtype="text"
+            callback={cb}
+            alt="Last Name"
           />
-        </Form.Group>
-        <Button variant="dark m-1 text-white outline-dark-outline" onClick={reset}>
-          Reset
-        </Button>
-        <Button variant="primary m-1" onClick={search}>
-          Search
-        </Button>
-      </Form>
-    </div>
+        </FilterForm>
+      </Col>
+    </>
   );
 };
 
