@@ -26,6 +26,7 @@ const LookoutModal = props => {
         { value: "REFERRED", label: "REFERRED" },
         { value: "DIDNOTBOARD", label: "DIDNOTBOARD" },
         { value: "INACTIVE", label: "INACTIVE" },
+        { value: "MISSED", label: "MISSED" },
         { value: "UNCATEGORIZED", label: "UNCATEGORIZED" }
     ];
 

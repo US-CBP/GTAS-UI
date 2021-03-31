@@ -387,7 +387,7 @@ export const poe = {
     getAllTiles: (params) => get(POETILES, BASEHEADER, undefined, params)
   },
   put : {
-    updatePOEstatus: body => {
+    updatePOEStatus: body => {
       return putNoId(POETILES, BASEHEADER, stringify(body));
    },
     updateLane: body =>{

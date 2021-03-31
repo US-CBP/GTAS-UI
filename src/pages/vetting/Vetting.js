@@ -150,7 +150,7 @@ const Vetting = props => {
                   <Xl8 xid="vet030">Please click confirm to promote this passenger to Lookout:</Xl8>
                   <br/>
                   <br/>
-                    {row.original.lookoutStatus != "INACTIVE"  ? (
+                    {row.original.lookoutStatus !== "INACTIVE"  ? (
                         <Xl8 xid="vet031" >Already Promoted</Xl8>
                     ) : (
                         <Xl8 xid="vet032">Promote</Xl8>
@@ -164,7 +164,7 @@ const Vetting = props => {
                       onClick={confirm(() => promoteToLookout(row.original.paxId, "ACTIVE")
                       )}
                   >
-                    {row.original.lookoutStatus != "INACTIVE" ? (
+                    {row.original.lookoutStatus !== "INACTIVE" ? (
                         <Xl8 xid="vet033" >Already Promoted</Xl8>
                     ) : (
                         <Xl8 xid="vet034">Promote To Lookout</Xl8>
