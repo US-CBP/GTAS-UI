@@ -245,7 +245,7 @@ const Vetting = props => {
 
   const getInitialState = () => {
     setShowDateTimePicker(false);
-    //setFilterFormKey(filterFormKey + 1); Initial state no longer calls, we call only once hit cats/note types are returned.
+    setFilterFormKey(filterFormKey + 1);
     return initialParamState;
   };
 
