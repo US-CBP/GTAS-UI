@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import { NO_URI } from "./constants";
+import { NO_URI, UNDEFINEDCHAR } from "./constants";
 // import i18n from "../i18n";
 
 // APB - shd add handling for other naming patterns like underscores and dashes, and maybe
@@ -202,8 +202,8 @@ export const localeMonthYear = val => {
   return new Date(val).toLocaleString(locale, options);
 };
 
-// sortable date string - not for display as it is not locale specific
-export const sortableDate = val => {
+// sortable date string - not for display
+export const sortableDate = (val, delim = UNDEFINEDCHAR) => {
   if (isNaN(Date.parse(val))) return "";
 
   const padDigit = num => {
@@ -212,11 +212,39 @@ export const sortableDate = val => {
 
   return (
     val.getFullYear() +
+    delim +
     padDigit(val.getMonth() + 1) +
+    delim +
     padDigit(val.getDate()) +
+    delim +
     padDigit(val.getHours()) +
+    delim +
     padDigit(val.getMinutes()) +
+    delim +
     padDigit(val.getSeconds())
+  );
+};
+
+/**
+ * Sortable date with only the year, month, day parts. The default delim value prevents the output string from inadvertently matching
+ * any user input. Not for display.
+ *
+ * @param {*} val
+ * @param {*} delim = string delimiter, defaults to the unicode char "Undefined".
+ */
+export const sortableDob = (val, delim = UNDEFINEDCHAR) => {
+  if (isNaN(Date.parse(val))) return "";
+
+  const padDigit = num => {
+    return num.toString().padStart(2, "0");
+  };
+
+  return (
+    val.getFullYear() +
+    delim +
+    padDigit(val.getMonth() + 1) +
+    delim +
+    padDigit(val.getDate())
   );
 };
 

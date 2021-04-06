@@ -66,9 +66,13 @@ const SeatInfo = props => {
           />
         </Col>
       </Row>
-      <Link to={`/gtas/paxDetail/${selectedSeatInfo.flightId}/${selectedSeatInfo.paxId}`}>
-        Back to Passenger Details
-      </Link>
+      <Col>
+        <Link
+          to={`/gtas/paxDetail/${selectedSeatInfo.flightId}/${selectedSeatInfo.paxId}`}
+        >
+          Back to Passenger Details
+        </Link>
+      </Col>
     </Container>
   ) : (
     ""

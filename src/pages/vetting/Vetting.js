@@ -205,7 +205,7 @@ const Vetting = props => {
       }
     },
     {
-      Accessor: "paxName",
+      Accessor: "lastName",
       Xl8: true,
       Header: ["wl021", "Biographic Information"],
       Cell: ({ row }) => <BiographicInfo data={getBiographicData(row.original)} />

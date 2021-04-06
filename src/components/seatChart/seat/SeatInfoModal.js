@@ -11,6 +11,7 @@ import Modal, {
   ModalHeader,
   ModalTitle
 } from "../../modal/Modal";
+import { Col } from "react-bootstrap";
 
 const SeatInfoModal = props => {
   const info = props.seatInfo || {};
@@ -21,16 +22,18 @@ const SeatInfoModal = props => {
       </ModalHeader>
       <ModalBody>
         <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+          <li>Last Name: {info.lastName}</li>
           <li>First Name: {info.firstName}</li>
-          <li> Last Name: {info.lastName}</li>
-          <li> Middle Name: {info.middleName}</li>
+          <li>Middle Name: {info.middleName}</li>
         </ul>
       </ModalBody>
 
       <ModalFooter>
-        <Link to={`/gtas/paxDetail/${info.flightId}/${info.paxId}`}>
-          Show passenger details
-        </Link>
+        <Col>
+          <Link to={`/gtas/paxDetail/${info.flightId}/${info.paxId}`}>
+            Show passenger details
+          </Link>
+        </Col>
       </ModalFooter>
     </Modal>
   );
