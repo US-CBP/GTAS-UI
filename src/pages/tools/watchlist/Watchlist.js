@@ -13,7 +13,12 @@ import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
 import { LookupContext } from "../../../context/data/LookupContext";
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
-import { hasData, watchlistDateFormat, timezoneFreeDate } from "../../../utils/utils";
+import {
+  hasData,
+  watchlistDateFormat,
+  timezoneFreeDate,
+  sortableDate
+} from "../../../utils/utils";
 import { LK } from "../../../utils/constants";
 import "./constants.js";
 
@@ -248,6 +253,7 @@ const Watchlist = props => {
               firstName: firstName,
               lastName: lastName,
               dob: timezoneFreeDate(dob),
+              sortableDOB: sortableDate(new Date(dob)),
               categoryId: categoryId,
               category: category
             };
@@ -299,7 +305,12 @@ const Watchlist = props => {
     },
     { Accessor: "firstName", Xl8: true, Header: ["wl015", "First Name"] },
     { Accessor: "lastName", Xl8: true, Header: ["wl016", "Last Name"] },
-    { Accessor: "dob", Xl8: true, Header: ["wl016", "DOB"] },
+    {
+      Accessor: "sortableDOB",
+      Xl8: true,
+      Header: ["wl016", "DOB"],
+      Cell: ({ row }) => row.original.dob
+    },
     { Accessor: "category", Xl8: true, Header: ["wl017", "Category"] },
     {
       Accessor: "delete",
