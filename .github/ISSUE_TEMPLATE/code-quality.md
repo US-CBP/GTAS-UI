@@ -2,7 +2,7 @@
 name: Code Quality
 about: Used to track maintenance issues, tech debt
 title: ''
-labels: ''
+labels: Housekeeping
 assignees: ''
 
 ---
