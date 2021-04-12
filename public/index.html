@@ -26,6 +26,17 @@
     -->
     <title>GTAS</title>
     <script src="%PUBLIC_URL%/env-config.js"></script>
+    <script>
+      /**
+       * React-dom v16 has a dependency that uses a soon-to-be-deprecated object, SharedArrayBuffer, which has a security
+       * vulnerability. Chrome flags its use with a deprecation warning.
+       * See: https://github.com/facebook/create-react-app/issues/10474 and https://github.com/facebook/react/issues/20829
+       *
+       * Facebook has removed the dep (scheduler.js) that uses it in v17.0.2. Until we upgrade react and react-dom
+       * to v17, we're doing a global overwrite the offending method with it's safer counterpart, ArrayBuffer.
+       * **/
+      SharedArrayBuffer = ArrayBuffer;
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
