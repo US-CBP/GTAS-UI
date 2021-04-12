@@ -15,7 +15,7 @@ import Main from "../../../components/main/Main";
 import { addMinutes, asArray, localeDate } from "../../../utils/utils";
 
 const AuditLog = ({ name }) => {
-  const cb = function(result) {};
+  const cb = () => {};
   const [data, setData] = useState();
   const [refreshKey, setRefreshKey] = useState(1);
   const [filterKey, setFilterKey] = useState(0);
@@ -95,7 +95,7 @@ const AuditLog = ({ name }) => {
       Accessor: "timestamp",
       Xl8: true,
       Header: ["al009", "Timestamp"],
-      Cell: ({ row }) => localeDate(row.original.timestampInMilli)
+      Cell: ({ row }) => localeDate(row.original.timestamp)
     }
   ];
 
