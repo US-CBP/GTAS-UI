@@ -161,9 +161,9 @@ const SeatChart = ({ location }) => {
         <div className="seat-chart">
           <div className="seat-chart-row-container">
             {asArray(rowsWithReservedSeat).map((row, index) => (
-              <span className={`seat-chart-row ${getClassNameByRow(index)}`} key={index}>
+              <Row className={`seat-chart-row ${getClassNameByRow(index)}`} key={index}>
                 {getRow(row)}
-              </span>
+              </Row>
             ))}
           </div>
         </div>
