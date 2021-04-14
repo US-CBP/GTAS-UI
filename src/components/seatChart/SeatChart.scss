@@ -7,9 +7,15 @@
   overflow: scroll;
   border-bottom: 1px solid rgb(185, 183, 183);
 }
-.seat-chart .row {
+
+.seat-chart-row {
   flex-wrap: nowrap;
-  margin: 10px 0px;
+  margin: 5px 0px;
+  display: inline-flex;
+}
+
+.seat-chart-row-container {
+  text-align: center;
 }
 
 .right-of-middle-rows {
