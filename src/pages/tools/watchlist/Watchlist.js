@@ -18,7 +18,7 @@ import {
   hasData,
   watchlistDateFormat,
   timezoneFreeDate,
-  sortableDate
+  sortableDob
 } from "../../../utils/utils";
 import { LK } from "../../../utils/constants";
 import "./constants.js";
@@ -247,16 +247,18 @@ const Watchlist = props => {
           const category = (wlcatData.find(item => item.id === +categoryId) || {}).label;
 
           //TODO: consolidate pax/doc fetches??
-          if (tab === TAB.PAX)
+          if (tab === TAB.PAX) {
+            const displayDobDate = timezoneFreeDate(dob);
             return {
               id: item.id,
               firstName: firstName,
               lastName: lastName,
-              dob: timezoneFreeDate(dob),
-              sortableDOB: sortableDate(new Date(dob)),
+              dob: displayDobDate,
+              sortableDOB: `${sortableDob(new Date(dob))} ${displayDobDate}`,
               categoryId: categoryId,
               category: category
             };
+          }
 
           return {
             id: item.id,
