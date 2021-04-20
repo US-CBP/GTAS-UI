@@ -83,7 +83,8 @@ const Header = () => {
     return currentPath.pathname.startsWith(tabName) ? "active-tab" : "";
   };
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = e => {
+    e.preventDefault();
     const searchParam = searchInputRef.current.value;
     if (hasData(searchParam)) {
       navigate(`/gtas/search/${searchParam}`);
@@ -167,11 +168,11 @@ const Header = () => {
             </RoleAuthenticator>
           </Nav>
           <Nav className="ml-auto">
-            <Form inline className="header-search">
+            <Form inline className="header-search" onSubmit={handleSearchSubmit}>
               <InputGroup>
                 <FormControl type="text" ref={searchInputRef} className="search-150" />
                 <InputGroup.Append>
-                  <Button variant="light" onClick={handleSearchSubmit}>
+                  <Button variant="light" type="submit">
                     <i className="fa fa-search"></i>
                   </Button>
                 </InputGroup.Append>

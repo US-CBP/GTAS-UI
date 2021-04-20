@@ -207,7 +207,7 @@ export const attachment = {
     },
     download: (attachmentId, fileName) => {
       const path = DOWNLOADATTACHMENT + `?attachmentId=${attachmentId}`;
-      get(path, BASEFILEHEADER, true).then(res =>{
+      get(path, BASEFILEHEADER).then(res =>{
         downloadWrap(res, fileName);
       });
       //window.open(path, "_self");

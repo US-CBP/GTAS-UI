@@ -159,11 +159,13 @@ const SeatChart = ({ location }) => {
       <Main>
         {showPending && <Loading></Loading>}
         <div className="seat-chart">
-          {asArray(rowsWithReservedSeat).map((row, index) => (
-            <Row className={getClassNameByRow(index)} key={index}>
-              {getRow(row)}
-            </Row>
-          ))}
+          <div className="seat-chart-row-container">
+            {asArray(rowsWithReservedSeat).map((row, index) => (
+              <Row className={`seat-chart-row ${getClassNameByRow(index)}`} key={index}>
+                {getRow(row)}
+              </Row>
+            ))}
+          </div>
         </div>
         <CardDeck className="seat-info-display">
           <Card>

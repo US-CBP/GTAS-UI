@@ -14,7 +14,12 @@ import Confirm from "../../../components/confirmationModal/Confirm";
 import { Fab, Action } from "react-tiny-fab";
 import { LookupContext } from "../../../context/data/LookupContext";
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
-import { hasData, watchlistDateFormat, timezoneFreeDate } from "../../../utils/utils";
+import {
+  hasData,
+  watchlistDateFormat,
+  timezoneFreeDate,
+  sortableDob
+} from "../../../utils/utils";
 import { LK } from "../../../utils/constants";
 import "./constants.js";
 
@@ -242,15 +247,18 @@ const Watchlist = props => {
           const category = (wlcatData.find(item => item.id === +categoryId) || {}).label;
 
           //TODO: consolidate pax/doc fetches??
-          if (tab === TAB.PAX)
+          if (tab === TAB.PAX) {
+            const displayDobDate = timezoneFreeDate(dob);
             return {
               id: item.id,
               firstName: firstName,
               lastName: lastName,
-              dob: timezoneFreeDate(dob),
+              dob: displayDobDate,
+              sortableDOB: `${sortableDob(new Date(dob))} ${displayDobDate}`,
               categoryId: categoryId,
               category: category
             };
+          }
 
           return {
             id: item.id,
@@ -302,7 +310,12 @@ const Watchlist = props => {
     },
     { Accessor: "firstName", Xl8: true, Header: ["wl015", "First Name"] },
     { Accessor: "lastName", Xl8: true, Header: ["wl016", "Last Name"] },
-    { Accessor: "dob", Xl8: true, Header: ["wl016", "DOB"] },
+    {
+      Accessor: "sortableDOB",
+      Xl8: true,
+      Header: ["wl016", "DOB"],
+      Cell: ({ row }) => row.original.dob
+    },
     { Accessor: "category", Xl8: true, Header: ["wl017", "Category"] },
     {
       Accessor: "delete",
