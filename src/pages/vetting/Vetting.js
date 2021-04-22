@@ -143,6 +143,9 @@ const Vetting = props => {
                 </Button>
               )}
             </Confirm>
+            {row.original.lookoutStatus !== "INACTIVE"  ? (
+                <></> //There doesn't need to be an indicator for an Already Promoted item, as it's self evident from the table.
+            ) : (
             <Confirm
                 header={<Xl8 xid="vet029">Promote To Lookout</Xl8>}
                 message={
@@ -153,7 +156,7 @@ const Vetting = props => {
                     {row.original.lookoutStatus !== "INACTIVE"  ? (
                         <Xl8 xid="vet031" >Already Promoted</Xl8>
                     ) : (
-                        <Xl8 xid="vet032">Promote</Xl8>
+                        <Xl8 xid="vet032">Promote To Lookout</Xl8>
                     )}
                 </span>
                 }
@@ -171,7 +174,7 @@ const Vetting = props => {
                     )}
                   </Button>
               )}
-            </Confirm>
+            </Confirm> )}
           </RoleAuthenticator>
         </DropdownButton>
       )
@@ -297,8 +300,8 @@ const Vetting = props => {
       paxId : paxId,
       poeStatus : status
     };
-    poe.put.updatePOEstatus(req).then(resp => {
-      console.log("success");
+    poe.put.updatePOEStatus(req).then(resp => {
+      setFilterFormKey(filterFormKey+1);//trigger update
     });
   }
 

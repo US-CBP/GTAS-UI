@@ -10,10 +10,7 @@ import Xl8 from "../../components/xl8/Xl8";
 
 const POE = props => {
   return (
-    <Main className="full-cards">
-      <Title title={<Xl8 xid="poe001">POE</Xl8>}></Title>
       <Kanban />
-    </Main>
   );
 };
 

@@ -14,6 +14,9 @@ import {poe} from "../../services/serviceWrapper";
 import SidenavContainer from "../sidenavContainer/SidenavContainer";
 import FilterForm from "../filterForm2/FilterForm";
 import LabelledInput from "../labelledInput/LabelledInput";
+import Main from "../../components/main/Main";
+import Title from "../title/Title";
+import Loading from "../../components/loading/Loading";
 
 const Kanban = props => {
   const randdate = (length = 1) => new Date(Date.now() + randomIntOfLength(length));
@@ -25,6 +28,7 @@ const Kanban = props => {
   const [poeTiles, setPoeTiles] = useState([]);
   const [showDateTimePicker, setShowDateTimePicker] = useState(false);
   const [filterFormKey, setFilterFormKey] = useState(0);
+  const [showPending, setShowPending] = useState(true);
   const cb = () => {};
 
   const toggleDateTimePicker = () => {
@@ -39,11 +43,13 @@ const Kanban = props => {
 
   const getInitialState = () => {
     setShowDateTimePicker(false);
+    setShowPending(true);
     setFilterFormKey(filterFormKey + 1);
     return initialParamState;
   };
 
   const setDataWrapper = tileRes => {
+    setShowPending(true);
     const tiles = [];
     const lanes = {};
 
@@ -59,6 +65,7 @@ const Kanban = props => {
         setPoeLanes(lanes);
         setColumns(lanes);
         setPoeTiles(tiles);
+        setShowPending(false);
       })
   };
 
@@ -200,7 +207,7 @@ const Kanban = props => {
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
-      poe.put.updatePOEStatus(convertTileToData(removed, destColumn.status)).then(res => {console.log("updateSuccess")});
+      poe.put.updatePOEStatus(convertTileToData(removed, destColumn.status)).then(res => {/*console.log("updateSuccess")*/});
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -319,7 +326,12 @@ const Kanban = props => {
           </FilterForm>
         </Col>
       </SidenavContainer>
-    <div className="scrollable">
+        <Main>
+          <Title
+              title={<Xl8 xid="poe0007">Port Of Entry Lookout</Xl8>}
+              uri={props.uri}
+          />
+          {showPending && <Loading></Loading>}
       <CardDeck className="page-deck justify-content-center">
         <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
           {Object.entries(columns).map(([columnId, column], index) => {
@@ -399,7 +411,7 @@ const Kanban = props => {
           })}
         </DragDropContext>
       </CardDeck>
-    </div></>
+        </Main></>
   );
 };
 

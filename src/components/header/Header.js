@@ -133,7 +133,7 @@ const Header = () => {
             <Nav.Link
               as={Link}
               to="poe"
-              className={`future ${getActiveClass(htab.POE)} optional`}
+              className={`${getActiveClass(htab.POE)}`}
               onClick={() => clickTab(htab.POE)}
             >
               <Xl8 xid="head007">POE</Xl8>
