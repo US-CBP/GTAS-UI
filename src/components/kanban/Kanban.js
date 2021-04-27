@@ -19,7 +19,6 @@ import Title from "../title/Title";
 import Loading from "../../components/loading/Loading";
 
 const Kanban = props => {
-  const randdate = (length = 1) => new Date(Date.now() + randomIntOfLength(length));
   let startDate = new Date();
   let endDate = new Date();
   endDate.setDate(endDate.getDate() + 4);
@@ -53,7 +52,7 @@ const Kanban = props => {
     const tiles = [];
     const lanes = {};
 
-      asArray(tileRes.slice(0,100)).map(tile =>{ //TODO: Remove splice
+      asArray(tileRes).map(tile =>{
         tiles.push(createPOETile(tile)) //creates tile, adds to tile array
       })
       //THEN fetch and create all lanes, feeding tiles to each lane to calc if they belong base on poeStatus
@@ -124,35 +123,6 @@ const Kanban = props => {
     };
     return req;
   };
-
-  /*useEffect(() => {
-    const tiles = [];
-    const lanes = {};
-    // TODO: Do the date part here differently
-    let etaEnd = new Date();
-    etaEnd.setHours(etaEnd.getHours() + 48);
-    let etaStart = new Date();
-    etaStart.setHours(etaStart.getHours() - 48);
-    let params = { etaStart: etaStart, etaEnd: etaEnd};
-    params = "?requestDto=" + encodeURIComponent(JSON.stringify(params))
-
-    //Fetch and create all poe lanes
-    poe.get.getAllTiles(params).then(tileRes => {
-      asArray(tileRes.slice(0,100)).map(tile =>{ //TODO: Remove splice
-        tiles.push(createPOETile(tile)) //creates tile, adds to tile array
-      })
-      //THEN fetch and create all lanes, feeding tiles to each lane to calc if they belong base on poeStatus
-      poe.get.getAllLanes().then(laneRes => {
-        asArray(laneRes).map(lane => {
-          lanes[lane.ord] = createPOELane(lane, tiles) //creates lane, adds to lane object
-        })
-        //After lanes AND tiles have both been created , set the constants
-        setPoeLanes(lanes);
-        setColumns(lanes);
-        setPoeTiles(tiles);
-      })
-    });
-  },[] );*/
 
   const createPOETile = tileData =>{
     return {
