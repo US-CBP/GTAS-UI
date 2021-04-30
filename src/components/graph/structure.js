@@ -16,6 +16,12 @@ export const palette = {
   phone: "#D74B00"
 };
 
+/**
+ * Basic node config - sets the retrieved fields, color, icons for each node type.
+ * @param {*} vaquita
+ * @param {*} SvgType
+ * @param {*} params
+ */
 export const provider = (vaquita, SvgType, params) => {
   return {
     Address: {
@@ -283,27 +289,7 @@ const relationsSecondary = [
   }
 ];
 
-export const thisPaxFlight = pax => {
-  return {
-    label: "Passenger",
-    rel: [
-      {
-        label: "flew_on",
-        target: {
-          label: "Flight",
-          value: [
-            {
-              flight_id_tag: pax.flightIdTag,
-              full_flight_number: pax.fullFlightNumber
-            }
-          ]
-        }
-      }
-    ] // rel
-  };
-};
-
-export const thisPaxFlight2 = (pax, target) => {
+export const thisPaxFlight = (pax, target) => {
   return {
     label: "Flight",
     horiz: 3,
@@ -407,22 +393,22 @@ export const saves = pax => {
     }, // rel
 
     emailall: {
-      ...thisPaxFlight2(pax, relationsSecondary[1])
+      ...thisPaxFlight(pax, relationsSecondary[1])
     },
     addressall: {
-      ...thisPaxFlight2(pax, relationsSecondary[3])
+      ...thisPaxFlight(pax, relationsSecondary[3])
     },
     documentall: {
-      ...thisPaxFlight2(pax, relationsSecondary[0])
+      ...thisPaxFlight(pax, relationsSecondary[0])
     },
     creditcardall: {
-      ...thisPaxFlight2(pax, relationsSecondary[2])
+      ...thisPaxFlight(pax, relationsSecondary[2])
     },
     phoneall: {
-      ...thisPaxFlight2(pax, relationsSecondary[4])
+      ...thisPaxFlight(pax, relationsSecondary[4])
     },
     hitall: {
-      ...thisPaxFlight2(pax, relationsSecondary[5])
+      ...thisPaxFlight(pax, relationsSecondary[5])
     }
   };
 }; //saves

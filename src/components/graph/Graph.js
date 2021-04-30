@@ -69,7 +69,12 @@ const Graph = props => {
 
   vaquita.graph.setZoom(0.5, 2);
 
-  vaquita.provider.node.Provider = provider(vaquita, SvgType, pax1);
+  /**  set the provider to filter on both pax idTag and flight idTag. This prevents vaquita from querying for counts of all entities
+   */
+  vaquita.provider.node.Provider = provider(vaquita, SvgType, {
+    idTag: pax1.idTag,
+    flightIdTag: pax1.flightIdTag
+  });
 
   vaquita.provider.link.Provider = {
     getColor: function(link) {
@@ -77,9 +82,9 @@ const Graph = props => {
     }
   };
 
-  vaquita.result.onTotalResultCount(function(count) {
-    // document.getElementById("result-total-count").innerHTML = "(" + count + ")";
-  });
+  // vaquita.result.onTotalResultCount(function(count) {
+  //   document.getElementById("result-total-count").innerHTML = "(" + count + ")";
+  // });
 
   const setCypherUrl = () => {
     cypher.get().then(function(res) {
@@ -123,6 +128,11 @@ const Graph = props => {
     if (id.endsWith("all"))
       vaquita.provider.node.Provider = provider(vaquita, SvgType, {
         flightIdTag: pax1.flightIdTag
+      });
+    else
+      vaquita.provider.node.Provider = provider(vaquita, SvgType, {
+        flightIdTag: pax1.flightIdTag,
+        idTag: pax1.idTag
       });
 
     // Update Graph title:
@@ -343,16 +353,13 @@ const Graph = props => {
               </div>
             </nav>
             <div id="popoto-graph" className="ppt-div-graph"></div>
+            {/* <div id="popoto-results" class="ppt-container-results"></div> */}
           </div>
 
-          {/* <div id="popoto-query" className="ppt-container-query"></div>
-
-                <div className="ppt-section-header">
-                  RESULTS
-                  <span id="result-total-count" className="ppt-count-results"></span>
-                </div>
-
-                <div id="popoto-results" className="ppt-container-results"></div> */}
+          {/* <div className="ppt-section-header">
+            RESULTS
+            <span id="result-total-count" className="ppt-count-results"></span>
+          </div> */}
         </section>
       </div>
     </div>
