@@ -69,7 +69,8 @@ export const provider = (vaquita, SvgType, params) => {
       constraintAttribute: "id_tag",
       displayAttribute: "last_name",
       getPredefinedConstraints: function() {
-        return [`passenger.id_tag  = '${params.idTag}'`];
+        if (params.idTag) return [`passenger.id_tag  = '${params.idTag}'`];
+        else return [];
       },
       getDisplayType: function(node) {
         return SvgType;
@@ -267,10 +268,7 @@ const relationsSecondary = [
     label: "used_email",
     target: { label: "Email" }
   },
-  {
-    label: "used_creditcard",
-    target: { label: "CreditCard" }
-  },
+  { label: "used_creditcard", target: { label: "CreditCard" } },
   {
     label: "lived_at",
     target: { label: "Address" }
@@ -305,7 +303,40 @@ export const thisPaxFlight = pax => {
   };
 };
 
+export const thisPaxFlight2 = (pax, target) => {
+  return {
+    label: "Flight",
+    horiz: 3,
+    value: [
+      {
+        flight_id_tag: pax.flightIdTag,
+        full_flight_number: pax.fullFlightNumber
+      }
+    ],
+    rel: [
+      {
+        label: "flew_on",
+        target: {
+          label: "Passenger",
+          rel: [{ ...target }]
+        }
+      }
+    ]
+  };
+};
+
 export const saves = pax => {
+  const paxDefaults = {
+    label: "Passenger",
+    horiz: 2,
+    value: [
+      {
+        id_tag: pax.idTag,
+        last_name: pax.lastName
+      }
+    ]
+  };
+
   return {
     pax: {
       // this pax
@@ -319,7 +350,7 @@ export const saves = pax => {
       ],
       rel: [...paxRelations(pax.flightIdTag, pax.fullFlightNumber), ...relationsSecondary]
     },
-    flight: {
+    flightall: {
       // this flight, all pax, ports
       label: "Flight",
       horiz: 1,
@@ -351,137 +382,47 @@ export const saves = pax => {
       ]
     },
     email: {
-      label: "Passenger",
-      horiz: 2,
-      value: [
-        {
-          id_tag: pax.idTag,
-          last_name: pax.lastName
-        }
-      ],
+      ...paxDefaults,
       rel: [relationsSecondary[1]]
     },
     address: {
-      label: "Passenger",
-      horiz: 2,
-      value: [
-        {
-          id_tag: pax.idTag,
-          last_name: pax.lastName
-        }
-      ],
+      ...paxDefaults,
       rel: [relationsSecondary[3]]
     },
     document: {
-      label: "Passenger",
-      horiz: 2,
-      value: [
-        {
-          id_tag: pax.idTag,
-          last_name: pax.lastName
-        }
-      ],
+      ...paxDefaults,
       rel: [relationsSecondary[0]]
     },
     creditcard: {
-      label: "Passenger",
-      horiz: 2,
-      value: [
-        {
-          id_tag: pax.idTag,
-          last_name: pax.lastName
-        }
-      ],
+      ...paxDefaults,
       rel: [relationsSecondary[2]]
     },
     phone: {
-      label: "Passenger",
-      horiz: 2,
-      value: [
-        {
-          id_tag: pax.idTag,
-          last_name: pax.lastName
-        }
-      ],
+      ...paxDefaults,
       rel: [relationsSecondary[4]]
     },
     hit: {
-      label: "Passenger",
-      horiz: 2,
-      value: [
-        {
-          id_tag: pax.idTag,
-          last_name: pax.lastName
-        }
-      ],
+      ...paxDefaults,
       rel: [relationsSecondary[5]]
     }, // rel
 
     emailall: {
-      //all emails this flight
-      label: "Email",
-      horiz: 3,
-      rel: [
-        {
-          label: "used_email",
-          target: thisPaxFlight(pax)
-        }
-      ] // rel
+      ...thisPaxFlight2(pax, relationsSecondary[1])
     },
     addressall: {
-      //all addys this flight
-      label: "Address",
-      horiz: 3,
-      rel: [
-        {
-          label: "lived_at",
-          target: thisPaxFlight(pax)
-        }
-      ] // rel
+      ...thisPaxFlight2(pax, relationsSecondary[3])
     },
     documentall: {
-      //all docs this flight
-      label: "Document",
-      horiz: 3,
-      rel: [
-        {
-          label: "used_document",
-          target: thisPaxFlight(pax)
-        }
-      ] // rel
+      ...thisPaxFlight2(pax, relationsSecondary[0])
     },
     creditcardall: {
-      //all ccards this flight
-      label: "CreditCard",
-      horiz: 3,
-      rel: [
-        {
-          label: "used_creditcard",
-          target: thisPaxFlight(pax)
-        }
-      ] // rel
+      ...thisPaxFlight2(pax, relationsSecondary[2])
     },
     phoneall: {
-      //all phones this flight
-      label: "Phone",
-      horiz: 3,
-      rel: [
-        {
-          label: "used_phone",
-          target: thisPaxFlight(pax)
-        }
-      ] // rel
+      ...thisPaxFlight2(pax, relationsSecondary[4])
     },
     hitall: {
-      // all pax with hits this flight
-      label: "Hit",
-      horiz: 3,
-      rel: [
-        {
-          label: "flagged",
-          target: thisPaxFlight(pax)
-        }
-      ] // rel
+      ...thisPaxFlight2(pax, relationsSecondary[5])
     }
   };
 }; //saves

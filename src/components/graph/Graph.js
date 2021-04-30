@@ -104,23 +104,27 @@ const Graph = props => {
   const activateGraph = () => {
     const template = save.pax;
 
-    let vaq = vaquita;
-    vaq.graph.HORIZONTAL_NODES = template.horiz || 1;
+    vaquita.graph.HORIZONTAL_NODES = template.horiz || 1;
 
     // call start only when there's no rootnode
     //TODO vaquita - expose a status field on graph?
     if (vaquita.dataModel.getRootNode() === undefined) {
-      vaq.start(template);
+      vaquita.start(template);
       setIsReloaded(false);
     }
     // refresh graph arena if the page reloads with new pax data
     else if (isReloaded) {
-      vaq.refresh(template);
+      vaquita.refresh(template);
       setIsReloaded(false);
     }
   };
 
   const onClickSavedGraph = id => {
+    if (id.endsWith("all"))
+      vaquita.provider.node.Provider = provider(vaquita, SvgType, {
+        flightIdTag: pax1.flightIdTag
+      });
+
     // Update Graph title:
     if (!id) {
       d3.select("#save-header").text(
@@ -131,11 +135,9 @@ const Graph = props => {
       );
     }
 
-    let vaq = vaquita;
-
-    vaq.graph.mainLabel = save[id];
-    vaq.graph.HORIZONTAL_NODES = save[id].horiz || 1;
-    vaq.tools.reset();
+    vaquita.graph.mainLabel = save[id];
+    vaquita.graph.HORIZONTAL_NODES = save[id].horiz || 1;
+    vaquita.tools.reset();
   };
 
   return (
@@ -245,7 +247,7 @@ const Graph = props => {
                 </span>
                 <table className="ppt-saved-ul">
                   <tbody>
-                    <tr id="Flight" onClick={() => onClickSavedGraph("flight")}>
+                    <tr id="Flight" onClick={() => onClickSavedGraph("flightall")}>
                       <td>
                         <i className="fa fa-plane pptflight"></i>
                       </td>
