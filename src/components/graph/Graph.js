@@ -19,7 +19,8 @@ const Graph = props => {
     dob: props.paxData?.dob,
     updatedAt: props.paxData?.updatedAt,
     paxId: props.paxData?.paxId,
-    idTag: props.paxData?.paxIdTag,
+    // idTag: props.paxData?.paxIdTag,
+    idTag: "8d5635b143ed8f1f53a1013b2c14843210a08b64",
     firstName: props.paxData?.firstName,
     middleName: props.paxData?.middleName,
     lastName: props.paxData?.lastName,
@@ -32,7 +33,8 @@ const Graph = props => {
     nationality: props.paxData?.nationality,
     passengerType: props.paxData?.passengerType,
     seat: props.paxData?.seat,
-    flightIdTag: props.paxData.flightIdTag,
+    // flightIdTag: props.paxData.flightIdTag,
+    flightIdTag: "07103978cbf7292d1ba23482875c32acdea3ca02",
     flightId: props.paxData?.flightId,
     flightNumber: props.paxData?.flightNumber,
     fullFlightNumber: `${props.paxData?.carrier}${props.paxData?.flightNumber}`.toUpperCase(),
@@ -52,8 +54,8 @@ const Graph = props => {
   };
   const componentNodeRef = useRef(null);
   const [isReloaded, setIsReloaded] = useState(true);
-  const [vaquita, setVaquita] = useState(vaqu);
-  const [save, setSave] = useState(saves(pax1));
+  const [vaquita] = useState(vaqu);
+  const [save] = useState(saves(pax1));
 
   const SvgType = 2;
   vaquita.tools.TOGGLE_TAXONOMY = false;
@@ -67,7 +69,7 @@ const Graph = props => {
 
   vaquita.graph.setZoom(0.5, 2);
 
-  vaquita.provider.node.Provider = provider(vaquita, SvgType);
+  vaquita.provider.node.Provider = provider(vaquita, SvgType, pax1);
 
   vaquita.provider.link.Provider = {
     getColor: function(link) {
@@ -127,7 +129,6 @@ const Graph = props => {
           .select(".ppt-label")
           .text()
       );
-      // id = id;
     }
 
     let vaq = vaquita;

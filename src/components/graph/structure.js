@@ -16,7 +16,7 @@ export const palette = {
   phone: "#D74B00"
 };
 
-export const provider = (vaquita, SvgType) => {
+export const provider = (vaquita, SvgType, params) => {
   return {
     Address: {
       returnAttributes: ["address_line_1", "country", "city"],
@@ -68,6 +68,9 @@ export const provider = (vaquita, SvgType) => {
       ],
       constraintAttribute: "id_tag",
       displayAttribute: "last_name",
+      getPredefinedConstraints: function() {
+        return [`passenger.id_tag  = '${params.idTag}'`];
+      },
       getDisplayType: function(node) {
         return SvgType;
       },
@@ -152,6 +155,7 @@ export const provider = (vaquita, SvgType) => {
     Email: {
       returnAttributes: ["address"],
       displayAttribute: "address",
+      constraintAttribute: "address",
       getDisplayType: function(node) {
         return SvgType;
       },
@@ -190,7 +194,7 @@ export const provider = (vaquita, SvgType) => {
       constraintAttribute: "flight_id_tag",
       displayAttribute: "full_flight_number",
       getPredefinedConstraints: function() {
-        return ["$identifier.flight_id_tag is not null"];
+        return [`flight.flight_id_tag  = '${params.flightIdTag}'`];
       },
       getDisplayType: function(node) {
         return SvgType;
@@ -251,7 +255,10 @@ export const paxRelations = (paxFlightIdTag, paxFullFlightNumber) => [
         }
       ]
     }
-  },
+  }
+];
+
+const relationsSecondary = [
   {
     label: "used_document",
     target: { label: "Document" }
@@ -310,7 +317,7 @@ export const saves = pax => {
           last_name: pax.lastName
         }
       ],
-      rel: paxRelations(pax.flightIdTag, pax.fullFlightNumber)
+      rel: [...paxRelations(pax.flightIdTag, pax.fullFlightNumber), ...relationsSecondary]
     },
     flight: {
       // this flight, all pax, ports
@@ -344,62 +351,6 @@ export const saves = pax => {
       ]
     },
     email: {
-      // all emails this pax
-      label: "Email",
-      horiz: 2,
-      rel: [
-        {
-          label: "used_email",
-          target: thisPax(pax)
-        }
-      ] // rel
-    },
-    address: {
-      //all addys this pax
-      label: "Address",
-      horiz: 2,
-      rel: [
-        {
-          label: "lived_at",
-          target: thisPax(pax)
-        }
-      ] // rel
-    },
-    document: {
-      //all docs this pax
-      label: "Document",
-      horiz: 2,
-      rel: [
-        {
-          label: "used_document",
-          target: thisPax(pax)
-        }
-      ] // rel
-    },
-    creditcard: {
-      //all ccards this pax
-      label: "CreditCard",
-      horiz: 2,
-      rel: [
-        {
-          label: "used_creditcard",
-          target: thisPax(pax)
-        }
-      ] // rel
-    },
-    phone: {
-      //all phones this pax
-      label: "Phone",
-      horiz: 2,
-      rel: [
-        {
-          label: "used_phone",
-          target: thisPax(pax)
-        }
-      ] // rel
-    },
-    hit: {
-      //  hits this pax
       label: "Passenger",
       horiz: 2,
       value: [
@@ -408,12 +359,62 @@ export const saves = pax => {
           last_name: pax.lastName
         }
       ],
-      rel: [
+      rel: [relationsSecondary[1]]
+    },
+    address: {
+      label: "Passenger",
+      horiz: 2,
+      value: [
         {
-          label: "flagged",
-          target: { label: "Hit" }
+          id_tag: pax.idTag,
+          last_name: pax.lastName
         }
-      ]
+      ],
+      rel: [relationsSecondary[3]]
+    },
+    document: {
+      label: "Passenger",
+      horiz: 2,
+      value: [
+        {
+          id_tag: pax.idTag,
+          last_name: pax.lastName
+        }
+      ],
+      rel: [relationsSecondary[0]]
+    },
+    creditcard: {
+      label: "Passenger",
+      horiz: 2,
+      value: [
+        {
+          id_tag: pax.idTag,
+          last_name: pax.lastName
+        }
+      ],
+      rel: [relationsSecondary[2]]
+    },
+    phone: {
+      label: "Passenger",
+      horiz: 2,
+      value: [
+        {
+          id_tag: pax.idTag,
+          last_name: pax.lastName
+        }
+      ],
+      rel: [relationsSecondary[4]]
+    },
+    hit: {
+      label: "Passenger",
+      horiz: 2,
+      value: [
+        {
+          id_tag: pax.idTag,
+          last_name: pax.lastName
+        }
+      ],
+      rel: [relationsSecondary[5]]
     }, // rel
 
     emailall: {
