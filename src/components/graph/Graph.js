@@ -50,6 +50,18 @@ const Graph = props => {
     origin: props.paxData.embarkation,
     destination: props.paxData.debarkation
   };
+
+  const paxFilters = {
+    idTag: props.paxData?.paxIdTag,
+    lastName: props.paxData?.lastName
+  };
+
+  const flightFilters = {
+    flightIdTag: props.paxData.flightIdTag,
+    flightNumber: props.paxData?.flightNumber,
+    fullFlightNumber: `${props.paxData?.carrier}${props.paxData?.flightNumber}`.toUpperCase()
+  };
+
   const componentNodeRef = useRef(null);
   const [isReloaded, setIsReloaded] = useState(true);
   const [vaquita] = useState(vaqu);
@@ -69,10 +81,7 @@ const Graph = props => {
 
   /**  set the provider to filter on both pax idTag and flight idTag. This prevents vaquita from querying for counts of all entities
    */
-  vaquita.provider.node.Provider = provider(vaquita, SvgType, {
-    idTag: pax1.idTag,
-    flightIdTag: pax1.flightIdTag
-  });
+  vaquita.provider.node.Provider = provider(SvgType, paxFilters);
 
   vaquita.provider.link.Provider = {
     getColor: function(link) {
@@ -92,7 +101,7 @@ const Graph = props => {
 
   useEffect(() => {
     cypherAuth.get().then(function(res) {
-      vaquita.rest.AUTHORIZATION = `${res.result}`;
+      vaquita.rest.AUTHORIZATION = res.result;
       setCypherUrl();
       activateGraph();
     });
@@ -124,14 +133,8 @@ const Graph = props => {
 
   const onClickSavedGraph = id => {
     if (id.endsWith("all"))
-      vaquita.provider.node.Provider = provider(vaquita, SvgType, {
-        flightIdTag: pax1.flightIdTag
-      });
-    else
-      vaquita.provider.node.Provider = provider(vaquita, SvgType, {
-        flightIdTag: pax1.flightIdTag,
-        idTag: pax1.idTag
-      });
+      vaquita.provider.node.Provider = provider(SvgType, flightFilters);
+    else vaquita.provider.node.Provider = provider(SvgType, paxFilters);
 
     // Update Graph title:
     if (!id) {
