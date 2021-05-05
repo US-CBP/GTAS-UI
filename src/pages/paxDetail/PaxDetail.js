@@ -133,7 +133,6 @@ const PaxDetail = props => {
   };
 
   const paxinfoData = res => {
-    res.seats = null;
     if(res.seats === null){
       res.seats = "";
     }
