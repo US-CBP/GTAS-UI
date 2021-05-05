@@ -15,7 +15,7 @@ import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import { Link } from "@reach/router";
 
-import { flightPassengers } from "../../services/serviceWrapper";
+import {flightPassengers, flights} from "../../services/serviceWrapper";
 import {
   asArray,
   hasData,
@@ -38,7 +38,7 @@ const FlightPax = props => {
   const [allData, setAllData] = useState();
   const [tab, setTab] = useState("all");
   const [key, setKey] = useState(0);
-  const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
+  const [flightData, setFlightData] = useState(hasData(props.location.state?.data) ? props.location.state.data : {});
 
   const hasAnyHits = item => {
     if (
@@ -253,6 +253,12 @@ const FlightPax = props => {
       const parsedHits = parsed.filter(item => {
         return hasAnyHits(item);
       });
+
+      if(!hasData(flightData)){
+        flights.getSingleFlightInfo(props.id).then(res => {
+          setFlightData(res);
+        })
+      }
 
       setAllData(parsed);
       setHitData(parsedHits);
