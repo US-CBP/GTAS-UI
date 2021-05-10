@@ -14,6 +14,7 @@ const ToolTipWrapper = props => {
   const [toolTipVal, setToolTipVal] = useState(initToolTipState);
   const val = props.data.val;
   const lkup = props.data.lkup;
+  const title = props.data.title;
 
   const renderTooltip = props => (
     <Popover {...props}>
@@ -22,6 +23,11 @@ const ToolTipWrapper = props => {
   );
 
   const getToolTipValue = () => {
+    if (title) {
+      setToolTipVal(title);
+      return;
+    }
+
     setToolTipVal(initToolTipState);
     getCachedKeyValues(lkup).then(types => {
       const type = asArray(types).find(t => {
@@ -34,9 +40,9 @@ const ToolTipWrapper = props => {
   const data = {
     val: val,
     lookup: lkup,
-    placement: hasData(props.data.placement) ? props.data.placement : "top",
-    show: hasData(props.data.show) ? props.data.show : 250,
-    hide: hasData(props.data.hide) ? props.data.hide : 400
+    placement: props.data?.placement || "top",
+    show: props.data?.show || 250,
+    hide: props.data?.hide || 400
   };
 
   return (

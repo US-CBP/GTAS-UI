@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
@@ -20,15 +20,7 @@ import { Link } from "@reach/router";
 import { flights } from "../../services/serviceWrapper";
 import { hasData, alt, localeDate, asArray, aboveZero, lpad5 } from "../../utils/utils";
 import { TIME, ROLE, LK } from "../../utils/constants";
-import {
-  Col,
-  Tabs,
-  Tab,
-  Tooltip,
-  OverlayTrigger,
-  Button,
-  Popover
-} from "react-bootstrap";
+import { Col, Tabs, Tab } from "react-bootstrap";
 import "./Flights.css";
 import { LookupContext } from "../../context/data/LookupContext";
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
@@ -139,6 +131,10 @@ const Flights = props => {
     return "?request=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 
+  const getTooltip = ttipKey => {
+    return `This is the ${ttipKey} title`;
+  };
+
   const aggregateHitHeader = {
     Accessor: "hitCounts",
     Xl8: true,
@@ -212,11 +208,12 @@ const Flights = props => {
       Xl8: true,
       Header: ["fl020", "Origin"],
       Cell: ({ row }) => (
-        <>
-          <ToolTipWrapper
-            data={{ val: row.original.origin, lkup: LK.AIRPORT }}
-          ></ToolTipWrapper>
-        </>
+        <ToolTipWrapper
+          data={{
+            val: row.original.origin,
+            title: getTooltip(row.original.origin)
+          }}
+        ></ToolTipWrapper>
       )
     },
     {
@@ -226,7 +223,11 @@ const Flights = props => {
       Cell: ({ row }) => (
         <>
           <ToolTipWrapper
-            data={{ val: row.original.destination, lkup: LK.AIRPORT }}
+            data={{
+              val: row.original.destination,
+              lkup: LK.AIRPORT,
+              title: getTooltip(row.original.destination)
+            }}
           ></ToolTipWrapper>
         </>
       )

@@ -6,7 +6,7 @@ import Dexie from "dexie";
 import { codeEditor, hitcats, roles, notetype } from "../../services/lookupService";
 import { LK } from "../../utils/constants";
 import { formatBytes } from "../../utils/utils";
-import { showEstimatedQuota, tryPersistWithoutPromtingUser } from "./utils";
+import { showEstimatedQuota } from "./utils";
 
 const initialState = [];
 const version = 1;
@@ -34,10 +34,6 @@ db.version(version).stores({
   role: "roleId, roleDescription",
   notetype: "id, noteType, archived"
 });
-
-// var foo = tryPersistWithoutPromtingUser().then(res => {
-//   console.log(res);
-// });
 
 try {
   db.open();
@@ -195,7 +191,6 @@ const LookupProvider = ({ children }) => {
 
     return cacheData(res, type).then(stat => {
       if (stat === STATUS.SUCCESS) setStatusData(type, interval);
-      // setStatusData(type, interval);
       if (returnResults) return getLookupCache(type);
     });
   };
@@ -312,6 +307,13 @@ const LookupProvider = ({ children }) => {
     { lk: LK.NOTETYPE, fields: ["noteType", "id"], sortBy: "noteType", useLabel: true }
   ];
 
+  // lkCoreFields plus the icon blob
+  // const lkCoreAndIconFields = [
+  //   lkCoreFields.map(f => {
+  //     return { ...f, fields: f.fields.concat("icon") };
+  //   })
+  // ];
+
   const getLookupState = type => {
     return JSON.parse(localStorage.getItem(type)) || initialState;
   };
@@ -327,6 +329,12 @@ const LookupProvider = ({ children }) => {
       return getLookupCache(type, false, includeArchived);
     });
   };
+
+  // const getSingleKeyValue = (type, key, includeArchived) => {
+  //   return refresh(type).then(res => {
+  //     return getLookupCache(type, true, includeArchived);
+  //   });
+  // };
 
   const getLookupCache = (type, coreFieldsOnly, includeArchived) => {
     const tbl = db.table(type);
