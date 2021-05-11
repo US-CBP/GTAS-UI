@@ -24,7 +24,7 @@ const CreditCardType = () => {
   const [confirmModalHeader, setConfirmModalHeader] = useState();
   const [confirmModalMessage, setConfirmModalMessage] = useState();
   const [showConfirm, setShowConfirm] = useState(false);
-  const { refreshAndReturn } = useContext(LookupContext);
+  const { refreshPartial } = useContext(LookupContext);
   const type = LK.CCTYPE;
 
   const refresh = () => {
@@ -137,7 +137,7 @@ const CreditCardType = () => {
         message={confirmModalMessage}
       />
       <Table
-        service={() => refreshAndReturn(type)}
+        service={() => refreshPartial(type)}
         callback={cb}
         header={headers}
         key={refreshKey}

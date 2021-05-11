@@ -124,3 +124,8 @@ export const DAYS = days => {
 };
 
 export const UNDEFINEDCHAR = "ꞏ"; // unicode U+A78F. Char not mapped to any language char, good as a delimiter.
+
+export const FORCE = {
+  FULL: 0,
+  PARTIAL: 1
+};

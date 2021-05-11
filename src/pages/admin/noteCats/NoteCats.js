@@ -25,7 +25,7 @@ const NoteCats = ({ name }) => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [editRowDetails, setEditRowDetails] = useState();
   const [modalTitle, setModalTitle] = useState(addNewCat);
-  const { refreshAndReturn } = useContext(LookupContext);
+  const { refreshPartial } = useContext(LookupContext);
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
@@ -111,7 +111,7 @@ const NoteCats = ({ name }) => {
       <Title title={name}></Title>
       <Row></Row>
       <Table
-        service={() => refreshAndReturn(LK.NOTETYPE)}
+        service={() => refreshPartial(LK.NOTETYPE)}
         key={refreshKey}
         callback={cb}
         header={headers}

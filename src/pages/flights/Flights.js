@@ -36,10 +36,13 @@ const Flights = props => {
   const { getUserState } = useContext(UserContext);
   const [data, setData] = useState();
   const [hitData, setHitData] = useState();
-  const [allData, setAllData] = useState();
+  const [allData, setAllData] = useState([]);
+  const [airportFaves, setAirportFaves] = useState([]);
   const [tab, setTab] = useState("all");
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
+
+  const { getCachedCoreFields } = useContext(LookupContext);
 
   const hasAnyHits = item => {
     if (
@@ -131,7 +134,8 @@ const Flights = props => {
   };
 
   const getTooltip = ttipKey => {
-    return `This is the ${ttipKey} title`;
+    const record = airportFaves.find(ap => ap.value === ttipKey);
+    return record?.title;
   };
 
   const aggregateHitHeader = {
@@ -208,10 +212,11 @@ const Flights = props => {
       Header: ["fl020", "Origin"],
       Cell: ({ row }) => (
         <ToolTipWrapper
+          key={airportFaves}
           data={{
             val: row.original.origin,
             lkup: LK.AIRPORT,
-            title: getTooltip(row.original.origin)
+            title: () => getTooltip(row.original.origin)
           }}
         ></ToolTipWrapper>
       )
@@ -225,7 +230,7 @@ const Flights = props => {
           data={{
             val: row.original.destination,
             lkup: LK.AIRPORT,
-            title: getTooltip(row.original.destination)
+            title: () => getTooltip(row.original.destination)
           }}
         ></ToolTipWrapper>
       )
@@ -242,7 +247,14 @@ const Flights = props => {
   }, [hitData, tab]);
 
   useEffect(() => {
-    console.log("alldata changed");
+    // const distinctAirports = [
+    //   ...new Set(allData.map(d => d.origin).concat(allData.map(d => d.destination)))
+    // ];
+
+    getCachedCoreFields(LK.AIRPORT, false).then(res => {
+      if (!hasData(airportFaves) || res?.length > airportFaves.length)
+        setAirportFaves(res);
+    });
   }, [allData]);
 
   const directions = [
@@ -361,14 +373,16 @@ const Flights = props => {
           leftChild={tabs}
           leftCb={titleTabCallback}
         />
-        <Table
-          data={data}
-          key={tablekey}
-          header={Headers}
-          callback={cb}
-          stateVals={getTableState}
-          stateCb={stateCallback}
-        />
+        {hasData(airportFaves) && (
+          <Table
+            data={data}
+            key={tablekey}
+            header={Headers}
+            callback={cb}
+            stateVals={getTableState}
+            stateCb={stateCallback}
+          />
+        )}
       </Main>
     </>
   );

@@ -9,7 +9,7 @@ import { LookupContext } from "../../context/data/LookupContext";
 
 const ToolTipWrapper = props => {
   const className = props?.className || "overlay-content";
-  const { getCachedKeyValues, getSingleKeyValue } = useContext(LookupContext);
+  const { getSingleKeyValue } = useContext(LookupContext);
   const initToolTipState = "Loading...";
   const notFound = "Not Found";
   const [toolTipVal, setToolTipVal] = useState(initToolTipState);
@@ -30,9 +30,8 @@ const ToolTipWrapper = props => {
     }
 
     setToolTipVal(initToolTipState);
-    getSingleKeyValue(lkup, false, val).then(type => {
-      setToolTipVal(type.title || notFound);
-    });
+    const type = getSingleKeyValue(lkup, false, val);
+    setToolTipVal(type?.title || notFound);
   };
 
   const data = {
@@ -48,7 +47,6 @@ const ToolTipWrapper = props => {
       placement={data.placement}
       delay={{ show: data.show, hide: data.hide }}
       onEnter={getToolTipValue}
-      //onExited={() => setToolTipVal(initToolTipState)}
       overlay={renderTooltip}
     >
       <span>{data.val}</span>

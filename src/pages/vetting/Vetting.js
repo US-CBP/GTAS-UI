@@ -36,7 +36,7 @@ import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 
 const Vetting = props => {
-  const { getCachedKeyValues } = useContext(LookupContext);
+  const { getCachedCoreFields } = useContext(LookupContext);
 
   // TODO - move hit types and statuses to db
   const hitTypeOptions = [
@@ -346,7 +346,7 @@ const Vetting = props => {
       setUsersEmails(res);
     });
 
-    getCachedKeyValues(LK.HITCAT).then(res => {
+    getCachedCoreFields(LK.HITCAT).then(res => {
       const options = asArray(res).map(hitCat => {
         return {
           label: hitCat.label,
@@ -356,7 +356,7 @@ const Vetting = props => {
       setHitCategoryOptions(options);
     });
 
-    getCachedKeyValues(LK.NOTETYPE).then(types => {
+    getCachedCoreFields(LK.NOTETYPE).then(types => {
       const nTypes = asArray(types).reduce((acc, type) => {
         if (type.noteType !== "DELETED") {
           acc.push({
@@ -371,8 +371,9 @@ const Vetting = props => {
   };
 
   useEffect(() => {
-    if(hasData(noteTypes) && hasData(hitCategoryOptions)){ //When both are fully loaded, impossible to know which one will finish first, check both
-      setFilterFormKey(filterFormKey+1);
+    if (hasData(noteTypes) && hasData(hitCategoryOptions)) {
+      //When both are fully loaded, impossible to know which one will finish first, check both
+      setFilterFormKey(filterFormKey + 1);
     }
   }, [noteTypes, hitCategoryOptions]);
 
