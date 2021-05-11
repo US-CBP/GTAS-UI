@@ -27,7 +27,7 @@ const db = new Dexie(lookupDB);
 db.version(version).stores({
   status: "&id, name",
   airport: "id, name, iata, favorite, archived",
-  carrier: "id, name, iata, archived",
+  carrier: "id, name, iata, favorite, archived",
   country: "id, name, iso3, archived",
   cctype: "id, code, archived",
   hitcats: "id, label, archived",
@@ -195,7 +195,7 @@ const LookupProvider = ({ children }) => {
     });
   };
 
-  const refreshAndReturn = type => {
+  const refreshOnly = type => {
     return refresh(type, true, false, true);
   };
 
@@ -308,11 +308,11 @@ const LookupProvider = ({ children }) => {
   ];
 
   // lkCoreFields plus the icon blob
-  // const lkCoreAndIconFields = [
-  //   lkCoreFields.map(f => {
-  //     return { ...f, fields: f.fields.concat("icon") };
-  //   })
-  // ];
+  const lkCoreAndIconFields = [
+    lkCoreFields.map(f => {
+      return { ...f, fields: f.fields.concat("icon") };
+    })
+  ];
 
   const getLookupState = type => {
     return JSON.parse(localStorage.getItem(type)) || initialState;
@@ -330,13 +330,15 @@ const LookupProvider = ({ children }) => {
     });
   };
 
-  // const getSingleKeyValue = (type, key, includeArchived) => {
-  //   return refresh(type).then(res => {
-  //     return getLookupCache(type, true, includeArchived);
-  //   });
-  // };
+  // return only a single record matching "key". If there are multiple, return the first.
+  //This call is still expensive, we should do this as infrequently as possible
+  const getSingleKeyValue = (type, includeArchived, key) => {
+    const res = getLookupCache(type, true, includeArchived, key);
+    return res;
+  };
 
-  const getLookupCache = (type, coreFieldsOnly, includeArchived) => {
+  // return all matching values as an array
+  const getLookupCache = (type, coreFieldsOnly, includeArchived, keyMatch) => {
     const tbl = db.table(type);
     const fieldMap = lkCoreFields.find(item => item.lk === type);
 
@@ -346,13 +348,13 @@ const LookupProvider = ({ children }) => {
     }
 
     const fields = fieldMap.fields;
-    const useLabel = fieldMap.useLabel;
 
     const archiveFilter = includeArchived ? rec => rec : rec => rec.archived !== true;
-    const coreFilter = coreFieldsOnly
+    const keyFilter = keyMatch ? rec => rec[fields[1]] === keyMatch : rec => rec;
+    const fieldFormat = coreFieldsOnly
       ? res => {
           return res.map(item => {
-            if (useLabel)
+            if (fieldMap.useLabel)
               return {
                 label: item[fields[0]],
                 value: item[fields[1]],
@@ -369,9 +371,10 @@ const LookupProvider = ({ children }) => {
 
     return tbl
       .orderBy(fieldMap.sortBy || fields[1])
+      .filter(keyFilter)
       .filter(archiveFilter)
       .toArray()
-      .then(coreFilter);
+      .then(fieldFormat);
   };
 
   return (
@@ -380,7 +383,8 @@ const LookupProvider = ({ children }) => {
         getLookupState,
         getCached,
         getCachedKeyValues,
-        refreshAndReturn,
+        getSingleKeyValue,
+        refreshOnly,
         lookupAction
       }}
     >

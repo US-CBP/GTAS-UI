@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
@@ -101,7 +101,6 @@ const Flights = props => {
     setTablekey(tablekey + 1);
   };
 
-  //TODO: refactor
   const preFetchCallback = fields => {
     const range = +fields["hourRange"] || 96; // default to 96 hours
 
@@ -211,6 +210,7 @@ const Flights = props => {
         <ToolTipWrapper
           data={{
             val: row.original.origin,
+            lkup: LK.AIRPORT,
             title: getTooltip(row.original.origin)
           }}
         ></ToolTipWrapper>
@@ -221,15 +221,13 @@ const Flights = props => {
       Xl8: true,
       Header: ["fl021", "Destination"],
       Cell: ({ row }) => (
-        <>
-          <ToolTipWrapper
-            data={{
-              val: row.original.destination,
-              lkup: LK.AIRPORT,
-              title: getTooltip(row.original.destination)
-            }}
-          ></ToolTipWrapper>
-        </>
+        <ToolTipWrapper
+          data={{
+            val: row.original.destination,
+            lkup: LK.AIRPORT,
+            title: getTooltip(row.original.destination)
+          }}
+        ></ToolTipWrapper>
       )
     },
     { Accessor: "direction", Xl8: true, Header: ["fl022", "Direction"] }
@@ -242,6 +240,10 @@ const Flights = props => {
     const newkey = tablekey + 1;
     setTablekey(newkey);
   }, [hitData, tab]);
+
+  useEffect(() => {
+    console.log("alldata changed");
+  }, [allData]);
 
   const directions = [
     { value: "A", label: "All" },
@@ -259,9 +261,7 @@ const Flights = props => {
     }
   };
 
-  const getTableState = () => {
-    return tableState;
-  };
+  const getTableState = () => tableState;
 
   const tabs = (
     <Tabs defaultActiveKey="all" id="flightTabs">
@@ -301,7 +301,7 @@ const Flights = props => {
             interval={TIME.MINUTE}
           >
             <LabelledInput
-              labelText={<Xl8 xid="fl003"> Origin Airports</Xl8>}
+              labelText={<Xl8 xid="fl003">Origin Airports</Xl8>}
               datafield="originAirports"
               name="originAirports"
               inputtype="text"
@@ -309,7 +309,7 @@ const Flights = props => {
               alt={<Xl8 xid="0">Origin Airports</Xl8>}
             />
             <LabelledInput
-              labelText={<Xl8 xid="fl004"> Destination Airports</Xl8>}
+              labelText={<Xl8 xid="fl004">Destination Airports</Xl8>}
               datafield="destinationAirports"
               name="destinationAirports"
               inputtype="text"
