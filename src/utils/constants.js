@@ -39,7 +39,7 @@ export const STATUS = {
 export const HIT_STATUS = {
   REVIEWED: "Reviewed",
   NEW: "New",
-  REOPENED: "Re_opened"
+  REOPENED: "Re_Opened"
 };
 
 export const ROLE = {
