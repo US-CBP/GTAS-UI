@@ -23,7 +23,6 @@ const Kanban = props => {
   let endDate = new Date();
   endDate.setDate(endDate.getDate() + 4);
   startDate.setHours(startDate.getHours() - 6);
-  const [poeLanes, setPoeLanes] = useState({});
   const [poeTiles, setPoeTiles] = useState([]);
   const [showDateTimePicker, setShowDateTimePicker] = useState(false);
   const [filterFormKey, setFilterFormKey] = useState(0);
@@ -61,7 +60,6 @@ const Kanban = props => {
           lanes[lane.ord] = createPOELane(lane, tiles) //creates lane, adds to lane object
         })
         //After lanes AND tiles have both been created , set the constants
-        setPoeLanes(lanes);
         setColumns(lanes);
         setPoeTiles(tiles);
         setShowPending(false);
@@ -132,8 +130,9 @@ const Kanban = props => {
           <div>
             <div className="font-weight-bolder">{tileData.paxLastName}, {tileData.paxFirstName}</div>
             <div> Doc #: {tileData.document.documentNumber}</div>
+            <div>Reason: {tileData.hitCategory}</div>
+            <div>&nbsp;</div>
             <div className="poe-countdown-outer">
-              <span>Reason: {tileData.hitCategory}</span>
               <div className="poe-countdown-inner">
                 <CountdownBadge
                     future={tileData.flightCountdownTime}

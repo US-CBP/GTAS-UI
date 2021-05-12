@@ -76,7 +76,7 @@ const LookoutModal = props => {
                         />
                         <LabelledInput
                             datafield
-                            labelText={<Xl8 xid="wlm005">Status:</Xl8>}
+                            labelText={<Xl8 xid="lkoutm004">Status:</Xl8>}
                             inputtype="select"
                             name="status"
                             inputval={props.isEdit ? row.status : statuses[0].value}
@@ -87,6 +87,7 @@ const LookoutModal = props => {
                         />
                         <LabelledInput
                             datafield
+                            labelText={<Xl8 xid="lkoutm005">Order Number:</Xl8>}
                             inputtype="number"
                             name="ord"
                             required={true}
