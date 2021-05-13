@@ -198,7 +198,9 @@ const App = props => {
                           ROLE.WLMGR,
                           ROLE.HITMGR,
                           ROLE.QRYMGR,
-                          ROLE.FLIGHTVWR
+                          ROLE.FLIGHTVWR,
+                          ROLE.LKOUTMGR,
+                          ROLE.LKOUTVWR
                         ]}
                       >
                         {UNAUTHED}
@@ -234,7 +236,12 @@ const App = props => {
                               <UploadAttachment path="uploadattachment"></UploadAttachment>
                             </PaxDetail>
                           </RoleAuthenticator>
-                          <POE path="poe"></POE>
+                          <RoleAuthenticator
+                          path="poe"
+                          roles={[ROLE.ADMIN, ROLE.LKOUTMGR, ROLE.LKOUTVWR]}
+                          >
+                            <POE path="/"></POE>
+                          </RoleAuthenticator>
                           <RoleAuthenticator
                             path="vetting"
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}

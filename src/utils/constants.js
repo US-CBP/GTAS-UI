@@ -50,6 +50,8 @@ export const ROLE = {
   RULEMGR: "Manage Rules",
   HITMGR: "Manage Hits",
   FLIGHTVWR: "View Flights",
+  LKOUTMGR: "Manage POE Lookout",
+  LKOUTVWR: "View POE Lookout",
   ANY: "Any"
 };
 
