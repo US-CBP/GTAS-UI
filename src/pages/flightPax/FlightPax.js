@@ -39,7 +39,7 @@ const FlightPax = props => {
   const [allData, setAllData] = useState();
   const [tab, setTab] = useState("all");
   const [key, setKey] = useState(0);
-  const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
+  const flightData = props.location?.state?.data || {};
 
   const hasAnyHits = item => {
     if (
@@ -299,22 +299,19 @@ const FlightPax = props => {
     setTab(id);
   };
 
-  const getFlightData = () => {
-    return {
-      flightNumber: flightData.fullFlightNumber,
-      carrier: "",
-      flightDestination: flightData.destination || flightData.flightDestination,
-      flightOrigin: flightData.origin || flightData.flightOrigin,
-      eta: flightData.eta,
-      etd: flightData.etd
-    };
+  const badgeData = {
+    flightNumber: flightData.fullFlightNumber,
+    carrier: alt(flightData.fullFlightNumber, "").slice(0, 2),
+    flightDestination: flightData.destination || flightData.flightDestination,
+    flightOrigin: flightData.origin || flightData.flightOrigin,
+    eta: flightData.eta,
+    etd: flightData.etd
   };
-
   return (
     <>
       <SidenavContainer>
         <br />
-        <FlightBadge data={getFlightData()}></FlightBadge>
+        <FlightBadge data={badgeData}></FlightBadge>
         <Col className="notopmargin">
           <div className="filterform-container form">
             <div className="flightpax-countdown-container">

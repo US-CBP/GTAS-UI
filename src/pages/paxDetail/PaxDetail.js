@@ -30,8 +30,7 @@ import Loading from "../../components/loading/Loading";
 
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import { asArray, hasData, titleCase } from "../../utils/utils";
-import { ACTION, ROLE } from "../../utils/constants";
-import { Link } from "@reach/router";
+import { ACTION, ROLE, LK } from "../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./PaxDetail.scss";
@@ -154,35 +153,18 @@ const PaxDetail = props => {
     };
   };
 
-  const addLinkToFlight = data => {
-    const fullFlightNumber = data.carrier + data.flightNumber;
-    const stateData = {
-      direction: data.direction,
-      eta: data.eta,
-      etd: data.etd,
-      fullFlightNumber: fullFlightNumber,
-      flightDestination: data.destination || data.flightDestination,
-      flightOrigin: data.origin || data.flightOrigin,
-      passengerCount: data.passengerCount
-    };
-    return (
-      <Link
-        to={"/gtas/flightpax/" + data.flightId}
-        state={{ data: stateData }}
-        className="link"
-      >
-        {fullFlightNumber}
-      </Link>
-    );
-  };
   const getFlightBadgeData = res => {
     return {
-      flightNumber: addLinkToFlight(res),
-      carrier: "",
+      flightNumber: res.carrier + res.flightNumber,
+      fullFlightNumber: res.carrier + res.flightNumber,
+      direction: res.direction,
+      flightId: res.flightId,
+      carrier: res.carrier,
       flightDestination: res.flightDestination,
       flightOrigin: res.flightOrigin,
       eta: res.eta,
       etd: res.etd,
+      passengerCount: res.passengerCount,
       flightNumberHasLink: true
     };
   };

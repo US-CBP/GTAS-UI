@@ -175,6 +175,8 @@ const Vetting = props => {
           <FlightBadge
             data={{
               flightNumber: row.original.flightNumber,
+              fullFlightNumber: row.original.flightNumber,
+              carrier: row.original.flightNumber.slice(0, 2),
               flightOrigin: row.original.flightOrigin,
               flightDestination: row.original.flightDestination,
               eta: row.original.flightETADate,
