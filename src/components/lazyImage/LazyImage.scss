@@ -1,0 +1,105 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+.flight-badge.reg {
+  font-size: xx-large;
+  font-weight: 600;
+  text-align: center !important;
+  background: #009fe3;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  margin: 0px;
+  padding: 10px 5px;
+  color: white;
+
+  .flight-number {
+    font-weight: 700;
+    align-items: center;
+  }
+
+  .flight-badge-row {
+    justify-content: space-evenly;
+    text-align: -moz-left;
+    text-align: initial;
+    margin-right: unset;
+    margin-left: unset;
+
+    .width40 {
+      width: 40px;
+    }
+  }
+
+  .flight-text {
+    font-size: large;
+    font-weight: 501;
+
+    .table {
+      display: inline-table;
+      min-width: -webkit-fill-available;
+    }
+  }
+}
+
+.flight-badge.sm {
+  text-align: center !important;
+  border-radius: 0.25rem;
+  background-color: white;
+  border: 1px solid #0082c3;
+  padding: 5px;
+
+  .flight-number {
+    color: black;
+    font-size: larger;
+  }
+
+  .flight-badge-row {
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    margin-right: unset;
+    margin-left: unset;
+
+    .width40 {
+      width: 40px;
+    }
+  }
+
+  .flight-text {
+    color: black;
+
+    .table {
+      display: inline-table;
+      min-width: -webkit-fill-available;
+    }
+  }
+}
+
+.flight-badge .link {
+  background-color: white;
+  padding: 3px;
+  border-radius: 0.25rem;
+}
+
+.flight-badge .link:hover {
+  text-decoration: none;
+}
+
+.lazy-image {
+  background: no-repeat center center;
+  background-size: cover;
+  height: 25px;
+  width: 30px;
+}
+
+.lazy-image-wrapper {
+  border-radius: 10px;
+  margin-top: 4px;
+  margin-bottom: 0px;
+  height: 25px;
+  width: 30px;
+  overflow: hidden;
+  display: inline-table;
+  margin-right: 10px;
+}

@@ -468,3 +468,12 @@ export const addMinutes = (date, minutes = 1) => {
 
   return new Date(date.getTime() + minutes * 60000);
 };
+
+/** Return the css class of one of 4 background jpg files (named 1.jpg, 2.jpg, etc) so the background cycles every day.
+ * We are using this because other strategies like setting a var to use sass random()) only get evaluated once at build
+ * time and are locked until the bundles get updated. */
+export const getTodaysBackground = prefix => {
+  const fileIdx = (new Date().getDate() % 4) + 1;
+
+  return `${prefix}${fileIdx}`;
+};

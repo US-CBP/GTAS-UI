@@ -13,7 +13,8 @@ import {
   clearInvalidFieldHighlight,
   hasData,
   highlightInvalidField,
-  isValidPassword
+  isValidPassword,
+  getTodaysBackground
 } from "../../utils/utils";
 import { useParams, Link } from "@reach/router";
 import { FULLPATH_TO } from "../../utils/constants";
@@ -87,7 +88,7 @@ const ResetPassword = props => {
   }, []);
 
   return (
-    <Main className="unauthed bg-image">
+    <Main className={`unauthed bg-image ${getTodaysBackground("background")}`}>
       <Container
         className="login d-flex align-items-center py-5 justify-content-around"
         fluid

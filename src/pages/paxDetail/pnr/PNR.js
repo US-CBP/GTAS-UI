@@ -11,12 +11,13 @@ import {
   asArray,
   hasData,
   localeDate,
-  localeDateOnly,
   localeMonthYear,
   timezoneFreeDate
 } from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
+import LazyImage from "../../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
+import { LK } from "../../../utils/constants";
 
 const PNR = props => {
   const data = hasData(props.data) ? props.data : {};
@@ -181,6 +182,7 @@ const PNR = props => {
       number: <Xl8 xid="pnr027">Number</Xl8>
     },
     frequentFlyerDetails: {
+      icon: "",
       carrier: <Xl8 xid="pnr028">Airline</Xl8>,
       number: <Xl8 xid="pnr029">Number</Xl8>
     },
@@ -269,6 +271,7 @@ const PNR = props => {
   const frequentFlyerDetails = asArray(data.frequentFlyerDetails).map(ffd => {
     return {
       ...ffd,
+      icon: <LazyImage val={ffd.carrier} type={LK.CARRIER}></LazyImage>,
       key: `FTI${ffd.number} `
     };
   });

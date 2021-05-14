@@ -9,7 +9,7 @@ import { formatBytes } from "../../utils/utils";
 import { showEstimatedQuota } from "./utils";
 
 const initialState = [];
-const version = 1;
+const version = 2;
 const lookupDB = "lookupDB";
 const STATUS = {
   SUCCESS: 0,
@@ -24,6 +24,7 @@ const setStorage = (key, val) => {
 };
 
 const db = new Dexie(lookupDB);
+
 db.version(version).stores({
   status: "&id, name",
   airport: "id, name, iata, favorite, archived",
@@ -35,11 +36,16 @@ db.version(version).stores({
   notetype: "id, noteType, archived"
 });
 
-try {
-  db.open();
-} catch (ex) {
-  console.error("IDB is inaccessible: ", ex);
-}
+// try {
+//   db.open();
+// } catch (ex) {
+//   console.error("IDB is inaccessible: ", ex);
+// }
+
+/** Return true for tables with a "favorite" column (currently Carrier and Airport).
+ * The favorite col sets the default records to return for tables with large-ish row counts (over 1000)
+ * to reduce the fetch size */
+const hasFavorites = type => type === LK.CARRIER || type === LK.AIRPORT;
 
 const statusData = [
   { id: 1, name: LK.ROLE, lastUpdated: "", nextUpdate: "", interval: longInterval },
@@ -290,9 +296,7 @@ const LookupProvider = ({ children }) => {
   };
 
   const markFavorite = (type, key) => {
-    if (type !== LK.CARRIER && type !== LK.AIRPORT) return;
-
-    console.log("marking fave", type, key);
+    if (!hasFavorites(type)) return;
 
     const tbl = db.table(type);
     return db.transaction("rw", tbl, async () => {
@@ -329,27 +333,41 @@ const LookupProvider = ({ children }) => {
     return JSON.parse(localStorage.getItem(type)) || initialState;
   };
 
+  /** Refresh and return the core (name and id) fields marked as favorites */
   const getCachedCoreFields = (type, includeArchived) => {
-    console.log("getting core faves for", type);
+    const favesOnly = hasFavorites(type);
     return refresh(type).then(() => {
-      return getLookupCache(type, true, includeArchived);
+      return getLookupCache(type, true, includeArchived, undefined, favesOnly);
     });
   };
 
+  /** Refresh and return all fields for the type. Pulls from faves for carriers and airports to reduce the fetch size */
   const getCachedAllFields = (type, includeArchived) => {
-    console.log("getting all faves for", type);
+    const favesOnly = hasFavorites(type);
     return refresh(type).then(() => {
-      return getLookupCache(type, false, includeArchived);
+      return getLookupCache(type, false, includeArchived, undefined, favesOnly);
     });
   };
 
-  /** Returns only a single record matching "key" from cache. If there are multiple, returns the first. Does not refresh.
+  /** Returns only a single record matching "key" from cache. If there are multiple, returns the first.
+   * Does not refresh
+   * Does not filter out non-favorites
+   * It pulls from all available records as a backup to getCachedCore and getCachedAll. It pulls records that
+   * are not favorites yet, and marks them as favorites.
    * Still nearly as expensive as getCachedCoreFields, which returns all values for a type. Use sparingly. */
   const getSingleKeyValue = (type, includeArchived, key) => {
-    console.log("getting single value for", type, key);
-    const match = getLookupCache(type, true, includeArchived, key, false);
-    markFavorite(type, key);
-    return match[0];
+    // const m = getLookupCache(type, true, includeArchived, key, false);
+    // const firstRec = m[0] || {};
+
+    // if (!firstRec.fave) markFavorite(type, key);
+    // return firstRec;
+
+    return getLookupCache(type, true, includeArchived, key, false).then(m => {
+      const firstRec = m[0] || {};
+
+      if (!firstRec.fave) markFavorite(type, key);
+      return firstRec;
+    });
   };
 
   // fetch all matching cached values as an array
@@ -374,12 +392,14 @@ const LookupProvider = ({ children }) => {
               return {
                 label: item[fields[0]],
                 value: item[fields[1]],
-                arch: item.archived
+                arch: item.archived,
+                fave: item.favorite
               };
             return {
               title: `${item[fields[1]]} ${item[fields[0]]}`,
               value: item[fields[1]],
-              arch: item.archived
+              arch: item.archived,
+              fave: item.favorite
             };
           });
         }
@@ -391,7 +411,18 @@ const LookupProvider = ({ children }) => {
       .filter(keyFilter)
       .filter(archiveFilter)
       .toArray()
-      .then(fieldFormat);
+      .then(fieldFormat)
+      .catch(error => {
+        console.error(
+          "Generic error in getLookupCache: ",
+          error,
+          type,
+          coreFieldsOnly,
+          includeArchived,
+          keyMatch,
+          favesOnly
+        );
+      });
   };
 
   return (

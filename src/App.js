@@ -22,9 +22,9 @@ import Loading from "./components/loading/Loading";
 
 import { hasData } from "./utils/utils";
 import { ROLE, FULLPATH_TO } from "./utils/constants";
-import "./App.scss";
-import "font-awesome/css/font-awesome.min.css";
 import ForgotUsername from "./pages/login/ForgotUsername";
+import "font-awesome/css/font-awesome.min.css";
+import "./App.scss";
 
 const Authenticator = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./context/authenticator/Authenticator")

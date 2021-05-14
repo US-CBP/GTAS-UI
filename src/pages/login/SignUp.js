@@ -9,7 +9,7 @@ import Main from "../../components/main/Main";
 import { signup, physicalLocations } from "../../services/serviceWrapper";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import Xl8 from "../../components/xl8/Xl8";
-import { asArray, hasData } from "../../utils/utils";
+import { asArray, hasData, getTodaysBackground } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./Login.scss";
 import { FULLPATH_TO } from "../../utils/constants";
@@ -40,11 +40,8 @@ const SignUp = props => {
     });
   }, []);
 
-  // <Container className="sign-up-container" fluid>
-  //   <Title title={<Xl8 xid="sup001">Sign Up</Xl8>} />
-
   return (
-    <Main className="unauthed bg-image">
+    <Main className={`unauthed bg-image ${getTodaysBackground("background")}`}>
       <Container
         className="login d-flex align-items-center py-5 justify-content-around"
         fluid

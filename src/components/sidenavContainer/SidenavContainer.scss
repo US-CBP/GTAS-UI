@@ -65,8 +65,30 @@ $wco-info: #009e9288;
   // background: linear-gradient(#40403f, #40403fdd, #40403f55),
   //   url($background-image-url) no-repeat no-repeat;
 
+  // url(randomBackground()) no-repeat no-repeat center;
+}
+
+.sidenav-background1 {
   background: linear-gradient(#40403f, #40403fdd, #40403f22),
-    url($background-image-url) no-repeat no-repeat center;
+    url("../../images/1.jpg") center center no-repeat;
+  background-size: cover;
+}
+
+.sidenav-background2 {
+  background: linear-gradient(#40403f, #40403fdd, #40403f22),
+    url("../../images/2.jpg") center center no-repeat;
+  background-size: cover;
+}
+
+.sidenav-background3 {
+  background: linear-gradient(#40403f, #40403fdd, #40403f22),
+    url("../../images/3.jpg") no-repeat -900px;
+  background-size: cover;
+}
+
+.sidenav-background4 {
+  background: linear-gradient(#40403f, #40403fdd, #40403f22),
+    url("../../images/4.jpg") left center no-repeat;
   background-size: cover;
 }
 

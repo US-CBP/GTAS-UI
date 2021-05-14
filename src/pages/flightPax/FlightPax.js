@@ -13,6 +13,7 @@ import HitsBadge from "../../components/hitsBadge/HitsBadge";
 import Main from "../../components/main/Main";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
+import LazyImage from "../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
 
 import { flightPassengers } from "../../services/serviceWrapper";
@@ -230,9 +231,12 @@ const FlightPax = props => {
       disableGroupBy: true,
       Cell: ({ row }) => {
         return (
-          <ToolTipWrapper
-            data={{ val: row.original.nationality, lkup: LK.COUNTRY }}
-          ></ToolTipWrapper>
+          <>
+            <LazyImage val={row.original.nationality} type={LK.COUNTRY}></LazyImage>
+            <ToolTipWrapper
+              data={{ val: row.original.nationality, lkup: LK.COUNTRY }}
+            ></ToolTipWrapper>
+          </>
         );
       },
       Aggregated: () => ``

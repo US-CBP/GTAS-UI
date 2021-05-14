@@ -37,7 +37,7 @@ const Flights = props => {
   const [data, setData] = useState();
   const [hitData, setHitData] = useState();
   const [allData, setAllData] = useState([]);
-  const [airportFaves, setAirportFaves] = useState([]);
+  const [airportFaves, setAirportFaves] = useState();
   const [tab, setTab] = useState("all");
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
@@ -212,11 +212,10 @@ const Flights = props => {
       Header: ["fl020", "Origin"],
       Cell: ({ row }) => (
         <ToolTipWrapper
-          key={airportFaves}
           data={{
             val: row.original.origin,
             lkup: LK.AIRPORT,
-            title: () => getTooltip(row.original.origin)
+            title: getTooltip(row.original.origin)
           }}
         ></ToolTipWrapper>
       )
@@ -230,7 +229,7 @@ const Flights = props => {
           data={{
             val: row.original.destination,
             lkup: LK.AIRPORT,
-            title: () => getTooltip(row.original.destination)
+            title: getTooltip(row.original.destination)
           }}
         ></ToolTipWrapper>
       )
@@ -252,8 +251,11 @@ const Flights = props => {
     // ];
 
     getCachedCoreFields(LK.AIRPORT, false).then(res => {
-      if (!hasData(airportFaves) || res?.length > airportFaves.length)
-        setAirportFaves(res);
+      if (!hasData(airportFaves) || res?.length > airportFaves.length) {
+        const resOrInitial = hasData(res) ? res : [{}];
+
+        setAirportFaves(resOrInitial);
+      }
     });
   }, [allData]);
 

@@ -88,6 +88,7 @@ const Vetting = props => {
       paxId: pax.paxId
     };
   };
+
   const Headers = [
     {
       Accessor: "paxId",
@@ -423,7 +424,6 @@ const Vetting = props => {
               callback={cb}
               alt="Hit Source"
             />
-            {/* {hasData(noteTypes) && ( */}
             <LabelledInput
               datafield
               name="noteTypes"
@@ -434,7 +434,6 @@ const Vetting = props => {
               callback={cb}
               alt={<Xl8 xid="vet019">Note Type</Xl8>}
             />
-            {/* )} */}
 
             <LabelledInput
               name="ruleCatFilter"
@@ -477,70 +476,70 @@ const Vetting = props => {
               spacebetween
             />
             {showDateTimePicker && (
-              <LabelledInput
-                datafield="etaStart"
-                inputtype="dateTime"
-                inputval={startDate}
-                labelText={<Xl8 xid="vet014">Start Date</Xl8>}
-                name="etaStart"
-                callback={cb}
-                className="dtp-vetting-upper"
-                required={true}
-                alt="Start Date"
-              />
-            )}
-            {showDateTimePicker && (
-              <LabelledInput
-                datafield="etaEnd"
-                inputtype="dateTime"
-                inputval={endDate}
-                labelText={<Xl8 xid="vet015">End Date</Xl8>}
-                name="etaEnd"
-                callback={cb}
-                required={true}
-                className="dtp-vetting-lower"
-                alt="End Date"
-              />
-            )}
-            {!showDateTimePicker && (
-              <LabelledInput
-                labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
-                inputtype="select"
-                name="startHourRange"
-                inputval="6"
-                inputStyle="form-select"
-                datafield="startHourRange"
-                options={[
-                  { value: "0", label: "0 hour" },
-                  { value: "6", label: "-6 hours" },
-                  { value: "12", label: "-12 hours" },
-                  { value: "24", label: "-24 hours" },
-                  { value: "48", label: "-48 hours" },
-                  { value: "96", label: "-96 hours" }
-                ]}
-                callback={cb}
-                alt="Hour range (Start)"
-              />
+              <>
+                <LabelledInput
+                  datafield="etaStart"
+                  inputtype="dateTime"
+                  inputval={startDate}
+                  labelText={<Xl8 xid="vet014">Start Date</Xl8>}
+                  name="etaStart"
+                  callback={cb}
+                  className="dtp-vetting-upper"
+                  required={true}
+                  alt="Start Date"
+                />
+                <LabelledInput
+                  datafield="etaEnd"
+                  inputtype="dateTime"
+                  inputval={endDate}
+                  labelText={<Xl8 xid="vet015">End Date</Xl8>}
+                  name="etaEnd"
+                  callback={cb}
+                  required={true}
+                  className="dtp-vetting-lower"
+                  alt="End Date"
+                />
+              </>
             )}
             {!showDateTimePicker && (
-              <LabelledInput
-                labelText={<Xl8 xid="vet017">Hour Range (End)</Xl8>}
-                inputtype="select"
-                name="endHourRange"
-                inputval="96"
-                inputStyle="form-select"
-                datafield="endHourRange"
-                options={[
-                  { value: "0", label: "0 hour" },
-                  { value: "6", label: "+6 hours" },
-                  { value: "12", label: "+12 hours" },
-                  { value: "24", label: "+24 hours" },
-                  { value: "48", label: "+48 hours" },
-                  { value: "96", label: "+96 hours" }
-                ]}
-                callback={cb}
-                alt="Hour range (End)"
-              />
+              <>
+                <LabelledInput
+                  labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
+                  inputtype="select"
+                  name="startHourRange"
+                  inputval="6"
+                  inputStyle="form-select"
+                  datafield="startHourRange"
+                  options={[
+                    { value: "0", label: "0 hour" },
+                    { value: "6", label: "-6 hours" },
+                    { value: "12", label: "-12 hours" },
+                    { value: "24", label: "-24 hours" },
+                    { value: "48", label: "-48 hours" },
+                    { value: "96", label: "-96 hours" }
+                  ]}
+                  callback={cb}
+                  alt="Hour range (Start)"
+                />
+                <LabelledInput
+                  labelText={<Xl8 xid="vet017">Hour Range (End)</Xl8>}
+                  inputtype="select"
+                  name="endHourRange"
+                  inputval="96"
+                  inputStyle="form-select"
+                  datafield="endHourRange"
+                  options={[
+                    { value: "0", label: "0 hour" },
+                    { value: "6", label: "+6 hours" },
+                    { value: "12", label: "+12 hours" },
+                    { value: "24", label: "+24 hours" },
+                    { value: "48", label: "+48 hours" },
+                    { value: "96", label: "+96 hours" }
+                  ]}
+                  callback={cb}
+                  alt="Hour range (End)"
+                />
+              </>
             )}
           </FilterForm>
         </Col>
