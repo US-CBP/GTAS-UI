@@ -182,7 +182,6 @@ const PNR = props => {
       number: <Xl8 xid="pnr027">Number</Xl8>
     },
     frequentFlyerDetails: {
-      icon: "",
       carrier: <Xl8 xid="pnr028">Airline</Xl8>,
       number: <Xl8 xid="pnr029">Number</Xl8>
     },
@@ -271,7 +270,6 @@ const PNR = props => {
   const frequentFlyerDetails = asArray(data.frequentFlyerDetails).map(ffd => {
     return {
       ...ffd,
-      icon: <LazyImage val={ffd.carrier} type={LK.CARRIER}></LazyImage>,
       key: `FTI${ffd.number} `
     };
   });

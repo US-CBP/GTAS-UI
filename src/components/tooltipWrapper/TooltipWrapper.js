@@ -3,7 +3,7 @@
 // Please see license.txt for details.
 
 import React, { useContext, useState } from "react";
-import { asArray, hasData } from "../../utils/utils";
+import { LK } from "../../utils/constants";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import { LookupContext } from "../../context/data/LookupContext";
 
@@ -14,8 +14,19 @@ const ToolTipWrapper = props => {
   const [toolTipVal, setToolTipVal] = useState("Loading...");
   const [isComplete, setIsComplete] = useState();
   const val = props.data.val;
-  const lkup = props.data.lkup;
+  const type = props.data.lkup;
   const title = props.data.title;
+
+  /**
+   * APB TODO - code handling link carrier values here and in LazyImage is fragile - needs refacking
+   * Need to consolidate the logic and structure the components better, they are currently very leaky
+   */
+  const typeKey = () => {
+    let safeVal = val.length === undefined ? val.props?.children : val;
+    safeVal = type === LK.CARRIER && safeVal.length === 6 ? safeVal.slice(0, 2) : safeVal;
+
+    return safeVal;
+  };
 
   const renderTooltip = props => (
     <Popover {...props}>
@@ -40,15 +51,15 @@ const ToolTipWrapper = props => {
       return;
     }
 
-    getSingleKeyValue(lkup, false, val).then(rec => {
+    getSingleKeyValue(type, false, typeKey()).then(rec => {
       setToolTipVal(rec.title || notFound);
       setIsComplete(true);
     });
   };
 
   const data = {
-    val: val,
-    lookup: lkup,
+    val: typeKey(),
+    lookup: type,
     placement: props.data?.placement || "top",
     show: props.data?.show || 250,
     hide: props.data?.hide || 400
@@ -61,7 +72,7 @@ const ToolTipWrapper = props => {
       onEnter={getToolTipValue}
       overlay={renderTooltip}
     >
-      <span>{data.val}</span>
+      <span>{val}</span>
     </OverlayTrigger>
   );
 };
