@@ -11,6 +11,7 @@ import Main from "../../components/main/Main";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import HitsBadge from "../../components/hitsBadge/HitsBadge";
+import LazyImage from "../../components/lazyImage/LazyImage";
 
 import Xl8 from "../../components/xl8/Xl8";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
@@ -205,7 +206,17 @@ const Flights = props => {
         </RoleAuthenticator>
       )
     },
-    { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl019", "Flight"] },
+    {
+      Accessor: "fullFlightNumber",
+      Xl8: true,
+      Header: ["fl019", "Flight"],
+      Cell: ({ row }) => (
+        <>
+          <LazyImage val={row.original.fullFlightNumber} type={LK.CARRIER}></LazyImage>
+          {row.original.fullFlightNumber}
+        </>
+      )
+    },
     {
       Accessor: "origin",
       Xl8: true,

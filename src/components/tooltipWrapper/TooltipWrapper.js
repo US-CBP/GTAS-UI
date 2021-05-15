@@ -22,6 +22,8 @@ const ToolTipWrapper = props => {
    * Need to consolidate the logic and structure the components better, they are currently very leaky
    */
   const typeKey = () => {
+    if (val === undefined) return "";
+
     let safeVal = val.length === undefined ? val.props?.children : val;
     safeVal = type === LK.CARRIER && safeVal.length === 6 ? safeVal.slice(0, 2) : safeVal;
 

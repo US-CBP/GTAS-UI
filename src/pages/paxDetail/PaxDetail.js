@@ -57,6 +57,7 @@ const PaxDetail = props => {
   const refreshEventNotesCard = () => {
     setEventNoteRefreshKey(new Date());
   };
+
   const tabs = [
     {
       title: <Xl8 xid="pd001">Summary</Xl8>,
