@@ -11,7 +11,7 @@ function BiographicInfo(props) {
   const data = props.data || {};
 
   return (
-    <div className="biographic-info">
+    <div>
       <Link to={`../paxDetail/${data.flightId}/${data.paxId}`}>
         <Row flex="true" no-wrap="true" className="biographic-info-row">
           {data.name}
