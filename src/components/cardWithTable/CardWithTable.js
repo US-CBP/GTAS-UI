@@ -64,20 +64,14 @@ const CardWithTable = props => {
           </>
         </td>
       ) : triggerOverlay ? (
-        <Overlay
-          trigger={triggerOverlay ? ["click", "hover"] : ""}
-          key={key}
-          content={td}
-        >
-          <>
-            {toolTipLKMap[key]?.icon && (
-              <LazyImage val={safeVal} type={toolTipLKMap[key].type}></LazyImage>
-            )}
-            <td className={triggerOverlay ? "as-info" : ""}>
-              {getShortText(td, textDisplayLimit)}
-            </td>
-          </>
-        </Overlay>
+        <>
+          {toolTipLKMap[key]?.icon && (
+            <LazyImage val={safeVal} type={toolTipLKMap[key].type}></LazyImage>
+          )}
+          <Overlay trigger={["click", "hover"]} key={key} content={td}>
+            <td className="as-info">{getShortText(td, textDisplayLimit)}</td>
+          </Overlay>
+        </>
       ) : (
         <td>
           {toolTipLKMap[key]?.icon && (
