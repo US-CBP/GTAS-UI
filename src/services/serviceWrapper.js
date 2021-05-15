@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import {get, put, post, del, putNoId, downloadWrap} from "./genericService";
+import { get, put, post, del, putNoId, downloadWrap } from "./genericService";
 import BASE_URL, {
   BASEFILEHEADER,
   BASEHEADER,
@@ -205,7 +205,7 @@ export const attachment = {
     },
     download: (attachmentId, fileName) => {
       const path = DOWNLOADATTACHMENT + `?attachmentId=${attachmentId}`;
-      get(path, BASEFILEHEADER).then(res =>{
+      get(path, BASEFILEHEADER).then(res => {
         downloadWrap(res, fileName);
       });
       //window.open(path, "_self");
@@ -216,10 +216,6 @@ export const attachment = {
     return del(ATTACHMENTS, BASEHEADER, attachmentId);
   }
 };
-
-// export const airportLookup = { get: () => get(CODES_AIRPORT_LK, BASEHEADER) };
-// export const countryLookup = { get: () => get(CODES_COUNTRY_LK, BASEHEADER) };
-// export const carrierLookup = { get: () => get(CODES_CARRIER_LK, BASEHEADER) };
 
 export const login = {
   post: body => {
@@ -323,7 +319,7 @@ export const manualHit = {
 export const logfile = {
   get: (id, params) => get(LOGFILE, BASEHEADER, id, params),
   download: (params, fileName) => {
-    get(LOGFILE+params, BASEHEADER).then(res=>{
+    get(LOGFILE + params, BASEHEADER).then(res => {
       downloadWrap(res, fileName);
     });
     //window.open(LOGFILE + params, "_self")

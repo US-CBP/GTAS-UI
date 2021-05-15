@@ -49,6 +49,7 @@ const FlightHistory = props => {
       flight.fullFlightNumber
     );
   };
+
   const parseFlightData = dataArray => {
     return dataArray.map(data => {
       return {
@@ -71,7 +72,6 @@ const FlightHistory = props => {
 
     paxFullTravelHistory.get(props.flightId, props.paxId).then(res => {
       const historyData = asArray(res).sort(sortFlightByEta);
-
       const data = parseFlightData(historyData);
 
       setFullTravelHistory(data);
@@ -84,20 +84,18 @@ const FlightHistory = props => {
 
   return (
     <div className="one-column-container">
-      <CardColumns>
+      <div className="grid-single-col">
         <CardWithTable
           data={currentFlightHistory}
           headers={headers}
-          className="pd-gridstack-2 flex-grow-0"
           title={<Xl8 xid="fh009">Current Itinerary</Xl8>}
         />
         <CardWithTable
           data={fullTravelHistory}
           headers={headers}
-          className="pd-gridstack-2 flex-grow-1"
           title={<Xl8 xid="fh010">Total Flight History</Xl8>}
         />
-      </CardColumns>
+      </div>
     </div>
   );
 };
