@@ -8,7 +8,8 @@
   height: 25px;
   width: 30px;
   border-radius: 5px;
-  vertical-align: unset;
+  border: 1px solid white;
+  line-height: 25px;
 }
 
 .lazy-image-wrapper {
@@ -21,8 +22,14 @@
   margin-right: 10px;
   vertical-align: inherit;
   margin-left: 8px;
+  line-height: 25px;
 }
 
 .flight-badge-nonlink-icon img {
   background-color: white;
+}
+
+.flight-badge .lazy-image-wrapper {
+  line-height: 30px;
+  vertical-align: text-top;
 }
