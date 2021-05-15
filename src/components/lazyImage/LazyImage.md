@@ -4,24 +4,18 @@
  Please see license.txt for details.
 -->
 
-**FlightsBadge is a formatted block of basic flight data **
+** LazyImage handles lazy loading of images in the public folder under root **
 
-Actual formatting is TBD
+It currently handles images for the LK types defined in /utils/constants. The type prop
+must resolve to one of the LK types, currently "carrier" or "country", and the key must resolve
+to the id field of the type, eg the IATA code.
 
 FlightBadge example:
 
 ```js
-<section className="section card message is-warning">
-  <div>
-    <FlightBadge
-      origin="IAD"
-      destination="OOD"
-      flightNumber="UA0038"
-      eta="11/14/94"
-      etd="01/23/2019"
-    />
-  </div>
-</section>
+<div>
+  <LazyImage val="UA" type="carrier"></LazyImage>
+</div>
 ```
 
 ---

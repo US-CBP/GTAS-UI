@@ -4,7 +4,6 @@
 
 import React, { useEffect, useState } from "react";
 import Xl8 from "../../../components/xl8/Xl8";
-import { CardColumns } from "react-bootstrap";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { paxFlightHistory, paxFullTravelHistory } from "../../../services/serviceWrapper";
 import { asArray, hasData, localeDate } from "../../../utils/utils";
