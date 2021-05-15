@@ -5,6 +5,8 @@
 import React from "react";
 import { Link } from "@reach/router";
 import { Row } from "react-bootstrap";
+import LazyImage from "../../../components/lazyImage/LazyImage";
+import { LK } from "../../../utils/constants";
 import "./BiographicInfo.scss";
 
 function BiographicInfo(props) {
@@ -21,6 +23,7 @@ function BiographicInfo(props) {
         </Row>
         <Row flex="true" no-wrap="true" className="biographic-info-row">
           {`${data.document} / ${data.nationality}`}
+          <LazyImage type={LK.COUNTRY} val={data.nationality}></LazyImage>
         </Row>
       </Link>
     </div>

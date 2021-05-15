@@ -2,9 +2,8 @@
 //
 // Please see license.txt for details.
 
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { LK } from "../../utils/constants";
-// import { localeMonthDayTime, hasData, alt, asArray } from "../../utils/utils";
 import LazyLoad from "react-lazyload";
 import "./LazyImage.scss";
 
@@ -21,10 +20,9 @@ const LazyImage = ({ val, type }) => {
   cleanVal =
     type === LK.CARRIER && cleanVal.length === 6 ? cleanVal.slice(0, 2) : cleanVal;
 
-  // console.log(cleanVal);
   useEffect(() => {
     setSrc(`${process.env.PUBLIC_URL}/flags/${type}/${cleanVal}.${extension}`);
-  }, [cleanVal]);
+  }, [val]);
 
   return (
     <>
