@@ -27,7 +27,7 @@ import {
   lpad5,
   sortableDob
 } from "../../utils/utils";
-import { LK, ROLE } from "../../utils/constants";
+import { LK, ROLE, DIRECTION } from "../../utils/constants";
 import { Col, Tabs, Tab } from "react-bootstrap";
 import "./FlightPax.css";
 
@@ -329,7 +329,7 @@ const FlightPax = props => {
                   <td className="left">
                     <Xl8 xid="fp006">Direction:</Xl8>
                   </td>
-                  <td className="right">{flightData.direction}</td>
+                  <td className="right">{DIRECTION[flightData.direction]}</td>
                 </tr>
                 <tr className="flightpax-row">
                   <td className="left">

@@ -42,6 +42,12 @@ export const HIT_STATUS = {
   REOPENED: "Re_opened"
 };
 
+export const DIRECTION = {
+  I: "Inbound",
+  O: "Outbound",
+  C: "Continuance"
+};
+
 export const ROLE = {
   ADMIN: "Admin",
   QRYMGR: "Manage Queries",

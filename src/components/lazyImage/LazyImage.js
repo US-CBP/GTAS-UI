@@ -28,9 +28,11 @@ const LazyImage = ({ val, type }) => {
 
   return (
     <>
-      <LazyLoad height={25} offset={100} overflow className="lazy-image-wrapper">
-        <img alt={cleanVal} src={src} className="lazy-image" />
-      </LazyLoad>
+      {cleanVal && (
+        <LazyLoad height={25} offset={100} overflow className="lazy-image-wrapper">
+          <img alt={cleanVal} src={src} className="lazy-image" />
+        </LazyLoad>
+      )}
     </>
   );
 };

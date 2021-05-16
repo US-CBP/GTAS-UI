@@ -610,3 +610,7 @@ li .rtf--ab__c button[variant="rtf-red"] {
   color: #212529;
   text-decoration: underline;
 }
+
+.table-hover tbody tr:hover {
+  background-color: #74c0e035 !important;
+}
