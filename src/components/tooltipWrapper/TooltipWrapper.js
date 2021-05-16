@@ -6,6 +6,7 @@ import React, { useContext, useState } from "react";
 import { LookupContext } from "../../context/data/LookupContext";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import { LK } from "../../utils/constants";
+import { hasData } from "../../utils/utils";
 
 const ToolTipWrapper = props => {
   const className = props?.className || "overlay-content";
@@ -22,7 +23,7 @@ const ToolTipWrapper = props => {
    * Need to consolidate the logic and structure the components better, they are currently very leaky
    */
   const typeKey = () => {
-    if (val === undefined) return "";
+    if (!hasData(val)) return "";
 
     let safeVal = val.length === undefined ? val.props?.children : val;
     safeVal = type === LK.CARRIER && safeVal.length === 6 ? safeVal.slice(0, 2) : safeVal;
