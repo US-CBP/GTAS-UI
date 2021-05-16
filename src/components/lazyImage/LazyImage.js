@@ -3,9 +3,11 @@
 // Please see license.txt for details.
 
 import React, { useState, useEffect } from "react";
+import Overlay from "../overlay/Overlay";
+import LazyLoad from "react-lazyload";
+import { Popover, OverlayTrigger } from "react-bootstrap";
 import { LK } from "../../utils/constants";
 import { alt } from "../../utils/utils";
-import LazyLoad from "react-lazyload";
 import "./LazyImage.scss";
 
 const LazyImage = ({ val, type }) => {
@@ -30,7 +32,20 @@ const LazyImage = ({ val, type }) => {
     <>
       {cleanVal && (
         <LazyLoad height={25} offset={100} overflow className="lazy-image-wrapper">
-          <img alt={cleanVal} src={src} className="lazy-image" />
+          <OverlayTrigger
+            trigger={["click"]}
+            rootClose
+            placement={"top"}
+            overlay={
+              <Popover>
+                <Popover.Content className="lazy-image-full">
+                  <img alt={cleanVal} src={src} />
+                </Popover.Content>
+              </Popover>
+            }
+          >
+            <img alt={cleanVal} src={src} className="lazy-image" />
+          </OverlayTrigger>
         </LazyLoad>
       )}
     </>

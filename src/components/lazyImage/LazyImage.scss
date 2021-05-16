@@ -12,6 +12,14 @@
   line-height: 25px;
 }
 
+.lazy-image-full img {
+  background: no-repeat center center;
+  background-size: cover;
+  height: 60px;
+  width: 80px;
+  border-radius: 5px;
+}
+
 .lazy-image-wrapper {
   margin-top: 0px;
   margin-bottom: 0px;
@@ -37,4 +45,16 @@
 .flight-badge.sm .lazy-image-wrapper {
   line-height: 25px;
   vertical-align: baseline;
+}
+
+.lazy-image-wrapper:hover {
+  box-shadow: 4px 3px 5px #545b62;
+}
+
+.lazy-image:hover {
+  background-color: white;
+}
+
+a .lazy-image-wrapper:hover {
+  box-shadow: unset;
 }
