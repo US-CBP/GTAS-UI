@@ -72,6 +72,7 @@ const Stepper = props => {
                 key={index}
               >
                 <ToolTipWrapper
+                  className="overlay-content-light"
                   data={{ val: step.label, lkup: LK.AIRPORT }}
                 ></ToolTipWrapper>
               </li>

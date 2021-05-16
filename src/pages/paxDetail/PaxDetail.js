@@ -6,6 +6,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../context/user/UserContext";
 import Tabs from "../../components/tabs/Tabs";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
+import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import { Col } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
@@ -226,7 +227,23 @@ const PaxDetail = props => {
         <Col className="notopmargin">
           <div className="filterform-container form">
             {isLoading && isStepperLoading && <Loading></Loading>}
-            {!isLoading && <PaxInfo pax={pax}></PaxInfo>}
+            {hasData(flightBadge) && !isLoading && (
+              <div className="flightpax-countdown-container">
+                <CountdownBadge
+                  future={
+                    flightBadge.direction === "O" ? flightBadge.etd : flightBadge.eta
+                  }
+                  baseline={Date.now()}
+                  direction={flightBadge.direction}
+                ></CountdownBadge>
+              </div>
+            )}
+            {!isLoading && (
+              <>
+                <br />
+                <PaxInfo pax={pax}></PaxInfo>
+              </>
+            )}
             {!isStepperLoading && hasData(flightLegsSegmentData) && (
               <Stepper steps={flightLegsSegmentData} />
             )}

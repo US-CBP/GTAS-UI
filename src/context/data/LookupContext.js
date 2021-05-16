@@ -396,7 +396,7 @@ const LookupProvider = ({ children }) => {
                 fave: item.favorite
               };
             return {
-              title: `${item[fields[1]]} ${item[fields[0]]}`,
+              title: `${item[fields[1]]} - ${item[fields[0]]}`,
               value: item[fields[1]],
               arch: item.archived,
               fave: item.favorite

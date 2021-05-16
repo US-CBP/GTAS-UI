@@ -4,25 +4,27 @@
 
 import React, { useState, useEffect } from "react";
 import { LK } from "../../utils/constants";
+import { alt } from "../../utils/utils";
 import LazyLoad from "react-lazyload";
 import "./LazyImage.scss";
 
 const LazyImage = ({ val, type }) => {
   const extension = type === LK.COUNTRY ? "svg" : "png";
   const [src, setSrc] = useState();
+  const altVal = alt(val);
 
   /**
    * APB TODO - code handling link carrier values here and in Tooltipwrap is fragile - needs refacking
    * Need to consolidate the logic and structure the components better (also cardwithtable), they are currently very leaky
    */
   // if we receive the full flight number for a carrier, eg UA1010, extract the carrier code
-  let cleanVal = val.length === undefined ? val.props?.children : val;
+  let cleanVal = altVal.length === undefined ? altVal.props?.children : altVal;
   cleanVal =
     type === LK.CARRIER && cleanVal.length === 6 ? cleanVal.slice(0, 2) : cleanVal;
 
   useEffect(() => {
     setSrc(`${process.env.PUBLIC_URL}/flags/${type}/${cleanVal}.${extension}`);
-  }, [val]);
+  }, []);
 
   return (
     <>

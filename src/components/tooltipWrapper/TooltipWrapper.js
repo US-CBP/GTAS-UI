@@ -3,9 +3,9 @@
 // Please see license.txt for details.
 
 import React, { useContext, useState } from "react";
-import { LK } from "../../utils/constants";
-import { OverlayTrigger, Popover } from "react-bootstrap";
 import { LookupContext } from "../../context/data/LookupContext";
+import { OverlayTrigger, Popover } from "react-bootstrap";
+import { LK } from "../../utils/constants";
 
 const ToolTipWrapper = props => {
   const className = props?.className || "overlay-content";
@@ -62,9 +62,9 @@ const ToolTipWrapper = props => {
   const data = {
     val: typeKey(),
     lookup: type,
-    placement: props.data?.placement || "top",
-    show: props.data?.show || 250,
-    hide: props.data?.hide || 400
+    placement: props.data?.placement || "top"
+    // show: props.data?.show || 250,
+    // hide: props.data?.hide || 400
   };
 
   return (
@@ -74,7 +74,7 @@ const ToolTipWrapper = props => {
       onEnter={getToolTipValue}
       overlay={renderTooltip}
     >
-      <span>{val}</span>
+      <span className="as-info">{val}</span>
     </OverlayTrigger>
   );
 };

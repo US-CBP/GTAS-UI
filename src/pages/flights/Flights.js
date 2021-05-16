@@ -12,12 +12,8 @@ import SidenavContainer from "../../components/sidenavContainer/SidenavContainer
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import HitsBadge from "../../components/hitsBadge/HitsBadge";
 import LazyImage from "../../components/lazyImage/LazyImage";
-
 import Xl8 from "../../components/xl8/Xl8";
-import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { UserContext } from "../../context/user/UserContext";
-
-import { Link } from "@reach/router";
 import { flights } from "../../services/serviceWrapper";
 import { hasData, alt, localeDate, asArray, aboveZero, lpad5 } from "../../utils/utils";
 import { TIME, ROLE, LK } from "../../utils/constants";
@@ -194,17 +190,7 @@ const Flights = props => {
     {
       Accessor: "passengerCount",
       Xl8: true,
-      Header: ["fl018", "Passengers"],
-      Cell: ({ row }) => (
-        <RoleAuthenticator
-          alt={row.original.passengerCount}
-          roles={[ROLE.ADMIN, ROLE.PAXVWR]}
-        >
-          <Link to={"../flightpax/" + row.original.id}>
-            {row.original.passengerCount}
-          </Link>
-        </RoleAuthenticator>
-      )
+      Header: ["fl018", "Passengers"]
     },
     {
       Accessor: "fullFlightNumber",
@@ -257,10 +243,6 @@ const Flights = props => {
   }, [hitData, tab]);
 
   useEffect(() => {
-    // const distinctAirports = [
-    //   ...new Set(allData.map(d => d.origin).concat(allData.map(d => d.destination)))
-    // ];
-
     getCachedCoreFields(LK.AIRPORT, false).then(res => {
       if (!hasData(airportFaves) || res?.length > airportFaves.length) {
         const resOrInitial = hasData(res) ? res : [{}];

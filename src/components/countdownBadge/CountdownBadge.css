@@ -5,14 +5,6 @@
  */
 
 .cdb-row {
-  /* margin: unset !important;
-  white-space: nowrap;
-  border-radius: 5px;
-  padding-left: 4px;
-  float: right;
-  display: block;
-  flex-wrap: nowrap !important;
-   */
   margin: unset !important;
   white-space: nowrap;
   border-radius: 0.5rem;
@@ -33,14 +25,17 @@
 
 .cdb-orange {
   background-color: #ffc107;
+  color: black;
 }
 
 .cdb-yellow {
   background-color: #ffeb3b;
+  color: black;
 }
 
 .cdb-green {
   background-color: #a7ff6d;
+  color: black;
 }
 
 .cdb-gray {
@@ -99,4 +94,8 @@
 
 .big-badge {
   font-size: 16px !important;
+}
+
+.filter .cdb-row {
+  display: inline-block;
 }
