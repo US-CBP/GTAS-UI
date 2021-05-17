@@ -10,12 +10,16 @@
   border-top: 1px solid white;
   border-bottom: 1px solid white;
   margin: 0px;
-  padding: 10px 5px;
+  padding: 8px 5px 5px 5px;
   color: white;
 
   .flight-number {
     font-weight: 700;
-    align-items: center;
+    justify-content: space-between;
+    vertical-align: bottom;
+    background-color: white;
+    border-radius: 3px;
+    margin: 0px 24px;
   }
 
   .flight-badge-row {
@@ -33,6 +37,7 @@
   .flight-text {
     font-size: large;
     font-weight: 501;
+    margin-top: 5px;
 
     .table {
       display: inline-table;
@@ -78,9 +83,7 @@
 
 .flight-badge .link {
   background-color: white;
-  padding: 3px;
   border-radius: 0.25rem;
-  padding-right: 10px;
 }
 
 .flight-badge .link:hover {

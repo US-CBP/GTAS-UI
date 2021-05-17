@@ -22,16 +22,22 @@ const FlightBadge = props => {
     arrival: [res.flightDestination, ...localeMonthDayTime(res.eta).split(",")],
     departure: [res.flightOrigin, ...localeMonthDayTime(res.etd).split(",")],
     flightNumber: res.flightNumberHasLink ? (
-      <Link to={"/gtas/flightpax/" + res.flightId} className="link" state={{ data: res }}>
+      <>
         <LazyImage val={res.carrier} type={LK.CARRIER}></LazyImage>
-        {res.flightNumber}
-      </Link>
+        <Link
+          to={"/gtas/flightpax/" + res.flightId}
+          className="link"
+          state={{ data: res }}
+        >
+          {res.flightNumber}
+        </Link>
+      </>
     ) : (
       <>
         <span className="flight-badge-nonlink-icon">
           <LazyImage val={res.carrier} type={LK.CARRIER}></LazyImage>
+          {res.flightNumber}
         </span>
-        {res.flightNumber}
       </>
     )
   };
