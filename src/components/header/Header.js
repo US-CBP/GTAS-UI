@@ -23,7 +23,7 @@ import {
   Button,
   InputGroup
 } from "react-bootstrap";
-import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
+import wcoLogo from "../../images/WCO_GTAS_header_brand_sm.png";
 import "./Header.scss";
 
 const Header = () => {
