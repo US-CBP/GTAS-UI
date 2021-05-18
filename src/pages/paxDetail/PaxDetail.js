@@ -224,7 +224,7 @@ const PaxDetail = props => {
       <SidenavContainer>
         <br />
         {hasData(flightBadge) && <FlightBadge data={flightBadge}></FlightBadge>}
-        <Col className="notopmargin">
+        <Col className="notopmargin below-badge">
           <div className="filterform-container form">
             {isLoading && isStepperLoading && <Loading></Loading>}
             {hasData(flightBadge) && !isLoading && (

@@ -312,7 +312,7 @@ const FlightPax = props => {
       <SidenavContainer>
         <br />
         <FlightBadge data={badgeData}></FlightBadge>
-        <Col className="notopmargin">
+        <Col className="notopmargin below-badge">
           <div className="filterform-container form">
             <div className="flightpax-countdown-container">
               <CountdownBadge

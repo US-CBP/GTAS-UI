@@ -66,19 +66,19 @@ $wco-info: #009e9288;
 
 .sidenav-background1 {
   background: linear-gradient(#40403f, #40403fdd, #40403f22),
-    url("../../images/1.jpg") -550px center no-repeat;
+    url("../../images/1.jpg") center no-repeat;
   background-size: cover;
 }
 
 .sidenav-background2 {
   background: linear-gradient(#40403f, #40403fdd, #40403f22),
-    url("../../images/2.jpg") -600px center no-repeat;
+    url("../../images/2.jpg") bottom center no-repeat;
   background-size: cover;
 }
 
 .sidenav-background3 {
   background: linear-gradient(#40403f, #40403fdd, #40403f22),
-    url("../../images/3.jpg") no-repeat -900px;
+    url("../../images/3.jpg") bottom right no-repeat;
   background-size: cover;
 }
 
@@ -134,6 +134,13 @@ hr {
 
 .notopmargin {
   margin-top: 0px !important;
+  height: 100%;
+  overflow-y: auto;
+  overflow: overlay;
+}
+
+.below-badge {
+  max-height: calc(100vh - 215px);
 }
 
 .dropdown-content > .panel-content > .select-panel > ul > li > label > .item-renderer {
