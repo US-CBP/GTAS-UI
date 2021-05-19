@@ -54,6 +54,7 @@ const PaxDetail = props => {
   const [paxDocuments, setPaxDocuments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isStepperLoading, setIsStepperLoading] = useState(false);
+  const nullSeat = "N/A";
 
   const refreshEventNotesCard = () => {
     setEventNoteRefreshKey(new Date());
@@ -133,15 +134,19 @@ const PaxDetail = props => {
   };
 
   const paxinfoData = res => {
-    if(res.seats === null){
-      res.seats = "";
+    if(!hasData(res.seats)){
+      res.seats = nullSeat;
     } else {
       let sts = "";
       res.seats.forEach((elem, idx) => {
         if(idx != res.seats.length-1) {
           sts = sts + elem + ", ";
         } else{
-          sts = sts + elem;
+          if(!hasData(elem)){
+            sts = sts + nullSeat;
+          } else {
+            sts = sts + elem;
+          }
         }
       })
       res.seats = sts;
