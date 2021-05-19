@@ -199,7 +199,12 @@ const Flights = props => {
       Cell: ({ row }) => (
         <>
           <LazyImage val={row.original.fullFlightNumber} type={LK.CARRIER}></LazyImage>
-          {row.original.fullFlightNumber}
+          <ToolTipWrapper
+            data={{
+              val: row.original.fullFlightNumber,
+              lkup: LK.CARRIER
+            }}
+          ></ToolTipWrapper>
         </>
       )
     },
