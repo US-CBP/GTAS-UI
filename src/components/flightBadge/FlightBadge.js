@@ -5,7 +5,6 @@
 import React from "react";
 import { localeMonthDayTime, hasData, alt } from "../../utils/utils";
 import { Row } from "react-bootstrap";
-// import { LookupContext } from "../../context/data/LookupContext";
 import { Link } from "@reach/router";
 import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 import LazyImage from "../../components/lazyImage/LazyImage";
@@ -23,7 +22,9 @@ const FlightBadge = props => {
     departure: [res.flightOrigin, ...localeMonthDayTime(res.etd).split(",")],
     flightNumber: res.flightNumberHasLink ? (
       <>
-        <LazyImage val={res.carrier} type={LK.CARRIER}></LazyImage>
+        <span className="flight-badge-nonlink-icon nozoom">
+          <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
+        </span>
         <Link
           to={"/gtas/flightpax/" + res.flightId}
           className="link"
@@ -33,12 +34,10 @@ const FlightBadge = props => {
         </Link>
       </>
     ) : (
-      <>
-        <span className="flight-badge-nonlink-icon">
-          <LazyImage val={res.carrier} type={LK.CARRIER}></LazyImage>
-          {res.flightNumber}
-        </span>
-      </>
+      <span className="flight-badge-nonlink-icon nozoom">
+        <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
+        {res.flightNumber}
+      </span>
     )
   };
 

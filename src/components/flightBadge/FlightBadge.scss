@@ -93,3 +93,29 @@
 .filter .as-info {
   color: white;
 }
+
+.vetting .flight-badge.sm {
+  text-align: center !important;
+  border-radius: 0.25rem;
+  background-color: transparent;
+  border: none;
+  padding: 5px;
+
+  .flight-number {
+    color: black;
+    font-size: larger;
+  }
+
+  .flight-badge-row {
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    margin-right: unset;
+    margin-left: unset;
+
+    .width40 {
+      width: 40px;
+    }
+  }
+}

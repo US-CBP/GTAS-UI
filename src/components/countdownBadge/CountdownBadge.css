@@ -79,5 +79,5 @@
 }
 
 .filter .cdb-row {
-  display: inline-block;
+  display: inline-block !important;
 }
