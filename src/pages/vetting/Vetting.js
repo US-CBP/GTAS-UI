@@ -14,6 +14,7 @@ import FlightBadge from "../../components/flightBadge/FlightBadge";
 import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
+import CarrierBadge from "../../components/carrierBadge/CarrierBadge";
 import Overlay from "../../components/overlay/Overlay";
 import Confirm from "../../components/confirmationModal/Confirm";
 import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
@@ -167,16 +168,21 @@ const Vetting = props => {
       }
     },
     {
+      Accessor: "carrier",
+      Xl8: true,
+      Header: ["wl029", "Carrier"],
+      Cell: ({ row }) => <CarrierBadge src={row.original.flightNumber}></CarrierBadge>
+    },
+    {
       Accessor: "flightNumber",
       Xl8: true,
       Header: ["wl019", "Flight ID"],
       Cell: ({ row }) => (
-        <>
+        <div className="vetting">
           <FlightBadge
             data={{
               flightNumber: row.original.flightNumber,
               fullFlightNumber: row.original.flightNumber,
-              carrier: row.original.flightNumber.slice(0, 2),
               flightOrigin: row.original.flightOrigin,
               flightDestination: row.original.flightDestination,
               eta: row.original.flightETADate,
@@ -184,7 +190,7 @@ const Vetting = props => {
             }}
             className="sm"
           ></FlightBadge>
-        </>
+        </div>
       )
     },
     {
@@ -268,6 +274,7 @@ const Vetting = props => {
   const setDataWrapper = data => {
     data = asArray(data.cases).map(item => {
       item.id = item.id || `${item.flightId}${item.paxId}`;
+      item.carrier = item.flightNumber.slice(0, 2);
       item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
         item.medPrioHitCount
       )}:${lpad5(item.lowPrioHitCount)}`;
