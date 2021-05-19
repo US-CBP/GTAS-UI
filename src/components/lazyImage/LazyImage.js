@@ -3,35 +3,36 @@
 // Please see license.txt for details.
 
 import React, { useState, useEffect } from "react";
-import Overlay from "../overlay/Overlay";
 import LazyLoad from "react-lazyload";
 import { Popover, OverlayTrigger } from "react-bootstrap";
 import { LK } from "../../utils/constants";
 import { alt } from "../../utils/utils";
 import "./LazyImage.scss";
 
-const LazyImage = ({ val, type }) => {
+const LazyImage = ({ val, type, size, nozoom }) => {
   const extension = type === LK.COUNTRY ? "svg" : "png";
   const [src, setSrc] = useState();
   const altVal = alt(val);
+  const zoomEnabled = !nozoom; // enabled by default
+  const placeholderHeight = size || 25;
 
   /**
    * APB TODO - code handling link carrier values here and in Tooltipwrap is fragile - needs refacking
    * Need to consolidate the logic and structure the components better (also cardwithtable), they are currently very leaky
    */
   // if we receive the full flight number for a carrier, eg UA1010, extract the carrier code
-  let cleanVal = altVal.length === undefined ? altVal.props?.children : altVal;
-  cleanVal =
-    type === LK.CARRIER && cleanVal.length === 6 ? cleanVal.slice(0, 2) : cleanVal;
+  let dataReady = altVal.length === undefined ? altVal.props?.children : altVal;
+  dataReady =
+    type === LK.CARRIER && dataReady.length === 6 ? dataReady.slice(0, 2) : dataReady;
 
   useEffect(() => {
-    setSrc(`${process.env.PUBLIC_URL}/flags/${type}/${cleanVal}.${extension}`);
+    setSrc(`${process.env.PUBLIC_URL}/flags/${type}/${dataReady}.${extension}`);
   }, []);
 
   return (
     <>
-      {cleanVal && (
-        <LazyLoad height={25} offset={100} overflow className="lazy-image-wrapper">
+      {dataReady && zoomEnabled && (
+        <LazyLoad height={placeholderHeight} overflow className="lazy-image-wrapper">
           <OverlayTrigger
             trigger={["click"]}
             rootClose
@@ -39,13 +40,18 @@ const LazyImage = ({ val, type }) => {
             overlay={
               <Popover>
                 <Popover.Content className="lazy-image-full">
-                  <img alt={cleanVal} src={src} />
+                  <img alt={dataReady} src={src} />
                 </Popover.Content>
               </Popover>
             }
           >
-            <img alt={cleanVal} src={src} className="lazy-image" />
+            <img alt={dataReady} src={src} className="lazy-image" />
           </OverlayTrigger>
+        </LazyLoad>
+      )}
+      {dataReady && !zoomEnabled && (
+        <LazyLoad height={placeholderHeight} overflow className="lazy-image-wrapper">
+          <img alt={dataReady} src={src} className="lazy-image" />
         </LazyLoad>
       )}
     </>

@@ -307,6 +307,7 @@ const FlightPax = props => {
     eta: flightData.eta,
     etd: flightData.etd
   };
+
   return (
     <>
       <SidenavContainer>

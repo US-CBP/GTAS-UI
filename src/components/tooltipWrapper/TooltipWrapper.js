@@ -40,7 +40,7 @@ const ToolTipWrapper = props => {
   /** Set the tooltip display text on mouseover if it hasn't already been set. The title should be passed in by the parent,
    * which should fetch on load to get all values for the page at once. For cases where the parent doesn't do the initial
    * fetch or where the initial fetch didn't include this record (eg, it has only records where favorite = true, but this record
-   * isn't marked favorite yet), we can do a onesie fetch here with getSingleKeyValue() on the first mouseover and redisplay
+   * isn't marked favorite yet), we can do a onesie fetch here with getSingleKeyValue() on the first mouseover and cache
    * that value until this tooltip goes out of scope.
    *
    * Note that getSingleKeyValue() automatically marks fetched records as favorite in indexeddb so they will be included all
@@ -64,14 +64,11 @@ const ToolTipWrapper = props => {
     val: typeKey(),
     lookup: type,
     placement: props.data?.placement || "top"
-    // show: props.data?.show || 250,
-    // hide: props.data?.hide || 400
   };
 
   return (
     <OverlayTrigger
       placement={data.placement}
-      delay={{ show: data.show, hide: data.hide }}
       onEnter={getToolTipValue}
       overlay={renderTooltip}
     >
