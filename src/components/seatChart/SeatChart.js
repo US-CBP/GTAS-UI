@@ -49,12 +49,16 @@ const SeatChart = ({ location }) => {
     const row = [];
     columnWithReservedSeat.forEach(col => {
       const seatNumber = `${col}${letter}`;
+      let isSelected = false;
+      currentPaxSeat.split(",").forEach(seatNum =>{
+        if(seatNum.trim() === seatNumber){isSelected = true};
+      });
       row.push(
         <Seat
           ref={seat => (seatRefs.current[seatNumber] = seat)}
           seatNumber={seatNumber}
           seatInfo={reservedSeatsInfo[seatNumber]}
-          selected={currentPaxSeat === seatNumber}
+          selected={isSelected}
           key={seatNumber}
           className={
             selectedSeatInfo.coTravellers?.includes(seatNumber) ? "co-traveler" : ""
@@ -101,7 +105,7 @@ const SeatChart = ({ location }) => {
   }, []);
 
   useEffect(() => {
-    setSelectedSeatInfo(reservedSeatsInfo[currentPaxSeat] || {});
+    setSelectedSeatInfo(reservedSeatsInfo[currentPaxSeat.split(",")[0]] || {});
   }, [reservedSeatsInfo]);
 
   const flightInfoData = [

@@ -135,6 +135,16 @@ const PaxDetail = props => {
   const paxinfoData = res => {
     if(res.seats === null){
       res.seats = "";
+    } else {
+      let sts = "";
+      res.seats.forEach((elem, idx) => {
+        if(idx != res.seats.length-1) {
+          sts = sts + elem + ", ";
+        } else{
+          sts = sts + elem;
+        }
+      })
+      res.seats = sts;
     }
     return {
       lastPnrReceived: res.pnrVo?.transmissionDate,
@@ -147,7 +157,7 @@ const PaxDetail = props => {
       gender: res.gender,
       nationality: res.nationality,
       residenceCountry: res.residenceCountry,
-      seat: res.seats[0],
+      seat: res.seats,
       eta: res.eta,
       etd: res.etd,
       flightId: props.flightId,
