@@ -181,35 +181,19 @@ const Flights = props => {
         ></CountdownBadge>
       )
     },
-    {
-      Accessor: "eta",
-      Xl8: true,
-      Header: ["fl010", "Arrival"],
-      Cell: ({ row }) => localeDate(row.original.eta)
-    },
+    { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl019", "Flight"] },
     {
       Accessor: "etd",
       Xl8: true,
       Header: ["fl011", "Departure"],
       Cell: ({ row }) => localeDate(row.original.etd)
     },
-    ...arrayHeaderFixer,
     {
-      Accessor: "passengerCount",
+      Accessor: "eta",
       Xl8: true,
-      Header: ["fl018", "Passengers"],
-      Cell: ({ row }) => (
-        <RoleAuthenticator
-          alt={row.original.passengerCount}
-          roles={[ROLE.ADMIN, ROLE.PAXVWR]}
-        >
-          <Link to={"../flightpax/" + row.original.id}>
-            {row.original.passengerCount}
-          </Link>
-        </RoleAuthenticator>
-      )
+      Header: ["fl010", "Arrival"],
+      Cell: ({ row }) => localeDate(row.original.eta)
     },
-    { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl019", "Flight"] },
     {
       Accessor: "origin",
       Xl8: true,
@@ -232,6 +216,23 @@ const Flights = props => {
             data={{ val: row.original.destination, lkup: LK.AIRPORT }}
           ></ToolTipWrapper>
         </>
+      )
+    },
+
+    ...arrayHeaderFixer,
+    {
+      Accessor: "passengerCount",
+      Xl8: true,
+      Header: ["fl018", "Passengers"],
+      Cell: ({ row }) => (
+        <RoleAuthenticator
+          alt={row.original.passengerCount}
+          roles={[ROLE.ADMIN, ROLE.PAXVWR]}
+        >
+          <Link to={"../flightpax/" + row.original.id}>
+            {row.original.passengerCount}
+          </Link>
+        </RoleAuthenticator>
       )
     },
     { Accessor: "direction", Xl8: true, Header: ["fl022", "Direction"] }
