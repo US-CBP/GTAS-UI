@@ -48,6 +48,7 @@ const Flights = props => {
   const [tab, setTab] = useState("all");
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
+  const [isLoading, setIsLoading] = useState(false);
 
   const hasAnyHits = item => {
     if (
@@ -107,10 +108,12 @@ const Flights = props => {
     setHitData(alt(parsedHits, []));
 
     setTablekey(tablekey + 1);
+    setIsLoading(false);
   };
 
   //TODO: refactor
   const preFetchCallback = fields => {
+    setIsLoading(true);
     const range = +fields["hourRange"] || 96; // default to 96 hours
 
     let etaEnd = new Date();
@@ -367,6 +370,7 @@ const Flights = props => {
           callback={cb}
           stateVals={getTableState}
           stateCb={stateCallback}
+          isLoading={isLoading}
         />
       </Main>
     </>
