@@ -179,138 +179,141 @@ const Table = props => {
     return (
       <>
         <div className="table-main">
-          {showPending && <Loading></Loading>}
-          <RBTable {...getTableProps()} striped bordered hover>
-            <thead>
-              {headerGroups.map((headerGroup, index) => {
-                return (
-                  <Fragment key={index}>
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column, idx) => {
-                        let hdr = column.render("Header");
+          {showPending || props.isLoading ? (
+            <Loading></Loading>
+          ) : (
+            <RBTable {...getTableProps()} striped bordered hover>
+              <thead>
+                {headerGroups.map((headerGroup, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map((column, idx) => {
+                          let hdr = column.render("Header");
 
-                        if (Array.isArray(hdr)) hdr = <Xl8 xid={hdr[0]}>{hdr[1]}</Xl8>;
+                          if (Array.isArray(hdr)) hdr = <Xl8 xid={hdr[0]}>{hdr[1]}</Xl8>;
 
-                        return (
-                          <th className="table-header" key={idx}>
-                            <span
-                              className="table-sort-span"
-                              {...column.getHeaderProps(column.getSortByToggleProps())}
-                            >
-                              {hdr} {column.canSort ? sortIcon(column) : ""}
-                              {props.hasOwnProperty("disableGroupBy") &&
-                              !props.disableGroupBy &&
-                              column.canGroupBy ? (
-                                <span {...column.getGroupByToggleProps()}>
-                                  {props.disableGroupBy ? (
-                                    ""
-                                  ) : column.isGrouped ? (
-                                    <i className="fa fa-object-ungroup"></i>
-                                  ) : (
-                                    <i className="fa fa-object-group"></i>
-                                  )}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </span>
-                          </th>
-                        );
-                      })}
-                    </tr>
-                    {props.enableColumnFilter && displayColumnFilter ? (
-                      <tr>
-                        {headerGroup.headers.map(column => {
                           return (
-                            <th className="table-header" key={column.id}>
-                              <div>
-                                {column.canFilter ? column.render("Filter") : null}
-                              </div>
+                            <th className="table-header" key={idx}>
+                              <span
+                                className="table-sort-span"
+                                {...column.getHeaderProps(column.getSortByToggleProps())}
+                              >
+                                {hdr} {column.canSort ? sortIcon(column) : ""}
+                                {props.hasOwnProperty("disableGroupBy") &&
+                                !props.disableGroupBy &&
+                                column.canGroupBy ? (
+                                  <span {...column.getGroupByToggleProps()}>
+                                    {props.disableGroupBy ? (
+                                      ""
+                                    ) : column.isGrouped ? (
+                                      <i className="fa fa-object-ungroup"></i>
+                                    ) : (
+                                      <i className="fa fa-object-group"></i>
+                                    )}
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
+                              </span>
                             </th>
                           );
                         })}
                       </tr>
-                    ) : null}
-                  </Fragment>
-                );
-              })}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row, i) => {
-                prepareRow(row);
-                const isGroupBy = row.isGrouped;
-                const link = !isGroupBy ? row.original.link : "";
-                const sendRowToLink = !isGroupBy ? row.original.sendRowToLink : "";
-                const linked = link ? "linked" : "";
-                return (
-                  <tr
-                    {...row.getRowProps()}
-                    className={linked}
-                    key={!isGroupBy ? row.original.id : row.groupByVal}
-                  >
-                    {row.cells.map(cell => {
-                      const style = cell.column.className || "";
-                      if (link) {
+                      {props.enableColumnFilter && displayColumnFilter ? (
+                        <tr>
+                          {headerGroup.headers.map(column => {
+                            return (
+                              <th className="table-header" key={column.id}>
+                                <div>
+                                  {column.canFilter ? column.render("Filter") : null}
+                                </div>
+                              </th>
+                            );
+                          })}
+                        </tr>
+                      ) : null}
+                    </Fragment>
+                  );
+                })}
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {page.map((row, i) => {
+                  prepareRow(row);
+                  const isGroupBy = row.isGrouped;
+                  const link = !isGroupBy ? row.original.link : "";
+                  const sendRowToLink = !isGroupBy ? row.original.sendRowToLink : "";
+                  const linked = link ? "linked" : "";
+                  return (
+                    <tr
+                      {...row.getRowProps()}
+                      className={linked}
+                      key={!isGroupBy ? row.original.id : row.groupByVal}
+                    >
+                      {row.cells.map(cell => {
+                        const style = cell.column.className || "";
+                        if (link) {
+                          return (
+                            <td
+                              className={` p-1 ${style}`}
+                              {...cell.getCellProps()}
+                              onClick={() =>
+                                navigate(link, {
+                                  state: { data: getLinkData() }
+                                })
+                              }
+                            >
+                              {cell.render("Cell")}
+                            </td>
+                          );
+                        } else if (sendRowToLink) {
+                          return (
+                            <td
+                              className={` p-1 ${style}`}
+                              {...cell.getCellProps()}
+                              onClick={() =>
+                                navigate(sendRowToLink, {
+                                  state: { data: row.original }
+                                })
+                              }
+                            >
+                              {cell.render("Cell")}
+                            </td>
+                          );
+                        } else if (isGroupBy) {
+                          return (
+                            <td>
+                              {cell.isGrouped ? (
+                                // If it's a grouped cell, add an expander and row count
+                                <>
+                                  <span {...row.getToggleRowExpandedProps()}>
+                                    {row.isExpanded ? "V" : ">"}
+                                  </span>{" "}
+                                  {cell.render("Cell")} ({row.subRows.length})
+                                </>
+                              ) : cell.isAggregated ? (
+                                // If the cell is aggregated, use the Aggregated
+                                // renderer for cell
+                                cell.render("Aggregated")
+                              ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
+                                // Otherwise, just render the regular cell
+                                cell.render("Cell")
+                              )}
+                            </td>
+                          );
+                        }
                         return (
-                          <td
-                            className={` p-1 ${style}`}
-                            {...cell.getCellProps()}
-                            onClick={() =>
-                              navigate(link, {
-                                state: { data: getLinkData() }
-                              })
-                            }
-                          >
+                          <td className={` p-1 ${style}`} {...cell.getCellProps()}>
                             {cell.render("Cell")}
                           </td>
                         );
-                      } else if (sendRowToLink) {
-                        return (
-                          <td
-                            className={` p-1 ${style}`}
-                            {...cell.getCellProps()}
-                            onClick={() =>
-                              navigate(sendRowToLink, {
-                                state: { data: row.original }
-                              })
-                            }
-                          >
-                            {cell.render("Cell")}
-                          </td>
-                        );
-                      } else if (isGroupBy) {
-                        return (
-                          <td>
-                            {cell.isGrouped ? (
-                              // If it's a grouped cell, add an expander and row count
-                              <>
-                                <span {...row.getToggleRowExpandedProps()}>
-                                  {row.isExpanded ? "V" : ">"}
-                                </span>{" "}
-                                {cell.render("Cell")} ({row.subRows.length})
-                              </>
-                            ) : cell.isAggregated ? (
-                              // If the cell is aggregated, use the Aggregated
-                              // renderer for cell
-                              cell.render("Aggregated")
-                            ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
-                              // Otherwise, just render the regular cell
-                              cell.render("Cell")
-                            )}
-                          </td>
-                        );
-                      }
-                      return (
-                        <td className={` p-1 ${style}`} {...cell.getCellProps()}>
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </RBTable>
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </RBTable>
+          )}
 
           <Pagination>
             <Pagination.First onClick={() => gotoPage(0)} disabled={!canPreviousPage}>

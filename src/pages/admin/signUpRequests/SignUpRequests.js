@@ -28,6 +28,7 @@ const SignUpRequests = () => {
   const [variant, setVariant] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [requestId, setRequestId] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const cb = () => {};
   const actions = { REJECT: "Reject", APPROVE: "Approve" };
@@ -35,6 +36,7 @@ const SignUpRequests = () => {
   const setDataWrapper = data => {
     setData(data);
     setRefreshKey(refreshKey + 1);
+    setIsLoading(false);
   };
 
   const handleResponse = (res, actionType) => {
@@ -72,6 +74,7 @@ const SignUpRequests = () => {
   };
 
   const preFetchCallback = params => {
+    setIsLoading(true);
     let parsedParams = "?";
 
     if (hasData(params.username)) parsedParams += "&username=" + params.username;
@@ -208,6 +211,7 @@ const SignUpRequests = () => {
           id="SigUpRequest"
           callback={cb}
           key={refreshKey}
+          isLoading={isLoading}
         ></Table>
 
         <SignUpRequestModal

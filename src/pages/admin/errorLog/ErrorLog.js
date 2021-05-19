@@ -20,6 +20,7 @@ const ErrorLog = ({ name }) => {
   const [refreshKey, setRefreshKey] = useState(1);
   const [filterKey, setFilterKey] = useState(1);
   const [errorCodes, setErrorCodes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const selectAllCodes = "Select All Codes";
   let startDate = new Date();
   let endDate = addMinutes(new Date(), 1);
@@ -52,6 +53,7 @@ const ErrorLog = ({ name }) => {
     }
   ];
   const preFetchCallback = params => {
+    setIsLoading(true);
     let parsedParams = "?";
     if (params) {
       if (params.startDate) {
@@ -88,6 +90,7 @@ const ErrorLog = ({ name }) => {
   const setDataWrapper = res => {
     setData(res);
     setRefreshKey(refreshKey + 1);
+    setIsLoading(false);
   };
 
   return (
@@ -146,6 +149,7 @@ const ErrorLog = ({ name }) => {
           callback={cb}
           header={headers}
           key={refreshKey}
+          isLoading={isLoading}
         ></Table>
       </Main>
     </>

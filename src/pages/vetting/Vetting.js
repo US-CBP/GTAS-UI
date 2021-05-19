@@ -241,6 +241,7 @@ const Vetting = props => {
   const [noteTypes, setNoteTypes] = useState([]);
   const [usersEmails, setUsersEmails] = useState({});
   const [tableKey, setTableKey] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const now = new Date();
   const initialParamState = {
@@ -282,9 +283,11 @@ const Vetting = props => {
     });
     setData(data || []);
     setTableKey(tableKey + 1);
+    setIsLoading(false);
   };
 
   const parameterAdapter = fields => {
+    setIsLoading(true);
     let paramObject = { pageSize: 500, pageNumber: 1 };
     const fieldscopy = Object.assign([], fields);
     delete fieldscopy["showDateTimePicker"];
@@ -555,7 +558,13 @@ const Vetting = props => {
       </SidenavContainer>
       <Main>
         <Title title={<Xl8 xid="vet018">Priority Vetting</Xl8>} uri={props.uri} />
-        <Table data={data} callback={onTableChange} header={Headers} key={tableKey} />
+        <Table
+          data={data}
+          callback={onTableChange}
+          header={Headers}
+          key={tableKey}
+          isLoading={isLoading}
+        />
       </Main>
     </>
   );

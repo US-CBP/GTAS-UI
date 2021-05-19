@@ -102,7 +102,7 @@ const Header = () => {
   return (
     <>
       <Navbar sticky="top" expand="md" className="header-navbar" variant="dark">
-        <Navbar.Brand className="header-navbar-brand">
+        <Navbar.Brand className="header-navbar-brand margin-top-0">
           <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]} alt={<></>}>
             <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
               <img src={wcoLogo} alt="WCO logo" />
@@ -110,12 +110,12 @@ const Header = () => {
           </RoleAuthenticator>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" ref={toggleRef} />
-        <Navbar.Collapse>
+        <Navbar.Collapse className="header-height">
           <Nav variant="tabs" className="left-nav">
             <Nav.Link
               as={Link}
               to="flights"
-              className={`${getActiveClass(htab.FLIGHT)}`}
+              className={`${getActiveClass(htab.FLIGHT)} nav-tab`}
               onClick={() => clickTab(htab.FLIGHT)}
             >
               <Xl8 xid="head001">Flights</Xl8>
@@ -124,7 +124,7 @@ const Header = () => {
               <Nav.Link
                 as={Link}
                 to="vetting"
-                className={`${getActiveClass(htab.VETTING)}`}
+                className={`${getActiveClass(htab.VETTING)} nav-tab`}
                 onClick={() => clickTab(htab.VETTING)}
               >
                 <Xl8 xid="head002">Vetting</Xl8>
@@ -133,7 +133,7 @@ const Header = () => {
             <Nav.Link
               as={Link}
               to="poe"
-              className={`future ${getActiveClass(htab.POE)} optional`}
+              className={`future ${getActiveClass(htab.POE)} optional nav-tab`}
               onClick={() => clickTab(htab.POE)}
             >
               <Xl8 xid="head007">POE</Xl8>
@@ -142,7 +142,7 @@ const Header = () => {
             <Nav.Link
               as={Link}
               to="tools"
-              className={`${getActiveClass(htab.TOOLS)}`}
+              className={`${getActiveClass(htab.TOOLS)} nav-tab`}
               onClick={() => clickTab(htab.TOOLS)}
             >
               <Xl8 xid="head004">Tools</Xl8>
@@ -151,7 +151,7 @@ const Header = () => {
               <Nav.Link
                 as={Link}
                 to="admin"
-                className={`${getActiveClass(htab.ADMIN)}`}
+                className={`${getActiveClass(htab.ADMIN)} nav-tab`}
                 onClick={() => clickTab(htab.ADMIN)}
               >
                 <Xl8 xid="head003">Admin</Xl8>
@@ -159,10 +159,10 @@ const Header = () => {
               <Nav.Link
                 as={Link}
                 to="langEditor"
-                className={`${getActiveClass(htab.LANG)} optional`}
+                className={`${getActiveClass(htab.LANG)} optional nav-tab`}
                 onClick={() => clickTab(htab.LANG)}
               >
-                <i className="fa fa-language mx-sm-1 language-icon"></i>
+                <i className="fa fa-language language-icon"></i>
                 {currentLang}
               </Nav.Link>
             </RoleAuthenticator>
