@@ -9,7 +9,6 @@ import { formatBytes } from "../../utils/utils";
 import { showEstimatedQuota } from "./utils";
 
 const initialState = [];
-const version = 2;
 const lookupDB = "lookupDB";
 const STATUS = {
   SUCCESS: 0,
@@ -25,7 +24,7 @@ const setStorage = (key, val) => {
 
 const db = new Dexie(lookupDB);
 
-db.version(version).stores({
+db.version().stores({
   status: "&id, name",
   airport: "id, name, iata, favorite, archived",
   carrier: "id, name, iata, favorite, archived",
@@ -36,11 +35,11 @@ db.version(version).stores({
   notetype: "id, noteType, archived"
 });
 
-// try {
-//   db.open();
-// } catch (ex) {
-//   console.error("IDB is inaccessible: ", ex);
-// }
+try {
+  db.open();
+} catch (ex) {
+  console.error("IDB is inaccessible: ", ex);
+}
 
 /** Return true for tables with a "favorite" column (currently Carrier and Airport).
  * The favorite col sets the default records to return for tables with large-ish row counts (over 1000)
