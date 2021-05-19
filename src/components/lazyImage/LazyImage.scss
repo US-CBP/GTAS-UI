@@ -76,3 +76,11 @@
 a .lazy-image-wrapper:hover {
   box-shadow: unset;
 }
+
+.lazyload-placeholder {
+  height: 30px;
+}
+
+.nozoom .lazy-image-wrapper:hover {
+  box-shadow: unset;
+}
