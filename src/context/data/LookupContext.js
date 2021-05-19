@@ -47,6 +47,23 @@ db.version(1).stores({
   notetype: "id, noteType, archived"
 });
 
+db.on("versionchange", function(event) {
+  if (
+    window.confirm(
+      "Another page tries to upgrade the database to version " +
+        event.newVersion +
+        ". Accept?"
+    )
+  ) {
+    // Refresh current webapp so that it starts working with newer DB schema.
+    window.location.reload();
+  } else {
+    // Will let user finish its work in this window and
+    // block the other window from upgrading.
+    return false;
+  }
+});
+
 try {
   db.open();
 } catch (ex) {
