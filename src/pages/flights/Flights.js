@@ -178,22 +178,16 @@ const Flights = props => {
       )
     },
     {
-      Accessor: "eta",
-      Xl8: true,
-      Header: ["fl010", "Arrival"],
-      Cell: ({ row }) => localeDate(row.original.eta)
-    },
-    {
       Accessor: "etd",
       Xl8: true,
       Header: ["fl011", "Departure"],
       Cell: ({ row }) => localeDate(row.original.etd)
     },
-    ...arrayHeaderFixer,
     {
-      Accessor: "passengerCount",
+      Accessor: "eta",
       Xl8: true,
-      Header: ["fl018", "Passengers"]
+      Header: ["fl010", "Arrival"],
+      Cell: ({ row }) => localeDate(row.original.eta)
     },
     {
       Accessor: "fullFlightNumber",
@@ -238,6 +232,14 @@ const Flights = props => {
           }}
         ></ToolTipWrapper>
       )
+    },
+
+    ...arrayHeaderFixer,
+    {
+      Accessor: "passengerCount",
+      Xl8: true,
+      Header: ["fl018", "Passengers"],
+      Cell: ({ row }) => row.original.passengerCount
     },
     { Accessor: "direction", Xl8: true, Header: ["fl022", "Direction"] }
   ];
