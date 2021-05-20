@@ -2,294 +2,168 @@
 //
 // Please see license.txt for details.
 
-import React, { useState } from "react";
+import React, {useState} from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
-import { CardDeck } from "react-bootstrap";
-import { randomIntOfLength } from "../../utils/utils";
+import {CardDeck, Col} from "react-bootstrap";
+import {addMinutes, asArray, hasData, randomIntOfLength} from "../../utils/utils";
 import Xl8 from "../../components/xl8/Xl8";
 
 import "./Kanban.css";
+import {poe} from "../../services/serviceWrapper";
+import SidenavContainer from "../sidenavContainer/SidenavContainer";
+import FilterForm from "../filterForm2/FilterForm";
+import LabelledInput from "../labelledInput/LabelledInput";
+import Main from "../../components/main/Main";
+import Title from "../title/Title";
+import Loading from "../../components/loading/Loading";
 
 const Kanban = props => {
-  const randdate = (length = 1) => new Date(Date.now() + randomIntOfLength(length));
+  let startDate = new Date();
+  let endDate = new Date();
+  endDate.setDate(endDate.getDate() + 4);
+  startDate.setHours(startDate.getHours() - 6);
+  const [poeTiles, setPoeTiles] = useState([]);
+  const [showDateTimePicker, setShowDateTimePicker] = useState(false);
+  const [filterFormKey, setFilterFormKey] = useState(0);
+  const [showPending, setShowPending] = useState(true);
+  const cb = () => {};
 
-  const actives = [
-    {
-      id: "1001",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Barthez, Veronique</div>
-          <div>Doc #: 21099D-MA78</div>
-          <div className="poe-countdown-outer">
-            <span>Reason:</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate(9)} baseline={randdate()}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "1002",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Floyd, Jojo</div>
-          <div>Doc #: 21099D-MA78</div>
-          <div className="poe-countdown-outer">
-            <span>Reason:</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate(9)} baseline={randdate()}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "1003",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Mellon, Carnegie</div>
-          <div>Doc #: 21099D-MA78</div>
-          <div className="poe-countdown-outer">
-            <span>Reason:</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate(8)} baseline={randdate()}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "1004",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Liu, Simu</div>
-          <div>Doc #: 21099D-MA78</div>
-          <div className="poe-countdown-outer">
-            <span>Reason:</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate(6)} baseline={randdate()}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "1005",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Varg, Hjordis</div>
-          <div>Doc #: 21099D-MA78</div>
-          <div className="poe-countdown-outer">
-            <span>Reason:</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate(9)} baseline={randdate()}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    }
-  ];
-
-  const enroutes = [
-    {
-      id: "1010",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Martin, Doc</div>
-          <div>Doc #: 21099D-MA78</div>
-          <div className="poe-countdown-outer">
-            <span>Reason:</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate(6)} baseline={randdate()}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "1012",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Olu, Idris</div>
-          <div>Doc #: 21099D-MA78</div>
-          <div className="poe-countdown-outer">
-            <span>Reason:</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate(7)} baseline={randdate()}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    }
-  ];
-
-  const encounters = [
-    {
-      id: "1020",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Marin, Imelda</div>
-          <div>Doc #: 21099D-MA78</div>
-          <div className="poe-countdown-outer">
-            <span>Reason:</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate(3)} baseline={randdate()}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "1022",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Olu, Idris</div>
-          <div>Doc #: 21099D-MA78</div>
-          <div className="poe-countdown-outer">
-            <span>Reason: World Health</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate(5)} baseline={randdate()}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "1023",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Twee, Harrison</div>
-          <div>Doc #: 21099D-MA78</div>
-          <div className="poe-countdown-outer">
-            <span>Reason:</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate(5)} baseline={randdate()}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    }
-  ];
-
-  const misses = [
-    {
-      id: "1030",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Popoto, Vaquita</div>
-          <div>Doc #: 199485bb2</div>
-          <div className="poe-countdown-outer">
-            <span>Reason: Local Police</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate()} baseline={randdate(6)}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    }
-  ];
-
-  const negatives = [
-    {
-      id: "1040",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Hsieh, Yu Min</div>
-          <div>Doc #: FF0294-KRCAN</div>
-          <div className="poe-countdown-outer">
-            <span>Reason: Interpol</span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate()} baseline={randdate(6)}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "1041",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Sandiego, Carmen</div>
-          <div>Doc #: 3948HHERUS</div>
-          <div className="poe-countdown-outer">
-            <span>Reason: </span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate()} baseline={randdate(6)}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: "1042",
-      content: (
-        <div>
-          <div className="font-weight-bolder">Pietr, Samuel</div>
-          <div>Doc #: BB2K9DRRE</div>
-          <div className="poe-countdown-outer">
-            <span>Reason: </span>
-            <div className="poe-countdown-inner">
-              <CountdownBadge future={randdate()} baseline={randdate(6)}></CountdownBadge>
-            </div>
-          </div>
-        </div>
-      )
-    }
-  ];
-
-  const columnsFromBackend = {
-    "9001": {
-      name: <Xl8 xid="poe0001">Active Lookout</Xl8>,
-      items: actives,
-      background: "#f0f0f0",
-      dragbackground: "#c0ddec"
-    },
-    "9002": {
-      name: <Xl8 xid="poe0002">Officer En Route</Xl8>,
-      items: enroutes,
-      background: "#f0f0f0",
-      dragbackground: "#c0ddec"
-    },
-    "9003": {
-      name: <Xl8 xid="poe0003">Lookout Encountered</Xl8>,
-      items: encounters,
-      background: "#f0f0f0",
-      dragbackground: "#c0ddec"
-    },
-    "9004": {
-      name: <Xl8 xid="poe0004">Lookout Referred</Xl8>,
-      items: [],
-      background: "#f0f0f0",
-      dragbackground: "#c0ddec"
-    },
-    "9005": {
-      name: <Xl8 xid="poe0005">Did Not Board</Xl8>,
-      items: [],
-      background: "#f0f0f0",
-      dragbackground: "lightyellow"
-    },
-    "9006": {
-      name: <Xl8 xid="poe0006">Lookout Missed</Xl8>,
-      items: misses,
-      background: "#f0f0f0",
-      dragbackground: "lightpink"
-    },
-    "9007": {
-      name: <Xl8 xid="poe0007">Secondary Positive</Xl8>,
-      items: [],
-      dragbackground: "lightgreen",
-      background: "#f0f0f0"
-    },
-    "9008": {
-      name: <Xl8 xid="poe0008">Secondary Negative</Xl8>,
-      items: negatives,
-      background: "#f0f0f0",
-      dragbackground: "lightgray"
-    }
+  const toggleDateTimePicker = () => {
+    setShowDateTimePicker(value => !value);
+    setFilterFormKey(filterFormKey + 1);
   };
-  const [columns, setColumns] = useState(columnsFromBackend);
+
+  const initialParamState = {
+    etaStart: startDate,
+    etaEnd: addMinutes(endDate, 1),
+  };
+
+  const getInitialState = () => {
+    setShowDateTimePicker(false);
+    setShowPending(true);
+    setFilterFormKey(filterFormKey + 1);
+    return initialParamState;
+  };
+
+  const setDataWrapper = tileRes => {
+    setShowPending(true);
+    const tiles = [];
+    const lanes = {};
+
+      asArray(tileRes).map(tile =>{
+        tiles.push(createPOETile(tile)) //creates tile, adds to tile array
+      })
+      //THEN fetch and create all lanes, feeding tiles to each lane to calc if they belong base on poeStatus
+      poe.get.getAllLanes().then(laneRes => {
+        asArray(laneRes).map(lane => {
+          lanes[lane.ord] = createPOELane(lane, tiles) //creates lane, adds to lane object
+        })
+        //After lanes AND tiles have both been created , set the constants
+        setColumns(lanes);
+        setPoeTiles(tiles);
+        setShowPending(false);
+      })
+  };
+
+  const parameterAdapter = fields => {
+    let paramObject = {};
+    const fieldscopy = Object.assign([], fields);
+    delete fieldscopy["showDateTimePicker"];
+
+    if (!showDateTimePicker) {
+      //passed range values insted of date
+      const startRange = fields["startHourRange"] || 6; // default to -6 hours
+      const endRange = fields["endHourRange"] || 96;
+      let etaEnd = new Date();
+      let etaStart = new Date();
+
+      etaEnd.setHours(etaEnd.getHours() + +endRange);
+      etaStart.setHours(etaStart.getHours() - +startRange);
+
+      paramObject["etaStart"] = etaStart;
+      paramObject["etaEnd"] = addMinutes(etaEnd, 1);
+
+      delete fieldscopy["startHourRange"];
+      delete fieldscopy["endHourRange"];
+    }
+
+    const fieldNames = Object.keys(fieldscopy);
+    fieldNames.forEach(name => {
+      if (name === "etaStart") {
+        const date = new Date(fields[name]);
+        paramObject[name] = date.toISOString();
+      }
+
+      if (name === "etaEnd") {
+        const date = addMinutes(new Date(fields[name]), 1);
+        paramObject[name] = date.toISOString();
+      }
+
+      if (hasData(fields[name])) {
+          paramObject[name] = fields[name];
+        }
+    });
+
+    return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
+  };
+
+
+  const convertTileToData = (tile, status) => {
+    const req = {
+      paxId : tile.paxId,
+      paxFirstName : null,
+      paxLastName : null,
+       document : null,
+      hitCategory : null,
+      flightCountdownTime : null,
+      status : status
+    };
+    return req;
+  };
+
+  const createPOETile = tileData =>{
+    return {
+      paxId: tileData.paxId,
+      id: tileData.paxId+"",
+      content: (
+          <div>
+            <div className="font-weight-bolder">{tileData.paxLastName}, {tileData.paxFirstName}</div>
+            <div> Doc #: {tileData.document.documentNumber}</div>
+            <div>Reason: {tileData.hitCategory}</div>
+            <div>&nbsp;</div>
+            <div className="poe-countdown-outer">
+              <div className="poe-countdown-inner">
+                <CountdownBadge
+                    future={tileData.flightCountdownTime}
+                    baseline={new Date()}
+                    direction={tileData.direction}
+                ></CountdownBadge>
+              </div>
+            </div>
+          </div>
+      ),
+      status: tileData.status
+    }
+  }
+
+  const createPOELane = (laneData, tiles) => {
+    const tileList = [];
+    tiles.forEach( tile =>{ //Give each lane its appropriate tile list
+      if(laneData.status === tile.status){
+        tileList.push(tile);
+      }
+    });
+    return {
+        name: <Xl8 xid="poe0001">{laneData.displayName}</Xl8>,
+        items: tileList,
+        background: "#f0f0f0",
+        dragbackground: "#c0ddec",
+        status: laneData.status
+    }
+  }
+
+  const [columns, setColumns] = useState({});
 
   const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
@@ -302,6 +176,7 @@ const Kanban = props => {
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
+      poe.put.updatePOEStatus(convertTileToData(removed, destColumn.status)).then(res => {/*console.log("updateSuccess")*/});
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -329,7 +204,103 @@ const Kanban = props => {
   };
 
   return (
-    <div className="scrollable">
+      <>
+      <SidenavContainer>
+        <Col className="notopmargin">
+          <FilterForm
+              service={poe.get.getAllTiles}
+              callback={setDataWrapper}
+              paramCallback={parameterAdapter}
+              key={filterFormKey}
+              getInitialState={getInitialState}
+          >
+            <LabelledInput
+                datafield="showDateTimePicker"
+                name="showDateTimePicker"
+                labelText={<Xl8 xid="poe0002">Show Date Time Picker</Xl8>}
+                inputtype="checkbox"
+                inputval={showDateTimePicker}
+                callback={cb}
+                toggleDateTimePicker={toggleDateTimePicker}
+                selected={showDateTimePicker}
+                alt="Show Date Time Picker"
+                spacebetween
+            />
+            {showDateTimePicker && (
+                <LabelledInput
+                    datafield="etaStart"
+                    inputtype="dateTime"
+                    inputval={startDate}
+                    labelText={<Xl8 xid="poe0003">Start Date</Xl8>}
+                    name="etaStart"
+                    callback={cb}
+                    className="dtp-vetting-upper"
+                    required={true}
+                    alt="Start Date"
+                />
+            )}
+            {showDateTimePicker && (
+                <LabelledInput
+                    datafield="etaEnd"
+                    inputtype="dateTime"
+                    inputval={endDate}
+                    labelText={<Xl8 xid="poe0004">End Date</Xl8>}
+                    name="etaEnd"
+                    callback={cb}
+                    required={true}
+                    className="dtp-vetting-lower"
+                    alt="End Date"
+                />
+            )}
+            {!showDateTimePicker && (
+                <LabelledInput
+                    labelText={<Xl8 xid="poe0005">Hour Range (Start)</Xl8>}
+                    inputtype="select"
+                    name="startHourRange"
+                    inputval="6"
+                    inputStyle="form-select"
+                    datafield="startHourRange"
+                    options={[
+                      { value: "0", label: "0 hour" },
+                      { value: "6", label: "-6 hours" },
+                      { value: "12", label: "-12 hours" },
+                      { value: "24", label: "-24 hours" },
+                      { value: "48", label: "-48 hours" },
+                      { value: "96", label: "-96 hours" }
+                    ]}
+                    callback={cb}
+                    alt="Hour range (Start)"
+                />
+            )}
+            {!showDateTimePicker && (
+                <LabelledInput
+                    labelText={<Xl8 xid="poe0006">Hour Range (End)</Xl8>}
+                    inputtype="select"
+                    name="endHourRange"
+                    inputval="96"
+                    inputStyle="form-select"
+                    datafield="endHourRange"
+                    options={[
+                      { value: "0", label: "0 hour" },
+                      { value: "6", label: "+6 hours" },
+                      { value: "12", label: "+12 hours" },
+                      { value: "24", label: "+24 hours" },
+                      { value: "48", label: "+48 hours" },
+                      { value: "96", label: "+96 hours" }
+                    ]}
+                    callback={cb}
+                    alt="Hour range (End)"
+                />
+            )}
+          </FilterForm>
+        </Col>
+      </SidenavContainer>
+        <Main>
+          <Title
+              title={<Xl8 xid="poe0007">Port Of Entry Lookout</Xl8>}
+              uri={props.uri}
+          />
+          {showPending && <Loading></Loading>}
       <CardDeck className="page-deck justify-content-center">
         <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
           {Object.entries(columns).map(([columnId, column], index) => {
@@ -409,7 +380,7 @@ const Kanban = props => {
           })}
         </DragDropContext>
       </CardDeck>
-    </div>
+        </Main></>
   );
 };
 
