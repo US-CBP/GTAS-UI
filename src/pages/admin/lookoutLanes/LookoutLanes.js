@@ -7,29 +7,26 @@ import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import HitModal from "./HitModal";
 import Confirm from "../../../components/confirmationModal/Confirm";
 
-import { LookupContext } from "../../../context/data/LookupContext";
-import { hitcats } from "../../../services/lookupService";
-import { LK } from "../../../utils/constants";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
+import { poe } from "../../../services/serviceWrapper";
+import LookoutModal from "./LookoutModal";
 
-const HitCats = ({ name }) => {
+const LookoutLanes = ({ name }) => {
   const cb = () => {};
-  const addNewCat = <Xl8 xid="wlm001">Add Category</Xl8>;
+  const addNewLane = <Xl8 xid="lkout001">Add Lane</Xl8>;
   const [showModal, setShowModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(1);
   const [isEditModal, setIsEditModal] = useState(false);
   const [editRowDetails, setEditRowDetails] = useState();
-  const [modalTitle, setModalTitle] = useState(addNewCat);
-  const { refreshPartial } = useContext(LookupContext);
+  const [modalTitle, setModalTitle] = useState(addNewLane);
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
-    setModalTitle(<Xl8 xid="wlm002">Edit Category</Xl8>);
+    setModalTitle(<Xl8 xid="lkout002">Edit Lane</Xl8>);
     setEditRowDetails(rowDetails);
     setShowModal(true);
   };
@@ -38,7 +35,7 @@ const HitCats = ({ name }) => {
     {
       Accessor: "Edit",
       Xl8: true,
-      Header: ["edit001", "Edit"],
+      Header: ["lkoutedit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
       Cell: ({ row }) => {
@@ -46,19 +43,19 @@ const HitCats = ({ name }) => {
           <div className="text-center edit-user">
             <DropdownButton
               variant="outline-info"
-              title={<Xl8 xid="manc002">Choose Action</Xl8>}
+              title={<Xl8 xid="lkout003">Choose Action</Xl8>}
             >
               <Dropdown.Item as="button" onClick={() => openEditModal(row.original)}>
-                <Xl8 xid="wlc006">Edit Category</Xl8>
+                <Xl8 xid="lkout004">Edit Lane</Xl8>
               </Dropdown.Item>
               <Confirm
-                header={<Xl8 xid="manc004">Confirm Category Deletion</Xl8>}
+                header={<Xl8 xid="manc004">Confirm Lane Deletion</Xl8>}
                 message={
                   <span>
-                    <Xl8 xid="wlc007">
-                      Please click confirm to delete a category with label:
+                    <Xl8 xid="lkout005">
+                      Please click confirm to delete a lane with display name:
                     </Xl8>
-                    {row.original.label}
+                    {row.original.displayName}
                   </span>
                 }
               >
@@ -66,10 +63,10 @@ const HitCats = ({ name }) => {
                   <Dropdown.Item
                     as="button"
                     onClick={confirm(() => {
-                      deleteCat(row.original);
+                      deleteLane(row.original);
                     })}
                   >
-                    <Xl8 xid="wlc008">Delete Hit Category</Xl8>
+                    <Xl8 xid="lkout006">Delete Lookout Lane</Xl8>
                   </Dropdown.Item>
                 )}
               </Confirm>
@@ -79,36 +76,19 @@ const HitCats = ({ name }) => {
       }
     },
     {
-      Accessor: "label",
+      Accessor: "displayName",
       Xl8: true,
-      Header: ["wlc003", "Label"]
+      Header: ["lkout007", "Display Name"]
     },
     {
-      Accessor: "description",
+      Accessor: "status",
       Xl8: true,
-      Header: ["wlc004", "Description"]
+      Header: ["lkout008", "Status"]
     },
     {
-      Accessor: "severity",
+      Accessor: "ord",
       Xl8: true,
-      Header: ["wlc005", "Severity"]
-    },
-    {
-      Accessor: "promoteToLookout",
-      Xl8: true,
-      Header: ["wlc006", "Auto-Promote"],
-      isBoolean: true,
-      Cell: ({ row }) => {
-        return (
-          <div className="text-center">
-            <i
-              className={`fa fa-lg ${
-                !!row.original.promoteToLookout ? "fa-check-square text-success" : ""
-              }`}
-            ></i>
-          </div>
-        );
-      }
+      Header: ["lkout009", "Order"]
     }
   ];
   const refresh = () => {
@@ -116,14 +96,14 @@ const HitCats = ({ name }) => {
   };
 
   const setupEditModal = () => {
-    setModalTitle(addNewCat);
+    setModalTitle(addNewLane);
     setEditRowDetails({});
     setIsEditModal(false);
     setShowModal(!showModal);
   };
 
-  const deleteCat = rowDetails => {
-    hitcats.del(rowDetails.id).then(res => {
+  const deleteLane = rowDetails => {
+    poe.del.deleteLane(rowDetails.id).then(res => {
       setRefreshKey(refreshKey + 1);
     });
   };
@@ -132,7 +112,7 @@ const HitCats = ({ name }) => {
     <Main className="full bg-white">
       <Title title={name}></Title>
       <Table
-        service={() => refreshPartial(LK.HITCAT)}
+        service={poe.get.getAllLanes}
         key={refreshKey}
         callback={cb}
         header={headers}
@@ -143,7 +123,7 @@ const HitCats = ({ name }) => {
         onClick={setupEditModal}
       ></Fab>
 
-      <HitModal
+      <LookoutModal
         show={showModal}
         onHide={() => setShowModal(false)}
         refresh={refresh}
@@ -156,4 +136,4 @@ const HitCats = ({ name }) => {
   );
 };
 
-export default HitCats;
+export default LookoutLanes;

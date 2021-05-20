@@ -6,7 +6,7 @@ import { Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
-import { hitcatspost } from "../../../services/serviceWrapper";
+import { poe } from "../../../services/serviceWrapper";
 import { ACTION } from "../../../utils/constants";
 import Modal, {
   ModalBody,
@@ -14,13 +14,20 @@ import Modal, {
   ModalTitle
 } from "../../../components/modal/Modal";
 
-const HitModal = props => {
+const LookoutModal = props => {
   const row = props.editRowDetails || {};
   const cb = () => {};
-  const severityLevels = [
-    { value: "Top", label: "Top" },
-    { value: "High", label: "High" },
-    { value: "Normal", label: "Normal" }
+  const statuses = [
+    { value: "ACTIVE", label: "ACTIVE" },
+    { value: "ENROUTE", label: "ENROUTE" },
+    { value: "ENCOUNTERED", label: "ENCOUNTERED" },
+    { value: "NEGATIVE", label: "NEGATIVE" },
+    { value: "POSITIVE", label: "POSITIVE" },
+    { value: "REFERRED", label: "REFERRED" },
+    { value: "DIDNOTBOARD", label: "DIDNOTBOARD" },
+    { value: "INACTIVE", label: "INACTIVE" },
+    { value: "MISSED", label: "MISSED" },
+    { value: "UNCATEGORIZED", label: "UNCATEGORIZED" }
   ];
 
   const postSubmit = status => {
@@ -50,7 +57,7 @@ const HitModal = props => {
       <ModalBody>
         <Container fluid>
           <Form
-            submitService={props.isEdit ? hitcatspost.put : hitcatspost.post}
+            submitService={props.isEdit ? poe.put.updateLane : poe.post.createNewLane}
             callback={postSubmit}
             paramCallback={preSubmit}
             action="add"
@@ -59,46 +66,34 @@ const HitModal = props => {
           >
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="wlm003">Name:</Xl8>}
+              labelText={<Xl8 xid="lkoutm003">Display Name:</Xl8>}
               inputtype="text"
-              inputval={row.label}
-              name="label"
+              inputval={row.displayName}
+              name="displayName"
               required={true}
               alt="nothing"
               callback={cb}
             />
             <LabelledInput
               datafield
-              labelText={<Xl8 xid="wlm004">Description:</Xl8>}
-              inputtype="textarea"
-              inputval={row.description}
-              name="description"
-              required={true}
-              alt="nothing"
-              callback={cb}
-            />
-            <LabelledInput
-              datafield
-              labelText={<Xl8 xid="wlm005">Severity Level:</Xl8>}
+              labelText={<Xl8 xid="lkoutm004">Status:</Xl8>}
               inputtype="select"
-              name="severity"
-              inputval={props.isEdit ? row.severity : severityLevels[0].value}
-              options={severityLevels}
+              name="status"
+              inputval={props.isEdit ? row.status : statuses[0].value}
+              options={statuses}
               required={true}
               alt="nothing"
               callback={cb}
             />
             <LabelledInput
-              datafield="promoteToLookout"
-              labelText={<Xl8 xid="wlm006">Enable Automatic Lookout Promotion</Xl8>}
-              inputtype="checkbox"
-              name="promoteToLookout"
+              datafield
+              labelText={<Xl8 xid="lkoutm005">Order Number:</Xl8>}
+              inputtype="number"
+              name="ord"
               required={true}
               alt="nothing"
-              inputval={row.promoteToLookout}
+              inputval={row.ord}
               callback={cb}
-              selected={row.promoteToLookout}
-              spacebetween
             />
           </Form>
         </Container>
@@ -107,4 +102,4 @@ const HitModal = props => {
   );
 };
 
-export default HitModal;
+export default LookoutModal;

@@ -30,7 +30,7 @@ import {
   lpad5,
   addMinutes
 } from "../../utils/utils";
-import { cases, usersemails } from "../../services/serviceWrapper";
+import { cases, poe, usersemails } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
 import { ROLE, HIT_STATUS, LK } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
@@ -145,6 +145,42 @@ const Vetting = props => {
                 </Button>
               )}
             </Confirm>
+            {row.original.lookoutStatus !== "NOTPROMOTED" ? (
+              <></> //There doesn't need to be an indicator for an Already Promoted item, as it's self evident from the table.
+            ) : (
+              <Confirm
+                header={<Xl8 xid="vet029">Promote To Lookout</Xl8>}
+                message={
+                  <span>
+                    <Xl8 xid="vet030">
+                      Please click confirm to promote this passenger to Lookout:
+                    </Xl8>
+                    <br />
+                    <br />
+                    {row.original.lookoutStatus !== "NOTPROMOTED" ? (
+                      <Xl8 xid="vet031">Already Promoted</Xl8>
+                    ) : (
+                      <Xl8 xid="vet032">Promote To Lookout</Xl8>
+                    )}
+                  </span>
+                }
+              >
+                {confirm => (
+                  <Button
+                    className="dropdown-item"
+                    onClick={confirm(() =>
+                      promoteToLookout(row.original.paxId, "ACTIVE")
+                    )}
+                  >
+                    {row.original.lookoutStatus !== "NOTPROMOTED" ? (
+                      <Xl8 xid="vet033">Already Promoted</Xl8>
+                    ) : (
+                      <Xl8 xid="vet034">Promote To Lookout</Xl8>
+                    )}
+                  </Button>
+                )}
+              </Confirm>
+            )}
           </RoleAuthenticator>
         </DropdownButton>
       )
@@ -224,6 +260,12 @@ const Vetting = props => {
       Xl8: true,
       Header: ["vet022", "Status"],
       Cell: ({ row }) => <div>{row.original.status}</div>
+    },
+    {
+      Accessor: "lookoutStatus",
+      Xl8: true,
+      Header: ["vet035", "Lookout Status"],
+      Cell: ({ row }) => <div>{row.original.lookoutStatus}</div>
     }
   ];
 
@@ -264,6 +306,16 @@ const Vetting = props => {
       status === HIT_STATUS.REVIEWED ? HIT_STATUS.REOPENED : HIT_STATUS.REVIEWED;
     cases.updateStatus(paxId, newStatus.toUpperCase()).then(res => {
       setFilterFormKey(filterFormKey + 1);
+    });
+  };
+
+  const promoteToLookout = (paxId, status) => {
+    const req = {
+      paxId: paxId,
+      poeStatus: status
+    };
+    poe.put.updatePOEStatus(req).then(resp => {
+      setFilterFormKey(filterFormKey + 1); //trigger update
     });
   };
 
