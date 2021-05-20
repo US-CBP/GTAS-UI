@@ -20,6 +20,7 @@ const AuditLog = ({ name }) => {
   const [refreshKey, setRefreshKey] = useState(1);
   const [filterKey, setFilterKey] = useState(0);
   const [auditActions, setAuditActions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const selectAllActions = "Select All Actions";
   let startDate = new Date();
   startDate.setDate(startDate.getDate() - 1);
@@ -51,6 +52,7 @@ const AuditLog = ({ name }) => {
   }, []);
 
   const preFetchCallback = params => {
+    setIsLoading(true);
     let parsedParams = "?";
     if (params) {
       if (params.startDate) {
@@ -102,6 +104,7 @@ const AuditLog = ({ name }) => {
   const setDataWrapper = res => {
     setData(res);
     setRefreshKey(refreshKey + 1);
+    setIsLoading(false);
   };
 
   return (
@@ -167,6 +170,7 @@ const AuditLog = ({ name }) => {
           id="Audit Log"
           callback={cb}
           header={headers}
+          isLoading={isLoading}
         ></Table>
       </Main>
     </>
