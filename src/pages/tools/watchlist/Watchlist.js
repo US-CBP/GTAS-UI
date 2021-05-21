@@ -46,7 +46,7 @@ const Watchlist = props => {
   const [toastHeader, setToastHeader] = useState();
   const [toastContent, setToastContent] = useState();
   const [toastVariant, setToastVariant] = useState();
-  const { getCached } = useContext(LookupContext);
+  const { getCachedAllFields } = useContext(LookupContext);
 
   const deleteText = {
     message: <Xl8 xid="wl005">Are you sure you want to delete the record?</Xl8>,
@@ -215,7 +215,7 @@ const Watchlist = props => {
   }, []);
 
   const getCats = () => {
-    getCached(LK.HITCAT, true).then(res => {
+    getCachedAllFields(LK.HITCAT, true).then(res => {
       setWlcatData(res);
     });
   };

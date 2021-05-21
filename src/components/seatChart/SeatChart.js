@@ -14,7 +14,7 @@ import SidenavContainer from "../sidenavContainer/SidenavContainer";
 import Main from "../main/Main";
 import { seats } from "../../services/serviceWrapper";
 import { Row, CardDeck, Card } from "react-bootstrap";
-import {asArray, hasData, localeDate} from "../../utils/utils";
+import { asArray, hasData, localeDate } from "../../utils/utils";
 import "./SeatChart.scss";
 
 const SeatChart = ({ location }) => {
@@ -50,8 +50,10 @@ const SeatChart = ({ location }) => {
     columnWithReservedSeat.forEach(col => {
       const seatNumber = `${col}${letter}`;
       let isSelected = false;
-      currentPaxSeat.split(",").forEach(seatNum =>{
-        if(seatNum.trim() === seatNumber){isSelected = true};
+      currentPaxSeat.split(",").forEach(seatNum => {
+        if (seatNum.trim() === seatNumber) {
+          isSelected = true;
+        }
       });
       row.push(
         <Seat
@@ -124,20 +126,32 @@ const SeatChart = ({ location }) => {
   ];
 
   const seatInfoData = [
-    { label: <Xl8 xid="seat007">Last Name</Xl8>,
-      value: (hasData(selectedSeatInfo.lastName)) ? selectedSeatInfo.lastName : location.state.lastName
+    {
+      label: <Xl8 xid="seat007">Last Name</Xl8>,
+      value: hasData(selectedSeatInfo.lastName)
+        ? selectedSeatInfo.lastName
+        : location.state.lastName
     },
     {
       label: <Xl8 xid="seat008">First Name</Xl8>,
-      value: (hasData(selectedSeatInfo.firstName)) ? selectedSeatInfo.firstName : location.state.firstName
+      value: hasData(selectedSeatInfo.firstName)
+        ? selectedSeatInfo.firstName
+        : location.state.firstName
     },
     {
       label: <Xl8 xid="seat009">Middle Name</Xl8>,
-      value: (hasData(selectedSeatInfo.middleName)) ? selectedSeatInfo.middleName : location.state.middleName
+      value: hasData(selectedSeatInfo.middleName)
+        ? selectedSeatInfo.middleName
+        : location.state.middleName
     },
     {
       label: <Xl8 xid="seat010">Seat Number</Xl8>,
-      value: (currentPaxSeat.split(',').length > 1) ? currentPaxSeat : (hasData(selectedSeatInfo.number)) ? selectedSeatInfo.number : "N/A"
+      value:
+        currentPaxSeat.split(",").length > 1
+          ? currentPaxSeat
+          : hasData(selectedSeatInfo.number)
+          ? selectedSeatInfo.number
+          : "N/A"
     }
   ];
   const linkToFlightPax = (

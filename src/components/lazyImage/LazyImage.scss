@@ -1,0 +1,86 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+.lazy-image {
+  background: no-repeat center center;
+  background-size: cover;
+  height: 25px;
+  width: 30px;
+  border-radius: 5px;
+  border: 1px solid white;
+  line-height: 25px;
+}
+
+.lazy-image-full img {
+  background: no-repeat center center;
+  background-size: cover;
+  height: 60px;
+  width: 80px;
+  border-radius: 5px;
+}
+
+.lazy-image-wrapper {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: 25px;
+  width: 30px;
+  overflow: hidden;
+  display: inline-table;
+  margin-right: 10px;
+  vertical-align: inherit;
+  margin-left: 8px;
+  line-height: 25px;
+}
+
+.filter .flight-badge .lazy-image-wrapper {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: 50px;
+  width: 60px;
+  overflow: hidden;
+  margin-right: 10px;
+  vertical-align: inherit;
+  line-height: 25px;
+  margin-left: -14px;
+}
+
+.filter .flight-badge .lazy-image {
+  height: 50px;
+  width: 60px;
+}
+
+.flight-badge-nonlink-icon {
+  color: #575756;
+  vertical-align: bottom;
+}
+
+.flight-badge .lazy-image-wrapper {
+  line-height: 30px;
+  vertical-align: text-top;
+}
+
+.flight-badge.sm .lazy-image-wrapper {
+  line-height: 25px;
+  vertical-align: baseline;
+}
+
+.lazy-image-wrapper:hover {
+  box-shadow: 4px 3px 5px #545b62;
+}
+
+.lazy-image:hover {
+  background-color: white;
+}
+
+a .lazy-image-wrapper:hover {
+  box-shadow: unset;
+}
+
+.lazyload-placeholder {
+  height: 30px;
+}
+
+.nozoom .lazy-image-wrapper:hover {
+  box-shadow: unset;
+}

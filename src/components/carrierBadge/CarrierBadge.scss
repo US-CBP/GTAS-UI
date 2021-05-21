@@ -1,0 +1,23 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+.carrier-badge {
+  text-align: center !important;
+  border-radius: 0.25rem;
+  background-color: white;
+  border: 1px solid lightgray;
+}
+
+.carrier-badge .lazy-image-wrapper {
+  line-height: unset;
+  height: unset;
+  width: unset;
+  margin: unset;
+}
+
+.carrier-badge .lazy-image {
+  line-height: unset;
+  height: unset;
+  width: unset;
+}

@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import Xl8 from "../../components/xl8/Xl8";
+import LazyImage from "../../components/lazyImage/LazyImage";
 
 import {
   hasData,
@@ -33,10 +34,13 @@ const PaxInfo = props => {
       {
         label: <Xl8 xid="pd013">Nationality</Xl8>,
         value: (
-          <ToolTipWrapper
-            className="overlay-content-light"
-            data={{ val: res.nationality, lkup: LK.COUNTRY }}
-          ></ToolTipWrapper>
+          <>
+            <LazyImage val={res.nationality} type={LK.COUNTRY}></LazyImage>
+            <ToolTipWrapper
+              className="overlay-content-light"
+              data={{ val: res.nationality, lkup: LK.COUNTRY }}
+            ></ToolTipWrapper>
+          </>
         )
       },
       { label: <Xl8 xid="pd014">Residence</Xl8>, value: res.residenceCountry },
@@ -44,7 +48,9 @@ const PaxInfo = props => {
         label: <Xl8 xid="pd015">Seat</Xl8>,
         value: (
           <Link
-            to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${(res.seat !== 'N/A') ? res.seat : 'NA'}`}
+            to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${
+              res.seat !== "N/A" ? res.seat : "NA"
+            }`}
             className="pax-info-link"
             state={{
               arrival: res.eta,

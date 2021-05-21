@@ -62,11 +62,29 @@ $wco-info: #009e9288;
 
 .filter-bg {
   z-index: 5;
-  // background: linear-gradient(#40403f, #40403fdd, #40403f55),
-  //   url($background-image-url) no-repeat no-repeat;
+}
 
+.sidenav-background1 {
   background: linear-gradient(#40403f, #40403fdd, #40403f22),
-    url($background-image-url) no-repeat no-repeat center;
+    url("../../images/1.jpg") center no-repeat;
+  background-size: cover;
+}
+
+.sidenav-background2 {
+  background: linear-gradient(#40403f, #40403fdd, #40403f22),
+    url("../../images/2.jpg") bottom center no-repeat;
+  background-size: cover;
+}
+
+.sidenav-background3 {
+  background: linear-gradient(#40403f, #40403fdd, #40403f22),
+    url("../../images/3.jpg") bottom no-repeat;
+  background-size: cover;
+}
+
+.sidenav-background4 {
+  background: linear-gradient(#40403f, #40403fdd, #40403f22),
+    url("../../images/4.jpg") left center no-repeat;
   background-size: cover;
 }
 
@@ -116,6 +134,13 @@ hr {
 
 .notopmargin {
   margin-top: 0px !important;
+  height: 100%;
+  overflow-y: auto;
+  overflow: overlay;
+}
+
+.below-badge {
+  max-height: calc(100vh - 215px);
 }
 
 .dropdown-content > .panel-content > .select-panel > ul > li > label > .item-renderer {
@@ -135,5 +160,6 @@ hr {
 .filterform-container > form,
 .filterform-container.form {
   padding: 20px;
-  border-radius: 0.25rem;
+  /* border-radius: 1.25rem; */
+  padding-bottom: 5px;
 }

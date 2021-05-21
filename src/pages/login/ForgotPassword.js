@@ -7,10 +7,9 @@ import Form from "../../components/form/Form";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { forgotPassword } from "../../services/serviceWrapper";
 import { Container, Alert, Col } from "react-bootstrap";
-// import Title from "../../components/title/Title";
 import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
-import { hasData } from "../../utils/utils";
+import { hasData, getTodaysBackground } from "../../utils/utils";
 import { Link } from "@reach/router";
 import { FULLPATH_TO } from "../../utils/constants";
 
@@ -33,7 +32,7 @@ const ForgotPassword = props => {
   };
 
   return (
-    <Main className="unauthed bg-image">
+    <Main className={`unauthed bg-image ${getTodaysBackground("background")}`}>
       <Container
         className="login d-flex align-items-center py-5 justify-content-around"
         fluid

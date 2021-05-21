@@ -157,3 +157,17 @@ $transparent: rgba(0, 0, 0, 0.65);
   overflow-x: hidden;
   overflow-wrap: anywhere;
 }
+
+.grid-single-col {
+  grid-auto-rows: minmax(100px, auto);
+  height: calc(100vh - 110px);
+  overflow-y: hidden;
+  padding-bottom: 0px;
+  display: grid;
+  max-height: calc(100vh - 110px);
+}
+
+.grid-single-col .card-with-table,
+.grid-single-col .table-responsive {
+  max-height: unset;
+}

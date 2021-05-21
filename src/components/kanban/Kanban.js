@@ -2,15 +2,15 @@
 //
 // Please see license.txt for details.
 
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
-import {CardDeck, Col} from "react-bootstrap";
-import {addMinutes, asArray, hasData, randomIntOfLength} from "../../utils/utils";
+import { CardDeck, Col } from "react-bootstrap";
+import { addMinutes, asArray, hasData, randomIntOfLength } from "../../utils/utils";
 import Xl8 from "../../components/xl8/Xl8";
 
 import "./Kanban.css";
-import {poe} from "../../services/serviceWrapper";
+import { poe } from "../../services/serviceWrapper";
 import SidenavContainer from "../sidenavContainer/SidenavContainer";
 import FilterForm from "../filterForm2/FilterForm";
 import LabelledInput from "../labelledInput/LabelledInput";
@@ -36,7 +36,7 @@ const Kanban = props => {
 
   const initialParamState = {
     etaStart: startDate,
-    etaEnd: addMinutes(endDate, 1),
+    etaEnd: addMinutes(endDate, 1)
   };
 
   const getInitialState = () => {
@@ -51,19 +51,19 @@ const Kanban = props => {
     const tiles = [];
     const lanes = {};
 
-      asArray(tileRes).map(tile =>{
-        tiles.push(createPOETile(tile)) //creates tile, adds to tile array
-      })
-      //THEN fetch and create all lanes, feeding tiles to each lane to calc if they belong base on poeStatus
-      poe.get.getAllLanes().then(laneRes => {
-        asArray(laneRes).map(lane => {
-          lanes[lane.ord] = createPOELane(lane, tiles) //creates lane, adds to lane object
-        })
-        //After lanes AND tiles have both been created , set the constants
-        setColumns(lanes);
-        setPoeTiles(tiles);
-        setShowPending(false);
-      })
+    asArray(tileRes).map(tile => {
+      tiles.push(createPOETile(tile)); //creates tile, adds to tile array
+    });
+    //THEN fetch and create all lanes, feeding tiles to each lane to calc if they belong base on poeStatus
+    poe.get.getAllLanes().then(laneRes => {
+      asArray(laneRes).map(lane => {
+        lanes[lane.ord] = createPOELane(lane, tiles); //creates lane, adds to lane object
+      });
+      //After lanes AND tiles have both been created , set the constants
+      setColumns(lanes);
+      setPoeTiles(tiles);
+      setShowPending(false);
+    });
   };
 
   const parameterAdapter = fields => {
@@ -101,67 +101,69 @@ const Kanban = props => {
       }
 
       if (hasData(fields[name])) {
-          paramObject[name] = fields[name];
-        }
+        paramObject[name] = fields[name];
+      }
     });
 
     return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 
-
   const convertTileToData = (tile, status) => {
     const req = {
-      paxId : tile.paxId,
-      paxFirstName : null,
-      paxLastName : null,
-       document : null,
-      hitCategory : null,
-      flightCountdownTime : null,
-      status : status
+      paxId: tile.paxId,
+      paxFirstName: null,
+      paxLastName: null,
+      document: null,
+      hitCategory: null,
+      flightCountdownTime: null,
+      status: status
     };
     return req;
   };
 
-  const createPOETile = tileData =>{
+  const createPOETile = tileData => {
     return {
       paxId: tileData.paxId,
-      id: tileData.paxId+"",
+      id: tileData.paxId + "",
       content: (
-          <div>
-            <div className="font-weight-bolder">{tileData.paxLastName}, {tileData.paxFirstName}</div>
-            <div> Doc #: {tileData.document.documentNumber}</div>
-            <div>Reason: {tileData.hitCategory}</div>
-            <div>&nbsp;</div>
-            <div className="poe-countdown-outer">
-              <div className="poe-countdown-inner">
-                <CountdownBadge
-                    future={tileData.flightCountdownTime}
-                    baseline={new Date()}
-                    direction={tileData.direction}
-                ></CountdownBadge>
-              </div>
+        <div>
+          <div className="font-weight-bolder">
+            {tileData.paxLastName}, {tileData.paxFirstName}
+          </div>
+          <div> Doc #: {tileData.document.documentNumber}</div>
+          <div>Reason: {tileData.hitCategory}</div>
+          <div>&nbsp;</div>
+          <div className="poe-countdown-outer">
+            <div className="poe-countdown-inner">
+              <CountdownBadge
+                future={tileData.flightCountdownTime}
+                baseline={new Date()}
+                direction={tileData.direction}
+              ></CountdownBadge>
             </div>
           </div>
+        </div>
       ),
       status: tileData.status
-    }
-  }
+    };
+  };
 
   const createPOELane = (laneData, tiles) => {
     const tileList = [];
-    tiles.forEach( tile =>{ //Give each lane its appropriate tile list
-      if(laneData.status === tile.status){
+    tiles.forEach(tile => {
+      //Give each lane its appropriate tile list
+      if (laneData.status === tile.status) {
         tileList.push(tile);
       }
     });
     return {
-        name: <Xl8 xid="poe0001">{laneData.displayName}</Xl8>,
-        items: tileList,
-        background: "#f0f0f0",
-        dragbackground: "#c0ddec",
-        status: laneData.status
-    }
-  }
+      name: <Xl8 xid="poe0001">{laneData.displayName}</Xl8>,
+      items: tileList,
+      background: "#f0f0f0",
+      dragbackground: "#c0ddec",
+      status: laneData.status
+    };
+  };
 
   const [columns, setColumns] = useState({});
 
@@ -176,7 +178,9 @@ const Kanban = props => {
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
-      poe.put.updatePOEStatus(convertTileToData(removed, destColumn.status)).then(res => {/*console.log("updateSuccess")*/});
+      poe.put.updatePOEStatus(convertTileToData(removed, destColumn.status)).then(res => {
+        /*console.log("updateSuccess")*/
+      });
       setColumns({
         ...columns,
         [source.droppableId]: {
@@ -204,183 +208,181 @@ const Kanban = props => {
   };
 
   return (
-      <>
+    <>
       <SidenavContainer>
         <Col className="notopmargin">
           <FilterForm
-              service={poe.get.getAllTiles}
-              callback={setDataWrapper}
-              paramCallback={parameterAdapter}
-              key={filterFormKey}
-              getInitialState={getInitialState}
+            service={poe.get.getAllTiles}
+            callback={setDataWrapper}
+            paramCallback={parameterAdapter}
+            key={filterFormKey}
+            getInitialState={getInitialState}
           >
             <LabelledInput
-                datafield="showDateTimePicker"
-                name="showDateTimePicker"
-                labelText={<Xl8 xid="poe0002">Show Date Time Picker</Xl8>}
-                inputtype="checkbox"
-                inputval={showDateTimePicker}
-                callback={cb}
-                toggleDateTimePicker={toggleDateTimePicker}
-                selected={showDateTimePicker}
-                alt="Show Date Time Picker"
-                spacebetween
+              datafield="showDateTimePicker"
+              name="showDateTimePicker"
+              labelText={<Xl8 xid="poe0002">Show Date Time Picker</Xl8>}
+              inputtype="checkbox"
+              inputval={showDateTimePicker}
+              callback={cb}
+              toggleDateTimePicker={toggleDateTimePicker}
+              selected={showDateTimePicker}
+              alt="Show Date Time Picker"
+              spacebetween
             />
             {showDateTimePicker && (
-                <LabelledInput
-                    datafield="etaStart"
-                    inputtype="dateTime"
-                    inputval={startDate}
-                    labelText={<Xl8 xid="poe0003">Start Date</Xl8>}
-                    name="etaStart"
-                    callback={cb}
-                    className="dtp-vetting-upper"
-                    required={true}
-                    alt="Start Date"
-                />
+              <LabelledInput
+                datafield="etaStart"
+                inputtype="dateTime"
+                inputval={startDate}
+                labelText={<Xl8 xid="poe0003">Start Date</Xl8>}
+                name="etaStart"
+                callback={cb}
+                className="dtp-vetting-upper"
+                required={true}
+                alt="Start Date"
+              />
             )}
             {showDateTimePicker && (
-                <LabelledInput
-                    datafield="etaEnd"
-                    inputtype="dateTime"
-                    inputval={endDate}
-                    labelText={<Xl8 xid="poe0004">End Date</Xl8>}
-                    name="etaEnd"
-                    callback={cb}
-                    required={true}
-                    className="dtp-vetting-lower"
-                    alt="End Date"
-                />
+              <LabelledInput
+                datafield="etaEnd"
+                inputtype="dateTime"
+                inputval={endDate}
+                labelText={<Xl8 xid="poe0004">End Date</Xl8>}
+                name="etaEnd"
+                callback={cb}
+                required={true}
+                className="dtp-vetting-lower"
+                alt="End Date"
+              />
             )}
             {!showDateTimePicker && (
-                <LabelledInput
-                    labelText={<Xl8 xid="poe0005">Hour Range (Start)</Xl8>}
-                    inputtype="select"
-                    name="startHourRange"
-                    inputval="6"
-                    inputStyle="form-select"
-                    datafield="startHourRange"
-                    options={[
-                      { value: "0", label: "0 hour" },
-                      { value: "6", label: "-6 hours" },
-                      { value: "12", label: "-12 hours" },
-                      { value: "24", label: "-24 hours" },
-                      { value: "48", label: "-48 hours" },
-                      { value: "96", label: "-96 hours" }
-                    ]}
-                    callback={cb}
-                    alt="Hour range (Start)"
-                />
+              <LabelledInput
+                labelText={<Xl8 xid="poe0005">Hour Range (Start)</Xl8>}
+                inputtype="select"
+                name="startHourRange"
+                inputval="6"
+                inputStyle="form-select"
+                datafield="startHourRange"
+                options={[
+                  { value: "0", label: "0 hour" },
+                  { value: "6", label: "-6 hours" },
+                  { value: "12", label: "-12 hours" },
+                  { value: "24", label: "-24 hours" },
+                  { value: "48", label: "-48 hours" },
+                  { value: "96", label: "-96 hours" }
+                ]}
+                callback={cb}
+                alt="Hour range (Start)"
+              />
             )}
             {!showDateTimePicker && (
-                <LabelledInput
-                    labelText={<Xl8 xid="poe0006">Hour Range (End)</Xl8>}
-                    inputtype="select"
-                    name="endHourRange"
-                    inputval="96"
-                    inputStyle="form-select"
-                    datafield="endHourRange"
-                    options={[
-                      { value: "0", label: "0 hour" },
-                      { value: "6", label: "+6 hours" },
-                      { value: "12", label: "+12 hours" },
-                      { value: "24", label: "+24 hours" },
-                      { value: "48", label: "+48 hours" },
-                      { value: "96", label: "+96 hours" }
-                    ]}
-                    callback={cb}
-                    alt="Hour range (End)"
-                />
+              <LabelledInput
+                labelText={<Xl8 xid="poe0006">Hour Range (End)</Xl8>}
+                inputtype="select"
+                name="endHourRange"
+                inputval="96"
+                inputStyle="form-select"
+                datafield="endHourRange"
+                options={[
+                  { value: "0", label: "0 hour" },
+                  { value: "6", label: "+6 hours" },
+                  { value: "12", label: "+12 hours" },
+                  { value: "24", label: "+24 hours" },
+                  { value: "48", label: "+48 hours" },
+                  { value: "96", label: "+96 hours" }
+                ]}
+                callback={cb}
+                alt="Hour range (End)"
+              />
             )}
           </FilterForm>
         </Col>
       </SidenavContainer>
-        <Main>
-          <Title
-              title={<Xl8 xid="poe0007">Port Of Entry Lookout</Xl8>}
-              uri={props.uri}
-          />
-          {showPending && <Loading></Loading>}
-      <CardDeck className="page-deck justify-content-center">
-        <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
-          {Object.entries(columns).map(([columnId, column], index) => {
-            return (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  marginBlock: "15px"
-                }}
-                key={columnId}
-              >
-                <h5>{column.name}</h5>
-                <div style={{ margin: 8, maxHeight: "calc((vh-120px)/2)" }}>
-                  <Droppable droppableId={columnId} key={columnId}>
-                    {(provided, snapshot) => {
-                      return (
-                        <div
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                          style={{
-                            background: snapshot.isDraggingOver
-                              ? column.dragbackground
-                              : column.background,
-                            padding: 8,
-                            width: 300,
-                            minHeight: 200,
-                            maxHeight: "calc((100vh - 250px)/2)",
-                            overflowY: "auto",
-                            border: "1px solid #d0d0d0",
-                            backgroundColor: "white",
-                            borderRadius: "3px"
-                          }}
-                        >
-                          {column.items.map((item, index) => {
-                            return (
-                              <Draggable
-                                key={item.id}
-                                draggableId={item.id}
-                                index={index}
-                              >
-                                {(provided, snapshot) => {
-                                  return (
-                                    <div
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      style={{
-                                        userSelect: "none",
-                                        padding: 6,
-                                        margin: "0 0 8px 0",
-                                        minHeight: "50px",
-                                        backgroundColor: "#009e9233",
-                                        color: "black",
-                                        ...provided.draggableProps.style,
-                                        border: "1px solid black",
-                                        borderRadius: "5px",
-                                        textAlign: "left"
-                                      }}
-                                    >
-                                      {item.content}
-                                    </div>
-                                  );
-                                }}
-                              </Draggable>
-                            );
-                          })}
-                          {provided.placeholder}
-                        </div>
-                      );
-                    }}
-                  </Droppable>
+      <Main>
+        <Title title={<Xl8 xid="poe0007">Port Of Entry Lookout</Xl8>} uri={props.uri} />
+        {showPending && <Loading></Loading>}
+        <CardDeck className="page-deck justify-content-center">
+          <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
+            {Object.entries(columns).map(([columnId, column], index) => {
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    marginBlock: "15px"
+                  }}
+                  key={columnId}
+                >
+                  <h5>{column.name}</h5>
+                  <div style={{ margin: 8, maxHeight: "calc((vh-120px)/2)" }}>
+                    <Droppable droppableId={columnId} key={columnId}>
+                      {(provided, snapshot) => {
+                        return (
+                          <div
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                            style={{
+                              background: snapshot.isDraggingOver
+                                ? column.dragbackground
+                                : column.background,
+                              padding: 8,
+                              width: 300,
+                              minHeight: 200,
+                              maxHeight: "calc((100vh - 250px)/2)",
+                              overflowY: "auto",
+                              border: "1px solid #d0d0d0",
+                              backgroundColor: "white",
+                              borderRadius: "3px"
+                            }}
+                          >
+                            {column.items.map((item, index) => {
+                              return (
+                                <Draggable
+                                  key={item.id}
+                                  draggableId={item.id}
+                                  index={index}
+                                >
+                                  {(provided, snapshot) => {
+                                    return (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        style={{
+                                          userSelect: "none",
+                                          padding: 6,
+                                          margin: "0 0 8px 0",
+                                          minHeight: "50px",
+                                          backgroundColor: "#009e9233",
+                                          color: "black",
+                                          ...provided.draggableProps.style,
+                                          border: "1px solid black",
+                                          borderRadius: "5px",
+                                          textAlign: "left"
+                                        }}
+                                      >
+                                        {item.content}
+                                      </div>
+                                    );
+                                  }}
+                                </Draggable>
+                              );
+                            })}
+                            {provided.placeholder}
+                          </div>
+                        );
+                      }}
+                    </Droppable>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </DragDropContext>
-      </CardDeck>
-        </Main></>
+              );
+            })}
+          </DragDropContext>
+        </CardDeck>
+      </Main>
+    </>
   );
 };
 

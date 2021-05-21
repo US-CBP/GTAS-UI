@@ -89,16 +89,16 @@ const HitModal = props => {
               callback={cb}
             />
             <LabelledInput
-                datafield="promoteToLookout"
-                labelText={<Xl8 xid="wlm006">Enable Automatic Lookout Promotion</Xl8>}
-                inputtype="checkbox"
-                name="promoteToLookout"
-                required={true}
-                alt="nothing"
-                inputval={row.promoteToLookout}
-                callback={cb}
-                selected={row.promoteToLookout}
-                spacebetween
+              datafield="promoteToLookout"
+              labelText={<Xl8 xid="wlm006">Enable Automatic Lookout Promotion</Xl8>}
+              inputtype="checkbox"
+              name="promoteToLookout"
+              required={true}
+              alt="nothing"
+              inputval={row.promoteToLookout}
+              callback={cb}
+              selected={row.promoteToLookout}
+              spacebetween
             />
           </Form>
         </Container>

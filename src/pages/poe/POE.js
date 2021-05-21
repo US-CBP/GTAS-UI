@@ -9,9 +9,7 @@ import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
 
 const POE = props => {
-  return (
-      <Kanban />
-  );
+  return <Kanban />;
 };
 
 export default POE;

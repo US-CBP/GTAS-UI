@@ -22,9 +22,9 @@ import Loading from "./components/loading/Loading";
 
 import { hasData } from "./utils/utils";
 import { ROLE, FULLPATH_TO } from "./utils/constants";
-import "./App.scss";
-import "font-awesome/css/font-awesome.min.css";
 import ForgotUsername from "./pages/login/ForgotUsername";
+import "font-awesome/css/font-awesome.min.css";
+import "./App.scss";
 
 const Authenticator = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./context/authenticator/Authenticator")
@@ -150,7 +150,7 @@ const LanguageEditor = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/lang/LanguageEditor")
 );
 const LookoutLanes = loadable(() =>
-    import(/* webpackChunkName: "admin" */ "./pages/admin/lookoutLanes/LookoutLanes")
+  import(/* webpackChunkName: "admin" */ "./pages/admin/lookoutLanes/LookoutLanes")
 );
 
 const NEO4JURL = window?._env_
@@ -237,8 +237,8 @@ const App = props => {
                             </PaxDetail>
                           </RoleAuthenticator>
                           <RoleAuthenticator
-                          path="poe"
-                          roles={[ROLE.ADMIN, ROLE.LKOUTMGR, ROLE.LKOUTVWR]}
+                            path="poe"
+                            roles={[ROLE.ADMIN, ROLE.LKOUTMGR, ROLE.LKOUTVWR]}
                           >
                             <POE path="/"></POE>
                           </RoleAuthenticator>
@@ -375,9 +375,7 @@ const App = props => {
                               ></NoteCats>
                               <LookoutLanes
                                 name={<Xl8 xid="app036">Lookout Lanes</Xl8>}
-                                desc={
-                                <Xl8 xid="app037">View or edit Lookout Lanes</Xl8>
-                              }
+                                desc={<Xl8 xid="app037">View or edit Lookout Lanes</Xl8>}
                                 icon="fa-road"
                                 path="lookoutlanes"
                               ></LookoutLanes>

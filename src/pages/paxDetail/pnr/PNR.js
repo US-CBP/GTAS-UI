@@ -11,12 +11,13 @@ import {
   asArray,
   hasData,
   localeDate,
-  localeDateOnly,
   localeMonthYear,
   timezoneFreeDate
 } from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
+import LazyImage from "../../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
+import { LK } from "../../../utils/constants";
 
 const PNR = props => {
   const data = hasData(props.data) ? props.data : {};

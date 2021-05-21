@@ -6,6 +6,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../context/user/UserContext";
 import Tabs from "../../components/tabs/Tabs";
 import FlightBadge from "../../components/flightBadge/FlightBadge";
+import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import { Col } from "react-bootstrap";
 import PaxInfo from "../../components/paxInfo/PaxInfo";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
@@ -30,8 +31,7 @@ import Loading from "../../components/loading/Loading";
 
 import { paxdetails, cases } from "../../services/serviceWrapper";
 import { asArray, hasData, titleCase } from "../../utils/utils";
-import { ACTION, ROLE } from "../../utils/constants";
-import { Link } from "@reach/router";
+import { ACTION, ROLE, LK } from "../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./PaxDetail.scss";
@@ -59,6 +59,7 @@ const PaxDetail = props => {
   const refreshEventNotesCard = () => {
     setEventNoteRefreshKey(new Date());
   };
+
   const tabs = [
     {
       title: <Xl8 xid="pd001">Summary</Xl8>,
@@ -134,21 +135,21 @@ const PaxDetail = props => {
   };
 
   const paxinfoData = res => {
-    if(!hasData(res.seats)){
+    if (!hasData(res.seats)) {
       res.seats = nullSeat;
     } else {
       let sts = "";
       res.seats.forEach((elem, idx) => {
-        if(idx != res.seats.length-1) {
+        if (idx != res.seats.length - 1) {
           sts = sts + elem + ", ";
-        } else{
-          if(!hasData(elem)){
+        } else {
+          if (!hasData(elem)) {
             sts = sts + nullSeat;
           } else {
             sts = sts + elem;
           }
         }
-      })
+      });
       res.seats = sts;
     }
     return {
@@ -172,35 +173,18 @@ const PaxDetail = props => {
     };
   };
 
-  const addLinkToFlight = data => {
-    const fullFlightNumber = data.carrier + data.flightNumber;
-    const stateData = {
-      direction: data.direction,
-      eta: data.eta,
-      etd: data.etd,
-      fullFlightNumber: fullFlightNumber,
-      flightDestination: data.destination || data.flightDestination,
-      flightOrigin: data.origin || data.flightOrigin,
-      passengerCount: data.passengerCount
-    };
-    return (
-      <Link
-        to={"/gtas/flightpax/" + data.flightId}
-        state={{ data: stateData }}
-        className="link"
-      >
-        {fullFlightNumber}
-      </Link>
-    );
-  };
   const getFlightBadgeData = res => {
     return {
-      flightNumber: addLinkToFlight(res),
-      carrier: "",
+      flightNumber: res.carrier + res.flightNumber,
+      fullFlightNumber: res.carrier + res.flightNumber,
+      direction: res.direction,
+      flightId: res.flightId,
+      carrier: res.carrier,
       flightDestination: res.flightDestination,
       flightOrigin: res.flightOrigin,
       eta: res.eta,
       etd: res.etd,
+      passengerCount: res.passengerCount,
       flightNumberHasLink: true
     };
   };
@@ -258,10 +242,26 @@ const PaxDetail = props => {
       <SidenavContainer>
         <br />
         {hasData(flightBadge) && <FlightBadge data={flightBadge}></FlightBadge>}
-        <Col className="notopmargin">
+        <Col className="notopmargin below-badge">
           <div className="filterform-container form">
             {isLoading && isStepperLoading && <Loading></Loading>}
-            {!isLoading && <PaxInfo pax={pax}></PaxInfo>}
+            {hasData(flightBadge) && !isLoading && (
+              <div className="flightpax-countdown-container">
+                <CountdownBadge
+                  future={
+                    flightBadge.direction === "O" ? flightBadge.etd : flightBadge.eta
+                  }
+                  baseline={Date.now()}
+                  direction={flightBadge.direction}
+                ></CountdownBadge>
+              </div>
+            )}
+            {!isLoading && (
+              <>
+                <br />
+                <PaxInfo pax={pax}></PaxInfo>
+              </>
+            )}
             {!isStepperLoading && hasData(flightLegsSegmentData) && (
               <Stepper steps={flightLegsSegmentData} />
             )}

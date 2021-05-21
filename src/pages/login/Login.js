@@ -13,6 +13,7 @@ import { login } from "../../services/serviceWrapper";
 import { Alert, Button } from "react-bootstrap";
 
 import { FULLPATH_TO } from "../../utils/constants";
+import { getTodaysBackground } from "../../utils/utils";
 import "./Login.scss";
 
 const Login = () => {
@@ -34,7 +35,6 @@ const Login = () => {
         fullName: `${res.lastName}, ${res.firstName}`,
         userId: res.userId,
         userRoles: res.roles.map(item => item.roleDescription),
-        // userToken: Cookies.get("JSESSIONID"),
         queryPageSize: 25,
         userPageSize: 25,
         landingPage: undefined,
@@ -58,7 +58,10 @@ const Login = () => {
   return (
     <div className="container-fluid">
       <div className="row no-gutter">
-        <div className="d-none d-md-flex col-md-7 col-lg-7 bg-image"></div>
+        <div
+          className={`d-none d-md-flex col-md-7 col-lg-7 bg-image 
+          ${getTodaysBackground("background")}`}
+        ></div>
         <div className="col-md-5 col-lg-5">
           <div className="login d-flex align-items-center py-5">
             <div className="container">

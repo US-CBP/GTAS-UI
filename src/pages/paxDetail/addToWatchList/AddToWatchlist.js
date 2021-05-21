@@ -25,7 +25,7 @@ const AddToWatchlist = props => {
   const [wlCategories, setWlCategories] = useState([]);
   const passenger = props.watchlistItems.passenger;
   const documents = props.watchlistItems.documents;
-  const { refreshAndReturn } = useContext(LookupContext);
+  const { refreshPartial } = useContext(LookupContext);
 
   const handleClose = () => {
     setShow(false);
@@ -75,7 +75,7 @@ const AddToWatchlist = props => {
   };
 
   useEffect(() => {
-    refreshAndReturn(LK.HITCAT).then(res => {
+    refreshPartial(LK.HITCAT).then(res => {
       const wlc = asArray(res).map(wl => {
         return {
           label: wl.label,

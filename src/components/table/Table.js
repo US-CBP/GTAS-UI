@@ -34,7 +34,7 @@ const Table = props => {
   const [data, setData] = useState(props.data || undefined);
   const [header, setHeader] = useState(props.header || []);
   const [columns, setColumns] = useState([]);
-  const [rowcount, setRowcount] = useState("");
+  // const [rowcount, setRowcount] = useState("");
   const stateVals = props.hasOwnProperty("stateVals") ? altObj(props.stateVals()) : {};
   const [displayColumnFilter, setDisplayColumnFilter] = useState(false);
   const [showPending, setShowPending] = useState(false);
@@ -107,6 +107,7 @@ const Table = props => {
       canPreviousPage,
       canNextPage,
       pageOptions,
+      rows,
       pageCount,
       gotoPage,
       nextPage,
@@ -360,7 +361,7 @@ const Table = props => {
             </Button>
             <span className="tagrightpag">
               <h3 className="title-default">
-                <i>{rowcount}</i>
+                <i>{rows.length}</i>
               </h3>
             </span>
           </Pagination>
@@ -441,8 +442,8 @@ const Table = props => {
     setColumns(columns);
 
     //exclude the No-Data-Found row from the count
-    if (dataArray.length === 1 && dataArray[0][props.id] === noDataFound) setRowcount(0);
-    else setRowcount(dataArray.length);
+    // if (dataArray.length === 1 && dataArray[0][props.id] === noDataFound) setRowcount(0);
+    // else setRowcount(dataArray.length);
   };
 
   const getData = (params = null) => {
@@ -473,7 +474,7 @@ const Table = props => {
       <RTable
         columns={columns}
         data={data}
-        rowcount={rowcount}
+        // rowcount={rowcount}
         initSort={props.initSort || []}
       ></RTable>
     </>

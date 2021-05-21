@@ -7,7 +7,7 @@
 .filterform-container {
   overflow-x: hidden;
   overflow-y: auto;
-  height: 100%;
+  backdrop-filter: blur(10px);
 }
 
 .filterform-container .react-calendar {

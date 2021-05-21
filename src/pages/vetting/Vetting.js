@@ -14,6 +14,7 @@ import FlightBadge from "../../components/flightBadge/FlightBadge";
 import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
+import CarrierBadge from "../../components/carrierBadge/CarrierBadge";
 import Overlay from "../../components/overlay/Overlay";
 import Confirm from "../../components/confirmationModal/Confirm";
 import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
@@ -29,14 +30,14 @@ import {
   lpad5,
   addMinutes
 } from "../../utils/utils";
-import {cases, poe, usersemails} from "../../services/serviceWrapper";
+import { cases, poe, usersemails } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
 import { ROLE, HIT_STATUS, LK } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 
 const Vetting = props => {
-  const { getCachedKeyValues } = useContext(LookupContext);
+  const { getCachedCoreFields } = useContext(LookupContext);
 
   // TODO - move hit types and statuses to db
   const hitTypeOptions = [
@@ -88,6 +89,7 @@ const Vetting = props => {
       paxId: pax.paxId
     };
   };
+
   const Headers = [
     {
       Accessor: "paxId",
@@ -143,38 +145,42 @@ const Vetting = props => {
                 </Button>
               )}
             </Confirm>
-            {row.original.lookoutStatus !== "NOTPROMOTED"  ? (
-                <></> //There doesn't need to be an indicator for an Already Promoted item, as it's self evident from the table.
+            {row.original.lookoutStatus !== "NOTPROMOTED" ? (
+              <></> //There doesn't need to be an indicator for an Already Promoted item, as it's self evident from the table.
             ) : (
-            <Confirm
+              <Confirm
                 header={<Xl8 xid="vet029">Promote To Lookout</Xl8>}
                 message={
                   <span>
-                  <Xl8 xid="vet030">Please click confirm to promote this passenger to Lookout:</Xl8>
-                  <br/>
-                  <br/>
-                    {row.original.lookoutStatus !== "NOTPROMOTED"  ? (
-                        <Xl8 xid="vet031" >Already Promoted</Xl8>
+                    <Xl8 xid="vet030">
+                      Please click confirm to promote this passenger to Lookout:
+                    </Xl8>
+                    <br />
+                    <br />
+                    {row.original.lookoutStatus !== "NOTPROMOTED" ? (
+                      <Xl8 xid="vet031">Already Promoted</Xl8>
                     ) : (
-                        <Xl8 xid="vet032">Promote To Lookout</Xl8>
+                      <Xl8 xid="vet032">Promote To Lookout</Xl8>
                     )}
-                </span>
+                  </span>
                 }
-            >
-              {confirm => (
+              >
+                {confirm => (
                   <Button
-                      className="dropdown-item"
-                      onClick={confirm(() => promoteToLookout(row.original.paxId, "ACTIVE")
-                      )}
+                    className="dropdown-item"
+                    onClick={confirm(() =>
+                      promoteToLookout(row.original.paxId, "ACTIVE")
+                    )}
                   >
                     {row.original.lookoutStatus !== "NOTPROMOTED" ? (
-                        <Xl8 xid="vet033" >Already Promoted</Xl8>
+                      <Xl8 xid="vet033">Already Promoted</Xl8>
                     ) : (
-                        <Xl8 xid="vet034">Promote To Lookout</Xl8>
+                      <Xl8 xid="vet034">Promote To Lookout</Xl8>
                     )}
                   </Button>
-              )}
-            </Confirm> )}
+                )}
+              </Confirm>
+            )}
           </RoleAuthenticator>
         </DropdownButton>
       )
@@ -198,14 +204,21 @@ const Vetting = props => {
       }
     },
     {
+      Accessor: "carrier",
+      Xl8: true,
+      Header: ["wl029", "Carrier"],
+      Cell: ({ row }) => <CarrierBadge src={row.original.flightNumber}></CarrierBadge>
+    },
+    {
       Accessor: "flightNumber",
       Xl8: true,
       Header: ["wl019", "Flight ID"],
       Cell: ({ row }) => (
-        <>
+        <div className="vetting">
           <FlightBadge
             data={{
               flightNumber: row.original.flightNumber,
+              fullFlightNumber: row.original.flightNumber,
               flightOrigin: row.original.flightOrigin,
               flightDestination: row.original.flightDestination,
               eta: row.original.flightETADate,
@@ -213,7 +226,7 @@ const Vetting = props => {
             }}
             className="sm"
           ></FlightBadge>
-        </>
+        </div>
       )
     },
     {
@@ -298,13 +311,13 @@ const Vetting = props => {
 
   const promoteToLookout = (paxId, status) => {
     const req = {
-      paxId : paxId,
-      poeStatus : status
+      paxId: paxId,
+      poeStatus: status
     };
     poe.put.updatePOEStatus(req).then(resp => {
-      setFilterFormKey(filterFormKey+1);//trigger update
+      setFilterFormKey(filterFormKey + 1); //trigger update
     });
-  }
+  };
 
   const toggleDateTimePicker = () => {
     setShowDateTimePicker(value => !value);
@@ -314,6 +327,7 @@ const Vetting = props => {
   const setDataWrapper = data => {
     data = asArray(data.cases).map(item => {
       item.id = item.id || `${item.flightId}${item.paxId}`;
+      item.carrier = item.flightNumber.slice(0, 2);
       item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
         item.medPrioHitCount
       )}:${lpad5(item.lowPrioHitCount)}`;
@@ -397,7 +411,7 @@ const Vetting = props => {
       setUsersEmails(res);
     });
 
-    getCachedKeyValues(LK.HITCAT).then(res => {
+    getCachedCoreFields(LK.HITCAT).then(res => {
       const options = asArray(res).map(hitCat => {
         return {
           label: hitCat.label,
@@ -407,7 +421,7 @@ const Vetting = props => {
       setHitCategoryOptions(options);
     });
 
-    getCachedKeyValues(LK.NOTETYPE).then(types => {
+    getCachedCoreFields(LK.NOTETYPE).then(types => {
       const nTypes = asArray(types).reduce((acc, type) => {
         if (type.noteType !== "DELETED") {
           acc.push({
@@ -474,7 +488,6 @@ const Vetting = props => {
               callback={cb}
               alt="Hit Source"
             />
-            {/* {hasData(noteTypes) && ( */}
             <LabelledInput
               datafield
               name="noteTypes"
@@ -485,7 +498,6 @@ const Vetting = props => {
               callback={cb}
               alt={<Xl8 xid="vet019">Note Type</Xl8>}
             />
-            {/* )} */}
 
             <LabelledInput
               name="ruleCatFilter"
@@ -528,70 +540,70 @@ const Vetting = props => {
               spacebetween
             />
             {showDateTimePicker && (
-              <LabelledInput
-                datafield="etaStart"
-                inputtype="dateTime"
-                inputval={startDate}
-                labelText={<Xl8 xid="vet014">Start Date</Xl8>}
-                name="etaStart"
-                callback={cb}
-                className="dtp-vetting-upper"
-                required={true}
-                alt="Start Date"
-              />
-            )}
-            {showDateTimePicker && (
-              <LabelledInput
-                datafield="etaEnd"
-                inputtype="dateTime"
-                inputval={endDate}
-                labelText={<Xl8 xid="vet015">End Date</Xl8>}
-                name="etaEnd"
-                callback={cb}
-                required={true}
-                className="dtp-vetting-lower"
-                alt="End Date"
-              />
-            )}
-            {!showDateTimePicker && (
-              <LabelledInput
-                labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
-                inputtype="select"
-                name="startHourRange"
-                inputval="6"
-                inputStyle="form-select"
-                datafield="startHourRange"
-                options={[
-                  { value: "0", label: "0 hour" },
-                  { value: "6", label: "-6 hours" },
-                  { value: "12", label: "-12 hours" },
-                  { value: "24", label: "-24 hours" },
-                  { value: "48", label: "-48 hours" },
-                  { value: "96", label: "-96 hours" }
-                ]}
-                callback={cb}
-                alt="Hour range (Start)"
-              />
+              <>
+                <LabelledInput
+                  datafield="etaStart"
+                  inputtype="dateTime"
+                  inputval={startDate}
+                  labelText={<Xl8 xid="vet014">Start Date</Xl8>}
+                  name="etaStart"
+                  callback={cb}
+                  className="dtp-vetting-upper"
+                  required={true}
+                  alt="Start Date"
+                />
+                <LabelledInput
+                  datafield="etaEnd"
+                  inputtype="dateTime"
+                  inputval={endDate}
+                  labelText={<Xl8 xid="vet015">End Date</Xl8>}
+                  name="etaEnd"
+                  callback={cb}
+                  required={true}
+                  className="dtp-vetting-lower"
+                  alt="End Date"
+                />
+              </>
             )}
             {!showDateTimePicker && (
-              <LabelledInput
-                labelText={<Xl8 xid="vet017">Hour Range (End)</Xl8>}
-                inputtype="select"
-                name="endHourRange"
-                inputval="96"
-                inputStyle="form-select"
-                datafield="endHourRange"
-                options={[
-                  { value: "0", label: "0 hour" },
-                  { value: "6", label: "+6 hours" },
-                  { value: "12", label: "+12 hours" },
-                  { value: "24", label: "+24 hours" },
-                  { value: "48", label: "+48 hours" },
-                  { value: "96", label: "+96 hours" }
-                ]}
-                callback={cb}
-                alt="Hour range (End)"
-              />
+              <>
+                <LabelledInput
+                  labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
+                  inputtype="select"
+                  name="startHourRange"
+                  inputval="6"
+                  inputStyle="form-select"
+                  datafield="startHourRange"
+                  options={[
+                    { value: "0", label: "0 hour" },
+                    { value: "6", label: "-6 hours" },
+                    { value: "12", label: "-12 hours" },
+                    { value: "24", label: "-24 hours" },
+                    { value: "48", label: "-48 hours" },
+                    { value: "96", label: "-96 hours" }
+                  ]}
+                  callback={cb}
+                  alt="Hour range (Start)"
+                />
+                <LabelledInput
+                  labelText={<Xl8 xid="vet017">Hour Range (End)</Xl8>}
+                  inputtype="select"
+                  name="endHourRange"
+                  inputval="96"
+                  inputStyle="form-select"
+                  datafield="endHourRange"
+                  options={[
+                    { value: "0", label: "0 hour" },
+                    { value: "6", label: "+6 hours" },
+                    { value: "12", label: "+12 hours" },
+                    { value: "24", label: "+24 hours" },
+                    { value: "48", label: "+48 hours" },
+                    { value: "96", label: "+96 hours" }
+                  ]}
+                  callback={cb}
+                  alt="Hour range (End)"
+                />
+              </>
             )}
           </FilterForm>
         </Col>

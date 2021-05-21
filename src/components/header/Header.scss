@@ -22,14 +22,13 @@ $hover-color: rgb(177, 172, 172);
   min-width: 375px;
 }
 .header-navbar-brand {
-  background-color: white;
+  // background-color: white;
+  display: inline-table !important;
+  width: 230px;
   height: 40px;
   text-align: center;
   padding-top: 0px !important;
   padding-bottom: 0px !important;
-  margin-top: 3px;
-  margin-left: 20px;
-  margin-right: 27px;
   a {
     img {
       height: 40px;
@@ -117,6 +116,9 @@ $hover-color: rgb(177, 172, 172);
   .optional {
     display: none !important;
   }
+}
+.header-search {
+  margin-top: -2px;
 }
 
 @media (max-width: 950px) {

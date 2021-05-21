@@ -13,6 +13,7 @@ import HitsBadge from "../../components/hitsBadge/HitsBadge";
 import Main from "../../components/main/Main";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
+import LazyImage from "../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
 
 import { flightPassengers } from "../../services/serviceWrapper";
@@ -26,7 +27,7 @@ import {
   lpad5,
   sortableDob
 } from "../../utils/utils";
-import { LK, ROLE } from "../../utils/constants";
+import { LK, ROLE, DIRECTION } from "../../utils/constants";
 import { Col, Tabs, Tab } from "react-bootstrap";
 import "./FlightPax.css";
 
@@ -38,7 +39,7 @@ const FlightPax = props => {
   const [allData, setAllData] = useState();
   const [tab, setTab] = useState("all");
   const [key, setKey] = useState(0);
-  const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
+  const flightData = props.location?.state?.data || {};
 
   const hasAnyHits = item => {
     if (
@@ -230,9 +231,12 @@ const FlightPax = props => {
       disableGroupBy: true,
       Cell: ({ row }) => {
         return (
-          <ToolTipWrapper
-            data={{ val: row.original.nationality, lkup: LK.COUNTRY }}
-          ></ToolTipWrapper>
+          <>
+            <LazyImage val={row.original.nationality} type={LK.COUNTRY}></LazyImage>
+            <ToolTipWrapper
+              data={{ val: row.original.nationality, lkup: LK.COUNTRY }}
+            ></ToolTipWrapper>
+          </>
         );
       },
       Aggregated: () => ``
@@ -295,23 +299,21 @@ const FlightPax = props => {
     setTab(id);
   };
 
-  const getFlightData = () => {
-    return {
-      flightNumber: flightData.fullFlightNumber,
-      carrier: "",
-      flightDestination: flightData.destination || flightData.flightDestination,
-      flightOrigin: flightData.origin || flightData.flightOrigin,
-      eta: flightData.eta,
-      etd: flightData.etd
-    };
+  const badgeData = {
+    flightNumber: flightData.fullFlightNumber,
+    carrier: alt(flightData.fullFlightNumber, "").slice(0, 2),
+    flightDestination: flightData.destination || flightData.flightDestination,
+    flightOrigin: flightData.origin || flightData.flightOrigin,
+    eta: flightData.eta,
+    etd: flightData.etd
   };
 
   return (
     <>
       <SidenavContainer>
         <br />
-        <FlightBadge data={getFlightData()}></FlightBadge>
-        <Col className="notopmargin">
+        <FlightBadge data={badgeData}></FlightBadge>
+        <Col className="notopmargin below-badge">
           <div className="filterform-container form">
             <div className="flightpax-countdown-container">
               <CountdownBadge
@@ -328,7 +330,7 @@ const FlightPax = props => {
                   <td className="left">
                     <Xl8 xid="fp006">Direction:</Xl8>
                   </td>
-                  <td className="right">{flightData.direction}</td>
+                  <td className="right">{DIRECTION[flightData.direction]}</td>
                 </tr>
                 <tr className="flightpax-row">
                   <td className="left">

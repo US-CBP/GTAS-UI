@@ -24,7 +24,7 @@ const Airports = () => {
   const [action, setAction] = useState();
   const [confirmModalHeader, setConfirmModalHeader] = useState();
   const [confirmModalMessage, setConfirmModalMessage] = useState();
-  const { refreshAndReturn } = useContext(LookupContext);
+  const { refreshPartial } = useContext(LookupContext);
 
   const addAirport = <Xl8 xid="airp002">Add Airport</Xl8>;
   const editAirport = <Xl8 xid="airp003">Edit Airport</Xl8>;
@@ -144,7 +144,7 @@ const Airports = () => {
       />
 
       <Table
-        service={() => refreshAndReturn(type)}
+        service={() => refreshPartial(type)}
         callback={cb}
         header={headers}
         key={refreshKey}

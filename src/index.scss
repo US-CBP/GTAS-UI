@@ -24,10 +24,30 @@ $wco-blue-gray: #a4c7e3;
 $wco-turquoise: #009e92;
 
 $gtas-white: rgba(255, 255, 255, 0.9);
-// $idx: random(3);
-$idx: 2;
 
-$background-image-url: "../../images/" + $idx + ".jpg";
+.background1 {
+  background: linear-gradient(#0082c3dd, #005aa7dd),
+    url("./images/1.jpg") left center no-repeat;
+  background-size: cover;
+}
+
+.background2 {
+  background: linear-gradient(#0082c3dd, #005aa7dd),
+    url("./images/2.jpg") left center no-repeat;
+  background-size: cover;
+}
+
+.background3 {
+  background: linear-gradient(#0082c3dd, #005aa7dd),
+    url("./images/3.jpg") center center no-repeat;
+  background-size: cover;
+}
+
+.background4 {
+  background: linear-gradient(#0082c3dd, #005aa7dd),
+    url("./images/4.jpg") left center no-repeat;
+  background-size: cover;
+}
 
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 

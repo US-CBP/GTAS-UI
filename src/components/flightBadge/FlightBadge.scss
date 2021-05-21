@@ -10,12 +10,16 @@
   border-top: 1px solid white;
   border-bottom: 1px solid white;
   margin: 0px;
-  padding: 10px 5px;
+  padding: 8px 5px 5px 5px;
   color: white;
 
   .flight-number {
     font-weight: 700;
-    align-items: center;
+    justify-content: space-between;
+    vertical-align: bottom;
+    background-color: white;
+    border-radius: 3px;
+    margin: 0px 24px;
   }
 
   .flight-badge-row {
@@ -33,6 +37,7 @@
   .flight-text {
     font-size: large;
     font-weight: 501;
+    margin-top: 5px;
 
     .table {
       display: inline-table;
@@ -78,10 +83,39 @@
 
 .flight-badge .link {
   background-color: white;
-  padding: 3px;
   border-radius: 0.25rem;
 }
 
 .flight-badge .link:hover {
   text-decoration: none;
+}
+
+.filter .as-info {
+  color: white;
+}
+
+.vetting .flight-badge.sm {
+  text-align: center !important;
+  border-radius: 0.25rem;
+  background-color: transparent;
+  border: none;
+  padding: 5px;
+
+  .flight-number {
+    color: black;
+    font-size: larger;
+  }
+
+  .flight-badge-row {
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    margin-right: unset;
+    margin-left: unset;
+
+    .width40 {
+      width: 40px;
+    }
+  }
 }

@@ -25,7 +25,7 @@ const HitCats = ({ name }) => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [editRowDetails, setEditRowDetails] = useState();
   const [modalTitle, setModalTitle] = useState(addNewCat);
-  const { refreshAndReturn } = useContext(LookupContext);
+  const { refreshPartial } = useContext(LookupContext);
 
   const openEditModal = rowDetails => {
     setIsEditModal(true);
@@ -100,13 +100,13 @@ const HitCats = ({ name }) => {
       isBoolean: true,
       Cell: ({ row }) => {
         return (
-            <div className="text-center">
-              <i
-                  className={`fa fa-lg ${
-                      !!row.original.promoteToLookout ? "fa-check-square text-success" : ""
-                  }`}
-              ></i>
-            </div>
+          <div className="text-center">
+            <i
+              className={`fa fa-lg ${
+                !!row.original.promoteToLookout ? "fa-check-square text-success" : ""
+              }`}
+            ></i>
+          </div>
         );
       }
     }
@@ -132,7 +132,7 @@ const HitCats = ({ name }) => {
     <Main className="full bg-white">
       <Title title={name}></Title>
       <Table
-        service={() => refreshAndReturn(LK.HITCAT)}
+        service={() => refreshPartial(LK.HITCAT)}
         key={refreshKey}
         callback={cb}
         header={headers}

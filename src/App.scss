@@ -390,10 +390,8 @@ li .rtf--ab__c button[variant="rtf-red"] {
 .filter-fg > .col,
 .filter-fg-open > .col {
   margin-top: 20px;
-  backdrop-filter: blur(2px);
   padding-bottom: 5px;
   padding: 0px;
-  height: 100%;
 }
 
 @media (max-width: 1024px) {
@@ -604,4 +602,13 @@ li .rtf--ab__c button[variant="rtf-red"] {
   color: red;
   align-self: center;
   padding-left: 4px;
+}
+
+.table a {
+  color: #212529;
+  text-decoration: underline;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #74c0e035 !important;
 }
