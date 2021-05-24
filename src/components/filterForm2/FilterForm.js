@@ -140,23 +140,35 @@ const FilterForm = props => {
     let fMap = fieldMap;
 
     asArray(props.children).forEach((child, idx) => {
-      const datafield = child.props?.datafield;
+      //Small issue with using conditional date fields, they end up as children of the property as an array of values and never get
+      //made into proper children. Check for multi-sub children and assign as top level children values.
 
-      if (datafield) {
-        const noname = `unnamedfield${idx}`;
-        const componentname = child.props.name || noname;
-        const fieldname = datafield === true ? componentname : datafield;
-        // Either the name or datafield prop must contain a string
-        if (fieldname === noname) {
-          throw new Error(`The child collection contains a "datafield" element whose name is not defined in the 
-                "name" or "datafield" props. Remove the "datafield" prop or define a name for the element.`);
-        }
-
-        fMap[componentname] = fieldname;
-        fields[fMap[componentname]] = child.props.inputval;
-
-        dfnames.push(fieldname);
+      let trueChildCount = [];
+      if(!hasData(child.props?.datafield) && hasData(child.props?.children)){
+        asArray(child.props.children).forEach(child => {
+          trueChildCount.push(child);
+        });
+      } else{
+        trueChildCount.push(child);
       }
+      trueChildCount.forEach( child => {
+        const datafield = child.props?.datafield;
+        if (datafield) {
+          const noname = `unnamedfield${idx}`;
+          const componentname = child.props.name || noname;
+          const fieldname = datafield === true ? componentname : datafield;
+          // Either the name or datafield prop must contain a string
+          if (fieldname === noname) {
+            throw new Error(`The child collection contains a "datafield" element whose name is not defined in the 
+                  "name" or "datafield" props. Remove the "datafield" prop or define a name for the element.`);
+          }
+
+          fMap[componentname] = fieldname;
+          fields[fMap[componentname]] = child.props.inputval;
+
+          dfnames.push(fieldname);
+        }
+      })
     });
 
     bindChildren(fields);
