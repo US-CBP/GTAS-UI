@@ -20,6 +20,14 @@
   border-radius: 5px;
 }
 
+.lazy-image-full.carrier img {
+  background: no-repeat center center;
+  background-size: cover;
+  height: 80px;
+  width: 80px;
+  border-radius: 5px;
+}
+
 .lazy-image-wrapper {
   margin-top: 0px;
   margin-bottom: 0px;

@@ -39,7 +39,7 @@ const LazyImage = ({ val, type, size, nozoom }) => {
             placement={"top"}
             overlay={
               <Popover>
-                <Popover.Content className="lazy-image-full">
+                <Popover.Content className={`lazy-image-full ${type}`}>
                   <img alt={dataReady} src={src} />
                 </Popover.Content>
               </Popover>

@@ -3,19 +3,20 @@
 // Please see license.txt for details.
 
 import React from "react";
-import { localeMonthDayTime, hasData, alt } from "../../utils/utils";
 import { Row } from "react-bootstrap";
 import { Link } from "@reach/router";
 import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 import LazyImage from "../../components/lazyImage/LazyImage";
 import { LK } from "../../utils/constants";
+import { localeMonthDayTime, hasData, alt } from "../../utils/utils";
 import "./FlightBadge.scss";
 
 const FlightBadge = props => {
   const res = props.data;
   const style = `flight-badge ${alt(props.className, "reg")}`;
 
-  if (!hasData(props.data?.flightNumber)) return <></>;
+  if (!hasData(props.data?.flightNumber) && !hasData(props.data?.flightDestination))
+    return <></>;
 
   const data = {
     arrival: [res.flightDestination, ...localeMonthDayTime(res.eta).split(",")],
@@ -33,11 +34,13 @@ const FlightBadge = props => {
           {res.flightNumber}
         </Link>
       </>
-    ) : (
+    ) : hasData(res.flightNumber || res.fullFlightNumber) ? (
       <span className="flight-badge-nonlink-icon nozoom">
         <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
         {res.flightNumber}
       </span>
+    ) : (
+      <></>
     )
   };
 
@@ -47,7 +50,7 @@ const FlightBadge = props => {
 
   return (
     <div className={style}>
-      <div className="flight-number">{flightNumber}</div>
+      {flightNumber && <div className="flight-number">{flightNumber}</div>}
       <div className="flight-text">
         <Row flex="true" no-wrap="true" className="flight-badge-row">
           <span className="img-departure"></span>
