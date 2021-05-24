@@ -109,21 +109,38 @@ const FilterForm = props => {
 
   // bind children containing form data (datafield prop) to the ev handler and state
   const bindChildren = populatedFields => {
-    let boundChildren = asArray(props.children).map((child, idx) => {
-      if (!child.props?.datafield) return child;
+    let trueIndex = 0;
+    let boundChildren = [];
+    asArray(props.children).forEach((child, idx) => {
+      let trueChildCount = [];
+      if (!hasData(child.props?.datafield) && hasData(child.props?.children)) {
+        asArray(child.props.children).forEach(child => {
+          trueChildCount.push(child);
+        });
+      } else {
+        trueChildCount.push(child);
+      }
+      trueChildCount.forEach((subChild,subIdx) => { // Will usually only be 1 child
+        if (!subChild.props?.datafield) {
+          boundChildren.push(subChild);
+          return;
+        }
+        if(subIdx > 0) trueIndex++; //Track indexes for extra subchildren that wouldn't mirror parent index count
 
-      let cleanprops = Object.assign({}, child.props);
-      // intercept the callback so FilterForm is notified of input field changes.
-      // Delete it here, and replace it in newchild (below) with a FilterForm handler.
-      // We can also forward the event on to the original callback or to a parent
-      // of FilterForm if needed.
-      delete cleanprops.callback;
+        let cleanprops = Object.assign({}, subChild.props);
+        // intercept the callback so FilterForm is notified of input field changes.
+        // Delete it here, and replace it in newchild (below) with a FilterForm handler.
+        // We can also forward the event on to the original callback or to a parent
+        // of FilterForm if needed.
+        delete cleanprops.callback;
 
-      return React.cloneElement(child, {
-        key: idx,
-        callback: onChange,
-        ...cleanprops
+        boundChildren.push(React.cloneElement(subChild, {
+          key: trueIndex,
+          callback: onChange,
+          ...cleanprops
+        }));
       });
+      trueIndex++;
     });
 
     setKids(boundChildren);
