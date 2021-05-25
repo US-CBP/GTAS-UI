@@ -16,6 +16,15 @@ export const RULETAB = {
   ALL: "all"
 };
 
+export const TABTYPE = {
+  ALL: "all",
+  HITS: "hits"
+};
+
+export const GENERICTYPE = {
+  ALL: "all"
+};
+
 export const MODE = {
   ADD: "Add",
   EDIT: "Edit"

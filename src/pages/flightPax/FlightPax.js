@@ -27,7 +27,7 @@ import {
   lpad5,
   sortableDob
 } from "../../utils/utils";
-import { LK, ROLE, DIRECTION } from "../../utils/constants";
+import { LK, ROLE, DIRECTION, TABTYPE, GENERICTYPE } from "../../utils/constants";
 import { Col, Tabs, Tab } from "react-bootstrap";
 import "./FlightPax.css";
 
@@ -37,7 +37,7 @@ const FlightPax = props => {
   const [data, setData] = useState();
   const [hitData, setHitData] = useState();
   const [allData, setAllData] = useState();
-  const [tab, setTab] = useState("all");
+  const [tab, setTab] = useState(TABTYPE.ALL);
   const [key, setKey] = useState(0);
   const flightData = props.location?.state?.data || {};
 
@@ -169,7 +169,7 @@ const FlightPax = props => {
     }
   ];
 
-  const tabSpecificHeaders = tab !== "hits" ? aggregateHitHeader : hitHeaders;
+  const tabSpecificHeaders = tab !== TABTYPE.HITS ? aggregateHitHeader : hitHeaders;
   const headers = [
     ...tabSpecificHeaders,
     {
@@ -265,7 +265,7 @@ const FlightPax = props => {
   }, [props.id]);
 
   useEffect(() => {
-    if (tab === "hits") setData(hitData);
+    if (tab === TABTYPE.HITS) setData(hitData);
     else setData(allData);
 
     const newkey = key + 1;
@@ -273,9 +273,9 @@ const FlightPax = props => {
   }, [hitData, tab]);
 
   const tabs = (
-    <Tabs defaultActiveKey="all" id="flightPaxTabs">
+    <Tabs defaultActiveKey={TABTYPE.ALL} id="flightPaxTabs">
       <Tab
-        eventKey="all"
+        eventKey={TABTYPE.ALL}
         title={
           <Xl8 xid="fp001" id="flightPaxTabs-tab-all">
             All
@@ -283,7 +283,7 @@ const FlightPax = props => {
         }
       ></Tab>
       <Tab
-        eventKey="hits"
+        eventKey={TABTYPE.HITS}
         title={
           <Xl8 xid="fp002" id="flightPaxTabs-tab-hits">
             Hits
@@ -344,7 +344,7 @@ const FlightPax = props => {
                   </td>
                   <td className="right">
                     <Link
-                      to={`/gtas/seat-chart/${flightData.id}/all/all`}
+                      to={`/gtas/seat-chart/${flightData.id}/${GENERICTYPE.ALL}/${GENERICTYPE.ALL}`}
                       className="flightpax-link"
                       state={{
                         arrival: flightData.eta,

@@ -15,6 +15,7 @@ import Main from "../main/Main";
 import { seats } from "../../services/serviceWrapper";
 import { Row, CardDeck, Card } from "react-bootstrap";
 import { asArray, hasData, localeDate } from "../../utils/utils";
+import { GENERICTYPE } from "../../utils/constants";
 import "./SeatChart.scss";
 
 const SeatChart = ({ location }) => {
@@ -107,7 +108,8 @@ const SeatChart = ({ location }) => {
     });
 
     // hide the pax tile if we are not viewing a specific pax yet
-    if (paxId === "all" && currentPaxSeat === "all") setShowPax(false);
+    if (paxId === GENERICTYPE.ALL && currentPaxSeat === GENERICTYPE.ALL)
+      setShowPax(false);
     else setShowPax(true);
   }, []);
 
