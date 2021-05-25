@@ -22,6 +22,14 @@
   height: 270px;
 }
 
+.filterform-container .btn-primary:hover {
+  border-color: #d0d0d0;
+}
+
+.filterform-container .btn-primary {
+  border-color: #8ea6b1;
+}
+
 .input:optional {
   border-left-color: #999;
 }
