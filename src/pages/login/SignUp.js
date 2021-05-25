@@ -12,7 +12,7 @@ import Xl8 from "../../components/xl8/Xl8";
 import { asArray, hasData, getTodaysBackground } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./Login.scss";
-import { FULLPATH_TO } from "../../utils/constants";
+import { FULLPATH_TO, USERID } from "../../utils/constants";
 
 const SignUp = props => {
   const [errorMsg, setErrorMsg] = useState("");
@@ -44,14 +44,12 @@ const SignUp = props => {
     }
   };
   const validateUsernameInput = (username = "") => {
-    const maxLen = 50;
-    const minLen = 3;
     const emptyString = "";
 
     const msg =
-      username.length < minLen
+      username.length < USERID.MIN_LEN
         ? USER_ID_TOO_SHORT
-        : username.length > maxLen
+        : username.length > USERID.MAX_LEN
         ? USER_ID_TOO_LONG
         : emptyString;
 

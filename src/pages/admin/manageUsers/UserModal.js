@@ -17,7 +17,7 @@ import { users } from "../../../services/serviceWrapper";
 import { roles } from "../../../services/lookupService";
 import { UserContext } from "../../../context/user/UserContext";
 import { asArray, isValidPassword } from "../../../utils/utils";
-import { ACTION, ROLE } from "../../../utils/constants";
+import { ACTION, ROLE, USERID } from "../../../utils/constants";
 import "./ManageUsers.scss";
 import PasswordConstraints from "../../../components/PasswordConstraints/PasswordConstraints";
 
@@ -148,16 +148,14 @@ const UserModal = props => {
   };
 
   const validateUsernameInput = (username = "") => {
-    const maxLen = 50;
-    const minLen = 3;
     const emptyString = "";
     const usernameExists = existingUserIds.includes(username.toUpperCase());
 
     const msg = usernameExists
       ? USER_ID_ALREADY_EXIST
-      : username.length < minLen
+      : username.length < USERID.MIN_LEN
       ? USER_ID_TOO_SHORT
-      : username.length > maxLen
+      : username.length > USERID.MAX_LEN
       ? USER_ID_TOO_LONG
       : emptyString;
 
