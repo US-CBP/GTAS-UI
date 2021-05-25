@@ -19,6 +19,9 @@ const SignUp = props => {
   const [displaySuccessMsg, setDisplaySuccessMsg] = useState(false);
   const [displayErrorMsg, setDisplayErrorMsg] = useState(false);
   const [locations, setLocations] = useState([]);
+  const USER_ID_TOO_SHORT = <Xl8 xid="um15">User ID is too short</Xl8>;
+  const USER_ID_TOO_LONG = <Xl8 xid="um15">User ID is too long</Xl8>;
+
   const cb = () => {};
 
   const signupCallback = (status, res) => {
@@ -30,6 +33,22 @@ const SignUp = props => {
       setDisplayErrorMsg(false);
       setDisplaySuccessMsg(true);
     }
+  };
+  const validateUsernameInput = (username = "") => {
+    const maxLen = 50;
+    const minLen = 3;
+    const emptyString = "";
+
+    const msg =
+      username.length < minLen
+        ? USER_ID_TOO_SHORT
+        : username.length > maxLen
+        ? USER_ID_TOO_LONG
+        : emptyString;
+
+    const valid = msg === emptyString;
+
+    return { valid: valid, info: msg };
   };
   useEffect(() => {
     physicalLocations.get().then(res => {
@@ -88,6 +107,7 @@ const SignUp = props => {
                   inputval=""
                   alt="nothing"
                   callback={cb}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -98,6 +118,7 @@ const SignUp = props => {
                   inputval=""
                   alt="nothing"
                   callback={cb}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -108,6 +129,8 @@ const SignUp = props => {
                   inputval=""
                   alt="nothing"
                   callback={cb}
+                  validateInput={validateUsernameInput}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -118,6 +141,7 @@ const SignUp = props => {
                   inputval=""
                   alt="nothing"
                   callback={cb}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -128,6 +152,7 @@ const SignUp = props => {
                   alt="nothing"
                   placeholder="optional"
                   callback={cb}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -139,6 +164,7 @@ const SignUp = props => {
                   options={locations}
                   alt="nothing"
                   callback={cb}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -149,6 +175,7 @@ const SignUp = props => {
                   inputval=""
                   alt="nothing"
                   callback={cb}
+                  spacebetween
                 />
               </Form>
             </>
