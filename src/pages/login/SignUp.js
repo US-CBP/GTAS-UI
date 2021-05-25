@@ -19,8 +19,8 @@ const SignUp = props => {
   const [displaySuccessMsg, setDisplaySuccessMsg] = useState(false);
   const [displayErrorMsg, setDisplayErrorMsg] = useState(false);
   const [locations, setLocations] = useState([]);
-  const USER_ID_TOO_SHORT = <Xl8 xid="um15">User ID is too short</Xl8>;
-  const USER_ID_TOO_LONG = <Xl8 xid="um15">User ID is too long</Xl8>;
+  const USER_ID_TOO_SHORT = <Xl8 xid="sup011">User ID is too short</Xl8>;
+  const USER_ID_TOO_LONG = <Xl8 xid="sup012">User ID is too long</Xl8>;
   const ALERTS_TYPES = { SUCCESS: "SUCCESS", FAILURE: "FAILURE" };
 
   const cb = () => {};

@@ -38,7 +38,7 @@ const UserModal = props => {
     </Xl8>
   );
   const USER_ID_TOO_SHORT = <Xl8 xid="um15">User ID is too short</Xl8>;
-  const USER_ID_TOO_LONG = <Xl8 xid="um15">User ID is too long</Xl8>;
+  const USER_ID_TOO_LONG = <Xl8 xid="um16">User ID is too long</Xl8>;
 
   const INVALID_PASSWORD_ERROR = (
     <Xl8 xid="um02">The password you entered does not satisfy the password criteria.</Xl8>
