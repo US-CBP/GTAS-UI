@@ -11,7 +11,8 @@
 }
 
 .filterform-container .react-calendar {
-  position: fixed;
+  display: none;
+  /* position: fixed;
   top: auto;
   line-height: 0.5rem;
   border-radius: 5px;
@@ -19,7 +20,7 @@
   max-width: unset;
   left: 240px;
   bottom: 5px;
-  height: 270px;
+  height: 270px; */
 }
 
 .input:optional {
