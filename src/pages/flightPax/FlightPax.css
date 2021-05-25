@@ -33,3 +33,11 @@
   color: white;
   font-size: medium;
 }
+
+.flightpax-row a .right {
+  float: right;
+  color: white;
+  font-size: medium;
+  text-decoration: underline;
+  display: contents;
+}

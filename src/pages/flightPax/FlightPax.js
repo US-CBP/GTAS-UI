@@ -338,6 +338,25 @@ const FlightPax = props => {
                   </td>
                   <td className="right">{flightData.passengerCount}</td>
                 </tr>
+                <tr className="flightpax-row">
+                  <td className="left">
+                    <Xl8 xid="fp009">Seat Assignments:</Xl8>
+                  </td>
+                  <td className="right">
+                    <Link
+                      to={`/gtas/seat-chart/${flightData.id}/all/all`}
+                      className="pax-info-link"
+                      state={{
+                        arrival: flightData.eta,
+                        departure: flightData.etd,
+                        flightId: flightData.id,
+                        flightNumber: flightData.fullFlightNumber
+                      }}
+                    >
+                      <td className="right">All</td>
+                    </Link>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>

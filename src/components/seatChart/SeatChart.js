@@ -25,6 +25,7 @@ const SeatChart = ({ location }) => {
   const [selectedSeatInfo, setSelectedSeatInfo] = useState({});
   const [showPending, setShowPending] = useState(true);
   const [searchedSeats, setSearchedSeats] = useState();
+  const [showPax, setShowPax] = useState();
   const seatRefs = useRef({});
   const searchRef = useRef({});
 
@@ -104,6 +105,9 @@ const SeatChart = ({ location }) => {
       processData(res);
       setShowPending(false);
     });
+
+    // hide the pax tile if we are not viewing a specific pax yet
+    if ((paxId === currentPaxSeat) === "all") setShowPax(false);
   }, []);
 
   useEffect(() => {
@@ -200,12 +204,14 @@ const SeatChart = ({ location }) => {
             </Card.Header>
             <SeatChartCard data={flightInfoData} link={linkToFlightPax} />
           </Card>
-          <Card>
-            <Card.Header>
-              <Xl8 xid="seat003">Passenger Information</Xl8>
-            </Card.Header>
-            <SeatChartCard data={seatInfoData} link={linkToPaxdetails} />
-          </Card>
+          {showPax && (
+            <Card>
+              <Card.Header>
+                <Xl8 xid="seat003">Passenger Information</Xl8>
+              </Card.Header>
+              <SeatChartCard data={seatInfoData} link={linkToPaxdetails} />
+            </Card>
+          )}
         </CardDeck>
       </Main>
     </>
