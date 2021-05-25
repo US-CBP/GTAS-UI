@@ -41,3 +41,9 @@
   text-decoration: underline;
   display: contents;
 }
+
+.flightpax-link {
+  background-color: white;
+  padding: 4px;
+  border-radius: 0.25rem;
+}
