@@ -53,11 +53,6 @@ const UserModal = props => {
     return loggedinUser.userId === userId;
   };
 
-  // const loggedinUserHasAdminRole = () => {
-  //   const roles = loggedinUser.userRoles;
-  //   return roles.includes(ROLE.ADMIN);
-  // };
-
   const isRoleDisabled = role => {
     return (
       role.roleDescription === ROLE.FLIGHTVWR ||
