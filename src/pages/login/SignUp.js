@@ -12,18 +12,22 @@ import Xl8 from "../../components/xl8/Xl8";
 import { asArray, hasData, getTodaysBackground } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./Login.scss";
-import { FULLPATH_TO } from "../../utils/constants";
+import { FULLPATH_TO, USERID } from "../../utils/constants";
 
 const SignUp = props => {
   const [errorMsg, setErrorMsg] = useState("");
   const [displaySuccessMsg, setDisplaySuccessMsg] = useState(false);
   const [displayErrorMsg, setDisplayErrorMsg] = useState(false);
   const [locations, setLocations] = useState([]);
+  const USER_ID_TOO_SHORT = <Xl8 xid="sup011">User ID is too short</Xl8>;
+  const USER_ID_TOO_LONG = <Xl8 xid="sup012">User ID is too long</Xl8>;
+  const ALERTS_TYPES = { SUCCESS: "SUCCESS", FAILURE: "FAILURE" };
+
   const cb = () => {};
 
-  const signupCallback = (status, res) => {
-    if (hasData(res) && res.status === "FAILURE") {
-      setErrorMsg(res.message);
+  const launchAlert = (type, msg) => {
+    if (type === ALERTS_TYPES.FAILURE) {
+      setErrorMsg(msg);
       setDisplaySuccessMsg(false);
       setDisplayErrorMsg(true);
     } else {
@@ -31,6 +35,35 @@ const SignUp = props => {
       setDisplaySuccessMsg(true);
     }
   };
+
+  const signupCallback = (status, res) => {
+    if (hasData(res) && res.status === "FAILURE") {
+      launchAlert(ALERTS_TYPES.FAILURE, res.message);
+    } else {
+      launchAlert(ALERTS_TYPES.SUCCESS);
+    }
+  };
+  const validateUsernameInput = (username = "") => {
+    const emptyString = "";
+
+    const msg =
+      username.length < USERID.MIN_LEN
+        ? USER_ID_TOO_SHORT
+        : username.length > USERID.MAX_LEN
+        ? USER_ID_TOO_LONG
+        : emptyString;
+
+    const valid = msg === emptyString;
+
+    return { valid: valid, info: msg };
+  };
+  const validateInputs = inputs => {
+    const username = asArray(inputs)[0]["username"];
+    const validatedUsername = validateUsernameInput(username);
+    launchAlert(ALERTS_TYPES.FAILURE, validatedUsername.info);
+    return validatedUsername.valid;
+  };
+
   useEffect(() => {
     physicalLocations.get().then(res => {
       const data = asArray(res).map(location => {
@@ -78,6 +111,7 @@ const SignUp = props => {
                 redirectTo={FULLPATH_TO.LOGIN}
                 cancellable
                 key={locations}
+                validateInputs={validateInputs}
               >
                 <LabelledInput
                   datafield
@@ -88,6 +122,7 @@ const SignUp = props => {
                   inputval=""
                   alt="nothing"
                   callback={cb}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -98,6 +133,7 @@ const SignUp = props => {
                   inputval=""
                   alt="nothing"
                   callback={cb}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -108,6 +144,8 @@ const SignUp = props => {
                   inputval=""
                   alt="nothing"
                   callback={cb}
+                  validateInput={validateUsernameInput}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -118,6 +156,7 @@ const SignUp = props => {
                   inputval=""
                   alt="nothing"
                   callback={cb}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -128,6 +167,7 @@ const SignUp = props => {
                   alt="nothing"
                   placeholder="optional"
                   callback={cb}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -139,6 +179,7 @@ const SignUp = props => {
                   options={locations}
                   alt="nothing"
                   callback={cb}
+                  spacebetween
                 />
                 <LabelledInput
                   datafield
@@ -149,6 +190,7 @@ const SignUp = props => {
                   inputval=""
                   alt="nothing"
                   callback={cb}
+                  spacebetween
                 />
               </Form>
             </>
