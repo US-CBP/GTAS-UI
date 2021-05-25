@@ -37,6 +37,7 @@ const Table = props => {
   const stateVals = props.hasOwnProperty("stateVals") ? altObj(props.stateVals()) : {};
   const [displayColumnFilter, setDisplayColumnFilter] = useState(false);
   const [showPending, setShowPending] = useState(false);
+  const [isPopulated, setIsPopulated] = useState();
 
   useEffect(() => {
     validateProps();
@@ -324,7 +325,7 @@ const Table = props => {
             </Button>
             <span className="tagrightpag">
               <h3 className="title-default">
-                <i>{rows.length}</i>
+                <i>{isPopulated ? rows.length : 0}</i>
               </h3>
             </span>
           </Pagination>
@@ -361,11 +362,12 @@ const Table = props => {
     noDataObj[0][props.id] = noDataFound;
 
     let dataArray = asArray(raw);
-    const isPopulated =
+    const hasValidData =
       hasData(dataArray) &&
       (dataArray.length > 1 || dataArray[0][props.id] !== noDataFound);
-    const sdata = isPopulated ? dataArray : noDataObj;
-    const sheader = isPopulated
+    setIsPopulated(hasValidData);
+    const sdata = hasValidData ? dataArray : noDataObj;
+    const sheader = hasValidData
       ? hasData(header)
         ? header
         : Object.keys(dataArray[0])
