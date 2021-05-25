@@ -57,12 +57,12 @@ const Login = () => {
 
   return (
     <div className="container-fluid">
-      <div className="row no-gutter">
-        <div
-          className={`d-none d-md-flex col-md-7 col-lg-7 bg-image 
+      <div
+        className={`row no-gutter bg-blend 
           ${getTodaysBackground("background")}`}
-        ></div>
-        <div className="col-md-5 col-lg-5">
+      >
+        <div className="d-none d-md-flex col-md-7 col-lg-7"></div>
+        <div className="col-md-5 col-lg-5 bg-white">
           <div className="login d-flex align-items-center py-5">
             <div className="container">
               <div className="row">

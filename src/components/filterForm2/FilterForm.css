@@ -11,7 +11,8 @@
 }
 
 .filterform-container .react-calendar {
-  position: fixed;
+  display: none;
+  /* position: fixed;
   top: auto;
   line-height: 0.5rem;
   border-radius: 5px;
@@ -19,7 +20,15 @@
   max-width: unset;
   left: 240px;
   bottom: 5px;
-  height: 270px;
+  height: 270px; */
+}
+
+.filterform-container .btn-primary:hover {
+  border-color: #d0d0d0;
+}
+
+.filterform-container .btn-primary {
+  border-color: #8ea6b1;
 }
 
 .input:optional {
