@@ -14,12 +14,11 @@ import {
   useFilters
 } from "react-table";
 import { navigate } from "@reach/router";
-// import { withTranslation } from 'react-i18next';
 import Xl8 from "../xl8/Xl8";
 import Loading from "../../components/loading/Loading";
 import { Table as RBTable, Pagination, Button } from "react-bootstrap";
-import { jsonToCSV } from "react-papaparse";
 import { useExportData } from "react-table-plugins";
+import { getExportFileBlob, BooleanFilter, ColumnFilter } from "./table-utils";
 import "./Table.css";
 
 //Will auto-populate with data retrieved from the given uri
@@ -31,10 +30,10 @@ const Table = props => {
   // props.data === []        ==> fetch is complete, data has no rows
   // hasData(props.data)      ==> fetch is complete, data has rows
 
-  const [data, setData] = useState(props.data || undefined);
+  const [propsdata] = useState(props.data || undefined);
+  const [parsedData, setParsedData] = useState();
   const [header, setHeader] = useState(props.header || []);
   const [columns, setColumns] = useState([]);
-  // const [rowcount, setRowcount] = useState("");
   const stateVals = props.hasOwnProperty("stateVals") ? altObj(props.stateVals()) : {};
   const [displayColumnFilter, setDisplayColumnFilter] = useState(false);
   const [showPending, setShowPending] = useState(false);
@@ -48,48 +47,12 @@ const Table = props => {
   }, []);
 
   useEffect(() => {
-    parseData(data);
-  }, [data]);
+    parseData(propsdata);
+  }, [propsdata]);
 
-  function ColumnFilter({ column: { filterValue, setFilter } }) {
-    return (
-      <input
-        className="table-filter-form"
-        value={filterValue || ""}
-        onChange={e => {
-          setFilter(e.target.value || undefined);
-        }}
-      />
-    );
-  }
-
-  function BooleanFilter({ column: { filterValue, setFilter } }) {
-    return (
-      <select
-        className="table-filter-form"
-        value={filterValue}
-        onChange={e => {
-          setFilter(e.target.value || undefined);
-        }}
-      >
-        <option value="">All</option>
-        <option value={1}>True</option>
-        <option value={0}>False</option>
-      </select>
-    );
-  }
-
-  function getExportFileBlob({ columns, data, fileType, fileName }) {
-    if (fileType === "csv") {
-      const headerNames = columns.map(col => col.exportValue);
-      const csvString = jsonToCSV({ fields: headerNames, data });
-      return new Blob([csvString], { type: "text/csv" });
-    }
-  }
-
-  function getExportFileName({ fileType, all }) {
+  const getExportFileName = ({ fileType, all }) => {
     return `${all ? "all-" : ""}${props.exportFileName || "data"}`;
-  }
+  };
 
   const RTable = ({ columns, data }) => {
     const defaultColumn = React.useMemo(
@@ -380,8 +343,8 @@ const Table = props => {
     }
   };
 
-  const parseData = data => {
-    if (!data) {
+  const parseData = raw => {
+    if (!raw) {
       setShowPending(true);
       return;
     }
@@ -397,8 +360,10 @@ const Table = props => {
     let noDataObj = [{}];
     noDataObj[0][props.id] = noDataFound;
 
-    let dataArray = asArray(data);
-    const isPopulated = hasData(dataArray);
+    let dataArray = asArray(raw);
+    const isPopulated =
+      hasData(dataArray) &&
+      (dataArray.length > 1 || dataArray[0][props.id] !== noDataFound);
     const sdata = isPopulated ? dataArray : noDataObj;
     const sheader = isPopulated
       ? hasData(header)
@@ -437,13 +402,10 @@ const Table = props => {
     });
 
     setDisplayColumnFilter(isPopulated);
-    setData(sdata);
+    setParsedData(sdata);
     setHeader(sheader);
     setColumns(columns);
-
-    //exclude the No-Data-Found row from the count
-    // if (dataArray.length === 1 && dataArray[0][props.id] === noDataFound) setRowcount(0);
-    // else setRowcount(dataArray.length);
+    setShowPending(false);
   };
 
   const getData = (params = null) => {
@@ -473,8 +435,7 @@ const Table = props => {
       {props.smalltext !== undefined && <small>{props.smalltext}</small>}
       <RTable
         columns={columns}
-        data={data}
-        // rowcount={rowcount}
+        data={parsedData}
         initSort={props.initSort || []}
       ></RTable>
     </>
