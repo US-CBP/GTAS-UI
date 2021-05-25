@@ -30,6 +30,19 @@ const UserModal = props => {
   const cb = function(result) {};
   const row = props.editRowDetails || {};
   const loggedinUser = getUserState();
+  const existingUserIds = asArray(props.userIds);
+
+  const USER_ID_ALREADY_EXIST = (
+    <Xl8 xid="um01">
+      The user ID is already in the system. Please choose a different user ID.
+    </Xl8>
+  );
+  const USER_ID_TOO_SHORT = <Xl8 xid="um15">User ID is too short</Xl8>;
+  const USER_ID_TOO_LONG = <Xl8 xid="um15">User ID is too long</Xl8>;
+
+  const INVALID_PASSWORD_ERROR = (
+    <Xl8 xid="um02">The password you entered does not satisfy the password criteria.</Xl8>
+  );
 
   const launchAlert = msg => {
     setAlertContent(msg);
@@ -116,38 +129,46 @@ const UserModal = props => {
   };
 
   const validateInputs = fields => {
-    const existingUserIds = asArray(props.userIds);
     let res = { ...fields[0] };
-    const INVALID_USER_ERROR = (
-      <Xl8 xid="um01">
-        The user ID is already in the system. Please choose a different user ID.
-      </Xl8>
-    );
-    const INVALID_PASSWORD_ERROR = (
-      <Xl8 xid="um02">
-        The password you entered does not satisfy the password criteria.
-      </Xl8>
-    );
+    const validatedUsername = validateUsernameInput(res.userId);
+
     let validPassword = true;
-    let validUserId = true;
 
     if (!props.isEdit) {
       validPassword = isValidPassword(res.password);
-      validUserId = !existingUserIds.includes(res.userId?.toUpperCase());
     }
-    if (!validUserId) {
-      launchAlert(INVALID_USER_ERROR);
+    if (!validatedUsername.valid) {
+      launchAlert(validatedUsername.info);
     } else if (!validPassword) {
       launchAlert(INVALID_PASSWORD_ERROR);
     }
 
-    return validPassword && validUserId;
+    return validPassword && validatedUsername.valid;
   };
 
   const validatePasswordInput = value => {
     const valid = isValidPassword(value);
 
     return { valid: valid, info: <PasswordConstraints password={value} /> };
+  };
+
+  const validateUsernameInput = (username = "") => {
+    const maxLen = 50;
+    const minLen = 3;
+    const emptyString = "";
+    const usernameExists = existingUserIds.includes(username.toUpperCase());
+
+    const msg = usernameExists
+      ? USER_ID_ALREADY_EXIST
+      : username.length < minLen
+      ? USER_ID_TOO_SHORT
+      : username.length > maxLen
+      ? USER_ID_TOO_LONG
+      : emptyString;
+
+    const valid = msg === emptyString;
+
+    return { valid: valid, info: msg };
   };
 
   const getPasswordInput = () => {
@@ -225,6 +246,7 @@ const UserModal = props => {
                 alt="nothing"
                 callback={cb}
                 spacebetween
+                validateInput={validateUsernameInput}
               />
             )}
 
