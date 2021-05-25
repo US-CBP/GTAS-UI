@@ -107,7 +107,8 @@ const SeatChart = ({ location }) => {
     });
 
     // hide the pax tile if we are not viewing a specific pax yet
-    if ((paxId === currentPaxSeat) === "all") setShowPax(false);
+    if (paxId === "all" && currentPaxSeat === "all") setShowPax(false);
+    else setShowPax(true);
   }, []);
 
   useEffect(() => {
