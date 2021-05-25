@@ -62,6 +62,11 @@ const LanguageEditor = () => {
       Accessor: "translation",
       Xl8: true,
       Header: ["led006", "Translation"]
+    },
+    {
+      Accessor: "defaultText",
+      Xl8: true,
+      Header: ["led007", "Default Text"]
     }
   ];
 
