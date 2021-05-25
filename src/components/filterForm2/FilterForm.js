@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
-import { asArray, hasData, getParamList } from "../../utils/utils";
+import {asArray, hasData, getParamList, getAllChildElements} from "../../utils/utils";
 import { Button, ButtonToolbar, Form as RBForm } from "react-bootstrap";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
@@ -109,39 +109,24 @@ const FilterForm = props => {
 
   // bind children containing form data (datafield prop) to the ev handler and state
   const bindChildren = populatedFields => {
-    let trueIndex = 0;
-    let boundChildren = [];
-    asArray(props.children).forEach((child, idx) => {
-      let trueChildCount = [];
-      if (!hasData(child.props?.datafield) && hasData(child.props?.children)) {
-        asArray(child.props.children).forEach(child => {
-          trueChildCount.push(child);
-        });
-      } else {
-        trueChildCount.push(child);
-      }
-      trueChildCount.forEach((subChild,subIdx) => { // Will usually only be 1 child
-        if (!subChild.props?.datafield) {
-          boundChildren.push(subChild);
-          return;
-        }
-        if(subIdx > 0) trueIndex++; //Track indexes for extra subchildren that wouldn't mirror parent index count
+    let trueChildArray = getAllChildElements(props.children);
+    let boundChildren = asArray(trueChildArray).map((child, idx) => {
+      if (!child.props?.datafield) return child;
 
-        let cleanprops = Object.assign({}, subChild.props);
+
+        let cleanprops = Object.assign({}, child.props);
         // intercept the callback so FilterForm is notified of input field changes.
         // Delete it here, and replace it in newchild (below) with a FilterForm handler.
         // We can also forward the event on to the original callback or to a parent
         // of FilterForm if needed.
         delete cleanprops.callback;
 
-        boundChildren.push(React.cloneElement(subChild, {
-          key: trueIndex,
+        return React.cloneElement(child, {
+          key: idx,
           callback: onChange,
           ...cleanprops
-        }));
+        });
       });
-      trueIndex++;
-    });
 
     setKids(boundChildren);
     setFields(populatedFields);
@@ -155,21 +140,10 @@ const FilterForm = props => {
   useEffect(() => {
     let dfnames = datafieldNames;
     let fMap = fieldMap;
-
-    asArray(props.children).forEach((child, idx) => {
-      //Small issue with using conditional date fields, they end up as children of the property as an array of values and never get
-      //made into proper children. Check for multi-sub children and assign as top level children values.
-
-      let trueChildCount = [];
-      if(!hasData(child.props?.datafield) && hasData(child.props?.children)){
-        asArray(child.props.children).forEach(child => {
-          trueChildCount.push(child);
-        });
-      } else{
-        trueChildCount.push(child);
-      }
-      trueChildCount.forEach( child => {
+    let trueChildren = getAllChildElements(props.children);
+    asArray(trueChildren).forEach((child, idx) => {
         const datafield = child.props?.datafield;
+
         if (datafield) {
           const noname = `unnamedfield${idx}`;
           const componentname = child.props.name || noname;
@@ -185,7 +159,6 @@ const FilterForm = props => {
 
           dfnames.push(fieldname);
         }
-      })
     });
 
     bindChildren(fields);
