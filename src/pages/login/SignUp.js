@@ -21,17 +21,26 @@ const SignUp = props => {
   const [locations, setLocations] = useState([]);
   const USER_ID_TOO_SHORT = <Xl8 xid="um15">User ID is too short</Xl8>;
   const USER_ID_TOO_LONG = <Xl8 xid="um15">User ID is too long</Xl8>;
+  const ALERTS_TYPES = { SUCCESS: "SUCCESS", FAILURE: "FAILURE" };
 
   const cb = () => {};
 
-  const signupCallback = (status, res) => {
-    if (hasData(res) && res.status === "FAILURE") {
-      setErrorMsg(res.message);
+  const launchAlert = (type, msg) => {
+    if (type === ALERTS_TYPES.FAILURE) {
+      setErrorMsg(msg);
       setDisplaySuccessMsg(false);
       setDisplayErrorMsg(true);
     } else {
       setDisplayErrorMsg(false);
       setDisplaySuccessMsg(true);
+    }
+  };
+
+  const signupCallback = (status, res) => {
+    if (hasData(res) && res.status === "FAILURE") {
+      launchAlert(ALERTS_TYPES.FAILURE, res.message);
+    } else {
+      launchAlert(ALERTS_TYPES.SUCCESS);
     }
   };
   const validateUsernameInput = (username = "") => {
@@ -50,6 +59,13 @@ const SignUp = props => {
 
     return { valid: valid, info: msg };
   };
+  const validateInputs = inputs => {
+    const username = asArray(inputs)[0]["username"];
+    const validatedUsername = validateUsernameInput(username);
+    launchAlert(ALERTS_TYPES.FAILURE, validatedUsername.info);
+    return validatedUsername.valid;
+  };
+
   useEffect(() => {
     physicalLocations.get().then(res => {
       const data = asArray(res).map(location => {
@@ -97,6 +113,7 @@ const SignUp = props => {
                 redirectTo={FULLPATH_TO.LOGIN}
                 cancellable
                 key={locations}
+                validateInputs={validateInputs}
               >
                 <LabelledInput
                   datafield
