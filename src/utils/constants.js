@@ -146,3 +146,8 @@ export const FORCE = {
   FULL: 0,
   PARTIAL: 1
 };
+
+export const USERID = {
+  MAX_LEN: 50,
+  MIN_LEN: 3
+};

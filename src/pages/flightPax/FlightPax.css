@@ -29,9 +29,9 @@
 }
 
 .flightpax-row .right {
-  float: right;
   color: white;
   font-size: medium;
+  text-align: right;
 }
 
 .flightpax-row a .right {

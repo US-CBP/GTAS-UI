@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
@@ -15,8 +15,8 @@ import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import LazyImage from "../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
-
 import { flightPassengers } from "../../services/serviceWrapper";
+import { LookupContext } from "../../context/data/LookupContext";
 import {
   asArray,
   hasData,
@@ -39,7 +39,9 @@ const FlightPax = props => {
   const [allData, setAllData] = useState();
   const [tab, setTab] = useState(TABTYPE.ALL);
   const [key, setKey] = useState(0);
+  const [carrierName, setCarrierName] = useState();
   const flightData = props.location?.state?.data || {};
+  const { getSingleKeyValue } = useContext(LookupContext);
 
   const hasAnyHits = item => {
     if (
@@ -58,7 +60,7 @@ const FlightPax = props => {
   const parseData = data => {
     return asArray(data).map(item => {
       const displayDobDate = localeDateOnly(new Date(item.dob));
-      item.docNumber = item.documents?.length > 0 ? item.documents[0] : ""; // TODO Documents: shd show all or none here.
+      item.docNumber = item.documents?.length > 0 ? item.documents[0] : "";
       item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
       item.dobStr = `${sortableDob(new Date(item.dob))} ${displayDobDate} ${item.age}`;
 
@@ -97,6 +99,15 @@ const FlightPax = props => {
     );
 
     return groupHitTotal;
+  };
+
+  const getCarrierDesc = () => {
+    const carriercode = alt(flightData.fullFlightNumber, "").slice(0, 2);
+    const notFound = "Not Found";
+
+    getSingleKeyValue(LK.CARRIER, false, carriercode).then(rec => {
+      setCarrierName(rec.title.split(" - ")[1] || notFound);
+    });
   };
 
   const hitHeaders = [
@@ -272,6 +283,10 @@ const FlightPax = props => {
     setKey(newkey);
   }, [hitData, tab]);
 
+  useEffect(() => {
+    getCarrierDesc();
+  }, []);
+
   const tabs = (
     <Tabs defaultActiveKey={TABTYPE.ALL} id="flightPaxTabs">
       <Tab
@@ -326,6 +341,12 @@ const FlightPax = props => {
 
             <table className="table table-sm table-borderless">
               <tbody>
+                <tr className="flightpax-row" key={carrierName}>
+                  <td className="left">
+                    <Xl8 xid="fp009">Carrier:</Xl8>
+                  </td>
+                  <td className="right">{carrierName}</td>
+                </tr>
                 <tr className="flightpax-row">
                   <td className="left">
                     <Xl8 xid="fp006">Direction:</Xl8>
