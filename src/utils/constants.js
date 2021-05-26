@@ -42,6 +42,12 @@ export const HIT_STATUS = {
   REOPENED: "Re_opened"
 };
 
+export const DIRECTION = {
+  I: "Inbound",
+  O: "Outbound",
+  C: "Continuance"
+};
+
 export const ROLE = {
   ADMIN: "Admin",
   QRYMGR: "Manage Queries",
@@ -50,6 +56,8 @@ export const ROLE = {
   RULEMGR: "Manage Rules",
   HITMGR: "Manage Hits",
   FLIGHTVWR: "View Flights",
+  LKOUTMGR: "Manage POE Lookout",
+  LKOUTVWR: "View POE Lookout",
   ANY: "Any"
 };
 
@@ -121,4 +129,16 @@ export const DAYS = days => {
     inMs: () => days * HOURS(rate).inMs(),
     inSeconds: () => days * HOURS(rate).inSeconds()
   };
+};
+
+export const UNDEFINEDCHAR = "ꞏ"; // unicode U+A78F. Char not mapped to any language char, good as a delimiter.
+
+export const FORCE = {
+  FULL: 0,
+  PARTIAL: 1
+};
+
+export const USERID = {
+  MAX_LEN: 50,
+  MIN_LEN: 3
 };

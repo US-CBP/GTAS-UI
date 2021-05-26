@@ -3,19 +3,19 @@
 // Please see license.txt for details.
 
 import React, { useEffect, useRef, useState } from "react";
-import Seat from "./seat/Seat";
-import { Container, Row, CardDeck, Card } from "react-bootstrap";
-import { seats } from "../../services/serviceWrapper";
-import { asArray, localeDate } from "../../utils/utils";
 import { Link, useParams } from "@reach/router";
+import Seat from "./seat/Seat";
 import Legend from "./legend/Legend";
 import SeatChartCard from "./seatChartCard/SeatChartCard";
 import Loading from "../loading/Loading";
 import Xl8 from "../xl8/Xl8";
-import "./SeatChart.scss";
 import SearchSeat from "./searchSeat/SearchSeat";
 import SidenavContainer from "../sidenavContainer/SidenavContainer";
 import Main from "../main/Main";
+import { seats } from "../../services/serviceWrapper";
+import { Row, CardDeck, Card } from "react-bootstrap";
+import { asArray, hasData, localeDate } from "../../utils/utils";
+import "./SeatChart.scss";
 
 const SeatChart = ({ location }) => {
   const { flightId, paxId, currentPaxSeat } = useParams();
@@ -34,6 +34,7 @@ const SeatChart = ({ location }) => {
       seat.classList.remove("search-result");
     });
   };
+
   const searchCallback = searchResult => {
     resetSearch();
     setSearchedSeats(searchResult);
@@ -43,16 +44,23 @@ const SeatChart = ({ location }) => {
       seat.focus();
     });
   };
+
   const getRow = letter => {
     const row = [];
     columnWithReservedSeat.forEach(col => {
       const seatNumber = `${col}${letter}`;
+      let isSelected = false;
+      currentPaxSeat.split(",").forEach(seatNum => {
+        if (seatNum.trim() === seatNumber) {
+          isSelected = true;
+        }
+      });
       row.push(
         <Seat
           ref={seat => (seatRefs.current[seatNumber] = seat)}
           seatNumber={seatNumber}
           seatInfo={reservedSeatsInfo[seatNumber]}
-          selected={currentPaxSeat === seatNumber}
+          selected={isSelected}
           key={seatNumber}
           className={
             selectedSeatInfo.coTravellers?.includes(seatNumber) ? "co-traveler" : ""
@@ -99,7 +107,7 @@ const SeatChart = ({ location }) => {
   }, []);
 
   useEffect(() => {
-    setSelectedSeatInfo(reservedSeatsInfo[currentPaxSeat] || {});
+    setSelectedSeatInfo(reservedSeatsInfo[currentPaxSeat.split(",")[0]] || {});
   }, [reservedSeatsInfo]);
 
   const flightInfoData = [
@@ -118,24 +126,44 @@ const SeatChart = ({ location }) => {
   ];
 
   const seatInfoData = [
-    { label: <Xl8 xid="seat007">Last Name</Xl8>, value: selectedSeatInfo.lastName },
+    {
+      label: <Xl8 xid="seat007">Last Name</Xl8>,
+      value: hasData(selectedSeatInfo.lastName)
+        ? selectedSeatInfo.lastName
+        : location.state.lastName
+    },
     {
       label: <Xl8 xid="seat008">First Name</Xl8>,
-      value: selectedSeatInfo.firstName
+      value: hasData(selectedSeatInfo.firstName)
+        ? selectedSeatInfo.firstName
+        : location.state.firstName
     },
     {
       label: <Xl8 xid="seat009">Middle Name</Xl8>,
-      value: selectedSeatInfo.middleName
+      value: hasData(selectedSeatInfo.middleName)
+        ? selectedSeatInfo.middleName
+        : location.state.middleName
     },
     {
       label: <Xl8 xid="seat010">Seat Number</Xl8>,
-      value: selectedSeatInfo.number
+      value:
+        currentPaxSeat.split(",").length > 1
+          ? currentPaxSeat
+          : hasData(selectedSeatInfo.number)
+          ? selectedSeatInfo.number
+          : "N/A"
     }
   ];
-  const linkToFlightPax = <Link to={`/gtas/flightpax/${flightId}`}>Flightpax</Link>;
+  const linkToFlightPax = (
+    <Link to={`/gtas/flightpax/${flightId}`}>
+      <Xl8 xid="seat011">Show flight passengers</Xl8>
+    </Link>
+  );
 
   const linkToPaxdetails = (
-    <Link to={`/gtas/paxDetail/${flightId}/${paxId}`}>Show passenger details</Link>
+    <Link to={`/gtas/paxDetail/${flightId}/${paxId}`}>
+      <Xl8 xid="seat012">Show passenger details</Xl8>
+    </Link>
   );
 
   return (
@@ -151,11 +179,13 @@ const SeatChart = ({ location }) => {
       <Main>
         {showPending && <Loading></Loading>}
         <div className="seat-chart">
-          {asArray(rowsWithReservedSeat).map((row, index) => (
-            <Row className={getClassNameByRow(index)} key={index}>
-              {getRow(row)}
-            </Row>
-          ))}
+          <div className="seat-chart-row-container">
+            {asArray(rowsWithReservedSeat).map((row, index) => (
+              <Row className={`seat-chart-row ${getClassNameByRow(index)}`} key={index}>
+                {getRow(row)}
+              </Row>
+            ))}
+          </div>
         </div>
         <CardDeck className="seat-info-display">
           <Card>

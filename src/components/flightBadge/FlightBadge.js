@@ -2,13 +2,14 @@
 //
 // Please see license.txt for details.
 
-import React, {useContext, useState} from "react";
-import {localeMonthDayTime, hasData, alt, asArray} from "../../utils/utils";
-import {Row, Tooltip} from "react-bootstrap";
-import "./FlightBadge.scss";
-import {LookupContext} from "../../context/data/LookupContext";
-import {LK} from "../../utils/constants";
+import React from "react";
+import { localeMonthDayTime, hasData, alt } from "../../utils/utils";
+import { Row } from "react-bootstrap";
+import { Link } from "@reach/router";
 import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
+import LazyImage from "../../components/lazyImage/LazyImage";
+import { LK } from "../../utils/constants";
+import "./FlightBadge.scss";
 
 const FlightBadge = props => {
   const res = props.data;
@@ -19,9 +20,25 @@ const FlightBadge = props => {
   const data = {
     arrival: [res.flightDestination, ...localeMonthDayTime(res.eta).split(",")],
     departure: [res.flightOrigin, ...localeMonthDayTime(res.etd).split(",")],
-    flightNumber: res.flightNumberHasLink
-      ? res.flightNumber
-      : `${alt(res.carrier)}${res.flightNumber}`
+    flightNumber: res.flightNumberHasLink ? (
+      <>
+        <span className="flight-badge-nonlink-icon nozoom">
+          <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
+        </span>
+        <Link
+          to={"/gtas/flightpax/" + res.flightId}
+          className="link"
+          state={{ data: res }}
+        >
+          {res.flightNumber}
+        </Link>
+      </>
+    ) : (
+      <span className="flight-badge-nonlink-icon nozoom">
+        <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
+        {res.flightNumber}
+      </span>
+    )
   };
 
   const arrival = data.arrival || [];
@@ -34,17 +51,19 @@ const FlightBadge = props => {
       <div className="flight-text">
         <Row flex="true" no-wrap="true" className="flight-badge-row">
           <span className="img-departure"></span>
-            <span className="width40">
-              <ToolTipWrapper data={{val:departure[0], lkup:LK.AIRPORT}}></ToolTipWrapper>
-            </span>
+          <span className="width40">
+            <ToolTipWrapper
+              data={{ val: departure[0], lkup: LK.AIRPORT }}
+            ></ToolTipWrapper>
+          </span>
           <span>{departure[1]}</span>
           <span>{departure[2]}</span>
         </Row>
         <Row flex="true" no-wrap="true" className="flight-badge-row">
           <span className="img-arrival"></span>
-            <span className="width40">
-              <ToolTipWrapper data={{val:arrival[0], lkup:LK.AIRPORT}}></ToolTipWrapper>
-            </span>
+          <span className="width40">
+            <ToolTipWrapper data={{ val: arrival[0], lkup: LK.AIRPORT }}></ToolTipWrapper>
+          </span>
           <span>{arrival[1]}</span>
           <span>{arrival[2]}</span>
         </Row>

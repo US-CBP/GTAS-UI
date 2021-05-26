@@ -196,17 +196,6 @@ const ManageUsers = props => {
     }
   ];
 
-  const button = (
-    <Button
-      variant="ternary"
-      className="btn btn-info"
-      name={props.name}
-      onClick={() => {}}
-    >
-      {addNewUser}
-    </Button>
-  );
-
   const parseData = raw => {
     return asArray(raw).map(row => {
       // Table component workaround.

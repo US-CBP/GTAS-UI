@@ -4,12 +4,11 @@
 import React, { createContext, useReducer, useEffect } from "react";
 import Dexie from "dexie";
 import { codeEditor, hitcats, roles, notetype } from "../../services/lookupService";
-import { LK } from "../../utils/constants";
+import { LK, FORCE } from "../../utils/constants";
 import { formatBytes } from "../../utils/utils";
 import { showEstimatedQuota } from "./utils";
 
 const initialState = [];
-const version = 1;
 const lookupDB = "lookupDB";
 const STATUS = {
   SUCCESS: 0,
@@ -24,10 +23,12 @@ const setStorage = (key, val) => {
 };
 
 const db = new Dexie(lookupDB);
+
+const version = 1;
 db.version(version).stores({
   status: "&id, name",
   airport: "id, name, iata, favorite, archived",
-  carrier: "id, name, iata, archived",
+  carrier: "id, name, iata, favorite, archived",
   country: "id, name, iso3, archived",
   cctype: "id, code, archived",
   hitcats: "id, label, archived",
@@ -35,7 +36,16 @@ db.version(version).stores({
   notetype: "id, noteType, archived"
 });
 
-db.open();
+try {
+  db.open();
+} catch (ex) {
+  console.error("IDB is inaccessible: ", ex);
+}
+
+/** Return true for tables with a "favorite" column (currently Carrier and Airport).
+ * The favorite col sets the default records to return for tables with large-ish row counts (over 1000)
+ * to reduce the fetch size */
+const hasFavorites = type => type === LK.CARRIER || type === LK.AIRPORT;
 
 const statusData = [
   { id: 1, name: LK.ROLE, lastUpdated: "", nextUpdate: "", interval: longInterval },
@@ -65,12 +75,12 @@ const LookupProvider = ({ children }) => {
         return;
       }
       case "refresh": {
-        // let caller trigger a partial refresh
-        return refresh(action.type, true);
+        // let caller trigger a partial refresh, does not return results
+        return refresh(action.type, FORCE.PARTIAL);
       }
       case "fullRefresh": {
-        // let the caller force a full refresh
-        return refresh(action.type, false, true);
+        // let the caller force a full refresh, does not return results
+        return refresh(action.type, FORCE.FULL);
       }
       default:
         return [];
@@ -90,28 +100,32 @@ const LookupProvider = ({ children }) => {
    */
   const createDb = () => {
     console.info("CREATE IDB");
-    Dexie.exists(lookupDB).then(function(exists) {
-      if (!exists) populateStatusTable();
-      // else updateStatusTable();
-    });
+    Dexie.exists(lookupDB)
+      .then(function(exists) {
+        if (!exists) populateStatusTable();
+        // else updateStatusTable();
 
-    db.status.count().then(count => {
-      if (count < statusData.length) populateStatusTable();
-    });
+        db.status.count().then(count => {
+          if (count < statusData.length) populateStatusTable();
+        });
 
-    showEstimatedQuota().then(res => {
-      if (!res) return;
+        showEstimatedQuota().then(res => {
+          if (!res) return;
 
-      console.table({
-        quota: formatBytes(res.quota),
-        usage: formatBytes(res.usage),
-        caches: formatBytes(res.usageDetails?.caches),
-        indexedDB: formatBytes(res.usageDetails?.indexedDB),
-        serviceWorkerRegistrations: formatBytes(
-          res.usageDetails?.serviceWorkerRegistrations
-        )
+          console.table({
+            quota: formatBytes(res.quota),
+            usage: formatBytes(res.usage),
+            caches: formatBytes(res.usageDetails?.caches),
+            indexedDB: formatBytes(res.usageDetails?.indexedDB),
+            serviceWorkerRegistrations: formatBytes(
+              res.usageDetails?.serviceWorkerRegistrations
+            )
+          });
+        });
+      })
+      .catch(ex => {
+        console.info("IDB is inaccessible: ", ex);
       });
-    });
   };
 
   const populateStatusTable = () => {
@@ -131,21 +145,23 @@ const LookupProvider = ({ children }) => {
       });
   };
 
+  /**
+   * Inserts initial status records for each type into the Status table, which tracks metadata for the individual lookup
+   * tables, including when they were last updated. If the record is not found in refresh(), we re-create it here. This
+   * could happen if the entire table got dropped by the browser to reclaim space, or the user manually removed the data, etc. */
   const createMissingStatusRec = type => {
-    console.info("CREATE MISSING STATUS TABLE RECORD");
+    const defaultStatusRecordForType = statusData.find(item => item.name === type);
 
-    const missingRecord = statusData.find(item => item.name === type);
-
-    if (!missingRecord) {
-      console.error(`No status record initialization data found for type ${type}`);
+    if (!defaultStatusRecordForType) {
+      console.error(`No status record initialization record was found for type ${type}`);
       return STATUS.ERROR;
     }
 
     return db.status
-      .put(missingRecord)
-      .then(res => {
+      .put(defaultStatusRecordForType)
+      .then(() => {
         db.open();
-        return missingRecord;
+        return defaultStatusRecordForType;
       })
       .catch(Dexie.BulkError, function(e) {
         console.error(`The missing status record was not inserted for type ${type}`);
@@ -177,6 +193,34 @@ const LookupProvider = ({ children }) => {
     return codeEditor;
   };
 
+  const refreshPartial = type => {
+    return refresh(type, FORCE.PARTIAL, true);
+  };
+
+  const refresh = (type, forceLevel = FORCE.PARTIAL, returnResults) => {
+    if (!svc(type)) {
+      console.error(`No service found for type ${type}`);
+      return;
+    }
+
+    return db.status
+      .where({ name: type })
+      .first(rec => {
+        if (!rec) {
+          createMissingStatusRec(type).then(res => {
+            if (res === STATUS.ERROR) return res;
+
+            return dataSync(res, forceLevel, returnResults);
+          });
+        } else return dataSync(rec, forceLevel, returnResults);
+      })
+      .catch(ex => {
+        console.error("Refresh - unhandled exception", ex);
+      });
+  }; // refresh
+
+  /** Given updated data (res) from the remote db, we cache the results to the type table and update the status table with a current timestamp.
+   * When we query for partial updates later, we ask for anything that changed after this timestamp. */
   const updateCacheAndStatus = (res, type, returnResults) => {
     const interval =
       statusData.find(item => item.name === type)?.interval || shortInterval;
@@ -187,52 +231,31 @@ const LookupProvider = ({ children }) => {
     });
   };
 
-  const refreshAndReturn = type => {
-    return refresh(type, true, false, true);
-  };
-
-  const refresh = (type, forcePartial, forceFull, returnResults) => {
-    if (!svc(type)) {
-      console.error(`No service found for type ${type}`);
-      return;
-    }
-
-    return db.status.where({ name: type }).first(rec => {
-      if (!rec) {
-        createMissingStatusRec(type).then(res => {
-          if (res === STATUS.ERROR) return res;
-
-          return dataSync(res, forcePartial, forceFull, returnResults);
-        });
-      }
-      return dataSync(rec, forcePartial, forceFull, returnResults);
-    });
-  }; // refresh
-
   // Supports periodic fetches that sync once per interval unless forced.
   // forcePartial - forces a partial update (data changed since the last partial fetch) before the nextUpdateDate has passed
   // forceFull - forces a full refresh on all data.
-  const dataSync = (rec, forcePartial, forceFull, returnResults) => {
+  const dataSync = (rec, forceLevel, returnResults) => {
     const lastDt = rec.lastUpdated;
-    const nextDt = rec.nextUpdate;
+    // const nextDt = rec.nextUpdate;
 
-    if (!lastDt || forceFull) {
+    if (!lastDt || forceLevel === FORCE.FULL) {
       return svc(rec.name)
         .get(rec.name)
         .then(res => {
           return updateCacheAndStatus(res, rec.name, returnResults);
         });
     } else {
-      if (forcePartial || !nextDt || nextDt < new Date().toISOString()) {
-        return svc(rec.name)
-          .getUpdated(rec.name, lastDt)
-          .then(res => {
-            return updateCacheAndStatus(res, rec.name, returnResults);
-          })
-          .catch(error => {
-            return error;
-          });
-      }
+      //default? is there a use case for not syncing here?
+      // if (forceLevel === FORCE.PARTIAL || !nextDt || nextDt < new Date().toISOString()) {
+      return svc(rec.name)
+        .getUpdated(rec.name, lastDt)
+        .then(res => {
+          return updateCacheAndStatus(res, rec.name, returnResults);
+        })
+        .catch(error => {
+          return error;
+        });
+      // }
     }
   };
 
@@ -260,12 +283,32 @@ const LookupProvider = ({ children }) => {
     return db.transaction("rw", tbl, async () => {
       return await tbl
         .bulkPut(newData)
-        .then(res => {
-          return STATUS.SUCCESS;
-        })
+        .then(() => STATUS.SUCCESS)
         .catch(ex => {
+          if (ex.failures?.length === 1 && ex.failures[0].name === "ConstraintError") {
+            // log to cached log
+            return STATUS.SUCCESS; // disregard constraint issues, signal the caller to update the status
+          }
           console.error("error", type, ex);
           return STATUS.ERROR;
+        });
+    });
+  };
+
+  const markFavorite = (type, key) => {
+    if (!hasFavorites(type)) return;
+
+    const tbl = db.table(type);
+    return db.transaction("rw", tbl, async () => {
+      return await tbl
+        .where({ iata: key })
+        .modify({ favorite: true })
+        .catch(Dexie.ModifyError, error => {
+          console.error("Context could not modify favorite for: ", type, key);
+          console.error("error: ", error.failures);
+        })
+        .catch(error => {
+          console.error("Generic error: ", error);
         });
     });
   };
@@ -278,8 +321,8 @@ const LookupProvider = ({ children }) => {
   // field mapping from the raw lookup data to the {title: "", value: ""} structure needed by dropdowns and popovers
   const lkCoreFields = [
     { lk: LK.AIRPORT, fields: ["name", "iata"], sortBy: "iata" },
-    { lk: LK.CARRIER, fields: ["name", "iata"], sortBy: "iata" },
-    { lk: LK.COUNTRY, fields: ["name", "iso3"], sortBy: "iso3" },
+    { lk: LK.CARRIER, fields: ["name", "iata", "icon"], sortBy: "iata" },
+    { lk: LK.COUNTRY, fields: ["name", "iso3", "icon"], sortBy: "iso3" },
     { lk: LK.CCTYPE, fields: ["description", "code"], sortBy: "code" },
     { lk: LK.HITCAT, fields: ["label", "id"], sortBy: "label", useLabel: true },
     { lk: LK.ROLE, fields: ["label", "id"], sortBy: "label" },
@@ -290,19 +333,45 @@ const LookupProvider = ({ children }) => {
     return JSON.parse(localStorage.getItem(type)) || initialState;
   };
 
-  const getCachedKeyValues = (type, includeArchived) => {
-    return refresh(type).then(res => {
-      return getLookupCache(type, true, includeArchived);
+  /** Refresh and return the core (name and id) fields marked as favorites */
+  const getCachedCoreFields = (type, includeArchived) => {
+    const favesOnly = hasFavorites(type);
+    return refresh(type).then(() => {
+      return getLookupCache(type, true, includeArchived, undefined, favesOnly);
     });
   };
 
-  const getCached = (type, includeArchived) => {
-    return refresh(type).then(res => {
-      return getLookupCache(type, false, includeArchived);
+  /** Refresh and return all fields for the type. Pulls from faves for carriers and airports to reduce the fetch size */
+  const getCachedAllFields = (type, includeArchived) => {
+    const favesOnly = hasFavorites(type);
+    return refresh(type).then(() => {
+      return getLookupCache(type, false, includeArchived, undefined, favesOnly);
     });
   };
 
-  const getLookupCache = (type, coreFieldsOnly, includeArchived) => {
+  /** Returns only a single record matching "key" from cache. If there are multiple, returns the first.
+   * Does not refresh
+   * Does not filter out non-favorites
+   * It pulls from all available records as a backup to getCachedCore and getCachedAll. It pulls records that
+   * are not favorites yet, and marks them as favorites.
+   * Still nearly as expensive as getCachedCoreFields, which returns all values for a type. Use sparingly. */
+  const getSingleKeyValue = (type, includeArchived, key) => {
+    // const m = getLookupCache(type, true, includeArchived, key, false);
+    // const firstRec = m[0] || {};
+
+    // if (!firstRec.fave) markFavorite(type, key);
+    // return firstRec;
+
+    return getLookupCache(type, true, includeArchived, key, false).then(m => {
+      const firstRec = m[0] || {};
+
+      if (!firstRec.fave) markFavorite(type, key);
+      return firstRec;
+    });
+  };
+
+  // fetch all matching cached values as an array
+  const getLookupCache = (type, coreFieldsOnly, includeArchived, keyMatch, favesOnly) => {
     const tbl = db.table(type);
     const fieldMap = lkCoreFields.find(item => item.lk === type);
 
@@ -312,22 +381,25 @@ const LookupProvider = ({ children }) => {
     }
 
     const fields = fieldMap.fields;
-    const useLabel = fieldMap.useLabel;
 
     const archiveFilter = includeArchived ? rec => rec : rec => rec.archived !== true;
-    const coreFilter = coreFieldsOnly
+    const faveFilter = favesOnly ? rec => rec.favorite === true : rec => rec;
+    const keyFilter = keyMatch ? rec => rec[fields[1]] === keyMatch : rec => rec;
+    const fieldFormat = coreFieldsOnly
       ? res => {
           return res.map(item => {
-            if (useLabel)
+            if (fieldMap.useLabel)
               return {
                 label: item[fields[0]],
                 value: item[fields[1]],
-                arch: item.archived
+                arch: item.archived,
+                fave: item.favorite
               };
             return {
-              title: `${item[fields[1]]} ${item[fields[0]]}`,
+              title: `${item[fields[1]]} - ${item[fields[0]]}`,
               value: item[fields[1]],
-              arch: item.archived
+              arch: item.archived,
+              fave: item.favorite
             };
           });
         }
@@ -335,18 +407,32 @@ const LookupProvider = ({ children }) => {
 
     return tbl
       .orderBy(fieldMap.sortBy || fields[1])
+      .filter(faveFilter)
+      .filter(keyFilter)
       .filter(archiveFilter)
       .toArray()
-      .then(coreFilter);
+      .then(fieldFormat)
+      .catch(error => {
+        console.error(
+          "Generic error in getLookupCache: ",
+          error,
+          type,
+          coreFieldsOnly,
+          includeArchived,
+          keyMatch,
+          favesOnly
+        );
+      });
   };
 
   return (
     <Provider
       value={{
         getLookupState,
-        getCached,
-        getCachedKeyValues,
-        refreshAndReturn,
+        getCachedAllFields,
+        getCachedCoreFields,
+        getSingleKeyValue,
+        refreshPartial,
         lookupAction
       }}
     >

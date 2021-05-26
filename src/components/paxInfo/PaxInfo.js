@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import Xl8 from "../../components/xl8/Xl8";
+import LazyImage from "../../components/lazyImage/LazyImage";
 
 import {
   hasData,
@@ -14,7 +15,7 @@ import {
 } from "../../utils/utils";
 import { Link } from "@reach/router";
 import "./PaxInfo.scss";
-import {LK} from "../../utils/constants";
+import { LK } from "../../utils/constants";
 import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 
 const PaxInfo = props => {
@@ -30,22 +31,35 @@ const PaxInfo = props => {
 
       { label: <Xl8 xid="pd011">DOB</Xl8>, value: timezoneFreeDate(res.dob) },
       { label: <Xl8 xid="pd012">Gender</Xl8>, value: res.gender },
-      { label: <Xl8 xid="pd013">Nationality</Xl8>, value: (
+      {
+        label: <Xl8 xid="pd013">Nationality</Xl8>,
+        value: (
+          <>
+            <LazyImage val={res.nationality} type={LK.COUNTRY}></LazyImage>
             <ToolTipWrapper
-                data={{val:res.nationality, lkup:LK.COUNTRY}}>
-            </ToolTipWrapper>)},
+              className="overlay-content-light"
+              data={{ val: res.nationality, lkup: LK.COUNTRY }}
+            ></ToolTipWrapper>
+          </>
+        )
+      },
       { label: <Xl8 xid="pd014">Residence</Xl8>, value: res.residenceCountry },
       {
         label: <Xl8 xid="pd015">Seat</Xl8>,
         value: (
           <Link
-            to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${res.seat}`}
+            to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${
+              res.seat !== "N/A" ? res.seat : "NA"
+            }`}
             className="pax-info-link"
             state={{
               arrival: res.eta,
               departure: res.etd,
               flightId: res.flightId,
-              flightNumber: res.flightNumber
+              flightNumber: res.flightNumber,
+              lastName: res.lastName,
+              middleName: res.middleName,
+              firstName: res.firstName
             }}
           >
             {res.seat}

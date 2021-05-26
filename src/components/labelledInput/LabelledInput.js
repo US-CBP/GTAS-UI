@@ -116,7 +116,7 @@ class LabelledInput extends Component {
     if (type === "label") {
       return (
         <LabelInput
-          className={this.props.inputStyle}
+          className={inputStyle}
           alt={this.props.alt}
           name={this.props.name}
           inputval={this.props.inputval}
@@ -140,6 +140,7 @@ class LabelledInput extends Component {
           maxLength={this.props.maxlength}
           readOnly={this.props.readOnly}
           callback={this.onChange}
+          validateInput={this.props.validateInput}
         />
       );
     }
@@ -237,11 +238,12 @@ class LabelledInput extends Component {
   }
 
   render() {
-    const cls = !!this.props.spacebetween ? " space-between" : "";
+    const sb = !!this.props.spacebetween ? " space-between" : "";
+    const sbw = !!this.props.spacebetweenwrap ? " space-between-wrap" : "";
     const inline = !!this.props.inline ? " input-group-append" : "";
     const textlabelStyle = this.props.inputtype === "multiSelect" ? "" : "txtlabel";
     return (
-      <FormGroup className={`${this.state.visibleStyle}${cls}${inline}`}>
+      <FormGroup className={`${this.state.visibleStyle}${sb}${sbw}${inline}`}>
         <label className={textlabelStyle}>{this.state.labelText}</label>
         {this.getInputByType()}
       </FormGroup>

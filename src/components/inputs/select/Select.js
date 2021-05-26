@@ -8,12 +8,22 @@ import PropTypes from "prop-types";
 import "../Inputs.scss";
 import MultiSelect from "react-multi-select-component";
 import { hasData } from "../../../utils/utils";
+import Xl8 from "../../xl8/Xl8";
 
 const SelectInput = props => {
   const [selected, setSelected] = useState(props.selected || "");
   const type = props.inputtype;
   const hasDefaultValue = hasData(props.selected);
   const placeholder = props.placeholder || "Select...";
+
+  const defaultOverrideStrings = {
+    allItemsAreSelected: <Xl8 xid="mselect01">All items are selected.</Xl8>,
+    clearSearch: <Xl8 xid="mselect02">Clear Search</Xl8>,
+    noOptions: <Xl8 xid="mselct03">No options</Xl8>,
+    search: "Search",
+    selectAll: <Xl8 xid="mslect06">Select All</Xl8>,
+    selectSomeItems: <Xl8 xid="mselect05">Select...</Xl8>
+  };
 
   const onChange = ev => {
     if (type === "multiSelect") {
@@ -33,6 +43,7 @@ const SelectInput = props => {
         onChange={onChange}
         className="form-multi-select"
         disabled={props.readOnly === "readOnly" ? "disabled" : ""}
+        overrideStrings={props.overrideStrings || defaultOverrideStrings}
       />
     );
   } else {

@@ -11,14 +11,19 @@ import WLModal from "./WLModal";
 import CSVReader from "../../../components/CSVReader/CSVReader";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
+import { Fab, Action } from "react-tiny-fab";
 import { LookupContext } from "../../../context/data/LookupContext";
 import { wlpax, wldocs } from "../../../services/serviceWrapper";
-import { hasData, watchlistDateFormat, timezoneFreeDate } from "../../../utils/utils";
+import {
+  hasData,
+  watchlistDateFormat,
+  timezoneFreeDate,
+  sortableDob
+} from "../../../utils/utils";
 import { LK } from "../../../utils/constants";
 import "./constants.js";
 
 import { Tabs, Tab } from "react-bootstrap";
-import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./Watchlist.css";
 
@@ -41,7 +46,7 @@ const Watchlist = props => {
   const [toastHeader, setToastHeader] = useState();
   const [toastContent, setToastContent] = useState();
   const [toastVariant, setToastVariant] = useState();
-  const { getCached } = useContext(LookupContext);
+  const { getCachedAllFields } = useContext(LookupContext);
 
   const deleteText = {
     message: <Xl8 xid="wl005">Are you sure you want to delete the record?</Xl8>,
@@ -210,7 +215,7 @@ const Watchlist = props => {
   }, []);
 
   const getCats = () => {
-    getCached(LK.HITCAT, true).then(res => {
+    getCachedAllFields(LK.HITCAT, true).then(res => {
       setWlcatData(res);
     });
   };
@@ -242,15 +247,18 @@ const Watchlist = props => {
           const category = (wlcatData.find(item => item.id === +categoryId) || {}).label;
 
           //TODO: consolidate pax/doc fetches??
-          if (tab === TAB.PAX)
+          if (tab === TAB.PAX) {
+            const displayDobDate = timezoneFreeDate(dob);
             return {
               id: item.id,
               firstName: firstName,
               lastName: lastName,
-              dob: timezoneFreeDate(dob),
+              dob: displayDobDate,
+              sortableDOB: `${sortableDob(new Date(dob))} ${displayDobDate}`,
               categoryId: categoryId,
               category: category
             };
+          }
 
           return {
             id: item.id,
@@ -274,6 +282,7 @@ const Watchlist = props => {
       Header: ["edit001", "Edit"],
       disableExport: true,
       disableSortBy: true,
+      disableFilters: true,
       Cell: ({ row }) => getEditRowData(row.original)
     },
     { Accessor: "documentType", Xl8: true, Header: ["wl011", "Document Type"] },
@@ -283,6 +292,7 @@ const Watchlist = props => {
       Accessor: "delete",
       Xl8: true,
       Header: ["wl014", "Delete"],
+      disableFilters: true,
       disableExport: true,
       Cell: ({ row }) => getDeleteColumnData(row.original.id)
     }
@@ -294,17 +304,24 @@ const Watchlist = props => {
       Xl8: true,
       disableExport: true,
       disableSortBy: true,
+      disableFilters: true,
       Header: ["edit001", "Edit"],
       Cell: ({ row }) => getEditRowData(row.original)
     },
     { Accessor: "firstName", Xl8: true, Header: ["wl015", "First Name"] },
     { Accessor: "lastName", Xl8: true, Header: ["wl016", "Last Name"] },
-    { Accessor: "dob", Xl8: true, Header: ["wl016", "DOB"] },
+    {
+      Accessor: "sortableDOB",
+      Xl8: true,
+      Header: ["wl016", "DOB"],
+      Cell: ({ row }) => row.original.dob
+    },
     { Accessor: "category", Xl8: true, Header: ["wl017", "Category"] },
     {
       Accessor: "delete",
       Xl8: true,
       disableExport: true,
+      disableFilters: true,
       Header: ["wl014", "Delete"],
       Cell: ({ row }) => getDeleteColumnData(row.original.id)
     }
@@ -327,6 +344,7 @@ const Watchlist = props => {
         header={header}
         callback={cb}
         exportFileName={`watchlists-${wlType}`}
+        enableColumnFilter={true}
       ></Table>
       <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action text={buttonTypeText} onClick={() => launchModal(0)}>

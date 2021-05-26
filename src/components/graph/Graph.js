@@ -50,10 +50,22 @@ const Graph = props => {
     origin: props.paxData.embarkation,
     destination: props.paxData.debarkation
   };
+
+  const paxFilters = {
+    idTag: props.paxData?.paxIdTag,
+    lastName: props.paxData?.lastName
+  };
+
+  const flightFilters = {
+    flightIdTag: props.paxData.flightIdTag,
+    flightNumber: props.paxData?.flightNumber,
+    fullFlightNumber: `${props.paxData?.carrier}${props.paxData?.flightNumber}`.toUpperCase()
+  };
+
   const componentNodeRef = useRef(null);
   const [isReloaded, setIsReloaded] = useState(true);
-  const [vaquita, setVaquita] = useState(vaqu);
-  const [save, setSave] = useState(saves(pax1));
+  const [vaquita] = useState(vaqu);
+  const [save] = useState(saves(pax1));
 
   const SvgType = 2;
   vaquita.tools.TOGGLE_TAXONOMY = false;
@@ -67,7 +79,9 @@ const Graph = props => {
 
   vaquita.graph.setZoom(0.5, 2);
 
-  vaquita.provider.node.Provider = provider(vaquita, SvgType);
+  /**  set the provider to filter on both pax idTag and flight idTag. This prevents vaquita from querying for counts of all entities
+   */
+  vaquita.provider.node.Provider = provider(SvgType, paxFilters);
 
   vaquita.provider.link.Provider = {
     getColor: function(link) {
@@ -75,9 +89,9 @@ const Graph = props => {
     }
   };
 
-  vaquita.result.onTotalResultCount(function(count) {
-    // document.getElementById("result-total-count").innerHTML = "(" + count + ")";
-  });
+  // vaquita.result.onTotalResultCount(function(count) {
+  //   document.getElementById("result-total-count").innerHTML = "(" + count + ")";
+  // });
 
   const setCypherUrl = () => {
     cypher.get().then(function(res) {
@@ -87,7 +101,7 @@ const Graph = props => {
 
   useEffect(() => {
     cypherAuth.get().then(function(res) {
-      vaquita.rest.AUTHORIZATION = `${res.result}`;
+      vaquita.rest.AUTHORIZATION = res.result;
       setCypherUrl();
       activateGraph();
     });
@@ -102,23 +116,26 @@ const Graph = props => {
   const activateGraph = () => {
     const template = save.pax;
 
-    let vaq = vaquita;
-    vaq.graph.HORIZONTAL_NODES = template.horiz || 1;
+    vaquita.graph.HORIZONTAL_NODES = template.horiz || 1;
 
     // call start only when there's no rootnode
     //TODO vaquita - expose a status field on graph?
     if (vaquita.dataModel.getRootNode() === undefined) {
-      vaq.start(template);
+      vaquita.start(template);
       setIsReloaded(false);
     }
     // refresh graph arena if the page reloads with new pax data
     else if (isReloaded) {
-      vaq.refresh(template);
+      vaquita.refresh(template);
       setIsReloaded(false);
     }
   };
 
   const onClickSavedGraph = id => {
+    if (id.endsWith("all"))
+      vaquita.provider.node.Provider = provider(SvgType, flightFilters);
+    else vaquita.provider.node.Provider = provider(SvgType, paxFilters);
+
     // Update Graph title:
     if (!id) {
       d3.select("#save-header").text(
@@ -127,14 +144,11 @@ const Graph = props => {
           .select(".ppt-label")
           .text()
       );
-      // id = id;
     }
 
-    let vaq = vaquita;
-
-    vaq.graph.mainLabel = save[id];
-    vaq.graph.HORIZONTAL_NODES = save[id].horiz || 1;
-    vaq.tools.reset();
+    vaquita.graph.mainLabel = save[id];
+    vaquita.graph.HORIZONTAL_NODES = save[id].horiz || 1;
+    vaquita.tools.reset();
   };
 
   return (
@@ -244,7 +258,7 @@ const Graph = props => {
                 </span>
                 <table className="ppt-saved-ul">
                   <tbody>
-                    <tr id="Flight" onClick={() => onClickSavedGraph("flight")}>
+                    <tr id="Flight" onClick={() => onClickSavedGraph("flightall")}>
                       <td>
                         <i className="fa fa-plane pptflight"></i>
                       </td>
@@ -340,16 +354,13 @@ const Graph = props => {
               </div>
             </nav>
             <div id="popoto-graph" className="ppt-div-graph"></div>
+            {/* <div id="popoto-results" class="ppt-container-results"></div> */}
           </div>
 
-          {/* <div id="popoto-query" className="ppt-container-query"></div>
-
-                <div className="ppt-section-header">
-                  RESULTS
-                  <span id="result-total-count" className="ppt-count-results"></span>
-                </div>
-
-                <div id="popoto-results" className="ppt-container-results"></div> */}
+          {/* <div className="ppt-section-header">
+            RESULTS
+            <span id="result-total-count" className="ppt-count-results"></span>
+          </div> */}
         </section>
       </div>
     </div>

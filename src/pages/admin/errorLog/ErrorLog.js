@@ -20,6 +20,7 @@ const ErrorLog = ({ name }) => {
   const [refreshKey, setRefreshKey] = useState(1);
   const [filterKey, setFilterKey] = useState(1);
   const [errorCodes, setErrorCodes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const selectAllCodes = "Select All Codes";
   let startDate = new Date();
   let endDate = addMinutes(new Date(), 1);
@@ -52,6 +53,7 @@ const ErrorLog = ({ name }) => {
     }
   ];
   const preFetchCallback = params => {
+    setIsLoading(true);
     let parsedParams = "?";
     if (params) {
       if (params.startDate) {
@@ -88,6 +90,7 @@ const ErrorLog = ({ name }) => {
   const setDataWrapper = res => {
     setData(res);
     setRefreshKey(refreshKey + 1);
+    setIsLoading(false);
   };
 
   return (
@@ -118,6 +121,7 @@ const ErrorLog = ({ name }) => {
               inputval={startDate}
               labelText={<Xl8 xid="el003">Start Date</Xl8>}
               name="startDate"
+              className="error-top"
               callback={cb}
               required={true}
               alt="Start Date"
@@ -126,6 +130,7 @@ const ErrorLog = ({ name }) => {
               datafield
               inputtype="dateTime"
               inputval={endDate}
+              className="error-bottom"
               labelText={<Xl8 xid="el004">End Date</Xl8>}
               name="endDate"
               callback={cb}
@@ -144,6 +149,7 @@ const ErrorLog = ({ name }) => {
           callback={cb}
           header={headers}
           key={refreshKey}
+          isLoading={isLoading}
         ></Table>
       </Main>
     </>

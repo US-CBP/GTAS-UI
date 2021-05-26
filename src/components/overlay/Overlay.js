@@ -12,7 +12,7 @@ const Overlay = props => {
     <OverlayTrigger
       trigger={props.trigger}
       rootClose
-      placement="top"
+      placement={props.placement || "top"}
       overlay={
         <Popover>
           <Popover.Content className="overlay-content">{props.content}</Popover.Content>

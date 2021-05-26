@@ -45,7 +45,7 @@ const QRModal = props => {
   const [refresh, setRefresh] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const isEdit = hasData(props.data?.id);
-  const { lookupAction, getCachedKeyValues } = useContext(LookupContext);
+  const { lookupAction, getCachedCoreFields } = useContext(LookupContext);
 
   useEffect(() => {
     if (
@@ -559,15 +559,15 @@ const QRModal = props => {
 
   const onRun = () => {
     if (!validateAll()) return;
-
     storeRule();
-
+    var minOffset = new Date().getTimezoneOffset();
     navigate("/gtas/tools/qrdetails", {
       state: {
         data: {
           pageNumber: 1,
           pageSize: 10,
-          query: query || data
+          query: query || data,
+          utcMinuteOffset: minOffset
         }
       }
     });
@@ -594,11 +594,11 @@ const QRModal = props => {
   useEffect(() => {
     if (loaded) return;
 
-    getCachedKeyValues(LK.COUNTRY).then(res => setCountries(res));
-    getCachedKeyValues(LK.CARRIER).then(res => setCarriers(res));
-    getCachedKeyValues(LK.HITCAT).then(res => setCategories(res));
-    getCachedKeyValues(LK.AIRPORT).then(res => setAirports(res));
-    getCachedKeyValues(LK.CCTYPE).then(res => setCcTypes(res));
+    getCachedCoreFields(LK.COUNTRY).then(res => setCountries(res));
+    getCachedCoreFields(LK.CARRIER).then(res => setCarriers(res));
+    getCachedCoreFields(LK.HITCAT).then(res => setCategories(res));
+    getCachedCoreFields(LK.AIRPORT).then(res => setAirports(res));
+    getCachedCoreFields(LK.CCTYPE).then(res => setCcTypes(res));
 
     setData(props.data?.query);
   }, []);

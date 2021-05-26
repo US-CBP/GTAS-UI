@@ -8,6 +8,7 @@
   text-align: -webkit-center;
   text-align: -moz-center;
 }
+
 .flightpax-countdown-container > .cdb-row {
   color: black;
   float: unset;
@@ -28,7 +29,7 @@
 }
 
 .flightpax-row .right {
-  float: right;
   color: white;
   font-size: medium;
+  text-align: right;
 }

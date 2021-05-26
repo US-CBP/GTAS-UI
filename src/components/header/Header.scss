@@ -22,14 +22,13 @@ $hover-color: rgb(177, 172, 172);
   min-width: 375px;
 }
 .header-navbar-brand {
-  background-color: white;
+  // background-color: white;
+  display: inline-table !important;
+  width: 230px;
   height: 40px;
   text-align: center;
   padding-top: 0px !important;
   padding-bottom: 0px !important;
-  margin-top: 3px;
-  margin-left: 20px;
-  margin-right: 27px;
   a {
     img {
       height: 40px;
@@ -105,9 +104,11 @@ $hover-color: rgb(177, 172, 172);
     padding: 5px;
     border-radius: 3px;
     padding-bottom: 10px;
+    border: 1px solid #575756;
   }
   .nav-link {
     padding-bottom: 5px;
+    padding-left: 10px !important;
   }
 }
 
@@ -116,11 +117,19 @@ $hover-color: rgb(177, 172, 172);
     display: none !important;
   }
 }
+.header-search {
+  margin-top: -2px;
+}
 
 @media (max-width: 950px) {
   .header-search {
     display: none !important;
   }
+}
+
+.nav-link {
+  display: block;
+  padding: 0.3rem 1rem !important;
 }
 
 .dropdown-item:hover,
@@ -172,4 +181,17 @@ $hover-color: rgb(177, 172, 172);
   height: 0;
   transition: height 0.2s ease !important;
   width: 180px !important;
+}
+
+.margin-top-0 {
+  margin-top: 0px;
+}
+
+.header-height {
+  line-height: 32px;
+  align-self: auto !important;
+}
+
+.nav-tab {
+  margin-right: 5px;
 }

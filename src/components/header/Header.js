@@ -23,7 +23,7 @@ import {
   Button,
   InputGroup
 } from "react-bootstrap";
-import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
+import wcoLogo from "../../images/WCO_GTAS_header_brand_sm.png";
 import "./Header.scss";
 
 const Header = () => {
@@ -40,7 +40,7 @@ const Header = () => {
 
   if (user === undefined) logout();
 
-  const [currentLang] = useState(window.navigator.language);
+  const [currentLang] = useState(window.navigator.language.split("-")[0]);
 
   const [showChangePasswordModal, setShowChangePasswordModal] = useState();
   const [showTost, setShowToast] = useState(false);
@@ -83,7 +83,8 @@ const Header = () => {
     return currentPath.pathname.startsWith(tabName) ? "active-tab" : "";
   };
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = e => {
+    e.preventDefault();
     const searchParam = searchInputRef.current.value;
     if (hasData(searchParam)) {
       navigate(`/gtas/search/${searchParam}`);
@@ -101,7 +102,7 @@ const Header = () => {
   return (
     <>
       <Navbar sticky="top" expand="md" className="header-navbar" variant="dark">
-        <Navbar.Brand className="header-navbar-brand">
+        <Navbar.Brand className="header-navbar-brand margin-top-0">
           <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]} alt={<></>}>
             <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
               <img src={wcoLogo} alt="WCO logo" />
@@ -109,12 +110,12 @@ const Header = () => {
           </RoleAuthenticator>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" ref={toggleRef} />
-        <Navbar.Collapse>
+        <Navbar.Collapse className="header-height">
           <Nav variant="tabs" className="left-nav">
             <Nav.Link
               as={Link}
               to="flights"
-              className={`${getActiveClass(htab.FLIGHT)}`}
+              className={`${getActiveClass(htab.FLIGHT)} nav-tab`}
               onClick={() => clickTab(htab.FLIGHT)}
             >
               <Xl8 xid="head001">Flights</Xl8>
@@ -123,7 +124,7 @@ const Header = () => {
               <Nav.Link
                 as={Link}
                 to="vetting"
-                className={`${getActiveClass(htab.VETTING)}`}
+                className={`${getActiveClass(htab.VETTING)} nav-tab`}
                 onClick={() => clickTab(htab.VETTING)}
               >
                 <Xl8 xid="head002">Vetting</Xl8>
@@ -132,7 +133,7 @@ const Header = () => {
             <Nav.Link
               as={Link}
               to="poe"
-              className={`future ${getActiveClass(htab.POE)} optional`}
+              className={`${getActiveClass(htab.POE)} nav-tab`}
               onClick={() => clickTab(htab.POE)}
             >
               <Xl8 xid="head007">POE</Xl8>
@@ -141,7 +142,7 @@ const Header = () => {
             <Nav.Link
               as={Link}
               to="tools"
-              className={`${getActiveClass(htab.TOOLS)}`}
+              className={`${getActiveClass(htab.TOOLS)} nav-tab`}
               onClick={() => clickTab(htab.TOOLS)}
             >
               <Xl8 xid="head004">Tools</Xl8>
@@ -150,7 +151,7 @@ const Header = () => {
               <Nav.Link
                 as={Link}
                 to="admin"
-                className={`${getActiveClass(htab.ADMIN)}`}
+                className={`${getActiveClass(htab.ADMIN)} nav-tab`}
                 onClick={() => clickTab(htab.ADMIN)}
               >
                 <Xl8 xid="head003">Admin</Xl8>
@@ -158,20 +159,20 @@ const Header = () => {
               <Nav.Link
                 as={Link}
                 to="langEditor"
-                className={`${getActiveClass(htab.LANG)} optional`}
+                className={`${getActiveClass(htab.LANG)} optional nav-tab`}
                 onClick={() => clickTab(htab.LANG)}
               >
-                <i className="fa fa-language mx-sm-1 language-icon"></i>
+                <i className="fa fa-language language-icon"></i>
                 {currentLang}
               </Nav.Link>
             </RoleAuthenticator>
           </Nav>
           <Nav className="ml-auto">
-            <Form inline className="header-search">
+            <Form inline className="header-search" onSubmit={handleSearchSubmit}>
               <InputGroup>
                 <FormControl type="text" ref={searchInputRef} className="search-150" />
                 <InputGroup.Append>
-                  <Button variant="light" onClick={handleSearchSubmit}>
+                  <Button variant="light" type="submit">
                     <i className="fa fa-search"></i>
                   </Button>
                 </InputGroup.Append>

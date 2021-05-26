@@ -11,18 +11,15 @@ import Main from "../../components/main/Main";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import HitsBadge from "../../components/hitsBadge/HitsBadge";
-
+import LazyImage from "../../components/lazyImage/LazyImage";
 import Xl8 from "../../components/xl8/Xl8";
-import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { UserContext } from "../../context/user/UserContext";
-
-import { Link } from "@reach/router";
 import { flights } from "../../services/serviceWrapper";
 import { hasData, alt, localeDate, asArray, aboveZero, lpad5 } from "../../utils/utils";
-import {TIME, ROLE, LK} from "../../utils/constants";
-import {Col, Tabs, Tab, Tooltip, OverlayTrigger, Button, Popover} from "react-bootstrap";
+import { TIME, ROLE, LK } from "../../utils/constants";
+import { Col, Tabs, Tab } from "react-bootstrap";
 import "./Flights.css";
-import {LookupContext} from "../../context/data/LookupContext";
+import { LookupContext } from "../../context/data/LookupContext";
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 
 const Flights = props => {
@@ -36,10 +33,14 @@ const Flights = props => {
   const { getUserState } = useContext(UserContext);
   const [data, setData] = useState();
   const [hitData, setHitData] = useState();
-  const [allData, setAllData] = useState();
+  const [allData, setAllData] = useState([]);
+  const [airportFaves, setAirportFaves] = useState();
   const [tab, setTab] = useState("all");
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { getCachedCoreFields } = useContext(LookupContext);
 
   const hasAnyHits = item => {
     if (
@@ -99,10 +100,11 @@ const Flights = props => {
     setHitData(alt(parsedHits, []));
 
     setTablekey(tablekey + 1);
+    setIsLoading(false);
   };
 
-  //TODO: refactor
   const preFetchCallback = fields => {
+    setIsLoading(true);
     const range = +fields["hourRange"] || 96; // default to 96 hours
 
     let etaEnd = new Date();
@@ -129,6 +131,11 @@ const Flights = props => {
     });
 
     return "?request=" + encodeURIComponent(JSON.stringify(paramObject));
+  };
+
+  const getTooltip = ttipKey => {
+    const record = airportFaves.find(ap => ap.value === ttipKey);
+    return record?.title;
   };
 
   const aggregateHitHeader = {
@@ -171,53 +178,70 @@ const Flights = props => {
       )
     },
     {
+      Accessor: "etd",
+      Xl8: true,
+      Header: ["fl011", "Departure"],
+      Cell: ({ row }) => localeDate(row.original.etd)
+    },
+    {
       Accessor: "eta",
       Xl8: true,
       Header: ["fl010", "Arrival"],
       Cell: ({ row }) => localeDate(row.original.eta)
     },
     {
-      Accessor: "etd",
+      Accessor: "fullFlightNumber",
       Xl8: true,
-      Header: ["fl011", "Departure"],
-      Cell: ({ row }) => localeDate(row.original.etd)
+      Header: ["fl019", "Flight"],
+      Cell: ({ row }) => (
+        <>
+          <LazyImage val={row.original.fullFlightNumber} type={LK.CARRIER}></LazyImage>
+          <ToolTipWrapper
+            data={{
+              val: row.original.fullFlightNumber,
+              lkup: LK.CARRIER
+            }}
+          ></ToolTipWrapper>
+        </>
+      )
     },
+    {
+      Accessor: "origin",
+      Xl8: true,
+      Header: ["fl020", "Origin"],
+      Cell: ({ row }) => (
+        <ToolTipWrapper
+          data={{
+            val: row.original.origin,
+            lkup: LK.AIRPORT,
+            title: getTooltip(row.original.origin)
+          }}
+        ></ToolTipWrapper>
+      )
+    },
+    {
+      Accessor: "destination",
+      Xl8: true,
+      Header: ["fl021", "Destination"],
+      Cell: ({ row }) => (
+        <ToolTipWrapper
+          data={{
+            val: row.original.destination,
+            lkup: LK.AIRPORT,
+            title: getTooltip(row.original.destination)
+          }}
+        ></ToolTipWrapper>
+      )
+    },
+
     ...arrayHeaderFixer,
     {
       Accessor: "passengerCount",
       Xl8: true,
       Header: ["fl018", "Passengers"],
-      Cell: ({ row }) => (
-        <RoleAuthenticator
-          alt={row.original.passengerCount}
-          roles={[ROLE.ADMIN, ROLE.PAXVWR]}
-        >
-          <Link to={"../flightpax/" + row.original.id}>
-            {row.original.passengerCount}
-          </Link>
-        </RoleAuthenticator>
-      )
+      Cell: ({ row }) => row.original.passengerCount
     },
-    { Accessor: "fullFlightNumber", Xl8: true, Header: ["fl019", "Flight"]},
-    { Accessor: "origin", Xl8: true, Header: ["fl020", "Origin"],
-      Cell: ({row}) => (
-          <>
-            <ToolTipWrapper
-                data={{val:row.original.origin, lkup:LK.AIRPORT}}>
-              className="sm"
-            </ToolTipWrapper>
-          </>
-      )},
-    { Accessor: "destination", Xl8: true, Header: ["fl021", "Destination"],
-      Cell: ({row}) => (
-          <>
-            <ToolTipWrapper
-            data={{val:row.original.destination, lkup:LK.AIRPORT}}>
-              className="sm"
-            </ToolTipWrapper>
-          </>
-      )},
-    { Accessor: "direction", Xl8: true, Header: ["fl022", "Direction"]},
+    { Accessor: "direction", Xl8: true, Header: ["fl022", "Direction"] }
   ];
 
   useEffect(() => {
@@ -227,6 +251,16 @@ const Flights = props => {
     const newkey = tablekey + 1;
     setTablekey(newkey);
   }, [hitData, tab]);
+
+  useEffect(() => {
+    getCachedCoreFields(LK.AIRPORT, false).then(res => {
+      if (!hasData(airportFaves) || res?.length > airportFaves.length) {
+        const resOrInitial = hasData(res) ? res : [{}];
+
+        setAirportFaves(resOrInitial);
+      }
+    });
+  }, [allData]);
 
   const directions = [
     { value: "A", label: "All" },
@@ -244,9 +278,7 @@ const Flights = props => {
     }
   };
 
-  const getTableState = () => {
-    return tableState;
-  };
+  const getTableState = () => tableState;
 
   const tabs = (
     <Tabs defaultActiveKey="all" id="flightTabs">
@@ -286,7 +318,7 @@ const Flights = props => {
             interval={TIME.MINUTE}
           >
             <LabelledInput
-              labelText={<Xl8 xid="fl003"> Origin Airports</Xl8>}
+              labelText={<Xl8 xid="fl003">Origin Airports</Xl8>}
               datafield="originAirports"
               name="originAirports"
               inputtype="text"
@@ -294,7 +326,7 @@ const Flights = props => {
               alt={<Xl8 xid="0">Origin Airports</Xl8>}
             />
             <LabelledInput
-              labelText={<Xl8 xid="fl004"> Destination Airports</Xl8>}
+              labelText={<Xl8 xid="fl004">Destination Airports</Xl8>}
               datafield="destinationAirports"
               name="destinationAirports"
               inputtype="text"
@@ -346,14 +378,17 @@ const Flights = props => {
           leftChild={tabs}
           leftCb={titleTabCallback}
         />
-        <Table
-          data={data}
-          key={tablekey}
-          header={Headers}
-          callback={cb}
-          stateVals={getTableState}
-          stateCb={stateCallback}
-        />
+        {hasData(airportFaves) && (
+          <Table
+            data={data}
+            key={tablekey}
+            header={Headers}
+            callback={cb}
+            stateVals={getTableState}
+            stateCb={stateCallback}
+            isLoading={isLoading}
+          />
+        )}
       </Main>
     </>
   );

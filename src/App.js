@@ -22,9 +22,9 @@ import Loading from "./components/loading/Loading";
 
 import { hasData } from "./utils/utils";
 import { ROLE, FULLPATH_TO } from "./utils/constants";
-import "./App.scss";
-import "font-awesome/css/font-awesome.min.css";
 import ForgotUsername from "./pages/login/ForgotUsername";
+import "font-awesome/css/font-awesome.min.css";
+import "./App.scss";
 
 const Authenticator = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./context/authenticator/Authenticator")
@@ -149,6 +149,9 @@ const Auxiliary = loadable(() =>
 const LanguageEditor = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/lang/LanguageEditor")
 );
+const LookoutLanes = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/lookoutLanes/LookoutLanes")
+);
 
 const NEO4JURL = window?._env_
   ? window._env_.REACT_APP_NEO4J_BROWSER
@@ -161,6 +164,7 @@ const KIBANAURL = window?._env_
 const App = props => {
   const UNAUTHED = <PageUnauthorized path="pageUnauthorized"></PageUnauthorized>;
   const NF404 = <Page404 path="page404"></Page404>;
+  const NF404Default = <Page404 path="page404" default></Page404>;
 
   return (
     <React.StrictMode>
@@ -194,30 +198,37 @@ const App = props => {
                           ROLE.WLMGR,
                           ROLE.HITMGR,
                           ROLE.QRYMGR,
-                          ROLE.FLIGHTVWR
+                          ROLE.FLIGHTVWR,
+                          ROLE.LKOUTMGR,
+                          ROLE.LKOUTVWR
                         ]}
                       >
                         {UNAUTHED}
                         <Home path="/">
                           <Redirect from="/" to={FULLPATH_TO.FLIGHTS} noThrow />
+                          {NF404Default}
                           <RoleAuthenticator
                             path="flights"
                             roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]}
                           >
                             <Flights path="/"></Flights>
+                            {NF404Default}
                           </RoleAuthenticator>
                           <RoleAuthenticator
                             path="flightpax"
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}
                           >
                             <FlightPax path="/:id"></FlightPax>
+                            {NF404Default}
                           </RoleAuthenticator>
                           <RoleAuthenticator
                             path="paxDetail/:flightId/:paxId"
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}
                           >
                             <PaxDetail path="/">
-                              <Summary path="summary" default></Summary>
+                              {NF404Default}
+                              <Redirect from="/" to="summary" noThrow />
+                              <Summary path="summary"></Summary>
                               <APIS path="apis"></APIS>
                               <PNR path="pnr"></PNR>
                               <FlightHistory path="flighthistory"></FlightHistory>
@@ -225,12 +236,18 @@ const App = props => {
                               <UploadAttachment path="uploadattachment"></UploadAttachment>
                             </PaxDetail>
                           </RoleAuthenticator>
-                          <POE path="poe"></POE>
+                          <RoleAuthenticator
+                            path="poe"
+                            roles={[ROLE.ADMIN, ROLE.LKOUTMGR, ROLE.LKOUTVWR]}
+                          >
+                            <POE path="/"></POE>
+                          </RoleAuthenticator>
                           <RoleAuthenticator
                             path="vetting"
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}
                           >
                             <PriorityVetting path="/"></PriorityVetting>
+                            {NF404Default}
                           </RoleAuthenticator>
                           <Tools path="tools">
                             <Rules path="rules"></Rules>
@@ -241,9 +258,10 @@ const App = props => {
                               roles={[ROLE.ADMIN, ROLE.WLMGR]}
                             >
                               <Watchlist path="/"></Watchlist>
-                              <Watchlist path="/:mode"></Watchlist>
+                              <Redirect from="/*" to="/gtas/tools" noThrow></Redirect>
                             </RoleAuthenticator>
                             <About path="about"></About>
+                            <Redirect from="/*" to="/gtas/tools" noThrow></Redirect>
                           </Tools>
                           <Search path="search/:searchParam"></Search>
                           <RoleAuthenticator
@@ -254,6 +272,7 @@ const App = props => {
                           </RoleAuthenticator>
                           <RoleAuthenticator path="langEditor" roles={[ROLE.ADMIN]}>
                             <LanguageEditor path="/"></LanguageEditor>
+                            {NF404Default}
                           </RoleAuthenticator>
                           <RoleAuthenticator path="admin" roles={[ROLE.ADMIN]}>
                             <Admin path="/" default>
@@ -307,10 +326,10 @@ const App = props => {
                                 icon="fa-list-ul"
                                 path="codeeditor"
                               >
+                                <Country path="/"></Country>
                                 <Country
                                   name={<Xl8 xid="app022">Country</Xl8>}
                                   path="country"
-                                  default
                                 ></Country>
                                 <Airport
                                   name={<Xl8 xid="app023">Airport</Xl8>}
@@ -324,6 +343,11 @@ const App = props => {
                                   name={<Xl8 xid="app035">Card Types</Xl8>}
                                   path="cctype"
                                 ></CreditCardType>
+                                <Redirect
+                                  from="/*"
+                                  to="../codeeditor/country"
+                                  noThrow
+                                ></Redirect>
                               </CodeEditor>
                               <LoaderStats
                                 name={<Xl8 xid="app025">Loader Statistics</Xl8>}
@@ -349,6 +373,12 @@ const App = props => {
                                 icon="fa-comment"
                                 path="notecats"
                               ></NoteCats>
+                              <LookoutLanes
+                                name={<Xl8 xid="app036">Lookout Lanes</Xl8>}
+                                desc={<Xl8 xid="app037">View or edit Lookout Lanes</Xl8>}
+                                icon="fa-road"
+                                path="lookoutlanes"
+                              ></LookoutLanes>
                               {hasData(KIBANAURL) && (
                                 <Auxiliary
                                   name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}
@@ -369,6 +399,7 @@ const App = props => {
                                   hasExternalLink={true}
                                 ></Auxiliary>
                               )}
+                              <Redirect from="/*" to="/gtas/admin" noThrow></Redirect>
                             </Admin>
                           </RoleAuthenticator>
                           {UNAUTHED}

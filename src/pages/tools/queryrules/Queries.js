@@ -43,6 +43,7 @@ const Queries = props => {
       Xl8: true,
       disableSortBy: true,
       Header: ["edit001", "Edit"],
+      disableFilters: true,
       Cell: ({ row }) => (
         <div className="icon-col">
           <i
@@ -100,6 +101,7 @@ const Queries = props => {
           callback={cb}
           header={header}
           key={`table${tablekey}`}
+          enableColumnFilter={true}
         ></Table>
         <Fab
           icon={<i className="fa fa-plus nospin" />}

@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import { NO_URI } from "./constants";
+import { NO_URI, UNDEFINEDCHAR } from "./constants";
 // import i18n from "../i18n";
 
 // APB - shd add handling for other naming patterns like underscores and dashes, and maybe
@@ -202,8 +202,8 @@ export const localeMonthYear = val => {
   return new Date(val).toLocaleString(locale, options);
 };
 
-// sortable date string - not for display as it is not locale specific
-export const sortableDate = val => {
+// sortable date string - not for display
+export const sortableDate = (val, delim = UNDEFINEDCHAR) => {
   if (isNaN(Date.parse(val))) return "";
 
   const padDigit = num => {
@@ -212,11 +212,39 @@ export const sortableDate = val => {
 
   return (
     val.getFullYear() +
+    delim +
     padDigit(val.getMonth() + 1) +
+    delim +
     padDigit(val.getDate()) +
+    delim +
     padDigit(val.getHours()) +
+    delim +
     padDigit(val.getMinutes()) +
+    delim +
     padDigit(val.getSeconds())
+  );
+};
+
+/**
+ * Sortable date with only the year, month, day parts. The default delim value prevents the output string from inadvertently matching
+ * any user input. Not for display.
+ *
+ * @param {*} val
+ * @param {*} delim = string delimiter, defaults to the unicode char "Undefined".
+ */
+export const sortableDob = (val, delim = UNDEFINEDCHAR) => {
+  if (isNaN(Date.parse(val))) return "";
+
+  const padDigit = num => {
+    return num.toString().padStart(2, "0");
+  };
+
+  return (
+    val.getFullYear() +
+    delim +
+    padDigit(val.getMonth() + 1) +
+    delim +
+    padDigit(val.getDate())
   );
 };
 
@@ -348,9 +376,50 @@ export function getShortText(text, shortTextLength = 50) {
 
 export const isValidPassword = password => {
   const passwordConstraint = new RegExp(
-    "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{10,20})"
+    "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&?*])(?=.{10,20}$)"
   );
   return passwordConstraint.test(password);
+};
+export const containsNumber = strInput => {
+  if (!hasData(strInput)) return false;
+  const checker = new RegExp("^(?=.*[0-9])");
+  return checker.test(strInput);
+};
+export const containsSpecialChar = strInput => {
+  if (!hasData(strInput)) return false;
+  const checker = new RegExp("^(?=.*[!@#$%^&?*])");
+  return checker.test(strInput);
+};
+export const containsUpperChar = strInput => {
+  if (!hasData(strInput)) return false;
+  const checker = new RegExp("^(?=.*[A-Z])");
+  return checker.test(strInput);
+};
+export const containslowerChar = strInput => {
+  if (!hasData(strInput)) return false;
+  const checker = new RegExp("^(?=.*[a-z])");
+  return checker.test(strInput);
+};
+export const satisfiesLengthConstraint = (strInput, minLen = 10, maxLen = 20) => {
+  if (!hasData(strInput)) return false;
+  const regExString = "^(?=.{" + minLen + "," + maxLen + "}$)";
+  const checker = new RegExp(regExString);
+  return checker.test(strInput);
+};
+
+export const highlightInvalidField = fieldName => {
+  const inputField = document.querySelector(`[name=${fieldName}]`);
+  if (hasData(inputField)) {
+    inputField.classList.add("invalid-input");
+  }
+};
+
+export const clearInvalidFieldHighlight = fieldName => {
+  const inputField = document.querySelector(`[name=${fieldName}]`);
+
+  if (hasData(inputField)) {
+    inputField.classList.remove("invalid-input");
+  }
 };
 
 export function formatRuleConditions(conditions) {
@@ -362,9 +431,12 @@ export function formatRuleConditions(conditions) {
 export const watchlistDateFormat = input => {
   const stringDate = new Date(input);
   if (stringDate === "Invalid Date") return "Invalid Date";
-  const formattedDate = stringDate.getFullYear() 
-  + '-' + ('0' + (stringDate.getMonth()+1)).slice(-2) 
-  + '-' + ('0' + stringDate.getDate()).slice(-2);
+  const formattedDate =
+    stringDate.getFullYear() +
+    "-" +
+    ("0" + (stringDate.getMonth() + 1)).slice(-2) +
+    "-" +
+    ("0" + stringDate.getDate()).slice(-2);
   return formattedDate;
 };
 
@@ -395,4 +467,13 @@ export const addMinutes = (date, minutes = 1) => {
   if (!isValidDate(date)) return "Invalid Date";
 
   return new Date(date.getTime() + minutes * 60000);
+};
+
+/** Return the css class of one of 4 background jpg files (named 1.jpg, 2.jpg, etc) so the background cycles every day.
+ * We are using this because other strategies like setting a var to use sass random()) only get evaluated once at build
+ * time and are locked until the bundles get updated. */
+export const getTodaysBackground = prefix => {
+  const fileIdx = (new Date().getDate() % 4) + 1;
+
+  return `${prefix}${fileIdx}`;
 };

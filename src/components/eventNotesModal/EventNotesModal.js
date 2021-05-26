@@ -18,7 +18,7 @@ import { asArray, hasData } from "../../utils/utils";
 const EventNotesModal = props => {
   const [show, setShow] = useState(false);
   const [notTypes, setNoteTypes] = useState([]);
-  const { getCachedKeyValues } = useContext(LookupContext);
+  const { getCachedCoreFields } = useContext(LookupContext);
 
   const handleClose = (status, res) => {
     setShow(false);
@@ -28,7 +28,7 @@ const EventNotesModal = props => {
   const paxId = props.paxId;
 
   useEffect(() => {
-    getCachedKeyValues(LK.NOTETYPE).then(types => {
+    getCachedCoreFields(LK.NOTETYPE).then(types => {
       const nTypes = [];
       asArray(types).forEach(type => {
         if (type.noteType !== "DELETED") {

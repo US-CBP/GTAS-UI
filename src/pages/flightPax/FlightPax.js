@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, {useContext, useEffect, useState} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
@@ -12,9 +12,11 @@ import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import HitsBadge from "../../components/hitsBadge/HitsBadge";
 import Main from "../../components/main/Main";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
+import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
+import LazyImage from "../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
-
 import { flightPassengers } from "../../services/serviceWrapper";
+import { LookupContext } from "../../context/data/LookupContext";
 import {
   asArray,
   hasData,
@@ -23,13 +25,11 @@ import {
   localeDateOnly,
   aboveZero,
   lpad5,
-  sortableDate
+  sortableDob
 } from "../../utils/utils";
-import {LK, ROLE} from "../../utils/constants";
-import {Col, Tabs, Tab, OverlayTrigger, Popover, Tooltip} from "react-bootstrap";
+import { LK, ROLE, DIRECTION } from "../../utils/constants";
+import { Col, Tabs, Tab } from "react-bootstrap";
 import "./FlightPax.css";
-import {LookupContext} from "../../context/data/LookupContext";
-import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 
 const FlightPax = props => {
   const cb = () => {};
@@ -39,7 +39,9 @@ const FlightPax = props => {
   const [allData, setAllData] = useState();
   const [tab, setTab] = useState("all");
   const [key, setKey] = useState(0);
-  const flightData = hasData(props.location.state?.data) ? props.location.state.data : {};
+  const [carrierName, setCarrierName] = useState();
+  const flightData = props.location?.state?.data || {};
+  const { getSingleKeyValue } = useContext(LookupContext);
 
   const hasAnyHits = item => {
     if (
@@ -57,10 +59,11 @@ const FlightPax = props => {
 
   const parseData = data => {
     return asArray(data).map(item => {
-      const displayDobDate = new Date(item.dob).toLocaleDateString();
-      item.docNumber = item.documents?.length > 0 ? item.documents[0] : ""; // TODO Documents: shd show all or none here.
+      const displayDobDate = localeDateOnly(new Date(item.dob));
+      item.docNumber = item.documents?.length > 0 ? item.documents[0] : "";
       item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
-      item.dobStr = `${sortableDate(new Date(item.dob))} ${displayDobDate} ${item.age}`;
+      item.dobStr = `${sortableDob(new Date(item.dob))} ${displayDobDate} ${item.age}`;
+
       item.dobAge = `${alt(displayDobDate)} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
@@ -96,6 +99,15 @@ const FlightPax = props => {
     );
 
     return groupHitTotal;
+  };
+
+  const getCarrierDesc = () => {
+    const carriercode = alt(flightData.fullFlightNumber, "").slice(0, 2);
+    const notFound = "Not Found";
+
+    getSingleKeyValue(LK.CARRIER, false, carriercode).then(rec => {
+      setCarrierName(rec.title.split(" - ")[1] || notFound);
+    });
   };
 
   const hitHeaders = [
@@ -155,6 +167,7 @@ const FlightPax = props => {
       Xl8: true,
       Header: ["fp026", "Hit Aggregates"],
       disableGroupBy: true,
+      disableFilters: true,
       aggregate: sumCotravelerHits,
       Aggregated: ({ value }) => aboveZero(value),
       Cell: ({ row }) => (
@@ -167,9 +180,9 @@ const FlightPax = props => {
     }
   ];
 
-  const arrayHeaderFixer = tab !== "hits" ? aggregateHitHeader : hitHeaders;
+  const tabSpecificHeaders = tab !== "hits" ? aggregateHitHeader : hitHeaders;
   const headers = [
-    ...arrayHeaderFixer,
+    ...tabSpecificHeaders,
     {
       Accessor: "passengerType",
       Xl8: true,
@@ -213,8 +226,8 @@ const FlightPax = props => {
       Xl8: true,
       Header: ["fp018", "DOB"],
       Cell: ({ row }) => <div>{row.original.dobAge}</div>,
-      disableGroupBy: true,
-      Aggregated: () => ``
+      Aggregated: () => ``,
+      disableGroupBy: true
     },
     {
       Accessor: "docNumber",
@@ -227,12 +240,15 @@ const FlightPax = props => {
       Xl8: true,
       Header: ["fp020", "Nationality"],
       disableGroupBy: true,
-      Cell: ({row}) => { return (
+      Cell: ({ row }) => {
+        return (
+          <>
+            <LazyImage val={row.original.nationality} type={LK.COUNTRY}></LazyImage>
             <ToolTipWrapper
-                data={{val:row.original.nationality, lkup:LK.COUNTRY}}>
-              className="sm"
-            </ToolTipWrapper>
-        )
+              data={{ val: row.original.nationality, lkup: LK.COUNTRY }}
+            ></ToolTipWrapper>
+          </>
+        );
       },
       Aggregated: () => ``
     },
@@ -267,6 +283,10 @@ const FlightPax = props => {
     setKey(newkey);
   }, [hitData, tab]);
 
+  useEffect(() => {
+    getCarrierDesc();
+  }, []);
+
   const tabs = (
     <Tabs defaultActiveKey="all" id="flightPaxTabs">
       <Tab
@@ -294,23 +314,21 @@ const FlightPax = props => {
     setTab(id);
   };
 
-  const getFlightData = () => {
-    return {
-      flightNumber: flightData.fullFlightNumber,
-      carrier: "",
-      flightDestination: flightData.destination || flightData.flightDestination,
-      flightOrigin: flightData.origin || flightData.flightOrigin,
-      eta: flightData.eta,
-      etd: flightData.etd
-    };
+  const badgeData = {
+    flightNumber: flightData.fullFlightNumber,
+    carrier: alt(flightData.fullFlightNumber, "").slice(0, 2),
+    flightDestination: flightData.destination || flightData.flightDestination,
+    flightOrigin: flightData.origin || flightData.flightOrigin,
+    eta: flightData.eta,
+    etd: flightData.etd
   };
 
   return (
     <>
       <SidenavContainer>
         <br />
-        <FlightBadge data={getFlightData()}></FlightBadge>
-        <Col className="notopmargin">
+        <FlightBadge data={badgeData}></FlightBadge>
+        <Col className="notopmargin below-badge">
           <div className="filterform-container form">
             <div className="flightpax-countdown-container">
               <CountdownBadge
@@ -327,13 +345,19 @@ const FlightPax = props => {
                   <td className="left">
                     <Xl8 xid="fp006">Direction:</Xl8>
                   </td>
-                  <td className="right">{flightData.direction}</td>
+                  <td className="right">{DIRECTION[flightData.direction]}</td>
                 </tr>
                 <tr className="flightpax-row">
                   <td className="left">
                     <Xl8 xid="fp009">Passengers:</Xl8>
                   </td>
                   <td className="right">{flightData.passengerCount}</td>
+                </tr>
+                <tr className="flightpax-row" key={carrierName}>
+                  <td className="left">
+                    <Xl8 xid="fp009">Carrier:</Xl8>
+                  </td>
+                  <td className="right">{carrierName}</td>
                 </tr>
               </tbody>
             </table>
