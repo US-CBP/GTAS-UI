@@ -51,9 +51,10 @@ $wco-info: #009e9288;
     top: 0px;
     left: 0px;
     width: 34px;
-    display: block;
+    display: flex;
     height: calc(100vh);
     cursor: pointer;
+    align-items: center;
   }
   .filter-toggle:hover {
     background-color: $wco-info;
@@ -89,7 +90,7 @@ $wco-info: #009e9288;
 }
 
 .toggle-arrow {
-  margin-top: 10px;
+  padding: 3px;
 }
 
 @media (min-width: 768px) {
@@ -140,7 +141,7 @@ hr {
 }
 
 .below-badge {
-  max-height: calc(100vh - 215px);
+  max-height: calc(100vh - 210px);
 }
 
 .dropdown-content > .panel-content > .select-panel > ul > li > label > .item-renderer {
