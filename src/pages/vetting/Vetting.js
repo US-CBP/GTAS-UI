@@ -145,7 +145,7 @@ const Vetting = props => {
                 </Button>
               )}
             </Confirm>
-            {row.original.lookoutStatus !== "NOTPROMOTED" ? (
+            {row.original.lookoutStatus !== "NOTPROMOTED" && row.original.lookoutStatus !== "DEMOTED"? (
               <></> //There doesn't need to be an indicator for an Already Promoted item, as it's self evident from the table.
             ) : (
               <Confirm
@@ -157,7 +157,7 @@ const Vetting = props => {
                     </Xl8>
                     <br />
                     <br />
-                    {row.original.lookoutStatus !== "NOTPROMOTED" ? (
+                    {row.original.lookoutStatus !== "NOTPROMOTED" && row.original.lookoutStatus !== "DEMOTED"? (
                       <Xl8 xid="vet031">Already Promoted</Xl8>
                     ) : (
                       <Xl8 xid="vet032">Promote To Lookout</Xl8>
@@ -172,7 +172,7 @@ const Vetting = props => {
                       promoteToLookout(row.original.paxId, "ACTIVE")
                     )}
                   >
-                    {row.original.lookoutStatus !== "NOTPROMOTED" ? (
+                    {row.original.lookoutStatus !== "NOTPROMOTED" && row.original.lookoutStatus !== "DEMOTED" ? (
                       <Xl8 xid="vet033">Already Promoted</Xl8>
                     ) : (
                       <Xl8 xid="vet034">Promote To Lookout</Xl8>
