@@ -272,6 +272,12 @@ const Vetting = props => {
   const onTableChange = () => {};
   const cb = () => {};
 
+  const initTableState = {
+    pageIndex: 0,
+    pageSize: 25,
+    sortBy: [{ id: "hitCounts", desc: true }]
+  };
+
   let startDate = new Date();
   let endDate = new Date();
   endDate.setDate(endDate.getDate() + 4);
@@ -284,6 +290,7 @@ const Vetting = props => {
   const [usersEmails, setUsersEmails] = useState({});
   const [tableKey, setTableKey] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [tableState, setTableState] = useState(initTableState);
 
   const now = new Date();
   const initialParamState = {
@@ -300,6 +307,8 @@ const Vetting = props => {
     setFilterFormKey(filterFormKey + 1);
     return initialParamState;
   };
+
+  const getTableState = () => tableState;
 
   const changeStatus = (paxId, status) => {
     const newStatus =
@@ -340,7 +349,11 @@ const Vetting = props => {
 
   const parameterAdapter = fields => {
     setIsLoading(true);
-    let paramObject = { pageSize: 500, pageNumber: 1 };
+    let sortBy = [{
+        column : "highPriorityRuleCatId",
+        dir: "asc"
+    }];
+    let paramObject = { pageSize: 500, pageNumber: 1, sort:sortBy };
     const fieldscopy = Object.assign([], fields);
     delete fieldscopy["showDateTimePicker"];
 
@@ -402,7 +415,6 @@ const Vetting = props => {
         }
       }
     });
-
     return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 
@@ -616,6 +628,7 @@ const Vetting = props => {
           header={Headers}
           key={tableKey}
           isLoading={isLoading}
+          stateVals={getTableState}
         />
       </Main>
     </>
