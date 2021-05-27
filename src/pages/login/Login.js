@@ -70,7 +70,11 @@ const Login = () => {
                   <div className="gtas-logo"></div>
                   <br />
                   <br />
-                  <h3 className="login-heading mb-4">GTAS</h3>
+                  <h3 className="login-heading mb-4">
+                    GLOBAL TRAVEL
+                    <br />
+                    ASSESSMENT SYSTEM
+                  </h3>
                   <br />
                   <Form
                     title=""
