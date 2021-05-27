@@ -341,6 +341,13 @@ const LookupProvider = ({ children }) => {
     });
   };
 
+  /** Refresh and return the core (name and id). Return all fields, not just favorites */
+  const getFullCachedCoreFields = (type, includeArchived) => {
+    return refresh(type).then(() => {
+      return getLookupCache(type, true, includeArchived, undefined, false);
+    });
+  };
+
   /** Refresh and return all fields for the type. Pulls from faves for carriers and airports to reduce the fetch size */
   const getCachedAllFields = (type, includeArchived) => {
     const favesOnly = hasFavorites(type);
@@ -431,6 +438,7 @@ const LookupProvider = ({ children }) => {
         getLookupState,
         getCachedAllFields,
         getCachedCoreFields,
+        getFullCachedCoreFields,
         getSingleKeyValue,
         refreshPartial,
         lookupAction
