@@ -235,18 +235,18 @@ const Vetting = props => {
       Header: ["wl020", "Hits"],
       Cell: ({ row }) => {
         const listdata = asArray(row.original.hitNames).map((hit, index) => {
-          const triggerOverlay = !isShortText(hit, 20);
+          const triggerOverlay = !isShortText(hit, 45);
           return (
             <Overlay
               trigger={triggerOverlay ? ["click", "hover"] : ""}
               key={index}
               content={hit}
             >
-              <li className={triggerOverlay ? "as-info" : ""}>{getShortText(hit, 20)}</li>
+              <li className={triggerOverlay ? "as-info" : ""}>{getShortText(hit, 45)}</li>
             </Overlay>
           );
         });
-        return <ul className="bio-data">{listdata}</ul>;
+        return <ul className="hits-data">{listdata}</ul>;
       }
     },
     {
@@ -333,16 +333,41 @@ const Vetting = props => {
     setFilterFormKey(filterFormKey + 1);
   };
 
-  const setDataWrapper = data => {
-    data = asArray(data.cases).map(item => {
-      item.id = item.id || `${item.flightId}${item.paxId}`;
-      item.carrier = item.flightNumber.slice(0, 2);
-      item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
+  const setDataWrapper = rawdata => {
+    const parseddata = asArray(rawdata.cases).map(item => {
+      const newitem = item;
+      newitem.id = item.id || `${item.flightId}${item.paxId}`;
+      newitem.carrier = item.flightNumber.slice(0, 2);
+      newitem.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
         item.medPrioHitCount
       )}:${lpad5(item.lowPrioHitCount)}`;
-      return item;
+
+      // newitem.paxId = item.paxId;
+      // newitem.dob = item.dob;
+      // newitem.docType = item.docType;
+      // newitem.document = item.document;
+      // newitem.firstName = item.firstName;
+      // newitem.lastName = item.lastName;
+      // newitem.middleName = item.middleName;
+      // newitem.gender = item.gender;
+      // newitem.nationality = item.nationality;
+      // newitem.flightId = item.flightId;
+      // newitem.flightDestination = item.flightDestination;
+      // newitem.flightOrigin = item.flightOrigin;
+      // newitem.flightNumber = item.flightNumber;
+      // newitem.flightDirection = item.flightDirection;
+      // newitem.flightETADate = item.flightETADate;
+      // newitem.flightETDDate = item.flightETDDate;
+
+      // newitem.status = item.status;
+      // newitem.lookoutStatus = item.lookoutStatus;
+      // newitem.hitNames = item.hitNames;
+
+      //38
+      return newitem;
     });
-    setData(data || []);
+
+    setData(parseddata || []);
     setTableKey(tableKey + 1);
     setIsLoading(false);
   };
