@@ -3,7 +3,7 @@
 // Please see license.txt for details.
 
 import React, { useState } from "react";
-
+import { getTodaysBackground } from "../../utils/utils";
 import "./SidenavContainer.scss";
 
 const SideNav = props => {
@@ -24,8 +24,10 @@ const SideNav = props => {
           <i className={`${open ? "arrow-hide" : "arrow-open"} fa fa-2x arrow`}></i>
         </div>
       </div>
-      <div className={`${open ? "filter-open" : "filter"} filter-bg`}></div>
-      {/* <div className={`${open ? "filter-open" : "filter"} filter-screen`}></div> */}
+      <div
+        className={`${open ? "filter-open" : "filter"} filter-bg 
+        ${getTodaysBackground("sidenav-background")}`}
+      ></div>
       <div className={`${open ? "filter-open filter-fg-open" : "filter filter-fg"}`}>
         {props.children}
         <br></br>

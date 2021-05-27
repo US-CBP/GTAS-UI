@@ -18,21 +18,21 @@ export const palette = {
 
 /**
  * Basic node config - sets the retrieved fields, color, icons for each node type.
- * @param {*} vaquita
  * @param {*} SvgType
  * @param {*} params
  */
-export const provider = (vaquita, SvgType, params) => {
+export const provider = (SvgType, params) => {
   return {
     Address: {
       returnAttributes: ["address_line_1", "country", "city"],
       displayAttribute: "address_line_1",
-      getDisplayType: node => SvgType,
-      getColor: node => palette.address,
-      getSVGPaths: node => [
+      getDisplayType: () => SvgType,
+      getColor: () => palette.address,
+      getIsTextDisplayed: () => true,
+      getSVGPaths: () => [
         {
           d: svgs.getAddressPath(),
-          fill: vaquita.provider.node.getColor(node)
+          fill: palette.address
         }
       ]
     },
@@ -40,23 +40,17 @@ export const provider = (vaquita, SvgType, params) => {
       returnAttributes: ["country_code", "airport_code"],
       constraintAttribute: "airport_code",
       displayAttribute: "airport_code",
-      getDisplayType: function(node) {
-        return SvgType;
-      },
-      getSVGPaths: function(node) {
+      getDisplayType: () => SvgType,
+      getIsTextDisplayed: () => true,
+      getSVGPaths: function() {
         return [
           {
             d: svgs.getAirportPath(),
-            fill: vaquita.provider.node.getColor(node)
+            fill: palette.airport
           }
         ];
       },
-      getColor: function(node) {
-        return palette.airport;
-      },
-      getIsTextDisplayed: function(node) {
-        return true;
-      }
+      getColor: () => palette.airport
     },
     Passenger: {
       returnAttributes: [
@@ -74,106 +68,81 @@ export const provider = (vaquita, SvgType, params) => {
       ],
       constraintAttribute: "id_tag",
       displayAttribute: "last_name",
-      getPredefinedConstraints: function() {
+      getPredefinedConstraints: () => {
         if (params.idTag) return [`passenger.id_tag  = '${params.idTag}'`];
         else return [];
       },
-      getDisplayType: function(node) {
-        return SvgType;
-      },
-      getSVGPaths: function(node) {
+      getDisplayType: () => SvgType,
+      getSVGPaths: function() {
         return [
           {
             d: svgs.getPassengerPath(),
-            fill: vaquita.provider.node.getColor(node)
+            fill: palette.passenger
           }
         ];
       },
-      getColor: function(node) {
-        return palette.passenger;
-      }
+      getColor: () => palette.passenger
     },
     Phone: {
       returnAttributes: ["number"],
       displayAttribute: "number",
       constraintAttribute: "number",
-      getDisplayType: function(node) {
-        return SvgType;
-      },
-      getSVGPaths: function(node) {
+      getDisplayType: () => SvgType,
+      getIsTextDisplayed: () => true,
+      getSVGPaths: function() {
         return [
           {
             d: svgs.getPhonePath(),
-            fill: vaquita.provider.node.getColor(node)
+            fill: palette.phone
           }
         ];
       },
-      getColor: function(node) {
-        return palette.phone;
-      },
-      getIsTextDisplayed: function(node) {
-        return true;
-      }
+      getColor: () => palette.phone
     },
     CreditCard: {
       returnAttributes: ["number", "exp_date", "type", "account_holder"],
       displayAttribute: "number",
       constraintAttribute: "number",
-      getDisplayType: function(node) {
-        return SvgType;
-      },
-      getColor: function(node) {
-        return palette.creditcard;
-      },
-      getSVGPaths: function(node) {
+      getDisplayType: () => SvgType,
+      getIsTextDisplayed: () => true,
+      getColor: () => palette.creditcard,
+      getSVGPaths: function() {
         return [
           {
             d: svgs.getCreditCardPath(),
-            fill: vaquita.provider.node.getColor(node)
+            fill: palette.creditcard
           }
         ];
-      },
-      getIsTextDisplayed: function(node) {
-        return true;
       }
     },
     Document: {
       returnAttributes: ["number", "exp_date", "type", "issuance_country"],
       displayAttribute: "number",
       constraintAttribute: "number",
-      getDisplayType: function(node) {
-        return SvgType;
-      },
-      getSVGPaths: function(node) {
+      getDisplayType: () => SvgType,
+      getIsTextDisplayed: () => true,
+      getSVGPaths: function() {
         return [
           {
             d: svgs.getDocumentPath(),
-            fill: vaquita.provider.node.getColor(node)
+            fill: palette.document
           }
         ];
       },
-      getColor: function(node) {
-        return palette.document;
-      },
-      getIsTextDisplayed: function(node) {
-        return true;
-      }
+      getColor: () => palette.document
     },
     Email: {
       returnAttributes: ["address"],
       displayAttribute: "address",
       constraintAttribute: "address",
-      getDisplayType: function(node) {
-        return SvgType;
-      },
-      getColor: function(node) {
-        return palette.email;
-      },
-      getSVGPaths: function(node) {
+      getDisplayType: () => SvgType,
+      getIsTextDisplayed: () => true,
+      getColor: () => palette.email,
+      getSVGPaths: function() {
         return [
           {
             d: svgs.getEmailPath(),
-            fill: vaquita.provider.node.getColor(node)
+            fill: palette.email
           }
         ];
       }
@@ -201,19 +170,18 @@ export const provider = (vaquita, SvgType, params) => {
       constraintAttribute: "flight_id_tag",
       displayAttribute: "full_flight_number",
       getPredefinedConstraints: function() {
-        return [`flight.flight_id_tag  = '${params.flightIdTag}'`];
+        if (params.flightIdTag)
+          return [`flight.flight_id_tag  = '${params.flightIdTag}'`];
+        else return [];
       },
-      getDisplayType: function(node) {
-        return SvgType;
-      },
-      getColor: function(node) {
-        return palette.flight; //
-      },
-      getSVGPaths: function(node) {
+      getDisplayType: () => SvgType,
+      getIsTextDisplayed: () => true,
+      getColor: () => palette.flight,
+      getSVGPaths: function() {
         return [
           {
             d: svgs.getFlightPath(),
-            fill: vaquita.provider.node.getColor(node)
+            fill: palette.flight
           }
         ];
       }
@@ -229,23 +197,17 @@ export const provider = (vaquita, SvgType, params) => {
         "hit_type"
       ],
       displayAttribute: "hit_type",
-      getDisplayType: function(node) {
-        return SvgType;
-      },
-      getSVGPaths: function(node) {
+      getDisplayType: () => SvgType,
+      getIsTextDisplayed: () => true,
+      getSVGPaths: function() {
         return [
           {
             d: svgs.getHitPath(),
-            fill: vaquita.provider.node.getColor(node)
+            fill: palette.hit
           }
         ];
       },
-      getColor: function(node) {
-        return palette.hit;
-      },
-      getIsTextDisplayed: function(node) {
-        return true;
-      }
+      getColor: () => palette.hit
     }
   };
 };
@@ -266,27 +228,12 @@ export const paxRelations = (paxFlightIdTag, paxFullFlightNumber) => [
 ];
 
 const relationsSecondary = [
-  {
-    label: "used_document",
-    target: { label: "Document" }
-  },
-  {
-    label: "used_email",
-    target: { label: "Email" }
-  },
+  { label: "used_document", target: { label: "Document" } },
+  { label: "used_email", target: { label: "Email" } },
   { label: "used_creditcard", target: { label: "CreditCard" } },
-  {
-    label: "lived_at",
-    target: { label: "Address" }
-  },
-  {
-    label: "used_phone",
-    target: { label: "Phone" }
-  },
-  {
-    label: "flagged",
-    target: { label: "Hit" }
-  }
+  { label: "lived_at", target: { label: "Address" } },
+  { label: "used_phone", target: { label: "Phone" } },
+  { label: "flagged", target: { label: "Hit" } }
 ];
 
 export const thisPaxFlight = (pax, target) => {
@@ -325,15 +272,8 @@ export const saves = pax => {
 
   return {
     pax: {
-      // this pax
-      label: "Passenger",
+      ...paxDefaults,
       horiz: 1,
-      value: [
-        {
-          id_tag: pax.idTag,
-          last_name: pax.lastName
-        }
-      ],
       rel: [...paxRelations(pax.flightIdTag, pax.fullFlightNumber), ...relationsSecondary]
     },
     flightall: {

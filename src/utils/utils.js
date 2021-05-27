@@ -468,3 +468,32 @@ export const addMinutes = (date, minutes = 1) => {
 
   return new Date(date.getTime() + minutes * 60000);
 };
+
+/** Return the css class of one of 4 background jpg files (named 1.jpg, 2.jpg, etc) so the background cycles every day.
+ * We are using this because other strategies like setting a var to use sass random()) only get evaluated once at build
+ * time and are locked until the bundles get updated. */
+export const getTodaysBackground = prefix => {
+  const fileIdx = (new Date().getDate() % 4) + 1;
+
+  return `${prefix}${fileIdx}`;
+};
+
+//Small issue with using conditional date fields, they end up as children of the property as an array of values and never get
+//made into proper children. Check for multi-sub children and assign as top level children values.
+export const getAllChildElements = (children) => {
+  let trueChildren = [];
+
+  const findChildren = children => {
+    asArray(children).forEach(child => {
+      if (child.props?.datafield // take top level datafield if available
+          || (!child.props?.datafield && !child.props?.children)) // If it's non standard field element, just return it as it was.
+      {trueChildren.push(child);}
+      if (!child.props?.datafield && child.props?.children) { //else keep digging
+       findChildren(child.props.children);
+      }
+    });
+  }
+
+  findChildren(children);
+  return trueChildren;
+}

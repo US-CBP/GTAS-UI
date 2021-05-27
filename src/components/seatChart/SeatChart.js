@@ -14,7 +14,8 @@ import SidenavContainer from "../sidenavContainer/SidenavContainer";
 import Main from "../main/Main";
 import { seats } from "../../services/serviceWrapper";
 import { Row, CardDeck, Card } from "react-bootstrap";
-import { asArray, localeDate } from "../../utils/utils";
+import { asArray, hasData, localeDate } from "../../utils/utils";
+import { GENERICTYPE } from "../../utils/constants";
 import "./SeatChart.scss";
 
 const SeatChart = ({ location }) => {
@@ -25,6 +26,7 @@ const SeatChart = ({ location }) => {
   const [selectedSeatInfo, setSelectedSeatInfo] = useState({});
   const [showPending, setShowPending] = useState(true);
   const [searchedSeats, setSearchedSeats] = useState();
+  const [showPax, setShowPax] = useState();
   const seatRefs = useRef({});
   const searchRef = useRef({});
 
@@ -49,12 +51,18 @@ const SeatChart = ({ location }) => {
     const row = [];
     columnWithReservedSeat.forEach(col => {
       const seatNumber = `${col}${letter}`;
+      let isSelected = false;
+      currentPaxSeat.split(",").forEach(seatNum => {
+        if (seatNum.trim() === seatNumber) {
+          isSelected = true;
+        }
+      });
       row.push(
         <Seat
           ref={seat => (seatRefs.current[seatNumber] = seat)}
           seatNumber={seatNumber}
           seatInfo={reservedSeatsInfo[seatNumber]}
-          selected={currentPaxSeat === seatNumber}
+          selected={isSelected}
           key={seatNumber}
           className={
             selectedSeatInfo.coTravellers?.includes(seatNumber) ? "co-traveler" : ""
@@ -98,10 +106,15 @@ const SeatChart = ({ location }) => {
       processData(res);
       setShowPending(false);
     });
+
+    // hide the pax tile if we are not viewing a specific pax yet
+    if (paxId === GENERICTYPE.ALL && currentPaxSeat === GENERICTYPE.ALL)
+      setShowPax(false);
+    else setShowPax(true);
   }, []);
 
   useEffect(() => {
-    setSelectedSeatInfo(reservedSeatsInfo[currentPaxSeat] || {});
+    setSelectedSeatInfo(reservedSeatsInfo[currentPaxSeat.split(",")[0]] || {});
   }, [reservedSeatsInfo]);
 
   const flightInfoData = [
@@ -120,18 +133,32 @@ const SeatChart = ({ location }) => {
   ];
 
   const seatInfoData = [
-    { label: <Xl8 xid="seat007">Last Name</Xl8>, value: selectedSeatInfo.lastName },
+    {
+      label: <Xl8 xid="seat007">Last Name</Xl8>,
+      value: hasData(selectedSeatInfo.lastName)
+        ? selectedSeatInfo.lastName
+        : location.state.lastName
+    },
     {
       label: <Xl8 xid="seat008">First Name</Xl8>,
-      value: selectedSeatInfo.firstName
+      value: hasData(selectedSeatInfo.firstName)
+        ? selectedSeatInfo.firstName
+        : location.state.firstName
     },
     {
       label: <Xl8 xid="seat009">Middle Name</Xl8>,
-      value: selectedSeatInfo.middleName
+      value: hasData(selectedSeatInfo.middleName)
+        ? selectedSeatInfo.middleName
+        : location.state.middleName
     },
     {
       label: <Xl8 xid="seat010">Seat Number</Xl8>,
-      value: selectedSeatInfo.number
+      value:
+        currentPaxSeat.split(",").length > 1
+          ? currentPaxSeat
+          : hasData(selectedSeatInfo.number)
+          ? selectedSeatInfo.number
+          : "N/A"
     }
   ];
   const linkToFlightPax = (
@@ -180,12 +207,14 @@ const SeatChart = ({ location }) => {
             </Card.Header>
             <SeatChartCard data={flightInfoData} link={linkToFlightPax} />
           </Card>
-          <Card>
-            <Card.Header>
-              <Xl8 xid="seat003">Passenger Information</Xl8>
-            </Card.Header>
-            <SeatChartCard data={seatInfoData} link={linkToPaxdetails} />
-          </Card>
+          {showPax && (
+            <Card>
+              <Card.Header>
+                <Xl8 xid="seat003">Passenger Information</Xl8>
+              </Card.Header>
+              <SeatChartCard data={seatInfoData} link={linkToPaxdetails} />
+            </Card>
+          )}
         </CardDeck>
       </Main>
     </>

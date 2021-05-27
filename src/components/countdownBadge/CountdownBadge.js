@@ -95,13 +95,15 @@ const CountdownBadge = props => {
   };
 
   return (
-    <Row flex="true" no-wrap="true" className={`cdb-row sm ${getStyle()}`}>
-      <span className={getIconClass()}></span>
-      <span>{sign}</span>
-      <span className={getSpanStyle(formatedDays)}>{formatedDays}</span>
-      <span className={getSpanStyle(formatedHours)}>{formatedHours}</span>
-      <span className={getSpanStyle(minutes)}>{formatedMinutes}</span>
-    </Row>
+    <div className="text-center">
+      <Row flex="true" no-wrap="true" className={`cdb-row sm ${getStyle()}`}>
+        <span className={getIconClass()}></span>
+        <span>{sign}</span>
+        <span className={getSpanStyle(formatedDays)}>{formatedDays}</span>
+        <span className={getSpanStyle(formatedHours)}>{formatedHours}</span>
+        <span className={getSpanStyle(minutes)}>{formatedMinutes}</span>
+      </Row>
+    </div>
   );
 };
 

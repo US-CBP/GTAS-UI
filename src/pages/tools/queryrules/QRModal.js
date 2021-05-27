@@ -36,16 +36,16 @@ const QRModal = props => {
   const [countries, setCountries] = useState([]);
   const [carriers, setCarriers] = useState([]);
   const [ccTypes, setCcTypes] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [dataConfig, setDataConfig] = useState([]);
 
   const [title, setTitle] = useState(props.data?.title);
-  const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState(props.data?.query);
   const [showInvalid, setShowInvalid] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const isEdit = hasData(props.data?.id);
-  const { lookupAction, getCachedKeyValues } = useContext(LookupContext);
+  const { lookupAction, getFullCachedCoreFields } = useContext(LookupContext);
 
   useEffect(() => {
     if (
@@ -54,8 +54,9 @@ const QRModal = props => {
       hasData(airports) &&
       hasData(ccTypes) &&
       hasData(categories)
-    )
+    ) {
       setLoaded(true);
+    }
   }, [countries, carriers, airports, ccTypes, categories]);
 
   const countryProps = useMemo(() => {
@@ -594,11 +595,11 @@ const QRModal = props => {
   useEffect(() => {
     if (loaded) return;
 
-    getCachedKeyValues(LK.COUNTRY).then(res => setCountries(res));
-    getCachedKeyValues(LK.CARRIER).then(res => setCarriers(res));
-    getCachedKeyValues(LK.HITCAT).then(res => setCategories(res));
-    getCachedKeyValues(LK.AIRPORT).then(res => setAirports(res));
-    getCachedKeyValues(LK.CCTYPE).then(res => setCcTypes(res));
+    getFullCachedCoreFields(LK.COUNTRY).then(res => setCountries(res));
+    getFullCachedCoreFields(LK.CARRIER).then(res => setCarriers(res));
+    getFullCachedCoreFields(LK.HITCAT).then(res => setCategories(res));
+    getFullCachedCoreFields(LK.AIRPORT).then(res => setAirports(res));
+    getFullCachedCoreFields(LK.CCTYPE).then(res => setCcTypes(res));
 
     setData(props.data?.query);
   }, []);
