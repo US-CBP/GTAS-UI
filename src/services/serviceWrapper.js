@@ -99,7 +99,10 @@ export const hitcatspost = {
   }
 };
 
-export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
+export const flights = {
+  get: params => get(FLIGHTS, BASEHEADER, undefined, params),
+  getSingleFlightInfo: id => get(FLIGHTS, BASEHEADER, id)
+};
 export const auditlog = {
   get: {
     logs: params => get(AUDITLOG, BASEHEADER, undefined, params),

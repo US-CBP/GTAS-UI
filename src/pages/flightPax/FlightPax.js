@@ -15,7 +15,8 @@ import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import LazyImage from "../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
-import { flightPassengers } from "../../services/serviceWrapper";
+
+import {flightPassengers, flights} from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
 import {
   asArray,
@@ -39,8 +40,8 @@ const FlightPax = props => {
   const [allData, setAllData] = useState();
   const [tab, setTab] = useState(TABTYPE.ALL);
   const [key, setKey] = useState(0);
+  const [flightData, setFlightData] = useState(hasData(props.location.state?.data) ? props.location.state.data : {});
   const [carrierName, setCarrierName] = useState();
-  const flightData = props.location?.state?.data || {};
   const { getSingleKeyValue } = useContext(LookupContext);
 
   const hasAnyHits = item => {
@@ -268,6 +269,12 @@ const FlightPax = props => {
       const parsedHits = parsed.filter(item => {
         return hasAnyHits(item);
       });
+
+      if(!hasData(flightData)){
+        flights.getSingleFlightInfo(props.id).then(res => {
+          setFlightData(res);
+        })
+      }
 
       setAllData(parsed);
       setHitData(parsedHits);
