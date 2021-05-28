@@ -157,7 +157,7 @@ const Kanban = props => {
       }
     });
     return {
-      name: <Xl8 xid="poe0001">{laneData.displayName}</Xl8>,
+      name: laneData.displayName,
       items: tileList,
       background: "#f0f0f0",
       dragbackground: "#c0ddec",
