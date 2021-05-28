@@ -15,6 +15,7 @@ import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import CarrierBadge from "../../components/carrierBadge/CarrierBadge";
+import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import Overlay from "../../components/overlay/Overlay";
 import Confirm from "../../components/confirmationModal/Confirm";
 import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
@@ -207,18 +208,30 @@ const Vetting = props => {
       Accessor: "carrier",
       Xl8: true,
       Header: ["wl029", "Carrier"],
-      Cell: ({ row }) => <CarrierBadge src={row.original.flightNumber}></CarrierBadge>
+      Cell: ({ row }) => (
+        <div className="carrier-badge-container">
+          <CarrierBadge src={row.original.flightNumber}></CarrierBadge>
+          <ToolTipWrapper
+            data={{
+              val: (
+                <span className="carrier-badge-flight">{row.original.flightNumber}</span>
+              ),
+              lkup: LK.CARRIER
+            }}
+          ></ToolTipWrapper>
+        </div>
+      )
     },
     {
       Accessor: "flightNumber",
       Xl8: true,
-      Header: ["wl019", "Flight ID"],
+      disableFilters: true,
+      disableSortBy: true,
+      Header: ["wl019", "Flight Info"],
       Cell: ({ row }) => (
         <div className="vetting">
           <FlightBadge
             data={{
-              flightNumber: row.original.flightNumber,
-              fullFlightNumber: row.original.flightNumber,
               flightOrigin: row.original.flightOrigin,
               flightDestination: row.original.flightDestination,
               eta: row.original.flightETADate,

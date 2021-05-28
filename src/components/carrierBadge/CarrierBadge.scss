@@ -7,6 +7,7 @@
   border-radius: 0.25rem;
   background-color: white;
   border: 1px solid lightgray;
+  max-width: 78px;
 }
 
 .carrier-badge .lazy-image-wrapper {
@@ -17,7 +18,20 @@
 }
 
 .carrier-badge .lazy-image {
-  line-height: unset;
-  height: unset;
-  width: unset;
+  line-height: 45px;
+  height: 45px;
+  width: 45px;
+}
+
+.carrier-badge-container {
+  display: flex;
+  text-align: center;
+  justify-content: space-evenly;
+}
+
+.carrier-badge-flight,
+.carrier-badge-container .as-info {
+  max-height: 32px;
+  align-self: center;
+  font-size: large;
 }
