@@ -207,7 +207,7 @@ const Vetting = props => {
     {
       Accessor: "carrier",
       Xl8: true,
-      Header: ["wl029", "Carrier"],
+      Header: ["wl029", "Flight"],
       Cell: ({ row }) => (
         <div className="carrier-badge-container">
           <div className="margin-right-sm">
