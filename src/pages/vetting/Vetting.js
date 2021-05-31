@@ -210,7 +210,9 @@ const Vetting = props => {
       Header: ["wl029", "Carrier"],
       Cell: ({ row }) => (
         <div className="carrier-badge-container">
-          <CarrierBadge src={row.original.flightNumber}></CarrierBadge>
+          <div className="margin-right-sm">
+            <CarrierBadge src={row.original.flightNumber}></CarrierBadge>
+          </div>
           <ToolTipWrapper
             data={{
               val: (
@@ -387,11 +389,13 @@ const Vetting = props => {
 
   const parameterAdapter = fields => {
     setIsLoading(true);
-    let sortBy = [{
-        column : "highPriorityRuleCatId",
+    let sortBy = [
+      {
+        column: "highPriorityRuleCatId",
         dir: "asc"
-    }];
-    let paramObject = { pageSize: 500, pageNumber: 1, sort:sortBy };
+      }
+    ];
+    let paramObject = { pageSize: 500, pageNumber: 1, sort: sortBy };
     const fieldscopy = Object.assign([], fields);
     delete fieldscopy["showDateTimePicker"];
 
