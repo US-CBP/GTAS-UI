@@ -335,11 +335,11 @@ const Flights = props => {
             />
             <LabelledInput
               datafield="flightNumber"
-              labelText={<Xl8 xid="fl005">Flight Number</Xl8>}
+              labelText={<Xl8 xid="fl005">Flight</Xl8>}
               inputtype="text"
               name="flightNumber"
               callback={cb}
-              alt={<Xl8 xid="7">Flight Number</Xl8>}
+              alt={<Xl8 xid="7">Flight</Xl8>}
             />
             <LabelledInput
               datafield="direction"
