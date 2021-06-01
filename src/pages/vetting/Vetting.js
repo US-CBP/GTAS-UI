@@ -574,11 +574,11 @@ const Vetting = props => {
             />
             <LabelledInput
               datafield="flightNumber"
-              labelText={<Xl8 xid="vet012">Flight Number</Xl8>}
+              labelText={<Xl8 xid="vet012">Flight</Xl8>}
               inputtype="text"
               name="flightNumber"
               callback={cb}
-              alt={<Xl8 xid="3">Flight Number</Xl8>}
+              alt={<Xl8 xid="3">Flight</Xl8>}
             />
             <hr />
             <LabelledInput
