@@ -15,7 +15,6 @@ import {
   timezoneFreeDate
 } from "../../../utils/utils";
 import Xl8 from "../../../components/xl8/Xl8";
-import LazyImage from "../../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
 import { LK } from "../../../utils/constants";
 
@@ -142,7 +141,7 @@ const PNR = props => {
   const headers = {
     itinerary: {
       leg: <Xl8 xid="pnr001">Leg</Xl8>,
-      flightNumber: <Xl8 xid="pnr002">Flight Number</Xl8>,
+      flightNumber: <Xl8 xid="pnr002">Flight</Xl8>,
       origin: <Xl8 xid="pnr003">Origin</Xl8>,
       destination: <Xl8 xid="pnr004">Destination</Xl8>,
       departure: <Xl8 xid="pnr005">Departure</Xl8>,
@@ -182,7 +181,7 @@ const PNR = props => {
       number: <Xl8 xid="pnr027">Number</Xl8>
     },
     frequentFlyerDetails: {
-      carrier: <Xl8 xid="pnr028">Airline</Xl8>,
+      carrier: <Xl8 xid="pnr028">Carrier</Xl8>,
       number: <Xl8 xid="pnr029">Number</Xl8>
     },
     agencies: {
@@ -197,11 +196,11 @@ const PNR = props => {
     seatAssignments: {
       firstName: <Xl8 xid="pnr037">First Name</Xl8>,
       lastName: <Xl8 xid="pnr038">Last Name</Xl8>,
-      flightNumber: <Xl8 xid="pnr039">Flight Number</Xl8>,
+      flightNumber: <Xl8 xid="pnr039">Flight</Xl8>,
       number: <Xl8 xid="pnr040">Seat Number</Xl8>
     },
     totalBaggage: {
-      flightNumber: <Xl8 xid="pnr057">Flight #</Xl8>,
+      flightNumber: <Xl8 xid="pnr057">Flight</Xl8>,
       passenger: <Xl8 xid="pnr053">Passenger</Xl8>,
       bagCount: <Xl8 xid="pnr055">Bag Count</Xl8>,
       totalWeight: <Xl8 xid="pnr056">Total Bag Weight</Xl8>,
