@@ -117,10 +117,10 @@ const QRModal = props => {
         label: "Bag",
         type: "!group",
         subfields: {
-          airline: { label: "Airline", ...carrierProps },
           "bagMeasurements.bagCount": { label: "Bag Count", ...numProps },
           bagId: { label: "Bag ID", ...txtProps },
           "bagMeasurements.weight": { label: "Bag Weight (kg)", ...numProps },
+          airline: { label: "Carrier", ...carrierProps },
           data_source: { label: "Data Source", ...txtProps },
           destinationAirport: { label: "Destination Airport", ...airportProps },
           country: { label: "Destination Country", ...countryProps },
