@@ -16,7 +16,7 @@ import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import LazyImage from "../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
 
-import {flightPassengers, flights} from "../../services/serviceWrapper";
+import { flightPassengers, flights } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
 import {
   asArray,
@@ -40,7 +40,7 @@ const FlightPax = props => {
   const [allData, setAllData] = useState();
   const [tab, setTab] = useState(TABTYPE.ALL);
   const [key, setKey] = useState(0);
-  const [flightData, setFlightData] = useState(hasData(props.location.state?.data) ? props.location.state.data : {});
+  const [flightData, setFlightData] = useState({});
   const [carrierName, setCarrierName] = useState();
   const { getSingleKeyValue } = useContext(LookupContext);
 
@@ -102,8 +102,7 @@ const FlightPax = props => {
     return groupHitTotal;
   };
 
-  const getCarrierDesc = () => {
-    const carriercode = alt(flightData.fullFlightNumber, "").slice(0, 2);
+  const getCarrierDesc = carriercode => {
     const notFound = "Not Found";
 
     getSingleKeyValue(LK.CARRIER, false, carriercode).then(rec => {
@@ -270,15 +269,14 @@ const FlightPax = props => {
         return hasAnyHits(item);
       });
 
-      if(!hasData(flightData)){
-        flights.getSingleFlightInfo(props.id).then(res => {
-          setFlightData(res);
-        })
-      }
-
       setAllData(parsed);
       setHitData(parsedHits);
       setKey(1);
+    });
+
+    flights.getSingleFlightInfo(props.id).then(res => {
+      setFlightData(res);
+      getCarrierDesc(res?.carrier);
     });
   }, [props.id]);
 
@@ -289,10 +287,6 @@ const FlightPax = props => {
     const newkey = key + 1;
     setKey(newkey);
   }, [hitData, tab]);
-
-  useEffect(() => {
-    getCarrierDesc();
-  }, []);
 
   const tabs = (
     <Tabs defaultActiveKey={TABTYPE.ALL} id="flightPaxTabs">
