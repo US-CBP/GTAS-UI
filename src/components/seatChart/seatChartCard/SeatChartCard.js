@@ -16,11 +16,7 @@ const SeatChartCard = props => {
               <b>{item.label}:</b>
             </Col>
             <Col>
-              <LabelledInput
-                alt="Flight Number"
-                inputtype="label"
-                inputval={item.value}
-              />
+              <LabelledInput alt="Flight" inputtype="label" inputval={item.value} />
             </Col>
           </Row>
         ))}
