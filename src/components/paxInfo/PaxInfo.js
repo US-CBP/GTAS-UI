@@ -48,7 +48,7 @@ const PaxInfo = props => {
         label: <Xl8 xid="pd015">Seat</Xl8>,
         value: (
           <Link
-            to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${
+            to={`/gtas/seatchart/${res.flightId}/${res.paxId}/${
               res.seat !== "N/A" ? res.seat : "NA"
             }`}
             className="pax-info-link"

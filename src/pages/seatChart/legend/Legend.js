@@ -3,7 +3,7 @@
 // Please see license.txt for details.
 
 import React from "react";
-import Xl8 from "../../xl8/Xl8";
+import Xl8 from "../../../components/xl8/Xl8";
 import "./Legend.scss";
 
 const Legend = props => {
