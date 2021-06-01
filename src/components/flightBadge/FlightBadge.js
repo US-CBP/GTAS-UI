@@ -59,7 +59,7 @@ const FlightBadge = props => {
               data={{ val: departure[0], lkup: LK.AIRPORT }}
             ></ToolTipWrapper>
           </span>
-          <span>{departure[1]}</span>
+          <span className="margin-right-sm">{departure[1]}</span>
           <span>{departure[2]}</span>
         </Row>
         <Row flex="true" no-wrap="true" className="flight-badge-row">
@@ -67,7 +67,7 @@ const FlightBadge = props => {
           <span className="width40">
             <ToolTipWrapper data={{ val: arrival[0], lkup: LK.AIRPORT }}></ToolTipWrapper>
           </span>
-          <span>{arrival[1]}</span>
+          <span className="margin-right-sm">{arrival[1]}</span>
           <span>{arrival[2]}</span>
         </Row>
       </div>
