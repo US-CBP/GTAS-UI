@@ -140,7 +140,7 @@ const PaxDetail = props => {
     } else {
       let sts = "";
       res.seats.forEach((elem, idx) => {
-        if (idx != res.seats.length - 1) {
+        if (idx !== res.seats.length - 1) {
           sts = sts + elem + ", ";
         } else {
           if (!hasData(elem)) {

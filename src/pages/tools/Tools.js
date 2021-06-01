@@ -6,6 +6,7 @@ import React from "react";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
 import Main from "../../components/main/Main";
+import FlightPath from "../../components/flightPath/FlightPath";
 import { Card, CardDeck } from "react-bootstrap";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import { getEndpoint } from "../../utils/utils";
@@ -58,7 +59,9 @@ const Tools = props => {
       <>
         <Main className="full-cards">
           <Title title={<Xl8 xid="too001">Tools</Xl8>} />
-          <CardDeck className="page-deck">
+          <FlightPath></FlightPath>
+
+          {/* <CardDeck className="page-deck">
             {tiles.map(data => {
               return (
                 <RoleAuthenticator alt={<></>} roles={data.roles} key={data.path}>
@@ -80,7 +83,7 @@ const Tools = props => {
                 </RoleAuthenticator>
               );
             })}
-          </CardDeck>
+          </CardDeck> */}
         </Main>
       </>
     );

@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from "react";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Xl8 from "../../../components/xl8/Xl8";
-import LazyImage from "../../../components/lazyImage/LazyImage";
+import FlightPath from "../../../components/flightPath/FlightPath";
 import {
   paxWatchListLink,
   flightpaxHitSummary,
@@ -210,6 +210,7 @@ const Summary = props => {
           headers={headers.historicalHits}
           title={<Xl8 xid="sum031">Historical Hits</Xl8>}
         />
+        <FlightPath></FlightPath>
       </CardColumns>
     </div>
   );

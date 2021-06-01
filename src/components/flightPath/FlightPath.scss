@@ -1,0 +1,23 @@
+// All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
+//
+// Please see license.txt for details.
+
+.continent {
+  fill: #f0e4dd;
+  stroke: #e0cabc;
+  stroke-width: 0.5;
+}
+
+.circles {
+  fill: #3c373d;
+}
+
+.labels {
+  font-family: sans-serif;
+  font-size: 11px;
+  fill: #3c373d;
+}
+
+.map-container {
+  margin-top: 50px;
+}
