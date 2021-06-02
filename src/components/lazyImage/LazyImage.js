@@ -32,7 +32,11 @@ const LazyImage = ({ val, type, size, nozoom }) => {
   return (
     <>
       {dataReady && zoomEnabled && (
-        <LazyLoad height={placeholderHeight} overflow className="lazy-image-wrapper">
+        <LazyLoad
+          height={placeholderHeight}
+          overflow
+          className={`lazy-image-wrapper ${type}`}
+        >
           <OverlayTrigger
             trigger={["click"]}
             rootClose
