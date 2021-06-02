@@ -42,6 +42,35 @@ const Map = ({ mapData }) => {
       .each(function(d, i) {
         select(this).attr("d", d3.geoPath().projection(projection())(d));
       });
+
+    const link = {
+      type: "LineString",
+      coordinates: [
+        // [pt1.lon, pt1.lat], [pt2.lon, pt2.lat]
+        [-77.456, 38.9445],
+        [-118.408, 33.942501]
+      ]
+    };
+
+    const lineprojection = () =>
+      d3
+        .geoMercator()
+        .scale(90)
+        .translate([width / 2, (height / 2) * 1.3]);
+
+    const path = d3.geoPath().projection(lineprojection());
+
+    // Add the flight path
+    select(node)
+      .append("path")
+      .attr("d", path(link))
+      .style("fill", "none")
+      .style("stroke", "orange")
+      .style("stroke-width", 2);
+
+    // const zoom = d3.zoom()
+    // .scaleExtent([1, 8])
+    // .on("zoom", zoomed);
   };
 
   return (
