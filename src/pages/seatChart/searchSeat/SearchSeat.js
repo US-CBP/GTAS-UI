@@ -5,9 +5,9 @@
 import React from "react";
 import { Col } from "react-bootstrap";
 import { asArray, hasData, alt } from "../../../utils/utils";
-import Xl8 from "../../xl8/Xl8";
-import FilterForm from "../../filterForm2/FilterForm";
-import LabelledInput from "../../labelledInput/LabelledInput";
+import Xl8 from "../../../components/xl8/Xl8";
+import FilterForm from "../../../components/filterForm2/FilterForm";
+import LabelledInput from "../../../components/labelledInput/LabelledInput";
 
 const SearchSeat = ({ searchCallback, reservedSeats, resetFilterForm }, ref) => {
   const areEqual = (str1, str2) => {

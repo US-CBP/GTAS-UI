@@ -16,7 +16,7 @@ import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import LazyImage from "../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
 
-import {flightPassengers, flights} from "../../services/serviceWrapper";
+import { flightPassengers, flights } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
 import {
   asArray,
@@ -40,7 +40,9 @@ const FlightPax = props => {
   const [allData, setAllData] = useState();
   const [tab, setTab] = useState(TABTYPE.ALL);
   const [key, setKey] = useState(0);
-  const [flightData, setFlightData] = useState(hasData(props.location.state?.data) ? props.location.state.data : {});
+  const [flightData, setFlightData] = useState(
+    hasData(props.location.state?.data) ? props.location.state.data : {}
+  );
   const [carrierName, setCarrierName] = useState();
   const { getSingleKeyValue } = useContext(LookupContext);
 
@@ -270,10 +272,10 @@ const FlightPax = props => {
         return hasAnyHits(item);
       });
 
-      if(!hasData(flightData)){
+      if (!hasData(flightData)) {
         flights.getSingleFlightInfo(props.id).then(res => {
           setFlightData(res);
-        })
+        });
       }
 
       setAllData(parsed);
@@ -372,7 +374,7 @@ const FlightPax = props => {
                   </td>
                   <td className="right">
                     <Link
-                      to={`/gtas/seat-chart/${flightData.id}/${GENERICTYPE.ALL}/${GENERICTYPE.ALL}`}
+                      to={`/gtas/seatchart/${flightData.id}/${GENERICTYPE.ALL}/${GENERICTYPE.ALL}`}
                       className="flightpax-link"
                       state={{
                         arrival: flightData.eta,
