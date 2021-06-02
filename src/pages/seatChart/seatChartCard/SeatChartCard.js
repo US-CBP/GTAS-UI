@@ -4,7 +4,7 @@
 
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import LabelledInput from "../../labelledInput/LabelledInput";
+import LabelledInput from "../../../components/labelledInput/LabelledInput";
 
 const SeatChartCard = props => {
   return (
