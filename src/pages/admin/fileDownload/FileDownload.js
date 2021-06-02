@@ -21,8 +21,8 @@ const FileDownload = ({ name }) => {
   const cb = () => {};
 
   const onLogTypeSelect = target => {
-    let logFileType = target.selectedOptions[0].value;
-    if (hasData(logFileType) && logFileType != "") {
+    const logFileType = target.selectedOptions[0].value;
+    if (hasData(logFileType)) {
       getLogFilesList(logFileType);
       setCurrentLogType(logFileType);
     } else {
@@ -122,7 +122,11 @@ const FileDownload = ({ name }) => {
 
   return (
     <Main className="full bg-white">
-      <Title title={name} leftChild={fileTypeCtrl} className="stacker title"></Title>
+      <Title
+        title={name}
+        leftChild={fileTypeCtrl}
+        className="stacker title filedownload"
+      ></Title>
       <div className="grid-container">
         <Table callback={cb} key={tblRefreshKey} data={data} header={headers}></Table>
       </div>

@@ -8,10 +8,9 @@
   display: flex;
   text-align: center;
   padding: 5px;
-  padding-top: 15px;
+  padding-top: 13px;
   position: relative;
   background-color: white;
-  /* border-bottom: 1px solid #d0d0d0; */
   margin: 0px -20px;
   height: 48px;
 }
