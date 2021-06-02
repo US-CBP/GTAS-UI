@@ -281,7 +281,7 @@ const Flights = props => {
   const getTableState = () => tableState;
 
   const tabs = (
-    <Tabs defaultActiveKey={TABTYPE.ALL} id="flightTabs">
+    <Tabs defaultActiveKey={TABTYPE.ALL} id="flightTabs" className="gtas-tabs">
       <Tab
         eventKey={TABTYPE.ALL}
         title={

@@ -295,7 +295,7 @@ const FlightPax = props => {
   }, []);
 
   const tabs = (
-    <Tabs defaultActiveKey={TABTYPE.ALL} id="flightPaxTabs">
+    <Tabs defaultActiveKey={TABTYPE.ALL} id="flightPaxTabs" className="gtas-tabs">
       <Tab
         eventKey={TABTYPE.ALL}
         title={

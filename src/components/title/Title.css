@@ -8,6 +8,7 @@
   display: flex;
   text-align: center;
   padding: 5px;
+  padding-top: 15px;
   position: relative;
   background-color: white;
   /* border-bottom: 1px solid #d0d0d0; */

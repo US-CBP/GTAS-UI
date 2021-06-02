@@ -217,7 +217,7 @@ const Rules = props => {
   }, []);
 
   const tabs = (
-    <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs">
+    <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs" className="gtas-tabs">
       <Tab
         eventKey={RULETAB.MY}
         title={
