@@ -30,20 +30,9 @@ const FlightHistory = props => {
     //Only prime flights need a link
     const flightId = flight.flightId || flight.id;
     const isPrimeFlight = !flight.bookingDetail && hasData(flight.direction);
-    const stateData = {
-      direction: flight.direction,
-      eta: flight.eta,
-      etd: flight.etd,
-      fullFlightNumber: flight.fullFlightNumber,
-      flightDestination: flight.destination,
-      flightOrigin: flight.origin,
-      passengerCount: flight.passengerCount
-    };
 
     return isPrimeFlight ? (
-      <Link to={"/gtas/flightpax/" + flightId} state={{ data: stateData }}>
-        {flight.fullFlightNumber}
-      </Link>
+      <Link to={"/gtas/flightpax/" + flightId}>{flight.fullFlightNumber}</Link>
     ) : (
       flight.fullFlightNumber
     );

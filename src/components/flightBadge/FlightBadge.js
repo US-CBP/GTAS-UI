@@ -26,11 +26,7 @@ const FlightBadge = props => {
         <span className="flight-badge-nonlink-icon nozoom">
           <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
         </span>
-        <Link
-          to={"/gtas/flightpax/" + res.flightId}
-          className="link"
-          state={{ data: res }}
-        >
+        <Link to={"/gtas/flightpax/" + res.flightId} className="link">
           {res.flightNumber}
         </Link>
       </>
