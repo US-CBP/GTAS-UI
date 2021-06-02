@@ -28,20 +28,9 @@ const PNR = props => {
   const addLinkToFlight = flight => {
     //Only prime flights need a link
     const isPrimeFlight = !hasData(flight.bookingDetailId);
-    const stateData = {
-      direction: flight.direction,
-      eta: flight.eta,
-      etd: flight.etd,
-      fullFlightNumber: flight.flightNumber,
-      flightDestination: flight.destinationAirport,
-      flightOrigin: flight.originAirport,
-      passengerCount: flight.passengerCount
-    };
 
     return isPrimeFlight ? (
-      <Link to={"/gtas/flightpax/" + flight.flightId} state={{ data: stateData }}>
-        {flight.flightNumber}
-      </Link>
+      <Link to={"/gtas/flightpax/" + flight.flightId}>{flight.flightNumber}</Link>
     ) : (
       flight.flightNumber
     );
