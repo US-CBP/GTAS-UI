@@ -11,7 +11,7 @@ import { Link } from "@reach/router";
 
 const FlightHistory = props => {
   const headers = {
-    fullFlightNumber: <Xl8 xid="fh001">Flight Number</Xl8>,
+    fullFlightNumber: <Xl8 xid="fh001">Flight</Xl8>,
     etd: <Xl8 xid="fh002">Departure</Xl8>,
     eta: <Xl8 xid="fh003">Arrival</Xl8>,
     originCountry: <Xl8 xid="fh004">Origin Country</Xl8>,
