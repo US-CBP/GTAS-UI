@@ -31,3 +31,4 @@ eslintrc.json
 .eslintcache
 
 request.http
+.project
