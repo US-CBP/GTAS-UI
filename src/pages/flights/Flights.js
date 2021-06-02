@@ -21,6 +21,7 @@ import { Col, Tabs, Tab } from "react-bootstrap";
 import { LookupContext } from "../../context/data/LookupContext";
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import "./Flights.css";
+import "../../components/tabs/Tabs.css"
 
 const Flights = props => {
   const cb = () => {};
