@@ -187,17 +187,13 @@ const Vetting = props => {
       )
     },
     {
-      Accessor: "countdownTime",
+      Accessor: "timer",
       Xl8: true,
       Header: ["wl018", "Timer"],
       Cell: ({ row }) => {
-        const future =
-          row.original.flightDirection === "O"
-            ? row.original.flightETDDate
-            : row.original.flightETADate;
         return (
           <CountdownBadge
-            future={future}
+            future={row.original.timer}
             baseline={now}
             direction={row.original.flightDirection}
           />
@@ -289,7 +285,7 @@ const Vetting = props => {
 
   const initTableState = {
     pageIndex: 0,
-    pageSize: 25,
+    pageSize: 50,
     sortBy: [{ id: "hitCounts", desc: true }]
   };
 
@@ -356,29 +352,8 @@ const Vetting = props => {
       newitem.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
         item.medPrioHitCount
       )}:${lpad5(item.lowPrioHitCount)}`;
-
-      // newitem.paxId = item.paxId;
-      // newitem.dob = item.dob;
-      // newitem.docType = item.docType;
-      // newitem.document = item.document;
-      // newitem.firstName = item.firstName;
-      // newitem.lastName = item.lastName;
-      // newitem.middleName = item.middleName;
-      // newitem.gender = item.gender;
-      // newitem.nationality = item.nationality;
-      // newitem.flightId = item.flightId;
-      // newitem.flightDestination = item.flightDestination;
-      // newitem.flightOrigin = item.flightOrigin;
-      // newitem.flightNumber = item.flightNumber;
-      // newitem.flightDirection = item.flightDirection;
-      // newitem.flightETADate = item.flightETADate;
-      // newitem.flightETDDate = item.flightETDDate;
-
-      // newitem.status = item.status;
-      // newitem.lookoutStatus = item.lookoutStatus;
-      // newitem.hitNames = item.hitNames;
-
-      //38
+      newitem.timer =
+        item.flightDirection === "O" ? item.flightETDDate : item.flightETADate;
       return newitem;
     });
 
