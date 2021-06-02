@@ -366,7 +366,7 @@ const FlightPax = props => {
                   </td>
                   <td className="right">
                     <Link
-                      to={`/gtas/seat-chart/${flightData.id}/${GENERICTYPE.ALL}/${GENERICTYPE.ALL}`}
+                      to={`/gtas/seatchart/${flightData.id}/${GENERICTYPE.ALL}/${GENERICTYPE.ALL}`}
                       className="flightpax-link"
                       state={{
                         arrival: flightData.eta,
