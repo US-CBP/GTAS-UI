@@ -119,7 +119,7 @@ const SeatChart = ({ location }) => {
 
   const flightInfoData = [
     {
-      label: <Xl8 xid="seat004">Flight Number</Xl8>,
+      label: <Xl8 xid="seat004">Flight</Xl8>,
       value: location.state?.flightNumber
     },
     {
