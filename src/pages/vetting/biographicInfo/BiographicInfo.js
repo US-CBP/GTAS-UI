@@ -16,11 +16,13 @@ function BiographicInfo(props) {
       <Link to={`../paxDetail/${data.flightId}/${data.paxId}`}>
         <div className="biographic-info-row">{data.name}</div>
         <div className="biographic-info-row">{`${data.dob} / ${data.gender}`}</div>
-        <div className="biographic-info-row">
-          {`${data.document} / ${data.nationality}`}
-          <LazyImage type={LK.COUNTRY} val={data.nationality}></LazyImage>
-        </div>
       </Link>
+      <div className="biographic-info-row">
+        <Link to={`../paxDetail/${data.flightId}/${data.paxId}`}>
+          {`${data.document} / ${data.nationality}`}
+        </Link>
+        <LazyImage type={LK.COUNTRY} val={data.nationality}></LazyImage>
+      </div>
     </div>
   );
 }

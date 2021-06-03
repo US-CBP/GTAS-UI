@@ -75,7 +75,7 @@ const Vetting = props => {
     },
     {
       value: "RE_OPENED",
-      label: "Reopen"
+      label: "Reopened"
     }
   ];
 
