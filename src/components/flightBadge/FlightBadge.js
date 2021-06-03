@@ -26,14 +26,24 @@ const FlightBadge = props => {
         <span className="flight-badge-nonlink-icon nozoom">
           <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
         </span>
-        <Link to={"/gtas/flightpax/" + res.flightId} className="link">
-          {res.flightNumber}
-        </Link>
+        <ToolTipWrapper
+          data={{ val: res.carrier, lkup: LK.CARRIER }}
+          className="overlay-content-light"
+        >
+          <Link to={"/gtas/flightpax/" + res.flightId} className="link">
+            {res.flightNumber}
+          </Link>
+        </ToolTipWrapper>
       </>
     ) : hasData(res.flightNumber || res.fullFlightNumber) ? (
       <span className="flight-badge-nonlink-icon nozoom">
         <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
-        {res.flightNumber}
+        <ToolTipWrapper
+          data={{ val: res.carrier, lkup: LK.CARRIER }}
+          className="overlay-content-light"
+        >
+          {res.flightNumber}
+        </ToolTipWrapper>
       </span>
     ) : (
       <></>
@@ -52,6 +62,7 @@ const FlightBadge = props => {
           <span className="img-departure"></span>
           <span className="width40">
             <ToolTipWrapper
+              className="overlay-content-light"
               data={{ val: departure[0], lkup: LK.AIRPORT }}
             ></ToolTipWrapper>
           </span>
@@ -61,7 +72,10 @@ const FlightBadge = props => {
         <Row flex="true" no-wrap="true" className="flight-badge-row">
           <span className="img-arrival"></span>
           <span className="width40">
-            <ToolTipWrapper data={{ val: arrival[0], lkup: LK.AIRPORT }}></ToolTipWrapper>
+            <ToolTipWrapper
+              className="overlay-content-light"
+              data={{ val: arrival[0], lkup: LK.AIRPORT }}
+            ></ToolTipWrapper>
           </span>
           <span className="margin-right-sm">{arrival[1]}</span>
           <span>{arrival[2]}</span>

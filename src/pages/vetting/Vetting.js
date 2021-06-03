@@ -287,7 +287,7 @@ const Vetting = props => {
   const [usersEmails, setUsersEmails] = useState({});
   const [tableKey, setTableKey] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [tableState, setTableState] = useState(initTableState);
+  const [tableState] = useState(initTableState);
 
   const now = new Date();
   const initialParamState = {
