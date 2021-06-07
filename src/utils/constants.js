@@ -179,5 +179,6 @@ export const EXPORTFILENAME = {
   },
   HITCAT: "hit categories",
   NOTECAT: "note categories",
-  LOOKOUTLANES: "lookout lanes"
+  LOOKOUTLANES: "lookout lanes",
+  SEARCHRESULTS: "search results"
 };

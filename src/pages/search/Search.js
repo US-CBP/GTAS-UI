@@ -11,6 +11,7 @@ import { search } from "../../services/serviceWrapper";
 import { asArray, hasData, localeDate } from "../../utils/utils";
 import { Link, useParams } from "@reach/router";
 import "./Search.scss";
+import { EXPORTFILENAME } from "../../utils/constants";
 
 const Search = props => {
   const [data, setData] = useState([]);
@@ -156,6 +157,7 @@ const Search = props => {
         header={Headers}
         key={refreshKey}
         enableColumnFilter={true}
+        exportFileName={EXPORTFILENAME.SEARCHRESULTS}
       />
     </Main>
   );
