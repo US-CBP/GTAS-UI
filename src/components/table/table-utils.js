@@ -3,6 +3,7 @@
 // Please see license.txt for details.
 import React from "react";
 import { jsonToCSV } from "react-papaparse";
+import { titleCase } from "../../utils/utils";
 
 export const ColumnFilter = ({ column: { filterValue, setFilter } }) => {
   return (
@@ -34,7 +35,7 @@ export const BooleanFilter = ({ column: { filterValue, setFilter } }) => {
 
 export const getExportFileBlob = ({ columns, data, fileType, fileName }) => {
   if (fileType === "csv") {
-    const headerNames = columns.map(col => col.exportValue);
+    const headerNames = columns.map(col => titleCase(col.exportValue));
     const csvString = jsonToCSV({ fields: headerNames, data });
     return new Blob([csvString], { type: "text/csv" });
   }
