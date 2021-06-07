@@ -13,6 +13,7 @@ import { Col } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import { addMinutes, asArray, localeDate } from "../../../utils/utils";
+import { EXPORTFILENAME } from "../../../utils/constants";
 
 const ErrorLog = ({ name }) => {
   const cb = () => {};
@@ -150,6 +151,7 @@ const ErrorLog = ({ name }) => {
           header={headers}
           key={refreshKey}
           isLoading={isLoading}
+          exportFileName={EXPORTFILENAME.ERRORLOG}
         ></Table>
       </Main>
     </>

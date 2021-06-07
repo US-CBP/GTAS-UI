@@ -13,6 +13,7 @@ import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Main from "../../../components/main/Main";
 import { addMinutes, asArray, localeDate } from "../../../utils/utils";
+import { EXPORTFILENAME } from "../../../utils/constants";
 
 const AuditLog = ({ name }) => {
   const cb = () => {};
@@ -171,6 +172,7 @@ const AuditLog = ({ name }) => {
           callback={cb}
           header={headers}
           isLoading={isLoading}
+          exportFileName={EXPORTFILENAME.AUDITLOG}
         ></Table>
       </Main>
     </>

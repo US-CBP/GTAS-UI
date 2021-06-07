@@ -10,7 +10,7 @@ import { users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import { asArray } from "../../../utils/utils";
-import { ACTION } from "../../../utils/constants";
+import { ACTION, EXPORTFILENAME } from "../../../utils/constants";
 
 import UserModal from "./UserModal";
 import Confirm from "../../../components/confirmationModal/Confirm";
@@ -233,6 +233,7 @@ const ManageUsers = props => {
           key={refreshKey}
           header={headers}
           enableColumnFilter={true}
+          exportFileName={EXPORTFILENAME.USERS}
         ></Table>
         <Fab
           icon={<i className="fa fa-plus nospin" />}

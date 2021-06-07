@@ -12,7 +12,7 @@ import { LookupContext } from "../../../context/data/LookupContext";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
 import { hasData } from "../../../utils/utils";
-import { QR, ACTION, RULETAB, ROLE } from "../../../utils/constants";
+import { QR, ACTION, RULETAB, ROLE, EXPORTFILENAME } from "../../../utils/constants";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import QRModal from "./QRModal";
 import { Fab } from "react-tiny-fab";
@@ -252,6 +252,9 @@ const Rules = props => {
           header={header}
           key={tablekey}
           enableColumnFilter={true}
+          exportFileName={
+            tab === RULETAB.ALL ? EXPORTFILENAME.RULE.ALL : EXPORTFILENAME.RULE.MYRULES
+          }
         ></Table>
         <Fab
           icon={<i className="fa fa-plus nospin" />}

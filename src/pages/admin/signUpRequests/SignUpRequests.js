@@ -14,7 +14,7 @@ import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { hasData } from "../../../utils/utils";
 import SignUpRequestModal from "./SignUpRequestModal";
-import { ACTION, STATUS } from "../../../utils/constants";
+import { ACTION, EXPORTFILENAME, STATUS } from "../../../utils/constants";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
 
@@ -212,6 +212,7 @@ const SignUpRequests = () => {
           callback={cb}
           key={refreshKey}
           isLoading={isLoading}
+          exportFileName={EXPORTFILENAME.SIGNUPREQUESTS}
         ></Table>
 
         <SignUpRequestModal

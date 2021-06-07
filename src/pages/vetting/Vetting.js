@@ -33,7 +33,7 @@ import {
 } from "../../utils/utils";
 import { cases, poe, usersemails } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
-import { ROLE, HIT_STATUS, LK } from "../../utils/constants";
+import { ROLE, HIT_STATUS, LK, EXPORTFILENAME } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 
@@ -646,6 +646,7 @@ const Vetting = props => {
           key={tableKey}
           isLoading={isLoading}
           stateVals={getTableState}
+          exportFileName={EXPORTFILENAME.VETTITNG}
         />
       </Main>
     </>

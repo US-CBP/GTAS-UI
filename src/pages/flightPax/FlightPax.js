@@ -28,7 +28,14 @@ import {
   lpad5,
   sortableDob
 } from "../../utils/utils";
-import { LK, ROLE, DIRECTION, TABTYPE, GENERICTYPE } from "../../utils/constants";
+import {
+  LK,
+  ROLE,
+  DIRECTION,
+  TABTYPE,
+  GENERICTYPE,
+  EXPORTFILENAME
+} from "../../utils/constants";
 import { Col, Tabs, Tab } from "react-bootstrap";
 import "./FlightPax.css";
 
@@ -42,6 +49,7 @@ const FlightPax = props => {
   const [key, setKey] = useState(0);
   const [flightData, setFlightData] = useState({});
   const [carrierName, setCarrierName] = useState();
+  const [exportFileName, setExportFileName] = useState();
   const { getSingleKeyValue } = useContext(LookupContext);
 
   const hasAnyHits = item => {
@@ -281,8 +289,13 @@ const FlightPax = props => {
   }, [props.id]);
 
   useEffect(() => {
-    if (tab === TABTYPE.HITS) setData(hitData);
-    else setData(allData);
+    if (tab === TABTYPE.HITS) {
+      setData(hitData);
+      setExportFileName(EXPORTFILENAME.FLIGHTPAX.HITS);
+    } else {
+      setData(allData);
+      setExportFileName(EXPORTFILENAME.FLIGHTPAX.ALL);
+    }
 
     const newkey = key + 1;
     setKey(newkey);
@@ -398,6 +411,7 @@ const FlightPax = props => {
           callback={cb}
           disableGroupBy={false}
           enableColumnFilter={true}
+          exportFileName={exportFileName}
         ></Table>
       </Main>
     </>
