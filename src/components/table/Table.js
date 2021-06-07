@@ -315,14 +315,16 @@ const Table = props => {
                 </option>
               ))}
             </select>
-            <Button
-              className="export-btn"
-              variant="light"
-              size="sm"
-              onClick={() => exportData("csv", true)}
-            >
-              {<Xl8 xid="tab004">Export</Xl8>}
-            </Button>
+            {!props.disableTableDataExport && (
+              <Button
+                className="export-btn"
+                variant="light"
+                size="sm"
+                onClick={() => exportData("csv", true)}
+              >
+                {<Xl8 xid="tab004">Export</Xl8>}
+              </Button>
+            )}
             <span className="tagrightpag">
               <h3 className="title-default">
                 <i>{isPopulated ? rows.length : 0}</i>
