@@ -12,7 +12,7 @@ import Confirm from "../../../components/confirmationModal/Confirm";
 
 import { LookupContext } from "../../../context/data/LookupContext";
 import { hitcats } from "../../../services/lookupService";
-import { LK } from "../../../utils/constants";
+import { EXPORTFILENAME, LK } from "../../../utils/constants";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
@@ -41,6 +41,7 @@ const HitCats = ({ name }) => {
       Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center edit-user">
@@ -136,6 +137,7 @@ const HitCats = ({ name }) => {
         key={refreshKey}
         callback={cb}
         header={headers}
+        exportFileName={EXPORTFILENAME.HITCAT}
       ></Table>
       <Fab
         icon={<i className="fa fa-plus nospin" />}

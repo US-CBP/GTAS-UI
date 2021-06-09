@@ -26,7 +26,8 @@ import {
   localeDateOnly,
   aboveZero,
   lpad5,
-  sortableDob
+  sortableDob,
+  dateComparator
 } from "../../utils/utils";
 import {
   LK,
@@ -71,8 +72,7 @@ const FlightPax = props => {
       const displayDobDate = localeDateOnly(new Date(item.dob));
       item.docNumber = item.documents?.length > 0 ? item.documents[0] : "";
       item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
-      item.dobStr = `${sortableDob(new Date(item.dob))} ${displayDobDate} ${item.age}`;
-
+      item.dateOfBirth = displayDobDate;
       item.dobAge = `${alt(displayDobDate)} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
@@ -176,6 +176,7 @@ const FlightPax = props => {
       Header: ["fp026", "Hit Aggregates"],
       disableGroupBy: true,
       disableFilters: true,
+      disableExport: true,
       aggregate: sumCotravelerHits,
       Aggregated: ({ value }) => aboveZero(value),
       Cell: ({ row }) => (
@@ -230,9 +231,11 @@ const FlightPax = props => {
     },
     { Accessor: "gender", Xl8: true, Header: ["fp017", "Gender"], disableGroupBy: true },
     {
-      Accessor: "dobStr",
+      Accessor: "dateOfBirth",
       Xl8: true,
       Header: ["fp018", "DOB"],
+      sortType: (row1, row2) =>
+        dateComparator(row1.original.dateOfBirth, row2.original.dateOfBirth),
       Cell: ({ row }) => <div>{row.original.dobAge}</div>,
       Aggregated: () => ``,
       disableGroupBy: true

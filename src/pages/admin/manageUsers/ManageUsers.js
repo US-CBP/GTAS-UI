@@ -93,6 +93,7 @@ const ManageUsers = props => {
       Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center edit-user">

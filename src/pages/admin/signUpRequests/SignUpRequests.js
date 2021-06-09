@@ -105,6 +105,7 @@ const SignUpRequests = () => {
       Xl8: true,
       Header: ["sur013", "Action"],
       disableSortBy: true,
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center edit-user">

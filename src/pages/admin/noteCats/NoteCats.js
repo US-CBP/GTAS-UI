@@ -12,7 +12,7 @@ import NoteTypeModal from "./NoteModal.js";
 import Confirm from "../../../components/confirmationModal/Confirm";
 import { notetypes } from "../../../services/serviceWrapper";
 import { LookupContext } from "../../../context/data/LookupContext";
-import { LK } from "../../../utils/constants";
+import { EXPORTFILENAME, LK } from "../../../utils/constants";
 
 import { Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
@@ -41,6 +41,7 @@ const NoteCats = ({ name }) => {
       Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center">
@@ -115,6 +116,7 @@ const NoteCats = ({ name }) => {
         key={refreshKey}
         callback={cb}
         header={headers}
+        exportFileName={EXPORTFILENAME.NOTECAT}
       ></Table>
       <Fab
         icon={<i className="fa fa-plus nospin" />}

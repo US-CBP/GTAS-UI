@@ -14,6 +14,7 @@ import { Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import { poe } from "../../../services/serviceWrapper";
 import LookoutModal from "./LookoutModal";
+import { EXPORTFILENAME } from "../../../utils/constants";
 
 const LookoutLanes = ({ name }) => {
   const cb = () => {};
@@ -38,6 +39,7 @@ const LookoutLanes = ({ name }) => {
       Header: ["lkoutedit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center edit-user">
@@ -116,6 +118,7 @@ const LookoutLanes = ({ name }) => {
         key={refreshKey}
         callback={cb}
         header={headers}
+        exportFileName={EXPORTFILENAME.LOOKOUTLANES}
       ></Table>
       <Fab
         icon={<i className="fa fa-plus nospin" />}

@@ -29,7 +29,9 @@ import {
   getAge,
   alt,
   lpad5,
-  addMinutes
+  addMinutes,
+  localeDate,
+  stringComparator
 } from "../../utils/utils";
 import { cases, poe, usersemails } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
@@ -39,6 +41,7 @@ import "./Vetting.css";
 
 const Vetting = props => {
   const { getCachedCoreFields } = useContext(LookupContext);
+  const [estimatedTimeHeader, setEstimatedTimeHeader] = useState();
 
   // TODO - move hit types and statuses to db
   const hitTypeOptions = [
@@ -187,7 +190,7 @@ const Vetting = props => {
       )
     },
     {
-      Accessor: "timer",
+      Accessor: estimatedTimeHeader,
       Xl8: true,
       Header: ["wl018", "Timer"],
       Cell: ({ row }) => {
@@ -244,6 +247,7 @@ const Vetting = props => {
       Accessor: "hitCounts",
       Xl8: true,
       Header: ["wl020", "Hits"],
+      disableExport: true,
       Cell: ({ row }) => {
         const listdata = asArray(row.original.hitNames).map((hit, index) => {
           const triggerOverlay = !isShortText(hit, 45);
@@ -261,9 +265,11 @@ const Vetting = props => {
       }
     },
     {
-      Accessor: "lastName",
+      Accessor: "fullName",
       Xl8: true,
       Header: ["wl021", "Biographic Information"],
+      sortType: (row1, row2) =>
+        stringComparator(row1.original.lastName, row2.original.lastName),
       Cell: ({ row }) => <BiographicInfo data={getBiographicData(row.original)} />
     },
     {
@@ -346,6 +352,7 @@ const Vetting = props => {
 
   const setDataWrapper = rawdata => {
     const parseddata = asArray(rawdata.cases).map(item => {
+      setEstimatedTimeHeader(item.flightDirection === "O" ? "departure" : "arrival");
       const newitem = item;
       newitem.id = item.id || `${item.flightId}${item.paxId}`;
       newitem.carrier = item.flightNumber.slice(0, 2);
@@ -354,6 +361,11 @@ const Vetting = props => {
       )}:${lpad5(item.lowPrioHitCount)}`;
       newitem.timer =
         item.flightDirection === "O" ? item.flightETDDate : item.flightETADate;
+      newitem.arrival = localeDate(item.flightETADate);
+      newitem.departure = localeDate(item.flightETDDate);
+      newitem.fullName = `${alt(item.firstName)} ${alt(item.middleName)}, ${alt(
+        item.lastName
+      )}`;
       return newitem;
     });
 
