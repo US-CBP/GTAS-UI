@@ -401,6 +401,10 @@ const Table = props => {
           cellconfig.Filter = BooleanFilter;
         }
 
+        if (element.sortType !== undefined) {
+          cellconfig.sortType = element.sortType;
+        }
+
         columns.push(cellconfig);
       }
     });
@@ -460,7 +464,8 @@ Table.propTypes = {
   stateVals: PropTypes.func,
   ignoredFields: PropTypes.arrayOf(PropTypes.string),
   enableColumnFilter: PropTypes.bool,
-  exportFileName: PropTypes.string
+  exportFileName: PropTypes.string,
+  sortType: PropTypes.func
 };
 
 export default Table;
