@@ -9,7 +9,7 @@ import CarrierModal from "./CarrierModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 import { codeEditor } from "../../../../services/lookupService";
 import { LookupContext } from "../../../../context/data/LookupContext";
-import { ACTION, LK } from "../../../../utils/constants";
+import { ACTION, EXPORTFILENAME, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
@@ -101,6 +101,7 @@ const Carriers = () => {
       Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <div className="icon-col">
@@ -142,6 +143,7 @@ const Carriers = () => {
         header={headers}
         key={refreshKey}
         enableColumnFilter={true}
+        exportFileName={EXPORTFILENAME.CODEEDITOR.CARRIER}
       ></Table>
       <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action

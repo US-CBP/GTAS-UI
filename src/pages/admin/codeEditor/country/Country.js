@@ -9,7 +9,7 @@ import CountryModal from "./CountryModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 import { LookupContext } from "../../../../context/data/LookupContext";
 import { codeEditor } from "../../../../services/lookupService";
-import { ACTION, LK } from "../../../../utils/constants";
+import { ACTION, EXPORTFILENAME, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
@@ -101,6 +101,7 @@ const Countries = () => {
       Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <div className="icon-col">
@@ -143,6 +144,7 @@ const Countries = () => {
         header={headers}
         key={refreshKey}
         enableColumnFilter={true}
+        exportFileName={EXPORTFILENAME.CODEEDITOR.COUNTRY}
       ></Table>
       <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action
