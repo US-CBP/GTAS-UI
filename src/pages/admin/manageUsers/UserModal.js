@@ -125,13 +125,14 @@ const UserModal = props => {
 
   const validateInputs = fields => {
     let res = { ...fields[0] };
-    const validatedUsername = validateUsernameInput(res.userId);
+    const dafaultValidObj = { valid: true };
+    const validatedUsername = props.isEdit
+      ? dafaultValidObj
+      : validateUsernameInput(res.userId);
 
-    let validPassword = true;
+    const validPassword = props.isEdit ? true : isValidPassword(res.password);
 
-    if (!props.isEdit) {
-      validPassword = isValidPassword(res.password);
-    }
+
     if (!validatedUsername.valid) {
       launchAlert(validatedUsername.info);
     } else if (!validPassword) {
