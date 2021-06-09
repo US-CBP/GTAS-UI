@@ -510,3 +510,12 @@ export const dateComparator = (value1, value2) => {
 
   return date1.getTime() - date2.getTime();
 };
+
+export const stringComparator = (value1, value2) => {
+  const str1 = alt(value1).toUpperCase();
+  const str2 = alt(value2).toUpperCase();
+
+  if (str1 < str2) return -1;
+  if (str1 > str2) return 1;
+  return 0;
+};
