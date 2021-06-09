@@ -132,7 +132,6 @@ const UserModal = props => {
 
     const validPassword = props.isEdit ? true : isValidPassword(res.password);
 
-
     if (!validatedUsername.valid) {
       launchAlert(validatedUsername.info);
     } else if (!validPassword) {
