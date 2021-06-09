@@ -480,20 +480,33 @@ export const getTodaysBackground = prefix => {
 
 //Small issue with using conditional date fields, they end up as children of the property as an array of values and never get
 //made into proper children. Check for multi-sub children and assign as top level children values.
-export const getAllChildElements = (children) => {
+export const getAllChildElements = children => {
   let trueChildren = [];
 
   const findChildren = children => {
     asArray(children).forEach(child => {
-      if (child.props?.datafield // take top level datafield if available
-          || (!child.props?.datafield && !child.props?.children)) // If it's non standard field element, just return it as it was.
-      {trueChildren.push(child);}
-      if (!child.props?.datafield && child.props?.children) { //else keep digging
-       findChildren(child.props.children);
+      if (
+        child.props?.datafield || // take top level datafield if available
+        (!child.props?.datafield && !child.props?.children)
+      ) {
+        // If it's non standard field element, just return it as it was.
+        trueChildren.push(child);
+      }
+      if (!child.props?.datafield && child.props?.children) {
+        //else keep digging
+        findChildren(child.props.children);
       }
     });
-  }
+  };
 
   findChildren(children);
   return trueChildren;
-}
+};
+
+export const dateComparator = (value1, value2) => {
+  const date1 = new Date(value1);
+  const date2 = new Date(value2);
+  if (!isValidDate(date1) || !isValidDate(date2)) return "Invalid Date";
+
+  return date1.getTime() - date2.getTime();
+};
