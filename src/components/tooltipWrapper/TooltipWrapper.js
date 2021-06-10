@@ -72,7 +72,7 @@ const ToolTipWrapper = props => {
       onEnter={getToolTipValue}
       overlay={renderTooltip}
     >
-      <span className="as-info">{val}</span>
+      <span className="as-info">{props.children || val}</span>
     </OverlayTrigger>
   );
 };

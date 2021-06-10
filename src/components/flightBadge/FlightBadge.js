@@ -26,14 +26,18 @@ const FlightBadge = props => {
         <span className="flight-badge-nonlink-icon nozoom">
           <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
         </span>
-        <Link to={"/gtas/flightpax/" + res.flightId} className="link">
-          {res.flightNumber}
-        </Link>
+        <ToolTipWrapper data={{ val: res.carrier, lkup: LK.CARRIER }}>
+          <Link to={"/gtas/flightpax/" + res.flightId} className="link">
+            {res.flightNumber}
+          </Link>
+        </ToolTipWrapper>
       </>
     ) : hasData(res.flightNumber || res.fullFlightNumber) ? (
       <span className="flight-badge-nonlink-icon nozoom">
         <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
-        {res.flightNumber}
+        <ToolTipWrapper data={{ val: res.carrier, lkup: LK.CARRIER }}>
+          {res.flightNumber}
+        </ToolTipWrapper>
       </span>
     ) : (
       <></>

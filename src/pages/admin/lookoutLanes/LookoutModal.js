@@ -1,13 +1,14 @@
 // All GTAS code is Copyright 2016, The Department of Homeland Security (DHS), U.S. Customs and Border Protection (CBP).
 //
 // Please see license.txt for details.
+
 import React from "react";
 import { Container } from "react-bootstrap";
 import Form from "../../../components/form/Form";
 import Xl8 from "../../../components/xl8/Xl8";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { poe } from "../../../services/serviceWrapper";
-import { ACTION } from "../../../utils/constants";
+import { ACTION, LOOKOUTSTATUS } from "../../../utils/constants";
 import Modal, {
   ModalBody,
   ModalHeader,
@@ -18,16 +19,16 @@ const LookoutModal = props => {
   const row = props.editRowDetails || {};
   const cb = () => {};
   const statuses = [
-    { value: "ACTIVE", label: "ACTIVE" },
-    { value: "ENROUTE", label: "ENROUTE" },
-    { value: "ENCOUNTERED", label: "ENCOUNTERED" },
-    { value: "NEGATIVE", label: "NEGATIVE" },
-    { value: "POSITIVE", label: "POSITIVE" },
-    { value: "REFERRED", label: "REFERRED" },
-    { value: "DIDNOTBOARD", label: "DIDNOTBOARD" },
-    { value: "INACTIVE", label: "INACTIVE" },
-    { value: "MISSED", label: "MISSED" },
-    { value: "UNCATEGORIZED", label: "UNCATEGORIZED" }
+    { value: LOOKOUTSTATUS.ACTIVE, label: LOOKOUTSTATUS.ACTIVE },
+    { value: LOOKOUTSTATUS.ENROUTE, label: LOOKOUTSTATUS.ENROUTE },
+    { value: LOOKOUTSTATUS.ENCOUNTERED, label: LOOKOUTSTATUS.ENCOUNTERED },
+    { value: LOOKOUTSTATUS.NEGATIVE, label: LOOKOUTSTATUS.NEGATIVE },
+    { value: LOOKOUTSTATUS.POSITIVE, label: LOOKOUTSTATUS.POSITIVE },
+    { value: LOOKOUTSTATUS.REFERRED, label: LOOKOUTSTATUS.REFERRED },
+    { value: LOOKOUTSTATUS.DIDNOTBOARD, label: LOOKOUTSTATUS.DIDNOTBOARD },
+    { value: LOOKOUTSTATUS.INACTIVE, label: LOOKOUTSTATUS.INACTIVE },
+    { value: LOOKOUTSTATUS.MISSED, label: LOOKOUTSTATUS.MISSED },
+    { value: LOOKOUTSTATUS.UNCATEGORIZED, label: LOOKOUTSTATUS.UNCATEGORIZED }
   ];
 
   const postSubmit = status => {
