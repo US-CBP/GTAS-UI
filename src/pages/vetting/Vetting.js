@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
@@ -26,16 +26,21 @@ import {
   asArray,
   getShortText,
   isShortText,
-  getAge,
-  alt,
   lpad5,
   addMinutes,
   localeDate,
-  stringComparator
+  stringComparator,
+  alt
 } from "../../utils/utils";
 import { cases, poe, usersemails } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
-import { ROLE, HIT_STATUS, LK, EXPORTFILENAME } from "../../utils/constants";
+import {
+  ROLE,
+  HIT_STATUS,
+  LK,
+  EXPORTFILENAME,
+  LOOKOUTSTATUS
+} from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 
@@ -78,21 +83,9 @@ const Vetting = props => {
     },
     {
       value: "RE_OPENED",
-      label: "Reopen"
+      label: "Reopened"
     }
   ];
-
-  const getBiographicData = pax => {
-    return {
-      name: `${pax.lastName}, ${alt(pax.firstName).toLowerCase()}`,
-      gender: pax.gender,
-      dob: `${pax.dob} (${getAge(pax.dob)})`,
-      nationality: pax.nationality,
-      document: `DOC(${pax.docType}): ${pax.document}`,
-      flightId: pax.flightId,
-      paxId: pax.paxId
-    };
-  };
 
   const Headers = [
     {
@@ -149,7 +142,8 @@ const Vetting = props => {
                 </Button>
               )}
             </Confirm>
-            {row.original.lookoutStatus !== "NOTPROMOTED" ? (
+            {row.original.lookoutStatus !== LOOKOUTSTATUS.NOTPROMOTED &&
+            row.original.lookoutStatus !== LOOKOUTSTATUS.DEMOTED ? (
               <></> //There doesn't need to be an indicator for an Already Promoted item, as it's self evident from the table.
             ) : (
               <Confirm
@@ -161,7 +155,8 @@ const Vetting = props => {
                     </Xl8>
                     <br />
                     <br />
-                    {row.original.lookoutStatus !== "NOTPROMOTED" ? (
+                    {row.original.lookoutStatus !== LOOKOUTSTATUS.NOTPROMOTED &&
+                    row.original.lookoutStatus !== LOOKOUTSTATUS.DEMOTED ? (
                       <Xl8 xid="vet031">Already Promoted</Xl8>
                     ) : (
                       <Xl8 xid="vet032">Promote To Lookout</Xl8>
@@ -173,10 +168,11 @@ const Vetting = props => {
                   <Button
                     className="dropdown-item"
                     onClick={confirm(() =>
-                      promoteToLookout(row.original.paxId, "ACTIVE")
+                      promoteToLookout(row.original.paxId, LOOKOUTSTATUS.ACTIVE)
                     )}
                   >
-                    {row.original.lookoutStatus !== "NOTPROMOTED" ? (
+                    {row.original.lookoutStatus !== LOOKOUTSTATUS.NOTPROMOTED &&
+                    row.original.lookoutStatus !== LOOKOUTSTATUS.DEMOTED ? (
                       <Xl8 xid="vet033">Already Promoted</Xl8>
                     ) : (
                       <Xl8 xid="vet034">Promote To Lookout</Xl8>
@@ -270,7 +266,7 @@ const Vetting = props => {
       Header: ["wl021", "Biographic Information"],
       sortType: (row1, row2) =>
         stringComparator(row1.original.lastName, row2.original.lastName),
-      Cell: ({ row }) => <BiographicInfo data={getBiographicData(row.original)} />
+      Cell: ({ row }) => <BiographicInfo data={row.original} />
     },
     {
       Accessor: "status",
@@ -307,7 +303,7 @@ const Vetting = props => {
   const [usersEmails, setUsersEmails] = useState({});
   const [tableKey, setTableKey] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [tableState, setTableState] = useState(initTableState);
+  const [tableState] = useState(initTableState);
 
   const now = new Date();
   const initialParamState = {

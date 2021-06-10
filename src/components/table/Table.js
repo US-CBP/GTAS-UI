@@ -235,11 +235,15 @@ const Table = props => {
                             <td
                               className={` p-1 ${style}`}
                               {...cell.getCellProps()}
-                              onClick={() =>
-                                navigate(sendRowToLink, {
-                                  state: { data: row.original }
-                                })
-                              }
+                              onClick={ev => {
+                                const type = ev.target?.nodeName;
+
+                                if (type !== "IMG") {
+                                  navigate(sendRowToLink, {
+                                    state: { data: row.original }
+                                  });
+                                }
+                              }} // onclick
                             >
                               {cell.render("Cell")}
                             </td>

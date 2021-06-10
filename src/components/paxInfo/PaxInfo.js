@@ -37,7 +37,6 @@ const PaxInfo = props => {
           <>
             <LazyImage val={res.nationality} type={LK.COUNTRY}></LazyImage>
             <ToolTipWrapper
-              className="overlay-content-light"
               data={{ val: res.nationality, lkup: LK.COUNTRY }}
             ></ToolTipWrapper>
           </>

@@ -37,5 +37,6 @@
 }
 
 .filedownload .tab-span {
-  margin-top: -8px;
+  margin-top: -3px;
+  padding-top: 0px;
 }
