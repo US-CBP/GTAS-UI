@@ -168,6 +168,7 @@ export const EXPORTFILENAME = {
     MYRULES: "my rules"
   },
   QUERIES: "queries",
+  QUERYRESULTS: "query results",
   USERS: "users",
   AUDITLOG: "audit logs",
   ERRORLOG: "error logs",

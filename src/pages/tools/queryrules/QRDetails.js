@@ -12,7 +12,7 @@ import Xl8 from "../../../components/xl8/Xl8";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { Link } from "@reach/router";
 import { asArray, getAge, alt, localeDate, timezoneFreeDate } from "../../../utils/utils";
-import { ROLE } from "../../../utils/constants";
+import { EXPORTFILENAME, ROLE } from "../../../utils/constants";
 
 const QRDetails = props => {
   const cb = () => {};
@@ -113,7 +113,13 @@ const QRDetails = props => {
     <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.QRYMGR]}>
       <Main className="full bg-white">
         <Title title={<Xl8 xid="">Query Details</Xl8>}></Title>
-        <Table data={data} header={headers} callback={cb} key={key}></Table>
+        <Table
+          data={data}
+          header={headers}
+          callback={cb}
+          key={key}
+          exportFileName={EXPORTFILENAME.QUERYRESULTS}
+        ></Table>
         <Toast
           onClose={() => setShowToast(false)}
           show={showToast}
