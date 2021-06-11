@@ -621,3 +621,9 @@ li .rtf--ab__c button[variant="rtf-red"] {
 .margin-right-sm {
   margin-right: 5px;
 }
+
+.filterform-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  backdrop-filter: blur(10px);
+}

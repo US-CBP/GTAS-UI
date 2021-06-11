@@ -4,12 +4,6 @@
  * Please see license.txt for details.
  */
 
-.filterform-container {
-  overflow-x: hidden;
-  overflow-y: auto;
-  backdrop-filter: blur(10px);
-}
-
 .filterform-container .react-calendar {
   display: none;
   /* position: fixed;
