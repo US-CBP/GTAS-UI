@@ -77,8 +77,6 @@ const Vetting = props => {
     }
   ];
 
-  // This should probably just be LOOKOUTSTATUS.NOTPROMOTED, but will leave it as is until the status workflow
-  // has been restructured and the demoted status has been removed.
   const isPromotable = currentStatus => {
     return (
       currentStatus === LOOKOUTSTATUS.NOTPROMOTED ||
