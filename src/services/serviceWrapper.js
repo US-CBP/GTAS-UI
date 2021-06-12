@@ -11,8 +11,15 @@ import BASE_URL, {
   stringify
 } from "./baseService";
 
+// pre-authentication requests
 const LOGIN = `${BASE_URL}gtas/authenticate`;
+const SIGNUP = `${BASE_URL}gtas/api/preauth/signup`;
+const FORGOTPASSWORD = `${BASE_URL}gtas/api/preauth/forgotpassword`;
+const FORGOTUSERNAME = `${BASE_URL}gtas/api/preauth/forgotusername`;
+const PHYSICALLOCATIONS = `${BASE_URL}gtas/api/preauth/locations`;
+
 const USERS = `${BASE_URL}gtas/users`;
+const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
 const USERSNONARCHIVED = `${USERS}/nonarchived`;
 const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
@@ -50,14 +57,9 @@ const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 const LOGFILE = `${BASE_URL}gtas/api/logs/`;
-const SIGNUP = `${BASE_URL}gtas/user/signup/new`;
-const PHYSICALLOCATIONS = `${BASE_URL}gtas/user/signup/physiclLocations`;
 const SIGNUPREQUESTS = `${BASE_URL}gtas/api/signup-requests`;
 const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
 const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
-const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
-const FORGOTUSERNAME = `${BASE_URL}gtas/forgot-username`;
-const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 const SEARCH = `${BASE_URL}gtas/search`;
 const SEATS = `${BASE_URL}gtas/seats`;
 const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
