@@ -12,12 +12,13 @@ import BASE_URL, {
 } from "./baseService";
 
 // pre-authentication requests
-const LOGIN = `${BASE_URL}gtas/authenticate`;
+const LOGIN = `${BASE_URL}gtas/api/authenticate`;
 const SIGNUP = `${BASE_URL}gtas/api/preauth/signup`;
 const FORGOTPASSWORD = `${BASE_URL}gtas/api/preauth/forgotpassword`;
 const FORGOTUSERNAME = `${BASE_URL}gtas/api/preauth/forgotusername`;
 const PHYSICALLOCATIONS = `${BASE_URL}gtas/api/preauth/locations`;
 
+const LOGOUT = `${BASE_URL}gtas/api/logout`;
 const USERS = `${BASE_URL}gtas/users`;
 const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
@@ -236,6 +237,10 @@ export const login = {
       return get(LOGGEDIN_USER, BASEHEADER);
     });
   }
+};
+
+export const logout = {
+  get: () => get(LOGOUT, BASEHEADER)
 };
 
 export const query = {
