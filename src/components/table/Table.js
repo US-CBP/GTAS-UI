@@ -407,7 +407,7 @@ const Table = props => {
       }
     });
 
-    setDisplayColumnFilter(isPopulated);
+    setDisplayColumnFilter(hasValidData);
     setParsedData(sdata);
     setHeader(sheader);
     setColumns(columns);
