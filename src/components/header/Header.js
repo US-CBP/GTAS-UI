@@ -3,8 +3,7 @@
 // Please see license.txt for details.
 
 import React, { useContext, useRef, useState } from "react";
-import { Link } from "@reach/router";
-import { navigate, useLocation } from "@reach/router";
+import { Link, navigate, useLocation } from "@reach/router";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import Toast from "../toast/Toast";
 import ChangePasswordModal from "../../pages/admin/manageUsers/changePasswordModal/ChangePasswordModal";
@@ -13,7 +12,7 @@ import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import { ACTION, FULLPATH_TO, ROLE } from "../../utils/constants";
 import { hasData } from "../../utils/utils";
 import Xl8 from "../../components/xl8/Xl8";
-
+import { logout } from "../../services/serviceWrapper";
 import {
   Nav,
   Navbar,
@@ -31,14 +30,15 @@ const Header = () => {
   const { action } = useContext(LiveEditContext);
   const user = getUserState();
 
-  const logout = () => {
+  const logoff = () => {
     action({ type: "read" });
     userAction({ type: "logoff" });
+    logout.get();
 
     navigate(FULLPATH_TO.LOGIN);
   };
 
-  if (user === undefined) logout();
+  if (user === undefined) logoff();
 
   const [currentLang] = useState(window.navigator.language.split("-")[0]);
 
@@ -183,7 +183,7 @@ const Header = () => {
                 {<Xl8 xid="head005">Change password</Xl8>}
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logout}>
+              <NavDropdown.Item onClick={logoff}>
                 {<Xl8 xid="head006">Logout</Xl8>}
               </NavDropdown.Item>
             </NavDropdown>
