@@ -87,7 +87,8 @@ const Table = props => {
         initialState: {
           pageIndex: stateVals.pageIndex || 0,
           pageSize: stateVals.pageSize || 25,
-          sortBy: stateVals.sortBy || []
+          sortBy: stateVals.sortBy || [],
+          hiddenColumns: props.hiddenColumns || []
         },
         getExportFileBlob,
         getExportFileName

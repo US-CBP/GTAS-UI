@@ -43,51 +43,15 @@ import {
 } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
+import { hiddenHeaders, hitStatusOptions, hitTypeOptions } from "./vetting-utils";
 
 const Vetting = props => {
   const { getCachedCoreFields } = useContext(LookupContext);
   const [estimatedTimeHeader, setEstimatedTimeHeader] = useState();
-
-  // TODO - move hit types and statuses to db
-  const hitTypeOptions = [
-    {
-      value: "WATCHLIST",
-      label: "Watchlist"
-    },
-    {
-      value: "USER_RULE",
-      label: "User Created"
-    },
-    {
-      value: "GRAPH_RULE",
-      label: "Graph Database"
-    },
-    {
-      value: "MANUAL",
-      label: "Manual "
-    },
-    {
-      value: "PARTIAL_WATCHLIST",
-      label: "Partial Watchlist"
-    }
-  ];
-
-  const hitStatusOptions = [
-    {
-      value: "NEW",
-      label: "New"
-    },
-    {
-      value: "REVIEWED",
-      label: "Reviewed"
-    },
-    {
-      value: "RE_OPENED",
-      label: "Reopened"
-    }
-  ];
+  const hiddenColumns = hiddenHeaders.map(column => column.Accessor);
 
   const Headers = [
+    ...hiddenHeaders,
     {
       Accessor: "paxId",
       Xl8: true,
@@ -655,6 +619,7 @@ const Vetting = props => {
           isLoading={isLoading}
           stateVals={getTableState}
           exportFileName={EXPORTFILENAME.VETTITNG}
+          hiddenColumns={hiddenColumns}
         />
       </Main>
     </>
