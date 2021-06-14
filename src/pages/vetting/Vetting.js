@@ -228,11 +228,10 @@ const Vetting = props => {
       }
     },
     {
-      Accessor: "fullName",
+      Accessor: "lastName",
       Xl8: true,
+      disableExport: true,
       Header: ["wl021", "Biographic Information"],
-      sortType: (row1, row2) =>
-        stringComparator(row1.original.lastName, row2.original.lastName),
       Cell: ({ row }) => <BiographicInfo data={row.original} />
     },
     {
