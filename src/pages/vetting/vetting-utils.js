@@ -38,12 +38,11 @@ export const hitStatusOptions = [
 ];
 
 export const hiddenHeaders = [
+  { Accessor: "flightNumber", Header: "Flight" },
   { Accessor: "flightOrigin", Header: "Origin" },
   { Accessor: "flightDestination", Header: "Destination" },
-  { Accessor: "flightETADate", Header: "Arrival" },
-  { Accessor: "flightETDDate", Header: "Departure" },
-  { Accessor: "firstName", Header: "First Name" },
-  { Accessor: "lastName", Header: "Last Name" },
+  { Accessor: "arrival", Header: "Arrival" },
+  { Accessor: "departure", Header: "Departure" },
   { Accessor: "document", Header: "Document Number" },
   { Accessor: "nationality", Header: "nationality" }
 ];

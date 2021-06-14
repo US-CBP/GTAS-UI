@@ -47,7 +47,6 @@ import { hiddenHeaders, hitStatusOptions, hitTypeOptions } from "./vetting-utils
 
 const Vetting = props => {
   const { getCachedCoreFields } = useContext(LookupContext);
-  const [estimatedTimeHeader, setEstimatedTimeHeader] = useState();
   const hiddenColumns = hiddenHeaders.map(column => column.Accessor);
 
   const Headers = [
@@ -57,6 +56,7 @@ const Vetting = props => {
       Xl8: true,
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Header: ["vet023", "Actions"],
       Cell: ({ row }) => (
         <DropdownButton
@@ -150,9 +150,10 @@ const Vetting = props => {
       )
     },
     {
-      Accessor: estimatedTimeHeader,
+      Accessor: "timer",
       Xl8: true,
       Header: ["wl018", "Timer"],
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <CountdownBadge
@@ -167,6 +168,7 @@ const Vetting = props => {
       Accessor: "carrier",
       Xl8: true,
       Header: ["wl029", "Flight"],
+      disableExport: true,
       Cell: ({ row }) => (
         <div className="carrier-badge-container">
           <div className="margin-right-sm">
@@ -184,10 +186,11 @@ const Vetting = props => {
       )
     },
     {
-      Accessor: "flightNumber",
+      Accessor: "flightId",
       Xl8: true,
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Header: ["wl019", "Flight Info"],
       Cell: ({ row }) => (
         <div className="vetting">
@@ -312,7 +315,6 @@ const Vetting = props => {
 
   const setDataWrapper = rawdata => {
     const parseddata = asArray(rawdata.cases).map(item => {
-      setEstimatedTimeHeader(item.flightDirection === "O" ? "departure" : "arrival");
       const newitem = item;
       newitem.id = item.id || `${item.flightId}${item.paxId}`;
       newitem.carrier = item.flightNumber.slice(0, 2);
