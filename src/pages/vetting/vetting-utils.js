@@ -45,5 +45,6 @@ export const hiddenHeaders = [
   { Accessor: "departure", Header: "Departure" },
   { Accessor: "fullName", Header: "Full Name" },
   { Accessor: "document", Header: "Document Number" },
-  { Accessor: "nationality", Header: "nationality" }
+  { Accessor: "nationality", Header: "Nationality" },
+  { Accessor: "hits", Header: "Hits" }
 ];

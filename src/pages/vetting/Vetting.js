@@ -327,6 +327,7 @@ const Vetting = props => {
       newitem.fullName = `${alt(item.firstName)} ${alt(item.middleName)}, ${alt(
         item.lastName
       )}`;
+      newitem.hits = asArray(item.hitNames).reduce((acc, hit) => acc + hit + ", ", "");
       return newitem;
     });
 
