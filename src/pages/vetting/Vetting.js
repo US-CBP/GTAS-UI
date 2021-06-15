@@ -77,6 +77,13 @@ const Vetting = props => {
     }
   ];
 
+  const isPromotable = currentStatus => {
+    return (
+      currentStatus === LOOKOUTSTATUS.NOTPROMOTED ||
+      currentStatus === LOOKOUTSTATUS.DEMOTED
+    );
+  };
+
   const Headers = [
     {
       Accessor: "paxId",
@@ -132,10 +139,7 @@ const Vetting = props => {
                 </Button>
               )}
             </Confirm>
-            {row.original.lookoutStatus !== LOOKOUTSTATUS.NOTPROMOTED &&
-            row.original.lookoutStatus !== LOOKOUTSTATUS.DEMOTED ? (
-              <></> //There doesn't need to be an indicator for an Already Promoted item, as it's self evident from the table.
-            ) : (
+            {isPromotable(row.original.lookoutStatus) ? (
               <Confirm
                 header={<Xl8 xid="vet029">Promote To Lookout</Xl8>}
                 message={
@@ -145,12 +149,7 @@ const Vetting = props => {
                     </Xl8>
                     <br />
                     <br />
-                    {row.original.lookoutStatus !== LOOKOUTSTATUS.NOTPROMOTED &&
-                    row.original.lookoutStatus !== LOOKOUTSTATUS.DEMOTED ? (
-                      <Xl8 xid="vet031">Already Promoted</Xl8>
-                    ) : (
-                      <Xl8 xid="vet032">Promote To Lookout</Xl8>
-                    )}
+                    {`${row.original.lastName}, ${row.original.firstName}`}
                   </span>
                 }
               >
@@ -161,15 +160,12 @@ const Vetting = props => {
                       promoteToLookout(row.original.paxId, LOOKOUTSTATUS.ACTIVE)
                     )}
                   >
-                    {row.original.lookoutStatus !== LOOKOUTSTATUS.NOTPROMOTED &&
-                    row.original.lookoutStatus !== LOOKOUTSTATUS.DEMOTED ? (
-                      <Xl8 xid="vet033">Already Promoted</Xl8>
-                    ) : (
-                      <Xl8 xid="vet034">Promote To Lookout</Xl8>
-                    )}
+                    <Xl8 xid="vet034">Promote To Lookout</Xl8>
                   </Button>
                 )}
               </Confirm>
+            ) : (
+              <></>
             )}
           </RoleAuthenticator>
         </DropdownButton>
