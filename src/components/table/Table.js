@@ -409,6 +409,14 @@ const Table = props => {
         if (element.sortType !== undefined) {
           cellconfig.sortType = element.sortType;
         }
+        //Overrides the cell values
+        if (element.getCellExportValue !== undefined) {
+          cellconfig.getCellExportValue = element.getCellExportValue;
+        }
+        //Override the column headr
+        if (element.getColumnExportValue !== undefined) {
+          cellconfig.getColumnExportValue = element.getColumnExportValue;
+        }
 
         columns.push(cellconfig);
       }

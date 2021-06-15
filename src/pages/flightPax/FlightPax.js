@@ -26,8 +26,8 @@ import {
   localeDateOnly,
   aboveZero,
   lpad5,
-  sortableDob,
-  dateComparator
+  dateComparator,
+  getNumberExportValue
 } from "../../utils/utils";
 import {
   LK,
@@ -244,7 +244,8 @@ const FlightPax = props => {
       Accessor: "docNumber",
       Xl8: true,
       Header: ["fp019", "Doc Number"],
-      disableGroupBy: true
+      disableGroupBy: true,
+      getCellExportValue: row => getNumberExportValue(row.original.docNumber)
     },
     {
       Accessor: "nationality",
@@ -263,7 +264,13 @@ const FlightPax = props => {
       },
       Aggregated: () => ``
     },
-    { Accessor: "coTravellerId", Xl8: true, Header: ["fp021", "PNR Record Loc."] }
+    {
+      Accessor: "coTravellerId",
+      Xl8: true,
+      Header: ["fp021", "PNR Record Loc."],
+      getColumnExportValue: () => "PNR Record Loc.",
+      getCellExportValue: row => getNumberExportValue(row.original.coTravellerId)
+    }
   ];
 
   useEffect(() => {

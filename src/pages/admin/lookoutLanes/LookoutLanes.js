@@ -90,7 +90,8 @@ const LookoutLanes = ({ name }) => {
     {
       Accessor: "ord",
       Xl8: true,
-      Header: ["lkout009", "Order"]
+      Header: ["lkout009", "Order"],
+      getColumnExportValue: () => "Order"
     }
   ];
   const refresh = () => {

@@ -11,7 +11,14 @@ import Toast from "../../../components/toast/Toast";
 import Xl8 from "../../../components/xl8/Xl8";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { Link } from "@reach/router";
-import { asArray, getAge, alt, localeDate, timezoneFreeDate } from "../../../utils/utils";
+import {
+  asArray,
+  getAge,
+  alt,
+  localeDate,
+  timezoneFreeDate,
+  getNumberExportValue
+} from "../../../utils/utils";
 import { EXPORTFILENAME, ROLE } from "../../../utils/constants";
 
 const QRDetails = props => {
@@ -93,7 +100,12 @@ const QRDetails = props => {
       Header: ["qrd010", "DOB"],
       Cell: ({ row }) => <div>{row.original.dobAge}</div>
     },
-    { Accessor: "docNumber", Xl8: true, Header: ["qrd011", "Document Number"] },
+    {
+      Accessor: "docNumber",
+      Xl8: true,
+      Header: ["qrd011", "Document Number"],
+      getCellExportValue: row => getNumberExportValue(row.original.docNumber)
+    },
     { Accessor: "nationality", Xl8: true, Header: ["qrd012", "Nationality"] }
   ];
 

@@ -11,7 +11,7 @@ import { Tabs, Tab } from "react-bootstrap";
 import { LookupContext } from "../../../context/data/LookupContext";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
-import { hasData } from "../../../utils/utils";
+import { getBooleanExportValue, hasData } from "../../../utils/utils";
 import { QR, ACTION, RULETAB, ROLE, EXPORTFILENAME } from "../../../utils/constants";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import QRModal from "./QRModal";
@@ -82,6 +82,7 @@ const Rules = props => {
       Xl8: true,
       Header: ["rul010", "Over Max Hits"],
       isBoolean: true,
+      getCellExportValue: row => getBooleanExportValue(row.original.overMaxHits),
       Cell: ({ row }) => {
         if (row.original.overMaxHits === 1) {
           return (
@@ -101,6 +102,7 @@ const Rules = props => {
       Xl8: true,
       isBoolean: true,
       Header: ["rul014", "Enabled"],
+      getCellExportValue: row => getBooleanExportValue(row.original.enabled),
       Cell: ({ row }) => {
         if (row.original.enabled === 1) {
           return (

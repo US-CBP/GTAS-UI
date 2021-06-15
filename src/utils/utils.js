@@ -519,3 +519,11 @@ export const stringComparator = (value1, value2) => {
   if (str1 > str2) return 1;
   return 0;
 };
+
+export const getBooleanExportValue = value => {
+  return value ? "Yes" : "No";
+};
+
+export const getNumberExportValue = value => {
+  return `="${value}"`;
+};

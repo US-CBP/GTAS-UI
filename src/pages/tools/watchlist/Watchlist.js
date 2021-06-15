@@ -18,7 +18,8 @@ import {
   hasData,
   watchlistDateFormat,
   timezoneFreeDate,
-  dateComparator
+  dateComparator,
+  getNumberExportValue
 } from "../../../utils/utils";
 import { LK } from "../../../utils/constants";
 import "./constants.js";
@@ -285,7 +286,12 @@ const Watchlist = props => {
       Cell: ({ row }) => getEditRowData(row.original)
     },
     { Accessor: "documentType", Xl8: true, Header: ["wl011", "Document Type"] },
-    { Accessor: "documentNumber", Xl8: true, Header: ["wl012", "Document Number"] },
+    {
+      Accessor: "documentNumber",
+      Xl8: true,
+      Header: ["wl012", "Document Number"],
+      getCellExportValue: row => getNumberExportValue(row.original.documentNumber)
+    },
     { Accessor: "category", Xl8: true, Header: ["wl013", "Category"] },
     {
       Accessor: "delete",

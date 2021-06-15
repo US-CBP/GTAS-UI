@@ -196,5 +196,6 @@ export const EXPORTFILENAME = {
   HITCAT: "hit categories",
   NOTECAT: "note categories",
   LOOKOUTLANES: "lookout lanes",
-  SEARCHRESULTS: "search results"
+  SEARCHRESULTS: "search results",
+  LANGEDITOR: "language editor"
 };

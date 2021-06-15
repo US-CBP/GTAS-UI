@@ -12,6 +12,7 @@ import { LookupContext } from "../../../../context/data/LookupContext";
 import { ACTION, EXPORTFILENAME, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
+import { getNumberExportValue } from "../../../../utils/utils";
 
 const Carriers = () => {
   const cb = function() {};
@@ -113,7 +114,12 @@ const Carriers = () => {
         );
       }
     },
-    { Accessor: "iata", Xl8: true, Header: ["iata001", "IATA"] },
+    {
+      Accessor: "iata",
+      Xl8: true,
+      Header: ["iata001", "IATA"],
+      getCellExportValue: row => getNumberExportValue(row.original.iata)
+    },
     { Accessor: "icao", Xl8: true, Header: ["icao001", "ICAO"] },
     { Accessor: "name", Xl8: true, Header: ["car005", "Name"] }
   ];

@@ -9,7 +9,7 @@ import Main from "../../../components/main/Main";
 import { users } from "../../../services/serviceWrapper";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
-import { asArray } from "../../../utils/utils";
+import { asArray, getBooleanExportValue } from "../../../utils/utils";
 import { ACTION, EXPORTFILENAME } from "../../../utils/constants";
 
 import UserModal from "./UserModal";
@@ -144,6 +144,7 @@ const ManageUsers = props => {
       Xl8: true,
       Header: ["manu011", "Active"],
       isBoolean: true,
+      getCellExportValue: row => getBooleanExportValue(row.original.active),
       Cell: ({ row }) => {
         return (
           <div className="text-center">
@@ -166,6 +167,7 @@ const ManageUsers = props => {
       Xl8: true,
       Header: ["manu017", "User Email Notification"],
       isBoolean: true,
+      getCellExportValue: row => getBooleanExportValue(row.original.emailEnabledInt),
       Cell: ({ row }) => {
         return (
           <div className="text-center">
@@ -183,6 +185,7 @@ const ManageUsers = props => {
       Xl8: true,
       Header: ["manu017", "Automated Email Notification"],
       isBoolean: true,
+      getCellExportValue: row => getBooleanExportValue(row.original.highPriorityEmailInt),
       Cell: ({ row }) => {
         return (
           <div className="text-center">
