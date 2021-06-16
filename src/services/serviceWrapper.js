@@ -17,6 +17,7 @@ const SIGNUP = `${BASE_URL}gtas/api/preauth/signup`;
 const FORGOTPASSWORD = `${BASE_URL}gtas/api/preauth/forgotpassword`;
 const FORGOTUSERNAME = `${BASE_URL}gtas/api/preauth/forgotusername`;
 const PHYSICALLOCATIONS = `${BASE_URL}gtas/api/preauth/locations`;
+const PREAUTHTRANSLATIONS = `${BASE_URL}gtas/api/preauth/translation`;
 
 const LOGOUT = `${BASE_URL}gtas/api/logout`;
 const USERS = `${BASE_URL}gtas/users`;
@@ -75,6 +76,10 @@ const POETILES = `${BASE_URL}gtas/api/POE/tiles`;
 export const translations = {
   get: id => get(TRANSLATIONS, BASEHEADER, id),
   post: body => post(TRANSLATIONS, BASEHEADER, stringify(body))
+};
+
+export const preauthtranslations = {
+  get: id => get(PREAUTHTRANSLATIONS, BASEHEADER, id)
 };
 
 export const users = {
