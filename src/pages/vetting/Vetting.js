@@ -29,7 +29,6 @@ import {
   lpad5,
   addMinutes,
   localeDate,
-  stringComparator,
   alt
 } from "../../utils/utils";
 import { cases, poe, usersemails } from "../../services/serviceWrapper";
@@ -323,7 +322,7 @@ const Vetting = props => {
       newitem.fullName = `${alt(item.firstName)} ${alt(item.middleName)}, ${alt(
         item.lastName
       )}`;
-      newitem.hits = asArray(item.hitNames).reduce((acc, hit) => acc + hit + ", ", "");
+      newitem.hits = asArray(item.hitNames).join();
       return newitem;
     });
 
