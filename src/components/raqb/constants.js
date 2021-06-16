@@ -297,6 +297,10 @@ export const ENTITIESEXT = {
       id: "passengerTripDetails.hoursBeforeTakeOff",
       type: "integer"
     },
+        {
+      id: "passengerTripDetails.daysOutOfCountry",
+      type: "double"
+    },
     {
       id: "passengerDetails.nationality",
       type: "string",
