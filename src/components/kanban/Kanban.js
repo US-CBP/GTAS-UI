@@ -227,45 +227,6 @@ const Kanban = props => {
             key={filterFormKey}
             getInitialState={getInitialState}
           >
-            <LabelledInput
-              datafield="showDateTimePicker"
-              name="showDateTimePicker"
-              labelText={<Xl8 xid="poe0002">Show Date Time Picker</Xl8>}
-              inputtype="checkbox"
-              inputval={showDateTimePicker}
-              callback={cb}
-              toggleDateTimePicker={toggleDateTimePicker}
-              selected={showDateTimePicker}
-              alt="Show Date Time Picker"
-              spacebetween
-            />
-            {showDateTimePicker && (
-              <LabelledInput
-                datafield="etaStart"
-                inputtype="dateTime"
-                inputval={startDate}
-                labelText={<Xl8 xid="poe0003">Start Date</Xl8>}
-                name="etaStart"
-                callback={cb}
-                className="dtp-vetting-upper"
-                required={true}
-                alt="Start Date"
-              />
-            )}
-            {showDateTimePicker && (
-              <LabelledInput
-                datafield="etaEnd"
-                inputtype="dateTime"
-                inputval={endDate}
-                labelText={<Xl8 xid="poe0004">End Date</Xl8>}
-                name="etaEnd"
-                callback={cb}
-                required={true}
-                className="dtp-vetting-lower"
-                alt="End Date"
-              />
-            )}
-            {!showDateTimePicker && (
               <LabelledInput
                 labelText={<Xl8 xid="poe0005">Hour Range (Start)</Xl8>}
                 inputtype="select"
@@ -284,8 +245,6 @@ const Kanban = props => {
                 callback={cb}
                 alt="Hour range (Start)"
               />
-            )}
-            {!showDateTimePicker && (
               <LabelledInput
                 labelText={<Xl8 xid="poe0006">Hour Range (End)</Xl8>}
                 inputtype="select"
@@ -304,7 +263,6 @@ const Kanban = props => {
                 callback={cb}
                 alt="Hour range (End)"
               />
-            )}
           </FilterForm>
         </Col>
       </SidenavContainer>
