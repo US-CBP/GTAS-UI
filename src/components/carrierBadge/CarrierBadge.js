@@ -14,8 +14,8 @@ const CarrierBadge = props => {
   if (!hasData(src)) return <></>;
 
   return (
-    <div className="carrier-badge nozoom">
-      <LazyImage val={src} type={LK.CARRIER} size="70" nozoom></LazyImage>
+    <div className="carrier-badge">
+      <LazyImage val={src} type={LK.CARRIER} size="45"></LazyImage>
     </div>
   );
 };

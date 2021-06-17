@@ -17,6 +17,8 @@ import LabelledInput from "../labelledInput/LabelledInput";
 import Main from "../../components/main/Main";
 import Title from "../title/Title";
 import Loading from "../../components/loading/Loading";
+import {LK} from "../../utils/constants";
+import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 
 const Kanban = props => {
   let startDate = new Date();
@@ -128,8 +130,15 @@ const Kanban = props => {
       content: (
         <div>
           <div className="font-weight-bolder">
-            {tileData.paxLastName}, {tileData.paxFirstName}
+            <a href={"paxDetail/"+tileData.flightId + "/" + tileData.paxId}>{tileData.paxLastName}, {tileData.paxFirstName}</a>
           </div>
+          <div>Flight #:
+            <ToolTipWrapper
+              data={{
+                val: tileData.flightNumber,
+                lkup: LK.CARRIER
+              }}
+          ></ToolTipWrapper> </div>
           <div> Doc #: {tileData.document.documentNumber}</div>
           <div>Reason: {tileData.hitCategory}</div>
           <div>&nbsp;</div>
@@ -157,7 +166,7 @@ const Kanban = props => {
       }
     });
     return {
-      name: <Xl8 xid="poe0001">{laneData.displayName}</Xl8>,
+      name: laneData.displayName,
       items: tileList,
       background: "#f0f0f0",
       dragbackground: "#c0ddec",

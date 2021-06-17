@@ -16,11 +16,12 @@ import Xl8 from "../../components/xl8/Xl8";
 import { UserContext } from "../../context/user/UserContext";
 import { flights } from "../../services/serviceWrapper";
 import { hasData, alt, localeDate, asArray, aboveZero, lpad5 } from "../../utils/utils";
-import { TIME, ROLE, LK } from "../../utils/constants";
+import { TIME, ROLE, LK, TABTYPE } from "../../utils/constants";
 import { Col, Tabs, Tab } from "react-bootstrap";
-import "./Flights.css";
 import { LookupContext } from "../../context/data/LookupContext";
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
+import "./Flights.css";
+import "../../components/tabs/Tabs.css";
 
 const Flights = props => {
   const cb = () => {};
@@ -35,7 +36,7 @@ const Flights = props => {
   const [hitData, setHitData] = useState();
   const [allData, setAllData] = useState([]);
   const [airportFaves, setAirportFaves] = useState();
-  const [tab, setTab] = useState("all");
+  const [tab, setTab] = useState(TABTYPE.ALL);
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
   const [isLoading, setIsLoading] = useState(false);
@@ -163,7 +164,7 @@ const Flights = props => {
     { Accessor: "manualHitCount", Xl8: true, Header: ["fl023", "Manual Hits"] }
   ];
 
-  const arrayHeaderFixer = tab !== "hits" ? [aggregateHitHeader] : hitHeaders;
+  const arrayHeaderFixer = tab !== TABTYPE.HITS ? [aggregateHitHeader] : hitHeaders;
   const Headers = [
     {
       Accessor: "timer",
@@ -245,7 +246,7 @@ const Flights = props => {
   ];
 
   useEffect(() => {
-    if (tab === "hits") setData(hitData);
+    if (tab === TABTYPE.HITS) setData(hitData);
     else setData(allData);
 
     const newkey = tablekey + 1;
@@ -281,9 +282,9 @@ const Flights = props => {
   const getTableState = () => tableState;
 
   const tabs = (
-    <Tabs defaultActiveKey="all" id="flightTabs">
+    <Tabs defaultActiveKey={TABTYPE.ALL} id="flightTabs" className="gtas-tabs">
       <Tab
-        eventKey="all"
+        eventKey={TABTYPE.ALL}
         title={
           <Xl8 xid="fl001" id="flightTabs-tab-all">
             All
@@ -291,7 +292,7 @@ const Flights = props => {
         }
       ></Tab>
       <Tab
-        eventKey="hits"
+        eventKey={TABTYPE.HITS}
         title={
           <Xl8 xid="fl002" id="flightTabs-tab-hits">
             Hits
@@ -335,11 +336,11 @@ const Flights = props => {
             />
             <LabelledInput
               datafield="flightNumber"
-              labelText={<Xl8 xid="fl005">Flight Number</Xl8>}
+              labelText={<Xl8 xid="fl005">Flight</Xl8>}
               inputtype="text"
               name="flightNumber"
               callback={cb}
-              alt={<Xl8 xid="7">Flight Number</Xl8>}
+              alt={<Xl8 xid="7">Flight</Xl8>}
             />
             <LabelledInput
               datafield="direction"

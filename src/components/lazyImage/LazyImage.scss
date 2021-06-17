@@ -5,17 +5,34 @@
 .lazy-image {
   background: no-repeat center center;
   background-size: cover;
-  height: 25px;
-  width: 30px;
   border-radius: 5px;
   border: 1px solid white;
+  height: 25px;
   line-height: 25px;
+}
+
+.lazy-image-wrapper.country {
+  height: 25px;
+  width: 30px;
+}
+
+.lazy-image-wrapper.carrier {
+  height: 25px;
+  width: 25px;
 }
 
 .lazy-image-full img {
   background: no-repeat center center;
   background-size: cover;
   height: 60px;
+  width: 80px;
+  border-radius: 5px;
+}
+
+.lazy-image-full.carrier img {
+  background: no-repeat center center;
+  background-size: cover;
+  height: 80px;
   width: 80px;
   border-radius: 5px;
 }
@@ -47,7 +64,8 @@
 
 .filter .flight-badge .lazy-image {
   height: 50px;
-  width: 60px;
+  width: 50px;
+  margin-left: -10px;
 }
 
 .flight-badge-nonlink-icon {
