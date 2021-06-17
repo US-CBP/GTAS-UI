@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Form from "../../components/form/Form";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { forgotPassword } from "../../services/serviceWrapper";
@@ -63,12 +63,12 @@ const ForgotPassword = props => {
               >
                 <LabelledInput
                   datafield
-                  labelText="User Id"
+                  labelText={<Xl8 xid="fopa002">User ID</Xl8>}
                   inputtype="text"
                   name="userId"
                   required={true}
                   inputval=""
-                  alt="nothing"
+                  alt="User ID"
                   callback={cb}
                   spacebetween
                 />

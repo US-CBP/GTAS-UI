@@ -31,12 +31,18 @@ const Xl8 = props => {
     setIsEdit(editstate.isEdit);
   }, []);
 
+  //Force default to the default English text rather than the translation ID (xid)
+  const cleanTrans = (xid, defaultText) => {
+    const attemptedTrans = t(xid);
+    return attemptedTrans === xid ? defaultText : attemptedTrans;
+  };
+
   return isEdit ? (
     <span {...translationProps} onClick={handleClick} className="xid">
-      {t(props.xid, props.children)}
+      {cleanTrans(props.xid, props.children)}
     </span>
   ) : (
-    <span {...props}>{t(props.xid, props.children)}</span>
+    <span {...props}> {cleanTrans(props.xid, props.children)}</span>
   );
 };
 
