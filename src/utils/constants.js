@@ -166,3 +166,14 @@ export const USERID = {
   MAX_LEN: 50,
   MIN_LEN: 3
 };
+
+export const SIGNUP_STATUS = {
+  NEW: "NEW",
+  APPROVED: "APPROVED",
+  REJECTED: "REJECTED"
+};
+
+export const SIGNUP_ACTIONS = {
+  REJECT: "Reject",
+  APPROVE: "Approve"
+};
