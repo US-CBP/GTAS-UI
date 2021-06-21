@@ -14,7 +14,7 @@ import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { hasData } from "../../../utils/utils";
 import SignUpRequestModal from "./SignUpRequestModal";
-import { ACTION, STATUS } from "../../../utils/constants";
+import { ACTION, SIGNUP_ACTIONS, SIGNUP_STATUS, STATUS } from "../../../utils/constants";
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
 
@@ -29,9 +29,9 @@ const SignUpRequests = () => {
   const [showModal, setShowModal] = useState(false);
   const [requestId, setRequestId] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [hiddenColumns, setHiddenColumns] = useState([]);
 
   const cb = () => {};
-  const actions = { REJECT: "Reject", APPROVE: "Approve" };
 
   const setDataWrapper = data => {
     setData(data);
@@ -64,17 +64,18 @@ const SignUpRequests = () => {
 
   const postApproveCallback = (status, res) => {
     if (status === ACTION.CANCEL) setShowModal(false);
-    else handleResponse(res, actions.APPROVE);
+    else handleResponse(res, SIGNUP_ACTIONS.APPROVE);
   };
 
   const reject = requestId => {
     signuprequests.reject(requestId).then(res => {
-      handleResponse(res, actions.REJECT);
+      handleResponse(res, SIGNUP_ACTIONS.REJECT);
     });
   };
 
   const preFetchCallback = params => {
     setIsLoading(true);
+    params.status === SIGNUP_STATUS.NEW ? setHiddenColumns([]) : setHiddenColumns(["id"]);
     let parsedParams = "?";
 
     if (hasData(params.username)) parsedParams += "&username=" + params.username;
@@ -86,15 +87,15 @@ const SignUpRequests = () => {
 
   const requestStatusOptions = [
     {
-      value: "NEW",
+      value: SIGNUP_STATUS.NEW,
       label: "New"
     },
     {
-      value: "APPROVED",
+      value: SIGNUP_STATUS.APPROVED,
       label: "Approved"
     },
     {
-      value: "REJECTED",
+      value: SIGNUP_STATUS.REJECTED,
       label: "Rejected"
     }
   ];
@@ -112,11 +113,7 @@ const SignUpRequests = () => {
               variant="outline-info"
               title={<Xl8 xid="manu002">Choose Action</Xl8>}
             >
-              <Dropdown.Item
-                as="button"
-                onClick={() => approve(row.original.id)}
-                disabled={row.original.status !== "NEW"}
-              >
+              <Dropdown.Item as="button" onClick={() => approve(row.original.id)}>
                 <Xl8 xid="sur001">Approve</Xl8>
               </Dropdown.Item>
 
@@ -137,7 +134,6 @@ const SignUpRequests = () => {
                   <Dropdown.Item
                     as="button"
                     onClick={confirm(() => reject(row.original.id))}
-                    disabled={row.original.status !== "NEW"}
                   >
                     <Xl8 xid="sur002">Reject</Xl8>
                   </Dropdown.Item>
@@ -212,6 +208,7 @@ const SignUpRequests = () => {
           callback={cb}
           key={refreshKey}
           isLoading={isLoading}
+          hiddenColumns={hiddenColumns}
         ></Table>
 
         <SignUpRequestModal
