@@ -42,7 +42,7 @@ const Xl8 = props => {
       {cleanTrans(props.xid, props.children)}
     </span>
   ) : (
-    <span {...props}> {cleanTrans(props.xid, props.children)}</span>
+    <span {...props}>{cleanTrans(props.xid, props.children)}</span>
   );
 };
 
