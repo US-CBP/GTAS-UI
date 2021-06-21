@@ -2,7 +2,9 @@
 //
 // Please see license.txt for details.
 
+import { navigate } from "@reach/router";
 import { hasData } from "../utils/utils";
+import { FULLPATH_TO } from "../utils/constants";
 import Cookies from "js-cookie";
 
 const DELETEID = "The delete method requires a valid id parameter.";
@@ -25,6 +27,11 @@ export const GenericService = async props => {
 
   return fetch(props.uri, param)
     .then(response => {
+      // APB - LOGOUT ON 401 - implement separately
+      // if (response.status === 401) {
+      //   navigate(FULLPATH_TO.LOGIN);
+      //   return [];
+      // }
       if (response === undefined) {
         return [];
       }

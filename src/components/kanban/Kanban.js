@@ -17,7 +17,7 @@ import LabelledInput from "../labelledInput/LabelledInput";
 import Main from "../../components/main/Main";
 import Title from "../title/Title";
 import Loading from "../../components/loading/Loading";
-import {LK} from "../../utils/constants";
+import { LK } from "../../utils/constants";
 import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 
 const Kanban = props => {
@@ -130,15 +130,19 @@ const Kanban = props => {
       content: (
         <div>
           <div className="font-weight-bolder">
-            <a href={"paxDetail/"+tileData.flightId + "/" + tileData.paxId}>{tileData.paxLastName}, {tileData.paxFirstName}</a>
+            <a href={"paxDetail/" + tileData.flightId + "/" + tileData.paxId}>
+              {tileData.paxLastName}, {tileData.paxFirstName}
+            </a>
           </div>
-          <div>Flight #:
+          <div>
+            Flight #:
             <ToolTipWrapper
               data={{
                 val: tileData.flightNumber,
                 lkup: LK.CARRIER
               }}
-          ></ToolTipWrapper> </div>
+            ></ToolTipWrapper>{" "}
+          </div>
           <div> Doc #: {tileData.document.documentNumber}</div>
           <div>Reason: {tileData.hitCategory}</div>
           <div>&nbsp;</div>
@@ -228,83 +232,41 @@ const Kanban = props => {
             getInitialState={getInitialState}
           >
             <LabelledInput
-              datafield="showDateTimePicker"
-              name="showDateTimePicker"
-              labelText={<Xl8 xid="poe0002">Show Date Time Picker</Xl8>}
-              inputtype="checkbox"
-              inputval={showDateTimePicker}
+              labelText={<Xl8 xid="poe0005">Hour Range (Start)</Xl8>}
+              inputtype="select"
+              name="startHourRange"
+              inputval="6"
+              inputStyle="form-select"
+              datafield="startHourRange"
+              options={[
+                { value: "0", label: "0 hour" },
+                { value: "6", label: "-6 hours" },
+                { value: "12", label: "-12 hours" },
+                { value: "24", label: "-24 hours" },
+                { value: "48", label: "-48 hours" },
+                { value: "96", label: "-96 hours" }
+              ]}
               callback={cb}
-              toggleDateTimePicker={toggleDateTimePicker}
-              selected={showDateTimePicker}
-              alt="Show Date Time Picker"
-              spacebetween
+              alt="Hour range (Start)"
             />
-            {showDateTimePicker && (
-              <LabelledInput
-                datafield="etaStart"
-                inputtype="dateTime"
-                inputval={startDate}
-                labelText={<Xl8 xid="poe0003">Start Date</Xl8>}
-                name="etaStart"
-                callback={cb}
-                className="dtp-vetting-upper"
-                required={true}
-                alt="Start Date"
-              />
-            )}
-            {showDateTimePicker && (
-              <LabelledInput
-                datafield="etaEnd"
-                inputtype="dateTime"
-                inputval={endDate}
-                labelText={<Xl8 xid="poe0004">End Date</Xl8>}
-                name="etaEnd"
-                callback={cb}
-                required={true}
-                className="dtp-vetting-lower"
-                alt="End Date"
-              />
-            )}
-            {!showDateTimePicker && (
-              <LabelledInput
-                labelText={<Xl8 xid="poe0005">Hour Range (Start)</Xl8>}
-                inputtype="select"
-                name="startHourRange"
-                inputval="6"
-                inputStyle="form-select"
-                datafield="startHourRange"
-                options={[
-                  { value: "0", label: "0 hour" },
-                  { value: "6", label: "-6 hours" },
-                  { value: "12", label: "-12 hours" },
-                  { value: "24", label: "-24 hours" },
-                  { value: "48", label: "-48 hours" },
-                  { value: "96", label: "-96 hours" }
-                ]}
-                callback={cb}
-                alt="Hour range (Start)"
-              />
-            )}
-            {!showDateTimePicker && (
-              <LabelledInput
-                labelText={<Xl8 xid="poe0006">Hour Range (End)</Xl8>}
-                inputtype="select"
-                name="endHourRange"
-                inputval="96"
-                inputStyle="form-select"
-                datafield="endHourRange"
-                options={[
-                  { value: "0", label: "0 hour" },
-                  { value: "6", label: "+6 hours" },
-                  { value: "12", label: "+12 hours" },
-                  { value: "24", label: "+24 hours" },
-                  { value: "48", label: "+48 hours" },
-                  { value: "96", label: "+96 hours" }
-                ]}
-                callback={cb}
-                alt="Hour range (End)"
-              />
-            )}
+            <LabelledInput
+              labelText={<Xl8 xid="poe0006">Hour Range (End)</Xl8>}
+              inputtype="select"
+              name="endHourRange"
+              inputval="96"
+              inputStyle="form-select"
+              datafield="endHourRange"
+              options={[
+                { value: "0", label: "0 hour" },
+                { value: "6", label: "+6 hours" },
+                { value: "12", label: "+12 hours" },
+                { value: "24", label: "+24 hours" },
+                { value: "48", label: "+48 hours" },
+                { value: "96", label: "+96 hours" }
+              ]}
+              callback={cb}
+              alt="Hour range (End)"
+            />
           </FilterForm>
         </Col>
       </SidenavContainer>

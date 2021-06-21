@@ -39,7 +39,6 @@ const UserProvider = ({ children }) => {
       }
       case "logoff": {
         sessionStorage.removeItem(USERSTORE);
-        Cookies.remove("JSESSIONID");
         setStorage(USERSTORE, initialState);
         return initialState;
       }

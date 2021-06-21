@@ -199,3 +199,13 @@ export const EXPORTFILENAME = {
   SEARCHRESULTS: "search results",
   LANGEDITOR: "language editor"
 };
+export const SIGNUP_STATUS = {
+  NEW: "NEW",
+  APPROVED: "APPROVED",
+  REJECTED: "REJECTED"
+};
+
+export const SIGNUP_ACTIONS = {
+  REJECT: "Reject",
+  APPROVE: "Approve"
+};
