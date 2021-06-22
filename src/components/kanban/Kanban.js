@@ -311,39 +311,26 @@ const Kanban = props => {
       <Main>
         <Title title={<Xl8 xid="poe0007">Port Of Entry Lookout</Xl8>} uri={props.uri} />
         {showPending && <Loading></Loading>}
-        <CardDeck className="page-deck justify-content-center">
+        <CardDeck className="poe-page-deck">
           <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
             {Object.entries(columns).map(([columnId, column], index) => {
               return (
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    marginBlock: "15px"
-                  }}
+                <div className="poe-drag-drop"
                   key={columnId}
                 >
                   <h5>{column.name}</h5>
-                  <div style={{ margin: 8, maxHeight: "calc((vh-120px)/2)" }}>
+                  <div className="poe-droppable-div">
                     <Droppable droppableId={columnId} key={columnId}>
                       {(provided, snapshot) => {
                         return (
                           <div
                             {...provided.droppableProps}
                             ref={provided.innerRef}
+                            className="poe-droppable"
                             style={{
                               background: snapshot.isDraggingOver
                                 ? column.dragbackground
                                 : column.background,
-                              padding: 8,
-                              width: 300,
-                              minHeight: 200,
-                              maxHeight: "calc((100vh - 250px)/2)",
-                              overflowY: "auto",
-                              border: "1px solid #d0d0d0",
-                              backgroundColor: "white",
-                              borderRadius: "3px"
                             }}
                           >
                             {column.items.map((item, index) => {
@@ -359,17 +346,9 @@ const Kanban = props => {
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
+                                          className="poe-draggable"
                                         style={{
-                                          userSelect: "none",
-                                          padding: 6,
-                                          margin: "0 0 8px 0",
-                                          minHeight: "50px",
-                                          backgroundColor: "#009e9233",
-                                          color: "black",
                                           ...provided.draggableProps.style,
-                                          border: "1px solid black",
-                                          borderRadius: "5px",
-                                          textAlign: "left"
                                         }}
                                       >
                                         {item.content}
