@@ -35,26 +35,26 @@
   position: relative;
 }
 
-.poe-page-deck{
+.poe-page-deck {
   margin: 10px;
   overflow-x: auto;
-  max-height: calc(100vh - 130px);
+  height: calc(100vh - 120px);
   text-align: -webkit-center;
-  flex-flow: row!important;
+  flex-flow: row !important;
 }
 
-.poe-droppable{
+.poe-droppable {
   padding: 8px;
   width: 300px;
   min-height: 200px;
-  max-height: calc((160vh - 250px)/2);
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
   border: 1px solid #d0d0d0;
   background-color: white;
   border-radius: 3px;
 }
 
-.poe-draggable{
+.poe-draggable {
   user-select: none;
   padding: 6px;
   margin: 0 0 8px 0;
@@ -66,14 +66,13 @@
   text-align: left;
 }
 
-.poe-drag-drop{
+.poe-drag-drop {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-block: 15px;
 }
 
-.poe-droppable-div{
-  margin:8px;
-  maxHeight: calc((vh-120px)/2);
+.poe-droppable-div {
+  margin: 8px;
 }
