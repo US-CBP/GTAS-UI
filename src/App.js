@@ -83,7 +83,7 @@ const PageUnauthorized = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
 );
 const SeatChart = loadable(() =>
-  import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
+  import(/* webpackChunkName: "authed" */ "./pages/seatChart/SeatChart")
 );
 const UploadAttachment = loadable(() =>
   import(
@@ -241,6 +241,7 @@ const App = props => {
                             roles={[ROLE.ADMIN, ROLE.LKOUTMGR, ROLE.LKOUTVWR]}
                           >
                             <POE path="/"></POE>
+                            {NF404Default}
                           </RoleAuthenticator>
                           <RoleAuthenticator
                             path="vetting"
@@ -265,7 +266,7 @@ const App = props => {
                           </Tools>
                           <Search path="search/:searchParam"></Search>
                           <RoleAuthenticator
-                            path="seat-chart/:flightId/:paxId/:currentPaxSeat"
+                            path="seatchart/:flightId/:paxId/:currentPaxSeat"
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}
                           >
                             <SeatChart path="/"></SeatChart>

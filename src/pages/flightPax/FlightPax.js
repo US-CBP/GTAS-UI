@@ -15,7 +15,8 @@ import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import LazyImage from "../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
-import { flightPassengers } from "../../services/serviceWrapper";
+
+import { flightPassengers, flights } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
 import {
   asArray,
@@ -39,8 +40,8 @@ const FlightPax = props => {
   const [allData, setAllData] = useState();
   const [tab, setTab] = useState(TABTYPE.ALL);
   const [key, setKey] = useState(0);
+  const [flightData, setFlightData] = useState({});
   const [carrierName, setCarrierName] = useState();
-  const flightData = props.location?.state?.data || {};
   const { getSingleKeyValue } = useContext(LookupContext);
 
   const hasAnyHits = item => {
@@ -101,8 +102,7 @@ const FlightPax = props => {
     return groupHitTotal;
   };
 
-  const getCarrierDesc = () => {
-    const carriercode = alt(flightData.fullFlightNumber, "").slice(0, 2);
+  const getCarrierDesc = carriercode => {
     const notFound = "Not Found";
 
     getSingleKeyValue(LK.CARRIER, false, carriercode).then(rec => {
@@ -273,6 +273,11 @@ const FlightPax = props => {
       setHitData(parsedHits);
       setKey(1);
     });
+
+    flights.getSingleFlightInfo(props.id).then(res => {
+      setFlightData(res);
+      getCarrierDesc(res?.carrier);
+    });
   }, [props.id]);
 
   useEffect(() => {
@@ -283,12 +288,8 @@ const FlightPax = props => {
     setKey(newkey);
   }, [hitData, tab]);
 
-  useEffect(() => {
-    getCarrierDesc();
-  }, []);
-
   const tabs = (
-    <Tabs defaultActiveKey={TABTYPE.ALL} id="flightPaxTabs">
+    <Tabs defaultActiveKey={TABTYPE.ALL} id="flightPaxTabs" className="gtas-tabs">
       <Tab
         eventKey={TABTYPE.ALL}
         title={
@@ -365,7 +366,7 @@ const FlightPax = props => {
                   </td>
                   <td className="right">
                     <Link
-                      to={`/gtas/seat-chart/${flightData.id}/${GENERICTYPE.ALL}/${GENERICTYPE.ALL}`}
+                      to={`/gtas/seatchart/${flightData.id}/${GENERICTYPE.ALL}/${GENERICTYPE.ALL}`}
                       className="flightpax-link"
                       state={{
                         arrival: flightData.eta,

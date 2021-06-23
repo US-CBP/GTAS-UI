@@ -10,7 +10,7 @@ import Modal, {
   ModalFooter,
   ModalHeader,
   ModalTitle
-} from "../../modal/Modal";
+} from "../../../components/modal/Modal";
 import { Col } from "react-bootstrap";
 
 const SeatInfoModal = props => {

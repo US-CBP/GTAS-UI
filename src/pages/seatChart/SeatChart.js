@@ -7,11 +7,11 @@ import { Link, useParams } from "@reach/router";
 import Seat from "./seat/Seat";
 import Legend from "./legend/Legend";
 import SeatChartCard from "./seatChartCard/SeatChartCard";
-import Loading from "../loading/Loading";
-import Xl8 from "../xl8/Xl8";
+import Loading from "../../components/loading/Loading";
+import Xl8 from "../../components/xl8/Xl8";
 import SearchSeat from "./searchSeat/SearchSeat";
-import SidenavContainer from "../sidenavContainer/SidenavContainer";
-import Main from "../main/Main";
+import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
+import Main from "../../components/main/Main";
 import { seats } from "../../services/serviceWrapper";
 import { Row, CardDeck, Card } from "react-bootstrap";
 import { asArray, hasData, localeDate } from "../../utils/utils";
@@ -119,7 +119,7 @@ const SeatChart = ({ location }) => {
 
   const flightInfoData = [
     {
-      label: <Xl8 xid="seat004">Flight Number</Xl8>,
+      label: <Xl8 xid="seat004">Flight</Xl8>,
       value: location.state?.flightNumber
     },
     {

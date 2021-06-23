@@ -32,14 +32,18 @@ const LazyImage = ({ val, type, size, nozoom }) => {
   return (
     <>
       {dataReady && zoomEnabled && (
-        <LazyLoad height={placeholderHeight} overflow className="lazy-image-wrapper">
+        <LazyLoad
+          height={placeholderHeight}
+          overflow
+          className={`lazy-image-wrapper ${type}`}
+        >
           <OverlayTrigger
             trigger={["click"]}
             rootClose
             placement={"top"}
             overlay={
               <Popover>
-                <Popover.Content className="lazy-image-full">
+                <Popover.Content className={`lazy-image-full ${type}`}>
                   <img alt={dataReady} src={src} />
                 </Popover.Content>
               </Popover>

@@ -35,3 +35,8 @@
     max-height: calc(100vh - 195px);
   }
 }
+
+.filedownload .tab-span {
+  margin-top: -3px;
+  padding-top: 0px;
+}

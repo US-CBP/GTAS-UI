@@ -4,9 +4,11 @@
  * Please see license.txt for details.
  */
 
-.bio-data {
+.hits-data {
+  text-align: center;
   list-style: none;
   padding-left: 0.25rem !important;
-  font-size: small;
   margin-bottom: 0px;
+  min-width: 220px;
+  white-space: nowrap;
 }
