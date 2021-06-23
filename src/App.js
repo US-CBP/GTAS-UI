@@ -241,6 +241,7 @@ const App = props => {
                             roles={[ROLE.ADMIN, ROLE.LKOUTMGR, ROLE.LKOUTVWR]}
                           >
                             <POE path="/"></POE>
+                            {NF404Default}
                           </RoleAuthenticator>
                           <RoleAuthenticator
                             path="vetting"
