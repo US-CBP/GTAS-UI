@@ -2,113 +2,40 @@
 //
 // Please see license.txt for details.
 
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import { CardDeck, Col } from "react-bootstrap";
-import { addMinutes, asArray, hasData, randomIntOfLength } from "../../utils/utils";
-import Xl8 from "../../components/xl8/Xl8";
+import { asArray, hasData } from "../../utils/utils";
 
 import "./Kanban.css";
 import { poe } from "../../services/serviceWrapper";
-import SidenavContainer from "../sidenavContainer/SidenavContainer";
-import FilterForm from "../filterForm2/FilterForm";
-import LabelledInput from "../labelledInput/LabelledInput";
-import Main from "../../components/main/Main";
-import Title from "../title/Title";
 import Loading from "../../components/loading/Loading";
 import {LK} from "../../utils/constants";
 import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 
 const Kanban = props => {
-  let startDate = new Date();
-  let endDate = new Date();
-  endDate.setDate(endDate.getDate() + 4);
-  startDate.setHours(startDate.getHours() - 6);
   const [poeTiles, setPoeTiles] = useState([]);
-  const [showDateTimePicker, setShowDateTimePicker] = useState(false);
-  const [filterFormKey, setFilterFormKey] = useState(0);
-  const [showPending, setShowPending] = useState(true);
-  const cb = () => {};
+  const [showPending, setIsPending] = useState(false);
 
-  const toggleDateTimePicker = () => {
-    setShowDateTimePicker(value => !value);
-    setFilterFormKey(filterFormKey + 1);
-  };
 
-  const initialParamState = {
-    etaStart: startDate,
-    etaEnd: addMinutes(endDate, 1)
-  };
-
-  const getInitialState = () => {
-    setShowDateTimePicker(false);
-    setShowPending(true);
-    setFilterFormKey(filterFormKey + 1);
-    return initialParamState;
-  };
-
-  const setDataWrapper = tileRes => {
-    setShowPending(true);
+  useEffect( () =>{
     const tiles = [];
     const lanes = {};
-
-    asArray(tileRes).map(tile => {
-      tiles.push(createPOETile(tile)); //creates tile, adds to tile array
-    });
-    //THEN fetch and create all lanes, feeding tiles to each lane to calc if they belong base on poeStatus
-    poe.get.getAllLanes().then(laneRes => {
-      asArray(laneRes).map(lane => {
-        lanes[lane.ord] = createPOELane(lane, tiles); //creates lane, adds to lane object
+    if(hasData(props.tiles)){
+      asArray(props.tiles).map(tile =>{
+        tiles.push(createPOETile(tile)); //creates tile, adds to tile array
       });
-      //After lanes AND tiles have both been created , set the constants
-      setColumns(lanes);
-      setPoeTiles(tiles);
-      setShowPending(false);
-    });
-  };
-
-  const parameterAdapter = fields => {
-    let paramObject = {};
-    const fieldscopy = Object.assign([], fields);
-    delete fieldscopy["showDateTimePicker"];
-
-    if (!showDateTimePicker) {
-      //passed range values insted of date
-      const startRange = fields["startHourRange"] || 6; // default to -6 hours
-      const endRange = fields["endHourRange"] || 96;
-      let etaEnd = new Date();
-      let etaStart = new Date();
-
-      etaEnd.setHours(etaEnd.getHours() + +endRange);
-      etaStart.setHours(etaStart.getHours() - +startRange);
-
-      paramObject["etaStart"] = etaStart;
-      paramObject["etaEnd"] = addMinutes(etaEnd, 1);
-
-      delete fieldscopy["startHourRange"];
-      delete fieldscopy["endHourRange"];
     }
-
-    const fieldNames = Object.keys(fieldscopy);
-    fieldNames.forEach(name => {
-      if (name === "etaStart") {
-        const date = new Date(fields[name]);
-        paramObject[name] = date.toISOString();
-      }
-
-      if (name === "etaEnd") {
-        const date = addMinutes(new Date(fields[name]), 1);
-        paramObject[name] = date.toISOString();
-      }
-
-      if (hasData(fields[name])) {
-        paramObject[name] = fields[name];
-      }
-    });
-
-    return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
-  };
+    if(hasData(props.lanes)){
+      asArray(props.lanes).map(lane =>{
+        lanes[lane.ord] = createPOELane(lane, tiles); //creates lane, associates tile, adds to lane object
+      });
+    }
+    setColumns(lanes);
+    setPoeTiles(tiles);
+    setIsPending(false);
+  },[])
 
   const convertTileToData = (tile, status) => {
     const req = {
@@ -218,57 +145,7 @@ const Kanban = props => {
 
   return (
     <>
-      <SidenavContainer>
-        <Col className="notopmargin">
-          <FilterForm
-            service={poe.get.getAllTiles}
-            callback={setDataWrapper}
-            paramCallback={parameterAdapter}
-            key={filterFormKey}
-            getInitialState={getInitialState}
-          >
-              <LabelledInput
-                labelText={<Xl8 xid="poe0005">Hour Range (Start)</Xl8>}
-                inputtype="select"
-                name="startHourRange"
-                inputval="6"
-                inputStyle="form-select"
-                datafield="startHourRange"
-                options={[
-                  { value: "0", label: "0 hour" },
-                  { value: "6", label: "-6 hours" },
-                  { value: "12", label: "-12 hours" },
-                  { value: "24", label: "-24 hours" },
-                  { value: "48", label: "-48 hours" },
-                  { value: "96", label: "-96 hours" }
-                ]}
-                callback={cb}
-                alt="Hour range (Start)"
-              />
-              <LabelledInput
-                labelText={<Xl8 xid="poe0006">Hour Range (End)</Xl8>}
-                inputtype="select"
-                name="endHourRange"
-                inputval="96"
-                inputStyle="form-select"
-                datafield="endHourRange"
-                options={[
-                  { value: "0", label: "0 hour" },
-                  { value: "6", label: "+6 hours" },
-                  { value: "12", label: "+12 hours" },
-                  { value: "24", label: "+24 hours" },
-                  { value: "48", label: "+48 hours" },
-                  { value: "96", label: "+96 hours" }
-                ]}
-                callback={cb}
-                alt="Hour range (End)"
-              />
-          </FilterForm>
-        </Col>
-      </SidenavContainer>
-      <Main>
-        <Title title={<Xl8 xid="poe0007">Port Of Entry Lookout</Xl8>} uri={props.uri} />
-        {showPending && <Loading></Loading>}
+        {(props.isLoading || showPending) && <Loading></Loading>}
         <CardDeck className="poe-page-deck">
           <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
             {Object.entries(columns).map(([columnId, column], index) => {
@@ -327,7 +204,6 @@ const Kanban = props => {
             })}
           </DragDropContext>
         </CardDeck>
-      </Main>
     </>
   );
 };
