@@ -4,7 +4,7 @@
 
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import LabelledInput from "../../labelledInput/LabelledInput";
+import LabelledInput from "../../../components/labelledInput/LabelledInput";
 
 const SeatChartCard = props => {
   return (
@@ -16,11 +16,7 @@ const SeatChartCard = props => {
               <b>{item.label}:</b>
             </Col>
             <Col>
-              <LabelledInput
-                alt="Flight Number"
-                inputtype="label"
-                inputval={item.value}
-              />
+              <LabelledInput alt="Flight" inputtype="label" inputval={item.value} />
             </Col>
           </Row>
         ))}

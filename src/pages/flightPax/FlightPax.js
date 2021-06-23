@@ -15,7 +15,8 @@ import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import LazyImage from "../../components/lazyImage/LazyImage";
 import { Link } from "@reach/router";
-import { flightPassengers } from "../../services/serviceWrapper";
+
+import { flightPassengers, flights } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
 import {
   asArray,
@@ -27,7 +28,7 @@ import {
   lpad5,
   sortableDob
 } from "../../utils/utils";
-import { LK, ROLE, DIRECTION } from "../../utils/constants";
+import { LK, ROLE, DIRECTION, TABTYPE, GENERICTYPE } from "../../utils/constants";
 import { Col, Tabs, Tab } from "react-bootstrap";
 import "./FlightPax.css";
 
@@ -37,10 +38,10 @@ const FlightPax = props => {
   const [data, setData] = useState();
   const [hitData, setHitData] = useState();
   const [allData, setAllData] = useState();
-  const [tab, setTab] = useState("all");
+  const [tab, setTab] = useState(TABTYPE.ALL);
   const [key, setKey] = useState(0);
+  const [flightData, setFlightData] = useState({});
   const [carrierName, setCarrierName] = useState();
-  const flightData = props.location?.state?.data || {};
   const { getSingleKeyValue } = useContext(LookupContext);
 
   const hasAnyHits = item => {
@@ -101,8 +102,7 @@ const FlightPax = props => {
     return groupHitTotal;
   };
 
-  const getCarrierDesc = () => {
-    const carriercode = alt(flightData.fullFlightNumber, "").slice(0, 2);
+  const getCarrierDesc = carriercode => {
     const notFound = "Not Found";
 
     getSingleKeyValue(LK.CARRIER, false, carriercode).then(rec => {
@@ -180,7 +180,7 @@ const FlightPax = props => {
     }
   ];
 
-  const tabSpecificHeaders = tab !== "hits" ? aggregateHitHeader : hitHeaders;
+  const tabSpecificHeaders = tab !== TABTYPE.HITS ? aggregateHitHeader : hitHeaders;
   const headers = [
     ...tabSpecificHeaders,
     {
@@ -273,24 +273,25 @@ const FlightPax = props => {
       setHitData(parsedHits);
       setKey(1);
     });
+
+    flights.getSingleFlightInfo(props.id).then(res => {
+      setFlightData(res);
+      getCarrierDesc(res?.carrier);
+    });
   }, [props.id]);
 
   useEffect(() => {
-    if (tab === "hits") setData(hitData);
+    if (tab === TABTYPE.HITS) setData(hitData);
     else setData(allData);
 
     const newkey = key + 1;
     setKey(newkey);
   }, [hitData, tab]);
 
-  useEffect(() => {
-    getCarrierDesc();
-  }, []);
-
   const tabs = (
-    <Tabs defaultActiveKey="all" id="flightPaxTabs">
+    <Tabs defaultActiveKey={TABTYPE.ALL} id="flightPaxTabs" className="gtas-tabs">
       <Tab
-        eventKey="all"
+        eventKey={TABTYPE.ALL}
         title={
           <Xl8 xid="fp001" id="flightPaxTabs-tab-all">
             All
@@ -298,7 +299,7 @@ const FlightPax = props => {
         }
       ></Tab>
       <Tab
-        eventKey="hits"
+        eventKey={TABTYPE.HITS}
         title={
           <Xl8 xid="fp002" id="flightPaxTabs-tab-hits">
             Hits
@@ -341,6 +342,12 @@ const FlightPax = props => {
 
             <table className="table table-sm table-borderless">
               <tbody>
+                <tr className="flightpax-row" key={carrierName}>
+                  <td className="left">
+                    <Xl8 xid="fp009">Carrier:</Xl8>
+                  </td>
+                  <td className="right">{carrierName}</td>
+                </tr>
                 <tr className="flightpax-row">
                   <td className="left">
                     <Xl8 xid="fp006">Direction:</Xl8>
@@ -353,11 +360,24 @@ const FlightPax = props => {
                   </td>
                   <td className="right">{flightData.passengerCount}</td>
                 </tr>
-                <tr className="flightpax-row" key={carrierName}>
+                <tr className="flightpax-row">
                   <td className="left">
-                    <Xl8 xid="fp009">Carrier:</Xl8>
+                    <Xl8 xid="fp009">Seat Assignments:</Xl8>
                   </td>
-                  <td className="right">{carrierName}</td>
+                  <td className="right">
+                    <Link
+                      to={`/gtas/seatchart/${flightData.id}/${GENERICTYPE.ALL}/${GENERICTYPE.ALL}`}
+                      className="flightpax-link"
+                      state={{
+                        arrival: flightData.eta,
+                        departure: flightData.etd,
+                        flightId: flightData.id,
+                        flightNumber: flightData.fullFlightNumber
+                      }}
+                    >
+                      All
+                    </Link>
+                  </td>
                 </tr>
               </tbody>
             </table>

@@ -16,6 +16,15 @@ export const RULETAB = {
   ALL: "all"
 };
 
+export const TABTYPE = {
+  ALL: "all",
+  HITS: "hits"
+};
+
+export const GENERICTYPE = {
+  ALL: "all"
+};
+
 export const MODE = {
   ADD: "Add",
   EDIT: "Edit"
@@ -40,6 +49,21 @@ export const HIT_STATUS = {
   REVIEWED: "Reviewed",
   NEW: "New",
   REOPENED: "Re_opened"
+};
+
+export const LOOKOUTSTATUS = {
+  ACTIVE: "ACTIVE",
+  INACTIVE: "INACTIVE",
+  DEMOTED: "DEMOTED",
+  NOTPROMOTED: "NOTPROMOTED",
+  ENCOUNTERED: "ENCOUNTERED",
+  REFERRED: "REFERRED",
+  MISSED: "MISSED",
+  ENROUTE: "ENROUTE",
+  POSITIVE: "POSITIVE",
+  NEGATIVE: "NEGATIVE",
+  DIDNOTBOARD: "DIDNOTBOARD",
+  UNCATEGORIZED: "UNCATEGORIZED"
 };
 
 export const DIRECTION = {
@@ -141,4 +165,15 @@ export const FORCE = {
 export const USERID = {
   MAX_LEN: 50,
   MIN_LEN: 3
+};
+
+export const SIGNUP_STATUS = {
+  NEW: "NEW",
+  APPROVED: "APPROVED",
+  REJECTED: "REJECTED"
+};
+
+export const SIGNUP_ACTIONS = {
+  REJECT: "Reject",
+  APPROVE: "Approve"
 };

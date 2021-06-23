@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
@@ -15,6 +15,7 @@ import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import CarrierBadge from "../../components/carrierBadge/CarrierBadge";
+import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import Overlay from "../../components/overlay/Overlay";
 import Confirm from "../../components/confirmationModal/Confirm";
 import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
@@ -25,14 +26,12 @@ import {
   asArray,
   getShortText,
   isShortText,
-  getAge,
-  alt,
   lpad5,
   addMinutes
 } from "../../utils/utils";
 import { cases, poe, usersemails } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
-import { ROLE, HIT_STATUS, LK } from "../../utils/constants";
+import { ROLE, HIT_STATUS, LK, LOOKOUTSTATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 
@@ -74,20 +73,15 @@ const Vetting = props => {
     },
     {
       value: "RE_OPENED",
-      label: "Reopen"
+      label: "Reopened"
     }
   ];
 
-  const getBiographicData = pax => {
-    return {
-      name: `${pax.lastName}, ${alt(pax.firstName).toLowerCase()}`,
-      gender: pax.gender,
-      dob: `${pax.dob} (${getAge(pax.dob)})`,
-      nationality: pax.nationality,
-      document: `DOC(${pax.docType}): ${pax.document}`,
-      flightId: pax.flightId,
-      paxId: pax.paxId
-    };
+  const isPromotable = currentStatus => {
+    return (
+      currentStatus === LOOKOUTSTATUS.NOTPROMOTED ||
+      currentStatus === LOOKOUTSTATUS.DEMOTED
+    );
   };
 
   const Headers = [
@@ -145,9 +139,7 @@ const Vetting = props => {
                 </Button>
               )}
             </Confirm>
-            {row.original.lookoutStatus !== "NOTPROMOTED" ? (
-              <></> //There doesn't need to be an indicator for an Already Promoted item, as it's self evident from the table.
-            ) : (
+            {isPromotable(row.original.lookoutStatus) ? (
               <Confirm
                 header={<Xl8 xid="vet029">Promote To Lookout</Xl8>}
                 message={
@@ -157,11 +149,7 @@ const Vetting = props => {
                     </Xl8>
                     <br />
                     <br />
-                    {row.original.lookoutStatus !== "NOTPROMOTED" ? (
-                      <Xl8 xid="vet031">Already Promoted</Xl8>
-                    ) : (
-                      <Xl8 xid="vet032">Promote To Lookout</Xl8>
-                    )}
+                    {`${row.original.lastName}, ${row.original.firstName}`}
                   </span>
                 }
               >
@@ -169,34 +157,28 @@ const Vetting = props => {
                   <Button
                     className="dropdown-item"
                     onClick={confirm(() =>
-                      promoteToLookout(row.original.paxId, "ACTIVE")
+                      promoteToLookout(row.original.paxId, LOOKOUTSTATUS.ACTIVE)
                     )}
                   >
-                    {row.original.lookoutStatus !== "NOTPROMOTED" ? (
-                      <Xl8 xid="vet033">Already Promoted</Xl8>
-                    ) : (
-                      <Xl8 xid="vet034">Promote To Lookout</Xl8>
-                    )}
+                    <Xl8 xid="vet034">Promote To Lookout</Xl8>
                   </Button>
                 )}
               </Confirm>
+            ) : (
+              <></>
             )}
           </RoleAuthenticator>
         </DropdownButton>
       )
     },
     {
-      Accessor: "countdownTime",
+      Accessor: "timer",
       Xl8: true,
       Header: ["wl018", "Timer"],
       Cell: ({ row }) => {
-        const future =
-          row.original.flightDirection === "O"
-            ? row.original.flightETDDate
-            : row.original.flightETADate;
         return (
           <CountdownBadge
-            future={future}
+            future={row.original.timer}
             baseline={now}
             direction={row.original.flightDirection}
           />
@@ -206,19 +188,33 @@ const Vetting = props => {
     {
       Accessor: "carrier",
       Xl8: true,
-      Header: ["wl029", "Carrier"],
-      Cell: ({ row }) => <CarrierBadge src={row.original.flightNumber}></CarrierBadge>
+      Header: ["wl029", "Flight"],
+      Cell: ({ row }) => (
+        <div className="carrier-badge-container">
+          <div className="margin-right-sm">
+            <CarrierBadge src={row.original.flightNumber}></CarrierBadge>
+          </div>
+          <ToolTipWrapper
+            data={{
+              val: (
+                <span className="carrier-badge-flight">{row.original.flightNumber}</span>
+              ),
+              lkup: LK.CARRIER
+            }}
+          ></ToolTipWrapper>
+        </div>
+      )
     },
     {
       Accessor: "flightNumber",
       Xl8: true,
-      Header: ["wl019", "Flight ID"],
+      disableFilters: true,
+      disableSortBy: true,
+      Header: ["wl019", "Flight Info"],
       Cell: ({ row }) => (
         <div className="vetting">
           <FlightBadge
             data={{
-              flightNumber: row.original.flightNumber,
-              fullFlightNumber: row.original.flightNumber,
               flightOrigin: row.original.flightOrigin,
               flightDestination: row.original.flightDestination,
               eta: row.original.flightETADate,
@@ -235,25 +231,25 @@ const Vetting = props => {
       Header: ["wl020", "Hits"],
       Cell: ({ row }) => {
         const listdata = asArray(row.original.hitNames).map((hit, index) => {
-          const triggerOverlay = !isShortText(hit, 20);
+          const triggerOverlay = !isShortText(hit, 45);
           return (
             <Overlay
               trigger={triggerOverlay ? ["click", "hover"] : ""}
               key={index}
               content={hit}
             >
-              <li className={triggerOverlay ? "as-info" : ""}>{getShortText(hit, 20)}</li>
+              <li className={triggerOverlay ? "as-info" : ""}>{getShortText(hit, 45)}</li>
             </Overlay>
           );
         });
-        return <ul className="bio-data">{listdata}</ul>;
+        return <ul className="hits-data">{listdata}</ul>;
       }
     },
     {
       Accessor: "lastName",
       Xl8: true,
       Header: ["wl021", "Biographic Information"],
-      Cell: ({ row }) => <BiographicInfo data={getBiographicData(row.original)} />
+      Cell: ({ row }) => <BiographicInfo data={row.original} />
     },
     {
       Accessor: "status",
@@ -272,6 +268,12 @@ const Vetting = props => {
   const onTableChange = () => {};
   const cb = () => {};
 
+  const initTableState = {
+    pageIndex: 0,
+    pageSize: 50,
+    sortBy: [{ id: "hitCounts", desc: true }]
+  };
+
   let startDate = new Date();
   let endDate = new Date();
   endDate.setDate(endDate.getDate() + 4);
@@ -284,6 +286,7 @@ const Vetting = props => {
   const [usersEmails, setUsersEmails] = useState({});
   const [tableKey, setTableKey] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [tableState] = useState(initTableState);
 
   const now = new Date();
   const initialParamState = {
@@ -300,6 +303,8 @@ const Vetting = props => {
     setFilterFormKey(filterFormKey + 1);
     return initialParamState;
   };
+
+  const getTableState = () => tableState;
 
   const changeStatus = (paxId, status) => {
     const newStatus =
@@ -324,23 +329,33 @@ const Vetting = props => {
     setFilterFormKey(filterFormKey + 1);
   };
 
-  const setDataWrapper = data => {
-    data = asArray(data.cases).map(item => {
-      item.id = item.id || `${item.flightId}${item.paxId}`;
-      item.carrier = item.flightNumber.slice(0, 2);
-      item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
+  const setDataWrapper = rawdata => {
+    const parseddata = asArray(rawdata.cases).map(item => {
+      const newitem = item;
+      newitem.id = item.id || `${item.flightId}${item.paxId}`;
+      newitem.carrier = item.flightNumber.slice(0, 2);
+      newitem.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
         item.medPrioHitCount
       )}:${lpad5(item.lowPrioHitCount)}`;
-      return item;
+      newitem.timer =
+        item.flightDirection === "O" ? item.flightETDDate : item.flightETADate;
+      return newitem;
     });
-    setData(data || []);
+
+    setData(parseddata || []);
     setTableKey(tableKey + 1);
     setIsLoading(false);
   };
 
   const parameterAdapter = fields => {
     setIsLoading(true);
-    let paramObject = { pageSize: 500, pageNumber: 1 };
+    let sortBy = [
+      {
+        column: "highPriorityRuleCatId",
+        dir: "asc"
+      }
+    ];
+    let paramObject = { pageSize: 500, pageNumber: 1, sort: sortBy };
     const fieldscopy = Object.assign([], fields);
     delete fieldscopy["showDateTimePicker"];
 
@@ -402,7 +417,6 @@ const Vetting = props => {
         }
       }
     });
-
     return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 
@@ -520,11 +534,11 @@ const Vetting = props => {
             />
             <LabelledInput
               datafield="flightNumber"
-              labelText={<Xl8 xid="vet012">Flight Number</Xl8>}
+              labelText={<Xl8 xid="vet012">Flight</Xl8>}
               inputtype="text"
               name="flightNumber"
               callback={cb}
-              alt={<Xl8 xid="3">Flight Number</Xl8>}
+              alt={<Xl8 xid="3">Flight</Xl8>}
             />
             <hr />
             <LabelledInput
@@ -616,6 +630,7 @@ const Vetting = props => {
           header={Headers}
           key={tableKey}
           isLoading={isLoading}
+          stateVals={getTableState}
         />
       </Main>
     </>

@@ -161,7 +161,7 @@ const Watchlist = props => {
   };
 
   const tabs = (
-    <Tabs defaultActiveKey={tab} id="wlTabs">
+    <Tabs defaultActiveKey={tab} id="wlTabs" className="gtas-tabs">
       <Tab
         eventKey={TAB.PAX}
         title={

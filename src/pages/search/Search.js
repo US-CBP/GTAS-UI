@@ -65,7 +65,7 @@ const Search = props => {
     },
     {
       Accessor: "flightNumber",
-      Header: "Flight Number",
+      Header: "Flight",
       Cell: ({ row }) => {
         return (
           <span className={getHighlight(row.original.flightNumber)}>

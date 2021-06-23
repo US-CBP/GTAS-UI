@@ -5,14 +5,14 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import Backend from "./fetch";
-import { translations } from "./services/serviceWrapper";
+import { preauthtranslations } from "./services/serviceWrapper";
 
 const lang = window.navigator.language.split("-")[0];
 
 let prefetchedData = [];
 
 export const getI18n = () =>
-  translations.get(lang).then(data => {
+  preauthtranslations.get(lang).then(data => {
     const backendOptions = {
       parse: function() {
         return prefetchedData;
@@ -34,7 +34,7 @@ export const getI18n = () =>
       .use(Backend)
       .init({
         lng: lang,
-        fallbackLng: lang,
+        fallbackLng: "en",
         backend: backendOptions,
         keySeparator: false,
         // debug: true,

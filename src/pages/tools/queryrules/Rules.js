@@ -78,6 +78,16 @@ const Rules = props => {
       Header: ["rul009", "Hits"]
     },
     {
+      Accessor: "posCount",
+      Xl8: true,
+      Header: ["rul015", "Positive"]
+    },
+    {
+      Accessor: "negCount",
+      Xl8: true,
+      Header: ["rul016", "Negative"]
+    },
+    {
       Accessor: "overMaxHits",
       Xl8: true,
       Header: ["rul010", "Over Max Hits"],
@@ -179,6 +189,8 @@ const Rules = props => {
           return {
             id: item.id,
             hitCount: item.hitCount,
+            posCount: item.posCount,
+            negCount: item.negCount,
             modifiedOn: item.modifiedOn,
             modifiedBy: item.modifiedBy,
             ...item.summary,
@@ -217,7 +229,7 @@ const Rules = props => {
   }, []);
 
   const tabs = (
-    <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs">
+    <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs" className="gtas-tabs">
       <Tab
         eventKey={RULETAB.MY}
         title={

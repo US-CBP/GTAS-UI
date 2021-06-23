@@ -90,8 +90,15 @@
   text-decoration: none;
 }
 
-.filter .as-info {
-  color: white;
+.filter {
+  .as-info {
+    color: white;
+  }
+  .flight-number {
+    .as-info {
+      color: unset;
+    }
+  }
 }
 
 .vetting .flight-badge.sm {

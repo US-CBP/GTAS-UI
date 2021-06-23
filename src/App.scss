@@ -241,13 +241,7 @@ input[type="radio"] {
 
 .as-info {
   cursor: pointer;
-  font-weight: 500;
   color: #008177;
-}
-
-.bs-popover-top > .arrow::after,
-.bs-popover-auto[x-placement^="top"] > .arrow::after {
-  border-top-color: #575756 !important;
 }
 
 .img-arrival {
@@ -575,21 +569,32 @@ li .rtf--ab__c button[variant="rtf-red"] {
 }
 
 .overlay-content {
+  border: 1.5px solid white;
   background-color: #575756;
   color: white !important;
   border-radius: 0.3rem;
   text-align: center;
 }
 
-.overlay-content-light {
-  color: #575756;
-  background-color: white !important;
-  border-radius: 0.3rem;
-  text-align: center;
+.arrow::after,
+.bs-popover-auto[x-placement^="top"] > .arrow::after {
+  border-top-color: #575756 !important;
+  color: #575756 !important;
+}
+
+.bs-popover-top > .arrow,
+.bs-popover-auto[x-placement^="top"] > .arrow {
+  bottom: calc(-0.5rem - 0px) !important;
+}
+
+.bs-popover-top > .arrow::before,
+.bs-popover-auto[x-placement^="top"] > .arrow::before {
+  border-top-color: white !important;
+  border-width: 0.5rem 0.55rem 0 !important;
 }
 
 .popover {
-  border-radius: 0.5rem !important;
+  border-radius: 0.3rem !important;
 }
 
 .valid-input-checkbox {
@@ -611,4 +616,15 @@ li .rtf--ab__c button[variant="rtf-red"] {
 
 .table-hover tbody tr:hover {
   background-color: #74c0e035 !important;
+}
+
+.margin-right-sm {
+  margin-right: 5px;
+}
+
+.filterform-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  backdrop-filter: brightness(0.5) blur(3px);
+  border-bottom: 1px solid white;
 }

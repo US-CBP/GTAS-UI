@@ -7,14 +7,15 @@ import { Link, useParams } from "@reach/router";
 import Seat from "./seat/Seat";
 import Legend from "./legend/Legend";
 import SeatChartCard from "./seatChartCard/SeatChartCard";
-import Loading from "../loading/Loading";
-import Xl8 from "../xl8/Xl8";
+import Loading from "../../components/loading/Loading";
+import Xl8 from "../../components/xl8/Xl8";
 import SearchSeat from "./searchSeat/SearchSeat";
-import SidenavContainer from "../sidenavContainer/SidenavContainer";
-import Main from "../main/Main";
+import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
+import Main from "../../components/main/Main";
 import { seats } from "../../services/serviceWrapper";
 import { Row, CardDeck, Card } from "react-bootstrap";
 import { asArray, hasData, localeDate } from "../../utils/utils";
+import { GENERICTYPE } from "../../utils/constants";
 import "./SeatChart.scss";
 
 const SeatChart = ({ location }) => {
@@ -25,6 +26,7 @@ const SeatChart = ({ location }) => {
   const [selectedSeatInfo, setSelectedSeatInfo] = useState({});
   const [showPending, setShowPending] = useState(true);
   const [searchedSeats, setSearchedSeats] = useState();
+  const [showPax, setShowPax] = useState();
   const seatRefs = useRef({});
   const searchRef = useRef({});
 
@@ -104,6 +106,11 @@ const SeatChart = ({ location }) => {
       processData(res);
       setShowPending(false);
     });
+
+    // hide the pax tile if we are not viewing a specific pax yet
+    if (paxId === GENERICTYPE.ALL && currentPaxSeat === GENERICTYPE.ALL)
+      setShowPax(false);
+    else setShowPax(true);
   }, []);
 
   useEffect(() => {
@@ -112,7 +119,7 @@ const SeatChart = ({ location }) => {
 
   const flightInfoData = [
     {
-      label: <Xl8 xid="seat004">Flight Number</Xl8>,
+      label: <Xl8 xid="seat004">Flight</Xl8>,
       value: location.state?.flightNumber
     },
     {
@@ -200,12 +207,14 @@ const SeatChart = ({ location }) => {
             </Card.Header>
             <SeatChartCard data={flightInfoData} link={linkToFlightPax} />
           </Card>
-          <Card>
-            <Card.Header>
-              <Xl8 xid="seat003">Passenger Information</Xl8>
-            </Card.Header>
-            <SeatChartCard data={seatInfoData} link={linkToPaxdetails} />
-          </Card>
+          {showPax && (
+            <Card>
+              <Card.Header>
+                <Xl8 xid="seat003">Passenger Information</Xl8>
+              </Card.Header>
+              <SeatChartCard data={seatInfoData} link={linkToPaxdetails} />
+            </Card>
+          )}
         </CardDeck>
       </Main>
     </>

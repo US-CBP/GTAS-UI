@@ -66,11 +66,12 @@ const LangModal = props => {
               spacebetween
             />
             <LabelledInput
+              datafield
               labelText="Default Text"
               inputtype="label"
               readOnly
               inputval={data.orig}
-              name="default"
+              name="defaultText"
               alt="Default Text"
               callback={cb}
               spacebetweenwrap

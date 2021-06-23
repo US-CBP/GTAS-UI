@@ -11,8 +11,17 @@ import BASE_URL, {
   stringify
 } from "./baseService";
 
-const LOGIN = `${BASE_URL}gtas/authenticate`;
+// pre-authentication requests
+const LOGIN = `${BASE_URL}gtas/api/authenticate`;
+const SIGNUP = `${BASE_URL}gtas/api/preauth/signup`;
+const FORGOTPASSWORD = `${BASE_URL}gtas/api/preauth/forgotpassword`;
+const FORGOTUSERNAME = `${BASE_URL}gtas/api/preauth/forgotusername`;
+const PHYSICALLOCATIONS = `${BASE_URL}gtas/api/preauth/locations`;
+const PREAUTHTRANSLATIONS = `${BASE_URL}gtas/api/preauth/translation`;
+
+const LOGOUT = `${BASE_URL}gtas/api/logout`;
 const USERS = `${BASE_URL}gtas/users`;
+const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
 const USERSNONARCHIVED = `${USERS}/nonarchived`;
 const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
@@ -50,14 +59,9 @@ const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 const LOGFILE = `${BASE_URL}gtas/api/logs/`;
-const SIGNUP = `${BASE_URL}gtas/user/signup/new`;
-const PHYSICALLOCATIONS = `${BASE_URL}gtas/user/signup/physiclLocations`;
 const SIGNUPREQUESTS = `${BASE_URL}gtas/api/signup-requests`;
 const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
 const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
-const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
-const FORGOTUSERNAME = `${BASE_URL}gtas/forgot-username`;
-const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 const SEARCH = `${BASE_URL}gtas/search`;
 const SEATS = `${BASE_URL}gtas/seats`;
 const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
@@ -72,6 +76,10 @@ const POETILES = `${BASE_URL}gtas/api/POE/tiles`;
 export const translations = {
   get: id => get(TRANSLATIONS, BASEHEADER, id),
   post: body => post(TRANSLATIONS, BASEHEADER, stringify(body))
+};
+
+export const preauthtranslations = {
+  get: id => get(PREAUTHTRANSLATIONS, BASEHEADER, id)
 };
 
 export const users = {
@@ -99,7 +107,10 @@ export const hitcatspost = {
   }
 };
 
-export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
+export const flights = {
+  get: params => get(FLIGHTS, BASEHEADER, undefined, params),
+  getSingleFlightInfo: id => get(FLIGHTS, BASEHEADER, id)
+};
 export const auditlog = {
   get: {
     logs: params => get(AUDITLOG, BASEHEADER, undefined, params),
@@ -231,6 +242,10 @@ export const login = {
       return get(LOGGEDIN_USER, BASEHEADER);
     });
   }
+};
+
+export const logout = {
+  get: () => get(LOGOUT, BASEHEADER)
 };
 
 export const query = {

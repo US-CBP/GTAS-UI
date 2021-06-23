@@ -37,7 +37,6 @@ const PaxInfo = props => {
           <>
             <LazyImage val={res.nationality} type={LK.COUNTRY}></LazyImage>
             <ToolTipWrapper
-              className="overlay-content-light"
               data={{ val: res.nationality, lkup: LK.COUNTRY }}
             ></ToolTipWrapper>
           </>
@@ -48,7 +47,7 @@ const PaxInfo = props => {
         label: <Xl8 xid="pd015">Seat</Xl8>,
         value: (
           <Link
-            to={`/gtas/seat-chart/${res.flightId}/${res.paxId}/${
+            to={`/gtas/seatchart/${res.flightId}/${res.paxId}/${
               res.seat !== "N/A" ? res.seat : "NA"
             }`}
             className="pax-info-link"
