@@ -57,6 +57,8 @@ $transparent: rgba(223, 231, 247, 0.14);
 .login-labeled-input {
   width: 75% !important;
   margin: auto;
+  max-width: 350px;
+  min-width: 200px;
 }
 
 .logo {
