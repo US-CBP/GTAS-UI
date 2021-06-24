@@ -2,29 +2,22 @@
 //
 // Please see license.txt for details.
 
-import React from "react";
-import { Row } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import { alt, hasData } from "../../utils/utils";
 import "./CountdownBadge.css";
 import Xl8 from "../xl8/Xl8";
+import { TIME } from "../../utils/constants";
 
-//TODO - refactor. clean and possibly move the calcs to utils.
 const CountdownBadge = props => {
-  if (!props.future) return <></>;
+  const [days, setDays] = useState();
+  const [hours, setHours] = useState();
+  const [minutes, setMinutes] = useState();
+  const [dayraw, setDayraw] = useState();
+  const [hrsraw, setHrsraw] = useState();
+  const [sign, setSign] = useState();
+  const [isPos, setIsPos] = useState();
 
   const incoming = new Date(props.future);
-  const now = props.now || new Date();
-  const deltaRaw = (incoming - now) / 1000;
-  const isPos = deltaRaw >= 0;
-  const delta = Math.abs(deltaRaw);
-
-  const getIconClass = () => {
-    const dir = props.direction;
-    if (!dir) return "";
-
-    return dir === "I" ? "img-arrival" : dir === "O" ? "img-departure" : "";
-  };
-
   const pad = val => {
     if (isNaN(val)) return 0;
 
@@ -39,44 +32,42 @@ const CountdownBadge = props => {
     if (+val === 0 || isNaN(+val)) return alt;
     return val;
   };
-
-  const sign = isPos ? "" : "-";
   const parse = (val, alt) => altZero(pad(val), alt);
 
-  const dayraw = Math.floor(delta / 86400);
-  const hrsraw = Math.floor(delta / 3600) % 24;
-  const minraw = Math.floor(delta / 60) % 60;
-  const days = altZero(dayraw);
-  const hours = !days ? parse(hrsraw) : pad(Math.abs(hrsraw));
-  const minutes = !days && !hours ? parse(minraw, "00") : pad(Math.abs(minraw));
+  //TODO - refactor. clean and possibly move the calcs to utils.
+  const calcTimer = () => {
+    const now = new Date();
+    const deltaRaw = (incoming - now) / 1000;
+    const isPos = deltaRaw >= 0;
+    const delta = Math.abs(deltaRaw);
+
+    const dayraw = Math.floor(delta / 86400);
+    const hrsraw = Math.floor(delta / 3600) % 24;
+    const minraw = Math.floor(delta / 60) % 60;
+    const days = altZero(dayraw);
+    const hours = !days ? parse(hrsraw) : pad(Math.abs(hrsraw));
+    const minutes = !days && !hours ? parse(minraw, "00") : pad(Math.abs(minraw));
+
+    setSign(isPos ? "" : "-");
+    setDayraw(dayraw);
+    setHrsraw(hrsraw);
+    setMinutes(minutes);
+    setIsPos(isPos);
+    setDays(days);
+    setHours(hours);
+    setMinutes(minutes);
+  };
+
+  const getIconClass = () => {
+    const dir = props.direction;
+    if (!dir) return "";
+
+    return dir === "I" ? "img-arrival" : dir === "O" ? "img-departure" : "";
+  };
 
   const d = <Xl8 xid="cdb001">d</Xl8>;
   const h = <Xl8 xid="cdb002">h</Xl8>;
   const m = <Xl8 xid="cdb003">m</Xl8>;
-  const formatedDays = days ? (
-    <span>
-      {days}
-      {d}
-    </span>
-  ) : (
-    days
-  );
-  const formatedHours = hours ? (
-    <span>
-      {hours}
-      {h}
-    </span>
-  ) : (
-    hours
-  );
-  const formatedMinutes = minutes ? (
-    <span>
-      {minutes}
-      {m}
-    </span>
-  ) : (
-    minutes
-  );
 
   const getStyle = () => {
     if (dayraw > 1) return "bordered cdb-white";
@@ -94,14 +85,37 @@ const CountdownBadge = props => {
     return "";
   };
 
+  useEffect(() => {
+    calcTimer();
+  }, [incoming]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      calcTimer();
+    }, TIME.MINUTE);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  if (!props.future) return <></>;
+
   return (
-    <div className="text-center">
+    <div className="text-center" key={incoming}>
       <div flex="true" no-wrap="true" className={`cdb-row sm ${getStyle()}`}>
         <span className={getIconClass()}></span>
         <span>{sign}</span>
-        <span className={getSpanStyle(formatedDays)}>{formatedDays}</span>
-        <span className={getSpanStyle(formatedHours)}>{formatedHours}</span>
-        <span className={getSpanStyle(minutes)}>{formatedMinutes}</span>
+        <span className={getSpanStyle(days)}>
+          {days}
+          {hasData(days) && d}
+        </span>
+        <span className={getSpanStyle(hours)}>
+          {hours}
+          {hasData(hours) && h}
+        </span>
+        <span className={getSpanStyle(minutes)}>
+          {minutes}
+          {hasData(minutes) && m}
+        </span>
       </div>
     </div>
   );
