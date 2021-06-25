@@ -18,6 +18,7 @@ import QRModal from "./QRModal";
 import { Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./QueryRules.css";
+import {UserContext} from "../../../context/user/UserContext";
 
 //TODO - the two fetches, rulesall and rules, are separate but they don't need to be. Until we have requirements preventing some
 //users or roles from fetching all rules, we should consider pulling all data from rulesall and filtering the results for "my rules".
@@ -35,6 +36,8 @@ const Rules = props => {
   const [tablekey, setTablekey] = useState(0);
   const ctx = useContext(LookupContext);
   const unsavedRuleKey = "lastRule";
+  const [myRules, setMyRules] = useState();
+  const [allRules, setAllRules] = useState();
 
   const cb = () => {};
 
@@ -182,11 +185,12 @@ const Rules = props => {
 
   const fetchTableData = svc => {
     (svc || service).get().then(res => {
-      let parsed = [];
+      let all = [];
+      let mine = [];
 
       if (hasData(res)) {
-        parsed = res.map(item => {
-          return {
+        res.forEach(item => {
+          let parsedItem = {
             id: item.id,
             hitCount: item.hitCount,
             posCount: item.posCount,
@@ -197,10 +201,19 @@ const Rules = props => {
             overMaxHits: item.summary.overMaxHits === true ? 1 : 0,
             enabled: item.summary.enabled === true ? 1 : 0
           };
+          if (isLoggedinUser(parsedItem.author)) {
+            mine.push(parsedItem); //if author is logged in user, add to 'my' list
+          }
+            all.push(parsedItem); //always add to 'all rules'.
         });
       }
-
-      setData(parsed);
+      setAllRules(all);
+      setMyRules(mine);
+      if (tab === RULETAB.ALL) {
+        setData(all);
+      } else{
+        setData(mine);
+      }
       setTablekey(tablekey + 1);
     });
   };
@@ -208,8 +221,16 @@ const Rules = props => {
   // on tab
   useEffect(() => {
     if (tab) {
-      const svc = tab === RULETAB.ALL ? rulesall : rule;
-      fetchTableData(svc);
+      if(hasData(allRules)) {
+        if (tab === RULETAB.ALL) { //set to myRules/allRules based on tab. Replace with indexed DB? Maybe not necessary to store?
+          setData(allRules);
+        } else{
+          setData(myRules);
+        }
+        setTablekey(tablekey + 1);
+      } else {
+        fetchTableData(rulesall);
+      }
     }
   }, [tab]);
 
@@ -227,6 +248,13 @@ const Rules = props => {
       ctx.lookupAction({ type: unsavedRuleKey, method: "delete" });
     }
   }, []);
+
+  //For separating "myRules/allRules"
+  const { getUserState } = useContext(UserContext);
+  const isLoggedinUser = userId => {
+    const loggedinUser = getUserState();
+    return loggedinUser.userId === userId;
+  };
 
   const tabs = (
     <Tabs defaultActiveKey={RULETAB.MY} id="qrTabs" className="gtas-tabs">
