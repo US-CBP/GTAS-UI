@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import {get, put, post, del, putNoId, downloadWrap} from "./genericService";
+import { get, put, post, del, putNoId, downloadWrap } from "./genericService";
 import BASE_URL, {
   BASEFILEHEADER,
   BASEHEADER,
@@ -11,8 +11,17 @@ import BASE_URL, {
   stringify
 } from "./baseService";
 
-const LOGIN = `${BASE_URL}gtas/authenticate`;
+// pre-authentication requests
+const LOGIN = `${BASE_URL}gtas/api/authenticate`;
+const SIGNUP = `${BASE_URL}gtas/api/preauth/signup`;
+const FORGOTPASSWORD = `${BASE_URL}gtas/api/preauth/forgotpassword`;
+const FORGOTUSERNAME = `${BASE_URL}gtas/api/preauth/forgotusername`;
+const PHYSICALLOCATIONS = `${BASE_URL}gtas/api/preauth/locations`;
+const PREAUTHTRANSLATIONS = `${BASE_URL}gtas/api/preauth/translation`;
+
+const LOGOUT = `${BASE_URL}gtas/api/logout`;
 const USERS = `${BASE_URL}gtas/users`;
+const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 const MANAGEUSERS = `${BASE_URL}gtas/manageuser`;
 const USERSNONARCHIVED = `${USERS}/nonarchived`;
 const USERSEMAIL = `${BASE_URL}gtas/users/emails`;
@@ -50,26 +59,27 @@ const CYPHER = HOST + "cypherUrl";
 const CYPHERAUTH = HOST + "cypherAuth";
 const MANUALHIT = `${BASE_URL}gtas/createmanualpvl`;
 const LOGFILE = `${BASE_URL}gtas/api/logs/`;
-const SIGNUP = `${BASE_URL}gtas/user/signup/new`;
-const PHYSICALLOCATIONS = `${BASE_URL}gtas/user/signup/physiclLocations`;
 const SIGNUPREQUESTS = `${BASE_URL}gtas/api/signup-requests`;
 const SIGNUPREQUESTAPPROVE = `${BASE_URL}gtas/signupRequest/approve`;
 const SIGNUPREQUESTSREJECT = `${BASE_URL}gtas/signupRequest/reject`;
-const FORGOTPASSWORD = `${BASE_URL}gtas/forgot-password`;
-const FORGOTUSERNAME = `${BASE_URL}gtas/forgot-username`;
-const RESETPASSWORD = `${BASE_URL}gtas/reset-password`;
 const SEARCH = `${BASE_URL}gtas/search`;
 const SEATS = `${BASE_URL}gtas/seats`;
 const ATTACHMENTS = `${BASE_URL}gtas/attachments`;
 const ATTACHMENTSMETA = `${BASE_URL}gtas/attachmentsmeta`;
 const DOWNLOADATTACHMENT = `${BASE_URL}gtas/attachment`;
 const TRANSLATIONS = `${BASE_URL}gtas/api/translation`;
+const POELANES = `${BASE_URL}gtas/api/POE/lanes`;
+const POETILES = `${BASE_URL}gtas/api/POE/tiles`;
 
 // ENTITY METHODS
 
 export const translations = {
   get: id => get(TRANSLATIONS, BASEHEADER, id),
   post: body => post(TRANSLATIONS, BASEHEADER, stringify(body))
+};
+
+export const preauthtranslations = {
+  get: id => get(PREAUTHTRANSLATIONS, BASEHEADER, id)
 };
 
 export const users = {
@@ -97,7 +107,10 @@ export const hitcatspost = {
   }
 };
 
-export const flights = { get: params => get(FLIGHTS, BASEHEADER, undefined, params) };
+export const flights = {
+  get: params => get(FLIGHTS, BASEHEADER, undefined, params),
+  getSingleFlightInfo: id => get(FLIGHTS, BASEHEADER, id)
+};
 export const auditlog = {
   get: {
     logs: params => get(AUDITLOG, BASEHEADER, undefined, params),
@@ -205,7 +218,7 @@ export const attachment = {
     },
     download: (attachmentId, fileName) => {
       const path = DOWNLOADATTACHMENT + `?attachmentId=${attachmentId}`;
-      get(path, BASEFILEHEADER).then(res =>{
+      get(path, BASEFILEHEADER).then(res => {
         downloadWrap(res, fileName);
       });
       //window.open(path, "_self");
@@ -216,10 +229,6 @@ export const attachment = {
     return del(ATTACHMENTS, BASEHEADER, attachmentId);
   }
 };
-
-// export const airportLookup = { get: () => get(CODES_AIRPORT_LK, BASEHEADER) };
-// export const countryLookup = { get: () => get(CODES_COUNTRY_LK, BASEHEADER) };
-// export const carrierLookup = { get: () => get(CODES_CARRIER_LK, BASEHEADER) };
 
 export const login = {
   post: body => {
@@ -233,6 +242,10 @@ export const login = {
       return get(LOGGEDIN_USER, BASEHEADER);
     });
   }
+};
+
+export const logout = {
+  get: () => get(LOGOUT, BASEHEADER)
 };
 
 export const query = {
@@ -323,7 +336,7 @@ export const manualHit = {
 export const logfile = {
   get: (id, params) => get(LOGFILE, BASEHEADER, id, params),
   download: (params, fileName) => {
-    get(LOGFILE+params, BASEHEADER).then(res=>{
+    get(LOGFILE + params, BASEHEADER).then(res => {
       downloadWrap(res, fileName);
     });
     //window.open(LOGFILE + params, "_self")
@@ -376,5 +389,30 @@ export const forgotUsername = {
   post: body => {
     const header = `${FORGOTUSERNAME}?userEmail=${body.userEmail}`;
     return post(header, SIGNUPHEADER, stringify(body));
+  }
+};
+
+export const poe = {
+  get: {
+    getAllLanes: () => get(POELANES, BASEHEADER),
+    getAllTiles: params => get(POETILES, BASEHEADER, undefined, params)
+  },
+  put: {
+    updatePOEStatus: body => {
+      return putNoId(POETILES, BASEHEADER, stringify(body));
+    },
+    updateLane: body => {
+      return putNoId(POELANES, BASEHEADER, stringify(body));
+    }
+  },
+  post: {
+    createNewLane: body => {
+      return post(POELANES, BASEHEADER, stringify(body));
+    }
+  },
+  del: {
+    deleteLane: id => {
+      return del(POELANES, BASEHEADER, id);
+    }
   }
 };

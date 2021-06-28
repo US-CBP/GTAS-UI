@@ -243,3 +243,21 @@
   width: 100%;
   min-width: 600px;
 }
+
+/* .ppt-container-query {
+  position: absolute;
+  bottom: 10px;
+} */
+
+.ppt-container-results {
+  width: 300px !important;
+  min-width: 300px;
+  padding: 0;
+  border-bottom-right-radius: 5px 5px;
+  border-bottom-left-radius: 5px 5px;
+  overflow: auto;
+  position: fixed;
+  bottom: 110px;
+  max-height: 680px;
+  right: 30px;
+}

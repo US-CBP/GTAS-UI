@@ -3,8 +3,7 @@
 // Please see license.txt for details.
 
 import React, { useContext, useRef, useState } from "react";
-import { Link } from "@reach/router";
-import { navigate, useLocation } from "@reach/router";
+import { Link, navigate, useLocation } from "@reach/router";
 import RoleAuthenticator from "../../context/roleAuthenticator/RoleAuthenticator";
 import Toast from "../toast/Toast";
 import ChangePasswordModal from "../../pages/admin/manageUsers/changePasswordModal/ChangePasswordModal";
@@ -13,7 +12,7 @@ import { LiveEditContext } from "../../context/translation/LiveEditContext";
 import { ACTION, FULLPATH_TO, ROLE } from "../../utils/constants";
 import { hasData } from "../../utils/utils";
 import Xl8 from "../../components/xl8/Xl8";
-
+import { logout } from "../../services/serviceWrapper";
 import {
   Nav,
   Navbar,
@@ -23,7 +22,7 @@ import {
   Button,
   InputGroup
 } from "react-bootstrap";
-import wcoLogo from "../../images/WCO_GTAS_header_brand.png";
+import wcoLogo from "../../images/WCO_GTAS_header_brand_sm.png";
 import "./Header.scss";
 
 const Header = () => {
@@ -31,14 +30,15 @@ const Header = () => {
   const { action } = useContext(LiveEditContext);
   const user = getUserState();
 
-  const logout = () => {
+  const logoff = () => {
     action({ type: "read" });
     userAction({ type: "logoff" });
+    logout.get();
 
     navigate(FULLPATH_TO.LOGIN);
   };
 
-  if (user === undefined) logout();
+  if (user === undefined) logoff();
 
   const [currentLang] = useState(window.navigator.language.split("-")[0]);
 
@@ -83,7 +83,8 @@ const Header = () => {
     return currentPath.pathname.startsWith(tabName) ? "active-tab" : "";
   };
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = e => {
+    e.preventDefault();
     const searchParam = searchInputRef.current.value;
     if (hasData(searchParam)) {
       navigate(`/gtas/search/${searchParam}`);
@@ -101,7 +102,7 @@ const Header = () => {
   return (
     <>
       <Navbar sticky="top" expand="md" className="header-navbar" variant="dark">
-        <Navbar.Brand className="header-navbar-brand">
+        <Navbar.Brand className="header-navbar-brand margin-top-0">
           <RoleAuthenticator roles={[ROLE.ADMIN, ROLE.FLIGHTVWR]} alt={<></>}>
             <Link to="flights" onClick={() => clickTab(htab.FLIGHT)}>
               <img src={wcoLogo} alt="WCO logo" />
@@ -109,12 +110,12 @@ const Header = () => {
           </RoleAuthenticator>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" ref={toggleRef} />
-        <Navbar.Collapse>
+        <Navbar.Collapse className="header-height">
           <Nav variant="tabs" className="left-nav">
             <Nav.Link
               as={Link}
               to="flights"
-              className={`${getActiveClass(htab.FLIGHT)}`}
+              className={`${getActiveClass(htab.FLIGHT)} nav-tab`}
               onClick={() => clickTab(htab.FLIGHT)}
             >
               <Xl8 xid="head001">Flights</Xl8>
@@ -123,7 +124,7 @@ const Header = () => {
               <Nav.Link
                 as={Link}
                 to="vetting"
-                className={`${getActiveClass(htab.VETTING)}`}
+                className={`${getActiveClass(htab.VETTING)} nav-tab`}
                 onClick={() => clickTab(htab.VETTING)}
               >
                 <Xl8 xid="head002">Vetting</Xl8>
@@ -132,7 +133,7 @@ const Header = () => {
             <Nav.Link
               as={Link}
               to="poe"
-              className={`future ${getActiveClass(htab.POE)} optional`}
+              className={`${getActiveClass(htab.POE)} nav-tab`}
               onClick={() => clickTab(htab.POE)}
             >
               <Xl8 xid="head007">POE</Xl8>
@@ -141,7 +142,7 @@ const Header = () => {
             <Nav.Link
               as={Link}
               to="tools"
-              className={`${getActiveClass(htab.TOOLS)}`}
+              className={`${getActiveClass(htab.TOOLS)} nav-tab`}
               onClick={() => clickTab(htab.TOOLS)}
             >
               <Xl8 xid="head004">Tools</Xl8>
@@ -150,7 +151,7 @@ const Header = () => {
               <Nav.Link
                 as={Link}
                 to="admin"
-                className={`${getActiveClass(htab.ADMIN)}`}
+                className={`${getActiveClass(htab.ADMIN)} nav-tab`}
                 onClick={() => clickTab(htab.ADMIN)}
               >
                 <Xl8 xid="head003">Admin</Xl8>
@@ -158,20 +159,20 @@ const Header = () => {
               <Nav.Link
                 as={Link}
                 to="langEditor"
-                className={`${getActiveClass(htab.LANG)} optional`}
+                className={`${getActiveClass(htab.LANG)} optional nav-tab`}
                 onClick={() => clickTab(htab.LANG)}
               >
-                <i className="fa fa-language mx-sm-1 language-icon"></i>
+                <i className="fa fa-language language-icon"></i>
                 {currentLang}
               </Nav.Link>
             </RoleAuthenticator>
           </Nav>
           <Nav className="ml-auto">
-            <Form inline className="header-search">
+            <Form inline className="header-search" onSubmit={handleSearchSubmit}>
               <InputGroup>
                 <FormControl type="text" ref={searchInputRef} className="search-150" />
                 <InputGroup.Append>
-                  <Button variant="light" onClick={handleSearchSubmit}>
+                  <Button variant="light" type="submit">
                     <i className="fa fa-search"></i>
                   </Button>
                 </InputGroup.Append>
@@ -182,7 +183,7 @@ const Header = () => {
                 {<Xl8 xid="head005">Change password</Xl8>}
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logout}>
+              <NavDropdown.Item onClick={logoff}>
                 {<Xl8 xid="head006">Logout</Xl8>}
               </NavDropdown.Item>
             </NavDropdown>

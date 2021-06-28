@@ -4,7 +4,6 @@
 
 import React, { useEffect, useState } from "react";
 import Xl8 from "../../../components/xl8/Xl8";
-import { CardColumns } from "react-bootstrap";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import { paxFlightHistory, paxFullTravelHistory } from "../../../services/serviceWrapper";
 import { asArray, hasData, localeDate } from "../../../utils/utils";
@@ -12,7 +11,7 @@ import { Link } from "@reach/router";
 
 const FlightHistory = props => {
   const headers = {
-    fullFlightNumber: <Xl8 xid="fh001">Flight Number</Xl8>,
+    fullFlightNumber: <Xl8 xid="fh001">Flight</Xl8>,
     etd: <Xl8 xid="fh002">Departure</Xl8>,
     eta: <Xl8 xid="fh003">Arrival</Xl8>,
     originCountry: <Xl8 xid="fh004">Origin Country</Xl8>,
@@ -31,24 +30,14 @@ const FlightHistory = props => {
     //Only prime flights need a link
     const flightId = flight.flightId || flight.id;
     const isPrimeFlight = !flight.bookingDetail && hasData(flight.direction);
-    const stateData = {
-      direction: flight.direction,
-      eta: flight.eta,
-      etd: flight.etd,
-      fullFlightNumber: flight.fullFlightNumber,
-      flightDestination: flight.destination,
-      flightOrigin: flight.origin,
-      passengerCount: flight.passengerCount
-    };
 
     return isPrimeFlight ? (
-      <Link to={"/gtas/flightpax/" + flightId} state={{ data: stateData }}>
-        {flight.fullFlightNumber}
-      </Link>
+      <Link to={"/gtas/flightpax/" + flightId}>{flight.fullFlightNumber}</Link>
     ) : (
       flight.fullFlightNumber
     );
   };
+
   const parseFlightData = dataArray => {
     return dataArray.map(data => {
       return {
@@ -71,7 +60,6 @@ const FlightHistory = props => {
 
     paxFullTravelHistory.get(props.flightId, props.paxId).then(res => {
       const historyData = asArray(res).sort(sortFlightByEta);
-
       const data = parseFlightData(historyData);
 
       setFullTravelHistory(data);
@@ -84,20 +72,18 @@ const FlightHistory = props => {
 
   return (
     <div className="one-column-container">
-      <CardColumns>
+      <div className="grid-single-col">
         <CardWithTable
           data={currentFlightHistory}
           headers={headers}
-          className="pd-gridstack-2 flex-grow-0"
           title={<Xl8 xid="fh009">Current Itinerary</Xl8>}
         />
         <CardWithTable
           data={fullTravelHistory}
           headers={headers}
-          className="pd-gridstack-2 flex-grow-1"
           title={<Xl8 xid="fh010">Total Flight History</Xl8>}
         />
-      </CardColumns>
+      </div>
     </div>
   );
 };

@@ -24,7 +24,7 @@ const CreateManualHit = props => {
   const [wlCategories, setWlCategories] = useState([]);
   const paxId = props.paxId;
   const flightId = props.flightId;
-  const { refreshAndReturn } = useContext(LookupContext);
+  const { refreshPartial } = useContext(LookupContext);
 
   const handleClose = () => {
     setShow(false);
@@ -33,7 +33,7 @@ const CreateManualHit = props => {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    refreshAndReturn(LK.HITCAT).then(res => {
+    refreshPartial(LK.HITCAT).then(res => {
       const wlc = asArray(res).map(wl => {
         return {
           label: wl.label,

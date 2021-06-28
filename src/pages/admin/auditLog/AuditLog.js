@@ -15,11 +15,12 @@ import Main from "../../../components/main/Main";
 import { addMinutes, asArray, localeDate } from "../../../utils/utils";
 
 const AuditLog = ({ name }) => {
-  const cb = function(result) {};
+  const cb = () => {};
   const [data, setData] = useState();
   const [refreshKey, setRefreshKey] = useState(1);
   const [filterKey, setFilterKey] = useState(0);
   const [auditActions, setAuditActions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const selectAllActions = "Select All Actions";
   let startDate = new Date();
   startDate.setDate(startDate.getDate() - 1);
@@ -51,6 +52,7 @@ const AuditLog = ({ name }) => {
   }, []);
 
   const preFetchCallback = params => {
+    setIsLoading(true);
     let parsedParams = "?";
     if (params) {
       if (params.startDate) {
@@ -95,13 +97,14 @@ const AuditLog = ({ name }) => {
       Accessor: "timestamp",
       Xl8: true,
       Header: ["al009", "Timestamp"],
-      Cell: ({ row }) => localeDate(row.original.timestampInMilli)
+      Cell: ({ row }) => localeDate(row.original.timestamp)
     }
   ];
 
   const setDataWrapper = res => {
     setData(res);
     setRefreshKey(refreshKey + 1);
+    setIsLoading(false);
   };
 
   return (
@@ -167,6 +170,7 @@ const AuditLog = ({ name }) => {
           id="Audit Log"
           callback={cb}
           header={headers}
+          isLoading={isLoading}
         ></Table>
       </Main>
     </>

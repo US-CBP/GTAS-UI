@@ -5,6 +5,7 @@
 import React, { useState, useEffect } from "react";
 import CardWithTable from "../../../components/cardWithTable/CardWithTable";
 import Xl8 from "../../../components/xl8/Xl8";
+import LazyImage from "../../../components/lazyImage/LazyImage";
 import {
   paxWatchListLink,
   flightpaxHitSummary,

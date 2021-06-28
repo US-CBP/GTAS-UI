@@ -11,10 +11,11 @@
 }
 
 .biographic-info-row {
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
   white-space: nowrap;
   margin-right: unset;
   margin-left: unset;
+  display: flex;
 }

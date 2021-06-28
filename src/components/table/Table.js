@@ -14,12 +14,11 @@ import {
   useFilters
 } from "react-table";
 import { navigate } from "@reach/router";
-// import { withTranslation } from 'react-i18next';
 import Xl8 from "../xl8/Xl8";
 import Loading from "../../components/loading/Loading";
 import { Table as RBTable, Pagination, Button } from "react-bootstrap";
-import { jsonToCSV } from "react-papaparse";
 import { useExportData } from "react-table-plugins";
+import { getExportFileBlob, BooleanFilter, ColumnFilter } from "./table-utils";
 import "./Table.css";
 
 //Will auto-populate with data retrieved from the given uri
@@ -31,13 +30,14 @@ const Table = props => {
   // props.data === []        ==> fetch is complete, data has no rows
   // hasData(props.data)      ==> fetch is complete, data has rows
 
-  const [data, setData] = useState(props.data || undefined);
+  const [propsdata] = useState(props.data || undefined);
+  const [parsedData, setParsedData] = useState();
   const [header, setHeader] = useState(props.header || []);
   const [columns, setColumns] = useState([]);
-  const [rowcount, setRowcount] = useState("");
   const stateVals = props.hasOwnProperty("stateVals") ? altObj(props.stateVals()) : {};
   const [displayColumnFilter, setDisplayColumnFilter] = useState(false);
   const [showPending, setShowPending] = useState(false);
+  const [isPopulated, setIsPopulated] = useState();
 
   useEffect(() => {
     validateProps();
@@ -48,48 +48,12 @@ const Table = props => {
   }, []);
 
   useEffect(() => {
-    parseData(data);
-  }, [data]);
+    parseData(propsdata);
+  }, [propsdata]);
 
-  function ColumnFilter({ column: { filterValue, setFilter } }) {
-    return (
-      <input
-        className="table-filter-form"
-        value={filterValue || ""}
-        onChange={e => {
-          setFilter(e.target.value || undefined);
-        }}
-      />
-    );
-  }
-
-  function BooleanFilter({ column: { filterValue, setFilter } }) {
-    return (
-      <select
-        className="table-filter-form"
-        value={filterValue}
-        onChange={e => {
-          setFilter(e.target.value || undefined);
-        }}
-      >
-        <option value="">All</option>
-        <option value={1}>True</option>
-        <option value={0}>False</option>
-      </select>
-    );
-  }
-
-  function getExportFileBlob({ columns, data, fileType, fileName }) {
-    if (fileType === "csv") {
-      const headerNames = columns.map(col => col.exportValue);
-      const csvString = jsonToCSV({ fields: headerNames, data });
-      return new Blob([csvString], { type: "text/csv" });
-    }
-  }
-
-  function getExportFileName({ fileType, all }) {
+  const getExportFileName = ({ fileType, all }) => {
     return `${all ? "all-" : ""}${props.exportFileName || "data"}`;
-  }
+  };
 
   const RTable = ({ columns, data }) => {
     const defaultColumn = React.useMemo(
@@ -107,6 +71,7 @@ const Table = props => {
       canPreviousPage,
       canNextPage,
       pageOptions,
+      rows,
       pageCount,
       gotoPage,
       nextPage,
@@ -122,7 +87,8 @@ const Table = props => {
         initialState: {
           pageIndex: stateVals.pageIndex || 0,
           pageSize: stateVals.pageSize || 25,
-          sortBy: stateVals.sortBy || []
+          sortBy: stateVals.sortBy || [],
+          hiddenColumns: props.hiddenColumns || []
         },
         getExportFileBlob,
         getExportFileName
@@ -178,134 +144,145 @@ const Table = props => {
     return (
       <>
         <div className="table-main">
-          {showPending && <Loading></Loading>}
-          <RBTable {...getTableProps()} striped bordered hover>
-            <thead>
-              {headerGroups.map((headerGroup, index) => {
-                return (
-                  <Fragment key={index}>
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column, idx) => {
-                        let hdr = column.render("Header");
+          {showPending || props.isLoading ? (
+            <Loading></Loading>
+          ) : (
+            <RBTable {...getTableProps()} striped bordered hover>
+              <thead>
+                {headerGroups.map((headerGroup, index) => {
+                  return (
+                    <Fragment key={index}>
+                      <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map((column, idx) => {
+                          let hdr = column.render("Header");
 
-                        if (Array.isArray(hdr)) hdr = <Xl8 xid={hdr[0]}>{hdr[1]}</Xl8>;
+                          if (Array.isArray(hdr)) hdr = <Xl8 xid={hdr[0]}>{hdr[1]}</Xl8>;
 
-                        return (
-                          <th className="table-header" key={idx}>
-                            <span
-                              className="table-sort-span"
-                              {...column.getHeaderProps(column.getSortByToggleProps())}
-                            >
-                              {hdr} {column.canSort ? sortIcon(column) : ""}
-                              {props.hasOwnProperty("disableGroupBy") &&
-                              !props.disableGroupBy &&
-                              column.canGroupBy ? (
-                                <span {...column.getGroupByToggleProps()}>
-                                  {props.disableGroupBy ? (
-                                    ""
-                                  ) : column.isGrouped ? (
-                                    <i className="fa fa-object-ungroup"></i>
-                                  ) : (
-                                    <i className="fa fa-object-group"></i>
-                                  )}
-                                </span>
-                              ) : (
-                                ""
-                              )}
-                            </span>
-                          </th>
-                        );
-                      })}
-                    </tr>
-                    {props.enableColumnFilter && displayColumnFilter ? (
-                      <tr>
-                        {headerGroup.headers.map(column => {
                           return (
-                            <th className="table-header" key={column.id}>
-                              <div>
-                                {column.canFilter ? column.render("Filter") : null}
-                              </div>
+                            <th className="table-header" key={idx}>
+                              <span
+                                className="table-sort-span"
+                                {...column.getHeaderProps(column.getSortByToggleProps())}
+                              >
+                                {hdr} {column.canSort ? sortIcon(column) : ""}
+                                {props.hasOwnProperty("disableGroupBy") &&
+                                !props.disableGroupBy &&
+                                column.canGroupBy ? (
+                                  <span {...column.getGroupByToggleProps()}>
+                                    {props.disableGroupBy ? (
+                                      ""
+                                    ) : column.isGrouped ? (
+                                      <i className="fa fa-object-ungroup"></i>
+                                    ) : (
+                                      <i className="fa fa-object-group"></i>
+                                    )}
+                                  </span>
+                                ) : (
+                                  ""
+                                )}
+                              </span>
                             </th>
                           );
                         })}
                       </tr>
-                    ) : null}
-                  </Fragment>
-                );
-              })}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {page.map((row, i) => {
-                prepareRow(row);
-                const isGroupBy = row.isGrouped;
-                const link = !isGroupBy ? row.original.link : "";
-                const sendRowToLink = !isGroupBy ? row.original.sendRowToLink : "";
-                const linked = link ? "linked" : "";
-                return (
-                  <tr {...row.getRowProps()} className={linked} key= {!isGroupBy ? row.original.id : row.groupByVal}>
-                    {row.cells.map(cell => {
-                      const style = cell.column.className || "";
-                      if (link) {
+                      {props.enableColumnFilter && displayColumnFilter ? (
+                        <tr>
+                          {headerGroup.headers.map(column => {
+                            return (
+                              <th className="table-header" key={column.id}>
+                                <div>
+                                  {column.canFilter ? column.render("Filter") : null}
+                                </div>
+                              </th>
+                            );
+                          })}
+                        </tr>
+                      ) : null}
+                    </Fragment>
+                  );
+                })}
+              </thead>
+              <tbody {...getTableBodyProps()}>
+                {page.map((row, i) => {
+                  prepareRow(row);
+                  const isGroupBy = row.isGrouped;
+                  const link = !isGroupBy ? row.original.link : "";
+                  const sendRowToLink = !isGroupBy ? row.original.sendRowToLink : "";
+                  const linked = link ? "linked" : "";
+                  return (
+                    <tr
+                      {...row.getRowProps()}
+                      className={linked}
+                      key={!isGroupBy ? row.original.id : row.groupByVal}
+                    >
+                      {row.cells.map(cell => {
+                        const style = cell.column.className || "";
+                        if (link) {
+                          return (
+                            <td
+                              className={` p-1 ${style}`}
+                              {...cell.getCellProps()}
+                              onClick={() =>
+                                navigate(link, {
+                                  state: { data: getLinkData() }
+                                })
+                              }
+                            >
+                              {cell.render("Cell")}
+                            </td>
+                          );
+                        } else if (sendRowToLink) {
+                          return (
+                            <td
+                              className={` p-1 ${style}`}
+                              {...cell.getCellProps()}
+                              onClick={ev => {
+                                const type = ev.target?.nodeName;
+
+                                if (type !== "IMG") {
+                                  navigate(sendRowToLink, {
+                                    state: { data: row.original }
+                                  });
+                                }
+                              }} // onclick
+                            >
+                              {cell.render("Cell")}
+                            </td>
+                          );
+                        } else if (isGroupBy) {
+                          return (
+                            <td>
+                              {cell.isGrouped ? (
+                                // If it's a grouped cell, add an expander and row count
+                                <>
+                                  <span {...row.getToggleRowExpandedProps()}>
+                                    {row.isExpanded ? "V" : ">"}
+                                  </span>{" "}
+                                  {cell.render("Cell")} ({row.subRows.length})
+                                </>
+                              ) : cell.isAggregated ? (
+                                // If the cell is aggregated, use the Aggregated
+                                // renderer for cell
+                                cell.render("Aggregated")
+                              ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
+                                // Otherwise, just render the regular cell
+                                cell.render("Cell")
+                              )}
+                            </td>
+                          );
+                        }
                         return (
-                          <td
-                            className={` p-1 ${style}`}
-                            {...cell.getCellProps()}
-                            onClick={() =>
-                              navigate(link, {
-                                state: { data: getLinkData() }
-                              })
-                            }
-                          >
+                          <td className={` p-1 ${style}`} {...cell.getCellProps()}>
                             {cell.render("Cell")}
                           </td>
                         );
-                      } else if (sendRowToLink) {
-                        return (
-                          <td
-                            className={` p-1 ${style}`}
-                            {...cell.getCellProps()}
-                            onClick={() =>
-                              navigate(sendRowToLink, {
-                                state: { data: row.original }
-                              })
-                            }
-                          >
-                            {cell.render("Cell")}
-                          </td>
-                        );
-                      } else if (isGroupBy) {
-                        return (
-                          <td>
-                            {cell.isGrouped ? (
-                              // If it's a grouped cell, add an expander and row count
-                              <>
-                                <span {...row.getToggleRowExpandedProps()}>
-                                  {row.isExpanded ? "V" : ">"}
-                                </span>{" "}
-                                {cell.render("Cell")} ({row.subRows.length})
-                              </>
-                            ) : cell.isAggregated ? (
-                              // If the cell is aggregated, use the Aggregated
-                              // renderer for cell
-                              cell.render("Aggregated")
-                            ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
-                              // Otherwise, just render the regular cell
-                              cell.render("Cell")
-                            )}
-                          </td>
-                        );
-                      }
-                      return (
-                        <td className={` p-1 ${style}`} {...cell.getCellProps()}>
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </RBTable>
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </RBTable>
+          )}
 
           <Pagination>
             <Pagination.First onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
@@ -353,7 +330,7 @@ const Table = props => {
             </Button>
             <span className="tagrightpag">
               <h3 className="title-default">
-                <i>{rowcount}</i>
+                <i>{isPopulated ? rows.length : 0}</i>
               </h3>
             </span>
           </Pagination>
@@ -372,8 +349,8 @@ const Table = props => {
     }
   };
 
-  const parseData = data => {
-    if (!data) {
+  const parseData = raw => {
+    if (!raw) {
       setShowPending(true);
       return;
     }
@@ -389,10 +366,13 @@ const Table = props => {
     let noDataObj = [{}];
     noDataObj[0][props.id] = noDataFound;
 
-    let dataArray = asArray(data);
-    const isPopulated = hasData(dataArray);
-    const sdata = isPopulated ? dataArray : noDataObj;
-    const sheader = isPopulated
+    let dataArray = asArray(raw);
+    const hasValidData =
+      hasData(dataArray) &&
+      (dataArray.length > 1 || dataArray[0][props.id] !== noDataFound);
+    setIsPopulated(hasValidData);
+    const sdata = hasValidData ? dataArray : noDataObj;
+    const sheader = hasValidData
       ? hasData(header)
         ? header
         : Object.keys(dataArray[0])
@@ -428,14 +408,11 @@ const Table = props => {
       }
     });
 
-    setDisplayColumnFilter(isPopulated);
-    setData(sdata);
+    setDisplayColumnFilter(hasValidData);
+    setParsedData(sdata);
     setHeader(sheader);
     setColumns(columns);
-
-    //exclude the No-Data-Found row from the count
-    if (dataArray.length === 1 && dataArray[0][props.id] === noDataFound) setRowcount(0);
-    else setRowcount(dataArray.length);
+    setShowPending(false);
   };
 
   const getData = (params = null) => {
@@ -465,8 +442,7 @@ const Table = props => {
       {props.smalltext !== undefined && <small>{props.smalltext}</small>}
       <RTable
         columns={columns}
-        data={data}
-        rowcount={rowcount}
+        data={parsedData}
         initSort={props.initSort || []}
       ></RTable>
     </>

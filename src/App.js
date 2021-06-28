@@ -22,9 +22,9 @@ import Loading from "./components/loading/Loading";
 
 import { hasData } from "./utils/utils";
 import { ROLE, FULLPATH_TO } from "./utils/constants";
-import "./App.scss";
-import "font-awesome/css/font-awesome.min.css";
 import ForgotUsername from "./pages/login/ForgotUsername";
+import "font-awesome/css/font-awesome.min.css";
+import "./App.scss";
 
 const Authenticator = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./context/authenticator/Authenticator")
@@ -83,7 +83,7 @@ const PageUnauthorized = loadable(() =>
   import(/* webpackChunkName: "authed" */ "./pages/pageUnauthorized/PageUnauthorized")
 );
 const SeatChart = loadable(() =>
-  import(/* webpackChunkName: "authed" */ "./components/seatChart/SeatChart")
+  import(/* webpackChunkName: "authed" */ "./pages/seatChart/SeatChart")
 );
 const UploadAttachment = loadable(() =>
   import(
@@ -149,6 +149,9 @@ const Auxiliary = loadable(() =>
 const LanguageEditor = loadable(() =>
   import(/* webpackChunkName: "admin" */ "./pages/lang/LanguageEditor")
 );
+const LookoutLanes = loadable(() =>
+  import(/* webpackChunkName: "admin" */ "./pages/admin/lookoutLanes/LookoutLanes")
+);
 
 const NEO4JURL = window?._env_
   ? window._env_.REACT_APP_NEO4J_BROWSER
@@ -195,7 +198,9 @@ const App = props => {
                           ROLE.WLMGR,
                           ROLE.HITMGR,
                           ROLE.QRYMGR,
-                          ROLE.FLIGHTVWR
+                          ROLE.FLIGHTVWR,
+                          ROLE.LKOUTMGR,
+                          ROLE.LKOUTVWR
                         ]}
                       >
                         {UNAUTHED}
@@ -231,7 +236,13 @@ const App = props => {
                               <UploadAttachment path="uploadattachment"></UploadAttachment>
                             </PaxDetail>
                           </RoleAuthenticator>
-                          <POE path="poe"></POE>
+                          <RoleAuthenticator
+                            path="poe"
+                            roles={[ROLE.ADMIN, ROLE.LKOUTMGR, ROLE.LKOUTVWR]}
+                          >
+                            <POE path="/"></POE>
+                            {NF404Default}
+                          </RoleAuthenticator>
                           <RoleAuthenticator
                             path="vetting"
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}
@@ -255,7 +266,7 @@ const App = props => {
                           </Tools>
                           <Search path="search/:searchParam"></Search>
                           <RoleAuthenticator
-                            path="seat-chart/:flightId/:paxId/:currentPaxSeat"
+                            path="seatchart/:flightId/:paxId/:currentPaxSeat"
                             roles={[ROLE.ADMIN, ROLE.PAXVWR]}
                           >
                             <SeatChart path="/"></SeatChart>
@@ -363,6 +374,12 @@ const App = props => {
                                 icon="fa-comment"
                                 path="notecats"
                               ></NoteCats>
+                              <LookoutLanes
+                                name={<Xl8 xid="app036">Lookout Lanes</Xl8>}
+                                desc={<Xl8 xid="app037">View or edit Lookout Lanes</Xl8>}
+                                icon="fa-road"
+                                path="lookoutlanes"
+                              ></LookoutLanes>
                               {hasData(KIBANAURL) && (
                                 <Auxiliary
                                   name={<Xl8 xid="app031">Kibana Dashboard</Xl8>}

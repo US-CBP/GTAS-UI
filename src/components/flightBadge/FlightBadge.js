@@ -2,26 +2,46 @@
 //
 // Please see license.txt for details.
 
-import React, { useContext, useState } from "react";
-import { localeMonthDayTime, hasData, alt, asArray } from "../../utils/utils";
-import { Row, Tooltip } from "react-bootstrap";
-import "./FlightBadge.scss";
-import { LookupContext } from "../../context/data/LookupContext";
-import { LK } from "../../utils/constants";
+import React from "react";
+import { Row } from "react-bootstrap";
+import { Link } from "@reach/router";
 import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
+import LazyImage from "../../components/lazyImage/LazyImage";
+import { LK } from "../../utils/constants";
+import { localeMonthDayTime, hasData, alt } from "../../utils/utils";
+import "./FlightBadge.scss";
 
 const FlightBadge = props => {
   const res = props.data;
   const style = `flight-badge ${alt(props.className, "reg")}`;
 
-  if (!hasData(props.data?.flightNumber)) return <></>;
+  if (!hasData(props.data?.flightNumber) && !hasData(props.data?.flightDestination))
+    return <></>;
 
   const data = {
     arrival: [res.flightDestination, ...localeMonthDayTime(res.eta).split(",")],
     departure: [res.flightOrigin, ...localeMonthDayTime(res.etd).split(",")],
-    flightNumber: res.flightNumberHasLink
-      ? res.flightNumber
-      : `${alt(res.carrier)}${res.flightNumber}`
+    flightNumber: res.flightNumberHasLink ? (
+      <>
+        <span className="flight-badge-nonlink-icon nozoom">
+          <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
+        </span>
+        <ToolTipWrapper data={{ val: res.carrier, lkup: LK.CARRIER }}>
+          <Link to={"/gtas/flightpax/" + res.flightId} className="link">
+            {res.flightNumber}
+          </Link>
+        </ToolTipWrapper>
+      </>
+    ) : hasData(res.flightNumber || res.fullFlightNumber) ? (
+      <span className="flight-badge-nonlink-icon nozoom">
+        <LazyImage val={res.carrier} type={LK.CARRIER} nozoom></LazyImage>
+        <ToolTipWrapper data={{ val: res.carrier, lkup: LK.CARRIER }}>
+          {res.flightNumber}
+        </ToolTipWrapper>
+      </span>
+    ) : (
+      <></>
+    )
   };
 
   const arrival = data.arrival || [];
@@ -30,7 +50,7 @@ const FlightBadge = props => {
 
   return (
     <div className={style}>
-      <div className="flight-number">{flightNumber}</div>
+      {flightNumber && <div className="flight-number">{flightNumber}</div>}
       <div className="flight-text">
         <Row flex="true" no-wrap="true" className="flight-badge-row">
           <span className="img-departure"></span>
@@ -39,7 +59,7 @@ const FlightBadge = props => {
               data={{ val: departure[0], lkup: LK.AIRPORT }}
             ></ToolTipWrapper>
           </span>
-          <span>{departure[1]}</span>
+          <span className="margin-right-sm">{departure[1]}</span>
           <span>{departure[2]}</span>
         </Row>
         <Row flex="true" no-wrap="true" className="flight-badge-row">
@@ -47,7 +67,7 @@ const FlightBadge = props => {
           <span className="width40">
             <ToolTipWrapper data={{ val: arrival[0], lkup: LK.AIRPORT }}></ToolTipWrapper>
           </span>
-          <span>{arrival[1]}</span>
+          <span className="margin-right-sm">{arrival[1]}</span>
           <span>{arrival[2]}</span>
         </Row>
       </div>

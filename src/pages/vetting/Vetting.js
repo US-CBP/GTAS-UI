@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Table from "../../components/table/Table";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
@@ -14,6 +14,8 @@ import FlightBadge from "../../components/flightBadge/FlightBadge";
 import Notification from "../paxDetail/notification/Notification";
 import DownloadReport from "../paxDetail/downloadReports/DownloadReports";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
+import CarrierBadge from "../../components/carrierBadge/CarrierBadge";
+import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
 import Overlay from "../../components/overlay/Overlay";
 import Confirm from "../../components/confirmationModal/Confirm";
 import EventNotesModal from "../../components/eventNotesModal/EventNotesModal";
@@ -24,19 +26,17 @@ import {
   asArray,
   getShortText,
   isShortText,
-  getAge,
-  alt,
   lpad5,
   addMinutes
 } from "../../utils/utils";
-import { cases, usersemails } from "../../services/serviceWrapper";
+import { cases, poe, usersemails } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
-import { ROLE, HIT_STATUS, LK } from "../../utils/constants";
+import { ROLE, HIT_STATUS, LK, LOOKOUTSTATUS } from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
 
 const Vetting = props => {
-  const { getCachedKeyValues } = useContext(LookupContext);
+  const { getCachedCoreFields } = useContext(LookupContext);
 
   // TODO - move hit types and statuses to db
   const hitTypeOptions = [
@@ -73,21 +73,17 @@ const Vetting = props => {
     },
     {
       value: "RE_OPENED",
-      label: "Reopen"
+      label: "Reopened"
     }
   ];
 
-  const getBiographicData = pax => {
-    return {
-      name: `${pax.lastName}, ${alt(pax.firstName).toLowerCase()}`,
-      gender: pax.gender,
-      dob: `${pax.dob} (${getAge(pax.dob)})`,
-      nationality: pax.nationality,
-      document: `DOC(${pax.docType}): ${pax.document}`,
-      flightId: pax.flightId,
-      paxId: pax.paxId
-    };
+  const isPromotable = currentStatus => {
+    return (
+      currentStatus === LOOKOUTSTATUS.NOTPROMOTED ||
+      currentStatus === LOOKOUTSTATUS.DEMOTED
+    );
   };
+
   const Headers = [
     {
       Accessor: "paxId",
@@ -143,22 +139,46 @@ const Vetting = props => {
                 </Button>
               )}
             </Confirm>
+            {isPromotable(row.original.lookoutStatus) ? (
+              <Confirm
+                header={<Xl8 xid="vet029">Promote To Lookout</Xl8>}
+                message={
+                  <span>
+                    <Xl8 xid="vet030">
+                      Please click confirm to promote this passenger to Lookout:
+                    </Xl8>
+                    <br />
+                    <br />
+                    {`${row.original.lastName}, ${row.original.firstName}`}
+                  </span>
+                }
+              >
+                {confirm => (
+                  <Button
+                    className="dropdown-item"
+                    onClick={confirm(() =>
+                      promoteToLookout(row.original.paxId, LOOKOUTSTATUS.ACTIVE)
+                    )}
+                  >
+                    <Xl8 xid="vet034">Promote To Lookout</Xl8>
+                  </Button>
+                )}
+              </Confirm>
+            ) : (
+              <></>
+            )}
           </RoleAuthenticator>
         </DropdownButton>
       )
     },
     {
-      Accessor: "countdownTime",
+      Accessor: "timer",
       Xl8: true,
       Header: ["wl018", "Timer"],
       Cell: ({ row }) => {
-        const future =
-          row.original.flightDirection === "O"
-            ? row.original.flightETDDate
-            : row.original.flightETADate;
         return (
           <CountdownBadge
-            future={future}
+            future={row.original.timer}
             baseline={now}
             direction={row.original.flightDirection}
           />
@@ -166,14 +186,35 @@ const Vetting = props => {
       }
     },
     {
+      Accessor: "carrier",
+      Xl8: true,
+      Header: ["wl029", "Flight"],
+      Cell: ({ row }) => (
+        <div className="carrier-badge-container">
+          <div className="margin-right-sm">
+            <CarrierBadge src={row.original.flightNumber}></CarrierBadge>
+          </div>
+          <ToolTipWrapper
+            data={{
+              val: (
+                <span className="carrier-badge-flight">{row.original.flightNumber}</span>
+              ),
+              lkup: LK.CARRIER
+            }}
+          ></ToolTipWrapper>
+        </div>
+      )
+    },
+    {
       Accessor: "flightNumber",
       Xl8: true,
-      Header: ["wl019", "Flight ID"],
+      disableFilters: true,
+      disableSortBy: true,
+      Header: ["wl019", "Flight Info"],
       Cell: ({ row }) => (
-        <>
+        <div className="vetting">
           <FlightBadge
             data={{
-              flightNumber: row.original.flightNumber,
               flightOrigin: row.original.flightOrigin,
               flightDestination: row.original.flightDestination,
               eta: row.original.flightETADate,
@@ -181,7 +222,7 @@ const Vetting = props => {
             }}
             className="sm"
           ></FlightBadge>
-        </>
+        </div>
       )
     },
     {
@@ -190,36 +231,48 @@ const Vetting = props => {
       Header: ["wl020", "Hits"],
       Cell: ({ row }) => {
         const listdata = asArray(row.original.hitNames).map((hit, index) => {
-          const triggerOverlay = !isShortText(hit, 20);
+          const triggerOverlay = !isShortText(hit, 45);
           return (
             <Overlay
               trigger={triggerOverlay ? ["click", "hover"] : ""}
               key={index}
               content={hit}
             >
-              <li className={triggerOverlay ? "as-info" : ""}>{getShortText(hit, 20)}</li>
+              <li className={triggerOverlay ? "as-info" : ""}>{getShortText(hit, 45)}</li>
             </Overlay>
           );
         });
-        return <ul className="bio-data">{listdata}</ul>;
+        return <ul className="hits-data">{listdata}</ul>;
       }
     },
     {
       Accessor: "lastName",
       Xl8: true,
       Header: ["wl021", "Biographic Information"],
-      Cell: ({ row }) => <BiographicInfo data={getBiographicData(row.original)} />
+      Cell: ({ row }) => <BiographicInfo data={row.original} />
     },
     {
       Accessor: "status",
       Xl8: true,
       Header: ["vet022", "Status"],
       Cell: ({ row }) => <div>{row.original.status}</div>
+    },
+    {
+      Accessor: "lookoutStatus",
+      Xl8: true,
+      Header: ["vet035", "Lookout Status"],
+      Cell: ({ row }) => <div>{row.original.lookoutStatus}</div>
     }
   ];
 
   const onTableChange = () => {};
   const cb = () => {};
+
+  const initTableState = {
+    pageIndex: 0,
+    pageSize: 50,
+    sortBy: [{ id: "hitCounts", desc: true }]
+  };
 
   let startDate = new Date();
   let endDate = new Date();
@@ -232,6 +285,8 @@ const Vetting = props => {
   const [noteTypes, setNoteTypes] = useState([]);
   const [usersEmails, setUsersEmails] = useState({});
   const [tableKey, setTableKey] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [tableState] = useState(initTableState);
 
   const now = new Date();
   const initialParamState = {
@@ -249,6 +304,8 @@ const Vetting = props => {
     return initialParamState;
   };
 
+  const getTableState = () => tableState;
+
   const changeStatus = (paxId, status) => {
     const newStatus =
       status === HIT_STATUS.REVIEWED ? HIT_STATUS.REOPENED : HIT_STATUS.REVIEWED;
@@ -257,25 +314,48 @@ const Vetting = props => {
     });
   };
 
+  const promoteToLookout = (paxId, status) => {
+    const req = {
+      paxId: paxId,
+      poeStatus: status
+    };
+    poe.put.updatePOEStatus(req).then(resp => {
+      setFilterFormKey(filterFormKey + 1); //trigger update
+    });
+  };
+
   const toggleDateTimePicker = () => {
     setShowDateTimePicker(value => !value);
     setFilterFormKey(filterFormKey + 1);
   };
 
-  const setDataWrapper = data => {
-    data = asArray(data.cases).map(item => {
-      item.id = item.id || `${item.flightId}${item.paxId}`;
-      item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
+  const setDataWrapper = rawdata => {
+    const parseddata = asArray(rawdata.cases).map(item => {
+      const newitem = item;
+      newitem.id = item.id || `${item.flightId}${item.paxId}`;
+      newitem.carrier = item.flightNumber.slice(0, 2);
+      newitem.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
         item.medPrioHitCount
       )}:${lpad5(item.lowPrioHitCount)}`;
-      return item;
+      newitem.timer =
+        item.flightDirection === "O" ? item.flightETDDate : item.flightETADate;
+      return newitem;
     });
-    setData(data || []);
+
+    setData(parseddata || []);
     setTableKey(tableKey + 1);
+    setIsLoading(false);
   };
 
   const parameterAdapter = fields => {
-    let paramObject = { pageSize: 500, pageNumber: 1 };
+    setIsLoading(true);
+    let sortBy = [
+      {
+        column: "highPriorityRuleCatId",
+        dir: "asc"
+      }
+    ];
+    let paramObject = { pageSize: 500, pageNumber: 1, sort: sortBy };
     const fieldscopy = Object.assign([], fields);
     delete fieldscopy["showDateTimePicker"];
 
@@ -337,7 +417,6 @@ const Vetting = props => {
         }
       }
     });
-
     return "?requestDto=" + encodeURIComponent(JSON.stringify(paramObject));
   };
 
@@ -346,7 +425,7 @@ const Vetting = props => {
       setUsersEmails(res);
     });
 
-    getCachedKeyValues(LK.HITCAT).then(res => {
+    getCachedCoreFields(LK.HITCAT).then(res => {
       const options = asArray(res).map(hitCat => {
         return {
           label: hitCat.label,
@@ -356,7 +435,7 @@ const Vetting = props => {
       setHitCategoryOptions(options);
     });
 
-    getCachedKeyValues(LK.NOTETYPE).then(types => {
+    getCachedCoreFields(LK.NOTETYPE).then(types => {
       const nTypes = asArray(types).reduce((acc, type) => {
         if (type.noteType !== "DELETED") {
           acc.push({
@@ -371,8 +450,11 @@ const Vetting = props => {
   };
 
   useEffect(() => {
-    setFilterFormKey(filterFormKey + 1);
-  }, [hitCategoryOptions, noteTypes]);
+    if (hasData(noteTypes) && hasData(hitCategoryOptions)) {
+      //When both are fully loaded, impossible to know which one will finish first, check both
+      setFilterFormKey(filterFormKey + 1);
+    }
+  }, [noteTypes, hitCategoryOptions]);
 
   useEffect(() => {
     fetchData();
@@ -420,7 +502,6 @@ const Vetting = props => {
               callback={cb}
               alt="Hit Source"
             />
-            {/* {hasData(noteTypes) && ( */}
             <LabelledInput
               datafield
               name="noteTypes"
@@ -431,7 +512,6 @@ const Vetting = props => {
               callback={cb}
               alt={<Xl8 xid="vet019">Note Type</Xl8>}
             />
-            {/* )} */}
 
             <LabelledInput
               name="ruleCatFilter"
@@ -454,11 +534,11 @@ const Vetting = props => {
             />
             <LabelledInput
               datafield="flightNumber"
-              labelText={<Xl8 xid="vet012">Flight Number</Xl8>}
+              labelText={<Xl8 xid="vet012">Flight</Xl8>}
               inputtype="text"
               name="flightNumber"
               callback={cb}
-              alt={<Xl8 xid="3">Flight Number</Xl8>}
+              alt={<Xl8 xid="3">Flight</Xl8>}
             />
             <hr />
             <LabelledInput
@@ -474,77 +554,84 @@ const Vetting = props => {
               spacebetween
             />
             {showDateTimePicker && (
-              <LabelledInput
-                datafield="etaStart"
-                inputtype="dateTime"
-                inputval={startDate}
-                labelText={<Xl8 xid="vet014">Start Date</Xl8>}
-                name="etaStart"
-                callback={cb}
-                className="dtp-vetting-upper"
-                required={true}
-                alt="Start Date"
-              />
-            )}
-            {showDateTimePicker && (
-              <LabelledInput
-                datafield="etaEnd"
-                inputtype="dateTime"
-                inputval={endDate}
-                labelText={<Xl8 xid="vet015">End Date</Xl8>}
-                name="etaEnd"
-                callback={cb}
-                required={true}
-                className="dtp-vetting-lower"
-                alt="End Date"
-              />
-            )}
-            {!showDateTimePicker && (
-              <LabelledInput
-                labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
-                inputtype="select"
-                name="startHourRange"
-                inputval="6"
-                inputStyle="form-select"
-                datafield="startHourRange"
-                options={[
-                  { value: "0", label: "0 hour" },
-                  { value: "6", label: "-6 hours" },
-                  { value: "12", label: "-12 hours" },
-                  { value: "24", label: "-24 hours" },
-                  { value: "48", label: "-48 hours" },
-                  { value: "96", label: "-96 hours" }
-                ]}
-                callback={cb}
-                alt="Hour range (Start)"
-              />
+              <>
+                <LabelledInput
+                  datafield="etaStart"
+                  inputtype="dateTime"
+                  inputval={startDate}
+                  labelText={<Xl8 xid="vet014">Start Date</Xl8>}
+                  name="etaStart"
+                  callback={cb}
+                  className="dtp-vetting-upper"
+                  required={true}
+                  alt="Start Date"
+                />
+                <LabelledInput
+                  datafield="etaEnd"
+                  inputtype="dateTime"
+                  inputval={endDate}
+                  labelText={<Xl8 xid="vet015">End Date</Xl8>}
+                  name="etaEnd"
+                  callback={cb}
+                  required={true}
+                  className="dtp-vetting-lower"
+                  alt="End Date"
+                />
+              </>
             )}
             {!showDateTimePicker && (
-              <LabelledInput
-                labelText={<Xl8 xid="vet017">Hour Range (End)</Xl8>}
-                inputtype="select"
-                name="endHourRange"
-                inputval="96"
-                inputStyle="form-select"
-                datafield="endHourRange"
-                options={[
-                  { value: "0", label: "0 hour" },
-                  { value: "6", label: "+6 hours" },
-                  { value: "12", label: "+12 hours" },
-                  { value: "24", label: "+24 hours" },
-                  { value: "48", label: "+48 hours" },
-                  { value: "96", label: "+96 hours" }
-                ]}
-                callback={cb}
-                alt="Hour range (End)"
-              />
+              <>
+                <LabelledInput
+                  labelText={<Xl8 xid="vet016">Hour Range (Start)</Xl8>}
+                  inputtype="select"
+                  name="startHourRange"
+                  inputval="6"
+                  inputStyle="form-select"
+                  datafield="startHourRange"
+                  options={[
+                    { value: "0", label: "0 hour" },
+                    { value: "6", label: "-6 hours" },
+                    { value: "12", label: "-12 hours" },
+                    { value: "24", label: "-24 hours" },
+                    { value: "48", label: "-48 hours" },
+                    { value: "96", label: "-96 hours" }
+                  ]}
+                  callback={cb}
+                  alt="Hour range (Start)"
+                />
+                <LabelledInput
+                  labelText={<Xl8 xid="vet017">Hour Range (End)</Xl8>}
+                  inputtype="select"
+                  name="endHourRange"
+                  inputval="96"
+                  inputStyle="form-select"
+                  datafield="endHourRange"
+                  options={[
+                    { value: "0", label: "0 hour" },
+                    { value: "6", label: "+6 hours" },
+                    { value: "12", label: "+12 hours" },
+                    { value: "24", label: "+24 hours" },
+                    { value: "48", label: "+48 hours" },
+                    { value: "96", label: "+96 hours" }
+                  ]}
+                  callback={cb}
+                  alt="Hour range (End)"
+                />
+              </>
             )}
           </FilterForm>
         </Col>
       </SidenavContainer>
       <Main>
         <Title title={<Xl8 xid="vet018">Priority Vetting</Xl8>} uri={props.uri} />
-        <Table data={data} callback={onTableChange} header={Headers} key={tableKey} />
+        <Table
+          data={data}
+          callback={onTableChange}
+          header={Headers}
+          key={tableKey}
+          isLoading={isLoading}
+          stateVals={getTableState}
+        />
       </Main>
     </>
   );

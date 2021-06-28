@@ -17,7 +17,7 @@ import { users } from "../../../services/serviceWrapper";
 import { roles } from "../../../services/lookupService";
 import { UserContext } from "../../../context/user/UserContext";
 import { asArray, isValidPassword } from "../../../utils/utils";
-import { ACTION, ROLE } from "../../../utils/constants";
+import { ACTION, ROLE, USERID } from "../../../utils/constants";
 import "./ManageUsers.scss";
 import PasswordConstraints from "../../../components/PasswordConstraints/PasswordConstraints";
 
@@ -30,6 +30,19 @@ const UserModal = props => {
   const cb = function(result) {};
   const row = props.editRowDetails || {};
   const loggedinUser = getUserState();
+  const existingUserIds = asArray(props.userIds);
+
+  const USER_ID_ALREADY_EXIST = (
+    <Xl8 xid="um01">
+      The user ID is already in the system. Please choose a different user ID.
+    </Xl8>
+  );
+  const USER_ID_TOO_SHORT = <Xl8 xid="um15">User ID is too short</Xl8>;
+  const USER_ID_TOO_LONG = <Xl8 xid="um16">User ID is too long</Xl8>;
+
+  const INVALID_PASSWORD_ERROR = (
+    <Xl8 xid="um02">The password you entered does not satisfy the password criteria.</Xl8>
+  );
 
   const launchAlert = msg => {
     setAlertContent(msg);
@@ -39,11 +52,6 @@ const UserModal = props => {
   const isLoggedinUser = userId => {
     return loggedinUser.userId === userId;
   };
-
-  // const loggedinUserHasAdminRole = () => {
-  //   const roles = loggedinUser.userRoles;
-  //   return roles.includes(ROLE.ADMIN);
-  // };
 
   const isRoleDisabled = role => {
     return (
@@ -116,38 +124,44 @@ const UserModal = props => {
   };
 
   const validateInputs = fields => {
-    const existingUserIds = asArray(props.userIds);
     let res = { ...fields[0] };
-    const INVALID_USER_ERROR = (
-      <Xl8 xid="um01">
-        The user ID is already in the system. Please choose a different user ID.
-      </Xl8>
-    );
-    const INVALID_PASSWORD_ERROR = (
-      <Xl8 xid="um02">
-        The password you entered does not satisfy the password criteria.
-      </Xl8>
-    );
-    let validPassword = true;
-    let validUserId = true;
+    const dafaultValidObj = { valid: true };
+    const validatedUsername = props.isEdit
+      ? dafaultValidObj
+      : validateUsernameInput(res.userId);
 
-    if (!props.isEdit) {
-      validPassword = isValidPassword(res.password);
-      validUserId = !existingUserIds.includes(res.userId?.toUpperCase());
-    }
-    if (!validUserId) {
-      launchAlert(INVALID_USER_ERROR);
+    const validPassword = props.isEdit ? true : isValidPassword(res.password);
+
+    if (!validatedUsername.valid) {
+      launchAlert(validatedUsername.info);
     } else if (!validPassword) {
       launchAlert(INVALID_PASSWORD_ERROR);
     }
 
-    return validPassword && validUserId;
+    return validPassword && validatedUsername.valid;
   };
 
   const validatePasswordInput = value => {
     const valid = isValidPassword(value);
 
     return { valid: valid, info: <PasswordConstraints password={value} /> };
+  };
+
+  const validateUsernameInput = (username = "") => {
+    const emptyString = "";
+    const usernameExists = existingUserIds.includes(username.toUpperCase());
+
+    const msg = usernameExists
+      ? USER_ID_ALREADY_EXIST
+      : username.length < USERID.MIN_LEN
+      ? USER_ID_TOO_SHORT
+      : username.length > USERID.MAX_LEN
+      ? USER_ID_TOO_LONG
+      : emptyString;
+
+    const valid = msg === emptyString;
+
+    return { valid: valid, info: msg };
   };
 
   const getPasswordInput = () => {
@@ -225,6 +239,7 @@ const UserModal = props => {
                 alt="nothing"
                 callback={cb}
                 spacebetween
+                validateInput={validateUsernameInput}
               />
             )}
 

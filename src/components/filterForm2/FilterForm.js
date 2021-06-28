@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
-import { asArray, hasData, getParamList } from "../../utils/utils";
+import {asArray, hasData, getParamList, getAllChildElements} from "../../utils/utils";
 import { Button, ButtonToolbar, Form as RBForm } from "react-bootstrap";
 import Title from "../../components/title/Title";
 import Xl8 from "../../components/xl8/Xl8";
@@ -109,22 +109,24 @@ const FilterForm = props => {
 
   // bind children containing form data (datafield prop) to the ev handler and state
   const bindChildren = populatedFields => {
-    let boundChildren = asArray(props.children).map((child, idx) => {
+    let trueChildArray = getAllChildElements(props.children);
+    let boundChildren = asArray(trueChildArray).map((child, idx) => {
       if (!child.props?.datafield) return child;
 
-      let cleanprops = Object.assign({}, child.props);
-      // intercept the callback so FilterForm is notified of input field changes.
-      // Delete it here, and replace it in newchild (below) with a FilterForm handler.
-      // We can also forward the event on to the original callback or to a parent
-      // of FilterForm if needed.
-      delete cleanprops.callback;
 
-      return React.cloneElement(child, {
-        key: idx,
-        callback: onChange,
-        ...cleanprops
+        let cleanprops = Object.assign({}, child.props);
+        // intercept the callback so FilterForm is notified of input field changes.
+        // Delete it here, and replace it in newchild (below) with a FilterForm handler.
+        // We can also forward the event on to the original callback or to a parent
+        // of FilterForm if needed.
+        delete cleanprops.callback;
+
+        return React.cloneElement(child, {
+          key: idx,
+          callback: onChange,
+          ...cleanprops
+        });
       });
-    });
 
     setKids(boundChildren);
     setFields(populatedFields);
@@ -138,25 +140,25 @@ const FilterForm = props => {
   useEffect(() => {
     let dfnames = datafieldNames;
     let fMap = fieldMap;
+    let trueChildren = getAllChildElements(props.children);
+    asArray(trueChildren).forEach((child, idx) => {
+        const datafield = child.props?.datafield;
 
-    asArray(props.children).forEach((child, idx) => {
-      const datafield = child.props?.datafield;
+        if (datafield) {
+          const noname = `unnamedfield${idx}`;
+          const componentname = child.props.name || noname;
+          const fieldname = datafield === true ? componentname : datafield;
+          // Either the name or datafield prop must contain a string
+          if (fieldname === noname) {
+            throw new Error(`The child collection contains a "datafield" element whose name is not defined in the 
+                  "name" or "datafield" props. Remove the "datafield" prop or define a name for the element.`);
+          }
 
-      if (datafield) {
-        const noname = `unnamedfield${idx}`;
-        const componentname = child.props.name || noname;
-        const fieldname = datafield === true ? componentname : datafield;
-        // Either the name or datafield prop must contain a string
-        if (fieldname === noname) {
-          throw new Error(`The child collection contains a "datafield" element whose name is not defined in the 
-                "name" or "datafield" props. Remove the "datafield" prop or define a name for the element.`);
+          fMap[componentname] = fieldname;
+          fields[fMap[componentname]] = child.props.inputval;
+
+          dfnames.push(fieldname);
         }
-
-        fMap[componentname] = fieldname;
-        fields[fMap[componentname]] = child.props.inputval;
-
-        dfnames.push(fieldname);
-      }
     });
 
     bindChildren(fields);

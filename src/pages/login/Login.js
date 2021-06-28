@@ -9,10 +9,11 @@ import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { navigate, Link } from "@reach/router";
 import { UserContext } from "../../context/user/UserContext";
 import { LiveEditContext } from "../../context/translation/LiveEditContext";
-import { login } from "../../services/serviceWrapper";
+import { login, logout } from "../../services/serviceWrapper";
 import { Alert, Button } from "react-bootstrap";
 
 import { FULLPATH_TO } from "../../utils/constants";
+import { getTodaysBackground } from "../../utils/utils";
 import "./Login.scss";
 
 const Login = () => {
@@ -25,6 +26,7 @@ const Login = () => {
     action({ type: "hide" });
     action({ type: "dataloaded", isDataLoaded: false });
     ctx.userAction({ type: "logoff" });
+    logout.get();
   }, []);
 
   const loginHandler = (status, res) => {
@@ -34,7 +36,6 @@ const Login = () => {
         fullName: `${res.lastName}, ${res.firstName}`,
         userId: res.userId,
         userRoles: res.roles.map(item => item.roleDescription),
-        // userToken: Cookies.get("JSESSIONID"),
         queryPageSize: 25,
         userPageSize: 25,
         landingPage: undefined,
@@ -57,9 +58,12 @@ const Login = () => {
 
   return (
     <div className="container-fluid">
-      <div className="row no-gutter">
-        <div className="d-none d-md-flex col-md-7 col-lg-7 bg-image"></div>
-        <div className="col-md-5 col-lg-5">
+      <div
+        className={`row no-gutter bg-blend 
+          ${getTodaysBackground("background")}`}
+      >
+        <div className="d-none d-md-flex col-md-7 col-lg-7"></div>
+        <div className="col-md-5 col-lg-5 bg-white">
           <div className="login d-flex align-items-center py-5">
             <div className="container">
               <div className="row">
@@ -67,7 +71,11 @@ const Login = () => {
                   <div className="gtas-logo"></div>
                   <br />
                   <br />
-                  <h3 className="login-heading mb-4">GTAS</h3>
+                  <h3 className="login-heading mb-4">
+                    GLOBAL TRAVEL
+                    <br />
+                    ASSESSMENT SYSTEM
+                  </h3>
                   <br />
                   <Form
                     title=""

@@ -4,11 +4,12 @@
 
 import React from "react";
 import { Button, Card, Table } from "react-bootstrap";
-import "./CardWithTable.scss";
-import { asArray, isShortText, getShortText, alt, hasData } from "../../utils/utils";
 import Overlay from "../overlay/Overlay";
-import { LK } from "../../utils/constants";
 import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
+import LazyImage from "../../components/lazyImage/LazyImage";
+import { asArray, isShortText, getShortText, alt, hasData } from "../../utils/utils";
+import { LK } from "../../utils/constants";
+import "./CardWithTable.scss";
 
 const CardWithTable = props => {
   const data = asArray(props.data); //[{key:value}]
@@ -16,18 +17,22 @@ const CardWithTable = props => {
   const cb = props.callback ? props.callback : () => {}; //callback may not be passed as a prop
   const textDisplayLimit = 30;
   const className = `${alt(props.className)} card-with-table`;
+
   const toolTipLKMap = {
-    issuanceCountry: LK.COUNTRY,
-    originCountry: LK.COUNTRY,
-    origin: LK.AIRPORT,
-    destinationCountry: LK.COUNTRY,
-    destination: LK.AIRPORT,
-    carrier: LK.CARRIER,
-    country: LK.COUNTRY,
-    residencyCountry: LK.COUNTRY,
-    location: LK.AIRPORT,
-    portOfFirstArrival: LK.AIRPORT
+    issuanceCountry: { type: LK.COUNTRY, icon: true },
+    originCountry: { type: LK.COUNTRY, icon: true },
+    origin: { type: LK.AIRPORT, icon: false },
+    fullFlightNumber: { type: LK.CARRIER, icon: true },
+    flightNumber: { type: LK.CARRIER, icon: true },
+    destinationCountry: { type: LK.COUNTRY, icon: true },
+    destination: { type: LK.AIRPORT, icon: false },
+    carrier: { type: LK.CARRIER, icon: true },
+    country: { type: LK.COUNTRY, icon: true },
+    residencyCountry: { type: LK.COUNTRY, icon: true },
+    location: { type: LK.AIRPORT, icon: false },
+    portOfFirstArrival: { type: LK.AIRPORT, icon: false }
   };
+
   const needsTooltip = key => {
     if (typeof toolTipLKMap[key] != "undefined") return true;
     return false;
@@ -39,28 +44,41 @@ const CardWithTable = props => {
 
   const tableRows = data.map((row, index) => {
     let highlightRow = row.highlightRow;
+
     const tableData = Object.keys(headers).map((key, index) => {
       const td = row[key];
       const triggerOverlay = !isShortText(td, textDisplayLimit);
       const triggerTooltip = needsTooltip(key);
+      let safeVal = td?.props?.children || td;
+      safeVal = toolTipLKMap[key] === LK.CARRIER && td.length === 6 ? td.slice(0, 2) : td;
+
       return triggerTooltip ? (
         <td className="as-info">
-          <ToolTipWrapper data={{ val: td, lkup: toolTipLKMap[key] }}>
-            {getShortText(td, textDisplayLimit)}
-          </ToolTipWrapper>
+          <>
+            {toolTipLKMap[key].icon && (
+              <LazyImage val={safeVal} type={toolTipLKMap[key].type}></LazyImage>
+            )}
+            <ToolTipWrapper data={{ val: td, lkup: toolTipLKMap[key].type }}>
+              {getShortText(td, textDisplayLimit)}
+            </ToolTipWrapper>
+          </>
         </td>
       ) : triggerOverlay ? (
-        <Overlay
-          trigger={triggerOverlay ? ["click", "hover"] : ""}
-          key={key}
-          content={td}
-        >
-          <td className={triggerOverlay ? "as-info" : ""}>
-            {getShortText(td, textDisplayLimit)}
-          </td>
-        </Overlay>
+        <>
+          {toolTipLKMap[key]?.icon && (
+            <LazyImage val={safeVal} type={toolTipLKMap[key].type}></LazyImage>
+          )}
+          <Overlay trigger={["click", "hover"]} key={key} content={td}>
+            <td className="as-info">{getShortText(td, textDisplayLimit)}</td>
+          </Overlay>
+        </>
       ) : (
-        <td>{td}</td>
+        <td>
+          {toolTipLKMap[key]?.icon && (
+            <LazyImage val={safeVal} type={toolTipLKMap[key].type}></LazyImage>
+          )}
+          {td}
+        </td>
       );
     });
 

@@ -18,7 +18,7 @@ import {
   hasData,
   watchlistDateFormat,
   timezoneFreeDate,
-  sortableDate
+  sortableDob
 } from "../../../utils/utils";
 import { LK } from "../../../utils/constants";
 import "./constants.js";
@@ -46,7 +46,7 @@ const Watchlist = props => {
   const [toastHeader, setToastHeader] = useState();
   const [toastContent, setToastContent] = useState();
   const [toastVariant, setToastVariant] = useState();
-  const { getCached } = useContext(LookupContext);
+  const { getCachedAllFields } = useContext(LookupContext);
 
   const deleteText = {
     message: <Xl8 xid="wl005">Are you sure you want to delete the record?</Xl8>,
@@ -161,7 +161,7 @@ const Watchlist = props => {
   };
 
   const tabs = (
-    <Tabs defaultActiveKey={tab} id="wlTabs">
+    <Tabs defaultActiveKey={tab} id="wlTabs" className="gtas-tabs">
       <Tab
         eventKey={TAB.PAX}
         title={
@@ -215,7 +215,7 @@ const Watchlist = props => {
   }, []);
 
   const getCats = () => {
-    getCached(LK.HITCAT, true).then(res => {
+    getCachedAllFields(LK.HITCAT, true).then(res => {
       setWlcatData(res);
     });
   };
@@ -247,16 +247,18 @@ const Watchlist = props => {
           const category = (wlcatData.find(item => item.id === +categoryId) || {}).label;
 
           //TODO: consolidate pax/doc fetches??
-          if (tab === TAB.PAX)
+          if (tab === TAB.PAX) {
+            const displayDobDate = timezoneFreeDate(dob);
             return {
               id: item.id,
               firstName: firstName,
               lastName: lastName,
-              dob: timezoneFreeDate(dob),
-              sortableDOB: sortableDate(new Date(dob)),
+              dob: displayDobDate,
+              sortableDOB: `${sortableDob(new Date(dob))} ${displayDobDate}`,
               categoryId: categoryId,
               category: category
             };
+          }
 
           return {
             id: item.id,

@@ -5,14 +5,6 @@
  */
 
 .cdb-row {
-  /* margin: unset !important;
-  white-space: nowrap;
-  border-radius: 5px;
-  padding-left: 4px;
-  float: right;
-  display: block;
-  flex-wrap: nowrap !important;
-   */
   margin: unset !important;
   white-space: nowrap;
   border-radius: 0.5rem;
@@ -33,14 +25,17 @@
 
 .cdb-orange {
   background-color: #ffc107;
+  color: black;
 }
 
 .cdb-yellow {
   background-color: #ffeb3b;
+  color: black;
 }
 
 .cdb-green {
   background-color: #a7ff6d;
+  color: black;
 }
 
 .cdb-gray {
@@ -53,26 +48,8 @@
   color: black;
 }
 
-.cdb-blue {
-  /* background-color: #6deeff; */
-}
-
-.cdb-violet {
-  /* background-color: #c8c5ff; */
-}
-
 .cdb-days-div {
   margin-right: 6px;
-}
-
-.icon-div {
-  /* flex-grow: 1 !important; */
-  /* min-width: 25px;
-  text-align: -webkit-center; */
-  /* color: black; */
-  /* margin-top: -2px !important;
-  margin-bottom: -4px !important;
-  height: 33px; */
 }
 
 .badge {
@@ -99,4 +76,8 @@
 
 .big-badge {
   font-size: 16px !important;
+}
+
+.filter .cdb-row {
+  display: inline-block !important;
 }
