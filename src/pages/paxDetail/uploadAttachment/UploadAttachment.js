@@ -10,6 +10,7 @@ import Confirm from "../../../components/confirmationModal/Confirm";
 import AttachmentModal from "./AttachmentModal";
 import { Button, Dropdown, DropdownButton } from "react-bootstrap";
 import "./UploadAttachment.scss";
+import {localeDate} from "../../../utils/utils";
 
 const UploadAttachment = props => {
   const [selectedFiles] = useState(null);
@@ -91,7 +92,12 @@ const UploadAttachment = props => {
     },
     { Accessor: "filename", Xl8: true, Header: ["att005", "File Name"] },
     { Accessor: "contentType", Xl8: true, Header: ["att006", "File Type"] },
-    { Accessor: "description", Xl8: true, Header: ["att007", "Description"] }
+    { Accessor: "description", Xl8: true, Header: ["att007", "Description"] },
+    { Accessor: "fileSize", Xl8: true, Header: ["att009", "Size (KB)"] },
+    { Accessor: "createdAt", Xl8: true, Header: ["att010", "Created At"],
+      Cell: ({ row }) =>
+      localeDate(row.original.createdAt)
+    }
   ];
 
   const button = (
