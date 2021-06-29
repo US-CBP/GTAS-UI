@@ -138,6 +138,22 @@ export function localeDate(val) {
     month: "2-digit",
     day: "2-digit",
     hour: "2-digit",
+    minute: "2-digit"
+  };
+  return new Date(val).toLocaleString(locale, options);
+}
+
+// Locale Date formatter for auditLog to include seconds.
+// This is being kept separate for now to avoid adding seconds to other locations that use the above function "localeDate"
+export function localeDateWithSeconds(val) {
+  if (!hasData(val)) return "";
+  const locale = window.navigator.language;
+  const options = {
+    // localeMatcher: "lookup",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
     minute: "2-digit",
     second: "2-digit"
   };
