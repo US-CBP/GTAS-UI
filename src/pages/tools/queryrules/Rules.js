@@ -26,7 +26,6 @@ const Rules = props => {
   const addRule = <Xl8 xid="rul001">Add Rule</Xl8>;
   const editRule = <Xl8 xid="rul002">Edit Rule</Xl8>;
   const [tab, setTab] = useState(RULETAB.MY);
-  const [service] = useState(rulesall);
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState();
   const [data, setData] = useState();
@@ -183,8 +182,8 @@ const Rules = props => {
     }
   };
 
-  const fetchTableData = svc => {
-    (svc || service).get().then(res => {
+  const fetchTableData = () => {
+    rulesall.get().then(res => {
       let all = [];
       let mine = [];
 
@@ -229,7 +228,7 @@ const Rules = props => {
         }
         setTablekey(tablekey + 1);
       } else {
-        fetchTableData(rulesall);
+        fetchTableData();
       }
     }
   }, [tab]);
