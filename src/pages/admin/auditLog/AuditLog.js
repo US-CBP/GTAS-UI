@@ -12,7 +12,7 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Main from "../../../components/main/Main";
-import { addMinutes, asArray, localeDate } from "../../../utils/utils";
+import { addMinutes, asArray, localeDateWithSeconds } from "../../../utils/utils";
 
 const AuditLog = ({ name }) => {
   const cb = () => {};
@@ -97,7 +97,7 @@ const AuditLog = ({ name }) => {
       Accessor: "timestamp",
       Xl8: true,
       Header: ["al009", "Timestamp"],
-      Cell: ({ row }) => localeDate(row.original.timestamp)
+      Cell: ({ row }) => localeDateWithSeconds(row.original.timestamp)
     }
   ];
 
