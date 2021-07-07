@@ -12,7 +12,12 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Main from "../../../components/main/Main";
-import { addMinutes, asArray, dateComparator, localeDate } from "../../../utils/utils";
+import {
+  addMinutes,
+  asArray,
+  dateComparator,
+  localeDateWithSeconds
+} from "../../../utils/utils";
 import { EXPORTFILENAME } from "../../../utils/constants";
 
 const AuditLog = ({ name }) => {
@@ -105,7 +110,7 @@ const AuditLog = ({ name }) => {
 
   const setDataWrapper = res => {
     const parsedData = asArray(res).map(log => {
-      return { ...log, timestamp: localeDate(log.timestamp) };
+      return { ...log, timestamp: localeDateWithSeconds(log.timestamp) };
     });
 
     setData(parsedData);

@@ -34,3 +34,45 @@
 .poe-countdown-outer {
   position: relative;
 }
+
+.poe-page-deck {
+  margin: 10px;
+  overflow-x: auto;
+  height: calc(100vh - 120px);
+  text-align: -webkit-center;
+  flex-flow: row !important;
+}
+
+.poe-droppable {
+  padding: 8px;
+  width: 300px;
+  min-height: 200px;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  border: 1px solid #d0d0d0;
+  background-color: white;
+  border-radius: 3px;
+}
+
+.poe-draggable {
+  user-select: none;
+  padding: 6px;
+  margin: 0 0 8px 0;
+  min-height: 50px;
+  background-color: #009e9233;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.poe-drag-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-block: 15px;
+}
+
+.poe-droppable-div {
+  margin: 8px;
+}

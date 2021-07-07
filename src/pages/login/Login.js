@@ -51,7 +51,7 @@ const Login = () => {
   };
 
   const customButton = (
-    <Button variant="outline-info" onClick={() => navigate(FULLPATH_TO.SIGNUP)}>
+    <Button variant="outline-info m-2" onClick={() => navigate(FULLPATH_TO.SIGNUP)}>
       Sign Up
     </Button>
   );
@@ -65,70 +65,62 @@ const Login = () => {
         <div className="d-none d-md-flex col-md-7 col-lg-7"></div>
         <div className="col-md-5 col-lg-5 bg-white">
           <div className="login d-flex align-items-center py-5">
-            <div className="container">
-              <div className="row">
-                <div className="col-md-10 mx-auto text-center">
-                  <div className="gtas-logo"></div>
-                  <br />
-                  <br />
-                  <h3 className="login-heading mb-4">
-                    GLOBAL TRAVEL
-                    <br />
-                    ASSESSMENT SYSTEM
-                  </h3>
-                  <br />
-                  <Form
-                    title=""
-                    submitText="Login"
-                    submitService={login.post}
-                    callback={loginHandler}
-                    customButtons={customButton}
-                    id="loginform"
-                  >
-                    <LabelledInput
-                      inputtype="text"
-                      alt="Enter the user name"
-                      name="username"
-                      labelText=""
-                      placeholder="Username"
-                      datafield="username"
-                      required
-                      inputval=""
-                      autoFocus
-                      className="login-labeled-input"
-                    />
-                    <LabelledInput
-                      inputtype="password"
-                      alt="Enter the password"
-                      name="password"
-                      labelText=""
-                      placeholder="Password"
-                      datafield="password"
-                      required
-                      inputval=""
-                      className="login-labeled-input"
-                    />
-                  </Form>
-                  <Link className="small" to={FULLPATH_TO.FORGOTPWD}>
-                    Forgot password?
-                  </Link>
-                  <br />
-                  <Link className="small space" to={FULLPATH_TO.FORGOTUSERNAME}>
-                    Forgot username?
-                  </Link>
+            <div className="col-md-10 mx-auto text-center">
+              <div className="gtas-logo"></div>
+              <br />
+              <br />
+              <h3 className="login-heading mb-4">
+                GLOBAL TRAVEL
+                <br />
+                ASSESSMENT SYSTEM
+              </h3>
+              <br />
+              <Form
+                title=""
+                submitText="Login"
+                submitService={login.post}
+                callback={loginHandler}
+                customButtons={customButton}
+                id="loginform"
+              >
+                <LabelledInput
+                  inputtype="text"
+                  alt="Enter the user name"
+                  name="username"
+                  labelText=""
+                  placeholder="Username"
+                  datafield="username"
+                  required
+                  inputval=""
+                  autoFocus
+                  className="login-labeled-input"
+                />
+                <LabelledInput
+                  inputtype="password"
+                  alt="Enter the password"
+                  name="password"
+                  labelText=""
+                  placeholder="Password"
+                  datafield="password"
+                  required
+                  inputval=""
+                  className="login-labeled-input"
+                />
+              </Form>
+              <Link className="small" to={FULLPATH_TO.FORGOTPWD}>
+                Forgot password?
+              </Link>
+              <br />
+              <Link className="small space" to={FULLPATH_TO.FORGOTUSERNAME}>
+                Forgot username?
+              </Link>
 
-                  <div>
-                    {alertVis && (
-                      <Alert
-                        variant="danger"
-                        dismissible
-                        onClose={() => setAlertVis(false)}
-                      >
-                        Login failed
-                      </Alert>
-                    )}
-                  </div>
-                </div>
+              <div>
+                {alertVis && (
+                  <Alert variant="danger" dismissible onClose={() => setAlertVis(false)}>
+                    Login failed
+                  </Alert>
+                )}
               </div>
             </div>
           </div>

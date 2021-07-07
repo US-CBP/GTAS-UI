@@ -12,7 +12,12 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import { Col } from "react-bootstrap";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import FilterForm from "../../../components/filterForm2/FilterForm";
-import { addMinutes, asArray, dateComparator, localeDate } from "../../../utils/utils";
+import {
+  addMinutes,
+  asArray,
+  dateComparator,
+  localeDateWithSeconds
+} from "../../../utils/utils";
 import { EXPORTFILENAME } from "../../../utils/constants";
 
 const ErrorLog = ({ name }) => {
@@ -91,7 +96,7 @@ const ErrorLog = ({ name }) => {
 
   const setDataWrapper = res => {
     const parsedData = asArray(res).map(log => {
-      return { ...log, timestamp: localeDate(log.timestamp) };
+      return { ...log, timestamp: localeDateWithSeconds(log.timestamp) };
     });
     setData(parsedData);
     setRefreshKey(refreshKey + 1);
