@@ -15,6 +15,7 @@ import { hasData, alt } from "../../utils/utils";
 import ReactDateTimePicker from "../inputs/dateTimePicker/DateTimePicker";
 import { FormGroup } from "react-bootstrap";
 import "./LabelledInput.css";
+import RichTextEditor from "../inputs/richTextEditor/RichTextEditor";
 
 const textTypes = ["text", "number", "password", "email", "search", "tel"];
 const boolTypes = ["radio", "checkbox", "toggle"];
@@ -24,6 +25,7 @@ const textareaType = "textarea";
 const fileType = "file";
 const REQUIRED = "required";
 const dateTime = "dateTime";
+const richText = "richText";
 
 // TODO - refac as a passthru hook!!!
 // Pass props through directly, remove all awareness of specific child types
@@ -36,6 +38,7 @@ class LabelledInput extends Component {
     this.onChangeArray = this.onChangeArray.bind(this);
     this.onMultiSelectChange = this.onMultiSelectChange.bind(this);
     this.onChangeDatePicker = this.onChangeDatePicker.bind(this);
+    this.onRichTextEditorChange = this.onRichTextEditorChange.bind(this);
 
     this.state = {
       isValid: true,
@@ -90,6 +93,14 @@ class LabelledInput extends Component {
       isValid: hasData(e) || this.props.required !== REQUIRED
     });
     this.props.callback({ value: e, name: this.props.name });
+  }
+
+  onRichTextEditorChange(editorState) {
+    this.setState({
+      inputval: editorState,
+      isValid: hasData(editorState) || this.props.required !== REQUIRED
+    });
+    this.props.callback({ value: editorState, name: this.props.name });
   }
 
   //APB - REFACTOR
@@ -230,6 +241,23 @@ class LabelledInput extends Component {
           readOnly={this.props.readOnly}
           format={this.props.format}
           disableCalendar={this.props.disableCalendar}
+        />
+      );
+    }
+
+    if (type === richText) {
+      return (
+        <RichTextEditor
+          autoFocus={this.props.autoFocus}
+          className={this.props.className}
+          alt={this.props.alt}
+          name={this.props.name}
+          inputval={alt(this.state.inputval)}
+          required={this.state.required}
+          placeholder={this.state.placeholder}
+          maxLength={this.props.maxlength}
+          readOnly={this.props.readOnly}
+          callback={this.onRichTextEditorChange}
         />
       );
     }
