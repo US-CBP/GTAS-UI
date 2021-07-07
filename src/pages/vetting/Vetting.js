@@ -27,55 +27,26 @@ import {
   getShortText,
   isShortText,
   lpad5,
-  addMinutes
+  addMinutes,
+  localeDate,
+  alt
 } from "../../utils/utils";
 import { cases, poe, usersemails } from "../../services/serviceWrapper";
 import { LookupContext } from "../../context/data/LookupContext";
-import { ROLE, HIT_STATUS, LK, LOOKOUTSTATUS } from "../../utils/constants";
+import {
+  ROLE,
+  HIT_STATUS,
+  LK,
+  EXPORTFILENAME,
+  LOOKOUTSTATUS
+} from "../../utils/constants";
 import { Col, Button, DropdownButton } from "react-bootstrap";
 import "./Vetting.css";
+import { hiddenHeaders, hitStatusOptions, hitTypeOptions } from "./vetting-utils";
 
 const Vetting = props => {
   const { getCachedCoreFields } = useContext(LookupContext);
-
-  // TODO - move hit types and statuses to db
-  const hitTypeOptions = [
-    {
-      value: "WATCHLIST",
-      label: "Watchlist"
-    },
-    {
-      value: "USER_RULE",
-      label: "User Created"
-    },
-    {
-      value: "GRAPH_RULE",
-      label: "Graph Database"
-    },
-    {
-      value: "MANUAL",
-      label: "Manual "
-    },
-    {
-      value: "PARTIAL_WATCHLIST",
-      label: "Partial Watchlist"
-    }
-  ];
-
-  const hitStatusOptions = [
-    {
-      value: "NEW",
-      label: "New"
-    },
-    {
-      value: "REVIEWED",
-      label: "Reviewed"
-    },
-    {
-      value: "RE_OPENED",
-      label: "Reopened"
-    }
-  ];
+  const hiddenColumns = hiddenHeaders.map(column => column.Accessor);
 
   const isPromotable = currentStatus => {
     return (
@@ -85,11 +56,13 @@ const Vetting = props => {
   };
 
   const Headers = [
+    ...hiddenHeaders,
     {
       Accessor: "paxId",
       Xl8: true,
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Header: ["vet023", "Actions"],
       Cell: ({ row }) => (
         <DropdownButton
@@ -175,6 +148,7 @@ const Vetting = props => {
       Accessor: "timer",
       Xl8: true,
       Header: ["wl018", "Timer"],
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <CountdownBadge
@@ -189,6 +163,7 @@ const Vetting = props => {
       Accessor: "carrier",
       Xl8: true,
       Header: ["wl029", "Flight"],
+      disableExport: true,
       Cell: ({ row }) => (
         <div className="carrier-badge-container">
           <div className="margin-right-sm">
@@ -206,10 +181,11 @@ const Vetting = props => {
       )
     },
     {
-      Accessor: "flightNumber",
+      Accessor: "flightId",
       Xl8: true,
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Header: ["wl019", "Flight Info"],
       Cell: ({ row }) => (
         <div className="vetting">
@@ -229,6 +205,7 @@ const Vetting = props => {
       Accessor: "hitCounts",
       Xl8: true,
       Header: ["wl020", "Hits"],
+      disableExport: true,
       Cell: ({ row }) => {
         const listdata = asArray(row.original.hitNames).map((hit, index) => {
           const triggerOverlay = !isShortText(hit, 45);
@@ -248,6 +225,7 @@ const Vetting = props => {
     {
       Accessor: "lastName",
       Xl8: true,
+      disableExport: true,
       Header: ["wl021", "Biographic Information"],
       Cell: ({ row }) => <BiographicInfo data={row.original} />
     },
@@ -339,6 +317,12 @@ const Vetting = props => {
       )}:${lpad5(item.lowPrioHitCount)}`;
       newitem.timer =
         item.flightDirection === "O" ? item.flightETDDate : item.flightETADate;
+      newitem.arrival = localeDate(item.flightETADate);
+      newitem.departure = localeDate(item.flightETDDate);
+      newitem.fullName = `${alt(item.firstName)} ${alt(item.middleName)}, ${alt(
+        item.lastName
+      )}`;
+      newitem.hits = asArray(item.hitNames).join();
       return newitem;
     });
 
@@ -631,6 +615,8 @@ const Vetting = props => {
           key={tableKey}
           isLoading={isLoading}
           stateVals={getTableState}
+          exportFileName={EXPORTFILENAME.VETTITNG}
+          hiddenColumns={hiddenColumns}
         />
       </Main>
     </>

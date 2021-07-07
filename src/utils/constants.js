@@ -167,6 +167,38 @@ export const USERID = {
   MIN_LEN: 3
 };
 
+export const EXPORTFILENAME = {
+  FLIGHT: {
+    ALL: "flights",
+    HITS: "flights with hits"
+  },
+  FLIGHTPAX: {
+    ALL: "passengers",
+    HITS: "passenger with hits"
+  },
+  VETTITNG: "vettings",
+  SIGNUPREQUESTS: "signup requests",
+  RULE: {
+    ALL: "rules",
+    MYRULES: "my rules"
+  },
+  QUERIES: "queries",
+  QUERYRESULTS: "query results",
+  USERS: "users",
+  AUDITLOG: "audit logs",
+  ERRORLOG: "error logs",
+  CODEEDITOR: {
+    COUNTRY: "country codes",
+    AIRPORT: "airport codes",
+    CARRIER: "carrier codes",
+    CCTYPE: "credit card types"
+  },
+  HITCAT: "hit categories",
+  NOTECAT: "note categories",
+  LOOKOUTLANES: "lookout lanes",
+  SEARCHRESULTS: "search results",
+  LANGEDITOR: "language editor"
+};
 export const SIGNUP_STATUS = {
   NEW: "NEW",
   APPROVED: "APPROVED",

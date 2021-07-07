@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import CountdownBadge from "../../components/countdownBadge/CountdownBadge";
 import { CardDeck, Col } from "react-bootstrap";
@@ -11,31 +11,30 @@ import { asArray, hasData } from "../../utils/utils";
 import "./Kanban.css";
 import { poe } from "../../services/serviceWrapper";
 import Loading from "../../components/loading/Loading";
-import {LK} from "../../utils/constants";
+import { LK } from "../../utils/constants";
 import ToolTipWrapper from "../tooltipWrapper/TooltipWrapper";
 
 const Kanban = props => {
   const [poeTiles, setPoeTiles] = useState([]);
   const [showPending, setIsPending] = useState(false);
 
-
-  useEffect( () =>{
+  useEffect(() => {
     const tiles = [];
     const lanes = {};
-    if(hasData(props.tiles)){
-      asArray(props.tiles).map(tile =>{
+    if (hasData(props.tiles)) {
+      asArray(props.tiles).map(tile => {
         tiles.push(createPOETile(tile)); //creates tile, adds to tile array
       });
     }
-    if(hasData(props.lanes)){
-      asArray(props.lanes).map(lane =>{
+    if (hasData(props.lanes)) {
+      asArray(props.lanes).map(lane => {
         lanes[lane.ord] = createPOELane(lane, tiles); //creates lane, associates tile, adds to lane object
       });
     }
     setColumns(lanes);
     setPoeTiles(tiles);
     setIsPending(false);
-  },[])
+  }, []);
 
   const convertTileToData = (tile, status) => {
     const req = {
@@ -57,15 +56,19 @@ const Kanban = props => {
       content: (
         <div>
           <div className="font-weight-bolder">
-            <a href={"paxDetail/"+tileData.flightId + "/" + tileData.paxId}>{tileData.paxLastName}, {tileData.paxFirstName}</a>
+            <a href={"paxDetail/" + tileData.flightId + "/" + tileData.paxId}>
+              {tileData.paxLastName}, {tileData.paxFirstName}
+            </a>
           </div>
-          <div>Flight #:
+          <div>
+            Flight #:
             <ToolTipWrapper
               data={{
                 val: tileData.flightNumber,
                 lkup: LK.CARRIER
               }}
-          ></ToolTipWrapper> </div>
+            ></ToolTipWrapper>{" "}
+          </div>
           <div> Doc #: {tileData.document.documentNumber}</div>
           <div>Reason: {tileData.hitCategory}</div>
           <div>&nbsp;</div>
@@ -145,65 +148,63 @@ const Kanban = props => {
 
   return (
     <>
-        {(props.isLoading || showPending) && <Loading></Loading>}
-        <CardDeck className="poe-page-deck">
-          <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
-            {Object.entries(columns).map(([columnId, column], index) => {
-              return (
-                <div className="poe-drag-drop"
-                  key={columnId}
-                >
-                  <h5>{column.name}</h5>
-                  <div className="poe-droppable-div">
-                    <Droppable droppableId={columnId} key={columnId}>
-                      {(provided, snapshot) => {
-                        return (
-                          <div
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                            className="poe-droppable"
-                            style={{
-                              background: snapshot.isDraggingOver
-                                ? column.dragbackground
-                                : column.background,
-                            }}
-                          >
-                            {column.items.map((item, index) => {
-                              return (
-                                <Draggable
-                                  key={item.id}
-                                  draggableId={item.id}
-                                  index={index}
-                                >
-                                  {(provided, snapshot) => {
-                                    return (
-                                      <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                          className="poe-draggable"
-                                        style={{
-                                          ...provided.draggableProps.style,
-                                        }}
-                                      >
-                                        {item.content}
-                                      </div>
-                                    );
-                                  }}
-                                </Draggable>
-                              );
-                            })}
-                            {provided.placeholder}
-                          </div>
-                        );
-                      }}
-                    </Droppable>
-                  </div>
+      {(props.isLoading || showPending) && <Loading></Loading>}
+      <CardDeck className="poe-page-deck">
+        <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
+          {Object.entries(columns).map(([columnId, column], index) => {
+            return (
+              <div className="poe-drag-drop" key={columnId}>
+                <h5>{column.name}</h5>
+                <div className="poe-droppable-div">
+                  <Droppable droppableId={columnId} key={columnId}>
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          className="poe-droppable"
+                          style={{
+                            background: snapshot.isDraggingOver
+                              ? column.dragbackground
+                              : column.background
+                          }}
+                        >
+                          {column.items.map((item, index) => {
+                            return (
+                              <Draggable
+                                key={item.id}
+                                draggableId={item.id}
+                                index={index}
+                              >
+                                {(provided, snapshot) => {
+                                  return (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      className="poe-draggable"
+                                      style={{
+                                        ...provided.draggableProps.style
+                                      }}
+                                    >
+                                      {item.content}
+                                    </div>
+                                  );
+                                }}
+                              </Draggable>
+                            );
+                          })}
+                          {provided.placeholder}
+                        </div>
+                      );
+                    }}
+                  </Droppable>
                 </div>
-              );
-            })}
-          </DragDropContext>
-        </CardDeck>
+              </div>
+            );
+          })}
+        </DragDropContext>
+      </CardDeck>
     </>
   );
 };

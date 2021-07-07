@@ -14,7 +14,14 @@ import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import { hasData } from "../../../utils/utils";
 import SignUpRequestModal from "./SignUpRequestModal";
-import { ACTION, SIGNUP_ACTIONS, SIGNUP_STATUS, STATUS } from "../../../utils/constants";
+import {
+  ACTION,
+  EXPORTFILENAME,
+  SIGNUP_ACTIONS,
+  SIGNUP_STATUS,
+  STATUS
+} from "../../../utils/constants";
+
 import Toast from "../../../components/toast/Toast";
 import Confirm from "../../../components/confirmationModal/Confirm";
 
@@ -106,6 +113,7 @@ const SignUpRequests = () => {
       Xl8: true,
       Header: ["sur013", "Action"],
       disableSortBy: true,
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <div className="text-center edit-user">
@@ -208,6 +216,7 @@ const SignUpRequests = () => {
           callback={cb}
           key={refreshKey}
           isLoading={isLoading}
+          exportFileName={EXPORTFILENAME.SIGNUPREQUESTS}
           hiddenColumns={hiddenColumns}
         ></Table>
 

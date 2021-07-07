@@ -26,9 +26,17 @@ import {
   localeDateOnly,
   aboveZero,
   lpad5,
-  sortableDob
+  dateComparator,
+  getNumberExportValue
 } from "../../utils/utils";
-import { LK, ROLE, DIRECTION, TABTYPE, GENERICTYPE } from "../../utils/constants";
+import {
+  LK,
+  ROLE,
+  DIRECTION,
+  TABTYPE,
+  GENERICTYPE,
+  EXPORTFILENAME
+} from "../../utils/constants";
 import { Col, Tabs, Tab } from "react-bootstrap";
 import "./FlightPax.css";
 
@@ -42,6 +50,7 @@ const FlightPax = props => {
   const [key, setKey] = useState(0);
   const [flightData, setFlightData] = useState({});
   const [carrierName, setCarrierName] = useState();
+  const [exportFileName, setExportFileName] = useState();
   const { getSingleKeyValue } = useContext(LookupContext);
 
   const hasAnyHits = item => {
@@ -63,8 +72,7 @@ const FlightPax = props => {
       const displayDobDate = localeDateOnly(new Date(item.dob));
       item.docNumber = item.documents?.length > 0 ? item.documents[0] : "";
       item.age = getAge(item.dob) ? ` (${getAge(item.dob)})` : "";
-      item.dobStr = `${sortableDob(new Date(item.dob))} ${displayDobDate} ${item.age}`;
-
+      item.dateOfBirth = displayDobDate;
       item.dobAge = `${alt(displayDobDate)} ${item.age}`;
       item.rulehit = item.onRuleHitList ? 1 : "";
       item.watchhit = item.onWatchList ? 1 : "";
@@ -168,6 +176,7 @@ const FlightPax = props => {
       Header: ["fp026", "Hit Aggregates"],
       disableGroupBy: true,
       disableFilters: true,
+      disableExport: true,
       aggregate: sumCotravelerHits,
       Aggregated: ({ value }) => aboveZero(value),
       Cell: ({ row }) => (
@@ -222,9 +231,11 @@ const FlightPax = props => {
     },
     { Accessor: "gender", Xl8: true, Header: ["fp017", "Gender"], disableGroupBy: true },
     {
-      Accessor: "dobStr",
+      Accessor: "dateOfBirth",
       Xl8: true,
       Header: ["fp018", "DOB"],
+      sortType: (row1, row2) =>
+        dateComparator(row1.original.dateOfBirth, row2.original.dateOfBirth),
       Cell: ({ row }) => <div>{row.original.dobAge}</div>,
       Aggregated: () => ``,
       disableGroupBy: true
@@ -233,7 +244,8 @@ const FlightPax = props => {
       Accessor: "docNumber",
       Xl8: true,
       Header: ["fp019", "Doc Number"],
-      disableGroupBy: true
+      disableGroupBy: true,
+      getCellExportValue: row => getNumberExportValue(row.original.docNumber)
     },
     {
       Accessor: "nationality",
@@ -252,7 +264,13 @@ const FlightPax = props => {
       },
       Aggregated: () => ``
     },
-    { Accessor: "coTravellerId", Xl8: true, Header: ["fp021", "PNR Record Loc."] }
+    {
+      Accessor: "coTravellerId",
+      Xl8: true,
+      Header: ["fp021", "PNR Record Loc."],
+      getColumnExportValue: () => "PNR Record Loc.",
+      getCellExportValue: row => getNumberExportValue(row.original.coTravellerId)
+    }
   ];
 
   useEffect(() => {
@@ -281,8 +299,13 @@ const FlightPax = props => {
   }, [props.id]);
 
   useEffect(() => {
-    if (tab === TABTYPE.HITS) setData(hitData);
-    else setData(allData);
+    if (tab === TABTYPE.HITS) {
+      setData(hitData);
+      setExportFileName(EXPORTFILENAME.FLIGHTPAX.HITS);
+    } else {
+      setData(allData);
+      setExportFileName(EXPORTFILENAME.FLIGHTPAX.ALL);
+    }
 
     const newkey = key + 1;
     setKey(newkey);
@@ -398,6 +421,7 @@ const FlightPax = props => {
           callback={cb}
           disableGroupBy={false}
           enableColumnFilter={true}
+          exportFileName={exportFileName}
         ></Table>
       </Main>
     </>

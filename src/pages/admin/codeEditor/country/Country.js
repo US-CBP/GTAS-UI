@@ -9,9 +9,10 @@ import CountryModal from "./CountryModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 import { LookupContext } from "../../../../context/data/LookupContext";
 import { codeEditor } from "../../../../services/lookupService";
-import { ACTION, LK } from "../../../../utils/constants";
+import { ACTION, EXPORTFILENAME, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
+import { getNumberExportValue } from "../../../../utils/utils";
 
 const Countries = () => {
   const cb = () => {};
@@ -101,6 +102,7 @@ const Countries = () => {
       Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <div className="icon-col">
@@ -114,7 +116,12 @@ const Countries = () => {
     },
     { Accessor: "iso2", Xl8: true, Header: ["iso2001", "ISO2"] },
     { Accessor: "iso3", Xl8: true, Header: ["iso3001", "ISO3"] },
-    { Accessor: "isoNumeric", Xl8: true, Header: ["isonum001", "ISO Numeric"] },
+    {
+      Accessor: "isoNumeric",
+      Xl8: true,
+      Header: ["isonum001", "ISO Numeric"],
+      getCellExportValue: row => getNumberExportValue(row.original.isoNumeric)
+    },
     { Accessor: "name", Xl8: true, Header: ["cou005", "Name"] }
   ];
 
@@ -143,6 +150,7 @@ const Countries = () => {
         header={headers}
         key={refreshKey}
         enableColumnFilter={true}
+        exportFileName={EXPORTFILENAME.CODEEDITOR.COUNTRY}
       ></Table>
       <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action

@@ -11,6 +11,7 @@ import Xl8 from "../../components/xl8/Xl8";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import { translations } from "../../services/serviceWrapper";
 import "./LanguageEditor.css";
+import { EXPORTFILENAME } from "../../utils/constants";
 
 const LanguageEditor = () => {
   const { getLiveEditState, action } = useContext(LiveEditContext);
@@ -88,7 +89,14 @@ const LanguageEditor = () => {
           </div>
         }
       ></Title>
-      <Table data={data} id="Queries" callback={cb} key={data} header={header}></Table>
+      <Table
+        data={data}
+        id="Queries"
+        callback={cb}
+        key={data}
+        header={header}
+        exportFileName={EXPORTFILENAME.LANGEDITOR}
+      ></Table>
     </Main>
   );
 };

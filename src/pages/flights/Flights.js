@@ -15,8 +15,16 @@ import LazyImage from "../../components/lazyImage/LazyImage";
 import Xl8 from "../../components/xl8/Xl8";
 import { UserContext } from "../../context/user/UserContext";
 import { flights } from "../../services/serviceWrapper";
-import { hasData, alt, localeDate, asArray, aboveZero, lpad5 } from "../../utils/utils";
-import { TIME, ROLE, LK, TABTYPE } from "../../utils/constants";
+import {
+  hasData,
+  alt,
+  localeDate,
+  asArray,
+  aboveZero,
+  lpad5,
+  dateComparator
+} from "../../utils/utils";
+import { TIME, ROLE, LK, TABTYPE, EXPORTFILENAME } from "../../utils/constants";
 import { Col, Tabs, Tab } from "react-bootstrap";
 import { LookupContext } from "../../context/data/LookupContext";
 import ToolTipWrapper from "../../components/tooltipWrapper/TooltipWrapper";
@@ -40,6 +48,7 @@ const Flights = props => {
   const [tablekey, setTablekey] = useState(0);
   const [tableState, setTableState] = useState(initTableState);
   const [isLoading, setIsLoading] = useState(false);
+  const [exportFileName, setExportFileName] = useState();
 
   const { getCachedCoreFields } = useContext(LookupContext);
 
@@ -79,6 +88,8 @@ const Flights = props => {
       item.fuzzyHitCount = aboveZero(item.fuzzyHitCount);
       item.externalHitCount = aboveZero(item.externalHitCount);
       item.manualHitCount = aboveZero(item.manualHitCount);
+      item.departure = localeDate(item.etd);
+      item.arrival = localeDate(item.eta);
 
       item.hitCounts = `${lpad5(item.highPrioHitCount)}:${lpad5(
         item.medPrioHitCount
@@ -143,6 +154,7 @@ const Flights = props => {
     Accessor: "hitCounts",
     Xl8: true,
     Header: ["fl024", "Hit Aggregates"],
+    disableExport: true,
     disableGroupBy: true,
     Cell: ({ row }) => {
       return (
@@ -179,16 +191,18 @@ const Flights = props => {
       )
     },
     {
-      Accessor: "etd",
+      Accessor: "departure",
       Xl8: true,
       Header: ["fl011", "Departure"],
-      Cell: ({ row }) => localeDate(row.original.etd)
+      sortType: (row1, row2) =>
+        dateComparator(row1.original.departure, row2.original.departure)
     },
     {
-      Accessor: "eta",
+      Accessor: "arrival",
       Xl8: true,
       Header: ["fl010", "Arrival"],
-      Cell: ({ row }) => localeDate(row.original.eta)
+      sortType: (row1, row2) =>
+        dateComparator(row1.original.arrival, row2.original.arrival)
     },
     {
       Accessor: "fullFlightNumber",
@@ -246,8 +260,13 @@ const Flights = props => {
   ];
 
   useEffect(() => {
-    if (tab === TABTYPE.HITS) setData(hitData);
-    else setData(allData);
+    if (tab === TABTYPE.HITS) {
+      setData(hitData);
+      setExportFileName(EXPORTFILENAME.FLIGHT.HITS);
+    } else {
+      setData(allData);
+      setExportFileName(EXPORTFILENAME.FLIGHT.ALL);
+    }
 
     const newkey = tablekey + 1;
     setTablekey(newkey);
@@ -388,6 +407,7 @@ const Flights = props => {
             stateVals={getTableState}
             stateCb={stateCallback}
             isLoading={isLoading}
+            exportFileName={exportFileName}
           />
         )}
       </Main>

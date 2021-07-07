@@ -11,14 +11,14 @@ import { Tabs, Tab } from "react-bootstrap";
 import { LookupContext } from "../../../context/data/LookupContext";
 
 import { rulesall, rule } from "../../../services/serviceWrapper";
-import { hasData } from "../../../utils/utils";
-import { QR, ACTION, RULETAB, ROLE } from "../../../utils/constants";
+import { getBooleanExportValue, hasData } from "../../../utils/utils";
+import { QR, ACTION, RULETAB, ROLE, EXPORTFILENAME } from "../../../utils/constants";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import QRModal from "./QRModal";
 import { Fab } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 import "./QueryRules.css";
-import {UserContext} from "../../../context/user/UserContext";
+import { UserContext } from "../../../context/user/UserContext";
 
 //TODO - the two fetches, rulesall and rules, are separate but they don't need to be. Until we have requirements preventing some
 //users or roles from fetching all rules, we should consider pulling all data from rulesall and filtering the results for "my rules".
@@ -94,6 +94,7 @@ const Rules = props => {
       Xl8: true,
       Header: ["rul010", "Over Max Hits"],
       isBoolean: true,
+      getCellExportValue: row => getBooleanExportValue(row.original.overMaxHits),
       Cell: ({ row }) => {
         if (row.original.overMaxHits === 1) {
           return (
@@ -113,6 +114,7 @@ const Rules = props => {
       Xl8: true,
       isBoolean: true,
       Header: ["rul014", "Enabled"],
+      getCellExportValue: row => getBooleanExportValue(row.original.enabled),
       Cell: ({ row }) => {
         if (row.original.enabled === 1) {
           return (
@@ -203,14 +205,14 @@ const Rules = props => {
           if (isLoggedinUser(parsedItem.author)) {
             mine.push(parsedItem); //if author is logged in user, add to 'my' list
           }
-            all.push(parsedItem); //always add to 'all rules'.
+          all.push(parsedItem); //always add to 'all rules'.
         });
       }
       setAllRules(all);
       setMyRules(mine);
       if (tab === RULETAB.ALL) {
         setData(all);
-      } else{
+      } else {
         setData(mine);
       }
       setTablekey(tablekey + 1);
@@ -220,10 +222,11 @@ const Rules = props => {
   // on tab
   useEffect(() => {
     if (tab) {
-      if(hasData(allRules)) {
-        if (tab === RULETAB.ALL) { //set to myRules/allRules based on tab. Replace with indexed DB? Maybe not necessary to store?
+      if (hasData(allRules)) {
+        if (tab === RULETAB.ALL) {
+          //set to myRules/allRules based on tab. Replace with indexed DB? Maybe not necessary to store?
           setData(allRules);
-        } else{
+        } else {
           setData(myRules);
         }
         setTablekey(tablekey + 1);
@@ -291,6 +294,9 @@ const Rules = props => {
           header={header}
           key={tablekey}
           enableColumnFilter={true}
+          exportFileName={
+            tab === RULETAB.ALL ? EXPORTFILENAME.RULE.ALL : EXPORTFILENAME.RULE.MYRULES
+          }
         ></Table>
         <Fab
           icon={<i className="fa fa-plus nospin" />}

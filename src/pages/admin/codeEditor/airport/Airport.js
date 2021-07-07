@@ -9,7 +9,7 @@ import AirportModal from "./AirportModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 import { codeEditor } from "../../../../services/lookupService";
 import { LookupContext } from "../../../../context/data/LookupContext";
-import { ACTION, LK } from "../../../../utils/constants";
+import { ACTION, EXPORTFILENAME, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
@@ -103,6 +103,7 @@ const Airports = () => {
       Xl8: true,
       Header: ["edit001", "Edit"],
       disableFilters: true,
+      disableExport: true,
       disableSortBy: true,
       Cell: ({ row }) => {
         return (
@@ -149,6 +150,7 @@ const Airports = () => {
         header={headers}
         key={refreshKey}
         enableColumnFilter={true}
+        exportFileName={EXPORTFILENAME.CODEEDITOR.AIRPORT}
       ></Table>
       <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action

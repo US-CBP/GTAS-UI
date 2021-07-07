@@ -9,7 +9,7 @@ import CreditCardTypeModal from "./CreditCardTypeModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 import { LookupContext } from "../../../../context/data/LookupContext";
 import { codeEditor } from "../../../../services/lookupService";
-import { ACTION, LK } from "../../../../utils/constants";
+import { ACTION, EXPORTFILENAME, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
 
@@ -103,6 +103,7 @@ const CreditCardType = () => {
       Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <div className="icon-col">
@@ -142,6 +143,7 @@ const CreditCardType = () => {
         header={headers}
         key={refreshKey}
         enableColumnFilter={true}
+        exportFileName={EXPORTFILENAME.CODEEDITOR.CCTYPE}
       ></Table>
       <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action

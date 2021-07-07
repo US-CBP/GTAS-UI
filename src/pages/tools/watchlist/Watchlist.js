@@ -18,7 +18,8 @@ import {
   hasData,
   watchlistDateFormat,
   timezoneFreeDate,
-  sortableDob
+  dateComparator,
+  getNumberExportValue
 } from "../../../utils/utils";
 import { LK } from "../../../utils/constants";
 import "./constants.js";
@@ -254,7 +255,6 @@ const Watchlist = props => {
               firstName: firstName,
               lastName: lastName,
               dob: displayDobDate,
-              sortableDOB: `${sortableDob(new Date(dob))} ${displayDobDate}`,
               categoryId: categoryId,
               category: category
             };
@@ -286,7 +286,12 @@ const Watchlist = props => {
       Cell: ({ row }) => getEditRowData(row.original)
     },
     { Accessor: "documentType", Xl8: true, Header: ["wl011", "Document Type"] },
-    { Accessor: "documentNumber", Xl8: true, Header: ["wl012", "Document Number"] },
+    {
+      Accessor: "documentNumber",
+      Xl8: true,
+      Header: ["wl012", "Document Number"],
+      getCellExportValue: row => getNumberExportValue(row.original.documentNumber)
+    },
     { Accessor: "category", Xl8: true, Header: ["wl013", "Category"] },
     {
       Accessor: "delete",
@@ -311,9 +316,10 @@ const Watchlist = props => {
     { Accessor: "firstName", Xl8: true, Header: ["wl015", "First Name"] },
     { Accessor: "lastName", Xl8: true, Header: ["wl016", "Last Name"] },
     {
-      Accessor: "sortableDOB",
+      Accessor: "dob",
       Xl8: true,
       Header: ["wl016", "DOB"],
+      sortType: (row1, row2) => dateComparator(row1.original.dob, row2.original.dob),
       Cell: ({ row }) => row.original.dob
     },
     { Accessor: "category", Xl8: true, Header: ["wl017", "Category"] },

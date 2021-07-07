@@ -128,7 +128,13 @@ const FileDownload = ({ name }) => {
         className="stacker title filedownload"
       ></Title>
       <div className="grid-container">
-        <Table callback={cb} key={tblRefreshKey} data={data} header={headers}></Table>
+        <Table
+          callback={cb}
+          key={tblRefreshKey}
+          data={data}
+          header={headers}
+          disableTableDataExport={true}
+        ></Table>
       </div>
     </Main>
   );

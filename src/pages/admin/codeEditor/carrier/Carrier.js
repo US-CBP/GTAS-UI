@@ -9,9 +9,10 @@ import CarrierModal from "./CarrierModal";
 import ConfirmationModal from "../../../../components/confirmationModal/ConfirmationModal";
 import { codeEditor } from "../../../../services/lookupService";
 import { LookupContext } from "../../../../context/data/LookupContext";
-import { ACTION, LK } from "../../../../utils/constants";
+import { ACTION, EXPORTFILENAME, LK } from "../../../../utils/constants";
 import { Fab, Action } from "react-tiny-fab";
 import "react-tiny-fab/dist/styles.css";
+import { getNumberExportValue } from "../../../../utils/utils";
 
 const Carriers = () => {
   const cb = function() {};
@@ -101,6 +102,7 @@ const Carriers = () => {
       Header: ["edit001", "Edit"],
       disableFilters: true,
       disableSortBy: true,
+      disableExport: true,
       Cell: ({ row }) => {
         return (
           <div className="icon-col">
@@ -112,7 +114,12 @@ const Carriers = () => {
         );
       }
     },
-    { Accessor: "iata", Xl8: true, Header: ["iata001", "IATA"] },
+    {
+      Accessor: "iata",
+      Xl8: true,
+      Header: ["iata001", "IATA"],
+      getCellExportValue: row => getNumberExportValue(row.original.iata)
+    },
     { Accessor: "icao", Xl8: true, Header: ["icao001", "ICAO"] },
     { Accessor: "name", Xl8: true, Header: ["car005", "Name"] }
   ];
@@ -142,6 +149,7 @@ const Carriers = () => {
         header={headers}
         key={refreshKey}
         enableColumnFilter={true}
+        exportFileName={EXPORTFILENAME.CODEEDITOR.CARRIER}
       ></Table>
       <Fab icon={<i className="fa fa-plus" />} variant="info">
         <Action

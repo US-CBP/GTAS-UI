@@ -2,17 +2,17 @@
 //
 // Please see license.txt for details.
 
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Kanban from "../../components/kanban/Kanban";
 import Title from "../../components/title/Title";
 import Main from "../../components/main/Main";
 import Xl8 from "../../components/xl8/Xl8";
-import {Col} from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import FilterForm from "../../components/filterForm2/FilterForm";
-import {poe} from "../../services/serviceWrapper";
+import { poe } from "../../services/serviceWrapper";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
-import {addMinutes, asArray, hasData} from "../../utils/utils";
+import { addMinutes, asArray, hasData } from "../../utils/utils";
 
 const POE = props => {
   let startDate = new Date();
@@ -88,73 +88,71 @@ const POE = props => {
       setPoeLanes(laneRes);
       setPoeTiles(tileRes);
       setIsLoading(false);
-      setPoeKey(poeKey+1);
+      setPoeKey(poeKey + 1);
     });
   };
 
-
   return (
-      <>
-  <SidenavContainer>
-    <Col className="notopmargin">
-      <FilterForm
-          service={poe.get.getAllTiles}
-          callback={setDataWrapper}
-          paramCallback={parameterAdapter}
-          key={filterFormKey}
-          getInitialState={getInitialState}
-      >
-        <LabelledInput
-            labelText={<Xl8 xid="poe0005">Hour Range (Start)</Xl8>}
-            inputtype="select"
-            name="startHourRange"
-            inputval="6"
-            inputStyle="form-select"
-            datafield="startHourRange"
-            options={[
-              { value: "0", label: "0 hour" },
-              { value: "6", label: "-6 hours" },
-              { value: "12", label: "-12 hours" },
-              { value: "24", label: "-24 hours" },
-              { value: "48", label: "-48 hours" },
-              { value: "96", label: "-96 hours" }
-            ]}
-            callback={cb}
-            alt="Hour range (Start)"
-        />
-        <LabelledInput
-            labelText={<Xl8 xid="poe0006">Hour Range (End)</Xl8>}
-            inputtype="select"
-            name="endHourRange"
-            inputval="96"
-            inputStyle="form-select"
-            datafield="endHourRange"
-            options={[
-              { value: "0", label: "0 hour" },
-              { value: "6", label: "+6 hours" },
-              { value: "12", label: "+12 hours" },
-              { value: "24", label: "+24 hours" },
-              { value: "48", label: "+48 hours" },
-              { value: "96", label: "+96 hours" }
-            ]}
-            callback={cb}
-            alt="Hour range (End)"
-        />
-      </FilterForm>
-    </Col>
-  </SidenavContainer>
-  <Main>
-    <Title title={<Xl8 xid="poe0007">Port Of Entry Lookout</Xl8>} uri={props.uri} />
-    <Kanban
-        lanes={poeLanes}
-        tiles={poeTiles}
-        key={poeKey}
-        isLoading={isLoading}
-    >
-    </Kanban>
-  </Main>
-  </>
-  )
+    <>
+      <SidenavContainer>
+        <Col className="notopmargin">
+          <FilterForm
+            service={poe.get.getAllTiles}
+            callback={setDataWrapper}
+            paramCallback={parameterAdapter}
+            key={filterFormKey}
+            getInitialState={getInitialState}
+          >
+            <LabelledInput
+              labelText={<Xl8 xid="poe0005">Hour Range (Start)</Xl8>}
+              inputtype="select"
+              name="startHourRange"
+              inputval="6"
+              inputStyle="form-select"
+              datafield="startHourRange"
+              options={[
+                { value: "0", label: "0 hour" },
+                { value: "6", label: "-6 hours" },
+                { value: "12", label: "-12 hours" },
+                { value: "24", label: "-24 hours" },
+                { value: "48", label: "-48 hours" },
+                { value: "96", label: "-96 hours" }
+              ]}
+              callback={cb}
+              alt="Hour range (Start)"
+            />
+            <LabelledInput
+              labelText={<Xl8 xid="poe0006">Hour Range (End)</Xl8>}
+              inputtype="select"
+              name="endHourRange"
+              inputval="96"
+              inputStyle="form-select"
+              datafield="endHourRange"
+              options={[
+                { value: "0", label: "0 hour" },
+                { value: "6", label: "+6 hours" },
+                { value: "12", label: "+12 hours" },
+                { value: "24", label: "+24 hours" },
+                { value: "48", label: "+48 hours" },
+                { value: "96", label: "+96 hours" }
+              ]}
+              callback={cb}
+              alt="Hour range (End)"
+            />
+          </FilterForm>
+        </Col>
+      </SidenavContainer>
+      <Main>
+        <Title title={<Xl8 xid="poe0007">Port Of Entry Lookout</Xl8>} uri={props.uri} />
+        <Kanban
+          lanes={poeLanes}
+          tiles={poeTiles}
+          key={poeKey}
+          isLoading={isLoading}
+        ></Kanban>
+      </Main>
+    </>
+  );
 };
 
 export default POE;

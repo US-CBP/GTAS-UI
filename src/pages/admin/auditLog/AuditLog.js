@@ -12,7 +12,13 @@ import SidenavContainer from "../../../components/sidenavContainer/SidenavContai
 import FilterForm from "../../../components/filterForm2/FilterForm";
 import LabelledInput from "../../../components/labelledInput/LabelledInput";
 import Main from "../../../components/main/Main";
-import { addMinutes, asArray, localeDateWithSeconds } from "../../../utils/utils";
+import {
+  addMinutes,
+  asArray,
+  dateComparator,
+  localeDateWithSeconds
+} from "../../../utils/utils";
+import { EXPORTFILENAME } from "../../../utils/constants";
 
 const AuditLog = ({ name }) => {
   const cb = () => {};
@@ -97,12 +103,17 @@ const AuditLog = ({ name }) => {
       Accessor: "timestamp",
       Xl8: true,
       Header: ["al009", "Timestamp"],
-      Cell: ({ row }) => localeDateWithSeconds(row.original.timestamp)
+      sortType: (row1, row2) =>
+        dateComparator(row1.original.timestamp, row2.original.timestamp)
     }
   ];
 
   const setDataWrapper = res => {
-    setData(res);
+    const parsedData = asArray(res).map(log => {
+      return { ...log, timestamp: localeDateWithSeconds(log.timestamp) };
+    });
+
+    setData(parsedData);
     setRefreshKey(refreshKey + 1);
     setIsLoading(false);
   };
@@ -171,6 +182,7 @@ const AuditLog = ({ name }) => {
           callback={cb}
           header={headers}
           isLoading={isLoading}
+          exportFileName={EXPORTFILENAME.AUDITLOG}
         ></Table>
       </Main>
     </>

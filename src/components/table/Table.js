@@ -320,14 +320,16 @@ const Table = props => {
                 </option>
               ))}
             </select>
-            <Button
-              className="export-btn"
-              variant="light"
-              size="sm"
-              onClick={() => exportData("csv", true)}
-            >
-              {<Xl8 xid="tab004">Export</Xl8>}
-            </Button>
+            {!props.disableTableDataExport && (
+              <Button
+                className="export-btn"
+                variant="light"
+                size="sm"
+                onClick={() => exportData("csv", true)}
+              >
+                {<Xl8 xid="tab004">Export</Xl8>}
+              </Button>
+            )}
             <span className="tagrightpag">
               <h3 className="title-default">
                 <i>{isPopulated ? rows.length : 0}</i>
@@ -404,6 +406,18 @@ const Table = props => {
           cellconfig.Filter = BooleanFilter;
         }
 
+        if (element.sortType !== undefined) {
+          cellconfig.sortType = element.sortType;
+        }
+        //Overrides the cell values
+        if (element.getCellExportValue !== undefined) {
+          cellconfig.getCellExportValue = element.getCellExportValue;
+        }
+        //Override the column headr
+        if (element.getColumnExportValue !== undefined) {
+          cellconfig.getColumnExportValue = element.getColumnExportValue;
+        }
+
         columns.push(cellconfig);
       }
     });
@@ -463,7 +477,8 @@ Table.propTypes = {
   stateVals: PropTypes.func,
   ignoredFields: PropTypes.arrayOf(PropTypes.string),
   enableColumnFilter: PropTypes.bool,
-  exportFileName: PropTypes.string
+  exportFileName: PropTypes.string,
+  sortType: PropTypes.func
 };
 
 export default Table;

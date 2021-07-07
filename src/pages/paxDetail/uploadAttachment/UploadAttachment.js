@@ -133,7 +133,14 @@ const UploadAttachment = props => {
 
   return (
     <div className="one-column-grid-container">
-      <Table data={data} id="attachments" header={headers} key={tableKey} callback={cb} />
+      <Table
+        data={data}
+        id="attachments"
+        header={headers}
+        key={tableKey}
+        callback={cb}
+        disableTableDataExport={true}
+      />
     </div>
   );
 };

@@ -7,7 +7,7 @@ import Table from "../../../components/table/Table";
 import Title from "../../../components/title/Title";
 import Xl8 from "../../../components/xl8/Xl8";
 import Main from "../../../components/main/Main";
-import { ACTION, ROLE } from "../../../utils/constants";
+import { ACTION, EXPORTFILENAME, ROLE } from "../../../utils/constants";
 import RoleAuthenticator from "../../../context/roleAuthenticator/RoleAuthenticator";
 import { LookupContext } from "../../../context/data/LookupContext";
 
@@ -102,6 +102,7 @@ const Queries = props => {
           header={header}
           key={`table${tablekey}`}
           enableColumnFilter={true}
+          exportFileName={EXPORTFILENAME.QUERIES}
         ></Table>
         <Fab
           icon={<i className="fa fa-plus nospin" />}
