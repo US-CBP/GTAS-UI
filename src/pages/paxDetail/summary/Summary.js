@@ -23,6 +23,7 @@ import { HIT_STATUS } from "../../../utils/constants";
 import { Link } from "@reach/router";
 import { CardColumns } from "react-bootstrap";
 import "./Summary.scss";
+import RichTextEditor from "../../../components/inputs/richTextEditor/RichTextEditor";
 
 const Summary = props => {
   const headers = {
@@ -49,7 +50,7 @@ const Summary = props => {
       ruleConditions: <Xl8 xid="sum016">Conditions</Xl8>
     },
     eventNotes: {
-      plainTextNote: <Xl8 xid="sum017">Note</Xl8>,
+      notes: <Xl8 xid="sum017">Note</Xl8>,
       noteType: <Xl8 xid="sum018">Note Type</Xl8>,
       createdBy: <Xl8 xid="sum019">Created By</Xl8>,
       createdAt: <Xl8 xid="sum020">Created At</Xl8>
@@ -151,7 +152,9 @@ const Summary = props => {
         return {
           ...note,
           createdAt: localeDate(note.createdAt),
-          noteType: type.toString()
+          noteType: type.toString(),
+          getShortTextFrom: "plainTextNote",
+          notes: <RichTextEditor content={JSON.parse(note.rtfNote)} readOnly={true} />
         };
       });
       setEventNotes(notesData);
@@ -166,7 +169,9 @@ const Summary = props => {
           return {
             ...note,
             createdAt: localeDate(note.createdAt),
-            noteType: type.toString()
+            noteType: type.toString(),
+            getShortTextFrom: "plainTextNote",
+            notes: <RichTextEditor content={JSON.parse(note.rtfNote)} readOnly={true} />
           };
         })
         .slice(0, 10);
