@@ -47,7 +47,9 @@ const CardWithTable = props => {
 
     const tableData = Object.keys(headers).map((key, index) => {
       const td = row[key];
-      const triggerOverlay = !isShortText(td, textDisplayLimit);
+      const getShortTextFrom = row.getShortTextFrom || key;
+      const shorText = row[getShortTextFrom];
+      const triggerOverlay = !isShortText(shorText, textDisplayLimit);
       const triggerTooltip = needsTooltip(key);
       let safeVal = td?.props?.children || td;
       safeVal = toolTipLKMap[key] === LK.CARRIER && td.length === 6 ? td.slice(0, 2) : td;
@@ -59,7 +61,7 @@ const CardWithTable = props => {
               <LazyImage val={safeVal} type={toolTipLKMap[key].type}></LazyImage>
             )}
             <ToolTipWrapper data={{ val: td, lkup: toolTipLKMap[key].type }}>
-              {getShortText(td, textDisplayLimit)}
+              {getShortText(shorText, textDisplayLimit)}
             </ToolTipWrapper>
           </>
         </td>
@@ -69,7 +71,7 @@ const CardWithTable = props => {
             <LazyImage val={safeVal} type={toolTipLKMap[key].type}></LazyImage>
           )}
           <Overlay trigger={["click", "hover"]} key={key} content={td}>
-            <td className="as-info">{getShortText(td, textDisplayLimit)}</td>
+            <td className="as-info">{getShortText(shorText, textDisplayLimit)}</td>
           </Overlay>
         </>
       ) : (

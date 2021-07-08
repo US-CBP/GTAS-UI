@@ -181,7 +181,7 @@ export const paxEventNotesHistory = {
     const tempBody = {
       ...body,
       noteType: [body.noteType],
-      rtfNote: `<div><!--block -->${body.plainTextNote}</div>`, //this should be fixed
+      rtfNote: stringify(body.rtfNote),
       passengerId: paxId
     };
     return post(`${PAX}/note`, BASEHEADER, stringify(tempBody));
