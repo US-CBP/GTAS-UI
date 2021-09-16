@@ -2,7 +2,7 @@
 //
 // Please see license.txt for details.
 
-import React, {useState} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import Kanban from "../../components/kanban/Kanban";
 import Title from "../../components/title/Title";
 import Main from "../../components/main/Main";
@@ -13,6 +13,8 @@ import {poe} from "../../services/serviceWrapper";
 import LabelledInput from "../../components/labelledInput/LabelledInput";
 import SidenavContainer from "../../components/sidenavContainer/SidenavContainer";
 import {addMinutes, asArray, hasData} from "../../utils/utils";
+import { LookupContext } from "../../context/data/LookupContext";
+import { LK } from "../../utils/constants";
 
 const POE = props => {
   let startDate = new Date();
@@ -21,6 +23,9 @@ const POE = props => {
   startDate.setHours(startDate.getHours() - 6);
   const [poeTiles, setPoeTiles] = useState([]);
   const [poeLanes, setPoeLanes] = useState([]);
+  const [airports, setAirports] = useState([]);
+
+  const { lookupAction, getFullCachedCoreFields } = useContext(LookupContext);
   const [showDateTimePicker, setShowDateTimePicker] = useState(false);
   const [filterFormKey, setFilterFormKey] = useState(0);
   const [poeKey, setPoeKey] = useState(0);
@@ -29,8 +34,39 @@ const POE = props => {
 
   const initialParamState = {
     etaStart: startDate,
-    etaEnd: addMinutes(endDate, 1)
+    etaEnd: addMinutes(endDate, 1),
+    airports: airports
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (hasData(airports)) {
+      setFilterFormKey(filterFormKey + 1);
+    }
+  }, [airports]);
+
+  const fetchData = () => {
+    getFullCachedCoreFields(LK.AIRPORT).then(res => {
+      let airportsWithABlankOption = [];
+      airportsWithABlankOption.push(
+         {
+          label:"", 
+          value:""
+          }
+        );
+      const mappedAirports = asArray(res).map(airport => {
+        return {
+          label: airport.title,
+          value: airport.value
+        };
+      });
+      airportsWithABlankOption.push(...mappedAirports);
+      setAirports(airportsWithABlankOption);
+    })};
+
 
   const getInitialState = () => {
     setShowDateTimePicker(false);
@@ -140,6 +176,16 @@ const POE = props => {
             callback={cb}
             alt="Hour range (End)"
         />
+        <LabelledInput
+              name="poeAirport"
+              datafield="poeAirport"
+              labelText={<Xl8 xid="poe0008">POE Airports</Xl8>}
+              inputtype="select"
+              inputval=""
+              options={airports}
+              callback={cb}
+              alt="Poe Airport"
+            />
       </FilterForm>
     </Col>
   </SidenavContainer>
