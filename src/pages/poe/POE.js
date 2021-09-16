@@ -53,8 +53,8 @@ const POE = props => {
       let airportsWithABlankOption = [];
       airportsWithABlankOption.push(
          {
-          label:"", 
-          value:""
+          label:"All Airports", 
+          value:"All"
           }
         );
       const mappedAirports = asArray(res).map(airport => {
@@ -181,7 +181,7 @@ const POE = props => {
               datafield="poeAirport"
               labelText={<Xl8 xid="poe0008">POE Airports</Xl8>}
               inputtype="select"
-              inputval=""
+              inputval="All"
               options={airports}
               callback={cb}
               alt="Poe Airport"
