@@ -17,8 +17,9 @@ RUN apt-get -y update \
     && mv nginx.conf /etc/nginx/conf.d/default.conf \
     && mv main.conf /etc/nginx/nginx.conf && ls /usr/src/app/
 
+ENV NODE_BIN /root/.nvm/versions/node/v14.18.0/bin
 ENV NODE_PATH /root/.nvm/versions/node/v14.18.0/lib/node_modules
-ENV PATH /root/.nvm/versions/node/v14.18.0/bin:$PATH
+ENV PATH $NODE_BIN:$PATH
 
 WORKDIR /usr/share/nginx/html
 
@@ -31,7 +32,7 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize
 RUN tar -C /usr/local/bin -xzf dockerize-linux-amd64-v0.6.1.tar.gz
 
 CMD ["/bin/bash", "-c", " \
-    cd /usr/src/app && /root/.nvm/versions/node/v14.18.0/bin/npm run build && cd /usr/share/nginx/html \
+    cd /usr/src/app && $NODE_BIN/npm run build && cd /usr/share/nginx/html \
     && cp -a /usr/src/app/build/. /usr/share/nginx/html \
     && ./env.sh && dockerize -wait tcp://web-app:8443 -timeout 1000s \
     && nginx -g \"daemon off;\""]
