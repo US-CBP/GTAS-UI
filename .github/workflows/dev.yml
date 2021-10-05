@@ -71,7 +71,7 @@ jobs:
           curl -L https://github.com/kubernetes/kompose/releases/download/v1.22.0/kompose-linux-amd64 -o kompose
           chmod +x kompose
           sudo mv ./kompose /usr/local/bin/kompose
-          kompose -f docker-compose.yml -f k8s-pipeline-properties.yml convert --out deploy.json
+          kompose -f docker-compose.yml -f k8s-pipeline-properties.yml convert -j --out deploy.json
 
           echo "Generating temporary sub json object with mount path"
           cat deploy.json | jq -r '.items[] | select(.kind=="Deployment" and .metadata.name=="gtas-ui") | .spec.template.spec.containers[] | select(.name=="gtas-ui") | .volumeMounts[] | select(.name=="env") | .mountPath="/usr/src/app/.env"' > temp.json
