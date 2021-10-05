@@ -10,12 +10,11 @@ services:
       context: .
       dockerfile: dockerfile
     ports:
-      #      - 80:80
       - 443:443
     restart: always
     secrets:
       - source: env
-        target: /environment/.env
+        target: /usr/src/app/.env
       - source: ui-cert
         target: /ui-cert/gtas.crt
       - source: ui-key

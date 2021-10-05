@@ -3,3 +3,6 @@ certs
 docker-compose.yml
 dockerfile
 README.md
+.env
+.env.development
+.env.bak
