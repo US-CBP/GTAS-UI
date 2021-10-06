@@ -74,7 +74,7 @@ jobs:
           kompose -f docker-compose.yml -f k8s-pipeline-properties.yml convert -j --out deploy.json
 
           echo "Generating temporary sub json object with mount path"
-          cat deploy.json | jq -r '.items[] | select(.kind=="Deployment" and .metadata.name=="gtas-ui") | .spec.template.spec.containers[] | select(.name=="gtas-ui") | .volumeMounts[] | select(.name=="env") | .mountPath="/usr/src/app/.env"' > temp.json
+          cat deploy.json | jq -r '.items[] | select(.kind=="Deployment" and .metadata.name=="gtas-ui") | .spec.template.spec.containers[] | select(.name=="gtas-ui") | .volumeMounts[] | select(.name=="env") | .mountPath="/usr/src/app/.env" | . += {subPath: ".env"}' > temp.json
 
           echo "Generating json with deleted mount path"
           cat deploy.json | jq -r 'del(.items[] | select(.kind=="Deployment" and .metadata.name=="gtas-ui")|.spec.template.spec.containers[] | select(.name=="gtas-ui") | .volumeMounts[] | select(.name=="env"))' > alt.json
