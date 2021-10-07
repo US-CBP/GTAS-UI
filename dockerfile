@@ -8,6 +8,7 @@ COPY . .
 
 RUN apt-get -y update \
     && apt-get install -y wget \
+    && apt-get install -y dos2unix \
     && curl -sL https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.0/install.sh -o install_nvm.sh \
     && bash install_nvm.sh && export NVM_DIR="$HOME/.nvm" \
     && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" \
@@ -26,13 +27,15 @@ WORKDIR /usr/share/nginx/html
 RUN cp /usr/src/app/env.sh . \
     && chmod +x env.sh
 
+RUN dos2unix /usr/share/nginx/html/env.sh    
+
 EXPOSE 80
 
 RUN wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz
 RUN tar -C /usr/local/bin -xzf dockerize-linux-amd64-v0.6.1.tar.gz
 
 CMD ["/bin/bash", "-c", " \
-    cd /usr/src/app && $NODE_BIN/npm run build && cd /usr/share/nginx/html \
+    cd /usr/src/app && $NODE_BIN/npm rebuild node-sass && $NODE_BIN/npm run build && cd /usr/share/nginx/html \
     && cp -a /usr/src/app/build/. /usr/share/nginx/html \
     && ./env.sh && dockerize -wait tcp://web-app:8443 -timeout 1000s \
     && nginx -g \"daemon off;\""]
