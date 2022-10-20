@@ -45,10 +45,18 @@ const UploadAttachment = props => {
 
   useEffect(() => {
     attachment.get.getAllAttachmentsMeta(paxId).then(resp => {
+      resp = adjustContentType(resp);
       setData(resp);
       setTableKey(tableKey + 1);
     });
   }, [refreshDataKey, props.attachmentRefreshKey]);
+
+  const adjustContentType = (resp) => {
+    resp.forEach(data => {
+      data.contentType = data.filename.split('.')[1];
+    })
+    return resp;
+  }
 
   const headers = [
     {
