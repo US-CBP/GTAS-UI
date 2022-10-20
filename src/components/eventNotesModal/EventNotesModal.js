@@ -20,6 +20,14 @@ const EventNotesModal = props => {
   const [notTypes, setNoteTypes] = useState([]);
   const { getCachedCoreFields } = useContext(LookupContext);
 
+  const paramCallback = params => {
+    const parsedParams = params[1];
+    const note = parsedParams["rtfNote"];
+
+    parsedParams["plainTextNote"] = note.plainText;
+    parsedParams["rtfNote"] = note.richTextFormat;
+    return [params[0], parsedParams];
+  };
   const handleClose = (status, res) => {
     setShow(false);
     if (hasData(props.callback)) props.callback(status, res);
@@ -81,6 +89,7 @@ const EventNotesModal = props => {
             afterProcessed={handleClose}
             recordId={paxId}
             cancellable
+            paramCallback={paramCallback}
           >
             <LabelledInput
               inputtype="select"
@@ -92,13 +101,12 @@ const EventNotesModal = props => {
               options={notTypes}
             />
             <LabelledInput
-              inputtype="textarea"
-              labelText={<Xl8 xid="evn001">Notes</Xl8>}
-              name="plainTextNote"
+              inputtype="richText"
+              name="rtfNote"
               alt={<Xl8 xid="11">Notes</Xl8>}
-              datafield="plainTextNote"
+              datafield="rtfNote"
               required="required"
-              inputval=""
+              placeholder="Add notes here..."
             />
           </Form>
         </ModalBody>
